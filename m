@@ -2,53 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8B5A296992
-	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 08:12:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2792F29699C
+	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 08:17:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S372259AbgJWGMv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 23 Oct 2020 02:12:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37332 "EHLO
+        id S372352AbgJWGRH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 23 Oct 2020 02:17:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2898360AbgJWGMu (ORCPT
+        with ESMTP id S372340AbgJWGRG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 23 Oct 2020 02:12:50 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5239CC0613CE
-        for <kernel-janitors@vger.kernel.org>; Thu, 22 Oct 2020 23:12:49 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id w21so328410pfc.7
-        for <kernel-janitors@vger.kernel.org>; Thu, 22 Oct 2020 23:12:49 -0700 (PDT)
+        Fri, 23 Oct 2020 02:17:06 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4157C0613D2
+        for <kernel-janitors@vger.kernel.org>; Thu, 22 Oct 2020 23:17:06 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id t22so310487plr.9
+        for <kernel-janitors@vger.kernel.org>; Thu, 22 Oct 2020 23:17:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=sEILgJLNi06NCo6epaYREQDcaIzCOIdwa2hMmhI70Jg=;
-        b=iEqMXrLl0RL9xxIe+yfy28ibTGW9XVZWczPvCKUllYRfiEFmJPM2anznMKLapDG9GX
-         h7fnY0QO9J39RQvjjk6GD2akI/wjl1Mypvlg3BnfAVpyz9zhgpfuAQTjAXsBtCG5Exa5
-         lxczUH9ovOtGzrFI/jP4wdP8IYbl1WAsqECR1KiSM7OSkr/+q8/tTjMMF2R5lWvKiINW
-         SAfOCr02zbJAmeQJhWNSACGYQwgOsAk3WxHmdTiN5sumdBi8BI41NGlRqv1gibcDhA/7
-         tGQ/GqL5zqisZz6Doa8Q/FVduwMTQPnLFWR+Rm5Cox9874x7+V4mYixHU/h1T3TOGmn5
-         HN9A==
+        bh=qZx9FbWhVPPPhazjV3moDfr24pwj93WkkmuXXCaHCHA=;
+        b=B64hrugZLYwFDebwJ2n7cVm7IRpj+T6U2GvjbXeupsrBGTGAYwZLtGRoMLjXS0LCNS
+         Nmo2U523Hv+ktz4L2Otq4L86ZqOFYu3WLlrAGgpC49UpMaaAYNxmetjkWeXqk0jiSIla
+         gY5Ho3k8QylY8TFUS5YT3M6B9u2h4iyXMgZXERvFgGVAcRiT1CaboY4C/hVO8V4atbq6
+         rPURegBP7LxCH+Yr4d4x1Qa7LALmduuR2heeao1YguWmBHEJ87V3XyUSsA2jJopT9x3d
+         rQLsbWY1PBXHXcJEfEf4Mrc4huuq4akMabCdSsVJtGm8Kgp+4t+qR6lvCa8qqXL9hsz+
+         nLvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=sEILgJLNi06NCo6epaYREQDcaIzCOIdwa2hMmhI70Jg=;
-        b=AuBGCbGJEpkWvkK3RwUrZPgUvTwOqKaXHVQjEVl1A8p61iWDxw0ca1bua+e3lBxFiE
-         sJc8FoIumbslifAPN6as45jjL1GI3cauD+B4h7A88hHAIc97G9ZAG4mUoXOpOIGOTi0i
-         9KJGdTvwCnrxSLEoIgGNP8AlgYstxfHFX0aCWqioeyB+DpoPebHZyyk9jOoepAifF/tu
-         kXz4od+08GJVZxjNWaElvyANIOf0/ps8UcdnEdVadjgCtlA9DTKmmHQ6FIpfImYrNCjp
-         PksQRO5exeQTDmSei98nMS/oL6VF5L54riNEZypRCRQeN0Fx3WWspPIUWt2sn2rzdJUT
-         EcsQ==
-X-Gm-Message-State: AOAM532rcv1iJmkmEvTMlPihLt+IUp879yi8eBMQiAMuhJ3wd82Tv5pn
-        X3w90b03qqftUa4z3+XjpkFWr2GlgD8VWg==
-X-Google-Smtp-Source: ABdhPJxwrBrDCshuFRMlZZPQRHvFk4BrZKTWyVBbDUgWGljRIN46qOVADLDi8JM3k8vZHA67hjjKQw==
-X-Received: by 2002:a63:8f5d:: with SMTP id r29mr840712pgn.18.1603433568888;
-        Thu, 22 Oct 2020 23:12:48 -0700 (PDT)
+        bh=qZx9FbWhVPPPhazjV3moDfr24pwj93WkkmuXXCaHCHA=;
+        b=NdDeEgN//nG48WCneJYnafOkfpz7drQW1qycX1V9BFp5uQx2nuERQSxjyahvSLwGd3
+         yAWXUQzoYqpGnf9jjQcWRiHwlYVf1HHV306KWiHe1g00tM1vR3+wlD9DlQjjk0qpAyCT
+         h0d8j98V8G7Bp1IHEBuBxrZZnbyyCXqizdA+vh/dkfussDN5IXGHeLpfJ1G6JfWmy5uK
+         M9ItL060TsgJ09LwQxHoVL6W4Gi5v4x/XGHP5owqY7aMLBT9N/cRJs4TguU3Vm8zQjBd
+         9pWA40tYzA6ndnOgA6oH5T+L5wRa5dA8c4M8NBIC6p0rFNS3JKK3YMFULw/XrfayOUfG
+         b9iA==
+X-Gm-Message-State: AOAM531d7EyHmVFfoTzL6yCghhgzFzhXAFLVuH51b7VryQ7VXFoShLMQ
+        Nw96KmjbVvDL28+LqYIM+DtyVw==
+X-Google-Smtp-Source: ABdhPJzxbFDFyOM5J2fHvcReFefR6cHQ7tvPbgE4SQ5a7DPzKvxN0M1pWbmG6xTE/UMs2sLWAUz7Tg==
+X-Received: by 2002:a17:902:6b45:b029:d3:df34:3222 with SMTP id g5-20020a1709026b45b02900d3df343222mr874550plt.68.1603433825974;
+        Thu, 22 Oct 2020 23:17:05 -0700 (PDT)
 Received: from localhost ([122.181.54.133])
-        by smtp.gmail.com with ESMTPSA id t15sm743131pjy.33.2020.10.22.23.12.47
+        by smtp.gmail.com with ESMTPSA id lb13sm600802pjb.5.2020.10.22.23.17.04
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 22 Oct 2020 23:12:48 -0700 (PDT)
-Date:   Fri, 23 Oct 2020 11:42:46 +0530
+        Thu, 22 Oct 2020 23:17:05 -0700 (PDT)
+Date:   Fri, 23 Oct 2020 11:47:03 +0530
 From:   Viresh Kumar <viresh.kumar@linaro.org>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Cc:     Peter Zijlstra <peterz@infradead.org>,
@@ -64,32 +64,80 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         linux-kernel@vger.kernel.org,
         Valentin Schneider <valentin.schneider@arm.com>,
         Gilles Muller <Gilles.Muller@inria.fr>,
-        srinivas.pandruvada@linux.intel.com
-Subject: Re: [PATCH] sched/fair: check for idle core
-Message-ID: <20201023061246.irzbrl62baoawmqv@vireshk-i7>
+        srinivas.pandruvada@linux.intel.com,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Len Brown <len.brown@intel.com>
+Subject: Re: [PATCH] cpufreq: Avoid configuring old governors as default with
+ intel_pstate
+Message-ID: <20201023061703.jjpmoeq7wzwqtsid@vireshk-i7>
 References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr>
- <20201022071145.GM2628@hirez.programming.kicks-ass.net>
- <20201022104703.nw45dwor6wfn4ity@vireshk-i7>
  <34115486.YmRjPRKJaA@kreacher>
+ <20201022120213.GG2611@hirez.programming.kicks-ass.net>
+ <8312288.dAKoTdFk2S@kreacher>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <34115486.YmRjPRKJaA@kreacher>
+In-Reply-To: <8312288.dAKoTdFk2S@kreacher>
 User-Agent: NeoMutt/20180716-391-311a52
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 22-10-20, 13:45, Rafael J. Wysocki wrote:
-> On Thursday, October 22, 2020 12:47:03 PM CEST Viresh Kumar wrote:
-> > And I am not really sure why we always wanted this backup performance
-> > governor to be there unless the said governors are built as module.
+On 22-10-20, 18:23, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Subject: [PATCH] cpufreq: Avoid configuring old governors as default with intel_pstate
 > 
-> Apparently, some old drivers had problems with switching frequencies fast enough
-> for ondemand to be used with them and the fallback was for those cases.  AFAICS.
+> Commit 33aa46f252c7 ("cpufreq: intel_pstate: Use passive mode by
+> default without HWP") was meant to cause intel_pstate without HWP
+> to be used in the passive mode with the schedutil governor on top of
+> it by default, but it missed the case in which either "ondemand" or
+> "conservative" was selected as the default governor in the existing
+> kernel config, in which case the previous old governor configuration
+> would be used, causing the default legacy governor to be used on top
+> of intel_pstate instead of schedutil.
+> 
+> Address this by preventing "ondemand" and "conservative" from being
+> configured as the default cpufreq governor in the case when schedutil
+> is the default choice for the default governor setting.
+> 
+> [Note that the default cpufreq governor can still be set via the
+>  kernel command line if need be and that choice is not limited,
+>  so if anyone really wants to use one of the legacy governors by
+>  default, it can be achieved this way.]
+> 
+> Fixes: 33aa46f252c7 ("cpufreq: intel_pstate: Use passive mode by default without HWP")
+> Cc: 5.8+ <stable@vger.kernel.org> # 5.8+
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>  drivers/cpufreq/Kconfig |    2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> Index: linux-pm/drivers/cpufreq/Kconfig
+> ===================================================================
+> --- linux-pm.orig/drivers/cpufreq/Kconfig
+> +++ linux-pm/drivers/cpufreq/Kconfig
+> @@ -71,6 +71,7 @@ config CPU_FREQ_DEFAULT_GOV_USERSPACE
+>  
+>  config CPU_FREQ_DEFAULT_GOV_ONDEMAND
+>  	bool "ondemand"
+> +	depends on !SMP || !X86_INTEL_PSTATE
+>  	select CPU_FREQ_GOV_ONDEMAND
+>  	select CPU_FREQ_GOV_PERFORMANCE
+>  	help
+> @@ -83,6 +84,7 @@ config CPU_FREQ_DEFAULT_GOV_ONDEMAND
+>  
+>  config CPU_FREQ_DEFAULT_GOV_CONSERVATIVE
+>  	bool "conservative"
+> +	depends on !SMP || !X86_INTEL_PSTATE
 
-Do we still need this ? Or better ask those platforms to individually
-enable both of them.
+While reading this first it felt like a SMP platforms related problem
+(which I was surprised about), and then I understood what you are
+doing.
+
+I wonder if rewriting it this way makes it more readable with same
+result eventually.
+
+	depends on !(X86_INTEL_PSTATE && SMP)
 
 -- 
 viresh

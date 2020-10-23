@@ -2,117 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E372F296DA4
-	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 13:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B915E296DB3
+	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 13:30:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S462975AbgJWL0u (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 23 Oct 2020 07:26:50 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:37194 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S462886AbgJWL0u (ORCPT
+        id S463014AbgJWLaH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 23 Oct 2020 07:30:07 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:45982 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S462965AbgJWLaH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 23 Oct 2020 07:26:50 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09NBOx22022603;
-        Fri, 23 Oct 2020 11:26:42 GMT
+        Fri, 23 Oct 2020 07:30:07 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09NBOsSl131525;
+        Fri, 23 Oct 2020 11:29:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=J+fY7K/PMwP5qX5S8TQUDWhdvCCBHhdIEr5a9q7bD8c=;
- b=o2hNJlXQaZGph993OO71RyzLaJm9gGOnGhpQncigxhdchdle1C0gQrJrqip/6ccScVsl
- s+CJXUvcnXXEzmiXELUlhut3I2ylUKqWYU0rIoXQJ3349JYOENJoscm4S5nPtLrDylM4
- P2Ajdt5OeRzegusUn8YrVzumhrrA+6R0TXBERxgg7eSIit89TKoqAIxk8oYTq60OZyg9
- CFX2ABPzEzH5qP9i+YYg9SZ2NnvBQP3Ia0+QcasmlQFZ9X8ikPS20rAKYXkEnOSXGYYx
- jujtjqluNFfE5BC6cn62CyGe6dEEjMK3/UmhQNoRSZEuVD6JWW+8s+8tfBn3GBojq8st Hg== 
+ bh=9kf8P27vyBYNLjGzKO/Jue2/64fmWTjPZNf2k5fKmhc=;
+ b=TNJkekHOIZJkGE8PQeteOXT9/QZzO75g69x/3tecYzA5a26/GsCvAPMCGoSI1T7stUAe
+ vn/emSRZwmIOAwuBlm/URzTM3IXdgCcdwnlQqS3PKmhL6HYg3ni8EODNGSI/4U3EYmZj
+ URqL0R8k+Nn2Swmnq0EPyHB6rvH7OkNyK60f7NwoJBLerlqS5WqGnmunRnDk3UHZeluR
+ R2Pz1AvqxfRJbvwH7UjxO4XTJVsUfxMi+k3Vs9zKCu3AXoGvx1WlUJuLnJ+OfRJwAw08
+ Mz05agl56NwfZLSdUC4xqFYCYi5Osw1gcTnCnaMqOsNpp76Lo23DbDzZnPFBlBYBu73x pA== 
 Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 34ak16tywn-1
+        by aserp2120.oracle.com with ESMTP id 349jrq2s4q-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 23 Oct 2020 11:26:42 +0000
+        Fri, 23 Oct 2020 11:29:55 +0000
 Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09NBPkjB123745;
-        Fri, 23 Oct 2020 11:26:41 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 348ah1w7kb-1
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09NBPl33123798;
+        Fri, 23 Oct 2020 11:29:54 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 348ah1w9em-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 23 Oct 2020 11:26:41 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 09NBQer2009641;
-        Fri, 23 Oct 2020 11:26:40 GMT
+        Fri, 23 Oct 2020 11:29:54 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 09NBTsiL031037;
+        Fri, 23 Oct 2020 11:29:54 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 23 Oct 2020 04:26:39 -0700
-Date:   Fri, 23 Oct 2020 14:26:33 +0300
+        with ESMTP ; Fri, 23 Oct 2020 04:29:53 -0700
+Date:   Fri, 23 Oct 2020 14:29:47 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Chris Mason <clm@fb.com>, Qu Wenruo <wqu@suse.com>
-Cc:     Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] btrfs: clean up NULL checks in qgroup_unreserve_range()
-Message-ID: <20201023112633.GE282278@mwanda>
+To:     Diana Craciun <diana.craciun@oss.nxp.com>
+Cc:     Alex Williamson <alex.williamson@redhat.com>,
+        Cornelia Huck <cohuck@redhat.com>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH 2/2] vfio/fsl-mc: prevent underflow in vfio_fsl_mc_mmap()
+Message-ID: <20201023112947.GF282278@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9782 signatures=668682
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 phishscore=0
- malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0 mlxlogscore=999
+ malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0 mlxlogscore=981
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2010230081
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9782 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0
- priorityscore=1501 clxscore=1011 malwarescore=0 mlxscore=0 adultscore=0
- lowpriorityscore=0 impostorscore=0 spamscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2010230081
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 impostorscore=0 adultscore=0 bulkscore=0 malwarescore=0
+ mlxlogscore=993 mlxscore=0 spamscore=0 suspectscore=0 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010230081
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Smatch complains that this code dereferences "entry" before checking
-whether it's NULL on the next line.  Fortunately, rb_entry() will never
-return NULL so it doesn't cause a problem.  We can clean up the NULL
-checking a bit to silence the warning and make the code more clear.
+My static analsysis tool complains that the "index" can be negative.
+There are some checks in do_mmap() which try to prevent underflows but
+I don't know if they are sufficient for this situation.  Either way,
+making "index" unsigned is harmless so let's do it just to be safe.
 
+Fixes: 67247289688d ("vfio/fsl-mc: Allow userspace to MMAP fsl-mc device MMIO regions")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-My patch does not change run-time, but it's possible that the original
-code was buggy and I missed it.
+ drivers/vfio/fsl-mc/vfio_fsl_mc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- fs/btrfs/qgroup.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
-
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 580899bdb991..a7ae2f18f486 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -3417,24 +3417,20 @@ static int qgroup_unreserve_range(struct btrfs_inode *inode,
+diff --git a/drivers/vfio/fsl-mc/vfio_fsl_mc.c b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
+index 21f22e3da11f..f27e25112c40 100644
+--- a/drivers/vfio/fsl-mc/vfio_fsl_mc.c
++++ b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
+@@ -472,7 +472,7 @@ static int vfio_fsl_mc_mmap(void *device_data, struct vm_area_struct *vma)
  {
- 	struct rb_node *node;
- 	struct rb_node *next;
--	struct ulist_node *entry = NULL;
-+	struct ulist_node *entry;
- 	int ret = 0;
+ 	struct vfio_fsl_mc_device *vdev = device_data;
+ 	struct fsl_mc_device *mc_dev = vdev->mc_dev;
+-	int index;
++	unsigned int index;
  
- 	node = reserved->range_changed.root.rb_node;
-+	if (!node)
-+		return 0;
- 	while (node) {
- 		entry = rb_entry(node, struct ulist_node, rb_node);
- 		if (entry->val < start)
- 			node = node->rb_right;
--		else if (entry)
--			node = node->rb_left;
- 		else
--			break;
-+			node = node->rb_left;
- 	}
+ 	index = vma->vm_pgoff >> (VFIO_FSL_MC_OFFSET_SHIFT - PAGE_SHIFT);
  
--	/* Empty changeset */
--	if (!entry)
--		return 0;
--
- 	if (entry->val > start && rb_prev(&entry->rb_node))
- 		entry = rb_entry(rb_prev(&entry->rb_node), struct ulist_node,
- 				 rb_node);
 -- 
 2.28.0
 

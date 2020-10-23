@@ -2,124 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0DF4296E1E
-	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 14:00:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69253296E39
+	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 14:09:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S463360AbgJWL77 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 23 Oct 2020 07:59:59 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:33714 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S369960AbgJWL77 (ORCPT
+        id S463449AbgJWMJH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 23 Oct 2020 08:09:07 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:46530 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S463180AbgJWMJH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 23 Oct 2020 07:59:59 -0400
-Received: by mail-ot1-f67.google.com with SMTP id t15so1071012otk.0;
-        Fri, 23 Oct 2020 04:59:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VVsEq+wRbGQg5Ha262jtQgKJ2V9xu+fwLoD8r3aBHAg=;
-        b=X9BdsVdCspr4xaYTx6E3dGaxWFHAZZH6HQw+c4QR9azkCuyURku2iyguwgEXpz9um4
-         W4/W52ZI6YEnE3/I8Ix+L+ItgES6tT1L5o32WyPmD6nZOtTAwy40bu/XhAs7rbf5PdUw
-         ryAyPqEZIYs5/I+h23dfVff4ThnJIKI4bH/h4mfM8TuEIPmVMR1xprvL0o554CtV+i0r
-         ybdYHH2DBHYTzjPnbYxZz0yHTx0as5xaf6jMZ81TLgbdvJizaSNLxptHuhApZyP2Zh5g
-         rMQZRoxaeMhPP2NKfDk7bLpcQoqc9msvm+ebGj0PX9eacyG3xJ1z6KKAhUTiERK0MQ+d
-         OiRg==
-X-Gm-Message-State: AOAM533HiiUwpxLa+VGOZrPrpCa32mbR08Rl6L6YvTuIuWyiZ3ZTb2Pr
-        AjgWKGQ5Hr+MLL3X3z9rWGryM0I9jwlDgEQ8gQk=
-X-Google-Smtp-Source: ABdhPJyT5r2GaLzXcgx6D+Y+xfPH3602a59tadmtl2LzoO/Xu/5IGCPU+shg1Mg9Nm/Z3xXuiWIEx1h39/tU0iFa9EU=
-X-Received: by 2002:a9d:ac9:: with SMTP id 67mr1320247otq.321.1603454397748;
- Fri, 23 Oct 2020 04:59:57 -0700 (PDT)
+        Fri, 23 Oct 2020 08:09:07 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09NC5Au7095975;
+        Fri, 23 Oct 2020 12:09:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=3u747VZC52iNeeNmOWRTKOGyZ8opg2btTPcZQUCsvGw=;
+ b=g/GRiX9jjXejYbgaoQuSWf8mDKwf1QHkoc/k3V5GOM3mCrZ6r+su6cuS6jETcHwiCNdy
+ T5lClorzd8RKcR0ifgboclLHVtg9aevcQqyI704DhbSq3Z6jH6H4jf9nSTa435BePGfK
+ GKPsQivycYyys7T5j+4VixT+JP7JKgJ7MHFAJwv4LezfTxxPfb06pDDbar2Lp5dPHqDO
+ 1CLFnXX31cIlaqUVNLRxBQFGjy1P9wY6hYwfDvLLVQwtq+eVz6fbZuu388iTknY3lnY5
+ c0nxcgHMCi4vaKMhyKDU/B74Xs2psh1yLMyP+gPOlNNnntABNohMFXcOYy9SP0JnjGPe qg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2130.oracle.com with ESMTP id 347p4bavxq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 23 Oct 2020 12:09:03 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09NC558Y104567;
+        Fri, 23 Oct 2020 12:09:02 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 348aj0wyb3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 23 Oct 2020 12:09:02 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09NC9099026344;
+        Fri, 23 Oct 2020 12:09:01 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 23 Oct 2020 05:08:59 -0700
+Date:   Fri, 23 Oct 2020 15:08:53 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>
+Cc:     kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH net] vhost_vdpa: Return -EFUALT if copy_from_user() fails
+Message-ID: <20201023120853.GI282278@mwanda>
 MIME-Version: 1.0
-References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr>
- <34115486.YmRjPRKJaA@kreacher> <20201022120213.GG2611@hirez.programming.kicks-ass.net>
- <8312288.dAKoTdFk2S@kreacher> <20201023061703.jjpmoeq7wzwqtsid@vireshk-i7>
-In-Reply-To: <20201023061703.jjpmoeq7wzwqtsid@vireshk-i7>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 23 Oct 2020 13:59:45 +0200
-Message-ID: <CAJZ5v0gt42=KRbKzRp7H6RrRdpxY-T_X_L9JjcMB+9VrvKAdvw@mail.gmail.com>
-Subject: Re: [PATCH] cpufreq: Avoid configuring old governors as default with intel_pstate
-To:     Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Julia Lawall <julia.lawall@inria.fr>,
-        Mel Gorman <mgorman@suse.de>, Ingo Molnar <mingo@redhat.com>,
-        kernel-janitors@vger.kernel.org,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Gilles Muller <Gilles.Muller@inria.fr>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Len Brown <len.brown@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9782 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 bulkscore=0
+ malwarescore=0 spamscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010230086
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9782 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 priorityscore=1501
+ clxscore=1015 malwarescore=0 mlxscore=0 bulkscore=0 lowpriorityscore=0
+ phishscore=0 adultscore=0 mlxlogscore=999 impostorscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010230086
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Oct 23, 2020 at 8:17 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
->
-> On 22-10-20, 18:23, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > Subject: [PATCH] cpufreq: Avoid configuring old governors as default with intel_pstate
-> >
-> > Commit 33aa46f252c7 ("cpufreq: intel_pstate: Use passive mode by
-> > default without HWP") was meant to cause intel_pstate without HWP
-> > to be used in the passive mode with the schedutil governor on top of
-> > it by default, but it missed the case in which either "ondemand" or
-> > "conservative" was selected as the default governor in the existing
-> > kernel config, in which case the previous old governor configuration
-> > would be used, causing the default legacy governor to be used on top
-> > of intel_pstate instead of schedutil.
-> >
-> > Address this by preventing "ondemand" and "conservative" from being
-> > configured as the default cpufreq governor in the case when schedutil
-> > is the default choice for the default governor setting.
-> >
-> > [Note that the default cpufreq governor can still be set via the
-> >  kernel command line if need be and that choice is not limited,
-> >  so if anyone really wants to use one of the legacy governors by
-> >  default, it can be achieved this way.]
-> >
-> > Fixes: 33aa46f252c7 ("cpufreq: intel_pstate: Use passive mode by default without HWP")
-> > Cc: 5.8+ <stable@vger.kernel.org> # 5.8+
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >  drivers/cpufreq/Kconfig |    2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > Index: linux-pm/drivers/cpufreq/Kconfig
-> > ===================================================================
-> > --- linux-pm.orig/drivers/cpufreq/Kconfig
-> > +++ linux-pm/drivers/cpufreq/Kconfig
-> > @@ -71,6 +71,7 @@ config CPU_FREQ_DEFAULT_GOV_USERSPACE
-> >
-> >  config CPU_FREQ_DEFAULT_GOV_ONDEMAND
-> >       bool "ondemand"
-> > +     depends on !SMP || !X86_INTEL_PSTATE
-> >       select CPU_FREQ_GOV_ONDEMAND
-> >       select CPU_FREQ_GOV_PERFORMANCE
-> >       help
-> > @@ -83,6 +84,7 @@ config CPU_FREQ_DEFAULT_GOV_ONDEMAND
-> >
-> >  config CPU_FREQ_DEFAULT_GOV_CONSERVATIVE
-> >       bool "conservative"
-> > +     depends on !SMP || !X86_INTEL_PSTATE
->
-> While reading this first it felt like a SMP platforms related problem
-> (which I was surprised about), and then I understood what you are
-> doing.
->
-> I wonder if rewriting it this way makes it more readable with same
-> result eventually.
->
->         depends on !(X86_INTEL_PSTATE && SMP)
+The copy_to/from_user() functions return the number of bytes which we
+weren't able to copy but the ioctl should return -EFAULT if they fail.
 
-Agreed, will update.
+Fixes: a127c5bbb6a8 ("vhost-vdpa: fix backend feature ioctls")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/vhost/vdpa.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Thanks!
+diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+index 62a9bb0efc55..c94a97b6bd6d 100644
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -428,12 +428,11 @@ static long vhost_vdpa_unlocked_ioctl(struct file *filep,
+ 	void __user *argp = (void __user *)arg;
+ 	u64 __user *featurep = argp;
+ 	u64 features;
+-	long r;
++	long r = 0;
+ 
+ 	if (cmd == VHOST_SET_BACKEND_FEATURES) {
+-		r = copy_from_user(&features, featurep, sizeof(features));
+-		if (r)
+-			return r;
++		if (copy_from_user(&features, featurep, sizeof(features)))
++			return -EFAULT;
+ 		if (features & ~VHOST_VDPA_BACKEND_FEATURES)
+ 			return -EOPNOTSUPP;
+ 		vhost_set_backend_features(&v->vdev, features);
+@@ -476,7 +475,8 @@ static long vhost_vdpa_unlocked_ioctl(struct file *filep,
+ 		break;
+ 	case VHOST_GET_BACKEND_FEATURES:
+ 		features = VHOST_VDPA_BACKEND_FEATURES;
+-		r = copy_to_user(featurep, &features, sizeof(features));
++		if (copy_to_user(featurep, &features, sizeof(features)))
++			r = -EFAULT;
+ 		break;
+ 	default:
+ 		r = vhost_dev_ioctl(&v->vdev, cmd, argp);

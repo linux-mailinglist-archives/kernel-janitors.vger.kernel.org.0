@@ -2,99 +2,124 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B196296DD9
-	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 13:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0DF4296E1E
+	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 14:00:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S463135AbgJWLkb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 23 Oct 2020 07:40:31 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:55148 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S463081AbgJWLkb (ORCPT
+        id S463360AbgJWL77 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 23 Oct 2020 07:59:59 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:33714 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S369960AbgJWL77 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 23 Oct 2020 07:40:31 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09NBcnio160965;
-        Fri, 23 Oct 2020 11:40:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=pmgqEiFa5ebIiYDwVlKkbL1Oo5Ge+iNlwCQELPsg1gQ=;
- b=ofNSOJzfcTZ+YrMmiLvwXTHLfkwS3WlBjki3u5CwW+jOxgjX6MhmMN7192EJsVEQVDo1
- urHwYV77JwE9B44WLTDMucsyDAvbWQ1TOMpsFpjDela3jejVcqJ7QfGC2HYSiCHaKkdn
- rzVpmnfKhx7r3BV4s60H+c1YDZ0fnmNWo3vKSzUNZKYbiptPALOSb5iqMLMHp+zZ2x5j
- XcyslVAIOo5oJcoSNG/7Qv76oHDxDGZmLbHrCV+lX9BiByb3sf27mOz1qZKTTVKXB1hJ
- WDDzbvAfJTtfcSoFmsvRxeOUAwGtufz190L3nV66DHToCvaVbUxOJKORfuM3tHVLPD/3 8w== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 349jrq2t6y-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 23 Oct 2020 11:40:26 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09NBe4IK186655;
-        Fri, 23 Oct 2020 11:40:25 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 34ak1ays21-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 23 Oct 2020 11:40:25 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 09NBeNFj015469;
-        Fri, 23 Oct 2020 11:40:24 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 23 Oct 2020 04:40:23 -0700
-Date:   Fri, 23 Oct 2020 14:40:17 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Amelie Delaunay <amelie.delaunay@st.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH 1/2 v2] usb: typec: stusb160x: fix an IS_ERR() vs NULL check
- in probe
-Message-ID: <20201023114017.GE18329@kadam>
+        Fri, 23 Oct 2020 07:59:59 -0400
+Received: by mail-ot1-f67.google.com with SMTP id t15so1071012otk.0;
+        Fri, 23 Oct 2020 04:59:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VVsEq+wRbGQg5Ha262jtQgKJ2V9xu+fwLoD8r3aBHAg=;
+        b=X9BdsVdCspr4xaYTx6E3dGaxWFHAZZH6HQw+c4QR9azkCuyURku2iyguwgEXpz9um4
+         W4/W52ZI6YEnE3/I8Ix+L+ItgES6tT1L5o32WyPmD6nZOtTAwy40bu/XhAs7rbf5PdUw
+         ryAyPqEZIYs5/I+h23dfVff4ThnJIKI4bH/h4mfM8TuEIPmVMR1xprvL0o554CtV+i0r
+         ybdYHH2DBHYTzjPnbYxZz0yHTx0as5xaf6jMZ81TLgbdvJizaSNLxptHuhApZyP2Zh5g
+         rMQZRoxaeMhPP2NKfDk7bLpcQoqc9msvm+ebGj0PX9eacyG3xJ1z6KKAhUTiERK0MQ+d
+         OiRg==
+X-Gm-Message-State: AOAM533HiiUwpxLa+VGOZrPrpCa32mbR08Rl6L6YvTuIuWyiZ3ZTb2Pr
+        AjgWKGQ5Hr+MLL3X3z9rWGryM0I9jwlDgEQ8gQk=
+X-Google-Smtp-Source: ABdhPJyT5r2GaLzXcgx6D+Y+xfPH3602a59tadmtl2LzoO/Xu/5IGCPU+shg1Mg9Nm/Z3xXuiWIEx1h39/tU0iFa9EU=
+X-Received: by 2002:a9d:ac9:: with SMTP id 67mr1320247otq.321.1603454397748;
+ Fri, 23 Oct 2020 04:59:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201023112347.GC282278@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9782 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0 phishscore=0
- spamscore=0 adultscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010230083
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9782 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 lowpriorityscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 bulkscore=0 malwarescore=0
- mlxlogscore=999 mlxscore=0 spamscore=0 suspectscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010230083
+References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr>
+ <34115486.YmRjPRKJaA@kreacher> <20201022120213.GG2611@hirez.programming.kicks-ass.net>
+ <8312288.dAKoTdFk2S@kreacher> <20201023061703.jjpmoeq7wzwqtsid@vireshk-i7>
+In-Reply-To: <20201023061703.jjpmoeq7wzwqtsid@vireshk-i7>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 23 Oct 2020 13:59:45 +0200
+Message-ID: <CAJZ5v0gt42=KRbKzRp7H6RrRdpxY-T_X_L9JjcMB+9VrvKAdvw@mail.gmail.com>
+Subject: Re: [PATCH] cpufreq: Avoid configuring old governors as default with intel_pstate
+To:     Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Julia Lawall <julia.lawall@inria.fr>,
+        Mel Gorman <mgorman@suse.de>, Ingo Molnar <mingo@redhat.com>,
+        kernel-janitors@vger.kernel.org,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ben Segall <bsegall@google.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        Gilles Muller <Gilles.Muller@inria.fr>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Len Brown <len.brown@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The typec_register_port() function doesn't return NULL, it returns error
-pointers.
+On Fri, Oct 23, 2020 at 8:17 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
+>
+> On 22-10-20, 18:23, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > Subject: [PATCH] cpufreq: Avoid configuring old governors as default with intel_pstate
+> >
+> > Commit 33aa46f252c7 ("cpufreq: intel_pstate: Use passive mode by
+> > default without HWP") was meant to cause intel_pstate without HWP
+> > to be used in the passive mode with the schedutil governor on top of
+> > it by default, but it missed the case in which either "ondemand" or
+> > "conservative" was selected as the default governor in the existing
+> > kernel config, in which case the previous old governor configuration
+> > would be used, causing the default legacy governor to be used on top
+> > of intel_pstate instead of schedutil.
+> >
+> > Address this by preventing "ondemand" and "conservative" from being
+> > configured as the default cpufreq governor in the case when schedutil
+> > is the default choice for the default governor setting.
+> >
+> > [Note that the default cpufreq governor can still be set via the
+> >  kernel command line if need be and that choice is not limited,
+> >  so if anyone really wants to use one of the legacy governors by
+> >  default, it can be achieved this way.]
+> >
+> > Fixes: 33aa46f252c7 ("cpufreq: intel_pstate: Use passive mode by default without HWP")
+> > Cc: 5.8+ <stable@vger.kernel.org> # 5.8+
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >  drivers/cpufreq/Kconfig |    2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > Index: linux-pm/drivers/cpufreq/Kconfig
+> > ===================================================================
+> > --- linux-pm.orig/drivers/cpufreq/Kconfig
+> > +++ linux-pm/drivers/cpufreq/Kconfig
+> > @@ -71,6 +71,7 @@ config CPU_FREQ_DEFAULT_GOV_USERSPACE
+> >
+> >  config CPU_FREQ_DEFAULT_GOV_ONDEMAND
+> >       bool "ondemand"
+> > +     depends on !SMP || !X86_INTEL_PSTATE
+> >       select CPU_FREQ_GOV_ONDEMAND
+> >       select CPU_FREQ_GOV_PERFORMANCE
+> >       help
+> > @@ -83,6 +84,7 @@ config CPU_FREQ_DEFAULT_GOV_ONDEMAND
+> >
+> >  config CPU_FREQ_DEFAULT_GOV_CONSERVATIVE
+> >       bool "conservative"
+> > +     depends on !SMP || !X86_INTEL_PSTATE
+>
+> While reading this first it felt like a SMP platforms related problem
+> (which I was surprised about), and then I understood what you are
+> doing.
+>
+> I wonder if rewriting it this way makes it more readable with same
+> result eventually.
+>
+>         depends on !(X86_INTEL_PSTATE && SMP)
 
-Fixes: da0cb6310094 ("usb: typec: add support for STUSB160x Type-C controller family")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-v2: Fix a typo in the commit message.  s/return error pointers/return NULL/.
-    Thanks, Walter!
+Agreed, will update.
 
- drivers/usb/typec/stusb160x.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/usb/typec/stusb160x.c b/drivers/usb/typec/stusb160x.c
-index ce0bd7b3ad88..f7369e371dd4 100644
---- a/drivers/usb/typec/stusb160x.c
-+++ b/drivers/usb/typec/stusb160x.c
-@@ -729,8 +729,8 @@ static int stusb160x_probe(struct i2c_client *client)
- 	}
- 
- 	chip->port = typec_register_port(chip->dev, &chip->capability);
--	if (!chip->port) {
--		ret = -ENODEV;
-+	if (IS_ERR(chip->port)) {
-+		ret = PTR_ERR(chip->port);
- 		goto all_reg_disable;
- 	}
- 
--- 
-2.28.0
+Thanks!

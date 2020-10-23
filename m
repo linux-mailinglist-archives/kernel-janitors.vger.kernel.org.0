@@ -2,24 +2,24 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EBF62971E5
-	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 17:06:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD3CC297217
+	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 17:16:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S465536AbgJWPGO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 23 Oct 2020 11:06:14 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:56046 "EHLO
+        id S465674AbgJWPQA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 23 Oct 2020 11:16:00 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:46646 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S465518AbgJWPGM (ORCPT
+        with ESMTP id S461811AbgJWPP7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 23 Oct 2020 11:06:12 -0400
+        Fri, 23 Oct 2020 11:15:59 -0400
 Received: from 89-64-88-190.dynamic.chello.pl (89.64.88.190) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.491)
- id 124138861e9212dc; Fri, 23 Oct 2020 17:06:09 +0200
+ id a4d8527cdf27f5d6; Fri, 23 Oct 2020 17:15:57 +0200
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Julia Lawall <julia.lawall@inria.fr>,
-        Mel Gorman <mgorman@suse.de>, Ingo Molnar <mingo@redhat.com>,
+To:     Peter Zijlstra <peterz@infradead.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Julia Lawall <julia.lawall@inria.fr>
+Cc:     Mel Gorman <mgorman@suse.de>, Ingo Molnar <mingo@redhat.com>,
         kernel-janitors@vger.kernel.org,
         Juri Lelli <juri.lelli@redhat.com>,
         Vincent Guittot <vincent.guittot@linaro.org>,
@@ -30,12 +30,14 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         linux-kernel@vger.kernel.org,
         Valentin Schneider <valentin.schneider@arm.com>,
         Gilles Muller <Gilles.Muller@inria.fr>,
-        srinivas.pandruvada@linux.intel.com, linux-pm@vger.kernel.org
-Subject: Re: [PATCH] sched/fair: check for idle core
-Date:   Fri, 23 Oct 2020 17:06:08 +0200
-Message-ID: <2251006.PXaUfaNY4o@kreacher>
-In-Reply-To: <20201023061246.irzbrl62baoawmqv@vireshk-i7>
-References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr> <34115486.YmRjPRKJaA@kreacher> <20201023061246.irzbrl62baoawmqv@vireshk-i7>
+        srinivas.pandruvada@linux.intel.com,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Len Brown <len.brown@intel.com>
+Subject: [PATCH v2] cpufreq: Avoid configuring old governors as default with intel_pstate
+Date:   Fri, 23 Oct 2020 17:15:56 +0200
+Message-ID: <9382251.a2nkXps1mP@kreacher>
+In-Reply-To: <8312288.dAKoTdFk2S@kreacher>
+References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr> <20201022120213.GG2611@hirez.programming.kicks-ass.net> <8312288.dAKoTdFk2S@kreacher>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -43,23 +45,59 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Friday, October 23, 2020 8:12:46 AM CEST Viresh Kumar wrote:
-> On 22-10-20, 13:45, Rafael J. Wysocki wrote:
-> > On Thursday, October 22, 2020 12:47:03 PM CEST Viresh Kumar wrote:
-> > > And I am not really sure why we always wanted this backup performance
-> > > governor to be there unless the said governors are built as module.
-> > 
-> > Apparently, some old drivers had problems with switching frequencies fast enough
-> > for ondemand to be used with them and the fallback was for those cases.  AFAICS.
-> 
-> Do we still need this ?
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-For the reasonably modern hardware, I don't think so.
+Commit 33aa46f252c7 ("cpufreq: intel_pstate: Use passive mode by
+default without HWP") was meant to cause intel_pstate to be used
+in the passive mode with the schedutil governor on top of it, but
+it missed the case in which either "ondemand" or "conservative"
+was selected as the default governor in the existing kernel config,
+in which case the previous old governor configuration would be used,
+causing the default legacy governor to be used on top of intel_pstate
+instead of schedutil.
 
-> Or better ask those platforms to individually
-> enable both of them.
+Address this by preventing "ondemand" and "conservative" from being
+configured as the default cpufreq governor in the case when schedutil
+is the default choice for the default governor setting.
 
-Bu who knows what they are? :-)
+[Note that the default cpufreq governor can still be set via the
+ kernel command line if need be and that choice is not limited,
+ so if anyone really wants to use one of the legacy governors by
+ default, it can be achieved this way.]
+
+Fixes: 33aa46f252c7 ("cpufreq: intel_pstate: Use passive mode by default without HWP")
+Reported-by: Julia Lawall <julia.lawall@inria.fr>
+Cc: 5.8+ <stable@vger.kernel.org> # 5.8+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+
+The v2 addresses a review comment from Viresh regarding of the expression format
+and adds a missing Reported-by for Julia.
+
+---
+ drivers/cpufreq/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
+
+Index: linux-pm/drivers/cpufreq/Kconfig
+===================================================================
+--- linux-pm.orig/drivers/cpufreq/Kconfig
++++ linux-pm/drivers/cpufreq/Kconfig
+@@ -71,6 +71,7 @@ config CPU_FREQ_DEFAULT_GOV_USERSPACE
+ 
+ config CPU_FREQ_DEFAULT_GOV_ONDEMAND
+ 	bool "ondemand"
++	depends on !(X86_INTEL_PSTATE && SMP)
+ 	select CPU_FREQ_GOV_ONDEMAND
+ 	select CPU_FREQ_GOV_PERFORMANCE
+ 	help
+@@ -83,6 +84,7 @@ config CPU_FREQ_DEFAULT_GOV_ONDEMAND
+ 
+ config CPU_FREQ_DEFAULT_GOV_CONSERVATIVE
+ 	bool "conservative"
++	depends on !(X86_INTEL_PSTATE && SMP)
+ 	select CPU_FREQ_GOV_CONSERVATIVE
+ 	select CPU_FREQ_GOV_PERFORMANCE
+ 	help
 
 
 

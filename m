@@ -2,95 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E50E2978EE
-	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Oct 2020 23:31:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D09D3297C81
+	for <lists+kernel-janitors@lfdr.de>; Sat, 24 Oct 2020 14:56:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1752198AbgJWVbE convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 23 Oct 2020 17:31:04 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:51714 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1751459AbgJWVbE (ORCPT
+        id S1761645AbgJXM4r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 24 Oct 2020 08:56:47 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:33526 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1761641AbgJXMzw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 23 Oct 2020 17:31:04 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-225-2zJy8eU6MGK-8PbmwxTpVQ-1; Fri, 23 Oct 2020 22:31:00 +0100
-X-MC-Unique: 2zJy8eU6MGK-8PbmwxTpVQ-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Fri, 23 Oct 2020 22:30:59 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Fri, 23 Oct 2020 22:30:59 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Stefano Garzarella' <sgarzare@redhat.com>,
-        Colin King <colin.king@canonical.com>
-CC:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] vsock: ratelimit unknown ioctl error message
-Thread-Topic: [PATCH] vsock: ratelimit unknown ioctl error message
-Thread-Index: AQHWqUY0CPRviIGx7UytnIgbPi7/0amltMKA
-Date:   Fri, 23 Oct 2020 21:30:59 +0000
-Message-ID: <e535c07df407444880d8b678bc215d9f@AcuMS.aculab.com>
-References: <20201023122113.35517-1-colin.king@canonical.com>
- <20201023140947.kurglnklaqteovkp@steredhat>
-In-Reply-To: <20201023140947.kurglnklaqteovkp@steredhat>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Sat, 24 Oct 2020 08:55:52 -0400
+Received: from cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net ([80.193.200.194] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kWJ5K-0006Zt-Bt; Sat, 24 Oct 2020 12:55:50 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jiri Kosina <trivial@kernel.org>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] arch/Kconfig: fix a few trivial spelling mistakes in Kconfig
+Date:   Sat, 24 Oct 2020 13:55:49 +0100
+Message-Id: <20201024125549.78254-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
-From: Stefano Garzarella
-> Sent: 23 October 2020 15:10
-> 
-> On Fri, Oct 23, 2020 at 01:21:13PM +0100, Colin King wrote:
-> >From: Colin Ian King <colin.king@canonical.com>
-> >
-> >When exercising the kernel with stress-ng with some ioctl tests the
-> >"Unknown ioctl" error message is spamming the kernel log at a high
-> >rate. Rate limit this message to reduce the noise.
-> >
-> >Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> >---
-> > net/vmw_vsock/af_vsock.c | 2 +-
-> > 1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> >diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-> >index 9e93bc201cc0..b8feb9223454 100644
-> >--- a/net/vmw_vsock/af_vsock.c
-> >+++ b/net/vmw_vsock/af_vsock.c
-> >@@ -2072,7 +2072,7 @@ static long vsock_dev_do_ioctl(struct file *filp,
-> > 		break;
-> >
-> > 	default:
-> >-		pr_err("Unknown ioctl %d\n", cmd);
-> >+		pr_err_ratelimited("Unknown ioctl %d\n", cmd);
-> 
-> Make sense, or maybe can we remove the error message returning only the
-> -EINVAL?
+There are a couple of trivial spelling mistakes, fix these.
 
-Isn't the canonical error for unknown ioctl codes -ENOTTY?
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ arch/Kconfig | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-	David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 56b6ccc0e32d..ce4e84366418 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -261,7 +261,7 @@ config ARCH_HAS_SET_DIRECT_MAP
+ 
+ #
+ # Select if the architecture provides the arch_dma_set_uncached symbol to
+-# either provide an uncached segement alias for a DMA allocation, or
++# either provide an uncached segment alias for a DMA allocation, or
+ # to remap the page tables in place.
+ #
+ config ARCH_HAS_DMA_SET_UNCACHED
+@@ -314,14 +314,14 @@ config ARCH_32BIT_OFF_T
+ config HAVE_ASM_MODVERSIONS
+ 	bool
+ 	help
+-	  This symbol should be selected by an architecure if it provides
++	  This symbol should be selected by an architecture if it provides
+ 	  <asm/asm-prototypes.h> to support the module versioning for symbols
+ 	  exported from assembly code.
+ 
+ config HAVE_REGS_AND_STACK_ACCESS_API
+ 	bool
+ 	help
+-	  This symbol should be selected by an architecure if it supports
++	  This symbol should be selected by an architecture if it supports
+ 	  the API needed to access registers and stack entries from pt_regs,
+ 	  declared in asm/ptrace.h
+ 	  For example the kprobes-based event tracer needs this API.
+@@ -336,7 +336,7 @@ config HAVE_RSEQ
+ config HAVE_FUNCTION_ARG_ACCESS_API
+ 	bool
+ 	help
+-	  This symbol should be selected by an architecure if it supports
++	  This symbol should be selected by an architecture if it supports
+ 	  the API needed to access function arguments from pt_regs,
+ 	  declared in asm/ptrace.h
+ 
+-- 
+2.27.0
 

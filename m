@@ -2,108 +2,135 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1658D297CEA
-	for <lists+kernel-janitors@lfdr.de>; Sat, 24 Oct 2020 16:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED106298311
+	for <lists+kernel-janitors@lfdr.de>; Sun, 25 Oct 2020 19:28:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1760071AbgJXOsk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 24 Oct 2020 10:48:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56348 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1756171AbgJXOsk (ORCPT
+        id S1418066AbgJYS2E (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 25 Oct 2020 14:28:04 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:57034
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732784AbgJYS2E (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 24 Oct 2020 10:48:40 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3352C0613CE;
-        Sat, 24 Oct 2020 07:48:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=Pc0tPJ+2gLNyCWPDXA3+iryc+AiLLhMWdQeLQo+DJBY=; b=LjjpnNPLHYbTvYAsjwjBqPacCA
-        E4Ynu7QWK51pqovwA6pUVwuTVJbHMCg+97uJzEqspdrupc5oQYXC/gIUQ6xlpvDpOIFNnGLmw3uZ+
-        O0oY9CPA+wofVPsN4qFuyTQxN9KQesJWCYuolQ3zhozuUn2jLNdcvzpX1sBAMGo07dV9mSK5/cQiI
-        BClqxy2pMR5M8lfGY+VugQm36SRQVhOk6ZHLSBu1s8Hbny2ilUM5Ljj6WkPVNDD01SDV0ppvC0xwL
-        JVxZypnNVI+TTR5EpnJFSvToyI6LHkpKC+3Nwx95ArXTjKBAT8RRZkrFYu8XQQWQuyGonWPYXxy+e
-        Qvqzj5Jw==;
-Received: from [2601:1c0:6280:3f0::507c]
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kWKqS-0000tw-VQ; Sat, 24 Oct 2020 14:48:38 +0000
-Subject: Re: [PATCH] arch/Kconfig: fix a few trivial spelling mistakes in
- Kconfig
-To:     Colin King <colin.king@canonical.com>,
-        Jiri Kosina <trivial@kernel.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20201024125549.78254-1-colin.king@canonical.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <92ed2fc0-0894-55ec-2cba-885acc66662f@infradead.org>
-Date:   Sat, 24 Oct 2020 07:48:33 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        Sun, 25 Oct 2020 14:28:04 -0400
+X-IronPort-AV: E=Sophos;i="5.77,416,1596492000"; 
+   d="scan'208";a="362719074"
+Received: from 173.121.68.85.rev.sfr.net (HELO hadrien) ([85.68.121.173])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Oct 2020 19:28:02 +0100
+Date:   Sun, 25 Oct 2020 19:28:01 +0100 (CET)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Coccinelle <cocci@systeme.lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: =?UTF-8?Q?Re=3A_=5BCocci=5D_=5BPATCH=5D_Coccinelle=3A_null=3A_O?=
+ =?UTF-8?Q?ptimise_disjunctions_in_SmPL_script_=E2=80=9Ceno=2Eco?=
+ =?UTF-8?Q?cci=E2=80=9D?=
+In-Reply-To: <0d1575b0-ab37-663e-2464-278fd76280b5@web.de>
+Message-ID: <alpine.DEB.2.22.394.2010251924290.2714@hadrien>
+References: <0d1575b0-ab37-663e-2464-278fd76280b5@web.de>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-In-Reply-To: <20201024125549.78254-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="8323329-685740588-1603650482=:2714"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 10/24/20 5:55 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There are a couple of trivial spelling mistakes, fix these.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
+--8323329-685740588-1603650482=:2714
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 
-Thanks.
 
+
+On Sun, 25 Oct 2020, Markus Elfring wrote:
+
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Sun, 25 Oct 2020 18:54:36 +0100
+>
+> A disjunction is applied by this script for the semantic patch language.
+> This construct uses short-circuit evaluation. It has got the consequence
+> that the last element of the specified condition will only be checked
+> if all previous parts did not match. Such a technical detail leads to
+> a recommended ordering of condition parts if you would like to care for
+> optimal run time characteristics of SmPL code.
+>
+> An usage incidence was determined for the specified identifiers in source
+> files from the software “Linux next-20201023” by another SmPL script.
+>
+> See also:
+> Determination of an usage statistic for memory allocation calls
+> https://lore.kernel.org/cocci/2774601.u91sIFNy1E@sonne/
+>
+> This analysis result indicates a clear ranking for such function calls.
+> Thus reorder the SmPL disjunction items according to their usage incidence.
+
+Did you actually test this before and after the change and see a
+difference in performance?  On my laptop, I see absolutely no difference,
+for the patch mode and for the context mode.  I didn't try the other
+cases.
+
+Before the change:
+
+patch: 440.182u 2.049s 1:53.12 390.9%	0+0k 0+232io 4pf+0w
+context: 392.931u 2.164s 1:41.53 389.1%	0+0k 432+360io 5pf+0w
+
+After the change:
+
+patch: 442.182u 2.090s 1:54.13 389.2%	0+0k 0+240io 4pf+0w
+context: 392.742u 2.035s 1:41.37 389.4%	0+0k 0+360io 4pf+0w
+
+julia
+
+>
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 > ---
->  arch/Kconfig | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/Kconfig b/arch/Kconfig
-> index 56b6ccc0e32d..ce4e84366418 100644
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
-> @@ -261,7 +261,7 @@ config ARCH_HAS_SET_DIRECT_MAP
->  
->  #
->  # Select if the architecture provides the arch_dma_set_uncached symbol to
-> -# either provide an uncached segement alias for a DMA allocation, or
-> +# either provide an uncached segment alias for a DMA allocation, or
->  # to remap the page tables in place.
->  #
->  config ARCH_HAS_DMA_SET_UNCACHED
-> @@ -314,14 +314,14 @@ config ARCH_32BIT_OFF_T
->  config HAVE_ASM_MODVERSIONS
->  	bool
->  	help
-> -	  This symbol should be selected by an architecure if it provides
-> +	  This symbol should be selected by an architecture if it provides
->  	  <asm/asm-prototypes.h> to support the module versioning for symbols
->  	  exported from assembly code.
->  
->  config HAVE_REGS_AND_STACK_ACCESS_API
->  	bool
->  	help
-> -	  This symbol should be selected by an architecure if it supports
-> +	  This symbol should be selected by an architecture if it supports
->  	  the API needed to access registers and stack entries from pt_regs,
->  	  declared in asm/ptrace.h
->  	  For example the kprobes-based event tracer needs this API.
-> @@ -336,7 +336,7 @@ config HAVE_RSEQ
->  config HAVE_FUNCTION_ARG_ACCESS_API
->  	bool
->  	help
-> -	  This symbol should be selected by an architecure if it supports
-> +	  This symbol should be selected by an architecture if it supports
->  	  the API needed to access function arguments from pt_regs,
->  	  declared in asm/ptrace.h
->  
-> 
-
-
--- 
-~Randy
+>  scripts/coccinelle/null/eno.cocci | 15 +++++++++++----
+>  1 file changed, 11 insertions(+), 4 deletions(-)
+>
+> diff --git a/scripts/coccinelle/null/eno.cocci b/scripts/coccinelle/null/eno.cocci
+> index 81584ff87956..969cab5116a9 100644
+> --- a/scripts/coccinelle/null/eno.cocci
+> +++ b/scripts/coccinelle/null/eno.cocci
+> @@ -17,8 +17,16 @@ virtual report
+>  @depends on patch@
+>  expression x,E;
+>  @@
+> -
+> -x = \(kmalloc\|kzalloc\|kcalloc\|kmem_cache_alloc\|kmem_cache_zalloc\|kmem_cache_alloc_node\|kmalloc_node\|kzalloc_node\)(...)
+> + x =
+> +(kzalloc
+> +|kmalloc
+> +|kcalloc
+> +|kmem_cache_alloc
+> +|kmem_cache_zalloc
+> +|kzalloc_node
+> +|kmalloc_node
+> +|kmem_cache_alloc_node
+> +)(...)
+>  ... when != x = E
+>  - IS_ERR(x)
+>  + !x
+> @@ -27,8 +35,7 @@ x = \(kmalloc\|kzalloc\|kcalloc\|kmem_cache_alloc\|kmem_cache_zalloc\|kmem_cache
+>  expression x,E;
+>  position p1,p2;
+>  @@
+> -
+> -*x = \(kmalloc@p1\|kzalloc@p1\|kcalloc@p1\|kmem_cache_alloc@p1\|kmem_cache_zalloc@p1\|kmem_cache_alloc_node@p1\|kmalloc_node@p1\|kzalloc_node@p1\)(...)
+> +*x = \(kzalloc@p1\|kmalloc@p1\|kcalloc@p1\|kmem_cache_alloc@p1\|kmem_cache_zalloc@p1\|kzalloc_node@p1\|kmalloc_node@p1\|kmem_cache_alloc_node@p1\)(...)
+>  ... when != x = E
+>  * IS_ERR@p2(x)
+>
+> --
+> 2.29.1
+>
+> _______________________________________________
+> Cocci mailing list
+> Cocci@systeme.lip6.fr
+> https://systeme.lip6.fr/mailman/listinfo/cocci
+>
+--8323329-685740588-1603650482=:2714--

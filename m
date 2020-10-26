@@ -2,119 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9484A29837E
-	for <lists+kernel-janitors@lfdr.de>; Sun, 25 Oct 2020 21:27:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BC652985BA
+	for <lists+kernel-janitors@lfdr.de>; Mon, 26 Oct 2020 04:00:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1418686AbgJYU1b (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 25 Oct 2020 16:27:31 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:9629 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727925AbgJYU1a (ORCPT
+        id S1421655AbgJZC7w (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 25 Oct 2020 22:59:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:50746 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1421650AbgJZC7v (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 25 Oct 2020 16:27:30 -0400
-X-IronPort-AV: E=Sophos;i="5.77,417,1596492000"; 
-   d="scan'208";a="474226999"
-Received: from 173.121.68.85.rev.sfr.net (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Oct 2020 21:27:27 +0100
-Date:   Sun, 25 Oct 2020 21:27:27 +0100 (CET)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Coccinelle <cocci@systeme.lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: =?UTF-8?Q?Re=3A_=5BCocci=5D_Coccinelle=3A_null=3A_Optimise_disj?=
- =?UTF-8?Q?unctions_in_SmPL_script_=E2=80=9Ceno=2Ecocci=E2=80=9D?=
-In-Reply-To: <bee0c5df-8f28-ee9d-99e2-abbf84df76e6@web.de>
-Message-ID: <alpine.DEB.2.22.394.2010252122320.2714@hadrien>
-References: <0d1575b0-ab37-663e-2464-278fd76280b5@web.de> <alpine.DEB.2.22.394.2010251924290.2714@hadrien> <8f58a94e-b093-a587-c56a-a0ea0fc1f3ea@web.de> <alpine.DEB.2.22.394.2010251955280.2714@hadrien> <bee0c5df-8f28-ee9d-99e2-abbf84df76e6@web.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        Sun, 25 Oct 2020 22:59:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1603681189;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Wj4XKzYinjtinYOa4SEH9Db7ssmjPWw3m5dgQvIRbIo=;
+        b=DN2DvN2/q/8SZgl+WQvYdyEb2nQlzmwyRfNKArBsXcnLqJjHF5SQDrdIEmALNEqZqz8zw8
+        Xo32n7rHHp1z9kGGP08q1cKg4r3f+g3n0B4eYC+OXDyC66xd7lXo/uP39u+Sh6x8TBgSB/
+        lipjut511fqZrHUPBmAKduRNZWVBkmM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-320-SsQjknsqOSaucbGw5t__FQ-1; Sun, 25 Oct 2020 22:59:45 -0400
+X-MC-Unique: SsQjknsqOSaucbGw5t__FQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1E8121006C81;
+        Mon, 26 Oct 2020 02:59:44 +0000 (UTC)
+Received: from [10.72.13.201] (ovpn-13-201.pek2.redhat.com [10.72.13.201])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id F012E55769;
+        Mon, 26 Oct 2020 02:59:38 +0000 (UTC)
+Subject: Re: [PATCH net] vhost_vdpa: Return -EFUALT if copy_from_user() fails
+To:     "Michael S. Tsirkin" <mst@redhat.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        kuba@kernel.org
+References: <20201023120853.GI282278@mwanda>
+ <20201023113326-mutt-send-email-mst@kernel.org>
+From:   Jason Wang <jasowang@redhat.com>
+Message-ID: <4485cc8d-ac69-c725-8493-eda120e29c41@redhat.com>
+Date:   Mon, 26 Oct 2020 10:59:37 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1179668747-1603657647=:2714"
+In-Reply-To: <20201023113326-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323329-1179668747-1603657647=:2714
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+On 2020/10/23 下午11:34, Michael S. Tsirkin wrote:
+> On Fri, Oct 23, 2020 at 03:08:53PM +0300, Dan Carpenter wrote:
+>> The copy_to/from_user() functions return the number of bytes which we
+>> weren't able to copy but the ioctl should return -EFAULT if they fail.
+>>
+>> Fixes: a127c5bbb6a8 ("vhost-vdpa: fix backend feature ioctls")
+>> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> Needed for stable I guess.
 
 
+Agree.
 
-On Sun, 25 Oct 2020, Markus Elfring wrote:
+Acked-by: Jason Wang <jasowang@redhat.com>
 
-> >> Would you become interested to configure a representative test environment
-> >> for safe comparisons of corresponding run time characteristics
-> >> of the affected software?
-> >
-> > In what sense could the comparison possibly be unsafe?
->
-> * Our test systems are obviously different.
->   Thus concerns can be considered for reproducibility of test results
->   on other possible configurations.
->
-> * We share only a tiny fraction of technical information which would probably
->   be needed for “benchmarks”.
->
->
-> > Just use time and run spatch on whatever machine you want.
->
-> fring@Sonne:~/Projekte/Linux/next-patched>
-> elfring@Sonne:~/Projekte/Linux/next-patched> git checkout next-20201023 && XX=$(date) && time spatch -D patch --timeout 9 --jobs 4 --chunksize 1 --include-headers --no-includes --dir . scripts/coccinelle/null/eno.cocci > ~/Projekte/Bau/Linux/scripts/Coccinelle/call_checks/20201023/eno1.diff 2> ~/Projekte/Bau/Linux/scripts/Coccinelle/call_checks/20201023/eno1-errors.txt; YY=$(date) && echo "$XX | $YY"
-> …
-> real	2m54,266s
-> user	10m15,553s
-> sys	0m4,004s
-> So 25. Okt 20:53:56 CET 2020 | So 25. Okt 20:56:51 CET 2020
-> elfring@Sonne:~/Projekte/Linux/next-patched> git checkout next-20201023 && XX=$(date) && time spatch -D context --timeout 9 --jobs 4 --chunksize 1 --include-headers --no-includes --dir . scripts/coccinelle/null/eno.cocci > ~/Projekte/Bau/Linux/scripts/Coccinelle/call_checks/20201023/eno2.txt 2> ~/Projekte/Bau/Linux/scripts/Coccinelle/call_checks/20201023/eno2-errors.txt; YY=$(date) && echo "$XX | $YY"
-> …
-> real	2m38,494s
-> user	9m39,364s
-> sys	0m4,094s
-> So 25. Okt 20:58:05 CET 2020 | So 25. Okt 21:00:44 CET 2020
-> elfring@Sonne:~/Projekte/Linux/next-patched> git checkout optimise_disjunction_in_eno.cocci-1 && XX=$(date) && time spatch -D patch --timeout 9 --jobs 4 --chunksize 1 --include-headers --no-includes --dir . scripts/coccinelle/null/eno.cocci > ~/Projekte/Bau/Linux/scripts/Coccinelle/call_checks/20201023/eno3.diff 2> ~/Projekte/Bau/Linux/scripts/Coccinelle/call_checks/20201023/eno3-errors.txt; YY=$(date) && echo "$XX | $YY"
-> …
-> real	2m46,097s
-> user	10m15,467s
-> sys	0m3,984s
-> So 25. Okt 21:00:56 CET 2020 | So 25. Okt 21:03:42 CET 2020
-> elfring@Sonne:~/Projekte/Linux/next-patched> git checkout optimise_disjunction_in_eno.cocci-1 && XX=$(date) && time spatch -D context --timeout 9 --jobs 4 --chunksize 1 --include-headers --no-includes --dir . scripts/coccinelle/null/eno.cocci > ~/Projekte/Bau/Linux/scripts/Coccinelle/call_checks/20201023/eno4.txt 2> ~/Projekte/Bau/Linux/scripts/Coccinelle/call_checks/20201023/eno4-errors.txt; YY=$(date) && echo "$XX | $YY"
-> …
-> real	2m41,472s
-> user	9m37,492s
-> sys	0m3,834s
 
-In the patch case, the user and system time are essentially identical.  In
-the context case, the difference in user time is 2 seconds out of 9.5
-minutes, 0.3%.
+>> ---
+>>   drivers/vhost/vdpa.c | 10 +++++-----
+>>   1 file changed, 5 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+>> index 62a9bb0efc55..c94a97b6bd6d 100644
+>> --- a/drivers/vhost/vdpa.c
+>> +++ b/drivers/vhost/vdpa.c
+>> @@ -428,12 +428,11 @@ static long vhost_vdpa_unlocked_ioctl(struct file *filep,
+>>   	void __user *argp = (void __user *)arg;
+>>   	u64 __user *featurep = argp;
+>>   	u64 features;
+>> -	long r;
+>> +	long r = 0;
+>>   
+>>   	if (cmd == VHOST_SET_BACKEND_FEATURES) {
+>> -		r = copy_from_user(&features, featurep, sizeof(features));
+>> -		if (r)
+>> -			return r;
+>> +		if (copy_from_user(&features, featurep, sizeof(features)))
+>> +			return -EFAULT;
+>>   		if (features & ~VHOST_VDPA_BACKEND_FEATURES)
+>>   			return -EOPNOTSUPP;
+>>   		vhost_set_backend_features(&v->vdev, features);
+>> @@ -476,7 +475,8 @@ static long vhost_vdpa_unlocked_ioctl(struct file *filep,
+>>   		break;
+>>   	case VHOST_GET_BACKEND_FEATURES:
+>>   		features = VHOST_VDPA_BACKEND_FEATURES;
+>> -		r = copy_to_user(featurep, &features, sizeof(features));
+>> +		if (copy_to_user(featurep, &features, sizeof(features)))
+>> +			r = -EFAULT;
+>>   		break;
+>>   	default:
+>>   		r = vhost_dev_ioctl(&v->vdev, cmd, argp);
 
-In the patch case, the real time is a bit slower.  But I believe that this
-is due to the time to read in the data from the file system.  I also had a
-number like that, but the difference disappeared when I reran it
-afterwards, which meant running that case in the same conditions as the
-others.
-
-In the context case, the real time is slightly slower with your patch.
-
-So I see no compelling evidence for making the change.
-
-julia
-
-> So 25. Okt 21:03:56 CET 2020 | So 25. Okt 21:06:37 CET 2020
->
->
-> > Intel(R) Core(TM) i5-6200U CPU @ 2.30GHz
->
-> AMD Phenom(tm) II X4 850 Processor
->
-> Will any other aspects become relevant?
->
-> Regards,
-> Markus
->
---8323329-1179668747-1603657647=:2714--

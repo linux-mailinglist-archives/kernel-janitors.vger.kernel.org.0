@@ -2,107 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCC8F298E55
-	for <lists+kernel-janitors@lfdr.de>; Mon, 26 Oct 2020 14:44:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FD7C299477
+	for <lists+kernel-janitors@lfdr.de>; Mon, 26 Oct 2020 18:55:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1780576AbgJZNoy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 26 Oct 2020 09:44:54 -0400
-Received: from mga17.intel.com ([192.55.52.151]:54108 "EHLO mga17.intel.com"
+        id S1788777AbgJZRzv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 26 Oct 2020 13:55:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46090 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2441715AbgJZNoy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 26 Oct 2020 09:44:54 -0400
-IronPort-SDR: gngGPUxDeoCpU0FLO98+O34Vv3L5cW0m//aeEn7fN7biPHioRyBVPxL2H7PvKi9jwD+CSI3JSn
- PXA3FYmiD1pw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9785"; a="147777754"
-X-IronPort-AV: E=Sophos;i="5.77,419,1596524400"; 
-   d="scan'208";a="147777754"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2020 06:44:53 -0700
-IronPort-SDR: x4PBEaw6wWNuAwqoAKlDsHAJdxRL2GqqLyCXvALJkKo16tSj9Mgef/bgNNi6dIzVcBN/RtH77Z
- O8oxeZ0rI0nw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,419,1596524400"; 
-   d="scan'208";a="467929096"
-Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.170]) ([10.237.72.170])
-  by orsmga004.jf.intel.com with ESMTP; 26 Oct 2020 06:44:52 -0700
-Subject: Re: [PATCH] xhci: Fix sizeof() mismatch
-To:     Colin King <colin.king@canonical.com>,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20201008171151.198996-1-colin.king@canonical.com>
-From:   Mathias Nyman <mathias.nyman@linux.intel.com>
-Autocrypt: addr=mathias.nyman@linux.intel.com; prefer-encrypt=mutual; keydata=
- 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 fiD/
-Message-ID: <43dc0950-c76e-713d-8d51-cdc3be9c9f46@linux.intel.com>
-Date:   Mon, 26 Oct 2020 15:46:20 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1788768AbgJZRzt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 26 Oct 2020 13:55:49 -0400
+Received: from kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net (unknown [163.114.132.4])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4517722265;
+        Mon, 26 Oct 2020 17:55:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603734949;
+        bh=NNIbbFb7W6DvybHlpLAu6+F1xGVbmScbL7eadIzXdQw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=X9l0WbDg7VUsIKOma/+cLoSJ08IHOMTMYeie41y7jryFSAnwX9IlkWt5/q0rm6PtL
+         xvcgnozQixfJYrij1nvyoussMNAk5pPLd7SU9IrR6AlnOJz0/kE6RtFJBoRw+g2pw1
+         p5XniN5EQoAVHxB3abDvr7dyuhR5F5VV6oCfLpdk=
+Date:   Mon, 26 Oct 2020 10:55:48 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Stefano Garzarella <sgarzare@redhat.com>
+Cc:     David Laight <David.Laight@aculab.com>,
+        Colin King <colin.king@canonical.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] vsock: ratelimit unknown ioctl error message
+Message-ID: <20201026105548.0cc911a8@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+In-Reply-To: <20201026100112.qaorff6c6vucakyg@steredhat>
+References: <20201023122113.35517-1-colin.king@canonical.com>
+        <20201023140947.kurglnklaqteovkp@steredhat>
+        <e535c07df407444880d8b678bc215d9f@AcuMS.aculab.com>
+        <20201026084300.5ag24vck3zeb4mcz@steredhat>
+        <d893e3251f804cffa797b6eb814944fd@AcuMS.aculab.com>
+        <20201026093917.5zgginii65pq6ezd@steredhat>
+        <3e34e4121f794355891fd7577c9dfbc0@AcuMS.aculab.com>
+        <20201026100112.qaorff6c6vucakyg@steredhat>
 MIME-Version: 1.0
-In-Reply-To: <20201008171151.198996-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 8.10.2020 20.11, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Mon, 26 Oct 2020 11:01:12 +0100 Stefano Garzarella wrote:
+> On Mon, Oct 26, 2020 at 09:46:17AM +0000, David Laight wrote:
+> >From: Stefano Garzarella  
+> >> Sent: 26 October 2020 09:39
+> >>
+> >> On Mon, Oct 26, 2020 at 09:13:23AM +0000, David Laight wrote:  
+> >> >From: Stefano Garzarella  
+> >> >> Sent: 26 October 2020 08:43  
+> >> >...  
+> >> >> >Isn't the canonical error for unknown ioctl codes -ENOTTY?
+> >> >> >  
+> >> >>
+> >> >> Oh, thanks for pointing that out!
+> >> >>
+> >> >> I had not paid attention to the error returned, but looking at it I
+> >> >> noticed that perhaps the most appropriate would be -ENOIOCTLCMD.
+> >> >> In the ioctl syscall we return -ENOTTY, if the callback returns
+> >> >> -ENOIOCTLCMD.
+> >> >>
+> >> >> What do you think?  
+> >> >
+> >> >It is 729 v 443 in favour of ENOTTY (based on grep).  
+> >>
+> >> Under net/ it is 6 vs 83 in favour of ENOIOCTLCMD.
+> >>  
+> >> >
+> >> >No idea where ENOIOCTLCMD comes from, but ENOTTY probably
+> >> >goes back to the early 1970s.  
+> >>
+> >> Me too.
+> >>  
+> >> >
+> >> >The fact that the ioctl wrapper converts the value is a good
+> >> >hint that userspace expects ENOTTY.  
+> >>
+> >> Agree on that, but since we are not interfacing directly with userspace,
+> >> I think it is better to return the more specific error (ENOIOCTLCMD).  
+> >
+> >I bet Linux thought it could use a different error code then
+> >found that 'unknown ioctl' was spelt ENOTTY.  
 > 
-> An incorrect sizeof() is being used, sizeof(rhub->ports) is not
-> correct, it should be sizeof(*rhub->ports).  This bug did not
-> cause any issues because it just so happens the sizes are the same.
+> It could be :-)
 > 
-> Addresses-Coverity: ("Sizeof not portable (SIZEOF_MISMATCH)")
-> Fixes: bcaa9d5c5900 ("xhci: Create new structures to store xhci port information")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
+> Anyway, as you pointed out, I think we should change the -EINVAL with 
+> -ENOTTY or -ENOIOCTLCMD.
+> 
+> @Jakub what do you suggest?
 
-Thanks, added
+ENOIOCTLCMD is a kernel-internal high return code (515) which should 
+be returned by the driver, but it's then caught inside the core and
+translated to ENOTTY which is then returned to user space.
 
--Mathias
-
+So you're both right, I guess? But the driver should use ENOIOCTLCMD.

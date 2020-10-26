@@ -2,100 +2,127 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7F22298A09
-	for <lists+kernel-janitors@lfdr.de>; Mon, 26 Oct 2020 11:09:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C0DB2989ED
+	for <lists+kernel-janitors@lfdr.de>; Mon, 26 Oct 2020 11:02:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1747290AbgJZJuD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 26 Oct 2020 05:50:03 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:55292 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1768334AbgJZJtX (ORCPT
+        id S1768864AbgJZKCO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 26 Oct 2020 06:02:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:32763 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1768821AbgJZKBV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 26 Oct 2020 05:49:23 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09Q9n9Su011265;
-        Mon, 26 Oct 2020 09:49:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=idCrYVaof56C5NOLfxcsP5wOGjSDiBC1Go1Tn0WcFLw=;
- b=cYh3whNEXdthmPNMeKsVtJdfm2JyvQsnP+lWOKSfYfUnpcCa3l+mEPJwuFs+NnOWcL+s
- 9e3wHgu7xYAot03/fCpS0zMseMkC64dlRXu/d/s9wdKFLFF2fP4oA60PV/KQ/ox7WvrU
- arg7dKkvTDkSIVndQgD9H0/6e4YKRWQ2s/tm9eUSEE3QLzA8ky3VWmpJ1Fh4mwAqz5rZ
- w+nn7WI75JyKHAdv4d0YTQ3U3D8Hf43JGlnDrDVnOfH+MKXhW4lusRwkZMcb23HKt0JS
- lnC/ivJklBeOOAUEUt2aIBHv5JU+RnkXXtG8XDksl/XXfcR2FOcAKaAdk3WJKwwy1tT/ xQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2130.oracle.com with ESMTP id 34c9sakxrb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 26 Oct 2020 09:49:15 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09Q9kCmZ047397;
-        Mon, 26 Oct 2020 09:49:14 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 34cx1pc9fy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 26 Oct 2020 09:49:14 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09Q9nDUB028947;
-        Mon, 26 Oct 2020 09:49:13 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 26 Oct 2020 02:49:12 -0700
-Date:   Mon, 26 Oct 2020 12:49:05 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Eric Anholt <eric@anholt.duckdns.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org,
-        Eric Anholt <eric@anholt.duckdns.org>,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH resend] drm/v3d: Fix double free in v3d_submit_cl_ioctl()
-Message-ID: <20201026094905.GA1634423@mwanda>
+        Mon, 26 Oct 2020 06:01:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1603706480;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=g9M52w860PyPvVBSu7mKSxeRwS8lIdF5tDbDT2wR+cs=;
+        b=gvajNPWQRuraAmYsfg9XMaP885aCKQ3J3yrNKkyX4QOF9VXJ/7VXBZQXWYWGfDWfCsZVHS
+        a6Udonlc2I3omiAYGke69YhcLCNU8ClTSZ7hHJSKinT7Psu3v9sTLQjiObinAFuQtSUGt1
+        Mf/rF9v1Hx4OooBCLTM+meU0NntJGhE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-484-y6ZhrjBTNQqd8UZikdo63g-1; Mon, 26 Oct 2020 06:01:18 -0400
+X-MC-Unique: y6ZhrjBTNQqd8UZikdo63g-1
+Received: by mail-wr1-f72.google.com with SMTP id t17so8155747wrm.13
+        for <kernel-janitors@vger.kernel.org>; Mon, 26 Oct 2020 03:01:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=g9M52w860PyPvVBSu7mKSxeRwS8lIdF5tDbDT2wR+cs=;
+        b=QfL8NxLCFwrSLaX9Yrh2ujRCuOMdHo7/7sEf6rNwe+kY5QO2OM9sWmvpnY4eLw90xX
+         qV7bYPGyF2LZ4mNmdiXr/buov1Jjf2T15AlQ2ZfuopsTvmWi1Uv8jc9F3kQHJ54RkD3Y
+         CDkx7YilCpgeYDaONQpsnh3gIn277CniYrPt8FaTVRcA8mA1vrzb8byb8NWDO9QL7asD
+         lfXnWztfzmRGMMLWul/TQ1AgyoDBRq7w4NJAH3BtAcY9gtuHZ/Pr4D6P7EhUJ/DG+iEw
+         EjtadzqOLWsSBE3SJQXb4NB/DebX0Dx7aaoG1VxNZIr6JZsLG0mZqfzWaF4is5XnJY4r
+         dkYQ==
+X-Gm-Message-State: AOAM530IlyAJlvr3MrhbZE8tb813C3lWi0oIbQQpbrBukOhamvOA4fcI
+        R7N+qRxRn8yP7liYgNAwuDbYoaTUgai/CfFJnq93PZX731G1igqOI6ILFsANo7xR/olqohSJ94N
+        EvZ9g21yC0Z9bGVMbloLXI8VjNXye
+X-Received: by 2002:a1c:7214:: with SMTP id n20mr15399259wmc.93.1603706476058;
+        Mon, 26 Oct 2020 03:01:16 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzqhquQiOmnt0ldElrGf3ZubNN/KA9VMe3Bjf5dcZx476oa5Meo2vVFpvD5OnEUV2kNEXETSQ==
+X-Received: by 2002:a1c:7214:: with SMTP id n20mr15399246wmc.93.1603706475872;
+        Mon, 26 Oct 2020 03:01:15 -0700 (PDT)
+Received: from steredhat (host-79-17-248-215.retail.telecomitalia.it. [79.17.248.215])
+        by smtp.gmail.com with ESMTPSA id t7sm21294559wrx.42.2020.10.26.03.01.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2020 03:01:15 -0700 (PDT)
+Date:   Mon, 26 Oct 2020 11:01:12 +0100
+From:   Stefano Garzarella <sgarzare@redhat.com>
+To:     David Laight <David.Laight@aculab.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Colin King <colin.king@canonical.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] vsock: ratelimit unknown ioctl error message
+Message-ID: <20201026100112.qaorff6c6vucakyg@steredhat>
+References: <20201023122113.35517-1-colin.king@canonical.com>
+ <20201023140947.kurglnklaqteovkp@steredhat>
+ <e535c07df407444880d8b678bc215d9f@AcuMS.aculab.com>
+ <20201026084300.5ag24vck3zeb4mcz@steredhat>
+ <d893e3251f804cffa797b6eb814944fd@AcuMS.aculab.com>
+ <20201026093917.5zgginii65pq6ezd@steredhat>
+ <3e34e4121f794355891fd7577c9dfbc0@AcuMS.aculab.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20191024205306.GA14416@mwanda>
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9785 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 bulkscore=0
- suspectscore=2 malwarescore=0 mlxlogscore=999 mlxscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010260069
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9785 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 malwarescore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 spamscore=0 phishscore=0 clxscore=1015 suspectscore=2
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2010260069
+In-Reply-To: <3e34e4121f794355891fd7577c9dfbc0@AcuMS.aculab.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Originally this error path used to leak "bin" but then we accidentally
-applied two separate commits to fix it and ended up with a double free.
+On Mon, Oct 26, 2020 at 09:46:17AM +0000, David Laight wrote:
+>From: Stefano Garzarella
+>> Sent: 26 October 2020 09:39
+>>
+>> On Mon, Oct 26, 2020 at 09:13:23AM +0000, David Laight wrote:
+>> >From: Stefano Garzarella
+>> >> Sent: 26 October 2020 08:43
+>> >...
+>> >> >Isn't the canonical error for unknown ioctl codes -ENOTTY?
+>> >> >
+>> >>
+>> >> Oh, thanks for pointing that out!
+>> >>
+>> >> I had not paid attention to the error returned, but looking at it I
+>> >> noticed that perhaps the most appropriate would be -ENOIOCTLCMD.
+>> >> In the ioctl syscall we return -ENOTTY, if the callback returns
+>> >> -ENOIOCTLCMD.
+>> >>
+>> >> What do you think?
+>> >
+>> >It is 729 v 443 in favour of ENOTTY (based on grep).
+>>
+>> Under net/ it is 6 vs 83 in favour of ENOIOCTLCMD.
+>>
+>> >
+>> >No idea where ENOIOCTLCMD comes from, but ENOTTY probably
+>> >goes back to the early 1970s.
+>>
+>> Me too.
+>>
+>> >
+>> >The fact that the ioctl wrapper converts the value is a good
+>> >hint that userspace expects ENOTTY.
+>>
+>> Agree on that, but since we are not interfacing directly with userspace,
+>> I think it is better to return the more specific error (ENOIOCTLCMD).
+>
+>I bet Linux thought it could use a different error code then
+>found that 'unknown ioctl' was spelt ENOTTY.
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-Resending a year later because it was confusing at the time who should
-apply this and it fell through the cracks.  For some reason the kbuild
-bot flagged it as a new warning so it showed up on my radar again.
+It could be :-)
 
- drivers/gpu/drm/v3d/v3d_gem.c | 1 -
- 1 file changed, 1 deletion(-)
+Anyway, as you pointed out, I think we should change the -EINVAL with 
+-ENOTTY or -ENOIOCTLCMD.
 
-diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
-index 549dde83408b..37515e47b47e 100644
---- a/drivers/gpu/drm/v3d/v3d_gem.c
-+++ b/drivers/gpu/drm/v3d/v3d_gem.c
-@@ -568,7 +568,6 @@ v3d_submit_cl_ioctl(struct drm_device *dev, void *data,
- 		ret = v3d_job_init(v3d, file_priv, &bin->base,
- 				   v3d_job_free, args->in_sync_bcl);
- 		if (ret) {
--			kfree(bin);
- 			v3d_job_put(&render->base);
- 			kfree(bin);
- 			return ret;
--- 
-2.20.1
+@Jakub what do you suggest?
 
+Thanks,
+Stefano
 

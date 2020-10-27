@@ -2,68 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B57CB29AA80
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Oct 2020 12:26:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5989229AB3C
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Oct 2020 12:53:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S460326AbgJ0L0n (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Oct 2020 07:26:43 -0400
-Received: from foss.arm.com ([217.140.110.172]:38606 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S460314AbgJ0L0m (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Oct 2020 07:26:42 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 704E730E;
-        Tue, 27 Oct 2020 04:26:42 -0700 (PDT)
-Received: from e113632-lin (e113632-lin.cambridge.arm.com [10.1.194.46])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0C1723F66E;
-        Tue, 27 Oct 2020 04:26:39 -0700 (PDT)
-References: <1603211879-1064-1-git-send-email-Julia.Lawall@inria.fr> <20201022071145.GM2628@hirez.programming.kicks-ass.net> <20201022104703.nw45dwor6wfn4ity@vireshk-i7> <34115486.YmRjPRKJaA@kreacher> <20201022120213.GG2611@hirez.programming.kicks-ass.net> <20201027111133.ajlxn5lbnfeocfgb@e107158-lin>
-User-agent: mu4e 0.9.17; emacs 26.3
-From:   Valentin Schneider <valentin.schneider@arm.com>
-To:     Qais Yousef <qais.yousef@arm.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Julia Lawall <julia.lawall@inria.fr>,
-        Mel Gorman <mgorman@suse.de>, Ingo Molnar <mingo@redhat.com>,
-        kernel-janitors@vger.kernel.org,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        linux-kernel@vger.kernel.org,
-        Gilles Muller <Gilles.Muller@inria.fr>,
-        srinivas.pandruvada@linux.intel.com
-Subject: Re: default cpufreq gov, was: [PATCH] sched/fair: check for idle core
-In-reply-to: <20201027111133.ajlxn5lbnfeocfgb@e107158-lin>
-Date:   Tue, 27 Oct 2020 11:26:37 +0000
-Message-ID: <jhjlffrq58y.mognet@arm.com>
+        id S367976AbgJ0Lxi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Oct 2020 07:53:38 -0400
+Received: from mslow2.mail.gandi.net ([217.70.178.242]:52308 "EHLO
+        mslow2.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2899629AbgJ0Lxh (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 27 Oct 2020 07:53:37 -0400
+Received: from relay8-d.mail.gandi.net (unknown [217.70.183.201])
+        by mslow2.mail.gandi.net (Postfix) with ESMTP id 3C6983A1DD2
+        for <kernel-janitors@vger.kernel.org>; Tue, 27 Oct 2020 11:32:56 +0000 (UTC)
+X-Originating-IP: 90.65.88.165
+Received: from localhost (lfbn-lyo-1-1908-165.w90-65.abo.wanadoo.fr [90.65.88.165])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 575A41BF209;
+        Tue, 27 Oct 2020 11:32:33 +0000 (UTC)
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        kernel-janitors@vger.kernel.org, linux-rtc@vger.kernel.org
+Subject: Re: [PATCH] rtc: pcf2127: fix pcf2127_nvmem_read/write() returns
+Date:   Tue, 27 Oct 2020 12:32:32 +0100
+Message-Id: <160379780345.96488.3985201259905259323.b4-ty@bootlin.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20201022070451.GA2817669@mwanda>
+References: <20201022070451.GA2817669@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Thu, 22 Oct 2020 10:04:51 +0300, Dan Carpenter wrote:
+> These functions should return zero on success.  Non-zero returns are
+> treated as error.  On some paths, this doesn't matter but in
+> nvmem_cell_read() a non-zero return would be passed to ERR_PTR() and
+> lead to an Oops.
 
-On 27/10/20 11:11, Qais Yousef wrote:
-> On 10/22/20 14:02, Peter Zijlstra wrote:
->> However I do want to retire ondemand, conservative and also very much
->> intel_pstate/active mode. I also have very little sympathy for
->> userspace.
->
-> Userspace is useful for testing and sanity checking. Not sure if people use it
-> to measure voltage/current at each frequency to generate
-> dynamic-power-coefficient for their platform. Lukasz, Dietmar?
->
+Applied, thanks!
 
-It's valuable even just for cpufreq sanity checking - we have that test
-that goes through increasing frequencies and asserts the work done is
-monotonically increasing. This has been quite useful in the past to detect
-broken bits.
+[1/1] rtc: pcf2127: fix pcf2127_nvmem_read/write() returns
+      commit: ba1c30bf3f2536f248d262c6f257b5a787305991
 
-That *should* still be totally doable with any other governor by using the
-scaling_{min, max}_freq sysfs interface.
-
-> Thanks
+Best regards,
+-- 
+Alexandre Belloni <alexandre.belloni@bootlin.com>

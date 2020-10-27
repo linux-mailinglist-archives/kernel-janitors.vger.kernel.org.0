@@ -2,77 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2946299B07
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Oct 2020 00:49:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C228D299ED6
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Oct 2020 01:18:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408375AbgJZXrT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 26 Oct 2020 19:47:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44208 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2408372AbgJZXrT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 26 Oct 2020 19:47:19 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3F74820809;
-        Mon, 26 Oct 2020 23:47:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603756038;
-        bh=8e+JQ2x+eeQocyNPZN+4ob1xi20n6Ei8E+bl7jF11K0=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=QtYTOTdvAySWrJF70q4ODepiLXBFL6igOAC9lFp2BBCla+Y+12P1w3vdf/2UR71zH
-         bj8dOUVQmENpoauFpvYkP3SKQPBmBXbFmsLBRIUHo8EWjVsR2m/VUmv5WT8NhZVfTV
-         +g/O7bMaoLjHjAJCZE080R/Xc/vGJ18rJdBTNvWw=
-Date:   Mon, 26 Oct 2020 23:47:14 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Colin King <colin.king@canonical.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-In-Reply-To: <20201016222235.686981-1-colin.king@canonical.com>
-References: <20201016222235.686981-1-colin.king@canonical.com>
-Subject: Re: [PATCH] regulator: lp872x: make a const array static, makes object smaller
-Message-Id: <160375603445.32304.3851545649708481770.b4-ty@kernel.org>
+        id S2440831AbgJ0ASF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 26 Oct 2020 20:18:05 -0400
+Received: from mail-pj1-f65.google.com ([209.85.216.65]:50648 "EHLO
+        mail-pj1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2439217AbgJ0AKY (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 26 Oct 2020 20:10:24 -0400
+Received: by mail-pj1-f65.google.com with SMTP id p21so4094008pju.0;
+        Mon, 26 Oct 2020 17:10:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=1azfFq7q86IJb4o/XiSShhCM71XtUbCQRnzUDV1c5hs=;
+        b=CoL3T/+foImUudkNj5w5m35TvLFtBjZHoI8jYuhYhaec+00NWjtfC9ivEQmBCy3TDf
+         +Xj8PsDtA4yfW1HZW2lXOlOPANfg4PBtw6oARbLMXSvHmYTD14Zbw8RoXXAMStI3Zfju
+         sThv9XVhpuGxHhbDKKMKQfJybAd6BIojpT8RvF0dWGwTB0Q6oYAb4c9y9PuYWvceNFKj
+         Ylzd9Y6gYhU9U/v2dtJh2jJi3GqSVoKTgTIY6KIOi2gOC7wcKWOgrqOzr+XbQh8WMVqO
+         jZHv9fGS+3PrtVpdc9WWcG31+WAfmJmvZozi72V+39FgjJ3jf3zKsXrwHXuIiMSTbo2h
+         +Svg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=1azfFq7q86IJb4o/XiSShhCM71XtUbCQRnzUDV1c5hs=;
+        b=lHx+KKUQ3HsknPgefFCg/tT9w7v0zwt0Jl+jfbjJJ6KjFBGtXVZaM3w2hW3MnO+AkI
+         gqV51irUJXFfAB6qOTCm5IR+D3OzHb5X3ZGaJo7KNkHwg+Xk0eu1Mz9BI108nCFiS+cX
+         QqiqqBNZABtc4VOVICwV0Tgf/mwHuWBUds+wyXB4kJK3z0gBYXSqILsfBKa5nkzobD/q
+         IKTm0wGhNLdS4zLB5UhnvzsQgQfcNcc7rbnSwT83aCE6rRWXDMId6hok0l4Cm9dGcGzg
+         /D7mNYXI+AAlbrnK0ddPCvIZbEpcJvYn5r7hybc1lXvjIMj5BQQsGRTR8LO38kdk1h3T
+         /PJQ==
+X-Gm-Message-State: AOAM530VUCCE5c7fnl5tWHrFqSOAcE0YXx1NQ5WxE4dreff84UqZfL+/
+        9LZLxMce2tbAZTKoYL42zmHC9iT0nAg=
+X-Google-Smtp-Source: ABdhPJyfyJ2C84xMaPcFdyLvVpQYe5GC5bPxz4jk88YO2/9URWIbpKmzD8TisO3JIqUbUxyBFmkHmQ==
+X-Received: by 2002:a17:902:6a8c:b029:d5:da81:dc42 with SMTP id n12-20020a1709026a8cb02900d5da81dc42mr400568plk.40.1603757423415;
+        Mon, 26 Oct 2020 17:10:23 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:a6ae:11ff:fe11:fcc3])
+        by smtp.gmail.com with ESMTPSA id z13sm1814233pgc.44.2020.10.26.17.10.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2020 17:10:22 -0700 (PDT)
+Date:   Mon, 26 Oct 2020 17:10:20 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Michael Hennerich <michael.hennerich@analog.com>,
+        linux-input@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] Input: adxl34x - clean up a data type in adxl34x_probe()
+Message-ID: <20201027001020.GG444962@dtor-ws>
+References: <20201026072824.GA1620546@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201026072824.GA1620546@mwanda>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 16 Oct 2020 23:22:35 +0100, Colin King wrote:
-> Don't populate const array lp872x_num_regulators  on the stack but
-> instead make it static. Makes the object code smaller by 29 bytes.
+On Mon, Oct 26, 2020 at 10:28:24AM +0300, Dan Carpenter wrote:
+> The "revid" is used to store negative error codes so it should be an int
+> type.
 > 
-> Before:
->    text	   data	    bss	    dec	    hex	filename
->   18441	   4624	     64	  23129	   5a59	drivers/regulator/lp872x.o
-> 
-> [...]
+> Fixes: e27c729219ad ("Input: add driver for ADXL345/346 Digital Accelerometers")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Applied to
+Applied, thank you.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
-
-Thanks!
-
-[1/1] regulator: lp872x: make a const array static, makes object smaller
-      commit: 390d828f56a602c9201601bff1170d9d2bf5801c
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+-- 
+Dmitry

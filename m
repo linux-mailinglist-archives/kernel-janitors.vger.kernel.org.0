@@ -2,72 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC29029AB25
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Oct 2020 12:49:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA83929AB61
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Oct 2020 13:03:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2899574AbgJ0Ltc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Oct 2020 07:49:32 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56697 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2899552AbgJ0Lta (ORCPT
+        id S1750500AbgJ0MDk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Oct 2020 08:03:40 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:45049 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1750496AbgJ0MDk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Oct 2020 07:49:30 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kXNTi-00027k-1Z; Tue, 27 Oct 2020 11:49:26 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] net: atm: fix update of position index in lec_seq_next
-Date:   Tue, 27 Oct 2020 11:49:25 +0000
-Message-Id: <20201027114925.21843-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        Tue, 27 Oct 2020 08:03:40 -0400
+X-IronPort-AV: E=Sophos;i="5.77,423,1596492000"; 
+   d="scan'208";a="474507552"
+Received: from 173.121.68.85.rev.sfr.net (HELO hadrien) ([85.68.121.173])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Oct 2020 13:03:35 +0100
+Date:   Tue, 27 Oct 2020 13:03:35 +0100 (CET)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Coccinelle <cocci@systeme.lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: =?UTF-8?Q?Re=3A_=5BCocci=5D_Coccinelle=3A_Checking_the_relevanc?=
+ =?UTF-8?Q?e_of_parentheses_in_=E2=80=9Cgit_grep=E2=80=9D?=
+In-Reply-To: <bfb3e786-a64f-ecaf-eb37-8bd6b53cf38a@web.de>
+Message-ID: <alpine.DEB.2.22.394.2010271303190.2847@hadrien>
+References: <78f8b08754dde286adf7e11e1eeb3bb8ad500d8b.camel@web.de> <acaed49b9195d47e252a0b67551f87e96324d004.camel@web.de> <45310257-201a-40ea-348f-b8e909c3775c@web.de> <alpine.DEB.2.22.394.2010271155330.2847@hadrien>
+ <bfb3e786-a64f-ecaf-eb37-8bd6b53cf38a@web.de>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="8323329-410386229-1603800215=:2847"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-The position index in leq_seq_next is not updated when the next
-entry is fetched an no more entries are available. This causes
-seq_file to report the following error:
+--8323329-410386229-1603800215=:2847
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 
-"seq_file: buggy .next function lec_seq_next [lec] did not update
- position index"
 
-Fix this by always updating the position index.
 
-[ Note: this is an ancient 2002 bug, the sha is from the
-  tglx/history repo ]
+On Tue, 27 Oct 2020, Markus Elfring wrote:
 
-Fixes 4aea2cbff417 ("[ATM]: Move lan seq_file ops to lec.c [1/3]")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- net/atm/lec.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+> >> … git grep -l -w \( -e for_each_node_by_type … -e for_each_node_with_property \) -- '*.c'
+> >>
+> >>
+> >> How do you think about to omit these parentheses here?
+> >
+> > Does it make a difference?
+>
+> I find that it can be nicer to avoid the passing of unnecessary characters.
+>
+> * The compilation of the affected OCaml source files can eventually benefit
+>   from another bit of clean-up, can't it?
 
-diff --git a/net/atm/lec.c b/net/atm/lec.c
-index dbabb65d8b67..7226c784dbe0 100644
---- a/net/atm/lec.c
-+++ b/net/atm/lec.c
-@@ -954,9 +954,8 @@ static void *lec_seq_next(struct seq_file *seq, void *v, loff_t *pos)
- {
- 	struct lec_state *state = seq->private;
- 
--	v = lec_get_idx(state, 1);
--	*pos += !!PTR_ERR(v);
--	return v;
-+	++*pos;
-+	return lec_get_idx(state, 1);
- }
- 
- static int lec_seq_show(struct seq_file *seq, void *v)
--- 
-2.27.0
+I have no idea what this means.
 
+julia
+
+> * The called software components do also not need to fiddle with such extra data then.
+>
+> Regards,
+> Markus
+>
+--8323329-410386229-1603800215=:2847--

@@ -2,101 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E169B29A79D
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Oct 2020 10:18:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB20229AA1D
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Oct 2020 11:56:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2505521AbgJ0JSS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Oct 2020 05:18:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:28309 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2407415AbgJ0JSM (ORCPT
+        id S2898775AbgJ0Kz6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Oct 2020 06:55:58 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:14598
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2898762AbgJ0Kz5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Oct 2020 05:18:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1603790291;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=PP9XfWWYs/ZL8eWntPMtO6Zbh5hoxUuR0KDIP5S05yQ=;
-        b=PByU6ptqiii+UK1rqDAOq5U/gFKkaWYVeL7Vyts2KmXS5RoITPiCT3SUvgECy4jzAEggj8
-        FJ4ebV6W/WkS+SwAPyypl+QWujz7H7Vz7o9XRMOwT2CVeSBlY9rGpx7+0ynd4gMVYiLvPH
-        dVGvd3pksjYiJuXlJAWc5zK7q7wL3KU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-171-uR8t7FKzNM2kCAllvmnHrQ-1; Tue, 27 Oct 2020 05:18:08 -0400
-X-MC-Unique: uR8t7FKzNM2kCAllvmnHrQ-1
-Received: by mail-wm1-f72.google.com with SMTP id f191so178016wmf.9
-        for <kernel-janitors@vger.kernel.org>; Tue, 27 Oct 2020 02:18:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=PP9XfWWYs/ZL8eWntPMtO6Zbh5hoxUuR0KDIP5S05yQ=;
-        b=NWLjo2jp952bgq5vQgfCpFjftSF5pXeDi9CWcgg410g5ChHn9riW4biZ/u2wMhNIT6
-         51K8jSm2nX98NeiiJ+FRC+PLcMXfJTLKGgtiPk2gAj70rfXUrve+0NzP+NiqNGLeabCj
-         TTXkCp+TATnr3OLv79ilAa7wjKtkKKwHp/5bLRZadeY/Ugn9M2UcWa3EKsc1ojjIRaAE
-         lyrGHZmRCiowk4DFNbLoGeZs4B0jTLG9WD+gRsfZgr7Og0tcZy8g/L9DA27Zn66iHYb/
-         cj/HwmLHReUZvDnxA526+CySV1aSPqQI8gz4VLwjnM8i5y4dwbvfZPJAirl4KBRVy0ze
-         CWuQ==
-X-Gm-Message-State: AOAM531T4J7udAkfgPE74lVbdQMAqa5BMPi20F1rJ6R0lJzSPlj4yCE1
-        pzgmCzc1B6APfrKYyDEVK/OEvfcokG8p8GNzykCztCPYKkEiAGD8bhfolxBpm1ZQEkXAoYwsFOJ
-        cGwoeCcVDhAD4TZvyoV1pQ7uXU+kX
-X-Received: by 2002:a1c:28d4:: with SMTP id o203mr1612041wmo.143.1603790287167;
-        Tue, 27 Oct 2020 02:18:07 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzIilyoqRxGaUl7p9JKTfBssuH7mohx3h+nf+wqghU8Ac68i7Wh1Yp/SFLOvnj3tU5GpJwc5Q==
-X-Received: by 2002:a1c:28d4:: with SMTP id o203mr1612024wmo.143.1603790286960;
-        Tue, 27 Oct 2020 02:18:06 -0700 (PDT)
-Received: from steredhat (host-79-17-248-215.retail.telecomitalia.it. [79.17.248.215])
-        by smtp.gmail.com with ESMTPSA id x64sm1166853wmg.33.2020.10.27.02.18.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2020 02:18:06 -0700 (PDT)
-Date:   Tue, 27 Oct 2020 10:18:04 +0100
-From:   Stefano Garzarella <sgarzare@redhat.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        Tue, 27 Oct 2020 06:55:57 -0400
+X-IronPort-AV: E=Sophos;i="5.77,423,1596492000"; 
+   d="scan'208";a="362868559"
+Received: from 173.121.68.85.rev.sfr.net (HELO hadrien) ([85.68.121.173])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Oct 2020 11:55:53 +0100
+Date:   Tue, 27 Oct 2020 11:55:53 +0100 (CET)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Coccinelle <cocci@systeme.lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Sumera Priyadarsini <sylphrenadin@gmail.com>,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] vsock: fix the error return when an invalid ioctl
- command is used
-Message-ID: <20201027091804.7mpad5yaxzfmbva6@steredhat>
-References: <20201027090942.14916-1-colin.king@canonical.com>
- <20201027090942.14916-3-colin.king@canonical.com>
+Subject: =?UTF-8?Q?Re=3A_=5BCocci=5D_Coccinelle=3A_Checking_the_relevanc?=
+ =?UTF-8?Q?e_of_parentheses_in_=E2=80=9Cgit_grep=E2=80=9D?=
+In-Reply-To: <45310257-201a-40ea-348f-b8e909c3775c@web.de>
+Message-ID: <alpine.DEB.2.22.394.2010271155330.2847@hadrien>
+References: <78f8b08754dde286adf7e11e1eeb3bb8ad500d8b.camel@web.de> <acaed49b9195d47e252a0b67551f87e96324d004.camel@web.de> <45310257-201a-40ea-348f-b8e909c3775c@web.de>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20201027090942.14916-3-colin.king@canonical.com>
+Content-Type: multipart/mixed; boundary="8323329-1797633343-1603796154=:2847"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Oct 27, 2020 at 09:09:42AM +0000, Colin King wrote:
->From: Colin Ian King <colin.king@canonical.com>
->
->Currently when an invalid ioctl command is used the error return
->is -EINVAL.  Fix this by returning the correct error -ENOIOCTLCMD.
->
->Signed-off-by: Colin Ian King <colin.king@canonical.com>
->---
-> net/vmw_vsock/af_vsock.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+--8323329-1797633343-1603796154=:2847
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 
->
->diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->index 865331b809e4..597c86413089 100644
->--- a/net/vmw_vsock/af_vsock.c
->+++ b/net/vmw_vsock/af_vsock.c
->@@ -2072,7 +2072,7 @@ static long vsock_dev_do_ioctl(struct file *filp,
-> 		break;
->
-> 	default:
->-		retval = -EINVAL;
->+		retval = -ENOIOCTLCMD;
-> 	}
->
-> 	return retval;
->-- 
->2.27.0
->
 
+
+On Tue, 27 Oct 2020, Markus Elfring wrote:
+
+> > Will any adjustments become relevant then accordingly?
+>
+> I have found out that the function “interpret” (OCaml code) constructs a command
+> and executes it.
+> https://github.com/coccinelle/coccinelle/blob/3c01dc1696dc5ccfb319673f205e491b572ee0be/parsing_cocci/git_grep.ml#L9
+>
+> I have tried a corresponding test display out. Thus I have got the impression
+> that desired patterns are passed with extra parentheses.
+>
+> … git grep -l -w \( -e for_each_node_by_type … -e for_each_node_with_property \) -- '*.c'
+>
+>
+> How do you think about to omit these parentheses here?
+
+Does it make a difference?
+
+julia
+--8323329-1797633343-1603796154=:2847--

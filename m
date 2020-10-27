@@ -2,69 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB20229AA1D
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Oct 2020 11:56:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBCB229AA3A
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Oct 2020 12:05:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2898775AbgJ0Kz6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Oct 2020 06:55:58 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:14598
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2898762AbgJ0Kz5 (ORCPT
+        id S2898905AbgJ0LFx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Oct 2020 07:05:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:46000 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2898903AbgJ0LFw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Oct 2020 06:55:57 -0400
-X-IronPort-AV: E=Sophos;i="5.77,423,1596492000"; 
-   d="scan'208";a="362868559"
-Received: from 173.121.68.85.rev.sfr.net (HELO hadrien) ([85.68.121.173])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Oct 2020 11:55:53 +0100
-Date:   Tue, 27 Oct 2020 11:55:53 +0100 (CET)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Coccinelle <cocci@systeme.lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        Tue, 27 Oct 2020 07:05:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1603796751;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=FrjeCAan5jwNXoKxJoHy3Krr60faw0rldSpx6L/g/YM=;
+        b=PTxnAuGptWbqnngVrXqQKpxWLkaKDrDlATYnLhMaJBXo7pCktm9lIzTLYIXBaGDLDaMJOO
+        4Bt1FfBjXUN5EPnZx7+cRu553Aeo13CY9L9pCepMStgxjChoHxzPt/KYYGN2Y26/TJDPxb
+        u7NULumT0J0A+IqtCoPJH4y8UnnBnDs=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-459-Hb0IV2mzMM6PWJegTkv_9w-1; Tue, 27 Oct 2020 07:05:49 -0400
+X-MC-Unique: Hb0IV2mzMM6PWJegTkv_9w-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9201D101F7A6;
+        Tue, 27 Oct 2020 11:05:48 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-70.rdu2.redhat.com [10.10.120.70])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 899275D9F3;
+        Tue, 27 Oct 2020 11:05:47 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20201021131133.128016-1-colin.king@canonical.com>
+References: <20201021131133.128016-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     dhowells@redhat.com, linux-afs@lists.infradead.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: =?UTF-8?Q?Re=3A_=5BCocci=5D_Coccinelle=3A_Checking_the_relevanc?=
- =?UTF-8?Q?e_of_parentheses_in_=E2=80=9Cgit_grep=E2=80=9D?=
-In-Reply-To: <45310257-201a-40ea-348f-b8e909c3775c@web.de>
-Message-ID: <alpine.DEB.2.22.394.2010271155330.2847@hadrien>
-References: <78f8b08754dde286adf7e11e1eeb3bb8ad500d8b.camel@web.de> <acaed49b9195d47e252a0b67551f87e96324d004.camel@web.de> <45310257-201a-40ea-348f-b8e909c3775c@web.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+Subject: Re: [PATCH][next] afs: fix a dereference on pointer cell before cell is null checked
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1797633343-1603796154=:2847"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3189276.1603796746.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date:   Tue, 27 Oct 2020 11:05:46 +0000
+Message-ID: <3189277.1603796746@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Colin King <colin.king@canonical.com> wrote:
 
---8323329-1797633343-1603796154=:2847
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+> @@ -606,7 +605,7 @@ void afs_unuse_cell(struct afs_net *net, struct afs_=
+cell *cell, enum afs_cell_tr
+>  =
 
+>  	u =3D atomic_read(&cell->ref);
+>  	a =3D atomic_dec_return(&cell->active);
+> -	trace_afs_cell(debug_id, u, a, reason);
+> +	trace_afs_cell(cell->debug_id, u, a, reason);
 
+It's probably better to read cell->debug_id before calling
+atomic_dec_return().
 
-On Tue, 27 Oct 2020, Markus Elfring wrote:
+I have a patch for this based on a report by Dan Carpenter, so no need to =
+send
+a revised patch.
 
-> > Will any adjustments become relevant then accordingly?
->
-> I have found out that the function “interpret” (OCaml code) constructs a command
-> and executes it.
-> https://github.com/coccinelle/coccinelle/blob/3c01dc1696dc5ccfb319673f205e491b572ee0be/parsing_cocci/git_grep.ml#L9
->
-> I have tried a corresponding test display out. Thus I have got the impression
-> that desired patterns are passed with extra parentheses.
->
-> … git grep -l -w \( -e for_each_node_by_type … -e for_each_node_with_property \) -- '*.c'
->
->
-> How do you think about to omit these parentheses here?
+Thanks,
+David
 
-Does it make a difference?
-
-julia
---8323329-1797633343-1603796154=:2847--

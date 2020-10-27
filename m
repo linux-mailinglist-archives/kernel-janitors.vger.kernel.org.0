@@ -2,125 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C51FD29C454
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Oct 2020 18:56:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F5AC29C788
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Oct 2020 19:38:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2509478AbgJ0OUg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Oct 2020 10:20:36 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:34538 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1758596AbgJ0OUT (ORCPT
+        id S1828586AbgJ0See (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Oct 2020 14:34:34 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:40771 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1796344AbgJ0See (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Oct 2020 10:20:19 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09REFU92044911;
-        Tue, 27 Oct 2020 14:20:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=DAQgQ08j/OaIwGQgAEOJBZdGf7wUU1XY8J9kawgRTzQ=;
- b=jSWx2kyMBsqQJIZTetmJlCucevuZ7wYg1QOWHjOK7vmyK/P6gryChn8QegkBx5BDawiQ
- Dizg242bl3R6cPj2Mr6MQ3bpQ7TS7VHCUEU3/xsPkJdVhwEZcdkGeE0Q72qZYdjuywFU
- NbzpHfe39rVerc0KkzFQuNQaE7RDg101KshqhbnUbettzeaCWMPeVbH6oe6qa1d+/g7s
- qrYKvctivo5PdORPPsgm7BHano5siopeoFbfwAlf33++yW3oUuz8/MLW1UZ/miQYdj+K
- tgSgCLryWNlMv1d+sK6xMfypd2qQT73Doblax7mzO0uLOgn/SXs+eRcB+aPOGhbSpRrI Dw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2130.oracle.com with ESMTP id 34c9satcka-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 27 Oct 2020 14:20:10 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09REFRTx145068;
-        Tue, 27 Oct 2020 14:18:10 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 34cx6w17we-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 27 Oct 2020 14:18:10 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09REI59H029549;
-        Tue, 27 Oct 2020 14:18:05 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 27 Oct 2020 07:18:05 -0700
-Date:   Tue, 27 Oct 2020 17:17:58 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Artur Molchanov <arturmolchanov@gmail.com>
-Cc:     Anna Schumaker <anna.schumaker@netapp.com>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Jakub Kicinski <kuba@kernel.org>, linux-nfs@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] net/sunrpc: clean up error checking in proc_do_xprt()
-Message-ID: <20201027141758.GA3488087@mwanda>
+        Tue, 27 Oct 2020 14:34:34 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kXTni-0007Bv-QW; Tue, 27 Oct 2020 18:34:30 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Jiri Kosina <trivial@kernel.org>, linux-mips@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] MIPS: Kconfig: fix a few trivial spelling mistakes
+Date:   Tue, 27 Oct 2020 18:34:30 +0000
+Message-Id: <20201027183430.56772-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <031F93AC-744F-4E02-9948-1C1F5939714B@gmail.com>
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9786 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
- bulkscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010270090
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9786 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 malwarescore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 spamscore=0 phishscore=0 clxscore=1011 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2010270090
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There are three changes but none of them should affect run time:
+From: Colin Ian King <colin.king@canonical.com>
 
-1)  You can't write to this file because the permissions are 0444.  But
-    it sort of looked like you could do a write and it would result in
-    a read.  Then it looked like proc_sys_call_handler() just ignored
-    it.  Which is confusing.  It's more clear if the "write" just
-    returns zero.
-2)  The "lenp" pointer is never NULL so that check can be removed.
-3)  In the original code, the "if (*lenp < 0)" check didn't work because
-    "*lenp" is unsigned.  Fortunately, the memory_read_from_buffer()
-    call will never fail in this context so it doesn't affect runtime.
+There are a few spelling mistakes in the Kconfig, fix these.
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- net/sunrpc/sysctl.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ arch/mips/Kconfig | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/sunrpc/sysctl.c b/net/sunrpc/sysctl.c
-index a18b36b5422d..04526bab4a06 100644
---- a/net/sunrpc/sysctl.c
-+++ b/net/sunrpc/sysctl.c
-@@ -63,19 +63,19 @@ static int proc_do_xprt(struct ctl_table *table, int write,
- 			void *buffer, size_t *lenp, loff_t *ppos)
- {
- 	char tmpbuf[256];
--	size_t len;
-+	ssize_t len;
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 2000bb2b0220..ddaff19a9580 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2645,7 +2645,7 @@ config WAR_R4600_V1_INDEX_ICACHEOP
+ #  18. The CACHE instructions Hit_Writeback_Invalidate_D, Hit_Writeback_D,
+ #      Hit_Invalidate_D and Create_Dirty_Excl_D should only be
+ #      executed if there is no other dcache activity. If the dcache is
+-#      accessed for another instruction immeidately preceding when these
++#      accessed for another instruction immediately preceding when these
+ #      cache instructions are executing, it is possible that the dcache
+ #      tag match outputs used by these cache instructions will be
+ #      incorrect. These cache instructions should be preceded by at least
+@@ -3086,7 +3086,7 @@ config MIPS_O32_FP64_SUPPORT
  
--	if ((*ppos && !write) || !*lenp) {
--		*lenp = 0;
-+	*lenp = 0;
-+
-+	if (write || *ppos)
- 		return 0;
--	}
-+
- 	len = svc_print_xprts(tmpbuf, sizeof(tmpbuf));
--	*lenp = memory_read_from_buffer(buffer, *lenp, ppos, tmpbuf, len);
-+	len = memory_read_from_buffer(buffer, *lenp, ppos, tmpbuf, len);
-+	if (len < 0)
-+		return len;
+ 	  Although binutils currently supports use of this flag the details
+ 	  concerning its effect upon the O32 ABI in userland are still being
+-	  worked on. In order to avoid userland becoming dependant upon current
++	  worked on. In order to avoid userland becoming dependent upon current
+ 	  behaviour before the details have been finalised, this option should
+ 	  be considered experimental and only enabled by those working upon
+ 	  said details.
+@@ -3124,7 +3124,7 @@ choice
  
--	if (*lenp < 0) {
--		*lenp = 0;
--		return -EINVAL;
--	}
-+	*lenp = len;
- 	return 0;
- }
+ 		    objcopy --update-section .appended_dtb=<filename>.dtb vmlinux
+ 
+-		  This is meant as a backward compatiblity convenience for those
++		  This is meant as a backward compatibility convenience for those
+ 		  systems with a bootloader that can't be upgraded to accommodate
+ 		  the documented boot protocol using a device tree.
  
 -- 
-2.28.0
+2.27.0
 

@@ -2,49 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DA0729CD08
-	for <lists+kernel-janitors@lfdr.de>; Wed, 28 Oct 2020 02:39:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0419E29D4C0
+	for <lists+kernel-janitors@lfdr.de>; Wed, 28 Oct 2020 22:54:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726242AbgJ1Bis (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Oct 2020 21:38:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36682 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1833084AbgJ1AMG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Oct 2020 20:12:06 -0400
-Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.7])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 82DB022281;
-        Wed, 28 Oct 2020 00:12:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603843925;
-        bh=DLGrk2eXb1L/cG31sLgldGEV4hE9DJM6OCdHn1VKf40=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=nrNoT/WpSjv5BMc57eOPIN4rVrNNLjVnxFSStqpozy0SxiWBSA0nImiMMQ5CSpOiz
-         8SO/Sq0+xOzrmZlhQy3YcVvjcbBmrW7iRShuomsVqCpI3KJSAmOw7cvbdzfhf1PkKe
-         kvHbPNh0L3G2nrQQuIbh8czZVsUjDph3zu4L6LoU=
-Date:   Tue, 27 Oct 2020 17:12:04 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jiri Pirko <jiri@nvidia.com>, Andrew Lunn <andrew@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 1/2 net] devlink: Fix some error codes
-Message-ID: <20201027171204.6235e1e6@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20201026080059.GA1628785@mwanda>
-References: <20201026080059.GA1628785@mwanda>
+        id S1728747AbgJ1VyU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 28 Oct 2020 17:54:20 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:42573 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728720AbgJ1VyR (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 28 Oct 2020 17:54:17 -0400
+X-IronPort-AV: E=Sophos;i="5.77,425,1596492000"; 
+   d="scan'208";a="474618844"
+Received: from 173.121.68.85.rev.sfr.net (HELO hadrien) ([85.68.121.173])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 Oct 2020 07:50:22 +0100
+Date:   Wed, 28 Oct 2020 07:50:22 +0100 (CET)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Julia Lawall <julia.lawall@inria.fr>,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Denis Efremov <efremov@linux.com>
+Subject: =?UTF-8?Q?Re=3A_Coccinelle=3A_Checking_the_influence_of_=E2?=
+ =?UTF-8?Q?=80=9CGrep_query=E2=80=9D?=
+In-Reply-To: <6fe4c63d-1b7e-b947-139c-423edc519d2f@web.de>
+Message-ID: <alpine.DEB.2.22.394.2010280748440.2766@hadrien>
+References: <78f8b08754dde286adf7e11e1eeb3bb8ad500d8b.camel@web.de> <acaed49b9195d47e252a0b67551f87e96324d004.camel@web.de> <alpine.DEB.2.22.394.2010221434210.5113@hadrien> <6fe4c63d-1b7e-b947-139c-423edc519d2f@web.de>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="8323329-2051016452-1603867822=:2766"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 26 Oct 2020 11:00:59 +0300 Dan Carpenter wrote:
-> devlink_nl_region_notify_build() where it leads to a NULL dereference in
-> the caller.
-> 
-> Fixes: 544e7c33ec2f ("net: devlink: Add support for port regions")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Applied both, thanks Dan!
+--8323329-2051016452-1603867822=:2766
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+
+
+
+On Tue, 27 Oct 2020, Markus Elfring wrote:
+
+> > It doesn't matter.  The purpose is just to select files that are relevent
+> > for consideration.  If a file is selected for two reasons instead of one
+> > reason, it doesn't matter; it's still selected.
+>
+> The software “git grep” probably supports also short-circuit evaluation
+> for the discussed use case (because command parameters were selected in the way
+> that this special functionality would not be excluded).
+> https://github.com/git/git/blob/e8ab941b671da6890181aea5b5755d1d9eea24ec/grep.c#L1294
+>
+> Under which circumstances would potentially measurable effects become more interesting
+> so that the reordering of the mentioned identifiers would be reconsidered?
+>
+>
+> elfring@Sonne:~/Projekte/Linux/next-patched> /usr/bin/time git grep --threads 4 -l -w -e 'for_each_node_by_type' -e 'for_each_matching_node_and_match' -e 'for_each_compatible_node' -e 'for_each_available_child_of_node' -e 'for_each_child_of_node' -e 'for_each_matching_node' -e 'for_each_node_by_name' -e 'for_each_node_with_property' -- '*.[ch]' > /dev/null
+> 1.55user 0.74system 0:01.24elapsed 183%CPU (0avgtext+0avgdata 78760maxresident)k
+> 216inputs+0outputs (3major+30006minor)pagefaults 0swaps
+> elfring@Sonne:~/Projekte/Linux/next-patched> /usr/bin/time git grep --threads 4 -l -w -e 'for_each_child_of_node' -e 'for_each_available_child_of_node' -e 'for_each_compatible_node' -e 'for_each_node_by_name' -e 'for_each_node_by_type' -e 'for_each_matching_node' -e 'for_each_matching_node_and_match' -e 'for_each_node_with_property' -- '*.[ch]' > /dev/null
+> 1.55user 0.72system 0:01.24elapsed 183%CPU (0avgtext+0avgdata 74380maxresident)k
+> 0inputs+0outputs (0major+31030minor)pagefaults 0swaps
+
+As far as I can see, you are showing that the times are the same.  Why are
+you wasting your time on this?
+
+Although I didn't know that git grep was parallelizable, although since
+the used time and the elapsed time are almost the same, maybe it doesn't
+help much.
+
+julia
+--8323329-2051016452-1603867822=:2766--

@@ -2,109 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4D1429D2FE
-	for <lists+kernel-janitors@lfdr.de>; Wed, 28 Oct 2020 22:40:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01D7629D3E8
+	for <lists+kernel-janitors@lfdr.de>; Wed, 28 Oct 2020 22:48:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727191AbgJ1Vj7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 28 Oct 2020 17:39:59 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:22240 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727133AbgJ1Vjq (ORCPT
+        id S1725965AbgJ1VnY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 28 Oct 2020 17:43:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47502 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725793AbgJ1VnW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 28 Oct 2020 17:39:46 -0400
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 09SEW77F011993;
-        Wed, 28 Oct 2020 15:38:55 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=LjybO3b4orhU3lT/78Ag9RW2YKS0sCHp+s/asyWXXi0=;
- b=d5PUYfMDeAE4mhJARCgFndzwCsc4FfmlB8gf1PfrvybFdzGtW4v2d+AQ65DPDThpysru
- icXQ+FLo6I0J01djLuMUcQzracsMa2pq2R+/HHJ2BOxmiIdO0aS6zyurfvNLhMtc4avr
- zciOowJkX6PlWsK79/9jot/vHAHeptrB1WmWgmjZstlA18P5a7dGBiP6q+GvR6NChAzV
- l1RS0fW1wufl0bDIKVoo8BN9JKjHOJNXQ6ej9WZBDlj36QLnJPPUvQTM+mBK7j3zoB6Y
- mXV0oxTZiO10s5YtRoLJcxwCtafaXlbs5FBFzlqNMJLl2BnVYWMrGDXNnBKXKpcnE7+m 2Q== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 34ccmr2qy9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 28 Oct 2020 15:38:55 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id CBD5C10002A;
-        Wed, 28 Oct 2020 15:38:54 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag3node2.st.com [10.75.127.8])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 7A2D024BDCC;
-        Wed, 28 Oct 2020 15:38:53 +0100 (CET)
-Received: from lmecxl0995.lme.st.com (10.75.127.44) by SFHDAG3NODE2.st.com
- (10.75.127.8) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 28 Oct
- 2020 15:38:52 +0100
-Subject: Re: [PATCH 2/2] usb: typec: stusb160x: fix some signedness bugs
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <linux-usb@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-References: <20201023112412.GD282278@mwanda>
- <625bf21d-e3bb-f952-9368-d93bee05a461@st.com> <20201028132346.GP18329@kadam>
-From:   Amelie DELAUNAY <amelie.delaunay@st.com>
-Message-ID: <9e3c4790-13d5-371a-52c9-8945faff66ab@st.com>
-Date:   Wed, 28 Oct 2020 15:38:54 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Wed, 28 Oct 2020 17:43:22 -0400
+Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C231C0613CF;
+        Wed, 28 Oct 2020 14:43:22 -0700 (PDT)
+Received: by mail-il1-x143.google.com with SMTP id x7so991876ili.5;
+        Wed, 28 Oct 2020 14:43:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ozYCZRgZqvrBNZwSGWpcjHZ/UebLYVQ2msLNU5VY5Mo=;
+        b=uoRMTe+GToyjDoY9/GaktCa1BeSuPzVAR3/boLPppUGl2qn34CK74mw2rIzAvM3ugD
+         SQ2p3aZO5PqkKhiOBdyBW8DBlPIF/Tcc6+83P3KSglxaTdhTl9wHL0mu6LpQJ/aNPYGk
+         /aDeRn5tXPMYv6ZrqEqshKEqAMefYDA42I2NAyiczmdob/fE6/C17lTpYjIm3i2nHFub
+         K7djTFNomWxGyjgJgYaExtWgiUrXfPoe1d3WFjoYg76WLdF5US+sBtUNs/orjJRmkjIT
+         oyE1avb6xQqwp/xtMx5iZ1T0D8ckNdMumCO27aucVma7HiOGSBhpTihnODBRV/SORZ9K
+         jh4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ozYCZRgZqvrBNZwSGWpcjHZ/UebLYVQ2msLNU5VY5Mo=;
+        b=JxiQeAP6dvKB85JUPFPrcNEDA2w0x8x3+OoV1zVhk3OFgiN+igbqgPCM6VO5rMJ2pY
+         5cMiamFbi0oxjAGWfd75bfGxVHPREYxK1XYZQzosiuyvZa4bRDFhqtfKsuABTuGXEXKq
+         9WaVFjP3YYPHPKG16GALTn1NYr8sM4zlPSaYsnVTQKmKjNl31gPnhyEZa/8QrwGqiYUm
+         kdnx7dxsdr50YWGgHza0XfWAnEYkog/8st5SyxXdUh3TRTPZwx1Ri+Gydlu7fKHQ6H9/
+         7brvmOtfGEJi7kTWB/I2rBN6iJleGg4nKNLf5Pwo1AhMbg56Jt885BeFkZtRy6IzI9e5
+         mK3g==
+X-Gm-Message-State: AOAM531odQqRjfVAq2JbSpUTAK7bU3Q1aoJobGsLdWzcg/X1lX1jM2kb
+        w14L/WrETjLK8IZ65tH/ONhVCS8SVAbm7hIW6cwfcVK0zUwiFA==
+X-Google-Smtp-Source: ABdhPJwBVHlD8D4vAAXos2Nzvs1/eRlOYVtS1b+L4Ik0PIOGENFpsUsLpxj2nAxw9y6dHLnM6j3+R7WB5l0ZfZPRLMc=
+X-Received: by 2002:a92:c04c:: with SMTP id o12mr171588ilf.22.1603906736261;
+ Wed, 28 Oct 2020 10:38:56 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20201028132346.GP18329@kadam>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.44]
-X-ClientProxiedBy: SFHDAG1NODE3.st.com (10.75.127.3) To SFHDAG3NODE2.st.com
- (10.75.127.8)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
- definitions=2020-10-28_07:2020-10-28,2020-10-28 signatures=0
+References: <20201028113533.26160-1-lukas.bulwahn@gmail.com> <d956a5a5-c064-3fd4-5e78-809638ba14ef@redhat.com>
+In-Reply-To: <d956a5a5-c064-3fd4-5e78-809638ba14ef@redhat.com>
+From:   Cong Wang <xiyou.wangcong@gmail.com>
+Date:   Wed, 28 Oct 2020 10:38:45 -0700
+Message-ID: <CAM_iQpUfE2f3QBFY6r0_D2mzFK_SsmFXdA-1p3h7yquM8912fg@mail.gmail.com>
+Subject: Re: [PATCH] net: cls_api: remove unneeded local variable in tc_dump_chain()
+To:     Tom Rix <trix@redhat.com>
+Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jiri Pirko <jiri@resnulli.us>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Linux Kernel Network Developers <netdev@vger.kernel.org>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        clang-built-linux@googlegroups.com,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Greg,
+On Wed, Oct 28, 2020 at 6:59 AM Tom Rix <trix@redhat.com> wrote:
+>
+>
+> On 10/28/20 4:35 AM, Lukas Bulwahn wrote:
+> > @@ -2971,13 +2963,11 @@ static int tc_dump_chain(struct sk_buff *skb, struct netlink_callback *cb)
+> >               if (!dev)
+> >                       return skb->len;
+> >
+> > -             parent = tcm->tcm_parent;
+> > -             if (!parent) {
+> > +             if (!tcm->tcm_parent)
+> >                       q = dev->qdisc;
+> > -                     parent = q->handle;
+>
+> This looks like a an unused error handler.
+>
+> and the later call to
+>
+> if (TC_H_MIN(tcm->tcm_parent)
+>
+> maybe should be
+>
+> if (TC_H_MIN(parent))
 
-I know I'm a bit late for the review, but is it still possible to fixup 
-this patch in your usb-linus branch?
+When tcm->tcm_parent is 0, TC_H_MIN(tcm->tcm_parent) is also 0,
+so we will not hit that if branch.
 
-Regards,
-Amelie
+So, I think Lukas' patch is correct.
 
-On 10/28/20 2:23 PM, Dan Carpenter wrote:
-> On Wed, Oct 28, 2020 at 01:26:16PM +0100, Amelie DELAUNAY wrote:
->>> @@ -567,9 +567,10 @@ static int stusb160x_get_fw_caps(struct stusb160x *chip,
->>>    	if (!ret) {
->>>    		chip->pwr_opmode = typec_find_pwr_opmode(cap_str);
->>>    		/* Power delivery not yet supported */
->>> -		if (chip->pwr_opmode < 0 ||
->>> +		if ((int)chip->pwr_opmode < 0 ||
->>>    		    chip->pwr_opmode == TYPEC_PWR_MODE_PD) {
->>> -			ret = chip->pwr_opmode < 0 ? chip->pwr_opmode : -EINVAL;
->>> +			ret = (int)chip->pwr_opmode < 0 ? chip->pwr_opmode :
->>> +							  -EINVAL;
->>>    			dev_err(chip->dev, "bad power operation mode: %d\n",
->>>    				chip->pwr_opmode);
->>>    			return ret;
->>>
->>
->> 	if (!ret) {
->> 		ret = typec_find_pwr_opmode(cap_str);
->> 		/* Power delivery not yet supported */
->> 		if (ret < 0 || ret == TYPEC_PWR_MODE_PD) {
->> 			dev_err(chip->dev, "bad power operation mode: %d\n", ret);
->> 			return -EINVAL;
->> 		}
->> 		chip->pwr_opmode = ret;
->> 	}
->>
->>
->> So, which fix sounds better ? IMHO using ret make the code more readable.
-> 
-> Yeah.  Your patch is nicer, but Greg *just* merged mine so it might
-> be too late...
-> 
-> regards,
-> dan carpenter
-> 
+Thanks.

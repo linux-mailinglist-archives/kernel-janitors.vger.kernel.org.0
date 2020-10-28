@@ -2,83 +2,130 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0419E29D4C0
-	for <lists+kernel-janitors@lfdr.de>; Wed, 28 Oct 2020 22:54:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A864C29D3E4
+	for <lists+kernel-janitors@lfdr.de>; Wed, 28 Oct 2020 22:47:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728747AbgJ1VyU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 28 Oct 2020 17:54:20 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:42573 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728720AbgJ1VyR (ORCPT
+        id S1727703AbgJ1Vrg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 28 Oct 2020 17:47:36 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:41858 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727735AbgJ1Vre (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 28 Oct 2020 17:54:17 -0400
-X-IronPort-AV: E=Sophos;i="5.77,425,1596492000"; 
-   d="scan'208";a="474618844"
-Received: from 173.121.68.85.rev.sfr.net (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 Oct 2020 07:50:22 +0100
-Date:   Wed, 28 Oct 2020 07:50:22 +0100 (CET)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Julia Lawall <julia.lawall@inria.fr>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Sumera Priyadarsini <sylphrenadin@gmail.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Denis Efremov <efremov@linux.com>
-Subject: =?UTF-8?Q?Re=3A_Coccinelle=3A_Checking_the_influence_of_=E2?=
- =?UTF-8?Q?=80=9CGrep_query=E2=80=9D?=
-In-Reply-To: <6fe4c63d-1b7e-b947-139c-423edc519d2f@web.de>
-Message-ID: <alpine.DEB.2.22.394.2010280748440.2766@hadrien>
-References: <78f8b08754dde286adf7e11e1eeb3bb8ad500d8b.camel@web.de> <acaed49b9195d47e252a0b67551f87e96324d004.camel@web.de> <alpine.DEB.2.22.394.2010221434210.5113@hadrien> <6fe4c63d-1b7e-b947-139c-423edc519d2f@web.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        Wed, 28 Oct 2020 17:47:34 -0400
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 09SC6teG022522;
+        Wed, 28 Oct 2020 13:26:15 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=0lu4VnSbANYdWZ6PjqxfBmOSgvGq3B4qJyATDLbX5Pg=;
+ b=HcsiuNIiYClaSRzH3nVWaI6O9/Or8Kg2B6TOoUvgxARj9q2VLOlDl3/7RKC0NwdH6/Sd
+ UrbYyLs5j3rpjFmnzLRRLZmoF7P1yxfFhjEzoZvNr4KeJNJfhHcX7eCikG9dOrEOEYRW
+ qUymLHqNuAUmoFy2DK1ID+AOF5Dp0GMM+6kkf0sQDrsaLkPh6kUb2Gcz7AK/bwmCxprD
+ UqAmHzQcZrnwPpafjwxBJe6Bx5Ukuu7SdnP9mbbfsBwtjD9SJBozxC0leUIorfaMuMem
+ zLu99ClFtVz+BwUSegAQe8kgQBEial3YIDN76jc760rPdTYXvfSzBTZSsjDxY0qmI12Z ZA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 34ccffhx0j-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 28 Oct 2020 13:26:15 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 309CF10002A;
+        Wed, 28 Oct 2020 13:26:14 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag3node2.st.com [10.75.127.8])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D1B682C41E2;
+        Wed, 28 Oct 2020 13:26:14 +0100 (CET)
+Received: from lmecxl0995.lme.st.com (10.75.127.46) by SFHDAG3NODE2.st.com
+ (10.75.127.8) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 28 Oct
+ 2020 13:26:14 +0100
+Subject: Re: [PATCH 2/2] usb: typec: stusb160x: fix some signedness bugs
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <linux-usb@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+References: <20201023112412.GD282278@mwanda>
+From:   Amelie DELAUNAY <amelie.delaunay@st.com>
+Message-ID: <625bf21d-e3bb-f952-9368-d93bee05a461@st.com>
+Date:   Wed, 28 Oct 2020 13:26:16 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-2051016452-1603867822=:2766"
+In-Reply-To: <20201023112412.GD282278@mwanda>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.46]
+X-ClientProxiedBy: SFHDAG3NODE3.st.com (10.75.127.9) To SFHDAG3NODE2.st.com
+ (10.75.127.8)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
+ definitions=2020-10-28_06:2020-10-26,2020-10-28 signatures=0
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi Dan,
 
---8323329-2051016452-1603867822=:2766
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+On 10/23/20 1:24 PM, Dan Carpenter wrote:
+> These variables are enums but in this situation GCC will treat them as
+> unsigned so the conditions are never true.
+> 
+> Fixes: da0cb6310094 ("usb: typec: add support for STUSB160x Type-C controller family")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>   drivers/usb/typec/stusb160x.c | 7 ++++---
+>   1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/stusb160x.c b/drivers/usb/typec/stusb160x.c
+> index f7369e371dd4..da7f1957bcb3 100644
+> --- a/drivers/usb/typec/stusb160x.c
+> +++ b/drivers/usb/typec/stusb160x.c
+> @@ -545,7 +545,7 @@ static int stusb160x_get_fw_caps(struct stusb160x *chip,
+>   	ret = fwnode_property_read_string(fwnode, "power-role", &cap_str);
+>   	if (!ret) {
+>   		chip->port_type = typec_find_port_power_role(cap_str);
+> -		if (chip->port_type < 0) {
+> +		if ((int)chip->port_type < 0) {
+>   			ret = chip->port_type;
+>   			return ret;
+>   		}
+
+I was preparing a patch for this one, and it uses the ret instead of the 
+cast:
+	ret = fwnode_property_read_string(fwnode, "power-role", &cap_str);
+	if (!ret) {
+		ret = typec_find_port_power_role(cap_str);
+		if (ret < 0)
+			return ret;
+		chip->port_type = ret;
+
+	}
+
+> @@ -567,9 +567,10 @@ static int stusb160x_get_fw_caps(struct stusb160x *chip,
+>   	if (!ret) {
+>   		chip->pwr_opmode = typec_find_pwr_opmode(cap_str);
+>   		/* Power delivery not yet supported */
+> -		if (chip->pwr_opmode < 0 ||
+> +		if ((int)chip->pwr_opmode < 0 ||
+>   		    chip->pwr_opmode == TYPEC_PWR_MODE_PD) {
+> -			ret = chip->pwr_opmode < 0 ? chip->pwr_opmode : -EINVAL;
+> +			ret = (int)chip->pwr_opmode < 0 ? chip->pwr_opmode :
+> +							  -EINVAL;
+>   			dev_err(chip->dev, "bad power operation mode: %d\n",
+>   				chip->pwr_opmode);
+>   			return ret;
+> 
+
+	if (!ret) {
+		ret = typec_find_pwr_opmode(cap_str);
+		/* Power delivery not yet supported */
+		if (ret < 0 || ret == TYPEC_PWR_MODE_PD) {
+			dev_err(chip->dev, "bad power operation mode: %d\n", ret);
+			return -EINVAL;
+		}
+		chip->pwr_opmode = ret;
+	}
 
 
+So, which fix sounds better ? IMHO using ret make the code more readable.
 
-On Tue, 27 Oct 2020, Markus Elfring wrote:
-
-> > It doesn't matter.  The purpose is just to select files that are relevent
-> > for consideration.  If a file is selected for two reasons instead of one
-> > reason, it doesn't matter; it's still selected.
->
-> The software “git grep” probably supports also short-circuit evaluation
-> for the discussed use case (because command parameters were selected in the way
-> that this special functionality would not be excluded).
-> https://github.com/git/git/blob/e8ab941b671da6890181aea5b5755d1d9eea24ec/grep.c#L1294
->
-> Under which circumstances would potentially measurable effects become more interesting
-> so that the reordering of the mentioned identifiers would be reconsidered?
->
->
-> elfring@Sonne:~/Projekte/Linux/next-patched> /usr/bin/time git grep --threads 4 -l -w -e 'for_each_node_by_type' -e 'for_each_matching_node_and_match' -e 'for_each_compatible_node' -e 'for_each_available_child_of_node' -e 'for_each_child_of_node' -e 'for_each_matching_node' -e 'for_each_node_by_name' -e 'for_each_node_with_property' -- '*.[ch]' > /dev/null
-> 1.55user 0.74system 0:01.24elapsed 183%CPU (0avgtext+0avgdata 78760maxresident)k
-> 216inputs+0outputs (3major+30006minor)pagefaults 0swaps
-> elfring@Sonne:~/Projekte/Linux/next-patched> /usr/bin/time git grep --threads 4 -l -w -e 'for_each_child_of_node' -e 'for_each_available_child_of_node' -e 'for_each_compatible_node' -e 'for_each_node_by_name' -e 'for_each_node_by_type' -e 'for_each_matching_node' -e 'for_each_matching_node_and_match' -e 'for_each_node_with_property' -- '*.[ch]' > /dev/null
-> 1.55user 0.72system 0:01.24elapsed 183%CPU (0avgtext+0avgdata 74380maxresident)k
-> 0inputs+0outputs (0major+31030minor)pagefaults 0swaps
-
-As far as I can see, you are showing that the times are the same.  Why are
-you wasting your time on this?
-
-Although I didn't know that git grep was parallelizable, although since
-the used time and the elapsed time are almost the same, maybe it doesn't
-help much.
-
-julia
---8323329-2051016452-1603867822=:2766--
+Regards,
+Amelie

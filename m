@@ -2,90 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73F3D29DA43
-	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Oct 2020 00:18:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCB2429DAAC
+	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Oct 2020 00:28:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390182AbgJ1XS0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 28 Oct 2020 19:18:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35554 "EHLO
+        id S2390576AbgJ1X21 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 28 Oct 2020 19:28:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390175AbgJ1XSY (ORCPT
+        with ESMTP id S2390217AbgJ1X2O (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 28 Oct 2020 19:18:24 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7789BC0613CF;
-        Wed, 28 Oct 2020 16:18:22 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id c18so800413wme.2;
-        Wed, 28 Oct 2020 16:18:22 -0700 (PDT)
+        Wed, 28 Oct 2020 19:28:14 -0400
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EC9AC0613CF;
+        Wed, 28 Oct 2020 16:28:14 -0700 (PDT)
+Received: by mail-lf1-x144.google.com with SMTP id b1so932193lfp.11;
+        Wed, 28 Oct 2020 16:28:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
-        bh=vjJC6dKOMFG4vb3AckKIuCP1t5bMO9lbc9KLXiwHlCo=;
-        b=iA5zf/FlqjobUMNllNoEUYcZhA0WkST3Kufe8sISdot6joDpSTMZ6yeIW2JNyD98IM
-         6+aHJMEE+sEmNs7Y1VGX1gB5+Eq03HvCPcgWkIMf3jsfpp/Aa2O3bZ6U9kDNoqB8sWX3
-         Cruq46ytfedaQZUEALfYwCRQJJZbD/6UZq/yyNK03QgVttWCnd4sXrMMYQO6Yp9CB+za
-         C/4yq1jf+tuP6ed0/5qTxiHW+HYjGsbPRGWR39qwTEDmX6QTzmPJgUVUCOyke9ZqhLmE
-         HT4YL9z7YgKQdLEK0zsx6u/wq44s7nZ6RMYrp3o60UK1gbH2C1g0xpPJPU+wklgzl4dd
-         WWDg==
+        bh=tFcezZaUjVtB4OlYd/0j5lQJ4Uiz++vw/9S3zS/Ui5Y=;
+        b=pqGwKkpki+kIC7fupDyAg9eTU8i8Kg6eOdm5GLTOMRyO+4ZIGSl13nwOvLixydxc1e
+         eE6NNNKcbGASf/tlYMCr99mEkavE/kiXcME8PFK7W+Rz7vK2mIaqtzCBqqbeglAsK+LU
+         fZnMFOAhutiZR4w7RekLQt6WRSA+KZ9u9XvnVgd4ZuT4nTyGoBxivs4Dbck6ECImMkja
+         qT6qk7PncQkEr3IsES0Z0SdEYrGM1yiK6YiIh/TrzzDBlGY2MpTgsx6ZmGZKP9AaNqCB
+         PM1hNo6C6pUZ8dBLQvF3uUcoyrWr5Em8Ik/JTLn9PGQu2m0Uptij8WW0vpFNQlDeEMoP
+         XSMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=vjJC6dKOMFG4vb3AckKIuCP1t5bMO9lbc9KLXiwHlCo=;
-        b=hbEcBfEVuaFB+6dLfWyOJSpvvNVvUbpQZaoRukBvi/BF89Py5y3hBaO16SI3zfBvvG
-         09vfWm9wV8246e7s4zYPysDQf6DC9Jwe6vhbjDXfyg0r7niu4n0Qq9GB1xEwL9RSmkFh
-         lkiE0VPqETL+7sd66+5OnDeG6ocb/F/a9ERMQqZYDpy7r5LuBmDFnRSZfSbdWwk94lZ2
-         fTEE6iemiwr7LxBWbvMvRsSIIom2K9eDF9z4F34Gt7YGWxb07zZCZoQbI/kVPkT+StHs
-         nR0U+a9pAETUPI/nho7CkFNYgUAq+MfaJpy/F+h7wU0PL12ls7RwsEV13RqO8+/XZkDZ
-         zjZQ==
-X-Gm-Message-State: AOAM531+bA50w3nYza/F+zhtuQGWKyHbSsO3FUgpw6Pt4XyvbcST1Sk1
-        CKahNE1NiWfzXUMnc8TdgWOPU4hcLqzlu0Wd
-X-Google-Smtp-Source: ABdhPJzWzEGUl4KjLGJ2WRgqfIWkz3spMlmRWhF49/keLE8mg7+Jda9ImH3eqzpeVCsqwUWpshUujw==
-X-Received: by 2002:a1c:f604:: with SMTP id w4mr7798630wmc.87.1603884943015;
-        Wed, 28 Oct 2020 04:35:43 -0700 (PDT)
+        bh=tFcezZaUjVtB4OlYd/0j5lQJ4Uiz++vw/9S3zS/Ui5Y=;
+        b=pdVHlBkHlbF8kiAAhwnDeAPSXX1R9+1AHmXWdkuaWgfhU1F9lNz2HXnGyKp46+2joZ
+         NnT5LcYQOKMDlIKl1KCft8/PtK0pmvoCKdyjzo+B2Z/iscC4HnvEBTBnQHoaJTn+Rm3Q
+         EalJBv6DSH5HxFriqQSvdCP+DjBeGGpTTjxT9/APs9/VB2uERDEnd1tnRT4tZ326gFP+
+         ZccxCkB7eINkerBySQqEbpgY/Buu40tDkPram5eDNA34T5Iy/SNsbaXZK2kz50PUfC30
+         hXxxSAMqd3XUU/wlJevowiM3kNlkDCoX8b9OjidfjkYuN6zv8OX+82UtyJ5sKMd0ZKty
+         JnhQ==
+X-Gm-Message-State: AOAM532jFhgWQgE1xpIezxNh2hc2ZNAVmuO/66TX6nVibAXW/m7CyF7J
+        BM29qrKqVO8ageTkcfKJIQQcEZ+0NL8AxcJ6
+X-Google-Smtp-Source: ABdhPJxSuYssdPMtBWkuONYEQ4ri3P/nvlWFvD8Nuuh8fE+81I5PE3HVmES2M3wcpNv0Nxewlr9mPw==
+X-Received: by 2002:a17:907:40eb:: with SMTP id nn19mr7715572ejb.240.1603890362912;
+        Wed, 28 Oct 2020 06:06:02 -0700 (PDT)
 Received: from felia.fritz.box ([2001:16b8:2d7a:200:a915:6596:e9b0:4f60])
-        by smtp.gmail.com with ESMTPSA id s11sm6579979wrm.56.2020.10.28.04.35.41
+        by smtp.gmail.com with ESMTPSA id j3sm2977928edh.25.2020.10.28.06.06.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 04:35:42 -0700 (PDT)
+        Wed, 28 Oct 2020 06:06:02 -0700 (PDT)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Jamal Hadi Salim <jhs@mojatatu.com>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        Jiri Pirko <jiri@resnulli.us>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-Cc:     Nathan Chancellor <natechancellor@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, clang-built-linux@googlegroups.com,
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>
+Cc:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Andrey Ignatov <rdna@fb.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         linux-safety@lists.elisa.tech,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] net: cls_api: remove unneeded local variable in tc_dump_chain()
-Date:   Wed, 28 Oct 2020 12:35:33 +0100
-Message-Id: <20201028113533.26160-1-lukas.bulwahn@gmail.com>
+Subject: [PATCH] kernel/hung_task.c: make type annotations consistent
+Date:   Wed, 28 Oct 2020 14:05:41 +0100
+Message-Id: <20201028130541.20320-1-lukas.bulwahn@gmail.com>
 X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-make clang-analyzer on x86_64 defconfig caught my attention with:
+Commit 32927393dc1c ("sysctl: pass kernel pointers to ->proc_handler")
+removed various __user annotations from function signatures as part of its
+refactoring.
 
-net/sched/cls_api.c:2964:3: warning: Value stored to 'parent' is never read
-  [clang-analyzer-deadcode.DeadStores]
-                parent = 0;
-                ^
+It also removed the __user annotation for proc_dohung_task_timeout_secs()
+at its declaration in ./sched/sysctl.h, but not at its definition in
+./kernel/hung_task.c.
 
-net/sched/cls_api.c:2977:4: warning: Value stored to 'parent' is never read
-  [clang-analyzer-deadcode.DeadStores]
-                        parent = q->handle;
-                        ^
+Hence, sparse complains:
 
-Commit 32a4f5ecd738 ("net: sched: introduce chain object to uapi")
-introduced tc_dump_chain() and this initial implementation already
-contained these unneeded dead stores.
+  kernel/hung_task.c:271:5: error: \
+  symbol 'proc_dohung_task_timeout_secs' redeclared with different type \
+  (incompatible argument 3 (different address spaces))
 
-Simplify the code to make clang-analyzer happy.
+Adjust the annotation at the definition fitting to that refactoring to make
+sparse happy again, which also resolves this warning from sparse:
 
-As compilers will detect these unneeded assignments and optimize this
-anyway, the resulting binary is identical before and after this change.
+  kernel/hung_task.c:277:52: warning: incorrect type in argument 3 \
+    (different address spaces)
+  kernel/hung_task.c:277:52:    expected void *
+  kernel/hung_task.c:277:52:    got void [noderef] __user *buffer
 
 No functional change. No change in object code.
 
@@ -93,55 +91,26 @@ Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
 applies cleanly on current master and next-20201028
 
-Jamal, Cong, Jiri, please ack.
-David, Jakub, please pick this minor non-urgent clean-up patch.
+Christoph, can I get quick ack from you on a fix to your refactoring?
+Andrew, please pick this minor non-urgent clean-up patch.
 
- net/sched/cls_api.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ kernel/hung_task.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index faeabff283a2..8ce830ca5f92 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -2940,7 +2940,6 @@ static int tc_dump_chain(struct sk_buff *skb, struct netlink_callback *cb)
- 	struct tcf_chain *chain;
- 	long index_start;
- 	long index;
--	u32 parent;
- 	int err;
+diff --git a/kernel/hung_task.c b/kernel/hung_task.c
+index a672db830a94..bb2e3e15c84c 100644
+--- a/kernel/hung_task.c
++++ b/kernel/hung_task.c
+@@ -269,8 +269,7 @@ static long hung_timeout_jiffies(unsigned long last_checked,
+  * Process updating of timeout sysctl
+  */
+ int proc_dohung_task_timeout_secs(struct ctl_table *table, int write,
+-				  void __user *buffer,
+-				  size_t *lenp, loff_t *ppos)
++				  void *buffer, size_t *lenp, loff_t *ppos)
+ {
+ 	int ret;
  
- 	if (nlmsg_len(cb->nlh) < sizeof(*tcm))
-@@ -2955,13 +2954,6 @@ static int tc_dump_chain(struct sk_buff *skb, struct netlink_callback *cb)
- 		block = tcf_block_refcnt_get(net, tcm->tcm_block_index);
- 		if (!block)
- 			goto out;
--		/* If we work with block index, q is NULL and parent value
--		 * will never be used in the following code. The check
--		 * in tcf_fill_node prevents it. However, compiler does not
--		 * see that far, so set parent to zero to silence the warning
--		 * about parent being uninitialized.
--		 */
--		parent = 0;
- 	} else {
- 		const struct Qdisc_class_ops *cops;
- 		struct net_device *dev;
-@@ -2971,13 +2963,11 @@ static int tc_dump_chain(struct sk_buff *skb, struct netlink_callback *cb)
- 		if (!dev)
- 			return skb->len;
- 
--		parent = tcm->tcm_parent;
--		if (!parent) {
-+		if (!tcm->tcm_parent)
- 			q = dev->qdisc;
--			parent = q->handle;
--		} else {
-+		else
- 			q = qdisc_lookup(dev, TC_H_MAJ(tcm->tcm_parent));
--		}
-+
- 		if (!q)
- 			goto out;
- 		cops = q->ops->cl_ops;
 -- 
 2.17.1
 

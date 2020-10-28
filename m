@@ -2,120 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C8DD29E122
-	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Oct 2020 02:54:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D060F29E0C8
+	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Oct 2020 02:38:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728862AbgJ2Bxq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 28 Oct 2020 21:53:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49980 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728659AbgJ1V51 (ORCPT
+        id S1729388AbgJ2BgR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 28 Oct 2020 21:36:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:32072 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729723AbgJ1WDj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 28 Oct 2020 17:57:27 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF7E5C0613CF;
-        Wed, 28 Oct 2020 14:57:27 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id k21so618700wmi.1;
-        Wed, 28 Oct 2020 14:57:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=A0oVWK/PD/2SiJZrfVFOxqFlp4+JetaKuHdDt62eT5Y=;
-        b=Z2ndfn5j7k7+QMJwNsAEGZoaEYBos7I7MqRDzTDgT+C7OVFtal3as/fuFyGorI6nbb
-         W2o6iKwFFEhVR4Im417Q9EjZdKs5jB5qpUZQU515sVhglsK5zxhUZ67WyCWhpXQlOWNo
-         1lStxvC2TvAHkEzniUcXmIkBZg1TUKaAHNP5zBG0WmmnArYSSMYDXJLJ9Qk0TbtzdLqc
-         D2NfPZel85LMUvnpNFHJxRMtIwNJCwOD2XSus1YUoh18+8H+FKZNhQAmQa4mJdV0tOgI
-         gjIHXbG8W9OSqe9k4qtt7239j1F9Z0bmTGLCMXO+owZhGHNG9er6XDOKx0p3VI7ZVVQr
-         I2lQ==
+        Wed, 28 Oct 2020 18:03:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1603922617;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=pA/ijsR6wL+A44Ymsd37c8yCOb9K4D0s+LLkBgVrjUk=;
+        b=ANs8mntHQp2+JP+RmwHHM1tT+CRoON7IlCBcLckdb0yc0U1jYmBXUgwCwqn1ARSlh4kHXT
+        kU+M6GBM6tU82geuV1avZhDFdf/3dSQmSVmEPWS4L1wm56E+JqQlusAp/WXaDznCtb5/zk
+        BIvabZbuMNlJNAomM4FnePF3pXElJCU=
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
+ [209.85.167.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-234-kfq6VyTGO4SBKOJITWFbXQ-1; Wed, 28 Oct 2020 10:02:40 -0400
+X-MC-Unique: kfq6VyTGO4SBKOJITWFbXQ-1
+Received: by mail-oi1-f199.google.com with SMTP id v145so2269584oie.3
+        for <kernel-janitors@vger.kernel.org>; Wed, 28 Oct 2020 07:02:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=A0oVWK/PD/2SiJZrfVFOxqFlp4+JetaKuHdDt62eT5Y=;
-        b=VTepSMyAgq3xz7xPoR5YRYI1T8R2ADgJOXsCw53kQTCThQ0ITwVDJmIu0uZ++zBMtQ
-         H5Vo1Q80bmmfZ50TP3E1rDwOMrHRgFc85P7UG1NYfe4TWXpXBBSXINzPBlssHwFiFcjk
-         2p5l3HOKBZgGxOg2l0Y4gep2k06YxFlAb5PQ59SpO/MPVK/16DsxAFJEilLyegBJqpXX
-         zI47d6L1Ox2wogzZFnJh/lkKHBIF5tKd9404s9PKAsg5DY+78sMW96U/eoE7qxEMxA9u
-         K5fnoJCArv8W1wHMJNPbKRHlr/b2xmpE8ATiL0lJCdGxkFwDnunnx7ojrA7xGKDzicac
-         RvlA==
-X-Gm-Message-State: AOAM533vJs8/vTH4My5Wt+7UDPCCCK7XkfFkzRlFOjaIhBhY+HtvRW6H
-        Vh8NOeuluRIByXSs5XLkuW7R3TeLt5oF3T3O
-X-Google-Smtp-Source: ABdhPJyaRHfb5LCfX2Rq7KACTz6umOsO5aK3fujyrp10owGv38bNI8BTsGvajv1jEuk9xmUB2K/Xsg==
-X-Received: by 2002:a1c:bdc4:: with SMTP id n187mr8303423wmf.185.1603887682784;
-        Wed, 28 Oct 2020 05:21:22 -0700 (PDT)
-Received: from felia.fritz.box ([2001:16b8:2d7a:200:a915:6596:e9b0:4f60])
-        by smtp.gmail.com with ESMTPSA id c1sm6783945wru.49.2020.10.28.05.21.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 05:21:22 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org
-Cc:     "H . Peter Anvin" <hpa@zytor.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Nathan Chancellor <natechancellor@gmail.com>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=pA/ijsR6wL+A44Ymsd37c8yCOb9K4D0s+LLkBgVrjUk=;
+        b=gkfuNZPLmLkfZsPJ60xcaOr3Fu8w/n5IKIuNlrBjawRd+MgRXDyiGjjBeCvb40uQlE
+         pifVF2EVwxuHTYYn446x7LD/48gGewv/NnNjS//tA9TM5DxOfvAUddMhmaJFO7rLESPj
+         V8ZAFmtcn0Mt+teoWPzVNx3TtSZcvamAC0GlBJlOK/Zn2j5UbONwQ0ie3Mj7M6tjlOLj
+         vCf7G+1qevTtxgYgwwRRLYJTH6X8gNwbu10Tm8oQTTW6exaDBN6JGnntTqzsKpdis9zy
+         SZ38q6zoU2MjnPUeR6qq/pcdgruQtjOqY7Ct5VH/d5v4g27p05NWVyPOOvHNoVuvAuq6
+         j+GA==
+X-Gm-Message-State: AOAM532cpHsTAQYi2/xgV0OEIb2JZr4KwocvIkjtYK7DU9aD3WAGSQ9T
+        EjAGthE2HwDcce84aRTb5J9opdrnntqsMKL0rT6Xhy3KxDJ+ratnr3duzAK8zaoAp5Fqc/7ml8A
+        K5MYWaHpGMkeRwAZGJn7rVfQSCE5T
+X-Received: by 2002:aca:bc89:: with SMTP id m131mr5038501oif.48.1603893758573;
+        Wed, 28 Oct 2020 07:02:38 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxK8HVad9mubt69p9XV0Zovu/5ZN2GiKzorEFq6aLJFRbquF2hpuRfMn0Pgaxfxph4ok5FPqw==
+X-Received: by 2002:aca:bc89:: with SMTP id m131mr5038471oif.48.1603893758162;
+        Wed, 28 Oct 2020 07:02:38 -0700 (PDT)
+Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id b125sm2656559oii.19.2020.10.28.07.02.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Oct 2020 07:02:37 -0700 (PDT)
+Subject: Re: [PATCH] agp: amd64: remove unneeded initialization
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        David Airlie <airlied@linux.ie>
+Cc:     Nathan Chancellor <natechancellor@gmail.com>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] x86/unwind: remove unneeded initialization
-Date:   Wed, 28 Oct 2020 13:21:02 +0100
-Message-Id: <20201028122102.24202-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        clang-built-linux@googlegroups.com, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech
+References: <20201028133106.5420-1-lukas.bulwahn@gmail.com>
+From:   Tom Rix <trix@redhat.com>
+Message-ID: <37c4192a-2757-574c-85e1-1df05c6a7a31@redhat.com>
+Date:   Wed, 28 Oct 2020 07:02:35 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
+MIME-Version: 1.0
+In-Reply-To: <20201028133106.5420-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-make clang-analyzer on x86_64 defconfig caught my attention with:
 
-  arch/x86/kernel/unwind_orc.c:38:7: warning: Value stored to 'mid' during
-  its initialization is never read [clang-analyzer-deadcode.DeadStores]
-          int *mid = first, *found = first;
-               ^
+On 10/28/20 6:31 AM, Lukas Bulwahn wrote:
+> make clang-analyzer on x86_64 defconfig caught my attention with:
+>
+>   drivers/char/agp/amd64-agp.c:336:2: warning: \
+>   Value stored to 'i' is never read [clang-analyzer-deadcode.DeadStores]
+>           i = 0;
+>           ^
+>
+> Remove this unneeded initialization to make clang-analyzer happy.
+>
+> Commit a32073bffc65 ("x86_64: Clean and enhance up K8 northbridge access
+> code") refactored cache_nbs() and introduced this unneeded dead-store
+> initialization.
+>
+> As compilers will detect this unneeded assignment and optimize this anyway,
+> the resulting binary is identical before and after this change.
+>
+> No functional change. No change in binary code.
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+> applies cleanly on current master and next-20201028
+>
+> David, please pick this minor non-urgent clean-up patch.
+>
+>  drivers/char/agp/amd64-agp.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/drivers/char/agp/amd64-agp.c b/drivers/char/agp/amd64-agp.c
+> index b40edae32817..0413b3136541 100644
+> --- a/drivers/char/agp/amd64-agp.c
+> +++ b/drivers/char/agp/amd64-agp.c
+> @@ -333,7 +333,6 @@ static int cache_nbs(struct pci_dev *pdev, u32 cap_ptr)
+>  	if (!amd_nb_has_feature(AMD_NB_GART))
+>  		return -ENODEV;
+>  
+> -	i = 0;
+>  	for (i = 0; i < amd_nb_num(); i++) {
+>  		struct pci_dev *dev = node_to_amd_nb(i)->misc;
+>  		if (fix_northbridge(dev, pdev, cap_ptr) < 0) {
 
-Commit ee9f8fce9964 ("x86/unwind: Add the ORC unwinder") introduced
-__orc_find() with this unneeded dead-store initialization.
+Looks ok to me.
 
-Put the variable in local scope and initialize only once the value is
-needed to make clang-analyzer happy.
-
-As compilers will detect this unneeded assignment and optimize this
-anyway, the resulting object code is effectively identical before and
-after this change.
-
-No functional change. Effectively, no change to object code.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-applies cleanly on current master and next-20201028
-
-Josh, please ack.
-Ingo, Borislav, please pick this minor non-urgent clean-up patch.
-
- arch/x86/kernel/unwind_orc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kernel/unwind_orc.c b/arch/x86/kernel/unwind_orc.c
-index 6a339ce328e0..5c64eed08257 100644
---- a/arch/x86/kernel/unwind_orc.c
-+++ b/arch/x86/kernel/unwind_orc.c
-@@ -35,7 +35,7 @@ static struct orc_entry *__orc_find(int *ip_table, struct orc_entry *u_table,
- {
- 	int *first = ip_table;
- 	int *last = ip_table + num_entries - 1;
--	int *mid = first, *found = first;
-+	int *found = first;
- 
- 	if (!num_entries)
- 		return NULL;
-@@ -47,7 +47,7 @@ static struct orc_entry *__orc_find(int *ip_table, struct orc_entry *u_table,
- 	 * ignored when they conflict with a real entry.
- 	 */
- 	while (first <= last) {
--		mid = first + ((last - first) / 2);
-+		int *mid = first + ((last - first) / 2);
- 
- 		if (orc_ip(mid) <= ip) {
- 			found = mid;
--- 
-2.17.1
+Reviewed-by: Tom Rix <trix@redhat.com>
 

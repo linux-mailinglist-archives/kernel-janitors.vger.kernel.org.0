@@ -2,73 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9024929EB3F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Oct 2020 13:05:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E507129EBFC
+	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Oct 2020 13:40:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725785AbgJ2ME6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 29 Oct 2020 08:04:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42822 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725379AbgJ2ME6 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 29 Oct 2020 08:04:58 -0400
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37B12C0613CF;
-        Thu, 29 Oct 2020 05:04:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=o687iw3cdVKlrtAY0hVT9GT6GWB0dk8OiWOKpnhjMLg=; b=gmyldzWAHEGGIUSuub4fO2AJRD
-        fw2n5JKinmfwX7At1VNZ4KOnNc+s0IuOygjNrKCv2KRVKgk2MjEgEEKTbqywbjtZJoDLyHJcCZ+lC
-        kgcs595Vkzz0fm4FGm1Ef5VLREFs6X5QKsEpsN9B55cOiFepPXSy72O9q6xVm9dVI0JxavG1jukxD
-        5f/vaz/af4YiQJa1/SwPon5BEJngXOHSXb3e+AhWW8trfR1Nf2DdgbeQPmqSQ4H1n5kF2GmwNqTyX
-        x8Zzy6KZS9vqf/T3OvLPxkUU22vIbLnl7Glq+07ShxZ3TEaIDOPeB604e0qpr9rkmFED4AJNGZPwf
-        sfNg+BdQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kY6fc-0008AP-QD; Thu, 29 Oct 2020 12:04:44 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        id S1725820AbgJ2MkQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 29 Oct 2020 08:40:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52858 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725379AbgJ2MkQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 29 Oct 2020 08:40:16 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 104023012C3;
-        Thu, 29 Oct 2020 13:04:43 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id EEB212B772B22; Thu, 29 Oct 2020 13:04:42 +0100 (CET)
-Date:   Thu, 29 Oct 2020 13:04:42 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Walter Harms <wharms@bfs.de>
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "clang-built-linux@googlegroups.com" 
-        <clang-built-linux@googlegroups.com>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-safety@lists.elisa.tech" <linux-safety@lists.elisa.tech>
-Subject: Re: [PATCH] x86/unwind: remove unneeded initialization
-Message-ID: <20201029120442.GP2628@hirez.programming.kicks-ass.net>
-References: <20201028122102.24202-1-lukas.bulwahn@gmail.com>
- <a28022479f594650a6d98adac3c4a6f0@bfs.de>
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 77FE02076B;
+        Thu, 29 Oct 2020 12:40:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603975216;
+        bh=p/WnSlwE7z/dV6rJKMbN+kl2u1f/wqMUmU+0pa8n5Ns=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=aGU1uq5J9Y+zzUHke9T4g5YAV6jpi5m5gbJ+5bhp4p0Tzx1xkbk+oq3utZsoF6AnT
+         BIvJ8aNL0ZEXLS/DD7q75cOVzjnk9llEWu4+8Za/HyGIzLawRQiMfGEbnQN/Dah+LM
+         Wdhg+xxTLP3vucNaCg5P17DaLD8qI4jAwhtiZx8o=
+Date:   Thu, 29 Oct 2020 12:40:09 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Patrick Lai <plai@codeaurora.org>,
+        Colin King <colin.king@canonical.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        V Sujith Kumar Reddy <vsujithk@codeaurora.org>,
+        Takashi Iwai <tiwai@suse.com>,
+        Banajit Goswami <bgoswami@codeaurora.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Srinivasa Rao <srivasam@codeaurora.org>,
+        alsa-devel@alsa-project.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20201028115112.109017-1-colin.king@canonical.com>
+References: <20201028115112.109017-1-colin.king@canonical.com>
+Subject: Re: [PATCH][next] ASoC: qcom: fix unsigned int bitwidth compared to less than zero
+Message-Id: <160397520896.55401.11950538848257876856.b4-ty@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a28022479f594650a6d98adac3c4a6f0@bfs.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Oct 29, 2020 at 11:49:50AM +0000, Walter Harms wrote:
-> this looks like a reimplementation of bsearch()
-> perhaps the maintainer can add a comment why the 
-> kernel implementation is not suitable here ?
+On Wed, 28 Oct 2020 11:51:12 +0000, Colin King wrote:
+> The check for an error return from the call to snd_pcm_format_width
+> is never true as the unsigned int bitwidth can never be less than
+> zero. Fix this by making bitwidth an int.
 
-If you look carefully it doesn't do an exact match, which is what
-bsearch() does.
+Applied to
 
-bsearch() also isn't stable in the precense of duplicates.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: qcom: fix unsigned int bitwidth compared to less than zero
+      commit: bcc96dc3cf8048c80af7c487af17e19be27ac57d
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

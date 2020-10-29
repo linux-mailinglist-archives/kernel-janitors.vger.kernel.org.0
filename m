@@ -2,58 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1CEC29F059
-	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Oct 2020 16:45:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE4BD29F673
+	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Oct 2020 21:53:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728146AbgJ2PnD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 29 Oct 2020 11:43:03 -0400
-Received: from foss.arm.com ([217.140.110.172]:39606 "EHLO foss.arm.com"
+        id S1726120AbgJ2Ux3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 29 Oct 2020 16:53:29 -0400
+Received: from mx2.suse.de ([195.135.220.15]:33080 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727842AbgJ2PnC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 29 Oct 2020 11:43:02 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F77931B;
-        Thu, 29 Oct 2020 08:43:02 -0700 (PDT)
-Received: from e113632-lin (e113632-lin.cambridge.arm.com [10.1.194.46])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B2B1A3F66E;
-        Thu, 29 Oct 2020 08:43:00 -0700 (PDT)
-References: <20201029151103.373410-1-colin.king@canonical.com> <jhjft5xoxtd.mognet@arm.com>
-User-agent: mu4e 0.9.17; emacs 26.3
-From:   Valentin Schneider <valentin.schneider@arm.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] sched/debug: fix memory corruption caused by multiple small reads of flags
-In-reply-to: <jhjft5xoxtd.mognet@arm.com>
-Date:   Thu, 29 Oct 2020 15:42:58 +0000
-Message-ID: <jhjeelhox6l.mognet@arm.com>
+        id S1725780AbgJ2Ux3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 29 Oct 2020 16:53:29 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 90625ACD8;
+        Thu, 29 Oct 2020 20:53:27 +0000 (UTC)
+Received: by ds.suse.cz (Postfix, from userid 10065)
+        id E7790DA7CE; Thu, 29 Oct 2020 21:51:51 +0100 (CET)
+Date:   Thu, 29 Oct 2020 21:51:50 +0100
+From:   David Sterba <dsterba@suse.cz>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Chris Mason <clm@fb.com>, Qu Wenruo <wqu@suse.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] btrfs: clean up NULL checks in qgroup_unreserve_range()
+Message-ID: <20201029205150.GW6756@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+Mail-Followup-To: dsterba@suse.cz, Dan Carpenter <dan.carpenter@oracle.com>,
+        Chris Mason <clm@fb.com>, Qu Wenruo <wqu@suse.com>,
+        Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+        linux-btrfs@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20201023112633.GE282278@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201023112633.GE282278@mwanda>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Fri, Oct 23, 2020 at 02:26:33PM +0300, Dan Carpenter wrote:
+> Smatch complains that this code dereferences "entry" before checking
+> whether it's NULL on the next line.  Fortunately, rb_entry() will never
+> return NULL so it doesn't cause a problem.  We can clean up the NULL
+> checking a bit to silence the warning and make the code more clear.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-On 29/10/20 15:29, Valentin Schneider wrote:
->> @@ -269,17 +269,17 @@ static int sd_ctl_doflags(struct ctl_table *table, int write,
->>               return 0;
->>       }
->>
->> -	tmp = kcalloc(data_size + 1, sizeof(*tmp), GFP_KERNEL);
-> [...]
->> -	tmp += *ppos;
-> [...]
->> -	kfree(tmp);
->
-> Yeah, that's downright sloppy :( I can't remember which one it was in a
-> hurry, but I was "inspired" by another proc handler somewhere; I'll try to
-> find out if there's any issue in that one or if I really cannot shift the
-> blame elsewhere.
-
-Nope, blame is all mine.
+Added to misc-next, thanks.

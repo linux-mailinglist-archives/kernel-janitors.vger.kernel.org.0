@@ -2,142 +2,140 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76C9D29ED07
-	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Oct 2020 14:35:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38F9329EF4E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Oct 2020 16:11:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727194AbgJ2Nfi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 29 Oct 2020 09:35:38 -0400
-Received: from mx0a-00154904.pphosted.com ([148.163.133.20]:33676 "EHLO
-        mx0a-00154904.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726139AbgJ2Nfh (ORCPT
+        id S1728007AbgJ2PLP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 29 Oct 2020 11:11:15 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:32977 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727917AbgJ2PLO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 29 Oct 2020 09:35:37 -0400
-Received: from pps.filterd (m0170390.ppops.net [127.0.0.1])
-        by mx0a-00154904.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 09TDW97M018927;
-        Thu, 29 Oct 2020 09:35:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=smtpout1;
- bh=QDh8Qm89exH9mh8deZsTCrC4lpPwSIr/9wW7eGoqbQM=;
- b=GhYdYFLXFJXh5zSkyxbtaOLdL2Mv6d5vu79p5tIymsm2h8nz38K8VjOfYzmMIlt2v2RB
- iypJ1URsuj3Vi6HjlgiruS6IvNOjJyte9A3yODp9E0bRNtlrufAZYVuSSSIs101gfszd
- UjA+HOgyjnY39k2qTuJyLvU1MOpGAaGXb112odFFn0v1eZ0mXB6Am/oJ42y9gyyvbCuI
- bHIvhYy2z8/O7rJWPNx45+UuTxuGH091vwGgjVKd0PAJ/WM1BL5WA8hd9A+iwjJ5V4T/
- cOWr21zZciVQZDlf7iwjyehsZfq1mo9N2Iboo7aiomWDOiZI8bBibBJjDLlyEEhq+BQw CQ== 
-Received: from mx0a-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
-        by mx0a-00154904.pphosted.com with ESMTP id 34cfb2tj5h-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 29 Oct 2020 09:35:21 -0400
-Received: from pps.filterd (m0142699.ppops.net [127.0.0.1])
-        by mx0a-00154901.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 09TDTqpL131704;
-        Thu, 29 Oct 2020 09:35:21 -0400
-Received: from nam04-dm6-obe.outbound.protection.outlook.com (mail-dm6nam08lp2045.outbound.protection.outlook.com [104.47.73.45])
-        by mx0a-00154901.pphosted.com with ESMTP id 34fuadbc05-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 29 Oct 2020 09:35:21 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LPnYP9LZ82mhr0o0jot+bO3xbtGG6tsBqR8UWtJFKYDCbZfmiPftQziuc5cG7eiN5qmEyh31GTzYO9A9wyENXiJLnPQH0J7Ei0VkFpgDg1yCMGA0QGh2hO5PCKm9955oOwib2IthJhuklf6WOfwcMcX6N85VwQtsmuDdf8czRAbOTKZubYk4x0ERSZgHYlwvYcdJu4DEZ14nHvMPHs8oSGgrA86diR7FKIv4rAlO0+wm8bCr3nHN6u6qVkhKO3bDS4tFdtcR8j4/gx/EW0ZfKIWg2dMwKZo3X2SuiuIyBmx1QlY8/20gMDRF2+rBNqn9RfoFV7YbVFLp4nxsYf7yTA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QDh8Qm89exH9mh8deZsTCrC4lpPwSIr/9wW7eGoqbQM=;
- b=LtfCTCZZZ4l7hu6NQ+t9+jJC8RYqYUDu5hBZTorDd2uejDJc4flWeNiOSQYXyqQdIHnZ0K7JKNS28G4dsXYNHw68H64XpJ0r+SQ901NEGint4QMXZkkzNUqZ75J+Qwnkx/RqwUWhanXeUA0TtNvrbx22fQ6Iht3AcwwsJsLRnb4Zw7EL9nZq1EbPDhwbqgM610veu9V1dQ/NZDBfxm+Xro+scxf7tANrbdqJDd61tiskFZR2RTHm28YahWDd/3T9ipqXzn7/YafGB+1ZKI9yOq+TCpZ+K9W/xnO9+FkEc5XW0eGbRGfcx3Q/tynO01WBqISdRYimyEtW0p4R5CJDPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=dell.com; dmarc=pass action=none header.from=dell.com;
- dkim=pass header.d=dell.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Dell.onmicrosoft.com;
- s=selector1-Dell-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QDh8Qm89exH9mh8deZsTCrC4lpPwSIr/9wW7eGoqbQM=;
- b=nrqyXZ8KuDIBMl8qi7iK/KXoydMWi5UpcJWy1YwYGbWqF4F77jNz2Ezx9oiDMxaajjK0auRs+VxXQyi1rP5fd7Qtab5mmM/M86g85vCyTtFTF81R4grZsCsJ4ugluOVoio8AFb+ZUbDK9DQy9xSOS9VfwUSLFcNuGNJ+hZ6bx+k=
-Received: from CY4PR19MB1254.namprd19.prod.outlook.com (2603:10b6:903:109::19)
- by CY4PR19MB1080.namprd19.prod.outlook.com (2603:10b6:903:a5::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.25; Thu, 29 Oct
- 2020 13:35:19 +0000
-Received: from CY4PR19MB1254.namprd19.prod.outlook.com
- ([fe80::c14:9bc6:d9e5:4e45]) by CY4PR19MB1254.namprd19.prod.outlook.com
- ([fe80::c14:9bc6:d9e5:4e45%5]) with mapi id 15.20.3499.027; Thu, 29 Oct 2020
- 13:35:19 +0000
-From:   "Bharathi, Divya" <Divya.Bharathi@Dell.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>
-CC:     "Limonciello, Mario" <Mario.Limonciello@dell.com>,
-        "Ksr, Prasanth" <Prasanth.Ksr@dell.com>,
-        Joe Perches <joe@perches.com>,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] MAINTAINERS: rectify DELL WMI SYSMAN DRIVERS section
-Thread-Topic: [PATCH] MAINTAINERS: rectify DELL WMI SYSMAN DRIVERS section
-Thread-Index: AQHWrejsNlpIp2ND6U+aEJwEujM7sqmulEfg
-Date:   Thu, 29 Oct 2020 13:35:19 +0000
-Message-ID: <CY4PR19MB125445B8D71FFEF6E234D40285140@CY4PR19MB1254.namprd19.prod.outlook.com>
-References: <20201029114425.22520-1-lukas.bulwahn@gmail.com>
-In-Reply-To: <20201029114425.22520-1-lukas.bulwahn@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: gmail.com; dkim=none (message not signed)
- header.d=none;gmail.com; dmarc=none action=none header.from=Dell.com;
-x-originating-ip: [223.186.128.92]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: d1434a05-b76c-4254-699a-08d87c0f7ac8
-x-ms-traffictypediagnostic: CY4PR19MB1080:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <CY4PR19MB1080201A794756778B0D36EC85140@CY4PR19MB1080.namprd19.prod.outlook.com>
-x-exotenant: 2khUwGVqB6N9v58KS13ncyUmMJd8q4
-x-ms-oob-tlc-oobclassifiers: OLM:7219;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: y17C/u3qes+TcUmyzU+5MOxhORLlUAGeGQnW0h4YXtGctasPerQwbC/1vju/qTdr7jPfqw7vYCs89dxCrj1vLX8tHr3Et5UxNwuqs+2FaeCYkjLNAus5OWoB6V7pAWQoInaXlb2GIMNbDZwRTkRRORv21RzJhDQl/eiHrLBic3pp4bxlV3AwTLqRMoFZ4745Ka/gWLr0qCbnwj04HFdVQi6K1e/aUT4duD8rGZEBEm+myF7EqXTjYC0k/1/CBSUG8oZk4vmo+xO7TDn90LG+aae4Xchq44n50h3zjdAqSA/aa/f+X/K+Hel/JI0f6kOe
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR19MB1254.namprd19.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(39860400002)(396003)(366004)(346002)(376002)(86362001)(2906002)(8676002)(186003)(26005)(4326008)(7696005)(6506007)(83380400001)(33656002)(54906003)(110136005)(52536014)(55016002)(786003)(5660300002)(316002)(76116006)(66946007)(64756008)(66556008)(9686003)(8936002)(478600001)(66446008)(4744005)(66476007)(71200400001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: cArUtInWFS3Rq0lKT7dgXcBKVj36uRpqs58fMozHRZIUY3ZWr6vX9bG8wMaFMHN5N8AaDbNqQVZePfwn3Ghao7edeiGKljaqoOt+Q4A36qnRzHwBtLH0FPtvM8iH2u7aAVmJTY+cOSE32ZsevMnFSKflfvydCo68aAMVSjdB93HDfPmdiFq57OSJUJ8eAJh3as8JjrJTUCVXUlhAEt33UY6E2VgU8cDDAI2hW3o3TDBn6oNDLkeqH2x0spFs15h4I+LFhPLsNewbLEEjQJhL7Qu+KkbvQjJ7ckL2L4ZGZn9CwM+jZfSg2b8sxea6qs2flMQFBPzUqWn0c/F3udKpQmUpXm8qJ+Bg2aUSSsJqp3T49//kjJuEZ9iimik2hiv2YJBjp0Xq+xjHRvikGvnVQZ4hjtz25iLIep/YSNqlmboy1rhbsz/nDrBEr3lDrmqRSxf1IR+jr1/SUu4pthOHxgGI6U7iW3XPVHgwlFlUUg/N9aEutdcP2nAJbS584HCscASQIemjawIi+g04uPCVzVgK9sb4IXM3wDCstWaevP5wgZdkY3Qdm9ZBSw9hiHF+IfWZC5xa/Ua3VsDkFOMcs7DKYQ/Nfyqmb0vx8YivjuqwMhuTJaL4XKNeiD3CwAwTblvb73E62gf7oRvS1vv3Lg==
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        Thu, 29 Oct 2020 11:11:14 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kY9Zv-0008Eg-Uh; Thu, 29 Oct 2020 15:11:04 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Valentin Schneider <valentin.schneider@arm.com>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] sched/debug: fix memory corruption caused by multiple small reads of flags
+Date:   Thu, 29 Oct 2020 15:11:03 +0000
+Message-Id: <20201029151103.373410-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-X-OriginatorOrg: Dell.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR19MB1254.namprd19.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1434a05-b76c-4254-699a-08d87c0f7ac8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Oct 2020 13:35:19.7764
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 945c199a-83a2-4e80-9f8c-5a91be5752dd
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: KsOkCWF/HN8RIfaTcwgUxO0deSoUjyLMlyibKGRQTwCfkV0/n/++PRQQ7tc2MyS5DOtHz5CQMlJ65x2sH8Ba9A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR19MB1080
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
- definitions=2020-10-29_06:2020-10-29,2020-10-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- clxscore=1011 bulkscore=0 spamscore=0 phishscore=0 suspectscore=0
- mlxlogscore=497 lowpriorityscore=0 priorityscore=1501 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2010290098
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 spamscore=0
- malwarescore=0 adultscore=0 suspectscore=0 mlxscore=0 mlxlogscore=613
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010290098
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->=20
-> Commit e8a60aa7404b ("platform/x86: Introduce support for Systems
-> Management Driver over WMI for Dell Systems") added a new section DELL
-> WMI SYSMAN DRIVERS in MAINTAINERS, but slipped in a typo.
->=20
-> Hence, ./scripts/get_maintainer.pl --self-test=3Dpatterns complains:
->=20
->   warning: no file matches    F:    drivers/platform/x86/dell-wmi-syman/*
->=20
-> Point the file entry to the right location and add an entry for its
-> Documentation while at it.
->=20
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Acked-by: Divya Bharathi <divya.bharathi@dell.com>
+Reading /proc/sys/kernel/sched_domain/cpu*/domain0/flags mutliple times
+with small reads causes oopses with slub corruption issues because the kfree is
+free'ing an offset from a previous allocation. Fix this by adding in a new
+pointer 'buf' for the allocation and kfree and use the temporary pointer tmp
+to handle memory copies of the buf offsets.
+
+Detected by running 'stress-ng --procfs 0' on 5.10-rc1; example splat:
+
+[  984.137351] usercopy: Kernel memory exposure attempt detected from SLUB object 'kmalloc-128' (offset 127, size 3)!
+[  984.148917] ------------[ cut here ]------------
+[  984.154089] kernel BUG at mm/usercopy.c:99!
+[  984.158813] invalid opcode: 0000 [#1] SMP PTI
+[  984.163771] CPU: 0 PID: 3031471 Comm: stress-ng-procf Tainted: G          I       5.10.0-rc1 #1
+[  984.173483] Hardware name: IBM IBM System X3250 M4 -[2583AC1]-/00D3729, BIOS -[JQE158AUS-1.05]- 07/23/2013
+[  984.184260] RIP: 0010:usercopy_abort+0x74/0x76
+[  984.189219] Code: 67 5c 8b 51 48 0f 45 d6 49 c7 c3 73 f7 5f 8b 4c 89 d1 57 48 c7 c6 68 57 5e 8b 48 c7 c7 38 f8 5f 8b 49 0f 45 f3 e8 13 71 ff ff <0f> 0b 4c 89 e1 49 89 d8 44 89 ea 31 f6 48 29 c1 48 c7 c7 b5 f7 5f
+[  984.210177] RSP: 0018:ffff9c1f007b3dc0 EFLAGS: 00010286
+[  984.216000] RAX: 0000000000000066 RBX: 0000000000000003 RCX: 0000000000000000
+[  984.223965] RDX: ffff911f37c27e20 RSI: ffff911f37c19050 RDI: ffff911f37c19050
+[  984.231929] RBP: ffff911e04cd1f82 R08: 0000000000000000 R09: 0000000000000000
+[  984.239893] R10: ffff9c1f007b3bf8 R11: ffffffff8bd711a8 R12: ffff911e04cd1f7f
+[  984.247857] R13: 0000000000000001 R14: 0000000000000003 R15: ffff911e009b19c0
+[  984.255821] FS:  00007fbabb42b180(0000) GS:ffff911f37c00000(0000) knlGS:0000000000000000
+[  984.264915] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  984.271520] CR2: 00007fbabb7ef000 CR3: 000000014e296001 CR4: 00000000001706f0
+[  984.279683] Call Trace:
+[  984.282581]  __check_heap_object+0xe0/0x110
+[  984.287405]  __check_object_size+0x136/0x150
+[  984.292347]  proc_sys_call_handler+0x167/0x250
+[  984.297565]  new_sync_read+0x108/0x180
+[  984.302082]  vfs_read+0x174/0x1d0
+[  984.306126]  ksys_read+0x58/0xd0
+[  984.310022]  do_syscall_64+0x33/0x40
+[  984.314277]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+[  984.320201] RIP: 0033:0x7fbabb6099ac
+[  984.324514] Code: ec 28 48 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 89 fc ff ff 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 31 c0 0f 05 <48> 3d 00 f0 ff ff 77 34 44 89 c7 48 89 44 24 08 e8 bf fc ff ff 48
+[  984.346368] RSP: 002b:00007fff47397340 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+[  984.355402] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fbabb6099ac
+[  984.363971] RDX: 0000000000000060 RSI: 00007fff47397390 RDI: 0000000000000006
+[  984.372583] RBP: 0000000000000006 R08: 0000000000000000 R09: 0000000000000000
+[  984.381093] R10: 00000000000fa2b4 R11: 0000000000000246 R12: 0000000000000003
+[  984.389577] R13: 00007fff473a3630 R14: 0000000000001000 R15: 0000000000000060
+[  984.398087] Modules linked in: binfmt_misc rfkill sunrpc intel_rapl_msr intel_rapl_common x86_pkg_temp_thermal mgag200 intel_powerclamp iTCO_wdt i2c_algo_bit coretemp intel_pmc_bxt cdc_ether gpio_ich drm_kms_helper iTCO_vendor_support usbnet mii cec rapl ipmi_ssif i2c_i801 intel_cstate e1000e intel_uncore ie31200_edac pcspkr ipmi_si i2c_smbus lpc_ich ipmi_devintf ipmi_msghandler drm ip_tables xfs crct10dif_pclmul crc32_pclmul crc32c_intel ghash_clmulni_intel ata_generic pata_acpi wmi
+[  984.449316] ---[ end trace d44739bb135b1e63 ]---
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=209919
+Reported-by: Jeff Bastian <jbastian@redhat.com>
+Fixes: 5b9f8ff7b320 ("sched/debug: Output SD flag names rather than their values")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ kernel/sched/debug.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 0655524..2357921 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -251,7 +251,7 @@ static int sd_ctl_doflags(struct ctl_table *table, int write,
+ 	unsigned long flags = *(unsigned long *)table->data;
+ 	size_t data_size = 0;
+ 	size_t len = 0;
+-	char *tmp;
++	char *tmp, *buf;
+ 	int idx;
+ 
+ 	if (write)
+@@ -269,17 +269,17 @@ static int sd_ctl_doflags(struct ctl_table *table, int write,
+ 		return 0;
+ 	}
+ 
+-	tmp = kcalloc(data_size + 1, sizeof(*tmp), GFP_KERNEL);
+-	if (!tmp)
++	buf = kcalloc(data_size + 1, sizeof(*buf), GFP_KERNEL);
++	if (!buf)
+ 		return -ENOMEM;
+ 
+ 	for_each_set_bit(idx, &flags, __SD_FLAG_CNT) {
+ 		char *name = sd_flag_debug[idx].name;
+ 
+-		len += snprintf(tmp + len, strlen(name) + 2, "%s ", name);
++		len += snprintf(buf + len, strlen(name) + 2, "%s ", name);
+ 	}
+ 
+-	tmp += *ppos;
++	tmp = buf + *ppos;
+ 	len -= *ppos;
+ 
+ 	if (len > *lenp)
+@@ -294,7 +294,7 @@ static int sd_ctl_doflags(struct ctl_table *table, int write,
+ 	*lenp = len;
+ 	*ppos += len;
+ 
+-	kfree(tmp);
++	kfree(buf);
+ 
+ 	return 0;
+ }
+-- 
+2.7.4
+

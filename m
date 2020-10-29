@@ -2,22 +2,22 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A2C829EFF5
-	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Oct 2020 16:31:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1CEC29F059
+	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Oct 2020 16:45:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727967AbgJ2PbS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 29 Oct 2020 11:31:18 -0400
-Received: from foss.arm.com ([217.140.110.172]:39332 "EHLO foss.arm.com"
+        id S1728146AbgJ2PnD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 29 Oct 2020 11:43:03 -0400
+Received: from foss.arm.com ([217.140.110.172]:39606 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728347AbgJ2P3W (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 29 Oct 2020 11:29:22 -0400
+        id S1727842AbgJ2PnC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 29 Oct 2020 11:43:02 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B142C1063;
-        Thu, 29 Oct 2020 08:29:21 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F77931B;
+        Thu, 29 Oct 2020 08:43:02 -0700 (PDT)
 Received: from e113632-lin (e113632-lin.cambridge.arm.com [10.1.194.46])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 450763F66E;
-        Thu, 29 Oct 2020 08:29:20 -0700 (PDT)
-References: <20201029151103.373410-1-colin.king@canonical.com>
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B2B1A3F66E;
+        Thu, 29 Oct 2020 08:43:00 -0700 (PDT)
+References: <20201029151103.373410-1-colin.king@canonical.com> <jhjft5xoxtd.mognet@arm.com>
 User-agent: mu4e 0.9.17; emacs 26.3
 From:   Valentin Schneider <valentin.schneider@arm.com>
 To:     Colin King <colin.king@canonical.com>
@@ -30,9 +30,9 @@ Cc:     Ingo Molnar <mingo@redhat.com>,
         Daniel Bristot de Oliveira <bristot@redhat.com>,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH][next] sched/debug: fix memory corruption caused by multiple small reads of flags
-In-reply-to: <20201029151103.373410-1-colin.king@canonical.com>
-Date:   Thu, 29 Oct 2020 15:29:18 +0000
-Message-ID: <jhjft5xoxtd.mognet@arm.com>
+In-reply-to: <jhjft5xoxtd.mognet@arm.com>
+Date:   Thu, 29 Oct 2020 15:42:58 +0000
+Message-ID: <jhjeelhox6l.mognet@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 Precedence: bulk
@@ -40,48 +40,20 @@ List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
-On 29/10/20 15:11, Colin King wrote:
-> Detected by running 'stress-ng --procfs 0' on 5.10-rc1; example splat:
+On 29/10/20 15:29, Valentin Schneider wrote:
+>> @@ -269,17 +269,17 @@ static int sd_ctl_doflags(struct ctl_table *table, int write,
+>>               return 0;
+>>       }
+>>
+>> -	tmp = kcalloc(data_size + 1, sizeof(*tmp), GFP_KERNEL);
+> [...]
+>> -	tmp += *ppos;
+> [...]
+>> -	kfree(tmp);
 >
+> Yeah, that's downright sloppy :( I can't remember which one it was in a
+> hurry, but I was "inspired" by another proc handler somewhere; I'll try to
+> find out if there's any issue in that one or if I really cannot shift the
+> blame elsewhere.
 
-That's definitely what I'll need to run next time I lay my dirty hands on
-procfs.
-
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=209919
-> Reported-by: Jeff Bastian <jbastian@redhat.com>
-> Fixes: 5b9f8ff7b320 ("sched/debug: Output SD flag names rather than their values")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-
-> ---
->  kernel/sched/debug.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-> index 0655524..2357921 100644
-> --- a/kernel/sched/debug.c
-> +++ b/kernel/sched/debug.c
-> @@ -251,7 +251,7 @@ static int sd_ctl_doflags(struct ctl_table *table, int write,
->       unsigned long flags = *(unsigned long *)table->data;
->       size_t data_size = 0;
->       size_t len = 0;
-> -	char *tmp;
-> +	char *tmp, *buf;
->       int idx;
->
->       if (write)
-> @@ -269,17 +269,17 @@ static int sd_ctl_doflags(struct ctl_table *table, int write,
->               return 0;
->       }
->
-> -	tmp = kcalloc(data_size + 1, sizeof(*tmp), GFP_KERNEL);
-[...]
-> -	tmp += *ppos;
-[...]
-> -	kfree(tmp);
-
-Yeah, that's downright sloppy :( I can't remember which one it was in a
-hurry, but I was "inspired" by another proc handler somewhere; I'll try to
-find out if there's any issue in that one or if I really cannot shift the
-blame elsewhere.
+Nope, blame is all mine.

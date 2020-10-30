@@ -2,93 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54F9B2A076D
-	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Oct 2020 15:08:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 358A82A07DF
+	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Oct 2020 15:30:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726727AbgJ3OIL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 30 Oct 2020 10:08:11 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:51740 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725939AbgJ3OIL (ORCPT
+        id S1726696AbgJ3OaH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 30 Oct 2020 10:30:07 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:43735 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725834AbgJ3OaH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 30 Oct 2020 10:08:11 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09UBk6rL151547;
-        Fri, 30 Oct 2020 11:51:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=s3tHlzB0xCGIK7yOwzACZQHeo2e//7rXl3a/1W9LG3w=;
- b=mji+/CqxaWQs11hQK+l6m0G8jy49CU8lI5i+d1zteXyQUiK2/qxKfqhlzcHEf7xfhRqS
- DRwbRhB0YrtrsIVDDWWloDSs7CkCnMjJv2Oa3DYuVAisqvcJmJSnBSs2IXGtg8hjjVel
- gP++V2gjn2zO6xrqankqNXe7xhK7DSRAlN7P8jgRnRGhNZQmaq2pvJWBVJCQohYfki5Y
- PHgZ3iv7NUEwjhgZezPwVazzL+z79agaslzKpn0uNxfNmOWaHy6lmBdLpbG8EMqqAHin
- ES/B08Zdw+amU/azdKk1BOnhuQYMloqo91sew1w/JNfMUiIOZJ+Qxup2ZYa690RGFQjm Kw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2130.oracle.com with ESMTP id 34c9sb9fc8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 30 Oct 2020 11:51:10 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09UBjVOF008711;
-        Fri, 30 Oct 2020 11:51:10 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 34cx70m4mh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 30 Oct 2020 11:51:10 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09UBp9iE024367;
-        Fri, 30 Oct 2020 11:51:09 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 30 Oct 2020 04:51:08 -0700
-Date:   Fri, 30 Oct 2020 14:51:02 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "David S. Miller" <davem@davemloft.net>,
-        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
-Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] ide: Prevent some negative shifts in ide_set_ignore_cable()
-Message-ID: <20201030115102.GE3251003@mwanda>
+        Fri, 30 Oct 2020 10:30:07 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kYVPm-00085E-Kr; Fri, 30 Oct 2020 14:30:02 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Nehal Shah <nehal-bakulchandra.shah@amd.com>,
+        Sandeep Singh <sandeep.singh@amd.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        linux-input@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] SFH: fix error return check for -ERESTARTSYS
+Date:   Fri, 30 Oct 2020 14:30:02 +0000
+Message-Id: <20201030143002.535531-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9789 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
- bulkscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010300091
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9789 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 malwarescore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 spamscore=0 phishscore=0 clxscore=1011 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2010300091
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Shifting by a negative number is undefined.  These values come from the
-module parameter, so it's not a big deal from a practical perspective.
+From: Colin Ian King <colin.king@canonical.com>
 
-Fixes: 9fd91d959f1a ("ide: add "ignore_cable" parameter (take 2)")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Currently the check for the error return code -ERESTARTSYS is dead code
+and never executed because a previous check for ret < 0 is catching this
+and returning -ETIMEDOUT instead.  Fix this by checking for -ERESTARTSYS
+before the more generic negative error code.
+
+Addresses-Coverity: ("Logically dead code")
+Fixes: 4b2c53d93a4b ("SFH:Transport Driver to add support of AMD Sensor Fusion Hub (SFH)")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/ide/ide.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/amd-sfh-hid/amd_sfh_hid.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ide/ide.c b/drivers/ide/ide.c
-index 9a9c64fd1032..dcfb8a187c46 100644
---- a/drivers/ide/ide.c
-+++ b/drivers/ide/ide.c
-@@ -338,7 +338,7 @@ static int ide_set_ignore_cable(const char *s, const struct kernel_param *kp)
- 	if (sscanf(s, "%d:%d", &i, &j) != 2 && sscanf(s, "%d", &i) != 1)
- 		return -EINVAL;
- 
--	if (i >= MAX_HWIFS || j < 0 || j > 1)
-+	if (i < 0 || i >= MAX_HWIFS || j < 0 || j > 1)
- 		return -EINVAL;
- 
- 	if (j)
+diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_hid.c b/drivers/hid/amd-sfh-hid/amd_sfh_hid.c
+index a471079a3bd0..4f989483aa03 100644
+--- a/drivers/hid/amd-sfh-hid/amd_sfh_hid.c
++++ b/drivers/hid/amd-sfh-hid/amd_sfh_hid.c
+@@ -88,10 +88,10 @@ static int amdtp_wait_for_response(struct hid_device *hid)
+ 		ret = wait_event_interruptible_timeout(hid_data->hid_wait,
+ 						       cli_data->request_done[i],
+ 						       msecs_to_jiffies(AMD_SFH_RESPONSE_TIMEOUT));
+-	if (ret < 0)
+-		return -ETIMEDOUT;
+-	else if (ret == -ERESTARTSYS)
++	if (ret == -ERESTARTSYS)
+ 		return -ERESTARTSYS;
++	else if (ret < 0)
++		return -ETIMEDOUT;
+ 	else
+ 		return 0;
+ }
 -- 
-2.28.0
+2.27.0
 

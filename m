@@ -2,55 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7824C29FE01
-	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Oct 2020 07:49:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32AA82A00CD
+	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Oct 2020 10:09:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725945AbgJ3Gto (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 30 Oct 2020 02:49:44 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:60500 "EHLO fornost.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725930AbgJ3Gto (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 30 Oct 2020 02:49:44 -0400
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
-        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
-        id 1kYOE9-0004rH-Q8; Fri, 30 Oct 2020 17:49:34 +1100
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 30 Oct 2020 17:49:33 +1100
-Date:   Fri, 30 Oct 2020 17:49:33 +1100
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Antoine Tenart <atenart@kernel.org>,
+        id S1726300AbgJ3JJF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 30 Oct 2020 05:09:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41102 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726292AbgJ3JJD (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 30 Oct 2020 05:09:03 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DAD2C0613CF;
+        Fri, 30 Oct 2020 02:09:03 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kYQOw-00FLjK-8q; Fri, 30 Oct 2020 10:08:50 +0100
+Message-ID: <923bdb745be04732ee451b8d1b78b3d915b54b16.camel@sipsolutions.net>
+Subject: Re: [PATCH][next] nl80211/cfg80211: fix potential infinite loop
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Colin King <colin.king@canonical.com>,
         "David S . Miller" <davem@davemloft.net>,
-        Ofer Heifetz <oferh@marvell.com>, linux-crypto@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] crypto: inside-secure: Fix sizeof() mismatch
-Message-ID: <20201030064933.GE25453@gondor.apana.org.au>
-References: <20201010164736.12871-1-colin.king@canonical.com>
+        Jakub Kicinski <kuba@kernel.org>,
+        Tova Mussai <tova.mussai@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Fri, 30 Oct 2020 10:08:49 +0100
+In-Reply-To: <20201029222407.390218-1-colin.king@canonical.com>
+References: <20201029222407.390218-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201010164736.12871-1-colin.king@canonical.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Oct 10, 2020 at 05:47:36PM +0100, Colin King wrote:
+On Thu, 2020-10-29 at 22:24 +0000, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> An incorrect sizeof() is being used, sizeof(priv->ring[i].rdr_req) is
-> not correct, it should be sizeof(*priv->ring[i].rdr_req). Note that
-> since the size of ** is the same size as * this is not causing any
-> issues.
-> 
-> Addresses-Coverity: ("Sizeof not portable (SIZEOF_MISMATCH)")
-> Fixes: 9744fec95f06 ("crypto: inside-secure - remove request list to improve performance")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/crypto/inside-secure/safexcel.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> The for-loop iterates with a u8 loop counter and compares this
+> with the loop upper limit of request->n_ssids which is an int type.
+> There is a potential infinite loop if n_ssids is larger than the
+> u8 loop counter, so fix this by making the loop counter an int.
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Makes sense, thanks. I'll apply it to next.
+
+For the record, it shouldn't be possible for request->n_ssids to be
+larger than what the driver limit was, and that's 20 by default and
+doesn't make sense to be really much higher than that, so in practice
+this won't happen.
+
+johannes
+

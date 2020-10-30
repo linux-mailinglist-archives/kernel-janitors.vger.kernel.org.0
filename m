@@ -2,70 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5590329FDD3
-	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Oct 2020 07:33:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7824C29FE01
+	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Oct 2020 07:49:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725779AbgJ3GdF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 30 Oct 2020 02:33:05 -0400
-Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:49908 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725355AbgJ3GdF (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 30 Oct 2020 02:33:05 -0400
-Received: from [192.168.42.210] ([81.185.168.250])
-        by mwinf5d46 with ME
-        id m6Z2230035QVFy9036Z2Qn; Fri, 30 Oct 2020 07:33:03 +0100
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 30 Oct 2020 07:33:03 +0100
-X-ME-IP: 81.185.168.250
-Subject: Re: new TODO list item
-To:     Christoph Hellwig <hch@infradead.org>,
-        kernel-janitors@vger.kernel.org
-References: <20200421081257.GA131897@infradead.org>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <d9e3c0f2-a2ea-a279-9df4-0c8a908bba14@wanadoo.fr>
-Date:   Fri, 30 Oct 2020 07:33:02 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.1
+        id S1725945AbgJ3Gto (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 30 Oct 2020 02:49:44 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:60500 "EHLO fornost.hmeau.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725930AbgJ3Gto (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 30 Oct 2020 02:49:44 -0400
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
+        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
+        id 1kYOE9-0004rH-Q8; Fri, 30 Oct 2020 17:49:34 +1100
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 30 Oct 2020 17:49:33 +1100
+Date:   Fri, 30 Oct 2020 17:49:33 +1100
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Antoine Tenart <atenart@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Ofer Heifetz <oferh@marvell.com>, linux-crypto@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] crypto: inside-secure: Fix sizeof() mismatch
+Message-ID: <20201030064933.GE25453@gondor.apana.org.au>
+References: <20201010164736.12871-1-colin.king@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <20200421081257.GA131897@infradead.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201010164736.12871-1-colin.king@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 21/04/2020 à 10:12, Christoph Hellwig a écrit :
-> Hi Janitors,
+On Sat, Oct 10, 2020 at 05:47:36PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> if someone feels like helping with a fairly trivial legacy API, the
-> wrappers in include/linux/pci-dma-compat.h should go away.  This is
-> mostly trivially scriptable, except for dma_alloc_coherent, where
-> the GFP_ATOMIC passed by pci_alloc_consistent should usually be replaced
-> with GFP_KERNEL when not calling from an atomic context.
+> An incorrect sizeof() is being used, sizeof(priv->ring[i].rdr_req) is
+> not correct, it should be sizeof(*priv->ring[i].rdr_req). Note that
+> since the size of ** is the same size as * this is not causing any
+> issues.
 > 
+> Addresses-Coverity: ("Sizeof not portable (SIZEOF_MISMATCH)")
+> Fixes: 9744fec95f06 ("crypto: inside-secure - remove request list to improve performance")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/crypto/inside-secure/safexcel.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Hi,
-just a small update on the work on progress:
-
-https://elixir.bootlin.com/linux/v5.8/A/ident/pci_alloc_consistent
-    --> 88 files
-https://elixir.bootlin.com/linux/v5.9/A/ident/pci_alloc_consistent
-    --> 62 files
-https://elixir.bootlin.com/linux/v5.10-rc1/A/ident/pci_alloc_consistent
-    --> 32 files
-
-https://elixir.bootlin.com/linux/v5.8/A/ident/pci_zalloc_consistent
-    --> 26 files
-https://elixir.bootlin.com/linux/v5.9/A/ident/pci_zalloc_consistent
-    --> 19 files
-https://elixir.bootlin.com/linux/v5.10-rc1/A/ident/pci_zalloc_consistent
-    --> 11 files
-
-
-None of the drivers/media/pci/* patches has been accepted yet.
-
-
-CJ
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

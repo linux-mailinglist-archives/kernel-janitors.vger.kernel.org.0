@@ -2,139 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 96EF82A09AD
-	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Oct 2020 16:24:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AA792A0D54
+	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Oct 2020 19:26:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726662AbgJ3PYD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 30 Oct 2020 11:24:03 -0400
-Received: from smtp-fw-9101.amazon.com ([207.171.184.25]:49004 "EHLO
-        smtp-fw-9101.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726319AbgJ3PYC (ORCPT
+        id S1726564AbgJ3S0k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 30 Oct 2020 14:26:40 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:29993 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725844AbgJ3S0k (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 30 Oct 2020 11:24:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1604071441; x=1635607441;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=0B2kVfW6FFKifdllmrR0sICqgIVG1Y7IInlcrRWpWrU=;
-  b=icBeh5ceqPl+NHsy5/G1VO/fs1mFtuGcZvKE13kYwF2ugPGzUVoLdyC0
-   MevtoV8QwdAkrdO+PQdZ98SdPqGuIHVQ3WWB7hXMezSRYt6j3Jtq3jCWe
-   lSdfIh4SuVkEsSOjmxbNwxULHBb/67hPPKBxq0H9i4F753AgUoL1lTUT+
-   w=;
-X-IronPort-AV: E=Sophos;i="5.77,433,1596499200"; 
-   d="scan'208";a="82069101"
-Received: from sea32-co-svc-lb4-vlan3.sea.corp.amazon.com (HELO email-inbound-relay-2b-5bdc5131.us-west-2.amazon.com) ([10.47.23.38])
-  by smtp-border-fw-out-9101.sea19.amazon.com with ESMTP; 30 Oct 2020 15:23:35 +0000
-Received: from EX13D16EUB003.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
-        by email-inbound-relay-2b-5bdc5131.us-west-2.amazon.com (Postfix) with ESMTPS id DB2F9A25F2;
-        Fri, 30 Oct 2020 15:23:32 +0000 (UTC)
-Received: from 38f9d34ed3b1.ant.amazon.com (10.43.162.231) by
- EX13D16EUB003.ant.amazon.com (10.43.166.99) with Microsoft SMTP Server (TLS)
- id 15.0.1497.2; Fri, 30 Oct 2020 15:23:29 +0000
-Subject: Re: [bug report] nitro_enclaves: Add logic for setting an enclave
- vCPU
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     Alexandru Vasile <lexnv@amazon.com>,
-        <kernel-janitors@vger.kernel.org>
-References: <20201030113033.GA3251003@mwanda>
-From:   "Paraschiv, Andra-Irina" <andraprs@amazon.com>
-Message-ID: <6ed3d5cb-e49c-677e-80d4-e02ab14b251a@amazon.com>
-Date:   Fri, 30 Oct 2020 17:23:18 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:78.0)
- Gecko/20100101 Thunderbird/78.2.2
+        Fri, 30 Oct 2020 14:26:40 -0400
+Received: from localhost.localdomain ([81.185.160.173])
+        by mwinf5d86 with ME
+        id mJSW2300E3km4KV03JSWA8; Fri, 30 Oct 2020 19:26:37 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 30 Oct 2020 19:26:37 +0100
+X-ME-IP: 81.185.160.173
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     dwmw2@infradead.org, baolu.lu@linux.intel.com, joro@8bytes.org
+Cc:     iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] iommu/vt-d: Avoid GFP_ATOMIC where it is not needed
+Date:   Fri, 30 Oct 2020 19:26:30 +0100
+Message-Id: <20201030182630.5154-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <20201030113033.GA3251003@mwanda>
-Content-Language: en-US
-X-Originating-IP: [10.43.162.231]
-X-ClientProxiedBy: EX13D28UWB004.ant.amazon.com (10.43.161.56) To
- EX13D16EUB003.ant.amazon.com (10.43.166.99)
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-CgpPbiAzMC8xMC8yMDIwIDEzOjMwLCBEYW4gQ2FycGVudGVyIHdyb3RlOgo+Cj4gSGVsbG8gQW5k
-cmEgUGFyYXNjaGl2LAo+Cj4gVGhlIHBhdGNoIGZmOGE0ZDNlM2E5OTogIm5pdHJvX2VuY2xhdmVz
-OiBBZGQgbG9naWMgZm9yIHNldHRpbmcgYW4KPiBlbmNsYXZlIHZDUFUiIGZyb20gU2VwIDIxLCAy
-MDIwLCBsZWFkcyB0byB0aGUgZm9sbG93aW5nIHN0YXRpYwo+IGNoZWNrZXIgd2FybmluZzoKPgo+
-ICAgICAgICAgIGRyaXZlcnMvdmlydC9uaXRyb19lbmNsYXZlcy9uZV9taXNjX2Rldi5jOjQ3MSBu
-ZV9kb25hdGVkX2NwdSgpCj4gICAgICAgICAgZXJyb3I6IHBhc3NpbmcgdW50cnVzdGVkIGRhdGEg
-J2NwdScgdG8gJ2NwdW1hc2tfdGVzdF9jcHUoKScKPgo+IGRyaXZlcnMvdmlydC9uaXRyb19lbmNs
-YXZlcy9uZV9taXNjX2Rldi5jCj4gICAgMTA5MyAgICAgICAgICBzd2l0Y2ggKGNtZCkgewo+ICAg
-IDEwOTQgICAgICAgICAgY2FzZSBORV9BRERfVkNQVTogewo+ICAgIDEwOTUgICAgICAgICAgICAg
-ICAgICBpbnQgcmMgPSAtRUlOVkFMOwo+ICAgIDEwOTYgICAgICAgICAgICAgICAgICB1MzIgdmNw
-dV9pZCA9IDA7Cj4gICAgMTA5Nwo+ICAgIDEwOTggICAgICAgICAgICAgICAgICBpZiAoY29weV9m
-cm9tX3VzZXIoJnZjcHVfaWQsICh2b2lkIF9fdXNlciAqKWFyZywgc2l6ZW9mKHZjcHVfaWQpKSkK
-PiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5eXl5eXl5eCj4K
-PiAgICAxMDk5ICAgICAgICAgICAgICAgICAgICAgICAgICByZXR1cm4gLUVGQVVMVDsKPiAgICAx
-MTAwCj4gICAgMTEwMSAgICAgICAgICAgICAgICAgIG11dGV4X2xvY2soJm5lX2VuY2xhdmUtPmVu
-Y2xhdmVfaW5mb19tdXRleCk7Cj4gICAgMTEwMgo+ICAgIDExMDMgICAgICAgICAgICAgICAgICBp
-ZiAobmVfZW5jbGF2ZS0+c3RhdGUgIT0gTkVfU1RBVEVfSU5JVCkgewo+ICAgIDExMDQgICAgICAg
-ICAgICAgICAgICAgICAgICAgIGRldl9lcnJfcmF0ZWxpbWl0ZWQobmVfbWlzY19kZXYudGhpc19k
-ZXZpY2UsCj4gICAgMTEwNSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAiRW5jbGF2ZSBpcyBub3QgaW4gaW5pdCBzdGF0ZVxuIik7Cj4gICAgMTEwNgo+ICAgIDEx
-MDcgICAgICAgICAgICAgICAgICAgICAgICAgIG11dGV4X3VubG9jaygmbmVfZW5jbGF2ZS0+ZW5j
-bGF2ZV9pbmZvX211dGV4KTsKPiAgICAxMTA4Cj4gICAgMTEwOSAgICAgICAgICAgICAgICAgICAg
-ICAgICAgcmV0dXJuIC1ORV9FUlJfTk9UX0lOX0lOSVRfU1RBVEU7Cj4gICAgMTExMCAgICAgICAg
-ICAgICAgICAgIH0KPiAgICAxMTExCj4gICAgMTExMiAgICAgICAgICAgICAgICAgIGlmICh2Y3B1
-X2lkID49IChuZV9lbmNsYXZlLT5ucl9wYXJlbnRfdm1fY29yZXMgKgo+ICAgIDExMTMgICAgICAg
-ICAgICAgICAgICAgICAgbmVfZW5jbGF2ZS0+bnJfdGhyZWFkc19wZXJfY29yZSkpIHsKPgo+IFRv
-IHByZXZlbnQgYSBidWZmZXIgb3ZlcmZsb3cgdmNwdV9pZCBoYXMgdG8gYmUgbGVzcyB0aGFuICJu
-cl9jcHVfaWRzIi4KPiBJcyAibmVfZW5jbGF2ZS0+bnJfcGFyZW50X3ZtX2NvcmVzICogbmVfZW5j
-bGF2ZS0+bnJfdGhyZWFkc19wZXJfY29yZSIKPiA8PSBucl9jcHVfaWRzPyAgSWYgc28gdGhlbiBp
-dCdzIGZpbmUuCgpIaSBEYW4sCgpUaGFua3MgZm9yIHJlYWNoaW5nIG91dCB3aXRoIHJlZ2FyZCB0
-byB0aGlzIHJlcG9ydGVkIGlzc3VlIGZyb20gdGhlIApzdGF0aWMgYW5hbHlzaXMuCgoibnJfY3B1
-X2lkcyIgaXMgdXNlZCB3aGVuIHRoZSBudW1iZXIgb2YgY29yZXMgaXMgaW5pdGlhbGl6ZWQsIHNv
-IGl0IApzaG91bGQgYmUgZmluZS4gTGV0IG1lIGtub3cgaWYgSSBtaXNzIHNvbWV0aGluZyBhbmQg
-YSBjaGVjayBoYXMgdG8gYmUgCmFkZGVkIHRvIGRpcmVjdGx5IGNvbXBhcmUgdG8gIm5yX2NwdV9p
-ZHMiLgoKVGhlIGluaXRpYWxpemF0aW9uIGZsb3cgZm9yIHRoZSBhYm92ZSB2YXJpYWJsZXMgbG9v
-a3MgbGlrZSB0aGlzOgoKWzFdIHxuZV9zZXR1cF9jcHVfcG9vbCgpfHx8Cgp8CgoJLyogQ2FsY3Vs
-YXRlIHRoZSBudW1iZXIgb2YgdGhyZWFkcyBmcm9tIGEgZnVsbCBDUFUgY29yZS4gKi8KCWNwdSAg
-PSAgY3B1bWFza19hbnkoY3B1X3Bvb2wpOwoJZm9yX2VhY2hfY3B1KGNwdV9zaWJsaW5nLCAgdG9w
-b2xvZ3lfc2libGluZ19jcHVtYXNrKGNwdSkpCgkJbmVfY3B1X3Bvb2wubnJfdGhyZWFkc19wZXJf
-Y29yZSsrOwoKCW5lX2NwdV9wb29sLm5yX3BhcmVudF92bV9jb3JlcyAgPSAgbnJfY3B1X2lkcyAg
-LyAgbmVfY3B1X3Bvb2wubnJfdGhyZWFkc19wZXJfY29yZTt8CgpbMl0gbmVfY3JlYXRlX3ZtX2lv
-Y3RsKCl8fAoKfAoKCW5lX2VuY2xhdmUtPm5yX3BhcmVudF92bV9jb3JlcyAgPSAgbmVfY3B1X3Bv
-b2wubnJfcGFyZW50X3ZtX2NvcmVzOwoJbmVfZW5jbGF2ZS0+bnJfdGhyZWFkc19wZXJfY29yZSAg
-PSAgbmVfY3B1X3Bvb2wubnJfdGhyZWFkc19wZXJfY29yZTt8CgoKVGhhbmtzLApBbmRyYQoKWzFd
-IApodHRwczovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgva2VybmVsL2dpdC90b3J2YWxk
-cy9saW51eC5naXQvdHJlZS9kcml2ZXJzL3ZpcnQvbml0cm9fZW5jbGF2ZXMvbmVfbWlzY19kZXYu
-Yz9oPXY1LjEwLXJjMSNuMjc5ClsyXSAKaHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xp
-bnV4L2tlcm5lbC9naXQvdG9ydmFsZHMvbGludXguZ2l0L3RyZWUvZHJpdmVycy92aXJ0L25pdHJv
-X2VuY2xhdmVzL25lX21pc2NfZGV2LmM/aD12NS4xMC1yYzEjbjE1NzEKCj4KPiAgICAxMTE0ICAg
-ICAgICAgICAgICAgICAgICAgICAgICBkZXZfZXJyX3JhdGVsaW1pdGVkKG5lX21pc2NfZGV2LnRo
-aXNfZGV2aWNlLAo+ICAgIDExMTUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgInZDUFUgaWQgaGlnaGVyIHRoYW4gbWF4IENQVSBpZFxuIik7Cj4gICAgMTExNgo+
-ICAgIDExMTcgICAgICAgICAgICAgICAgICAgICAgICAgIG11dGV4X3VubG9jaygmbmVfZW5jbGF2
-ZS0+ZW5jbGF2ZV9pbmZvX211dGV4KTsKPiAgICAxMTE4Cj4gICAgMTExOSAgICAgICAgICAgICAg
-ICAgICAgICAgICAgcmV0dXJuIC1ORV9FUlJfSU5WQUxJRF9WQ1BVOwo+ICAgIDExMjAgICAgICAg
-ICAgICAgICAgICB9Cj4gICAgMTEyMQo+ICAgIDExMjIgICAgICAgICAgICAgICAgICBpZiAoIXZj
-cHVfaWQpIHsKPiAgICAxMTIzICAgICAgICAgICAgICAgICAgICAgICAgICAvKiBVc2UgdGhlIENQ
-VSBwb29sIGZvciBjaG9vc2luZyBhIENQVSBmb3IgdGhlIGVuY2xhdmUuICovCj4gICAgMTEyNCAg
-ICAgICAgICAgICAgICAgICAgICAgICAgcmMgPSBuZV9nZXRfY3B1X2Zyb21fY3B1X3Bvb2wobmVf
-ZW5jbGF2ZSwgJnZjcHVfaWQpOwo+ICAgIDExMjUgICAgICAgICAgICAgICAgICAgICAgICAgIGlm
-IChyYyA8IDApIHsKPiAgICAxMTI2ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRl
-dl9lcnJfcmF0ZWxpbWl0ZWQobmVfbWlzY19kZXYudGhpc19kZXZpY2UsCj4gICAgMTEyNyAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJFcnJvciBp
-biBnZXQgQ1BVIGZyb20gcG9vbCBbcmM9JWRdXG4iLAo+ICAgIDExMjggICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICByYyk7Cj4gICAgMTEyOQo+ICAg
-IDExMzAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbXV0ZXhfdW5sb2NrKCZuZV9l
-bmNsYXZlLT5lbmNsYXZlX2luZm9fbXV0ZXgpOwo+ICAgIDExMzEKPiAgICAxMTMyICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiByYzsKPiAgICAxMTMzICAgICAgICAgICAg
-ICAgICAgICAgICAgICB9Cj4gICAgMTEzNCAgICAgICAgICAgICAgICAgIH0gZWxzZSB7Cj4gICAg
-MTEzNSAgICAgICAgICAgICAgICAgICAgICAgICAgLyogQ2hlY2sgaWYgdGhlIHByb3ZpZGVkIHZD
-UFUgaXMgYXZhaWxhYmxlIGluIHRoZSBORSBDUFUgcG9vbC4gKi8KPiAgICAxMTM2ICAgICAgICAg
-ICAgICAgICAgICAgICAgICByYyA9IG5lX2NoZWNrX2NwdV9pbl9jcHVfcG9vbChuZV9lbmNsYXZl
-LCB2Y3B1X2lkKTsKPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBeXl5eXl5eCj4gVGhpcyB3aWxsIGxlYWQg
-dG8gdGhlIG91dCBvZiBib3VuZHMgaWYgdmNwdV9pZCBpcyBtb3JlIHRoYW4KPiBucl9jcHVfaWRz
-Lgo+Cj4gICAgMTEzNyAgICAgICAgICAgICAgICAgICAgICAgICAgaWYgKHJjIDwgMCkgewo+ICAg
-IDExMzggICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGV2X2Vycl9yYXRlbGltaXRl
-ZChuZV9taXNjX2Rldi50aGlzX2RldmljZSwKPgo+IHJlZ2FyZHMsCj4gZGFuIGNhcnBlbnRlcgoK
-CgoKQW1hem9uIERldmVsb3BtZW50IENlbnRlciAoUm9tYW5pYSkgUy5SLkwuIHJlZ2lzdGVyZWQg
-b2ZmaWNlOiAyN0EgU2YuIExhemFyIFN0cmVldCwgVUJDNSwgZmxvb3IgMiwgSWFzaSwgSWFzaSBD
-b3VudHksIDcwMDA0NSwgUm9tYW5pYS4gUmVnaXN0ZXJlZCBpbiBSb21hbmlhLiBSZWdpc3RyYXRp
-b24gbnVtYmVyIEoyMi8yNjIxLzIwMDUuCg==
+There is no reason to use GFP_ATOMIC in a 'suspend' function.
+Use GFP_KERNEL instead to give more opportunities to allocate the
+requested memory.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Should GFP_ATOMIC be mandatory here, a comment explaining why would be great
+---
+ drivers/iommu/intel/iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index f8177c59d229..cd2a82ed78b5 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -4114,7 +4114,7 @@ static int iommu_suspend(void)
+ 
+ 	for_each_active_iommu(iommu, drhd) {
+ 		iommu->iommu_state = kcalloc(MAX_SR_DMAR_REGS, sizeof(u32),
+-						 GFP_ATOMIC);
++					     GFP_KERNEL);
+ 		if (!iommu->iommu_state)
+ 			goto nomem;
+ 	}
+-- 
+2.27.0
 

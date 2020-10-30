@@ -2,99 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B4202A04B3
-	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Oct 2020 12:48:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 031022A04D3
+	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Oct 2020 12:54:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726095AbgJ3Lsc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 30 Oct 2020 07:48:32 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:59630 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726055AbgJ3Lsc (ORCPT
+        id S1726491AbgJ3Lyo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 30 Oct 2020 07:54:44 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:35712 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726078AbgJ3Lyo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 30 Oct 2020 07:48:32 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09UBjBtS068968;
-        Fri, 30 Oct 2020 11:48:19 GMT
+        Fri, 30 Oct 2020 07:54:44 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09UBjKfL151312;
+        Fri, 30 Oct 2020 11:54:38 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=u8OK6JTwAscu54Un4Xn+CHsR2kUdCYEM2EQPwUmKxRk=;
- b=hmUIwi+/SgAeglz3QH998o7cRxvHLF+OAEXoRHRIt+EKjWGGAX7lzXQ3htM4sf6qP+7y
- OgfPYnWxONAeh5QZ8kRx/GOVl22NTpBTpwzYBvN3co6AC5gbpZzCMraHA9YktLlPD8IU
- CoKBTzuildrRREwy+h0pa3IFBJZIm+99TKLjBEnTgcsrp0jw/7jSQ7H7Urcbh8l94T8k
- sJXXLqcEmXpiFCO97Ztv6ccuw4i6svpq3D3z1sd/bBzK+4EkFHk11NC5bhMIqnvviN3m
- wa+h66jS4RLOOeYh6vINZAnkAAIy13IFlkztZvjtF3g7Mg1ZTzkPISU683+JuTT2el3w Bw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 34cc7m9a7q-1
+ bh=+Yf2h8kroGa9FFqdyGT38oTbkFb5FaWP6BIQgYe/vpk=;
+ b=GHju6cIz4YiEqvk8J9Rjifms3r+YtLhbS/rHupe8MUl7O0i49FTzRdeZH0fMRZZ5THJD
+ GYJVB0fQbtWw5vJhQQCU2jwGnSKbxTW/CIZVILbTMTZzg9k3Aq/psityFEMiSjIPMMoR
+ 6UA8V8Ifpn+LAhe/jJdp9M68E+3q+M0jX54P4SaRGA8CHGn/N53b+MQMJcowqRjanbSw
+ 3OMhIn+KoUgv4Klahu+mLlJosm2WgGCALk3jiPH3+AdvCv7cRQfvcbVXY7h8UQNve7kk
+ fW9P3H/Qp/M/fc4q4afIty/zd6vGu1905CR37m2z/AzSJn7s4FttAAfgIRKSQaiTaz+J sg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2130.oracle.com with ESMTP id 34c9sb9fp0-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 30 Oct 2020 11:48:19 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09UBjWSS008946;
-        Fri, 30 Oct 2020 11:48:18 GMT
+        Fri, 30 Oct 2020 11:54:38 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09UBoRCV074625;
+        Fri, 30 Oct 2020 11:52:37 GMT
 Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 34cx70m29d-1
+        by userp3020.oracle.com with ESMTP id 34cx1ucp61-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 30 Oct 2020 11:48:18 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09UBmF2r023127;
-        Fri, 30 Oct 2020 11:48:15 GMT
+        Fri, 30 Oct 2020 11:52:37 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09UBqabZ024884;
+        Fri, 30 Oct 2020 11:52:36 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 30 Oct 2020 04:48:15 -0700
-Date:   Fri, 30 Oct 2020 14:48:08 +0300
+        with ESMTP ; Fri, 30 Oct 2020 04:52:35 -0700
+Date:   Fri, 30 Oct 2020 14:52:30 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     David Airlie <airlied@linux.ie>, Gerd Hoffmann <kraxel@redhat.com>
-Cc:     Daniel Vetter <daniel@ffwll.ch>,
-        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        Gurchetan Singh <gurchetansingh@chromium.org>,
-        dri-devel@lists.freedesktop.org,
-        virtualization@lists.linux-foundation.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] drm/virtio: Fix a double free in virtio_gpu_cmd_map()
-Message-ID: <20201030114808.GD3251003@mwanda>
+To:     Sean Young <sean@mess.org>
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] media: rc: validate that "rc_proto" is reasonable
+Message-ID: <20201030115230.GF3251003@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9789 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
- bulkscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0 suspectscore=2
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 bulkscore=0
+ suspectscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010300091
+ definitions=main-2010300092
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9789 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 adultscore=0
- malwarescore=0 spamscore=0 clxscore=1011 mlxscore=0 suspectscore=2
- priorityscore=1501 impostorscore=0 bulkscore=0 phishscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 malwarescore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 spamscore=0 phishscore=0 clxscore=1011 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2009150000 definitions=main-2010300091
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This is freed both here and in the caller (virtio_gpu_vram_map()) so
-it's a double free.  The correct place is only in the caller.
+Smatch complains that "rc_proto" comes from the user and it can result
+in shift wrapping in ir_raw_encode_scancode()
 
-Fixes: 16845c5d5409 ("drm/virtio: implement blob resources: implement vram object")
+    drivers/media/rc/rc-ir-raw.c:526 ir_raw_encode_scancode()
+    error: undefined (user controlled) shift '1 << protocol'
+
+This is true, but I reviewed the surrounding code and it appears
+harmless.  Anyway, let's verify that "rc_proto" is valid as a kernel
+hardenning measure.
+
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/gpu/drm/virtio/virtgpu_vq.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/media/rc/lirc_dev.c | 3 ++-
+ include/uapi/linux/lirc.h   | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/virtio/virtgpu_vq.c b/drivers/gpu/drm/virtio/virtgpu_vq.c
-index 72586cd8cc4c..3f200306c9d7 100644
---- a/drivers/gpu/drm/virtio/virtgpu_vq.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_vq.c
-@@ -1212,10 +1212,8 @@ int virtio_gpu_cmd_map(struct virtio_gpu_device *vgdev,
- 	struct virtio_gpu_resp_map_info *resp_buf;
+diff --git a/include/uapi/linux/lirc.h b/include/uapi/linux/lirc.h
+index f99d9dcae667..c1eb960adde3 100644
+--- a/include/uapi/linux/lirc.h
++++ b/include/uapi/linux/lirc.h
+@@ -226,6 +226,7 @@ enum rc_proto {
+ 	RC_PROTO_RCMM24		= 25,
+ 	RC_PROTO_RCMM32		= 26,
+ 	RC_PROTO_XBOX_DVD	= 27,
++	RC_PROTO_MAX		= RC_PROTO_XBOX_DVD,
+ };
  
- 	resp_buf = kzalloc(sizeof(*resp_buf), GFP_KERNEL);
--	if (!resp_buf) {
--		virtio_gpu_array_put_free(objs);
-+	if (!resp_buf)
- 		return -ENOMEM;
--	}
+ #endif
+diff --git a/drivers/media/rc/lirc_dev.c b/drivers/media/rc/lirc_dev.c
+index 220363b9a868..116daf90c858 100644
+--- a/drivers/media/rc/lirc_dev.c
++++ b/drivers/media/rc/lirc_dev.c
+@@ -263,7 +263,8 @@ static ssize_t lirc_transmit(struct file *file, const char __user *buf,
+ 			goto out_unlock;
+ 		}
  
- 	cmd_p = virtio_gpu_alloc_cmd_resp
- 		(vgdev, virtio_gpu_cmd_resource_map_cb, &vbuf, sizeof(*cmd_p),
+-		if (scan.flags || scan.keycode || scan.timestamp) {
++		if (scan.flags || scan.keycode || scan.timestamp ||
++		    scan.rc_proto > RC_PROTO_MAX) {
+ 			ret = -EINVAL;
+ 			goto out_unlock;
+ 		}
 -- 
 2.28.0
 

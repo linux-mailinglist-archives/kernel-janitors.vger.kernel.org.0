@@ -2,90 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C8092A18F1
-	for <lists+kernel-janitors@lfdr.de>; Sat, 31 Oct 2020 18:19:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F88A2A1A47
+	for <lists+kernel-janitors@lfdr.de>; Sat, 31 Oct 2020 20:32:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728166AbgJaRTf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 31 Oct 2020 13:19:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57194 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726586AbgJaRTf (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 31 Oct 2020 13:19:35 -0400
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D19FBC0617A6;
-        Sat, 31 Oct 2020 10:19:33 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id o205so1122054qke.10;
-        Sat, 31 Oct 2020 10:19:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
-        bh=VQlGBb8M5jgrHCNctQCHW/goIscpJbN90wm8vcO5ynk=;
-        b=vMu1gXrr4HKw49O9BvBSO+oIzPQAaXyHwaCDcXiQwH+XL3kgCNQj62lHxnMQEEkEMd
-         ilPnsVXyRhvYVvDUItIfD+O3Hf2t47ARQz2auIG4rr/JyghXt8CJzWBFbKl7SwRAod2X
-         7vvRjFFlQX7KwUvhg1L13qo/GUvCDbGoQH6PMYu3uXqHw0MHQCzZopJC8etk2i0zk6Ua
-         aEncPepJhLDKskmFIhH2Ry+Pt3e5nM+vcO3feXaKkcpup+TL6rDzI7s4K4pXra4eX5Hs
-         e4sZyadcK3q20Vt1J4rKhWOlFBKcjUBGgvyvjGRUwQB313NNV9hQx7vFT9/Un4wPOdYt
-         g1Lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition;
-        bh=VQlGBb8M5jgrHCNctQCHW/goIscpJbN90wm8vcO5ynk=;
-        b=fr966P/6b9sthjAlkjUXjIskh88NLZ7x2LLi6nM+kjT8cj4lvRqvlZ4KV2spLxS2bC
-         tdcP+doP7Bx280gK10OlAsgRawnZR+eB6DKH/QaNo5b017fu58DAqpwpFRPFlfRm3CTQ
-         aoVt2sAobNVjgyWzxM78hhXXwVdtsc/7eHWMLRdvY+1v3wa2KdYDoIF3KOeYsI8Igq4G
-         FPFxaIPxEeGdHRUCf3+oIzPLzPZi6uARsHWrlz4pWy0Lzf0PC9AdSMoVutyRjUYJu06e
-         FzQPbhYYxXeg41vm0oxj4juvIk5XMfpdKdIgovO5EYYehQVQu4nmY9W34S7gRRYa+b/2
-         C5bQ==
-X-Gm-Message-State: AOAM530yQ2HZs4b0rtKq3VL5+XqsepTtTGfNd7K9ELsjUTjBHLf8J0Ld
-        aZ6VmDbUd15sf55jSd0Cuxw=
-X-Google-Smtp-Source: ABdhPJxORmnEl4mCjT7RkUqG2A+iG1mPNrcKGA+6JEE/VxNkQxTmRNDz46NZUWtFi3ViCKpBzWfVqg==
-X-Received: by 2002:a05:620a:2148:: with SMTP id m8mr7651515qkm.19.1604164773134;
-        Sat, 31 Oct 2020 10:19:33 -0700 (PDT)
-Received: from fedora-project ([2604:2000:ffc0:0:74b0:102f:8bef:7279])
-        by smtp.gmail.com with ESMTPSA id r190sm4770134qkf.101.2020.10.31.10.19.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Oct 2020 10:19:32 -0700 (PDT)
-Date:   Sat, 31 Oct 2020 13:19:30 -0400
-From:   Nigel Christian <nigel.l.christian@gmail.com>
-To:     gregkh@linuxfoundation.org, lee.jones@linaro.org
-Cc:     linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] usb: core: ledtrig-usbport: use octal permission
-Message-ID: <20201031171930.GA21555@fedora-project>
+        id S1727301AbgJaTcb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 31 Oct 2020 15:32:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40996 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725786AbgJaTcb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 31 Oct 2020 15:32:31 -0400
+Received: from kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net (c-67-180-217-166.hsd1.ca.comcast.net [67.180.217.166])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A868F206D5;
+        Sat, 31 Oct 2020 19:32:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604172750;
+        bh=lKG4qxBnXK/Jqf1CaFvvYJoxmuwssr1+n5QOZM9FPjI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=BXLiEnnKgJbBMLLAtfl6hskGkeOnNxf3uHbhNj108y9ur7ifvZ1gy0DaeJTzlF7Gf
+         FmtQh/TMX+ppxNfOPyTRYVAgvgjM5PlzDgKPvTB8GqDZEgvtphKBA6f2j204xDIrAD
+         Og5z+LpzkvI62as+L8o4jmipNSG1iHiusmm+29uo=
+Date:   Sat, 31 Oct 2020 12:32:28 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: atm: fix update of position index in lec_seq_next
+Message-ID: <20201031123228.5040bd7b@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+In-Reply-To: <20201027114925.21843-1-colin.king@canonical.com>
+References: <20201027114925.21843-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Change read/write for owner permission from symbolic to octal
-to enhance readability. This patch reduces checkpatch warnings 
-for this file to nil.
+On Tue, 27 Oct 2020 11:49:25 +0000 Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The position index in leq_seq_next is not updated when the next
+> entry is fetched an no more entries are available. This causes
+> seq_file to report the following error:
+> 
+> "seq_file: buggy .next function lec_seq_next [lec] did not update
+>  position index"
+> 
+> Fix this by always updating the position index.
+> 
+> [ Note: this is an ancient 2002 bug, the sha is from the
+>   tglx/history repo ]
+> 
+> Fixes 4aea2cbff417 ("[ATM]: Move lan seq_file ops to lec.c [1/3]")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-see: https://lkml.org/lkml/2016/8/2/1945
+Applied, very sneaky there with the lack of a colon on the Fixes tag :)
 
-verified via chmod(2) man page
 
-Signed-off-by: Nigel Christian <nigel.l.christian@gmail.com>
----
- drivers/usb/core/ledtrig-usbport.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+BTW looking at seq_read() it seems to eat the potential error code from
+->next, doesn't it?
 
-diff --git a/drivers/usb/core/ledtrig-usbport.c b/drivers/usb/core/ledtrig-usbport.c
-index ba371a24ff78..8e9b1c5cc971 100644
---- a/drivers/usb/core/ledtrig-usbport.c
-+++ b/drivers/usb/core/ledtrig-usbport.c
-@@ -211,7 +211,7 @@ static int usbport_trig_add_port(struct usbport_trig_data *usbport_data,
- 
- 	sysfs_attr_init(&port->attr.attr);
- 	port->attr.attr.name = port->port_name;
--	port->attr.attr.mode = S_IRUSR | S_IWUSR;
-+	port->attr.attr.mode = 0600;
- 	port->attr.show = usbport_trig_port_show;
- 	port->attr.store = usbport_trig_port_store;
- 
--- 
-2.28.0
+@@ -254,9 +254,11 @@ ssize_t seq_read(struct file *file, char __user *buf, size_t size, loff_t *ppos)
+        }
+        m->op->stop(m, p);
+        n = min(m->count, size);
+-       err = copy_to_user(buf, m->buf, n);
+-       if (err)
+-               goto Efault;
++       if (n) {
++               err = copy_to_user(buf, m->buf, n);
++               if (err)
++                       goto Efault;
++       }
+        copied += n;
+        m->count -= n;
+        m->from = n;
 
+Maybe? Or at least:
+
+@@ -239,10 +239,8 @@ ssize_t seq_read(struct file *file, char __user *buf, size_t size, loff_t *ppos)
+                                            m->op->next);
+                        m->index++;
+                }
+-               if (!p || IS_ERR(p)) {
+-                       err = PTR_ERR(p);
++               if (!p || IS_ERR(p))
+                        break;
+-               }
+                if (m->count >= size)
+                        break;
+                err = m->op->show(m, p);

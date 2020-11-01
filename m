@@ -2,58 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A1E42A1CDD
-	for <lists+kernel-janitors@lfdr.de>; Sun,  1 Nov 2020 10:27:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E95A82A1D8B
+	for <lists+kernel-janitors@lfdr.de>; Sun,  1 Nov 2020 12:12:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726231AbgKAJ1O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 1 Nov 2020 04:27:14 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59290 "EHLO mail.kernel.org"
+        id S1726343AbgKALMG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 1 Nov 2020 06:12:06 -0500
+Received: from gofer.mess.org ([88.97.38.141]:35481 "EHLO gofer.mess.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725951AbgKAJ1N (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 1 Nov 2020 04:27:13 -0500
-Received: from dragon (80.251.214.228.16clouds.com [80.251.214.228])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 37EFE20706;
-        Sun,  1 Nov 2020 09:27:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604222833;
-        bh=S148xYiDLkpqMjXcFmkJzuuhVelRZwJmOjteNJYXqKw=;
+        id S1726282AbgKALMF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 1 Nov 2020 06:12:05 -0500
+X-Greylist: delayed 432 seconds by postgrey-1.27 at vger.kernel.org; Sun, 01 Nov 2020 06:12:05 EST
+Received: by gofer.mess.org (Postfix, from userid 1000)
+        id 45DDAC63A4; Sun,  1 Nov 2020 11:04:52 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mess.org; s=2020;
+        t=1604228692; bh=D5/AIwYi2iRE6p1FOb4Scp2Gxxq7ZdnLg7RG4L99rwE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=yOXZdPNQ8nzjrOJ1gSC+drld20Na0eN9i3SfWXg2wthRPYUH0p6oEG7DzIJ5w9xJk
-         H/NtfnU45L2bcZ6y6NKRFQn6nL3hB/MuIpsHuTcg+lEOgky2liAVvwm15BgDmemjQz
-         LKHyvDNB1r4VZU7xfZ90J/y1GdyAX9hGKzirxfsQ=
-Date:   Sun, 1 Nov 2020 17:27:06 +0800
-From:   Shawn Guo <shawnguo@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] clk: imx: remove redundant assignment to pointer np
-Message-ID: <20201101092705.GO31601@dragon>
-References: <20201029224007.390762-1-colin.king@canonical.com>
+        b=pLYxql5qT1Gci2G5MNKD4CbGwCHMjNQt05a9JJEIC6ZlEwfu4vaZVKCNacn9lP3/G
+         M7VIQUZpf9maDnhc607phaOR1ISzATOOkKozNc6e9VM01TgtQKOFtW0nL8RImkOxgA
+         YOFUyHk2GNCt796itmnL2OU3/ZncPdUj4azDeyjerVwZAab841Gc7uDFYMSyKpqS+7
+         NElvHDb97M8O9w+LrCZtyEvYuc0Gp6bOinI1Hsgue9Rt6sDmELe5v5C35WuJ/yqrQD
+         Mr6o8w3SfYB8gkPEBqE0lhitXM855iaUD7X8+SGdgrJ8nr0vTsh18FrpA+ZSafbfaw
+         i+eWIoKwSkoKA==
+Date:   Sun, 1 Nov 2020 11:04:52 +0000
+From:   Sean Young <sean@mess.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] media: rc: validate that "rc_proto" is reasonable
+Message-ID: <20201101110452.GA8281@gofer.mess.org>
+References: <20201030115230.GF3251003@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201029224007.390762-1-colin.king@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20201030115230.GF3251003@mwanda>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Oct 29, 2020 at 10:40:07PM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Pointer np is being initialized with a value that is never read
-> and it is being updated with a value later on. The initialization
-> is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Hi Dan,
 
-Applied, thanks.
+On Fri, Oct 30, 2020 at 02:52:30PM +0300, Dan Carpenter wrote:
+> Smatch complains that "rc_proto" comes from the user and it can result
+> in shift wrapping in ir_raw_encode_scancode()
+> 
+>     drivers/media/rc/rc-ir-raw.c:526 ir_raw_encode_scancode()
+>     error: undefined (user controlled) shift '1 << protocol'
+> 
+> This is true, but I reviewed the surrounding code and it appears
+> harmless.  Anyway, let's verify that "rc_proto" is valid as a kernel
+> hardenning measure.
+
+It would mean that suddenly an invalid rc proto could become valid; also
+like you say, this is a good hardening measure.
+
+Good catch, thank you.
+
+Regards,
+
+Sean
+
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/media/rc/lirc_dev.c | 3 ++-
+>  include/uapi/linux/lirc.h   | 1 +
+>  2 files changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/uapi/linux/lirc.h b/include/uapi/linux/lirc.h
+> index f99d9dcae667..c1eb960adde3 100644
+> --- a/include/uapi/linux/lirc.h
+> +++ b/include/uapi/linux/lirc.h
+> @@ -226,6 +226,7 @@ enum rc_proto {
+>  	RC_PROTO_RCMM24		= 25,
+>  	RC_PROTO_RCMM32		= 26,
+>  	RC_PROTO_XBOX_DVD	= 27,
+> +	RC_PROTO_MAX		= RC_PROTO_XBOX_DVD,
+>  };
+>  
+>  #endif
+> diff --git a/drivers/media/rc/lirc_dev.c b/drivers/media/rc/lirc_dev.c
+> index 220363b9a868..116daf90c858 100644
+> --- a/drivers/media/rc/lirc_dev.c
+> +++ b/drivers/media/rc/lirc_dev.c
+> @@ -263,7 +263,8 @@ static ssize_t lirc_transmit(struct file *file, const char __user *buf,
+>  			goto out_unlock;
+>  		}
+>  
+> -		if (scan.flags || scan.keycode || scan.timestamp) {
+> +		if (scan.flags || scan.keycode || scan.timestamp ||
+> +		    scan.rc_proto > RC_PROTO_MAX) {
+>  			ret = -EINVAL;
+>  			goto out_unlock;
+>  		}
+> -- 
+> 2.28.0

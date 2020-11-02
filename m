@@ -2,222 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79A8B2A2FF6
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Nov 2020 17:39:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 361572A3383
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Nov 2020 20:00:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727122AbgKBQj3 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 2 Nov 2020 11:39:29 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46396 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726834AbgKBQj3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 2 Nov 2020 11:39:29 -0500
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7A87A22268;
-        Mon,  2 Nov 2020 16:39:28 +0000 (UTC)
-Date:   Mon, 2 Nov 2020 11:39:26 -0500
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     kernel-janitors@vger.kernel.org, Tom Zanussi <zanussi@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [bug report] tracing, synthetic events: Replace buggy strcat()
- with seq_buf operations
-Message-ID: <20201102113926.3f43531b@gandalf.local.home>
-In-Reply-To: <20201102074524.GA4040095@mwanda>
-References: <20201102074524.GA4040095@mwanda>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726512AbgKBTA1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Nov 2020 14:00:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35120 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726423AbgKBTA1 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 2 Nov 2020 14:00:27 -0500
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 089B7C0617A6;
+        Mon,  2 Nov 2020 11:00:27 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id c16so10528101wmd.2;
+        Mon, 02 Nov 2020 11:00:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=F52hESqbsB1MPJOrdkRKIslrWAc4TnNYL/WsFrJgJKw=;
+        b=toR2HRVdMm7mruxLONthC9XCLQ2NZM7kvv76jNtete8uCBDGb7+45cxZPdkRDrH59n
+         mn2jusHu9DC1CUcCHVwWrwrx9yQo08XLXrLovUsOY5/VwQ6fZZt1KTBDX5NmBVMIkDJ/
+         EqzMvk5nkdMc/DdJ3rJLd0EEbCXCRxhE6F4DpSADFhnaACYbCq0Hnc2XlDtBEEdM65eK
+         mEBe1NZXRRvstr8m9KiSpO7zQoHflmYdRbRXgRC4upO1zH0T0LlMuSyVJXcvmbZwW+F8
+         OFSAa6P+DaJTq+YT2/qF24jsGzErQR+Di5uTo15pZT5amGCHl13xKVdMKuoS8iWJur+C
+         ptag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=F52hESqbsB1MPJOrdkRKIslrWAc4TnNYL/WsFrJgJKw=;
+        b=RRFw0cSFoJdbTYdkjdl/EwQBiGhJjf1Kp00gIdklUFHF9KcQC2ekBW3djHCbPfLLkP
+         R6t/fFHHeToqHRJEd0LEepOf4W7QPzxDZEE2lLL0tQ+J9UxA2XAQzvkzJyXWHx5cwxE1
+         PaQ8QjW4OKr61CDA/IKK+3juLjXfK+vA0SY56rDkSNtZpOoFq60n09RAf4Z1NTcU4L1/
+         c054qVqMP6/u6PAx5FGbP3Yrq7Kn+/tY0la5EA9ya+h8wG5aB5Pnu10Q08eguqRwWDqm
+         ySB0v6DomAcr1AjT6diUIZCoivUI3UR9BpHFjwIURnpVlimElR2UaxbpPosQ0SEUxkx+
+         vQ9w==
+X-Gm-Message-State: AOAM533p0xoO8VoloapGu+Su5URh90rF6XDS3Fs+2mOgwEdqD9FWYCtO
+        0oUladVqscw3ANWAzWp76WsFKFxyQcJTR4DkQ3/qrghE
+X-Google-Smtp-Source: ABdhPJytQUYMUMSyXdcmVlTI70Lb9uFFEdcAtoiyeavU7SDPkzfzLliepONejZLqlw/MJVxGDHVXT7e6qiW+8huN4SQ=
+X-Received: by 2002:a05:600c:25a:: with SMTP id 26mr19186350wmj.39.1604343625759;
+ Mon, 02 Nov 2020 11:00:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8BIT
+References: <20201102141654.699468-1-colin.king@canonical.com>
+In-Reply-To: <20201102141654.699468-1-colin.king@canonical.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Mon, 2 Nov 2020 14:00:14 -0500
+Message-ID: <CADnq5_NJ=X1A+R5rHCvLZAXWpAL-3YiN_ksrzY8Kjuaoj1ybeg@mail.gmail.com>
+Subject: Re: [PATCH][next] drm/amdgpu: fix spelling mistake: "Successed" -> "Succeeded"
+To:     Colin King <colin.king@canonical.com>
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dave Airlie <airlied@redhat.com>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 2 Nov 2020 10:45:24 +0300
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+Applied.  Thanks!
 
-> Hello Steven Rostedt (VMware),
-> 
-> The patch 761a8c58db6b: "tracing, synthetic events: Replace buggy
-> strcat() with seq_buf operations" from Oct 23, 2020, leads to the
-> following static checker warning:
-> 
-> 	kernel/trace/trace_events_synth.c:703 parse_synth_field()
-> 	warn: passing zero to 'ERR_PTR'
-> 
-> kernel/trace/trace_events_synth.c
->    582  static struct synth_field *parse_synth_field(int argc, const char **argv,
->    583                                               int *consumed)
->    584  {
->    585          struct synth_field *field;
->    586          const char *prefix = NULL, *field_type = argv[0], *field_name, *array;
->    587          int len, ret = 0;
->    588          struct seq_buf s;
->    589          ssize_t size;
->    590  
->    591          if (field_type[0] == ';')
->    592                  field_type++;
->    593  
->    594          if (!strcmp(field_type, "unsigned")) {
->    595                  if (argc < 3) {
->    596                          synth_err(SYNTH_ERR_INCOMPLETE_TYPE, errpos(field_type));
->    597                          return ERR_PTR(-EINVAL);
->    598                  }
->    599                  prefix = "unsigned ";
->    600                  field_type = argv[1];
->    601                  field_name = argv[2];
->    602                  *consumed = 3;
->    603          } else {
->    604                  field_name = argv[1];
->    605                  *consumed = 2;
->    606          }
->    607  
->    608          field = kzalloc(sizeof(*field), GFP_KERNEL);
->    609          if (!field)
->    610                  return ERR_PTR(-ENOMEM);
->    611  
->    612          len = strlen(field_name);
->    613          array = strchr(field_name, '[');
->    614          if (array)
->    615                  len -= strlen(array);
->    616          else if (field_name[len - 1] == ';')
->    617                  len--;
->    618  
->    619          field->name = kmemdup_nul(field_name, len, GFP_KERNEL);
->    620          if (!field->name) {
->    621                  ret = -ENOMEM;
->    622                  goto free;
->    623          }
->    624          if (!is_good_name(field->name)) {
->    625                  synth_err(SYNTH_ERR_BAD_NAME, errpos(field_name));
->    626                  ret = -EINVAL;
->    627                  goto free;
->    628          }
->    629  
->    630          if (field_type[0] == ';')
->    631                  field_type++;
->    632          len = strlen(field_type) + 1;
->    633  
->    634          if (array)
->    635                  len += strlen(array);
->    636  
->    637          if (prefix)
->    638                  len += strlen(prefix);
->    639  
->    640          field->type = kzalloc(len, GFP_KERNEL);
->    641          if (!field->type) {
->    642                  ret = -ENOMEM;
->    643                  goto free;
->    644          }
->    645          seq_buf_init(&s, field->type, len);
->    646          if (prefix)
->    647                  seq_buf_puts(&s, prefix);
->    648          seq_buf_puts(&s, field_type);
->    649          if (array) {
->    650                  seq_buf_puts(&s, array);
->    651                  if (s.buffer[s.len - 1] == ';')
->    652                          s.len--;
->    653          }
->    654          if (WARN_ON_ONCE(!seq_buf_buffer_left(&s)))
->    655                  goto free;
-> 
-> This was originally reported by kbuild-bot, but it was somehow
-> overlooked so now it's on my system.  The missing error code will lead
-> to a NULL dereference in the caller.
+Alex
 
-
-I misread the original report, modified it to fix something else, and
-didn't see the real problem.
-
-Having to initialize ret for *every* error path is ridiculous. Here's the
-fix.
-
--- Steve
-
-From 2980f226a7fb08e37fd3948e206854fe5a1a8c50 Mon Sep 17 00:00:00 2001
-From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
-Date: Mon, 2 Nov 2020 11:28:39 -0500
-Subject: [PATCH] tracing: Make -ENOMEM the default error for
- parse_synth_field()
-
-parse_synth_field() returns a pointer and requires that errors get
-surrounded by ERR_PTR(). The ret variable is initialized to zero, but should
-never be used as zero, and if it is, it could cause a false return code and
-produce a NULL pointer dereference. It makes no sense to set ret to zero.
-
-Set ret to -ENOMEM (the most common error case), and have any other errors
-set it to something else. This removes the need to initialize ret on *every*
-error branch.
-
-Fixes: 761a8c58db6b ("tracing, synthetic events: Replace buggy strcat() with seq_buf operations")
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
----
- kernel/trace/trace_events_synth.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
-
-diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
-index 84b7cab55291..881df991742a 100644
---- a/kernel/trace/trace_events_synth.c
-+++ b/kernel/trace/trace_events_synth.c
-@@ -584,7 +584,7 @@ static struct synth_field *parse_synth_field(int argc, const char **argv,
- {
- 	struct synth_field *field;
- 	const char *prefix = NULL, *field_type = argv[0], *field_name, *array;
--	int len, ret = 0;
-+	int len, ret = -ENOMEM;
- 	struct seq_buf s;
- 	ssize_t size;
- 
-@@ -617,10 +617,9 @@ static struct synth_field *parse_synth_field(int argc, const char **argv,
- 		len--;
- 
- 	field->name = kmemdup_nul(field_name, len, GFP_KERNEL);
--	if (!field->name) {
--		ret = -ENOMEM;
-+	if (!field->name)
- 		goto free;
--	}
-+
- 	if (!is_good_name(field->name)) {
- 		synth_err(SYNTH_ERR_BAD_NAME, errpos(field_name));
- 		ret = -EINVAL;
-@@ -638,10 +637,9 @@ static struct synth_field *parse_synth_field(int argc, const char **argv,
- 		len += strlen(prefix);
- 
- 	field->type = kzalloc(len, GFP_KERNEL);
--	if (!field->type) {
--		ret = -ENOMEM;
-+	if (!field->type)
- 		goto free;
--	}
-+
- 	seq_buf_init(&s, field->type, len);
- 	if (prefix)
- 		seq_buf_puts(&s, prefix);
-@@ -653,6 +651,7 @@ static struct synth_field *parse_synth_field(int argc, const char **argv,
- 	}
- 	if (WARN_ON_ONCE(!seq_buf_buffer_left(&s)))
- 		goto free;
-+
- 	s.buffer[s.len] = '\0';
- 
- 	size = synth_field_size(field->type);
-@@ -666,10 +665,8 @@ static struct synth_field *parse_synth_field(int argc, const char **argv,
- 
- 			len = sizeof("__data_loc ") + strlen(field->type) + 1;
- 			type = kzalloc(len, GFP_KERNEL);
--			if (!type) {
--				ret = -ENOMEM;
-+			if (!type)
- 				goto free;
--			}
- 
- 			seq_buf_init(&s, type, len);
- 			seq_buf_puts(&s, "__data_loc ");
--- 
-2.25.4
-
-
+On Mon, Nov 2, 2020 at 9:17 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There is a spelling mistake in a deb_dbg message. Fix it.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+> index 28a5c0d21b71..c99c2180785f 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+> @@ -296,7 +296,7 @@ static void amdgpu_vram_mgr_do_reserve(struct ttm_resource_manager *man)
+>                 if (drm_mm_reserve_node(mm, &rsv->mm_node))
+>                         continue;
+>
+> -               dev_dbg(adev->dev, "Reservation 0x%llx - %lld, Successed\n",
+> +               dev_dbg(adev->dev, "Reservation 0x%llx - %lld, Succeeded\n",
+>                         rsv->mm_node.start, rsv->mm_node.size);
+>
+>                 vis_usage = amdgpu_vram_mgr_vis_size(adev, &rsv->mm_node);
+> --
+> 2.27.0
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

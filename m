@@ -2,103 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D63D22A25B0
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Nov 2020 08:57:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83CE72A261B
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Nov 2020 09:29:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727870AbgKBH5J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 2 Nov 2020 02:57:09 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:44448 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726819AbgKBH5I (ORCPT
+        id S1728236AbgKBI3I (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Nov 2020 03:29:08 -0500
+Received: from smtp-fw-2101.amazon.com ([72.21.196.25]:6987 "EHLO
+        smtp-fw-2101.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728217AbgKBI3H (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 2 Nov 2020 02:57:08 -0500
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A27tXVX106797;
-        Mon, 2 Nov 2020 07:57:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=Wef2b/yzMGsWD9DTHJSvGdiP19gLsqH3HIK7My8A+hQ=;
- b=RkCFPrIk6dvQMgT18BH12mxwZrIr6nYiG/bqijOTLc6deHQ+VVV1uHNRcta1XN6se2Mf
- jO17WQ4+kXKz0OxOIL+lT7Pj3s7Wsx3kdgW2lYERZnDEPNs/vPBwPRtvmaNwshQJBwFE
- GbcspXGQsx8MrRreIOEGwhnkjFiv2pdRlSZg0FlMCaTn8OvRXjiCGZg64q9yyuhOJnOo
- FJVJA9xWoYFSHwr7XP/KKgYjEdsA6pNvczSGr/9yKrHu5cj06ZjiqpqqRc4UG+I8c4Ou
- vRMe130g9QnXIS+rYiQY4J42JrS50hqbJepUtTpG6dvHh5XFXcCLfpfaRNBEowg3cvVy 0w== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2130.oracle.com with ESMTP id 34hhb1tfqm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 02 Nov 2020 07:57:05 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A27teT9066849;
-        Mon, 2 Nov 2020 07:57:05 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 34hvrtfyhk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 02 Nov 2020 07:57:05 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0A27v4gV014130;
-        Mon, 2 Nov 2020 07:57:04 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sun, 01 Nov 2020 23:57:03 -0800
-Date:   Mon, 2 Nov 2020 10:56:55 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Al Cooper <alcooperx@gmail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com, linux-usb@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] usb: misc: brcmstb-usb-pinmap: Fix an IS_ERR() vs NULL check
-Message-ID: <20201102075655.GA4163205@mwanda>
+        Mon, 2 Nov 2020 03:29:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1604305747; x=1635841747;
+  h=subject:to:cc:references:from:message-id:date:
+   mime-version:in-reply-to:content-transfer-encoding;
+  bh=IigxMWJoFi9y4Gd5/7rdQPSHQRc1mycdjNDKcBAqG2I=;
+  b=a+bpocThotjtkjvcr/IomiTSDUERRKRKJ5hdb1WfDY0zAuaDS3Ff6UrC
+   XuEojCFKVD8aFP1vmKn+GR7QGy3mBiiUcy+BKTll87y7i5U5wWzakui0a
+   pG+RUAU8GySJDOX064fbZATELlOMz+uwvum7zpj+nvCBn2yDtVY7Sdga/
+   c=;
+X-IronPort-AV: E=Sophos;i="5.77,444,1596499200"; 
+   d="scan'208";a="61899120"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-1e-a70de69e.us-east-1.amazon.com) ([10.43.8.6])
+  by smtp-border-fw-out-2101.iad2.amazon.com with ESMTP; 02 Nov 2020 08:29:00 +0000
+Received: from EX13D16EUB003.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
+        by email-inbound-relay-1e-a70de69e.us-east-1.amazon.com (Postfix) with ESMTPS id 4471EA18EF;
+        Mon,  2 Nov 2020 08:28:59 +0000 (UTC)
+Received: from 38f9d34ed3b1.ant.amazon.com (10.43.162.144) by
+ EX13D16EUB003.ant.amazon.com (10.43.166.99) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.2; Mon, 2 Nov 2020 08:28:57 +0000
+Subject: Re: [bug report] nitro_enclaves: Add logic for setting an enclave
+ vCPU
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+CC:     Alexandru Vasile <lexnv@amazon.com>,
+        <kernel-janitors@vger.kernel.org>
+References: <20201030113033.GA3251003@mwanda>
+ <6ed3d5cb-e49c-677e-80d4-e02ab14b251a@amazon.com>
+ <20201102062013.GC12347@kadam>
+From:   "Paraschiv, Andra-Irina" <andraprs@amazon.com>
+Message-ID: <46fba46c-e196-1ee7-e27c-66ccfccd28c1@amazon.com>
+Date:   Mon, 2 Nov 2020 10:28:47 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:78.0)
+ Gecko/20100101 Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9792 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 mlxscore=0
- malwarescore=0 mlxlogscore=999 suspectscore=0 spamscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011020062
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9792 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 suspectscore=0
- clxscore=1011 mlxlogscore=999 impostorscore=0 malwarescore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 priorityscore=1501 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011020062
+In-Reply-To: <20201102062013.GC12347@kadam>
+Content-Language: en-US
+X-Originating-IP: [10.43.162.144]
+X-ClientProxiedBy: EX13D47UWA004.ant.amazon.com (10.43.163.47) To
+ EX13D16EUB003.ant.amazon.com (10.43.166.99)
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The devm_ioremap() function doesn't return error pointers, it returns
-NULL on error.
-
-Fixes: 517c4c44b323 ("usb: Add driver to allow any GPIO to be used for 7211 USB signals")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-The commit original commit "usb: Add driver to allow any GPIO to ..."
-has a bad subsystem prefix.  This is a common anti-pattern for new
-drivers.  (Although less common after I started whinging to everyone
-about it).  It means that the first person to fix a bug in the driver
-has to imagine what the original author wanted.  Sometimes people get
-annoyed which prefix we pick for them.
-
- drivers/usb/misc/brcmstb-usb-pinmap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/usb/misc/brcmstb-usb-pinmap.c b/drivers/usb/misc/brcmstb-usb-pinmap.c
-index 02144c39aaba..2326e60545f7 100644
---- a/drivers/usb/misc/brcmstb-usb-pinmap.c
-+++ b/drivers/usb/misc/brcmstb-usb-pinmap.c
-@@ -277,8 +277,8 @@ static int __init brcmstb_usb_pinmap_probe(struct platform_device *pdev)
- 	pdata->out_pins = (struct out_pin *)(pdata->in_pins + in_count);
- 
- 	pdata->regs = devm_ioremap(&pdev->dev, r->start, resource_size(r));
--	if (IS_ERR(pdata->regs))
--		return PTR_ERR(pdata->regs);
-+	if (!pdata->regs)
-+		return -ENOMEM;
- 	platform_set_drvdata(pdev, pdata);
- 
- 	err = parse_pins(&pdev->dev, dn, pdata);
--- 
-2.28.0
+CgpPbiAwMi8xMS8yMDIwIDA4OjIwLCBEYW4gQ2FycGVudGVyIHdyb3RlOgo+IE9uIEZyaSwgT2N0
+IDMwLCAyMDIwIGF0IDA1OjIzOjE4UE0gKzAyMDAsIFBhcmFzY2hpdiwgQW5kcmEtSXJpbmEgd3Jv
+dGU6Cj4+Cj4+IE9uIDMwLzEwLzIwMjAgMTM6MzAsIERhbiBDYXJwZW50ZXIgd3JvdGU6Cj4+PiBI
+ZWxsbyBBbmRyYSBQYXJhc2NoaXYsCj4+Pgo+Pj4gVGhlIHBhdGNoIGZmOGE0ZDNlM2E5OTogIm5p
+dHJvX2VuY2xhdmVzOiBBZGQgbG9naWMgZm9yIHNldHRpbmcgYW4KPj4+IGVuY2xhdmUgdkNQVSIg
+ZnJvbSBTZXAgMjEsIDIwMjAsIGxlYWRzIHRvIHRoZSBmb2xsb3dpbmcgc3RhdGljCj4+PiBjaGVj
+a2VyIHdhcm5pbmc6Cj4+Pgo+Pj4gICAgICAgICAgIGRyaXZlcnMvdmlydC9uaXRyb19lbmNsYXZl
+cy9uZV9taXNjX2Rldi5jOjQ3MSBuZV9kb25hdGVkX2NwdSgpCj4+PiAgICAgICAgICAgZXJyb3I6
+IHBhc3NpbmcgdW50cnVzdGVkIGRhdGEgJ2NwdScgdG8gJ2NwdW1hc2tfdGVzdF9jcHUoKScKPj4+
+Cj4+PiBkcml2ZXJzL3ZpcnQvbml0cm9fZW5jbGF2ZXMvbmVfbWlzY19kZXYuYwo+Pj4gICAgIDEw
+OTMgICAgICAgICAgc3dpdGNoIChjbWQpIHsKPj4+ICAgICAxMDk0ICAgICAgICAgIGNhc2UgTkVf
+QUREX1ZDUFU6IHsKPj4+ICAgICAxMDk1ICAgICAgICAgICAgICAgICAgaW50IHJjID0gLUVJTlZB
+TDsKPj4+ICAgICAxMDk2ICAgICAgICAgICAgICAgICAgdTMyIHZjcHVfaWQgPSAwOwo+Pj4gICAg
+IDEwOTcKPj4+ICAgICAxMDk4ICAgICAgICAgICAgICAgICAgaWYgKGNvcHlfZnJvbV91c2VyKCZ2
+Y3B1X2lkLCAodm9pZCBfX3VzZXIgKilhcmcsIHNpemVvZih2Y3B1X2lkKSkpCj4+PiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBeXl5eXl5eXgo+Pj4KPj4+ICAg
+ICAxMDk5ICAgICAgICAgICAgICAgICAgICAgICAgICByZXR1cm4gLUVGQVVMVDsKPj4+ICAgICAx
+MTAwCj4+PiAgICAgMTEwMSAgICAgICAgICAgICAgICAgIG11dGV4X2xvY2soJm5lX2VuY2xhdmUt
+PmVuY2xhdmVfaW5mb19tdXRleCk7Cj4+PiAgICAgMTEwMgo+Pj4gICAgIDExMDMgICAgICAgICAg
+ICAgICAgICBpZiAobmVfZW5jbGF2ZS0+c3RhdGUgIT0gTkVfU1RBVEVfSU5JVCkgewo+Pj4gICAg
+IDExMDQgICAgICAgICAgICAgICAgICAgICAgICAgIGRldl9lcnJfcmF0ZWxpbWl0ZWQobmVfbWlz
+Y19kZXYudGhpc19kZXZpY2UsCj4+PiAgICAgMTEwNSAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAiRW5jbGF2ZSBpcyBub3QgaW4gaW5pdCBzdGF0ZVxuIik7Cj4+
+PiAgICAgMTEwNgo+Pj4gICAgIDExMDcgICAgICAgICAgICAgICAgICAgICAgICAgIG11dGV4X3Vu
+bG9jaygmbmVfZW5jbGF2ZS0+ZW5jbGF2ZV9pbmZvX211dGV4KTsKPj4+ICAgICAxMTA4Cj4+PiAg
+ICAgMTEwOSAgICAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuIC1ORV9FUlJfTk9UX0lOX0lO
+SVRfU1RBVEU7Cj4+PiAgICAgMTExMCAgICAgICAgICAgICAgICAgIH0KPj4+ICAgICAxMTExCj4+
+PiAgICAgMTExMiAgICAgICAgICAgICAgICAgIGlmICh2Y3B1X2lkID49IChuZV9lbmNsYXZlLT5u
+cl9wYXJlbnRfdm1fY29yZXMgKgo+Pj4gICAgIDExMTMgICAgICAgICAgICAgICAgICAgICAgbmVf
+ZW5jbGF2ZS0+bnJfdGhyZWFkc19wZXJfY29yZSkpIHsKPj4+Cj4+PiBUbyBwcmV2ZW50IGEgYnVm
+ZmVyIG92ZXJmbG93IHZjcHVfaWQgaGFzIHRvIGJlIGxlc3MgdGhhbiAibnJfY3B1X2lkcyIuCj4+
+PiBJcyAibmVfZW5jbGF2ZS0+bnJfcGFyZW50X3ZtX2NvcmVzICogbmVfZW5jbGF2ZS0+bnJfdGhy
+ZWFkc19wZXJfY29yZSIKPj4+IDw9IG5yX2NwdV9pZHM/ICBJZiBzbyB0aGVuIGl0J3MgZmluZS4K
+Pj4gSGkgRGFuLAo+Pgo+PiBUaGFua3MgZm9yIHJlYWNoaW5nIG91dCB3aXRoIHJlZ2FyZCB0byB0
+aGlzIHJlcG9ydGVkIGlzc3VlIGZyb20gdGhlIHN0YXRpYwo+PiBhbmFseXNpcy4KPj4KPj4gIm5y
+X2NwdV9pZHMiIGlzIHVzZWQgd2hlbiB0aGUgbnVtYmVyIG9mIGNvcmVzIGlzIGluaXRpYWxpemVk
+LCBzbyBpdCBzaG91bGQKPj4gYmUgZmluZS4gTGV0IG1lIGtub3cgaWYgSSBtaXNzIHNvbWV0aGlu
+ZyBhbmQgYSBjaGVjayBoYXMgdG8gYmUgYWRkZWQgdG8KPj4gZGlyZWN0bHkgY29tcGFyZSB0byAi
+bnJfY3B1X2lkcyIuCj4gWWVhaC4gIFRoYXQgd29ya3MuICBUaGFua3MgZm9yIHRha2luZyBhIGxv
+b2sgYXQgdGhpcy4KPgoKT2ssIHRoYW5rcyBmb3IgdGhlIGZvbGxvdy11cC4KCkFuZHJhCgoKCkFt
+YXpvbiBEZXZlbG9wbWVudCBDZW50ZXIgKFJvbWFuaWEpIFMuUi5MLiByZWdpc3RlcmVkIG9mZmlj
+ZTogMjdBIFNmLiBMYXphciBTdHJlZXQsIFVCQzUsIGZsb29yIDIsIElhc2ksIElhc2kgQ291bnR5
+LCA3MDAwNDUsIFJvbWFuaWEuIFJlZ2lzdGVyZWQgaW4gUm9tYW5pYS4gUmVnaXN0cmF0aW9uIG51
+bWJlciBKMjIvMjYyMS8yMDA1Lgo=
 

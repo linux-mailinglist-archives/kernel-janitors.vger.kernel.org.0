@@ -2,28 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25AEB2A2A7B
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Nov 2020 13:16:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFC022A2BE7
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Nov 2020 14:46:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728668AbgKBMQU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 2 Nov 2020 07:16:20 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:46600 "EHLO
+        id S1725847AbgKBNqL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Nov 2020 08:46:11 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:49305 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728484AbgKBMQU (ORCPT
+        with ESMTP id S1725616AbgKBNqL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 2 Nov 2020 07:16:20 -0500
+        Mon, 2 Nov 2020 08:46:11 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kZYkx-0000OA-Fi; Mon, 02 Nov 2020 12:16:15 +0000
+        id 1kZa9p-0000ZO-B0; Mon, 02 Nov 2020 13:46:01 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     "David S . Miller" <davem@davemloft.net>,
+To:     Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        "David S . Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] net: dev_ioctl: remove redundant initialization of variable err
-Date:   Mon,  2 Nov 2020 12:16:15 +0000
-Message-Id: <20201102121615.695196-1-colin.king@canonical.com>
+Subject: [PATCH] octeontx2-pf: Fix sizeof() mismatch
+Date:   Mon,  2 Nov 2020 13:46:01 +0000
+Message-Id: <20201102134601.698436-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -34,29 +37,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable err is being initialized with a value that is never read
-and it is being updated later with a new value.  The initialization is
-redundant and can be removed.
+An incorrect sizeof() is being used, sizeof(u64 *) is not correct,
+it should be sizeof(*sq->sqb_ptrs).
 
-Addresses-Coverity: ("Unused value")
+Fixes: caa2da34fd25 ("octeontx2-pf: Initialize and config queues")
+Addresses-Coverity: ("Sizeof not portable (SIZEOF_MISMATCH)")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- net/core/dev_ioctl.c | 2 +-
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
-index 205e92e604ef..db8a0ff86f36 100644
---- a/net/core/dev_ioctl.c
-+++ b/net/core/dev_ioctl.c
-@@ -230,7 +230,7 @@ static int dev_do_ioctl(struct net_device *dev,
- 			struct ifreq *ifr, unsigned int cmd)
- {
- 	const struct net_device_ops *ops = dev->netdev_ops;
--	int err = -EOPNOTSUPP;
-+	int err;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index fc765e86988e..9f3d6715748e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -1239,7 +1239,7 @@ int otx2_sq_aura_pool_init(struct otx2_nic *pfvf)
  
- 	err = dsa_ndo_do_ioctl(dev, ifr, cmd);
- 	if (err == 0 || err != -EOPNOTSUPP)
+ 		sq = &qset->sq[qidx];
+ 		sq->sqb_count = 0;
+-		sq->sqb_ptrs = kcalloc(num_sqbs, sizeof(u64 *), GFP_KERNEL);
++		sq->sqb_ptrs = kcalloc(num_sqbs, sizeof(*sq->sqb_ptrs), GFP_KERNEL);
+ 		if (!sq->sqb_ptrs)
+ 			return -ENOMEM;
+ 
 -- 
 2.27.0
 

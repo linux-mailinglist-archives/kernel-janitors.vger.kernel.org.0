@@ -2,107 +2,120 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4787D2A3C9C
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Nov 2020 07:08:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCEBF2A4063
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Nov 2020 10:36:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727451AbgKCGHu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Nov 2020 01:07:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53668 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725958AbgKCGHu (ORCPT
+        id S1727921AbgKCJgH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Nov 2020 04:36:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:60278 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726013AbgKCJgG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Nov 2020 01:07:50 -0500
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CECE1C0617A6;
-        Mon,  2 Nov 2020 22:07:49 -0800 (PST)
-Received: by mail-ej1-x644.google.com with SMTP id w13so8987270eju.13;
-        Mon, 02 Nov 2020 22:07:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=wZzzP42oR1wFOjbR/obXzKPXtaESFvyqabAu+OtZP9c=;
-        b=ORxsZIWa28SAoCoDem+FxE1zCcXRCU998CQABTj9MmvAD58e8Cgp4vIzXDwLq5de9l
-         RXAnRYLQVMN0d5oazb7ocAE/O09/Jbyh/XTmc6vWh6NOVd/FltYTX4AxRCRsMzn57uod
-         7B2EQWbuJ96bf3m1DVAG//kKVrBnzGq0141czX3ZZ58IlU0CkOc9Fz06WILLHkfjJP+3
-         +WSy2fzWnT8ynnPOc55vw7rHl1NEnvY/5o8ZWaZKKvjEx0l08ID0Gb33ane01c9Bnhs+
-         iEguvoYIvjz+ft/GPM0SZbLLY/P9TRKZTNzR9z3mBzI6sSefEFtS/YVnMSNbwcktRSvK
-         FYKQ==
+        Tue, 3 Nov 2020 04:36:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1604396165;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=utrPveW+BJMu+H8w9gP8ENBbrrz/FW0t+ZI2x7qQEJ0=;
+        b=QbvwyPeRQeMlL5bKQOBXcGaZ5KP4eoXs+WpD8gfCm/7a16dnTyakDYVSM6tJ2Sg+0mMjJ/
+        6/c5seGU2CuhfkYZSTEAoB8jl4Nzo4Wy0KRbLNiKA6fvsn0Kt9k/Xx3vpleDdsHsHrpoqn
+        IPP89sq08Zi2iCQp279PIfZrTwD/ua0=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-452-p3IzBsC1NASwbLKztRHKng-1; Tue, 03 Nov 2020 04:36:03 -0500
+X-MC-Unique: p3IzBsC1NASwbLKztRHKng-1
+Received: by mail-ej1-f72.google.com with SMTP id dx19so4630958ejb.7
+        for <kernel-janitors@vger.kernel.org>; Tue, 03 Nov 2020 01:36:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=wZzzP42oR1wFOjbR/obXzKPXtaESFvyqabAu+OtZP9c=;
-        b=heMXXU99i5SBlIqAcA2IUvKY9SdbFSbEG1ZXRJteihS4Hv5ciCukJjfrpRzcPMTxu8
-         kdBJValJ6src0FQT1tZjfKcPWIr1w3tv21+UJcnvyvG8GOPf3YflRpfEpdaMPh42qTZQ
-         PfiPzY8gFX5rTu99pTc9RBkk5AmmBUJXmOe+Te2gsdYz1pOcFsuvQwYMQzrSIgegJFTc
-         bo5snsIBkgxcWn9Gl6wPWk2HwDxshYn8ZqMWTOwG7mR3rKbRH0lq+wv5aIoDLXZ0PUyB
-         +23h7FMU4Z1aj2ZcSFYZ4JrTOumSFpN5KFpapklOWhalIf4o+5dbUT9VkS9LWQBXhahT
-         kUCw==
-X-Gm-Message-State: AOAM532igLcbJXHgL6LehoSsKbO1DdArJjqh8SEmLw2YkjRUQX+NDh0a
-        3URT2wIXCNSPBe8UEOCk2xE=
-X-Google-Smtp-Source: ABdhPJzOiWqr2Yv/cL1jcFKDWfQYoYaT/YVgEF+7QuQOl8M7DHQFeGynUF+PNxlme7kY2EB7BuXQ0g==
-X-Received: by 2002:a17:906:f296:: with SMTP id gu22mr13176896ejb.475.1604383668551;
-        Mon, 02 Nov 2020 22:07:48 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2dfb:4300:898f:a1f0:a069:8253])
-        by smtp.gmail.com with ESMTPSA id f16sm4491478edw.15.2020.11.02.22.07.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2020 22:07:47 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Cc:     Joe Perches <joe@perches.com>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=utrPveW+BJMu+H8w9gP8ENBbrrz/FW0t+ZI2x7qQEJ0=;
+        b=LBn/ZyrEBh5P2h3K7DaFIsW9s69fNyLqWZrJTiGXNrdJG0syeL9YiR3tiI3MrKUj92
+         AZXBZp14a4V7MfptZN+ci2bZleA5i5DV4I9/p7M83mcMMgFw6h9xbWyIs6gSpdNq7ySv
+         QiMO1yyR01jl3mK2Twfvrn6XuctyZzaohNybSHz8ZfoTu1OweMYE88oO1Imr/B9L1Gil
+         L3RT4DBCB355v/v5fSXZFEMDT7hkRP2Mh6DsFT10LLXr4Xi+BTaxvL4eRQ9GOuSyx3Uc
+         GjY5mySMjjniO9SalvNRMhkKyl4oqfcgRNvrDyHwCIZxo1nSYriHhTnNIpgR5OkStj3D
+         DhXA==
+X-Gm-Message-State: AOAM532Tr3b8YiDaDHweoTcIWQfA+eGz9UUIhsD7IKXs2/Ttl17gAcSo
+        bT9MlGrIJL1xwtCypofI1YNn4PGUv4IxqeirdrUq19aj5OfMviSDvYudGR/MXicTEouyDrJJnPi
+        82oJTn4ZpVu13/eaLM9t6uhzLqCkZ
+X-Received: by 2002:a17:906:edaf:: with SMTP id sa15mr16365526ejb.454.1604396162610;
+        Tue, 03 Nov 2020 01:36:02 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJySyprnOznFAnABrhRiUSLsGjXxSGaLlIw0abYlPr+aHBuTZm4tdcRRUniVh8KiZ9aMowrB4w==
+X-Received: by 2002:a17:906:edaf:: with SMTP id sa15mr16365509ejb.454.1604396162372;
+        Tue, 03 Nov 2020 01:36:02 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
+        by smtp.gmail.com with ESMTPSA id d1sm10653069ejo.17.2020.11.03.01.36.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Nov 2020 01:36:01 -0800 (PST)
+Subject: Re: [PATCH] MAINTAINERS: rectify DELL WMI SYSMAN DRIVERS section
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Divya Bharathi <divya.bharathi@dell.com>,
+        platform-driver-x86@vger.kernel.org
+Cc:     Mario Limonciello <mario.limonciello@dell.com>,
+        Prasanth KSR <prasanth.ksr@dell.com>,
+        Joe Perches <joe@perches.com>,
         Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
         Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: assign mediatek headers to Mediatek SoC support
-Date:   Tue,  3 Nov 2020 07:07:33 +0100
-Message-Id: <20201103060733.25729-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20201029114425.22520-1-lukas.bulwahn@gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <0eea5f3d-b3bc-e3b4-1b7f-d6528f33bd44@redhat.com>
+Date:   Tue, 3 Nov 2020 10:36:01 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
+MIME-Version: 1.0
+In-Reply-To: <20201029114425.22520-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-./include/soc/mediatek/smi.h and ./include/linux/soc/mediatek/infracfg.h
-are currently not assigned to a specific section in MAINTAINERS.
+Hi,
 
-./include/soc/mediatek/smi.h is the header file for definitions in
-./drivers/memory/mtk-smi.c, which is assigned to the section ARM/Mediatek
-SoC support in MAINTAINERS.
+On 10/29/20 12:44 PM, Lukas Bulwahn wrote:
+> Commit e8a60aa7404b ("platform/x86: Introduce support for Systems
+> Management Driver over WMI for Dell Systems") added a new section
+> DELL WMI SYSMAN DRIVERS in MAINTAINERS, but slipped in a typo.
+> 
+> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
+> 
+>   warning: no file matches    F:    drivers/platform/x86/dell-wmi-syman/*
+> 
+> Point the file entry to the right location and add an entry for its
+> Documentation while at it.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-./include/linux/soc/mediatek/infracfg.h is the header file for definitions
-in ./drivers/soc/mediatek/mtk-infracfg.c, which is assigned to the section
-ARM/Mediatek SoC support in MAINTAINERS.
 
-Hence, assign those header files to ARM/Mediatek SoC support as well.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-Matthias, please pick this minor non-urgent cleanup patch.
-
-This patch is part of an initial experiment to assign all files to
-specific sections in MAINTAINERS. At the moment, about 3200 files are
-currently not assigned to specific sections and maintainers.
-
-If you think these cleanup patch cause more churn than value, please let
-me know. Thanks.
-
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b4197e9da495..1703c7d2e146 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2066,6 +2066,8 @@ F:	arch/arm/boot/dts/mt8*
- F:	arch/arm/mach-mediatek/
- F:	arch/arm64/boot/dts/mediatek/
- F:	drivers/soc/mediatek/
-+F:	include/linux/soc/mediatek/infracfg.h
-+F:	include/soc/mediatek/smi.h
- N:	mtk
- N:	mt[678]
- K:	mediatek
--- 
-2.17.1
+> ---
+> Divya, please ack.
+> 
+> Hans, please pick this minor non-urgent patch into your -next x86 platform
+> driver tree on top of commit mentioned above.
+> 
+>  MAINTAINERS | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b8a905354ee9..a0a86daa9c51 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -4974,7 +4974,8 @@ M:	Mario Limonciello <mario.limonciello@dell.com>
+>  M:	Prasanth Ksr <prasanth.ksr@dell.com>
+>  L:	platform-driver-x86@vger.kernel.org
+>  S:	Maintained
+> -F:	drivers/platform/x86/dell-wmi-syman/*
+> +F:	Documentation/ABI/testing/sysfs-class-firmware-attributes
+> +F:	drivers/platform/x86/dell-wmi-sysman/
+>  
+>  DELL WMI NOTIFICATIONS DRIVER
+>  M:	Matthew Garrett <mjg59@srcf.ucam.org>
+> 
 

@@ -2,100 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA5152A4E39
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Nov 2020 19:19:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37AE52A5082
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Nov 2020 20:54:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729091AbgKCSTN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Nov 2020 13:19:13 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:48612 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729065AbgKCSTN (ORCPT
+        id S1729343AbgKCTyL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Nov 2020 14:54:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41958 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726232AbgKCTyK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Nov 2020 13:19:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1604427552;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=d/hWu+N+wOTe562y79WDJHfHrZYi3ZnAqNsDEEWdHNM=;
-        b=ijWnBu820WSzt/327gvE1FiZssZ8/BjoJvpqW9BxGPzA7jNGMYJnM5UqpbSiRkHdDcdwrv
-        bJ+ulpTuyMn3C08VdgFlzvx0EQySIa34nOmFv6ZmArj1UbFQkMF8zQqOWJR+JLR7i+msh+
-        lbgcfjmkjYKP+kqvyveOGC9AMnED148=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-23-VCYS1BjpMkqsO61RFv8BAQ-1; Tue, 03 Nov 2020 13:19:08 -0500
-X-MC-Unique: VCYS1BjpMkqsO61RFv8BAQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2D7751009E23;
-        Tue,  3 Nov 2020 18:19:07 +0000 (UTC)
-Received: from w520.home (ovpn-112-213.phx2.redhat.com [10.3.112.213])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4843A2C31E;
-        Tue,  3 Nov 2020 18:19:03 +0000 (UTC)
-Date:   Tue, 3 Nov 2020 11:19:02 -0700
-From:   Alex Williamson <alex.williamson@redhat.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Diana Craciun <diana.craciun@oss.nxp.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Bharat Bhushan <Bharat.Bhushan@nxp.com>,
-        Eric Auger <eric.auger@redhat.com>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 1/2] vfio/fsl-mc: return -EFAULT if copy_to_user() fails
-Message-ID: <20201103111902.1ac78ae3@w520.home>
-In-Reply-To: <20201023113450.GH282278@mwanda>
-References: <20201023113450.GH282278@mwanda>
+        Tue, 3 Nov 2020 14:54:10 -0500
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8977FC0613D1;
+        Tue,  3 Nov 2020 11:54:10 -0800 (PST)
+Received: by mail-io1-xd41.google.com with SMTP id n129so447661iod.5;
+        Tue, 03 Nov 2020 11:54:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=4WG8tmd1HMqcTZk+4IU/8TLuwdK1RWEkdVQemnyiNgU=;
+        b=oHKVRlSSGCSBson9pZ7r8z8xNib7GSpOYnL0qUzOThF8lE29Ys3NYm6AwhptsEDRB/
+         7dtmo6wIrlF/knKOa7qfpgGX0H+YmUCPLDufVvREKrYQ26d4G/DYTTqc9NKnVDJQhplI
+         ISGeuw/V7pzxAz7bnBjLsRRwfDFLEEiZOHQWf5bI0oGCY1Fs9m7afhbV4VePVgm9rMlA
+         QikObKtBwApmSAaIozeyXzglSQDhh8vczlIS5SZZfecEcztrNjhaUtl8tdjOiewlY8Ce
+         LuduNCFBSBAztN2rYHHbifeEOH/Un96rQPCwdF8SfzyHlDCFNWbVzXZIEuAAvXMjRoLR
+         WunA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4WG8tmd1HMqcTZk+4IU/8TLuwdK1RWEkdVQemnyiNgU=;
+        b=Hz/yYT8qP74q0jK7wYQA/xhCm34cbCXMBNl7MIJOLYg3alSo9Rp70DYlbOVV9uBYPA
+         /zWipW0lWAfheAXLmf7DstPSrr+J4AdJx8SGnCcwv/4BTGe+6mX/BoBtU0qw5/bV8yAf
+         r3GtxkrD8ygsKnLhpNa8KkhJYxDrmPvjKGpLmZko9wsJFaE6pvyZwfD9ASecbyKg7lL0
+         YUu/dyp9mRp5HZYHRm8ujotoqDWlts8gzEZC/EYZ7MwfKqC8Nj6j0PqA2LtZ9gjqarmt
+         /dF9cJY2n+y+Tc5x38C0hjBWeQLJCvonom4vJBv9eGAhPdgAIacyuLBhv7w9ynGpB6wN
+         ebkg==
+X-Gm-Message-State: AOAM5305yLKSM0FQ1aE0wk5T2p1Cnonj/hR1aPaE45zEsOdn8K+Q5Wc3
+        m0eo/4qBreCdpELXJ749p41v471r0t5M3C5gGJ54Sggk
+X-Google-Smtp-Source: ABdhPJw4DgBcNSUg1Wz7uO52LY5Y8eiTwfK0z2kRNDZlIYDgfyuT9h1hdj1nnIHP6UiP1HeudXzSCxhx/HixH1p5n0k=
+X-Received: by 2002:a02:d85:: with SMTP id 127mr17143273jax.13.1604433249817;
+ Tue, 03 Nov 2020 11:54:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+References: <20201102075655.GA4163205@mwanda>
+In-Reply-To: <20201102075655.GA4163205@mwanda>
+From:   Alan Cooper <alcooperx@gmail.com>
+Date:   Tue, 3 Nov 2020 14:53:58 -0500
+Message-ID: <CAOGqxeXtpet0AxmKwkwdjWs4j8_-Lc0jkpahDsAvAcbD0dc1TQ@mail.gmail.com>
+Subject: Re: [PATCH] usb: misc: brcmstb-usb-pinmap: Fix an IS_ERR() vs NULL check
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
+        USB list <linux-usb@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 23 Oct 2020 14:34:50 +0300
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
-
-> The copy_to_user() function returns the number of bytes remaining to be
-> copied, but this code should return -EFAULT.
-> 
-> Fixes: df747bcd5b21 ("vfio/fsl-mc: Implement VFIO_DEVICE_GET_REGION_INFO ioctl call")
+On Mon, Nov 2, 2020 at 2:57 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> The devm_ioremap() function doesn't return error pointers, it returns
+> NULL on error.
+>
+> Fixes: 517c4c44b323 ("usb: Add driver to allow any GPIO to be used for 7211 USB signals")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  drivers/vfio/fsl-mc/vfio_fsl_mc.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+> The commit original commit "usb: Add driver to allow any GPIO to ..."
+> has a bad subsystem prefix.  This is a common anti-pattern for new
+> drivers.  (Although less common after I started whinging to everyone
+> about it).  It means that the first person to fix a bug in the driver
+> has to imagine what the original author wanted.  Sometimes people get
+> annoyed which prefix we pick for them.
+>
+>  drivers/usb/misc/brcmstb-usb-pinmap.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/usb/misc/brcmstb-usb-pinmap.c b/drivers/usb/misc/brcmstb-usb-pinmap.c
+> index 02144c39aaba..2326e60545f7 100644
+> --- a/drivers/usb/misc/brcmstb-usb-pinmap.c
+> +++ b/drivers/usb/misc/brcmstb-usb-pinmap.c
+> @@ -277,8 +277,8 @@ static int __init brcmstb_usb_pinmap_probe(struct platform_device *pdev)
+>         pdata->out_pins = (struct out_pin *)(pdata->in_pins + in_count);
+>
+>         pdata->regs = devm_ioremap(&pdev->dev, r->start, resource_size(r));
+> -       if (IS_ERR(pdata->regs))
+> -               return PTR_ERR(pdata->regs);
+> +       if (!pdata->regs)
+> +               return -ENOMEM;
+>         platform_set_drvdata(pdev, pdata);
+>
+>         err = parse_pins(&pdev->dev, dn, pdata);
+> --
+> 2.28.0
+>
 
-Applied this and the following patch to vfio for-linus branch with
-Diana's acks for v5.10.  Thanks,
-
-Alex
-
-
-> diff --git a/drivers/vfio/fsl-mc/vfio_fsl_mc.c b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-> index 0113a980f974..21f22e3da11f 100644
-> --- a/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-> +++ b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-> @@ -248,7 +248,9 @@ static long vfio_fsl_mc_ioctl(void *device_data, unsigned int cmd,
->  		info.size = vdev->regions[info.index].size;
->  		info.flags = vdev->regions[info.index].flags;
->  
-> -		return copy_to_user((void __user *)arg, &info, minsz);
-> +		if (copy_to_user((void __user *)arg, &info, minsz))
-> +			return -EFAULT;
-> +		return 0;
->  	}
->  	case VFIO_DEVICE_GET_IRQ_INFO:
->  	{
-> @@ -267,7 +269,9 @@ static long vfio_fsl_mc_ioctl(void *device_data, unsigned int cmd,
->  		info.flags = VFIO_IRQ_INFO_EVENTFD;
->  		info.count = 1;
->  
-> -		return copy_to_user((void __user *)arg, &info, minsz);
-> +		if (copy_to_user((void __user *)arg, &info, minsz))
-> +			return -EFAULT;
-> +		return 0;
->  	}
->  	case VFIO_DEVICE_SET_IRQS:
->  	{
-
+Acked-by: Al Cooper <alcooperx@gmail.com> # prefix change noted

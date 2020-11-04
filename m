@@ -2,101 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37AE52A5082
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Nov 2020 20:54:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A3482A5C2B
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Nov 2020 02:50:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729343AbgKCTyL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Nov 2020 14:54:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41958 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726232AbgKCTyK (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Nov 2020 14:54:10 -0500
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8977FC0613D1;
-        Tue,  3 Nov 2020 11:54:10 -0800 (PST)
-Received: by mail-io1-xd41.google.com with SMTP id n129so447661iod.5;
-        Tue, 03 Nov 2020 11:54:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4WG8tmd1HMqcTZk+4IU/8TLuwdK1RWEkdVQemnyiNgU=;
-        b=oHKVRlSSGCSBson9pZ7r8z8xNib7GSpOYnL0qUzOThF8lE29Ys3NYm6AwhptsEDRB/
-         7dtmo6wIrlF/knKOa7qfpgGX0H+YmUCPLDufVvREKrYQ26d4G/DYTTqc9NKnVDJQhplI
-         ISGeuw/V7pzxAz7bnBjLsRRwfDFLEEiZOHQWf5bI0oGCY1Fs9m7afhbV4VePVgm9rMlA
-         QikObKtBwApmSAaIozeyXzglSQDhh8vczlIS5SZZfecEcztrNjhaUtl8tdjOiewlY8Ce
-         LuduNCFBSBAztN2rYHHbifeEOH/Un96rQPCwdF8SfzyHlDCFNWbVzXZIEuAAvXMjRoLR
-         WunA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4WG8tmd1HMqcTZk+4IU/8TLuwdK1RWEkdVQemnyiNgU=;
-        b=Hz/yYT8qP74q0jK7wYQA/xhCm34cbCXMBNl7MIJOLYg3alSo9Rp70DYlbOVV9uBYPA
-         /zWipW0lWAfheAXLmf7DstPSrr+J4AdJx8SGnCcwv/4BTGe+6mX/BoBtU0qw5/bV8yAf
-         r3GtxkrD8ygsKnLhpNa8KkhJYxDrmPvjKGpLmZko9wsJFaE6pvyZwfD9ASecbyKg7lL0
-         YUu/dyp9mRp5HZYHRm8ujotoqDWlts8gzEZC/EYZ7MwfKqC8Nj6j0PqA2LtZ9gjqarmt
-         /dF9cJY2n+y+Tc5x38C0hjBWeQLJCvonom4vJBv9eGAhPdgAIacyuLBhv7w9ynGpB6wN
-         ebkg==
-X-Gm-Message-State: AOAM5305yLKSM0FQ1aE0wk5T2p1Cnonj/hR1aPaE45zEsOdn8K+Q5Wc3
-        m0eo/4qBreCdpELXJ749p41v471r0t5M3C5gGJ54Sggk
-X-Google-Smtp-Source: ABdhPJw4DgBcNSUg1Wz7uO52LY5Y8eiTwfK0z2kRNDZlIYDgfyuT9h1hdj1nnIHP6UiP1HeudXzSCxhx/HixH1p5n0k=
-X-Received: by 2002:a02:d85:: with SMTP id 127mr17143273jax.13.1604433249817;
- Tue, 03 Nov 2020 11:54:09 -0800 (PST)
+        id S1728263AbgKDBuS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Nov 2020 20:50:18 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41424 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725765AbgKDBuS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 3 Nov 2020 20:50:18 -0500
+Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.5])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4A6B420870;
+        Wed,  4 Nov 2020 01:50:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604454617;
+        bh=np7ao9CRiVE7dH2ACNRRQQ4C0At4/rQuLahrqhg/1q4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=f64NiT1e7fGOz+34KoH7M4ppkp9si/CbKiiHM7X5+S3vH8x8VVGLqSzlbTqm8bX0n
+         lokEJiw2Zy5oHFPK0MIL33CmGvzQIOcy1AosfdLYDzVwQm9bFFcrMFM3e67cIAGKwL
+         eS07kHizQPvmOazAbYVH/uKlHZU+c5wv9n2rbWZ4=
+Date:   Tue, 3 Nov 2020 17:50:16 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: dev_ioctl: remove redundant initialization of
+ variable err
+Message-ID: <20201103175016.0070fe48@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20201102121615.695196-1-colin.king@canonical.com>
+References: <20201102121615.695196-1-colin.king@canonical.com>
 MIME-Version: 1.0
-References: <20201102075655.GA4163205@mwanda>
-In-Reply-To: <20201102075655.GA4163205@mwanda>
-From:   Alan Cooper <alcooperx@gmail.com>
-Date:   Tue, 3 Nov 2020 14:53:58 -0500
-Message-ID: <CAOGqxeXtpet0AxmKwkwdjWs4j8_-Lc0jkpahDsAvAcbD0dc1TQ@mail.gmail.com>
-Subject: Re: [PATCH] usb: misc: brcmstb-usb-pinmap: Fix an IS_ERR() vs NULL check
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>,
-        USB list <linux-usb@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Nov 2, 2020 at 2:57 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> The devm_ioremap() function doesn't return error pointers, it returns
-> NULL on error.
->
-> Fixes: 517c4c44b323 ("usb: Add driver to allow any GPIO to be used for 7211 USB signals")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> The commit original commit "usb: Add driver to allow any GPIO to ..."
-> has a bad subsystem prefix.  This is a common anti-pattern for new
-> drivers.  (Although less common after I started whinging to everyone
-> about it).  It means that the first person to fix a bug in the driver
-> has to imagine what the original author wanted.  Sometimes people get
-> annoyed which prefix we pick for them.
->
->  drivers/usb/misc/brcmstb-usb-pinmap.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/usb/misc/brcmstb-usb-pinmap.c b/drivers/usb/misc/brcmstb-usb-pinmap.c
-> index 02144c39aaba..2326e60545f7 100644
-> --- a/drivers/usb/misc/brcmstb-usb-pinmap.c
-> +++ b/drivers/usb/misc/brcmstb-usb-pinmap.c
-> @@ -277,8 +277,8 @@ static int __init brcmstb_usb_pinmap_probe(struct platform_device *pdev)
->         pdata->out_pins = (struct out_pin *)(pdata->in_pins + in_count);
->
->         pdata->regs = devm_ioremap(&pdev->dev, r->start, resource_size(r));
-> -       if (IS_ERR(pdata->regs))
-> -               return PTR_ERR(pdata->regs);
-> +       if (!pdata->regs)
-> +               return -ENOMEM;
->         platform_set_drvdata(pdev, pdata);
->
->         err = parse_pins(&pdev->dev, dn, pdata);
-> --
-> 2.28.0
->
+On Mon,  2 Nov 2020 12:16:15 +0000 Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable err is being initialized with a value that is never read
+> and it is being updated later with a new value.  The initialization is
+> redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Acked-by: Al Cooper <alcooperx@gmail.com> # prefix change noted
+Applied.

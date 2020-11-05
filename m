@@ -2,126 +2,127 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 476A92A81B6
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Nov 2020 16:00:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB2492A89B0
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Nov 2020 23:24:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731128AbgKEPAA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Nov 2020 10:00:00 -0500
-Received: from mout01.posteo.de ([185.67.36.65]:38837 "EHLO mout01.posteo.de"
+        id S1732632AbgKEWYd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Nov 2020 17:24:33 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43452 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730862AbgKEO77 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Nov 2020 09:59:59 -0500
-Received: from submission (posteo.de [89.146.220.130]) 
-        by mout01.posteo.de (Postfix) with ESMTPS id B3B08160060
-        for <kernel-janitors@vger.kernel.org>; Thu,  5 Nov 2020 15:59:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-        t=1604588395; bh=ZvLSPE52lPHFBlIfJ9oWOiy2A/99HXQsbJtnOXoWBTM=;
-        h=Date:From:To:Cc:Subject:From;
-        b=PXmX599IeHHbu/YbDaFMMf3Qybjy6D/OwFaO5Y6K29vkALY32UL6oqF3U+JAkyrX1
-         CSeEj51ipKQCBBUqQh2BqG9YmVl9JXxpK62qww/kiCAIbXh/tEQbdwc+VDr5PrA96f
-         ZyF7yFy32rdqHxZGHMjWX9OiY0aTKUH+PbQjsX8YTxfDsFnC7vtd5M4tSjutFRouab
-         8HQ+rmp1MZgmF45sktgXE9t0gtSTUsfKqf4w3Zm+hsMXbeMaQBj/162ggLnziPIVwD
-         qyctPBnvCinStmiI1cIzgtrS86pIeJOLg+M8f0vsQ19TMiWABNPvhzN+xVs/RG+jbK
-         5X32wGzkJEcog==
-Received: from customer (localhost [127.0.0.1])
-        by submission (posteo.de) with ESMTPSA id 4CRms65Jptz6tmK;
-        Thu,  5 Nov 2020 15:59:54 +0100 (CET)
-Date:   Thu, 5 Nov 2020 15:59:52 +0100
-From:   Wilken Gottwalt <wilken.gottwalt@posteo.net>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Colin King <colin.king@canonical.com>,
-        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] hwmon: corsair-psu: fix unintentional sign
- extension issue
-Message-ID: <20201105155952.1db127bd@monster.powergraphx.local>
-In-Reply-To: <20201105141549.GA1389@roeck-us.net>
-References: <20201105115019.41735-1-colin.king@canonical.com>
-        <20201105133233.10edda5b@monster.powergraphx.local>
-        <20201105141549.GA1389@roeck-us.net>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1732295AbgKEWYc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 5 Nov 2020 17:24:32 -0500
+Received: from localhost (230.sub-72-107-127.myvzw.com [72.107.127.230])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C37D82078E;
+        Thu,  5 Nov 2020 22:24:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604615072;
+        bh=m4VksZL7+JiqNpYze209mExqXP8l/+3AbfJkmoUOqu4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=PfPGXqzAET2q3RaQlhTZeLFhPGzVo8+uEhxpDjALDjkX6Ne0ll1Kn6HdVR69O0TJJ
+         deuq1eJ304vw8pNJJtdYWJqC7A3TOsxS7vxcPQT7euCpsCQse3ecL0LsF/aCjfjQ76
+         yXSh6nYR/sLhiJPH/MRiKVbIAtpnKtl4zP/lHobc=
+Date:   Thu, 5 Nov 2020 16:24:30 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Stephen Bates <sbates@raithlin.com>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] PCI: fix a potential uninitentional integer overflow
+ issue
+Message-ID: <20201105222430.GA499522@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201007123045.GS4282@kadam>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 5 Nov 2020 06:15:49 -0800
-Guenter Roeck <linux@roeck-us.net> wrote:
+On Wed, Oct 07, 2020 at 03:33:45PM +0300, Dan Carpenter wrote:
+> On Wed, Oct 07, 2020 at 12:46:15PM +0100, Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > The shift of 1 by align_order is evaluated using 32 bit arithmetic
+> > and the result is assigned to a resource_size_t type variable that
+> > is a 64 bit unsigned integer on 64 bit platforms. Fix an overflow
+> > before widening issue by using the BIT_ULL macro to perform the
+> > shift.
+> > 
+> > Addresses-Coverity: ("Uninitentional integer overflow")
 
-> On Thu, Nov 05, 2020 at 01:32:33PM +0100, Wilken Gottwalt wrote:
-> > On Thu,  5 Nov 2020 11:50:19 +0000
-> > Colin King <colin.king@canonical.com> wrote:
+s/Uninitentional/Unintentional/
+Also in subject (please also capitalize subject)
+
+Doesn't Coverity also assign an ID number for this specific issue?
+Can you include that as well, e.g.,
+
+  Addresses-Coverity-ID: 1226899 ("Unintentional integer overflow")
+
+> > Fixes: 07d8d7e57c28 ("PCI: Make specifying PCI devices in kernel parameters reusable")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > ---
+> >  drivers/pci/pci.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
 > > 
-> > > From: Colin Ian King <colin.king@canonical.com>
-> > > 
-> > > The shifting of the u8 integer data[3] by 24 bits to the left will
-> > > be promoted to a 32 bit signed int and then sign-extended to a
-> > > long. In the event that the top bit of data[3] is set then all
-> > > then all the upper 32 bits of a 64 bit long end up as also being
-> > > set because of the sign-extension. Fix this by casting data[3] to
-> > > a long before the shift.
-> > > 
-> > > Addresses-Coverity: ("Unintended sign extension")
-> > > Fixes: ce15cd2cee8b ("hwmon: add Corsair PSU HID controller driver")
-> > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > > ---
-> > >  drivers/hwmon/corsair-psu.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/hwmon/corsair-psu.c b/drivers/hwmon/corsair-psu.c
-> > > index e92d0376e7ac..5d19a888231a 100644
-> > > --- a/drivers/hwmon/corsair-psu.c
-> > > +++ b/drivers/hwmon/corsair-psu.c
-> > > @@ -241,7 +241,7 @@ static int corsairpsu_get_value(struct corsairpsu_data *priv, u8 cmd, u8
-> > > rail, l
-> > >  	 * the LINEAR11 conversion are the watts values which are about 1200 for the
-> > > strongest psu
-> > >  	 * supported (HX1200i)
-> > >  	 */
-> > > -	tmp = (data[3] << 24) + (data[2] << 16) + (data[1] << 8) + data[0];
-> > > +	tmp = ((long)data[3] << 24) + (data[2] << 16) + (data[1] << 8) + data[0];
-> > >  	switch (cmd) {
-> > >  	case PSU_CMD_IN_VOLTS:
-> > >  	case PSU_CMD_IN_AMPS:
-> > 
-> > Yeah, this could happen if the uptime value in the micro-controller gets bigger
-> > than 68 years (in seconds), and it is the only value which actually uses more
-> > than 2 bytes for the representation. So what about architectures which are 32 bit
-> > wide and where a long has 32 bits? I guess this simple cast is not enough.
-> > 
+> > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> > index 6d4d5a2f923d..1a5844d7af35 100644
+> > --- a/drivers/pci/pci.c
+> > +++ b/drivers/pci/pci.c
+> > @@ -6209,7 +6209,7 @@ static resource_size_t pci_specified_resource_alignment(struct pci_dev *dev,
+> >  			if (align_order == -1)
+> >  				align = PAGE_SIZE;
+> >  			else
+> > -				align = 1 << align_order;
+> > +				align = BIT_ULL(align_order);
 > 
-> The hwmon subsystem uses 'long' to pass values back to the core.
-> While that may be a bit unfortunate as it doesn't support uptimes
-> of more than 68 years in seconds, we are not going to change the
-> hwmon core to accommodate it. If the incoming data is always
-> expected to be positive, and you don't want to risk the overflow,
-> feel free to either use "data[3] & 0x7f" instead, or max out the
-> result at INT_MAX (from <linux/limits.h>).
-> 
-> Thanks,
-> Guenter
+> "align_order" comes from sscanf() so Smatch thinks it's not trusted.
+> Anything above 63 is undefined behavior.  There should be a bounds check
+> on this but I don't know what the valid values of "align" are.
 
-And it is basically impossible to hit the 68 years. For example here are the
-values for my psu, which I got about 6 years ago (2014 is the first year it
-was sold) and which runs 8-20 hours nearly every day: 656 day(s), 21:26:34,
-that are not even 2 years. And we are talking about gaming PSUs here, which
-no sane person would put into a server where it runs 24/7. And if so, it
-wouldn't survive 10 uptime years, not to mention 68 years. I'm pretty sure
-that the fan in my PSU is somewhat damaged already (hence the best guess fan
-value calculation). So yes, technically it is not perfect but practically it
-doesn't make much sense here trying to find the perfect solution. It will
-only introduce unnecessary complexity for a scenario which is so unlikely to
-happen at all. I actually spent a lot of time thinking about it, and this
-is the most practical solution I found - and which made Guenter happy ;-)
+The spec doesn't explicitly say what the size limit for 64-bit BARs
+is, but it does say 32-bit BARs can support up to 2GB (2^31).  So I
+infer that 2^63 would be the limit for 64-bit BARs.
 
-Though, I must admit there is a way to solve this problem - by making chained
-requests and get all values at once and parse/split the response. You can
-easily join all requests in this 64 bytes hid message. But this may not work
-reliable for all supported devices. I already encountered issues while joining
-rail select and read a rail value. It would at least increase the complexity
-to quite a new level.
+What about something like the following?  To me, BIT_ULL doesn't seem
+like an advantage over "1ULL << ", but maybe there's a reason to use
+it.
 
-greetings,
-Wilken
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 8b9bea8ba751..6e17d0a6828a 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -6197,19 +6197,21 @@ static resource_size_t pci_specified_resource_alignment(struct pci_dev *dev,
+ 	while (*p) {
+ 		count = 0;
+ 		if (sscanf(p, "%d%n", &align_order, &count) == 1 &&
+-							p[count] == '@') {
++		    p[count] == '@') {
+ 			p += count + 1;
++			if (align_order > 63) {
++				pr_err("PCI: Invalid requested alignment (order %d)\n",
++				       align_order);
++				align_order = PAGE_SHIFT;
++			}
+ 		} else {
+-			align_order = -1;
++			align_order = PAGE_SHIFT;
+ 		}
+ 
+ 		ret = pci_dev_str_match(dev, p, &p);
+ 		if (ret == 1) {
+ 			*resize = true;
+-			if (align_order == -1)
+-				align = PAGE_SIZE;
+-			else
+-				align = 1 << align_order;
++			align = 1ULL << align_order;
+ 			break;
+ 		} else if (ret < 0) {
+ 			pr_err("PCI: Can't parse resource_alignment parameter: %s\n",

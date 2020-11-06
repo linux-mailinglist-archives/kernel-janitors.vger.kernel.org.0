@@ -2,110 +2,130 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DE022A934A
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Nov 2020 10:48:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C78382A935D
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Nov 2020 10:50:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726901AbgKFJsg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Nov 2020 04:48:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56070 "EHLO
+        id S1727066AbgKFJuK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Nov 2020 04:50:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725868AbgKFJsf (ORCPT
+        with ESMTP id S1726423AbgKFJuJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Nov 2020 04:48:35 -0500
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6799AC0613CF;
-        Fri,  6 Nov 2020 01:48:35 -0800 (PST)
-Received: by mail-wr1-x442.google.com with SMTP id 33so625174wrl.7;
-        Fri, 06 Nov 2020 01:48:35 -0800 (PST)
+        Fri, 6 Nov 2020 04:50:09 -0500
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A493C0613CF;
+        Fri,  6 Nov 2020 01:50:07 -0800 (PST)
+Received: by mail-il1-x144.google.com with SMTP id p10so562602ile.3;
+        Fri, 06 Nov 2020 01:50:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=r7YyaJmRIWWPTEfEzl80MC6QW4rF6G5MsBiV1a8/Lpc=;
-        b=eQ3+X40TsWePgKwYfv6Y0LrGNy6Si6msdrfWqYRBp5WPTkG0hjNjGm66SiM9HqZ0nk
-         KF5HPV6RTb5+1fkntdj+itsd956wskElIvlUkBamTgKjpnplJ4Rk2Ib0ZBg32FcYylp+
-         Jfutwen3/Jo8hF5/Y7bL2j/tf2OT/5H9BfIE66I48QofEdVgCsdlHb6TyttKYBIJ9Jy5
-         cfSwiMiCX4I7W2zvParOK4si2/Z6C52EoVua/0aWfSgdb9cEX2/ug7fpydGdA+KKEM9J
-         R1r/ICUPEoh548L51HgsP7qB63gu7VwTtGnqrF2ukiNlWpoD3+spNOiV3Wf7kfih6Vuu
-         4CJA==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Xo980jxDgHwElwCLE395h1hcpqz7tSY6loYQUrMps3A=;
+        b=nXWUVZfhV0+btoasoZHp+W0XUuF1dY1RydW0bCEjZfZMZechY86dZbBADBqZD7R/gP
+         NkcnaZtFnMiOpXvJsZ/wQU3EyUjaLYzpGpBDcqosxFPjl6i99Vf8SA7ilr7YsQ3omeTf
+         GsoZxcUeVWOvbTFznbC705BQq+A3Fki4eAhdJI1VJNqc3ynSPwRHVjZw8+UcHd429onw
+         yF4ZN3e7Yj+Zk5VpaFDk8dJGkSyQeYDam1KVEB2acdyYKrj33KnhEURSTiBeOMAHNp7U
+         /V1QRGjmFor/e/aG9sbrQXpfa/QnhQIjbjjVrD0Tm0RX1jHQtRInR14kLgF69656Aqea
+         0Xvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=r7YyaJmRIWWPTEfEzl80MC6QW4rF6G5MsBiV1a8/Lpc=;
-        b=R1XYbL2fVZIQBto8tAFCAr9w77oAsXb4Ygb9ctFyvwkvwHax4kwqda3gSa9srkHNcU
-         dbC79coAMDov59yEzpGwXtriS3IndnRkPBOGoOhfh7xSPRd2RV04sVb3mN8qFMaBq+9G
-         rVZH2ygcxKsPxsukdDoGGfDWpeX4qPpjyRs1dvmOMPpfo3WLI54FTsFG/62eIZcBC7rX
-         6F4L8nkneWUbxM4bZ4Rex0Wl93//RIoi7U6tySjHNHMGhzZFaNP0eg19D39j33kALr3a
-         EtQ9npB8+tMepk2888BMrShyJVLo2zoR/gB+5/kV7dwPb0QeFXbMt0oUu/mCV8zVPg58
-         Zjqg==
-X-Gm-Message-State: AOAM532pOTTqgl1Gx6AgE8k76vasbx9sfYAiLrURDyCnkamApGj4nMZJ
-        7ajHOuhOeJSce5PLFerZOj0=
-X-Google-Smtp-Source: ABdhPJyVUzxwiL83Bw5+ELbmBhVqWaLCOIfOQ1w3aqx4YdGq1EfkW9niP4Pe3zgVc9WNFsu/OEZyqg==
-X-Received: by 2002:a5d:6681:: with SMTP id l1mr1705435wru.356.1604656114107;
-        Fri, 06 Nov 2020 01:48:34 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d20:9d00:b87b:b644:61a3:6870])
-        by smtp.gmail.com with ESMTPSA id c9sm1187446wrp.65.2020.11.06.01.48.32
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Xo980jxDgHwElwCLE395h1hcpqz7tSY6loYQUrMps3A=;
+        b=j3FigQfUYvAnZSwD9ImS5pgNqJIzehFMtmTKrC4Gl30IF5SqLz+ilmrg9yZ/s/yO7S
+         T5d1ZUpODr9NJF2gjn6EKybFMrO0c1Wz8FFJ2731KGSmfpliMqOmtfo7GOMIN/0QbT2w
+         sr0QEm/yJb2+b2cXvd5iAI/DjBX9vjpTgu3/SgGbbn3eMXSDaZbbrXCNpC74lKy7GieH
+         wnU9CYQBo1ud3g25jE0i0GIejHikYj7P5TVnGopbNHg4W3mSy2Dot4uPq5YTjldJndfX
+         Nr/UTp5zSx1EP8JnMRNa7igVksmplQ+sgzpvyUBTRsZuDL4VmdTExLYocQH3lQNVnbV/
+         eq3A==
+X-Gm-Message-State: AOAM532Fe3e6+AEfZgF4NLyAY9qEoNbDZz4yUnLhf/3UYMt+/Z6ooDKs
+        AE8fSOgPGebvOXTuUfBR8oyVZsNv/l8=
+X-Google-Smtp-Source: ABdhPJxZp36p6E2qRtUdnnHhjz1uk5ZO4T1LrrfvyzSUV82a53vXRt7bP0NKoshVvnHFy55uHy0/KQ==
+X-Received: by 2002:a92:d449:: with SMTP id r9mr752535ilm.276.1604656206576;
+        Fri, 06 Nov 2020 01:50:06 -0800 (PST)
+Received: from ubuntu-m3-large-x86 ([2604:1380:45f1:1d00::1])
+        by smtp.gmail.com with ESMTPSA id r14sm711209ilc.78.2020.11.06.01.50.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2020 01:48:33 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
-Cc:     Tom Rix <trix@redhat.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
+        Fri, 06 Nov 2020 01:50:06 -0800 (PST)
+Date:   Fri, 6 Nov 2020 02:50:04 -0700
+From:   Nathan Chancellor <natechancellor@gmail.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Balbir Singh <bsingharora@gmail.com>, Tom Rix <trix@redhat.com>,
         Nick Desaulniers <ndesaulniers@google.com>,
         clang-built-linux@googlegroups.com,
         kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech,
-        linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] clk: remove unneeded dead-store initialization
-Date:   Fri,  6 Nov 2020 10:48:20 +0100
-Message-Id: <20201106094820.30167-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] taskstats: remove unneeded dead assignment
+Message-ID: <20201106095004.GA3269193@ubuntu-m3-large-x86>
+References: <20201106062210.27920-1-lukas.bulwahn@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201106062210.27920-1-lukas.bulwahn@gmail.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-make clang-analyzer on x86_64 defconfig caught my attention with:
+On Fri, Nov 06, 2020 at 07:22:10AM +0100, Lukas Bulwahn wrote:
+> make clang-analyzer on x86_64 defconfig caught my attention with:
+> 
+>   kernel/taskstats.c:120:2: warning: Value stored to 'rc' is never read \
+>   [clang-analyzer-deadcode.DeadStores]
+>           rc = 0;
+>           ^
+> 
+> Commit d94a041519f3 ("taskstats: free skb, avoid returns in
+> send_cpu_listeners") made send_cpu_listeners() not return a value and
+> hence, the rc variable remained only to be used within the loop where
+> it is always assigned before read and it does not need any other
+> initialisation.
+> 
+> So, simply remove this unneeded dead initializing assignment.
+> 
+> As compilers will detect this unneeded assignment and optimize this anyway,
+> the resulting object code is identical before and after this change.
+> 
+> No functional change. No change to object code.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-  drivers/clk/clk.c:423:19:
-  warning: Value stored to 'parent' during its initialization is never read
-  [clang-analyzer-deadcode.DeadStores]
-          struct clk_core *parent = ERR_PTR(-ENOENT);
-                           ^
+Question below.
 
-Commit fc0c209c147f ("clk: Allow parents to be specified without string
-names") introduced clk_core_fill_parent_index() with this unneeded
-dead-store initialization.
+Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
 
-So, simply remove this unneeded dead-store initialization to make
-clang-analyzer happy.
+> ---
+> applies cleanly on current master and next-20201105
+> 
+> Balbir, please pick this minor non-urgent clean-up patch.
+> 
+>  kernel/taskstats.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/kernel/taskstats.c b/kernel/taskstats.c
+> index a2802b6ff4bb..bd18a7bf5276 100644
+> --- a/kernel/taskstats.c
+> +++ b/kernel/taskstats.c
+> @@ -117,7 +117,6 @@ static void send_cpu_listeners(struct sk_buff *skb,
+>  
+>  	genlmsg_end(skb, reply);
+>  
+> -	rc = 0;
+>  	down_read(&listeners->sem);
+>  	list_for_each_entry(s, &listeners->list, list) {
 
-As compilers will detect this unneeded assignment and optimize this anyway,
-the resulting object code is identical before and after this change.
+Would it be worth moving the scope of rc into the for loop, now that it
+is only used there? Looks like it used to be used in the main function
+scope before commit 053c095a82cf ("netlink: make nlmsg_end() and
+genlmsg_end() void") but if this is removed, it is only used to check
+the return of genlmsg_unicast within the list_for_each_entry loop. Not
+sure that buys us anything but I know you have done it in patches
+before so I thought it was worth considering.
 
-No functional change. No change to object code.
+>  		skb_next = NULL;
+> -- 
+> 2.17.1
+> 
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-applies cleanly on current master and next-20201106
-
-Stephen, Michael, please pick this minor non-urgent clean-up patch.
-
- drivers/clk/clk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index f83dac54ed85..ba35bf35bcd3 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -420,7 +420,7 @@ static struct clk_core *clk_core_get(struct clk_core *core, u8 p_index)
- static void clk_core_fill_parent_index(struct clk_core *core, u8 index)
- {
- 	struct clk_parent_map *entry = &core->parents[index];
--	struct clk_core *parent = ERR_PTR(-ENOENT);
-+	struct clk_core *parent;
- 
- 	if (entry->hw) {
- 		parent = entry->hw->core;
--- 
-2.17.1
-
+Cheers,
+Nathan

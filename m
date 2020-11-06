@@ -2,96 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C7372A8EA2
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Nov 2020 06:12:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF5B92A8F6A
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Nov 2020 07:22:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726116AbgKFFMp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Nov 2020 00:12:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41366 "EHLO
+        id S1726121AbgKFGWV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Nov 2020 01:22:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725776AbgKFFMo (ORCPT
+        with ESMTP id S1725830AbgKFGWV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Nov 2020 00:12:44 -0500
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73C1AC0613CF;
-        Thu,  5 Nov 2020 21:12:43 -0800 (PST)
-Received: by mail-pl1-x62c.google.com with SMTP id j5so123580plk.7;
-        Thu, 05 Nov 2020 21:12:43 -0800 (PST)
+        Fri, 6 Nov 2020 01:22:21 -0500
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DBEFC0613CF;
+        Thu,  5 Nov 2020 22:22:21 -0800 (PST)
+Received: by mail-wm1-x344.google.com with SMTP id v5so268376wmh.1;
+        Thu, 05 Nov 2020 22:22:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=qaz5JfSXEexVzd3vu4/X1zvrfhtSmuN9aWiTUHv9SJA=;
-        b=gH4mN2yOR56HxWAUwIJnrOftunZr9+x3k3rBsiRJpCEksBtaVdkAckIA/ShkL3YK2I
-         mkGL3Hy4IUaQz762pvnkx4KwUGB3BGF80qajcWfFjd3npfm501lmjQmXotnZ6fWWFPTv
-         HtGAsH4Nr6zqgcBut3cJLOkkA6HjcjzOeiBgQOQmGIkHpBIZk7SfvgFKzre4bD6er3ya
-         gXaAFbMsf1CME3CF83weO8ROcpeFuEPeflYeITDaZa9G75buQ0cI5aO6IItXmjHRFbEM
-         99PGhazX1x6zc9vZ5TEqTrOmrufIVnDJhwjCUGQym7gCog8MXh3QtEriERKx5ZABf9rB
-         HpBg==
+        h=from:to:cc:subject:date:message-id;
+        bh=s5ZmG5HziDA6IddsEwKpYTRZvML0z6aMnCT2nnV/iGw=;
+        b=eXFlA98XsP9bNmMIrUbtLEH8DNqvq47SPuGmJHCzfmWSp1fR1x2j++BW+WQOKtNHpy
+         +n08HtlcerjUblGu7gVJIEAE8snqfmrKwkHUBhVmckyOAifi9wl/MLGB+j8fZnAhKgft
+         AGf/TnfJECJbQhkZd5NaLUOE+dB2HmNcP1cXmptgfCEcvh2ESOWwr8viqYLL3qrflwQ4
+         ej9EnxUhE9BBa/UQrjg+TYA/zGHhHUF5z3raVSr5MypFVjkjv0/u1pitZf2oUcQxMax5
+         RehF139mRg36hUXiXbPwOZYby58Feh1Zu8IX5dkdNtsMdC9/SYNEfYpNKEiRcDbBCiqK
+         Sc3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=qaz5JfSXEexVzd3vu4/X1zvrfhtSmuN9aWiTUHv9SJA=;
-        b=E0+AataMUa682FCPcKRIc4KvhuaaCmYoq84qvddpsAneH0F7ANcc83+0z66qme/Nb0
-         5P+AW45235aYe5+xvp/0pj7x9VHBQR0ohmUYunXOKP45K5kE/znJ3rGuVbdTAEV9Sjdj
-         6Zl2VRteDgd7vk9oiqyM29mFNj9LpBnp/OEJ/AJsY4suAehQknJBzbndfNvpKbl3g7XI
-         Ds6rHH7eILjQcfDbvUrMGUDC/h06piQzXkqOGLbTp33Beuz8hzzTjw477TvRbSmlVfIg
-         Jdz6W3oU+F3AWXWjpDcfLLwIElfTxfkfVMTRRZMHi10e2N+L4dpunQZPoM6ohiQswYG+
-         3SIg==
-X-Gm-Message-State: AOAM5300m2CpRdfY0z3urnwXhd+zDPol8hAA3jVt4gRa3zgBoCl1vHqm
-        HqBG+zXV9VKPMKDW3z2Z8V0=
-X-Google-Smtp-Source: ABdhPJyn8OECd6Yk2g1TFuxtsKbYq4FLzAeVOngn/1xDW9/NSK6CjFcd/h0m9+vl0XlPDiPDXxLHrQ==
-X-Received: by 2002:a17:902:d698:b029:d6:b974:13c5 with SMTP id v24-20020a170902d698b02900d6b97413c5mr339670ply.13.1604639563004;
-        Thu, 05 Nov 2020 21:12:43 -0800 (PST)
-Received: from localhost ([2409:10:2e40:5100:6e29:95ff:fe2d:8f34])
-        by smtp.gmail.com with ESMTPSA id j184sm320461pfg.207.2020.11.05.21.12.41
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=s5ZmG5HziDA6IddsEwKpYTRZvML0z6aMnCT2nnV/iGw=;
+        b=Do7G5p0HT/LiprlUywutKIToOdokDz71Gs1SVzkJSeaFbfeTB9SbhDRyiRC96EB9+9
+         Hh7Ch3fD7si1hrfI/Ksjtef1JHxF93igmRk1nevNE7wb48njwRwZilhBrGntIINjkthu
+         RPwuryWlB7u1POEZ/559RMXG3dz7BFNmU2gouQ2SsCxYtSfv537M12sNKh2Zuxf2A/x9
+         8aCNsX4fp1YlqtjvR3shrOcxFharShsY/+8ucrm1G/6lmxneE8Iiyu7GCMn34eI6ror7
+         uuzfRB2vKXjznjJYQK8aLCVlFbS976QUsbAFm9rt/y73qeJRkLVSErwyKVhDrqjIknrI
+         PgyQ==
+X-Gm-Message-State: AOAM532t0lkV+b2IwUsx7P+pN2zKJfFrFGTY+1E7VBK/T5k9IwwUZHDQ
+        W3+hzYgUKkK6A83xpMYpLQQ=
+X-Google-Smtp-Source: ABdhPJw1kNpLxAin7EGLXZO9jr3KRSf4YMHdtk5JEmho3ZDLTxUMoNc/quG7fq3c5nak5We4cIg9ig==
+X-Received: by 2002:a1c:a503:: with SMTP id o3mr613462wme.21.1604643739995;
+        Thu, 05 Nov 2020 22:22:19 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d20:9d00:b87b:b644:61a3:6870])
+        by smtp.gmail.com with ESMTPSA id h81sm612401wmf.44.2020.11.05.22.22.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2020 21:12:42 -0800 (PST)
-Date:   Fri, 6 Nov 2020 14:12:40 +0900
-From:   Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        John Ogness <john.ogness@linutronix.de>,
+        Thu, 05 Nov 2020 22:22:19 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Balbir Singh <bsingharora@gmail.com>
+Cc:     Tom Rix <trix@redhat.com>,
         Nathan Chancellor <natechancellor@gmail.com>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech
-Subject: Re: [PATCH] printk: remove unneeded dead-store assignment
-Message-ID: <20201106051240.GC4718@jagdpanzerIV.localdomain>
-References: <20201106034005.18822-1-lukas.bulwahn@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201106034005.18822-1-lukas.bulwahn@gmail.com>
+        clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] taskstats: remove unneeded dead assignment
+Date:   Fri,  6 Nov 2020 07:22:10 +0100
+Message-Id: <20201106062210.27920-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On (20/11/06 04:40), Lukas Bulwahn wrote:
-> make clang-analyzer on x86_64 defconfig caught my attention with:
-> 
->   kernel/printk/printk_ringbuffer.c:885:3: warning:
->   Value stored to 'desc' is never read [clang-analyzer-deadcode.DeadStores]
->                 desc = to_desc(desc_ring, head_id);
->                 ^
-> 
-> Commit b6cf8b3f3312 ("printk: add lockless ringbuffer") introduced
-> desc_reserve() with this unneeded dead-store assignment.
-> 
-> As discussed with John Ogness privately, this is probably just some minor
-> left-over from previous iterations of the ringbuffer implementation. So,
-> simply remove this unneeded dead assignment to make clang-analyzer happy.
-> 
-> As compilers will detect this unneeded assignment and optimize this anyway,
-> the resulting object code is identical before and after this change.
-> 
-> No functional change. No change to object code.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+make clang-analyzer on x86_64 defconfig caught my attention with:
 
-Reviewed-by: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+  kernel/taskstats.c:120:2: warning: Value stored to 'rc' is never read \
+  [clang-analyzer-deadcode.DeadStores]
+          rc = 0;
+          ^
 
-	-ss
+Commit d94a041519f3 ("taskstats: free skb, avoid returns in
+send_cpu_listeners") made send_cpu_listeners() not return a value and
+hence, the rc variable remained only to be used within the loop where
+it is always assigned before read and it does not need any other
+initialisation.
+
+So, simply remove this unneeded dead initializing assignment.
+
+As compilers will detect this unneeded assignment and optimize this anyway,
+the resulting object code is identical before and after this change.
+
+No functional change. No change to object code.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on current master and next-20201105
+
+Balbir, please pick this minor non-urgent clean-up patch.
+
+ kernel/taskstats.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/kernel/taskstats.c b/kernel/taskstats.c
+index a2802b6ff4bb..bd18a7bf5276 100644
+--- a/kernel/taskstats.c
++++ b/kernel/taskstats.c
+@@ -117,7 +117,6 @@ static void send_cpu_listeners(struct sk_buff *skb,
+ 
+ 	genlmsg_end(skb, reply);
+ 
+-	rc = 0;
+ 	down_read(&listeners->sem);
+ 	list_for_each_entry(s, &listeners->list, list) {
+ 		skb_next = NULL;
+-- 
+2.17.1
+

@@ -2,109 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF1502A91D0
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Nov 2020 09:52:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DE022A934A
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Nov 2020 10:48:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726139AbgKFIwj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Nov 2020 03:52:39 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:52704 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726075AbgKFIwj (ORCPT
+        id S1726901AbgKFJsg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Nov 2020 04:48:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56070 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725868AbgKFJsf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Nov 2020 03:52:39 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A68n23R059812;
-        Fri, 6 Nov 2020 08:52:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=hdn3S6G4CZ9K6laz9yIdjncIsG6hx8UfoRsDLSDj7Cc=;
- b=r3MCFurXvxw6VH30+BpBL/iLkG9zfbW90V0aivuUIG37aBoX6BdCRhYrYHqo3bSCcrZP
- q4jcrELDM51Erem499ec0SOlvwNU4ibutEKmmJ+R6Gh8ZarvtI/TAD5F3eDTNXmGDtY+
- JOOK9ONDKTUvu+6B4+3ktfZk+aax0Wk5ShmzSUiepAoOZWdc5/9rrxmDLgA/6SAWv8ZG
- M+jyY5FVqKGAYr0ONxXKjweKE6VofLKEJJ4/CqeMFXnO4aYpKmdM9Lt4ikua+/k7iwLD
- ubZOfjZ6xWNkH5vaESacio1+wtbq2DSVtRrOpzFHAPIdzg9QnH9lvARO3ddoyyu0xXB0 wA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 34hhw2yvgw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 06 Nov 2020 08:52:18 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A68oo64166690;
-        Fri, 6 Nov 2020 08:52:18 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 34hw0jwc5m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 06 Nov 2020 08:52:18 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0A68qC36031674;
-        Fri, 6 Nov 2020 08:52:17 GMT
-Received: from mwanda (/10.175.216.98)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 06 Nov 2020 00:52:11 -0800
-Date:   Fri, 6 Nov 2020 11:52:05 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Ingo Molnar <mingo@redhat.com>, Darren Hart <dvhart@infradead.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] futex: Don't enable IRQs unconditionally in put_pi_state()
-Message-ID: <20201106085205.GA1159983@mwanda>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9796 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
- phishscore=0 bulkscore=0 spamscore=0 malwarescore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011060064
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9796 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 mlxscore=0
- suspectscore=0 clxscore=1011 priorityscore=1501 impostorscore=0
- spamscore=0 lowpriorityscore=0 mlxlogscore=999 phishscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011060064
+        Fri, 6 Nov 2020 04:48:35 -0500
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6799AC0613CF;
+        Fri,  6 Nov 2020 01:48:35 -0800 (PST)
+Received: by mail-wr1-x442.google.com with SMTP id 33so625174wrl.7;
+        Fri, 06 Nov 2020 01:48:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=r7YyaJmRIWWPTEfEzl80MC6QW4rF6G5MsBiV1a8/Lpc=;
+        b=eQ3+X40TsWePgKwYfv6Y0LrGNy6Si6msdrfWqYRBp5WPTkG0hjNjGm66SiM9HqZ0nk
+         KF5HPV6RTb5+1fkntdj+itsd956wskElIvlUkBamTgKjpnplJ4Rk2Ib0ZBg32FcYylp+
+         Jfutwen3/Jo8hF5/Y7bL2j/tf2OT/5H9BfIE66I48QofEdVgCsdlHb6TyttKYBIJ9Jy5
+         cfSwiMiCX4I7W2zvParOK4si2/Z6C52EoVua/0aWfSgdb9cEX2/ug7fpydGdA+KKEM9J
+         R1r/ICUPEoh548L51HgsP7qB63gu7VwTtGnqrF2ukiNlWpoD3+spNOiV3Wf7kfih6Vuu
+         4CJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=r7YyaJmRIWWPTEfEzl80MC6QW4rF6G5MsBiV1a8/Lpc=;
+        b=R1XYbL2fVZIQBto8tAFCAr9w77oAsXb4Ygb9ctFyvwkvwHax4kwqda3gSa9srkHNcU
+         dbC79coAMDov59yEzpGwXtriS3IndnRkPBOGoOhfh7xSPRd2RV04sVb3mN8qFMaBq+9G
+         rVZH2ygcxKsPxsukdDoGGfDWpeX4qPpjyRs1dvmOMPpfo3WLI54FTsFG/62eIZcBC7rX
+         6F4L8nkneWUbxM4bZ4Rex0Wl93//RIoi7U6tySjHNHMGhzZFaNP0eg19D39j33kALr3a
+         EtQ9npB8+tMepk2888BMrShyJVLo2zoR/gB+5/kV7dwPb0QeFXbMt0oUu/mCV8zVPg58
+         Zjqg==
+X-Gm-Message-State: AOAM532pOTTqgl1Gx6AgE8k76vasbx9sfYAiLrURDyCnkamApGj4nMZJ
+        7ajHOuhOeJSce5PLFerZOj0=
+X-Google-Smtp-Source: ABdhPJyVUzxwiL83Bw5+ELbmBhVqWaLCOIfOQ1w3aqx4YdGq1EfkW9niP4Pe3zgVc9WNFsu/OEZyqg==
+X-Received: by 2002:a5d:6681:: with SMTP id l1mr1705435wru.356.1604656114107;
+        Fri, 06 Nov 2020 01:48:34 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d20:9d00:b87b:b644:61a3:6870])
+        by smtp.gmail.com with ESMTPSA id c9sm1187446wrp.65.2020.11.06.01.48.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2020 01:48:33 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
+Cc:     Tom Rix <trix@redhat.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] clk: remove unneeded dead-store initialization
+Date:   Fri,  6 Nov 2020 10:48:20 +0100
+Message-Id: <20201106094820.30167-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The exit_pi_state_list() function calls put_pi_state() with IRQs
-disabled and is not expecting that IRQs will be enabled inside the
-function.  Use the _irqsave() so that IRQs are restored to the original
-state instead of enabled unconditionally.
+make clang-analyzer on x86_64 defconfig caught my attention with:
 
-Fixes: 153fbd1226fb ("futex: Fix more put_pi_state() vs. exit_pi_state_list() races")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+  drivers/clk/clk.c:423:19:
+  warning: Value stored to 'parent' during its initialization is never read
+  [clang-analyzer-deadcode.DeadStores]
+          struct clk_core *parent = ERR_PTR(-ENOENT);
+                           ^
+
+Commit fc0c209c147f ("clk: Allow parents to be specified without string
+names") introduced clk_core_fill_parent_index() with this unneeded
+dead-store initialization.
+
+So, simply remove this unneeded dead-store initialization to make
+clang-analyzer happy.
+
+As compilers will detect this unneeded assignment and optimize this anyway,
+the resulting object code is identical before and after this change.
+
+No functional change. No change to object code.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
-This is from static analysis and not tested.  I am not very familiar
-with futex code.
+applies cleanly on current master and next-20201106
 
- kernel/futex.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Stephen, Michael, please pick this minor non-urgent clean-up patch.
 
-diff --git a/kernel/futex.c b/kernel/futex.c
-index f8614ef4ff31..ca84745713bc 100644
---- a/kernel/futex.c
-+++ b/kernel/futex.c
-@@ -788,8 +788,9 @@ static void put_pi_state(struct futex_pi_state *pi_state)
- 	 */
- 	if (pi_state->owner) {
- 		struct task_struct *owner;
-+		unsigned long flags;
+ drivers/clk/clk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index f83dac54ed85..ba35bf35bcd3 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -420,7 +420,7 @@ static struct clk_core *clk_core_get(struct clk_core *core, u8 p_index)
+ static void clk_core_fill_parent_index(struct clk_core *core, u8 index)
+ {
+ 	struct clk_parent_map *entry = &core->parents[index];
+-	struct clk_core *parent = ERR_PTR(-ENOENT);
++	struct clk_core *parent;
  
--		raw_spin_lock_irq(&pi_state->pi_mutex.wait_lock);
-+		raw_spin_lock_irqsave(&pi_state->pi_mutex.wait_lock, flags);
- 		owner = pi_state->owner;
- 		if (owner) {
- 			raw_spin_lock(&owner->pi_lock);
-@@ -797,7 +798,7 @@ static void put_pi_state(struct futex_pi_state *pi_state)
- 			raw_spin_unlock(&owner->pi_lock);
- 		}
- 		rt_mutex_proxy_unlock(&pi_state->pi_mutex, owner);
--		raw_spin_unlock_irq(&pi_state->pi_mutex.wait_lock);
-+		raw_spin_unlock_irqrestore(&pi_state->pi_mutex.wait_lock, flags);
- 	}
- 
- 	if (current->pi_state_cache) {
+ 	if (entry->hw) {
+ 		parent = entry->hw->core;
 -- 
-2.28.0
+2.17.1
 

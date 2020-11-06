@@ -2,56 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87D072A8BAD
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Nov 2020 01:54:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B98C2A8DA1
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Nov 2020 04:40:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732943AbgKFAyJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Nov 2020 19:54:09 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:7594 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732537AbgKFAyJ (ORCPT
+        id S1725972AbgKFDkV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Nov 2020 22:40:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55302 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725828AbgKFDkU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Nov 2020 19:54:09 -0500
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4CS22c5BwxzLt3T;
-        Fri,  6 Nov 2020 08:54:00 +0800 (CST)
-Received: from [10.174.176.134] (10.174.176.134) by smtp.huawei.com
- (10.3.19.213) with Microsoft SMTP Server (TLS) id 14.3.487.0; Fri, 6 Nov 2020
- 08:54:03 +0800
-Subject: Re: [PATCH] mfd: htc-i2cpld: Add the missed i2c_put_adapter() in
- htcpld_register_chip_i2c()
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        Lee Jones <lee.jones@linaro.org>
-References: <20201104063158.102048-1-jingxiangfeng@huawei.com>
- <ec8f256f-d796-1311-1faa-443e33631ced@web.de>
-CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-From:   Jing Xiangfeng <jingxiangfeng@huawei.com>
-Message-ID: <5FA49EAB.2020308@huawei.com>
-Date:   Fri, 6 Nov 2020 08:54:03 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.1.0
-MIME-Version: 1.0
-In-Reply-To: <ec8f256f-d796-1311-1faa-443e33631ced@web.de>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.176.134]
-X-CFilter-Loop: Reflected
+        Thu, 5 Nov 2020 22:40:20 -0500
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20498C0613CF;
+        Thu,  5 Nov 2020 19:40:20 -0800 (PST)
+Received: by mail-ej1-x643.google.com with SMTP id s25so5722465ejy.6;
+        Thu, 05 Nov 2020 19:40:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=v31c+3qUzm/Jl9mhtRELjufMUcxhfj6Qpk0Egg0rkIc=;
+        b=G2sPbaKVWlctWWt9dQqnUUZ26kWvTx4lqpzkKvDn9D1DxhleQxkvLOaOHnbPnk3raT
+         Lk7PdtiqqtRFkDpPM2JXWduU85jDrg8SZreWZlATMqd6zdcLaz9YfcKnq7bEGGA+m9cX
+         8Oz+j9tVEk9imS/i1TzoJ0qXuejfUX/yDNMCKzUwGWr58yJWgUTUfe9hp5NueEa+RI+Y
+         6gaq/n+nbQqqV2c7zT3zd3ZZmmU9CYkeTmw9KfZYMsomje/mKrNiMdHr/4c3Kgl4RCWC
+         bzLptOP6jsqvjY2KAAtprDXXZqNIVxX7p8Mpl0josoGZXcroSDGO+j5lCF40P9Qmte1l
+         qniQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=v31c+3qUzm/Jl9mhtRELjufMUcxhfj6Qpk0Egg0rkIc=;
+        b=jLUkkbyO98doxMqo7lS7kLNE79Bc13eeqi9rdNULIS89aIZbV/fB/MYqoQHFIOEWJh
+         Byrdgeuog6BwGpIJPpZiuO2xSf6RKNGO94jm79q+i6XwWrLZHfH4pWjX1KIRewe5+ukJ
+         v0ewICR5geq65dBIdSG2w1mDPha02fiGLr/C7cPZHK5WMHABIUaScKaIe3aDGqiDpM1X
+         01qd/U+IEiAv7DjO/wF4xdko0MRNHQxx3fhNLo01VurHySfD+qf6QIGhd9EX6fOgZDOB
+         56Vby4DeVM4HnmdryGtQcQY3pRvQH4mBmkDtroFjl+htEubmJFgAxUe85lMPZD7STCiL
+         kA8Q==
+X-Gm-Message-State: AOAM533tnjTYNJfjbzn9FR+P2kthn3eUOEK/lnYaGJ3ZXA2E4i5mYqyT
+        NcmsqFMzvM+hOLaePWnS5RA=
+X-Google-Smtp-Source: ABdhPJxdlgrDr75OUdeerY4h/FD+9Z7XvLQL8XO5mZ2NUVm/pGUpKmrXgCq2czkobGG4KNQiERvrOA==
+X-Received: by 2002:a17:906:6a57:: with SMTP id n23mr55277ejs.315.1604634018857;
+        Thu, 05 Nov 2020 19:40:18 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d20:9d00:b87b:b644:61a3:6870])
+        by smtp.gmail.com with ESMTPSA id z23sm2103337ejb.4.2020.11.05.19.40.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2020 19:40:18 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        John Ogness <john.ogness@linutronix.de>
+Cc:     Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] printk: remove unneeded dead-store assignment
+Date:   Fri,  6 Nov 2020 04:40:05 +0100
+Message-Id: <20201106034005.18822-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+make clang-analyzer on x86_64 defconfig caught my attention with:
 
+  kernel/printk/printk_ringbuffer.c:885:3: warning:
+  Value stored to 'desc' is never read [clang-analyzer-deadcode.DeadStores]
+                desc = to_desc(desc_ring, head_id);
+                ^
 
-On 2020/11/4 14:50, Markus Elfring wrote:
->> htcpld_register_chip_i2c() misses to call i2c_put_adapter() in an error
->> path. Add the missed function call to fix it.
-> Would you like to add the tag “Fixes”?
-OK, I'll send a v2 with it.
+Commit b6cf8b3f3312 ("printk: add lockless ringbuffer") introduced
+desc_reserve() with this unneeded dead-store assignment.
 
-  Thanks
->
-> Regards,
-> Markus
-> .
->
+As discussed with John Ogness privately, this is probably just some minor
+left-over from previous iterations of the ringbuffer implementation. So,
+simply remove this unneeded dead assignment to make clang-analyzer happy.
+
+As compilers will detect this unneeded assignment and optimize this anyway,
+the resulting object code is identical before and after this change.
+
+No functional change. No change to object code.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on current master and next-20201105
+
+John, please ack.
+Petr, please pick this minor non-urgent clean-up patch.
+
+ kernel/printk/printk_ringbuffer.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/kernel/printk/printk_ringbuffer.c b/kernel/printk/printk_ringbuffer.c
+index 6b1525685277..74e25a1704f2 100644
+--- a/kernel/printk/printk_ringbuffer.c
++++ b/kernel/printk/printk_ringbuffer.c
+@@ -882,8 +882,6 @@ static bool desc_reserve(struct printk_ringbuffer *rb, unsigned long *id_out)
+ 	head_id = atomic_long_read(&desc_ring->head_id); /* LMM(desc_reserve:A) */
+ 
+ 	do {
+-		desc = to_desc(desc_ring, head_id);
+-
+ 		id = DESC_ID(head_id + 1);
+ 		id_prev_wrap = DESC_ID_PREV_WRAP(desc_ring, id);
+ 
+-- 
+2.17.1
 

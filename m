@@ -2,68 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B740D2A9FA5
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Nov 2020 22:56:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A86EB2AA24B
+	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Nov 2020 04:23:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728651AbgKFVzU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Nov 2020 16:55:20 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:59350 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728365AbgKFVzU (ORCPT
+        id S1728160AbgKGDXk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Nov 2020 22:23:40 -0500
+Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:37764 "EHLO
+        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727298AbgKGDXk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Nov 2020 16:55:20 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kb9hW-00024b-OC; Fri, 06 Nov 2020 21:55:18 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     linux-fsdevel@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] hfsplus: remove pr_err message on ENOSPC file extend error
-Date:   Fri,  6 Nov 2020 21:55:18 +0000
-Message-Id: <20201106215518.390664-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.28.0
+        Fri, 6 Nov 2020 22:23:40 -0500
+Received: from callcc.thunk.org (pool-72-74-133-215.bstnma.fios.verizon.net [72.74.133.215])
+        (authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 0A73NUFe002848
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 6 Nov 2020 22:23:30 -0500
+Received: by callcc.thunk.org (Postfix, from userid 15806)
+        id 3464A420107; Fri,  6 Nov 2020 22:23:30 -0500 (EST)
+Date:   Fri, 6 Nov 2020 22:23:30 -0500
+From:   "Theodore Y. Ts'o" <tytso@mit.edu>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Harshad Shirwadkar <harshadshirwadkar@gmail.com>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        linux-ext4@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] ext4: silence an uninitialized variable warning
+Message-ID: <20201107032330.GN1750809@mit.edu>
+References: <20201030114620.GB3251003@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201030114620.GB3251003@mwanda>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Fri, Oct 30, 2020 at 02:46:20PM +0300, Dan Carpenter wrote:
+> Smatch complains that "i" can be uninitialized if we don't enter the
+> loop.  I don't know if it's possible but we may as well silence this
+> warning.
 
-Currently ENOSPC errors that are triggered from extending a file
-are spamming the kernel log with messages.  Since ENOSPC is being
-returned there is enough information to userspace to inform why
-the extend is failing and the error message is unnecessary and
-just more logging noise.  This is particularly noticeable when
-exercising a full hfs filesystem with stress-ng file stress tests.
+Thanks, applied.
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- fs/hfsplus/extents.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+I changed the patch so that i gets initialized to sb->s_blocksize
+instead of 0.  The only way the for loop could be skipped entirely,
+leaving i initialized, is if the in-memory data structures, in
+particular the bh->b_data for the on-disk superblock has gotten
+corrupted enough that calculated value of group is >= to
+ext4_get_groups_count(sb).  In that case, we want to exit immediately
+without allocating a block, and if i is left to sb->s_blocksize, that
+will cause the function to bail out right after the skipped for loop.
 
-diff --git a/fs/hfsplus/extents.c b/fs/hfsplus/extents.c
-index a930ddd15681..6cc30482c82c 100644
---- a/fs/hfsplus/extents.c
-+++ b/fs/hfsplus/extents.c
-@@ -446,13 +446,9 @@ int hfsplus_file_extend(struct inode *inode, bool zeroout)
- 	int res;
- 
- 	if (sbi->alloc_file->i_size * 8 <
--	    sbi->total_blocks - sbi->free_blocks + 8) {
-+	    sbi->total_blocks - sbi->free_blocks + 8)
- 		/* extend alloc file */
--		pr_err("extend alloc file! (%llu,%u,%u)\n",
--		       sbi->alloc_file->i_size * 8,
--		       sbi->total_blocks, sbi->free_blocks);
- 		return -ENOSPC;
--	}
- 
- 	mutex_lock(&hip->extents_lock);
- 	if (hip->alloc_blocks == hip->first_blocks)
--- 
-2.28.0
-
+     	       		   	    - Ted

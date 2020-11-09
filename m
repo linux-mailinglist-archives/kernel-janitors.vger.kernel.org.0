@@ -2,103 +2,133 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6973D2AB69F
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Nov 2020 12:21:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA5BA2AB75E
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Nov 2020 12:41:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729547AbgKILVg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Nov 2020 06:21:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33770 "EHLO
+        id S1729715AbgKILlc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Nov 2020 06:41:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729499AbgKILVg (ORCPT
+        with ESMTP id S1729673AbgKILlb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Nov 2020 06:21:36 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 369C3C0613CF;
-        Mon,  9 Nov 2020 03:21:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=23JvPsCJ8bZTGypus7M+0zut1iK9VvweCbVk0Ig98f8=; b=bQ6jS/sW9qpECD2vEn0Z0bk35I
-        jy2A56RXzfv+InB3KOVZ5AxftSOhgBz24VXHMnZNfV3ylx3Yt7eV33Q1nCwChjificIwtmBfi+XTa
-        nPTgGdweB2wtibgtPne9/WvUUgvNwLUZHP6/msRJU7Vu49B80Ajr1h2b5XIWDFTJgdk2erGMWFQHh
-        HyOfmFBU9Q8sCXp6j77lsWamUspYg41Ruoxxk6Bc2zDv47u7bcaIRoF52A096EG+goReJA4i5n2wn
-        PUSe0/XehVsKjg1vBH5LaJwG3gQ67bx2mstnIstbFeStCThTrSuangzmmTK4L85/4WX8Z9cPPZPre
-        ImgPsMSw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kc5Ep-0005Rb-16; Mon, 09 Nov 2020 11:21:31 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 0B51F306099;
-        Mon,  9 Nov 2020 12:21:29 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id EC2E92B09ACF6; Mon,  9 Nov 2020 12:21:28 +0100 (CET)
-Date:   Mon, 9 Nov 2020 12:21:28 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Darren Hart <dvhart@infradead.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] futex: Don't enable IRQs unconditionally in
- put_pi_state()
-Message-ID: <20201109112128.GF2594@hirez.programming.kicks-ass.net>
-References: <20201106085205.GA1159983@mwanda>
+        Mon, 9 Nov 2020 06:41:31 -0500
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76517C0613D4
+        for <kernel-janitors@vger.kernel.org>; Mon,  9 Nov 2020 03:41:31 -0800 (PST)
+Received: by mail-il1-x142.google.com with SMTP id p10so7977090ile.3
+        for <kernel-janitors@vger.kernel.org>; Mon, 09 Nov 2020 03:41:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=rvy9/WkLCxYxtHuDnEwzo7NVYvNBUGnMi/E3lzNTZiU=;
+        b=VeNw+S3Fb2nmjMIz7GerJ9k7CYcEDXKZqMHEblY+L/1ubVSAfK5ZmtOeuQWyYpqL9C
+         ivnLJt/qAnNlHbPQQI+uut27ATNnIDTrW7XjmrnafVZo8YmGh6b5+EFF3DzhuMxFd/um
+         kTvKAc68vHorDClk80q2S2+wMU3DYKxUBPDun3p3J4vPYZecAn2YUs+hAVDhhhg/n2yY
+         bXwn4gcKz8IFGpm+T4t+HlHYtSXj8JwleBAyEWlQdXQbTT7JQKHmH0usI3KqMUI90Gu3
+         b9yUCAw0IakLsMoi+h8bGyMw9YwGW1vTHxQwgGtIpv9iGqDmkzaphSAhaIRcni9sGBek
+         j2xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=rvy9/WkLCxYxtHuDnEwzo7NVYvNBUGnMi/E3lzNTZiU=;
+        b=po8K+Cx4N9j7ZtyzoQEgyYeszAS+YgnJou1PDGZULMArpKI8dagayMCYSZdfogo2un
+         DfcvXNMEo5kN2P22EtGdjfT/pxdxnzJ6jl0IoNAyMxbvOlpVzCia9LFlfeiNC3OAx9uo
+         H/4AIrSem7yJvgfTZW69M3dzfr2djl0ReUH1QQ+fi5KlGujF0+mh/mTtGPkdRsQ69pQ1
+         L6TDIg6w5HSTKaW3lyzjlFFsivq3JEwwXC4o+8f/aBUpGBbkhctVUqE5UhGukU6LW5r4
+         xVqDR8zmftRgDZ5bjDt+COcPQyPlRl+IYTavWSnv3Cw7lli9ti4guthc0iXyciTUqzJV
+         uPzg==
+X-Gm-Message-State: AOAM532CfLDKRr1JvOgRKpiDAdDHJgeFPwdPNJVevb0Eq+jn7VFVHM44
+        LJlZuuV5IwEcHUqapA6ibXoAE8pfMlfi9KQ+lHQcPJPHiV441Q==
+X-Google-Smtp-Source: ABdhPJz3qLOUE/G75fCctA62RI4+6Fx4vrvuNy0j+jzQhoNBnx7H5kZbMbH0YPhIb+t3GtjiNwt6TV6dGxYa1LAkSJo=
+X-Received: by 2002:a92:7f08:: with SMTP id a8mr9095512ild.216.1604922090454;
+ Mon, 09 Nov 2020 03:41:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201106085205.GA1159983@mwanda>
+References: <1604913614-19432-1-git-send-email-wenan.mao@linux.alibaba.com>
+ <1604914417-24578-1-git-send-email-wenan.mao@linux.alibaba.com>
+ <CANn89iKiNdtxaL_yMF6=_8=m001vXVaxvECMGbAiXTYZjfj3oQ@mail.gmail.com>
+ <3b92167c-201c-e85d-822d-06f0c9ac508c@linux.alibaba.com> <CANn89i+oS75TVKBDOBrr7Ff55Uctq4_HUcM_05Ed8kUL1HkHLw@mail.gmail.com>
+In-Reply-To: <CANn89i+oS75TVKBDOBrr7Ff55Uctq4_HUcM_05Ed8kUL1HkHLw@mail.gmail.com>
+From:   Eric Dumazet <edumazet@google.com>
+Date:   Mon, 9 Nov 2020 12:41:19 +0100
+Message-ID: <CANn89iJ5kuEfKAJoWxM9MWV5X6nHXzbtcBkh1OBTak-Y6SzbPQ@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: Update window_clamp if SOCK_RCVBUF is set
+To:     Mao Wenan <wenan.mao@linux.alibaba.com>
+Cc:     David Miller <davem@davemloft.net>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Nov 06, 2020 at 11:52:05AM +0300, Dan Carpenter wrote:
-> The exit_pi_state_list() function calls put_pi_state() with IRQs
-> disabled and is not expecting that IRQs will be enabled inside the
-> function.  Use the _irqsave() so that IRQs are restored to the original
-> state instead of enabled unconditionally.
-> 
-> Fixes: 153fbd1226fb ("futex: Fix more put_pi_state() vs. exit_pi_state_list() races")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> This is from static analysis and not tested.  I am not very familiar
-> with futex code.
+Packetdrill test would be :
 
-It it exceedingly rare if at all possible to trigger this, but yes, your
-patch is correct.
+// Force syncookies
+`sysctl -q net.ipv4.tcp_syncookies=3D2`
 
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+    0 socket(..., SOCK_STREAM, IPPROTO_TCP) =3D 3
+   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) =3D 0
+   +0 setsockopt(3, SOL_SOCKET, SO_RCVBUF, [2048], 4) =3D 0
+   +0 bind(3, ..., ...) =3D 0
+   +0 listen(3, 1) =3D 0
 
-> 
->  kernel/futex.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/kernel/futex.c b/kernel/futex.c
-> index f8614ef4ff31..ca84745713bc 100644
-> --- a/kernel/futex.c
-> +++ b/kernel/futex.c
-> @@ -788,8 +788,9 @@ static void put_pi_state(struct futex_pi_state *pi_state)
->  	 */
->  	if (pi_state->owner) {
->  		struct task_struct *owner;
-> +		unsigned long flags;
->  
-> -		raw_spin_lock_irq(&pi_state->pi_mutex.wait_lock);
-> +		raw_spin_lock_irqsave(&pi_state->pi_mutex.wait_lock, flags);
->  		owner = pi_state->owner;
->  		if (owner) {
->  			raw_spin_lock(&owner->pi_lock);
-> @@ -797,7 +798,7 @@ static void put_pi_state(struct futex_pi_state *pi_state)
->  			raw_spin_unlock(&owner->pi_lock);
->  		}
->  		rt_mutex_proxy_unlock(&pi_state->pi_mutex, owner);
-> -		raw_spin_unlock_irq(&pi_state->pi_mutex.wait_lock);
-> +		raw_spin_unlock_irqrestore(&pi_state->pi_mutex.wait_lock, flags);
->  	}
->  
->  	if (current->pi_state_cache) {
-> -- 
-> 2.28.0
-> 
++0 < S 0:0(0) win 32792 <mss 1000,sackOK,TS val 100 ecr 0,nop,wscale 7>
+   +0 > S. 0:0(0) ack 1 <mss 1460,sackOK,TS val 4000 ecr 100,nop,wscale 0>
+  +.1 < . 1:1(0) ack 1 win 1024 <nop,nop,TS val 200 ecr 4000>
+   +0 accept(3, ..., ...) =3D 4
++0 %{ assert tcpi_snd_wscale =3D=3D 0, tcpi_snd_wscale }%
+
+On Mon, Nov 9, 2020 at 12:02 PM Eric Dumazet <edumazet@google.com> wrote:
+>
+> On Mon, Nov 9, 2020 at 11:12 AM Mao Wenan <wenan.mao@linux.alibaba.com> w=
+rote:
+> >
+> >
+> >
+> > =E5=9C=A8 2020/11/9 =E4=B8=8B=E5=8D=885:56, Eric Dumazet =E5=86=99=E9=
+=81=93:
+> > > On Mon, Nov 9, 2020 at 10:33 AM Mao Wenan <wenan.mao@linux.alibaba.co=
+m> wrote:
+> > >>
+> > >> When net.ipv4.tcp_syncookies=3D1 and syn flood is happened,
+> > >> cookie_v4_check or cookie_v6_check tries to redo what
+> > >> tcp_v4_send_synack or tcp_v6_send_synack did,
+> > >> rsk_window_clamp will be changed if SOCK_RCVBUF is set,
+> > >> which will make rcv_wscale is different, the client
+> > >> still operates with initial window scale and can overshot
+> > >> granted window, the client use the initial scale but local
+> > >> server use new scale to advertise window value, and session
+> > >> work abnormally.
+> > >
+> > > What is not working exactly ?
+> > >
+> > > Sending a 'big wscale' should not really matter, unless perhaps there
+> > > is a buggy stack at the remote end ?
+> > 1)in tcp_v4_send_synack, if SO_RCVBUF is set and
+> > tcp_full_space(sk)=3D65535, pass req->rsk_window_clamp=3D65535 to
+> > tcp_select_initial_window, rcv_wscale will be zero, and send to client,
+> > the client consider wscale is 0;
+> > 2)when ack is back from client, if there is no this patch,
+> > req->rsk_window_clamp is 0, and pass to tcp_select_initial_window,
+> > wscale will be 7, this new rcv_wscale is no way to advertise to client.
+> > 3)if server send rcv_wind to client with window=3D63, it consider the r=
+eal
+> > window is 63*2^7=3D8064, but client consider the server window is only
+> > 63*2^0=3D63, it can't send big packet to server, and the send-q of clie=
+nt
+> > is full.
+> >
+>
+> I see, please change your patches so that tcp_full_space() is used _once_
+>
+> listener sk_rcvbuf can change under us.
+>
+> I really have no idea how window can be set to 63, so please send us
+> the packetdrill test once you have it.

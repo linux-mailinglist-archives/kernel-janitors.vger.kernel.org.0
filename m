@@ -2,88 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 826EB2AB341
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Nov 2020 10:11:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB45A2AB36E
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Nov 2020 10:20:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729745AbgKIJLU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Nov 2020 04:11:20 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:58922 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726482AbgKIJLU (ORCPT
+        id S1727077AbgKIJTy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Nov 2020 04:19:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42720 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725854AbgKIJTy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Nov 2020 04:11:20 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A993pdl167639;
-        Mon, 9 Nov 2020 09:11:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=pEbHLrb/uqYzCw7ITx+lfqOy22oj0OT0gEycaUlubs8=;
- b=yWu0i/4/s8hW0wUnECAxNP16BGjOIsoyhpYYHA8jnvXZ1y6aaeopCBnTwU7tKqg/LwpO
- 8aFFMxGMNN8gFvb7mdWrfXs9wORfi16Z2WOF88Hnes4Wb7d782fAf2DYMUdaFrIX/gu1
- YCg4ikoOJDnWIiQYB4Oer3PODByOWzTJr5hLmnK4URWQUBtDpq/LOdrc3eWWyUH0YnS7
- G9Dzqt3mmL0eeDIMyVmUaXmo5rs1Grs8ApA7E9182whSx7jBMmcURFBYJbr5iHa6E4Uy
- 4uESLXpkUCiZvKclic+BGMpclLpouWKasAcu27ipRyCuHdjHlsmnAMQxqQiB7eGd6fIS 3Q== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 34nkhkmray-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 09 Nov 2020 09:11:05 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A9958Qo169522;
-        Mon, 9 Nov 2020 09:11:05 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 34p55kpyxf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 09 Nov 2020 09:11:04 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0A99AxCS003122;
-        Mon, 9 Nov 2020 09:10:59 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 09 Nov 2020 01:10:59 -0800
-Date:   Mon, 9 Nov 2020 12:10:51 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "J. Bruce Fields" <bfields@fieldses.org>
-Cc:     Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Artur Molchanov <arturmolchanov@gmail.com>,
-        Anna Schumaker <anna.schumaker@netapp.com>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Jakub Kicinski <kuba@kernel.org>, linux-nfs@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Colin King <colin.king@canonical.com>
-Subject: Re: [PATCH] net/sunrpc: clean up error checking in proc_do_xprt()
-Message-ID: <20201109090950.GJ18329@kadam>
-References: <031F93AC-744F-4E02-9948-1C1F5939714B@gmail.com>
- <20201027141758.GA3488087@mwanda>
- <20201106203316.GA26028@fieldses.org>
- <20201106205959.GB26028@fieldses.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201106205959.GB26028@fieldses.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9799 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 phishscore=0
- mlxlogscore=999 mlxscore=0 malwarescore=0 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011090059
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9799 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 priorityscore=1501
- mlxscore=0 suspectscore=0 mlxlogscore=999 lowpriorityscore=0 spamscore=0
- malwarescore=0 adultscore=0 clxscore=1015 bulkscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011090059
+        Mon, 9 Nov 2020 04:19:54 -0500
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAEFFC0613CF;
+        Mon,  9 Nov 2020 01:19:53 -0800 (PST)
+Received: by mail-wr1-x441.google.com with SMTP id 33so7851858wrl.7;
+        Mon, 09 Nov 2020 01:19:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=GUBLLHbst2zeH9c/A9PODgvPT5XA5rVjk1jholZ9SRQ=;
+        b=kfg4eU3VVoKvTjZjQS8sEhcZqElqp8XNyGsIdRnYkMYgri+stxfPtjWUdzVkHaLivh
+         D9cYFvEwbHvIgANjHGO/WOgF9ujbCKGKSxWQUflX22LZ/+Qftl1YaZNOE2Evr4oNHyiP
+         yogLQ29pzKUtD8YvTlYjNKKastnRKNOPq3+zSet9fzCfB9MH3rp0OpdCZ/0IOVKsEJXJ
+         PJKTafiYyLmrqqEAi3ND0NRwWxZFCJPI6urdk1xAT4qPrktxoFBBXVL/ksGvNZsbaP7S
+         i3EmWoB5kv9CvMmM9qVlSJLI03PVn9QRAL+W4Fz67yQh+JH/CKDfTy4j463pzcXSOCjO
+         xyaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=GUBLLHbst2zeH9c/A9PODgvPT5XA5rVjk1jholZ9SRQ=;
+        b=HCbfB4QqwE+xAolvAklGve/XMmHEKM15tSf+YFx/lYy7544IvArWqkK0tU8N7Fp/vh
+         VEGHw0ZvQ8BNSorr9uYfOj6Dz7s1uOO11Hp98AcrwAMu1UKavjIvDkrd0vlFWl7mT+Jz
+         FWxw8MHmO5+AkmmxaQgcKAN0dltc8ieVN6wlIEzAHXIvFnVqJc/29SLL/+5catWQqO42
+         n2XJMM/GEDUbD78xG8y09xchrnZFvvVfecp3DKMJawctjSzoKrdHXA02+Iyjf3bYO9Ac
+         JHAco3HJZvpIPqTnREm9fn5WeeG0I/Ugb25z9tbztSAPe/0+YJ65VAhMfScx78GrnUBe
+         QMrg==
+X-Gm-Message-State: AOAM533NehUqmAYsx46DdAjeoKvkBKhRJZXHFWpfpx5HEryZkPWuQPzY
+        wFFWs7NwTAFkpVuW5DQ9ZwU=
+X-Google-Smtp-Source: ABdhPJwu3gruSVyzNdsY7JRGI+5F9eOc2RfKuCvT6dlP/5VnN22JiqZ5VBwPY1g+RHnRn+ytK29Iog==
+X-Received: by 2002:adf:f24b:: with SMTP id b11mr2099778wrp.342.1604913592343;
+        Mon, 09 Nov 2020 01:19:52 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2dd6:1d00:48a4:9af6:6f6a:ebcb])
+        by smtp.gmail.com with ESMTPSA id f16sm12696366wrp.66.2020.11.09.01.19.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2020 01:19:51 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Pablo Neira Ayuso <pablo@netfilter.org>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org
+Cc:     Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: rectify file patterns for NETFILTER
+Date:   Mon,  9 Nov 2020 10:19:42 +0100
+Message-Id: <20201109091942.32280-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Bruce, thanks for catching my bug.
+The two file patterns in the NETFILTER section:
 
-Acked-by: Dan Carpenter <dan.carpenter@oracle.com>
+  F:      include/linux/netfilter*
+  F:      include/uapi/linux/netfilter*
 
-Do want me to do anything, because it seems like you already fixed my
-patch?
+intended to match the directories:
 
-regards,
-dan carpenter
+  ./include{/uapi}/linux/netfilter_{arp,bridge,ipv4,ipv6}
+
+A quick check with ./scripts/get_maintainer.pl --letters -f will show that
+they are not matched, though, because this pattern only matches files, but
+not directories.
+
+Rectify the patterns to match the intended directories.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on v5.10-rc3 and next-20201109
+
+Pablo, Jozsef, Florian, please pick this minor non-urgent clean-up patch.
+
+ MAINTAINERS | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index cba8ddf87a08..572a064a9c95 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12139,10 +12139,10 @@ W:	http://www.nftables.org/
+ Q:	http://patchwork.ozlabs.org/project/netfilter-devel/list/
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pablo/nf.git
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pablo/nf-next.git
+-F:	include/linux/netfilter*
++F:	include/linux/netfilter*/
+ F:	include/linux/netfilter/
+ F:	include/net/netfilter/
+-F:	include/uapi/linux/netfilter*
++F:	include/uapi/linux/netfilter*/
+ F:	include/uapi/linux/netfilter/
+ F:	net/*/netfilter.c
+ F:	net/*/netfilter/
+-- 
+2.17.1
 

@@ -2,56 +2,22 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A92D52AB417
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Nov 2020 10:56:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21BBF2AB48A
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Nov 2020 11:12:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729100AbgKIJ4u (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Nov 2020 04:56:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48428 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729081AbgKIJ4r (ORCPT
+        id S1728937AbgKIKMp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Nov 2020 05:12:45 -0500
+Received: from out30-131.freemail.mail.aliyun.com ([115.124.30.131]:53982 "EHLO
+        out30-131.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726176AbgKIKMp (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Nov 2020 04:56:47 -0500
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D317C0613D4
-        for <kernel-janitors@vger.kernel.org>; Mon,  9 Nov 2020 01:56:45 -0800 (PST)
-Received: by mail-il1-x141.google.com with SMTP id x7so7724834ili.5
-        for <kernel-janitors@vger.kernel.org>; Mon, 09 Nov 2020 01:56:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Reyf2LTkl/nZmDymc/C7yhdYxGBOvgpjf15ijhHXrXk=;
-        b=h6lPXGm5aOnj3YuFHHOqJ54jB/gd4poG1bgWPgpyvt1+NfFOh6lcPqHeMzjQ5mrY/R
-         roMcD+FaCTwRBOyX59DBpv/ueZZhi20x3WwIXkAmCZDcbSUt2nX3tjhN3kg47VnpDhdc
-         jJgmoPlA3KUlxJ5pH0Jg9ger371DV+iH1uMkxd/s8gjxHsYws9GbIN9iiWUgvyrhqbNZ
-         yuuzXK3xJOoiBcEXuWxdzums+aOvjz8Za2NJQ2bOGm3QMVMFtDAxvhZl7o+oZ2a5vNSB
-         AQdesuNpbCDL2C7tRxfUBr7v+gUe2SiNFMiXJeyaMvZlE7qHRRd3pp7t0BZocUDYeU0t
-         bhmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Reyf2LTkl/nZmDymc/C7yhdYxGBOvgpjf15ijhHXrXk=;
-        b=VRUGqMIVn+V4v40w+hJDfArufTlxTv5gbqrqgIcXkcGQGgZeWY9EIq4H9e0Tt7q5GB
-         Gb0Z6TTwP+xIqRuvA0GxxZemak/lr+4p6/07D44dV97/LeYx04pQKzwqOUrk3dSj8++f
-         LYx/hWD5u/2LKso9/jwAx11aqTM1ehJ3Ecl9ZMovm8ruYgkUIv8MQDdrP7APTNCFNnfY
-         kVLk/OkOoU6o1mx1a0E4ZH153A+M+qKfB6ErcSvr8gDuuxyOKBlD2XNV6xa3sxYL/yhD
-         5AZlNqFagcUTPBU0hfwfyTwcJkQ+zOnGD7PU8LQHL2D0W8JJApN73x13Vgj8Seb59qB7
-         ZccA==
-X-Gm-Message-State: AOAM530St99Ab91zCr0kTEj7m2ZyriovJHnj4gpMHRhF5s25advK/bmg
-        jKi5q4REw8KCoTH608OxsU+2efgKkPXpvvGPp2xmkw==
-X-Google-Smtp-Source: ABdhPJzoXZSHKjTkIGQFt1LutvDCEx/57b7tlUf+ufClMuHEnwB4eL4Vbg/Q5gshcXTU5vx5K22p/Dnl3YB10/u8jMI=
-X-Received: by 2002:a92:6f11:: with SMTP id k17mr9516216ilc.69.1604915804564;
- Mon, 09 Nov 2020 01:56:44 -0800 (PST)
-MIME-Version: 1.0
-References: <1604913614-19432-1-git-send-email-wenan.mao@linux.alibaba.com> <1604914417-24578-1-git-send-email-wenan.mao@linux.alibaba.com>
-In-Reply-To: <1604914417-24578-1-git-send-email-wenan.mao@linux.alibaba.com>
-From:   Eric Dumazet <edumazet@google.com>
-Date:   Mon, 9 Nov 2020 10:56:33 +0100
-Message-ID: <CANn89iKiNdtxaL_yMF6=_8=m001vXVaxvECMGbAiXTYZjfj3oQ@mail.gmail.com>
+        Mon, 9 Nov 2020 05:12:45 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R231e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=wenan.mao@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0UEhrQpj_1604916760;
+Received: from B-44NBMD6M-0121.local(mailfrom:wenan.mao@linux.alibaba.com fp:SMTPD_---0UEhrQpj_1604916760)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 09 Nov 2020 18:12:40 +0800
 Subject: Re: [PATCH net v2] net: Update window_clamp if SOCK_RCVBUF is set
-To:     Mao Wenan <wenan.mao@linux.alibaba.com>
+To:     Eric Dumazet <edumazet@google.com>
 Cc:     David Miller <davem@davemloft.net>,
         Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
         Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
@@ -59,56 +25,101 @@ Cc:     David Miller <davem@davemloft.net>,
         netdev <netdev@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+References: <1604913614-19432-1-git-send-email-wenan.mao@linux.alibaba.com>
+ <1604914417-24578-1-git-send-email-wenan.mao@linux.alibaba.com>
+ <CANn89iKiNdtxaL_yMF6=_8=m001vXVaxvECMGbAiXTYZjfj3oQ@mail.gmail.com>
+From:   Mao Wenan <wenan.mao@linux.alibaba.com>
+Message-ID: <3b92167c-201c-e85d-822d-06f0c9ac508c@linux.alibaba.com>
+Date:   Mon, 9 Nov 2020 18:12:40 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.3.2
+MIME-Version: 1.0
+In-Reply-To: <CANn89iKiNdtxaL_yMF6=_8=m001vXVaxvECMGbAiXTYZjfj3oQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Nov 9, 2020 at 10:33 AM Mao Wenan <wenan.mao@linux.alibaba.com> wrote:
->
-> When net.ipv4.tcp_syncookies=1 and syn flood is happened,
-> cookie_v4_check or cookie_v6_check tries to redo what
-> tcp_v4_send_synack or tcp_v6_send_synack did,
-> rsk_window_clamp will be changed if SOCK_RCVBUF is set,
-> which will make rcv_wscale is different, the client
-> still operates with initial window scale and can overshot
-> granted window, the client use the initial scale but local
-> server use new scale to advertise window value, and session
-> work abnormally.
 
-What is not working exactly ?
 
-Sending a 'big wscale' should not really matter, unless perhaps there
-is a buggy stack at the remote end ?
+在 2020/11/9 下午5:56, Eric Dumazet 写道:
+> On Mon, Nov 9, 2020 at 10:33 AM Mao Wenan <wenan.mao@linux.alibaba.com> wrote:
+>>
+>> When net.ipv4.tcp_syncookies=1 and syn flood is happened,
+>> cookie_v4_check or cookie_v6_check tries to redo what
+>> tcp_v4_send_synack or tcp_v6_send_synack did,
+>> rsk_window_clamp will be changed if SOCK_RCVBUF is set,
+>> which will make rcv_wscale is different, the client
+>> still operates with initial window scale and can overshot
+>> granted window, the client use the initial scale but local
+>> server use new scale to advertise window value, and session
+>> work abnormally.
+> 
+> What is not working exactly ?
+> 
+> Sending a 'big wscale' should not really matter, unless perhaps there
+> is a buggy stack at the remote end ?
+1)in tcp_v4_send_synack, if SO_RCVBUF is set and 
+tcp_full_space(sk)=65535, pass req->rsk_window_clamp=65535 to 
+tcp_select_initial_window, rcv_wscale will be zero, and send to client, 
+the client consider wscale is 0;
+2)when ack is back from client, if there is no this patch, 
+req->rsk_window_clamp is 0, and pass to tcp_select_initial_window, 
+wscale will be 7, this new rcv_wscale is no way to advertise to client.
+3)if server send rcv_wind to client with window=63, it consider the real
+window is 63*2^7=8064, but client consider the server window is only 
+63*2^0=63, it can't send big packet to server, and the send-q of client
+is full.
 
->
-> Signed-off-by: Mao Wenan <wenan.mao@linux.alibaba.com>
-> ---
->  v2: fix for ipv6.
->  net/ipv4/syncookies.c | 4 ++++
->  net/ipv6/syncookies.c | 5 +++++
->  2 files changed, 9 insertions(+)
->
-> diff --git a/net/ipv4/syncookies.c b/net/ipv4/syncookies.c
-> index 6ac473b..57ce317 100644
-> --- a/net/ipv4/syncookies.c
-> +++ b/net/ipv4/syncookies.c
-> @@ -427,6 +427,10 @@ struct sock *cookie_v4_check(struct sock *sk, struct sk_buff *skb)
->
->         /* Try to redo what tcp_v4_send_synack did. */
->         req->rsk_window_clamp = tp->window_clamp ? :dst_metric(&rt->dst, RTAX_WINDOW);
-> +       /* limit the window selection if the user enforce a smaller rx buffer */
-> +       if (sk->sk_userlocks & SOCK_RCVBUF_LOCK &&
-> +           (req->rsk_window_clamp > tcp_full_space(sk) || req->rsk_window_clamp == 0))
-> +               req->rsk_window_clamp = tcp_full_space(sk);
 
-This seems not needed to me.
+> 
+>>
+>> Signed-off-by: Mao Wenan <wenan.mao@linux.alibaba.com>
+>> ---
+>>   v2: fix for ipv6.
+>>   net/ipv4/syncookies.c | 4 ++++
+>>   net/ipv6/syncookies.c | 5 +++++
+>>   2 files changed, 9 insertions(+)
+>>
+>> diff --git a/net/ipv4/syncookies.c b/net/ipv4/syncookies.c
+>> index 6ac473b..57ce317 100644
+>> --- a/net/ipv4/syncookies.c
+>> +++ b/net/ipv4/syncookies.c
+>> @@ -427,6 +427,10 @@ struct sock *cookie_v4_check(struct sock *sk, struct sk_buff *skb)
+>>
+>>          /* Try to redo what tcp_v4_send_synack did. */
+>>          req->rsk_window_clamp = tp->window_clamp ? :dst_metric(&rt->dst, RTAX_WINDOW);
+>> +       /* limit the window selection if the user enforce a smaller rx buffer */
+>> +       if (sk->sk_userlocks & SOCK_RCVBUF_LOCK &&
+>> +           (req->rsk_window_clamp > tcp_full_space(sk) || req->rsk_window_clamp == 0))
+>> +               req->rsk_window_clamp = tcp_full_space(sk);
+> 
+> This seems not needed to me.
+> 
+> We call tcp_select_initial_window() with tcp_full_space(sk) passed as
+> the 2nd parameter.
+> 
+> tcp_full_space(sk) will then apply :
+> 
+> space = min(*window_clamp, space);
 
-We call tcp_select_initial_window() with tcp_full_space(sk) passed as
-the 2nd parameter.
+if cookie_v4_check pass window_clamp=0 to tcp_select_initial_window, it 
+will set window_clamp to max value.
+(*window_clamp) = (U16_MAX << TCP_MAX_WSCALE);
 
-tcp_full_space(sk) will then apply :
+but space will fetch from sysctl_rmem_max and sysctl_tcp_rmem[2] which 
+is also big value.
+space = max_t(u32, space, sock_net(sk)->ipv4.sysctl_tcp_rmem[2]);
+space = max_t(u32, space, sysctl_rmem_max);
 
-space = min(*window_clamp, space);
+Then,space = min(*window_clamp, space) is a big value, lead wscale to 7,
+is different from tcp_v4_send_synack.
 
-Please cook a packetdrill test to demonstrate what you are seeing ?
+
+> 
+> Please cook a packetdrill test to demonstrate what you are seeing ?
+> 
+I have real environment and reproduce this case, this patch can fix 
+that, i will try to use packetdrill with syn cookies and syn flood happen.
+

@@ -2,82 +2,118 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C050F2AB86D
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Nov 2020 13:40:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B92B22AB8A8
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Nov 2020 13:51:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729510AbgKIMkO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Nov 2020 07:40:14 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:51131 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726410AbgKIMkO (ORCPT
+        id S1729706AbgKIMve convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Nov 2020 07:51:34 -0500
+Received: from coyote.holtmann.net ([212.227.132.17]:33916 "EHLO
+        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729740AbgKIMvd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Nov 2020 07:40:14 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kc6Su-0004zh-OY; Mon, 09 Nov 2020 12:40:08 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kurt Kanzenbach <kurt@linutronix.de>, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] net: dsa: fix unintended sign extension on a u16 left shift
-Date:   Mon,  9 Nov 2020 12:40:08 +0000
-Message-Id: <20201109124008.2079873-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.28.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Mon, 9 Nov 2020 07:51:33 -0500
+X-Greylist: delayed 348 seconds by postgrey-1.27 at vger.kernel.org; Mon, 09 Nov 2020 07:51:32 EST
+Received: from marcel-macbook.fritz.box (p4fefcf0f.dip0.t-ipconnect.de [79.239.207.15])
+        by mail.holtmann.org (Postfix) with ESMTPSA id AD92ACECC5;
+        Mon,  9 Nov 2020 13:52:43 +0100 (CET)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.4\))
+Subject: Re: [PATCH] Bluetooth: hci_qca: resolve various warnings
+From:   Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <20201101025215.GA4828@fedora-project>
+Date:   Mon, 9 Nov 2020 13:45:34 +0100
+Cc:     Johan Hedberg <johan.hedberg@gmail.com>,
+        kernel-janitors@vger.kernel.org, linux-bluetooth@vger.kernel.org
+Content-Transfer-Encoding: 8BIT
+Message-Id: <BB6BEAED-CFED-4092-AB9A-A98A064676EE@holtmann.org>
+References: <20201101025215.GA4828@fedora-project>
+To:     Nigel Christian <nigel.l.christian@gmail.com>
+X-Mailer: Apple Mail (2.3608.120.23.2.4)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hi Nigel,
 
-The left shift of u16 variable high is promoted to the type int and
-then sign extended to a 64 bit u64 value.  If the top bit of high is
-set then the upper 32 bits of the result end up being set by the
-sign extension. Fix this by explicitly casting the value in high to
-a u64 before left shifting by 16 places.
+> Use template string as opposed to function name. Add a blank
+> line after declaration to improve readability. Replace symbolic
+> permissions with octal values. Use usleep_range for small msec
+> values due to the fact that msleep() less than 20ms may have
+> unexpected behavior/sleep longer. This patch removes all
+> checkpatch warnings.
+> 
+> - https://lkml.org/lkml/2016/8/2/1945
+> - Documentation/timers/timers-howto.rst
+> 
+> Signed-off-by: Nigel Christian <nigel.l.christian@gmail.com>
+> ---
+> drivers/bluetooth/hci_qca.c | 11 ++++++-----
+> 1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+> index 2d3f1f179a1e..22da59d8f471 100644
+> --- a/drivers/bluetooth/hci_qca.c
+> +++ b/drivers/bluetooth/hci_qca.c
+> @@ -555,7 +555,7 @@ static int qca_open(struct hci_uart *hu)
+> 	struct qca_serdev *qcadev;
+> 	struct qca_data *qca;
+> 
+> -	BT_DBG("hu %p qca_open", hu);
+> +	BT_DBG("hu %p %s", hu, __func__);
 
-Also, remove the initialisation of variable value to 0 at the start
-of each loop iteration as the value is never read and hence the
-assignment it is redundant.
+please clean up your patch before submitting it. This change does not belong
+here.
 
-Addresses-Coverity: ("Unintended sign extension")
-Fixes: e4b27ebc780f ("net: dsa: Add DSA driver for Hirschmann Hellcreek switches")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/dsa/hirschmann/hellcreek.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> 	if (!hci_uart_has_flow_control(hu))
+> 		return -EOPNOTSUPP;
+> @@ -631,7 +631,7 @@ static void qca_debugfs_init(struct hci_dev *hdev)
+> 	ibs_dir = debugfs_create_dir("ibs", hdev->debugfs);
+> 
+> 	/* read only */
+> -	mode = S_IRUGO;
+> +	mode = 0444;
+> 	debugfs_create_u8("tx_ibs_state", mode, ibs_dir, &qca->tx_ibs_state);
+> 	debugfs_create_u8("rx_ibs_state", mode, ibs_dir, &qca->rx_ibs_state);
+> 	debugfs_create_u64("ibs_sent_sleeps", mode, ibs_dir,
+> @@ -658,7 +658,7 @@ static void qca_debugfs_init(struct hci_dev *hdev)
+> 	debugfs_create_u32("vote_off_ms", mode, ibs_dir, &qca->vote_off_ms);
+> 
+> 	/* read/write */
+> -	mode = S_IRUGO | S_IWUSR;
+> +	mode = 0644;
+> 	debugfs_create_u32("wake_retrans", mode, ibs_dir, &qca->wake_retrans);
+> 	debugfs_create_u32("tx_idle_delay", mode, ibs_dir,
+> 			   &qca->tx_idle_delay);
+> @@ -1215,6 +1215,7 @@ static int qca_recv(struct hci_uart *hu, const void *data, int count)
+> 				  qca_recv_pkts, ARRAY_SIZE(qca_recv_pkts));
+> 	if (IS_ERR(qca->rx_skb)) {
+> 		int err = PTR_ERR(qca->rx_skb);
+> +
 
-diff --git a/drivers/net/dsa/hirschmann/hellcreek.c b/drivers/net/dsa/hirschmann/hellcreek.c
-index dfa66f7260d6..d42f40c76ba5 100644
---- a/drivers/net/dsa/hirschmann/hellcreek.c
-+++ b/drivers/net/dsa/hirschmann/hellcreek.c
-@@ -308,7 +308,7 @@ static void hellcreek_get_ethtool_stats(struct dsa_switch *ds, int port,
- 		const struct hellcreek_counter *counter = &hellcreek_counter[i];
- 		u8 offset = counter->offset + port * 64;
- 		u16 high, low;
--		u64 value = 0;
-+		u64 value;
- 
- 		mutex_lock(&hellcreek->reg_lock);
- 
-@@ -320,7 +320,7 @@ static void hellcreek_get_ethtool_stats(struct dsa_switch *ds, int port,
- 		 */
- 		high  = hellcreek_read(hellcreek, HR_CRDH);
- 		low   = hellcreek_read(hellcreek, HR_CRDL);
--		value = (high << 16) | low;
-+		value = ((u64)high << 16) | low;
- 
- 		hellcreek_port->counter_values[i] += value;
- 		data[i] = hellcreek_port->counter_values[i];
--- 
-2.28.0
+This omitted empty line was intentional btw.
+
+> 		bt_dev_err(hu->hdev, "Frame reassembly failed (%d)", err);
+> 		qca->rx_skb = NULL;
+> 		return err;
+> @@ -1302,7 +1303,7 @@ static int qca_set_baudrate(struct hci_dev *hdev, uint8_t baudrate)
+> 
+> 	/* Give the controller time to process the request */
+> 	if (qca_is_wcn399x(qca_soc_type(hu)))
+> -		msleep(10);
+> +		usleep_range(1000, 10000);
+> 	else
+> 		msleep(300);
+> 
+> @@ -1350,7 +1351,7 @@ static int qca_send_power_pulse(struct hci_uart *hu, bool on)
+> 	if (on)
+> 		msleep(100);
+> 	else
+> -		msleep(10);
+> +		usleep_range(1000, 10000);
+
+Regards
+
+Marcel
 

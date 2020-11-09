@@ -2,119 +2,120 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C644C2AC241
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Nov 2020 18:29:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DA692AC53B
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Nov 2020 20:40:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731787AbgKIR3J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Nov 2020 12:29:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34608 "EHLO
+        id S1730739AbgKITkz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Nov 2020 14:40:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731476AbgKIR3G (ORCPT
+        with ESMTP id S1729875AbgKITkz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Nov 2020 12:29:06 -0500
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ADC9C0613D6
-        for <kernel-janitors@vger.kernel.org>; Mon,  9 Nov 2020 09:29:06 -0800 (PST)
-Received: by mail-io1-xd43.google.com with SMTP id u19so10644097ion.3
-        for <kernel-janitors@vger.kernel.org>; Mon, 09 Nov 2020 09:29:06 -0800 (PST)
+        Mon, 9 Nov 2020 14:40:55 -0500
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D86DC0613CF
+        for <kernel-janitors@vger.kernel.org>; Mon,  9 Nov 2020 11:40:55 -0800 (PST)
+Received: by mail-oi1-x244.google.com with SMTP id k26so11520255oiw.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 09 Nov 2020 11:40:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=iS7wGl9RDeoaCYAmtEhoMmhifB7Bkd936j4hSXda9EQ=;
-        b=qORLalHDW7LGVeTLFECbEXBBMT8mS1jyJOQ7Axna9Vlw0y963SK1p2R0JlsGhmfOK9
-         8bgUaLFJYUNfcAvFyKnHovCj641LwmTqB6fCfJjil+/qDFOyBb6wlVRxGTwwew8ypGoR
-         LMQFpHhxF5dwrr2ILH6vh1eQOjBomAkSxcUu/wjuB48B6SnZ/VAVB18n90Sl1IFZ8tEF
-         YJK4Zxl435cMVsAjv/26doLLb6IH82kTuey6+N0STwu49m5fkh0CmibRmqKuc5lVOoBf
-         tdhbaoNvTRJQlNWJMkRjjjr+pFroHaJTv7f4NamaIfBe247GhYhVMxqPiQjCiQ2TEOvF
-         Qr8g==
+        d=dubeyko-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=RYG5aRqtt1oTe5ehg+dvQZG6g+L+lFoK4HtUJA+r5KM=;
+        b=S9hFOP+Ssq7NyJgZ90LPdfpgmbTnVaBk1SKVIeH1g8gjMUNx6T6NsiGHwyfXHZRZdl
+         rN2R7/sUH/33WrJAZ6eJth6m0PZ8nt7gCUOJNA/+NnH+vmqeJ76NBriWvZDAWObVv7aC
+         puQDLDAL0iZys7rVbPs12KY1ekzhrtKA9OKm7Q08xYn3OKfPiSGE/gXpRU+OggRL7hCD
+         t9dyAUXmlUU7ZJJ1N/Vbyk0MDNYEMJeqbFDivxyIHO1gFH3oruvecsYflB/LUHhqycLA
+         f86pbbJBKMhsFfwfdZ5RKifIbF3uqbaeAMYVHT/C3DiXWVL8ejpdCyZASQnrJAFpSSPH
+         WOtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=iS7wGl9RDeoaCYAmtEhoMmhifB7Bkd936j4hSXda9EQ=;
-        b=l1s+i/6zoUpOS0gFf7gaQCn1mr+QDBuPMe7nbed/VsMp2uR6vs8Ld4PCROGNQJVAaG
-         QPrINmQ5Ucfo9P1NJLNfmbs7WN8ayfd1N6eXBUxQ0Ji5IdFWAMUfKTQiq+oXQLCz2kIn
-         bAsohwx4IVT5IFeIPTGoH/4PiiwDXou3oLxUmz4M9IzhwcieYK87gQA6nN1JIS9gV96G
-         zOIC+dLkhkjYvK/FCVt/WN1OZXQkmu8tNKzgbt5xT8A8EjqqpnD/BfnOC0cf1egM4axL
-         IvvuJ8rLAOTEUXFMYXT+PcgApzIvvlgQoU1jR6hG+EzecKDJz2aOkSrZHm+/lUO88hJF
-         JiwQ==
-X-Gm-Message-State: AOAM533z6F3WK6crdMZqW1e27BaF6dAK7l6I2OFl00MZ7ocWBC6zBNvS
-        uZVA+ba5gPcvQaNkeGD2WKnrzGCotPYSk+3+p1J9NA==
-X-Google-Smtp-Source: ABdhPJzXzmeKVEDjebEji3sdG67yPKV/Yns17/N7tod+wD7i2Lnmtm0ujUnV4ku62ZygmGN4tp4NIgrhEXqlnypKKCM=
-X-Received: by 2002:a02:7112:: with SMTP id n18mr11937162jac.34.1604942945017;
- Mon, 09 Nov 2020 09:29:05 -0800 (PST)
-MIME-Version: 1.0
-References: <CANn89iLVWFgDvkUygK8Sh_H7=qFmuZKo1h=aoq+F57J28r4EUA@mail.gmail.com>
- <1604942276-92635-1-git-send-email-wenan.mao@linux.alibaba.com>
-In-Reply-To: <1604942276-92635-1-git-send-email-wenan.mao@linux.alibaba.com>
-From:   Eric Dumazet <edumazet@google.com>
-Date:   Mon, 9 Nov 2020 18:28:53 +0100
-Message-ID: <CANn89i+ABLMJTEKat=9=qujNwe0BFavphzqYc1CQGtrdkwUnXg@mail.gmail.com>
-Subject: Re: [PATCH net v4] net: Update window_clamp if SOCK_RCVBUF is set
-To:     Mao Wenan <wenan.mao@linux.alibaba.com>
-Cc:     David Miller <davem@davemloft.net>,
-        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=RYG5aRqtt1oTe5ehg+dvQZG6g+L+lFoK4HtUJA+r5KM=;
+        b=DXHojhA2KPl1qoOFkKpKidIdf1Rrs1vOeyimeyAMudhHdmJqxLDtT3td2QQweWfFdt
+         TlQrKVXNyNbfuDNjeGae2/rBZ0FtRbzGlYHbFTVgbYLykomoUWcSbhF8zV0zgj0Ybrug
+         5/x7isTQvpT97JaGH+epMnqAhHP4eNkBDJzIqhbnatMARbxJRqZthaJwKevdzNotOoxS
+         efUyuDcuvzvpGKfX9DtHmT+9hKDqCDT+poTaZSOP8VOPdYblIL+sLi8mKRdl3FxyE1Ed
+         gjscgQZTo7BoUlgS42x29dPymo8PPv6aNAGE28lagG3zQGTZCplwhiATwuRxStRFlfOc
+         kU9A==
+X-Gm-Message-State: AOAM533SG0bCV2mQBPaDRgUYKMvv8ssalbdPYolY0weWmo/6aPwatWq0
+        Ka2I32RCOlJsBlygUV2QdEdOjg==
+X-Google-Smtp-Source: ABdhPJxQj9r/hWa4Api3frfCsBoxa7VOjekt3gZz5yrRq2nyQzcGhbWOR3ec2irEkqcm4H5r7tFXMA==
+X-Received: by 2002:aca:ac06:: with SMTP id v6mr485050oie.97.1604950854672;
+        Mon, 09 Nov 2020 11:40:54 -0800 (PST)
+Received: from ?IPv6:2600:1700:42f0:6600:2015:92de:6a58:e331? ([2600:1700:42f0:6600:2015:92de:6a58:e331])
+        by smtp.gmail.com with ESMTPSA id w21sm1052968otq.20.2020.11.09.11.40.53
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 09 Nov 2020 11:40:53 -0800 (PST)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.4\))
+Subject: Re: [PATCH] hfsplus: remove pr_err message on ENOSPC file extend
+ error
+From:   Viacheslav Dubeyko <slava@dubeyko.com>
+In-Reply-To: <20201106215518.390664-1-colin.king@canonical.com>
+Date:   Mon, 9 Nov 2020 11:40:52 -0800
+Cc:     Linux FS devel list <linux-fsdevel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C65DFC10-FEF7-4117-894D-F347310ED13E@dubeyko.com>
+References: <20201106215518.390664-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+X-Mailer: Apple Mail (2.3608.120.23.2.4)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Nov 9, 2020 at 6:18 PM Mao Wenan <wenan.mao@linux.alibaba.com> wrote:
->
-> When net.ipv4.tcp_syncookies=1 and syn flood is happened,
-> cookie_v4_check or cookie_v6_check tries to redo what
-> tcp_v4_send_synack or tcp_v6_send_synack did,
-> rsk_window_clamp will be changed if SOCK_RCVBUF is set,
-> which will make rcv_wscale is different, the client
-> still operates with initial window scale and can overshot
-> granted window, the client use the initial scale but local
-> server use new scale to advertise window value, and session
-> work abnormally.
->
-> Fixes: e88c64f0a425 ("tcp: allow effective reduction of TCP's rcv-buffer via setsockopt")
-> Signed-off-by: Mao Wenan <wenan.mao@linux.alibaba.com>
+
+
+> On Nov 6, 2020, at 1:55 PM, Colin King <colin.king@canonical.com> =
+wrote:
+>=20
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> Currently ENOSPC errors that are triggered from extending a file
+> are spamming the kernel log with messages.  Since ENOSPC is being
+> returned there is enough information to userspace to inform why
+> the extend is failing and the error message is unnecessary and
+> just more logging noise.  This is particularly noticeable when
+> exercising a full hfs filesystem with stress-ng file stress tests.
+>=20
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  v4: change fixes tag format, and delay the actual call to
->  tcp_full_space().
->  v3: add local variable full_space, add fixes tag.
->  v2: fix for ipv6.
->  net/ipv4/syncookies.c | 8 +++++++-
->  net/ipv6/syncookies.c | 9 ++++++++-
->  2 files changed, 15 insertions(+), 2 deletions(-)
->
-> diff --git a/net/ipv4/syncookies.c b/net/ipv4/syncookies.c
-> index 6ac473b..8784e1f 100644
-> --- a/net/ipv4/syncookies.c
-> +++ b/net/ipv4/syncookies.c
-> @@ -327,6 +327,7 @@ struct sock *cookie_v4_check(struct sock *sk, struct sk_buff *skb)
->         struct inet_request_sock *ireq;
->         struct tcp_request_sock *treq;
->         struct tcp_sock *tp = tcp_sk(sk);
-> +       int full_space;
+> fs/hfsplus/extents.c | 6 +-----
+> 1 file changed, 1 insertion(+), 5 deletions(-)
+>=20
+> diff --git a/fs/hfsplus/extents.c b/fs/hfsplus/extents.c
+> index a930ddd15681..6cc30482c82c 100644
+> --- a/fs/hfsplus/extents.c
+> +++ b/fs/hfsplus/extents.c
+> @@ -446,13 +446,9 @@ int hfsplus_file_extend(struct inode *inode, bool =
+zeroout)
+> 	int res;
+>=20
+> 	if (sbi->alloc_file->i_size * 8 <
+> -	    sbi->total_blocks - sbi->free_blocks + 8) {
+> +	    sbi->total_blocks - sbi->free_blocks + 8)
+> 		/* extend alloc file */
+> -		pr_err("extend alloc file! (%llu,%u,%u)\n",
+> -		       sbi->alloc_file->i_size * 8,
+> -		       sbi->total_blocks, sbi->free_blocks);
+> 		return -ENOSPC;
+> -	}
 
-SGTM. although you could have avoided adding a variable breaking the almost
-correct reverse Christmas tree that some of us prefer.
+Looks good and sounds reasonable.
 
-Something like this would look better :
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
 
-diff --git a/net/ipv4/syncookies.c b/net/ipv4/syncookies.c
-index 6ac473b47f30d4d5e5e9455424b1a91d84e649ee..78af720f3e2c6dcdc7298178c5d2f02f0e425e04
-100644
---- a/net/ipv4/syncookies.c
-+++ b/net/ipv4/syncookies.c
-@@ -331,7 +331,7 @@ struct sock *cookie_v4_check(struct sock *sk,
-struct sk_buff *skb)
-        __u32 cookie = ntohl(th->ack_seq) - 1;
-        struct sock *ret = sk;
-        struct request_sock *req;
--       int mss;
-+       int full_space, mss;
-        struct rtable *rt;
-        __u8 rcv_wscale;
-        struct flowi4 fl4;
+Thanks,
+Viacheslav Dubeyko.
+
+>=20
+> 	mutex_lock(&hip->extents_lock);
+> 	if (hip->alloc_blocks =3D=3D hip->first_blocks)
+> --=20
+> 2.28.0
+>=20
+

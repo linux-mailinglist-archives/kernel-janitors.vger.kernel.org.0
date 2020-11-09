@@ -2,76 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D6052AB3D6
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Nov 2020 10:43:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15E8F2AB3EB
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Nov 2020 10:47:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729124AbgKIJnJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Nov 2020 04:43:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46288 "EHLO
+        id S1729067AbgKIJrG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Nov 2020 04:47:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729166AbgKIJnJ (ORCPT
+        with ESMTP id S1728917AbgKIJrF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Nov 2020 04:43:09 -0500
-X-Greylist: delayed 536 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 09 Nov 2020 01:43:08 PST
-Received: from smtp3-1.goneo.de (smtp3.goneo.de [IPv6:2001:1640:5::8:37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D2B7C0613CF
-        for <kernel-janitors@vger.kernel.org>; Mon,  9 Nov 2020 01:43:08 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by smtp3.goneo.de (Postfix) with ESMTP id C282723EEDC;
-        Mon,  9 Nov 2020 10:34:10 +0100 (CET)
-X-Virus-Scanned: by goneo
-X-Spam-Flag: NO
-X-Spam-Score: -2.94
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.94 tagged_above=-999 tests=[ALL_TRUSTED=-1,
-        AWL=-0.040, BAYES_00=-1.9] autolearn=ham
-Received: from smtp3.goneo.de ([127.0.0.1])
-        by localhost (smtp3.goneo.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id m8iLppu4mIMG; Mon,  9 Nov 2020 10:34:09 +0100 (CET)
-Received: from lem-wkst-02.lemonage (hq.lemonage.de [87.138.178.34])
-        by smtp3.goneo.de (Postfix) with ESMTPSA id 378B923F3C7;
-        Mon,  9 Nov 2020 10:34:09 +0100 (CET)
-Date:   Mon, 9 Nov 2020 10:34:01 +0100
-From:   Lars Poeschel <poeschel@lemonage.de>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Miguel Ojeda Sandonis <miguel.ojeda.sandonis@gmail.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] auxdisplay: fix use after free in lcd2s_i2c_remove()
-Message-ID: <20201109093401.oufzm5z3kcckloks@lem-wkst-02.lemonage>
-References: <20201106192415.GA2696904@mwanda>
+        Mon, 9 Nov 2020 04:47:05 -0500
+Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68276C0613CF;
+        Mon,  9 Nov 2020 01:47:04 -0800 (PST)
+Received: by mail-yb1-xb42.google.com with SMTP id 2so3549247ybc.12;
+        Mon, 09 Nov 2020 01:47:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=b+fXAPRsR/uex6VU5/EqCVLiWplbh7G5vxH2O/MlyR4=;
+        b=pJhTvuH4nCUkAyElx/qD1AaanZ2cSIDtOfvdTAtsy5Ez/Lq7CqmANmvpLaG4Jv4C34
+         jIEgyAzYdk6Do0yo+ry7bKyAIHSny1U3jwftJXUmXb+FAvTufJ8EKK7LnA0Jsb8wo01f
+         csx9lYsaAEXeQhC3lFcAS1dUM0GrO0gH4ms7rHViqdvqpTp66RlaRtR2iZkrQUar1u16
+         WIip1bxKzZiy+BjmPDHd5RI4bLLGPnZH0g+vyEWzoCDlGsWaZnCgFDaQQvJEzbzYjoOC
+         syVJAJSWz0EMYHU6CnermmxeUw9tvwo+/wJ3RmlF0x9QfivT3R+3KM6BKC41MUENR42o
+         mS8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=b+fXAPRsR/uex6VU5/EqCVLiWplbh7G5vxH2O/MlyR4=;
+        b=TG7mDiNFzStOgmC7cqhfMOpDb4bZU4r76uGZyYw9vuZTpKecNUgghNY5ZcpSDYbBqp
+         j17XU5vhvhoCIRpof3IDLK8GrF7gRuYNAexWsix/UZ6Jq4q+3WVa+9TEjA/ovpAlOrbj
+         56pPsf1R1kIJ/Vse/HuSD8paCL8qynmXjrpqLsWnkGqojtJeHe4gkTizbF/F30bjfC7l
+         ApQfrJCbIGEr9Qt2/zDL/pefRJCnulKjf0EmJUd0+2oWMcuSZK02GAz5j2DbMqkkNPfk
+         XSwroVnj2l7aoo6zdIo6M3J7IC6kQ++Uw5vBX8QMuqPE+97Zx7evH/32CgH0LCTXYWqt
+         quBQ==
+X-Gm-Message-State: AOAM533L5KdCl7KgQO9dGYITprRsiTn/JTPoCJ1SKDbWqjHMQmoVXOhx
+        NuM+SEdnO5P9GhAk0+dlWN7NxQiU1gFXuskVOkA=
+X-Google-Smtp-Source: ABdhPJxGPr4N79SqNn9JyWZYznr3r3+sTcgzE+d95uzXvdhAXmp0Nq/URccVL5pcH9BTmbsdb2XY4bCV0wI7l2V/nwg=
+X-Received: by 2002:a25:bcc7:: with SMTP id l7mr8063390ybm.115.1604915223794;
+ Mon, 09 Nov 2020 01:47:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+References: <20201106192415.GA2696904@mwanda>
 In-Reply-To: <20201106192415.GA2696904@mwanda>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 9 Nov 2020 10:46:53 +0100
+Message-ID: <CANiq72m+_4K8RzR4JtdAq4o4uc_vBPmLZmgLiGB1jwd_FnjrZA@mail.gmail.com>
+Subject: Re: [PATCH] auxdisplay: fix use after free in lcd2s_i2c_remove()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Lars Poeschel <poeschel@lemonage.de>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Nov 06, 2020 at 10:24:15PM +0300, Dan Carpenter wrote:
+On Fri, Nov 6, 2020 at 8:26 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
 > The kfree() needs to be moved down a line to prevent a use after free.
-> 
-> Fixes: 8c9108d014c5 ("auxdisplay: add a driver for lcd2s character display")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/auxdisplay/lcd2s.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/auxdisplay/lcd2s.c b/drivers/auxdisplay/lcd2s.c
-> index cfa5f86deeef..3eb7f04db6cb 100644
-> --- a/drivers/auxdisplay/lcd2s.c
-> +++ b/drivers/auxdisplay/lcd2s.c
-> @@ -348,8 +348,8 @@ static int lcd2s_i2c_remove(struct i2c_client *i2c)
->  {
->  	struct lcd2s_data *lcd2s = i2c_get_clientdata(i2c);
->  
-> -	kfree(lcd2s->charlcd);
->  	charlcd_unregister(lcd2s->charlcd);
-> +	kfree(lcd2s->charlcd);
->  	return 0;
->  }
 
-Reviewed-by: Lars Pöschel <poeschel@lemonage.de>
+Thanks Dan for catching this one up while in -next. I'll pick it up.
 
-Thanks,
-Lars
+Cheers,
+Miguel

@@ -2,120 +2,114 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DA692AC53B
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Nov 2020 20:40:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7AE42AC99E
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Nov 2020 01:16:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730739AbgKITkz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Nov 2020 14:40:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55090 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729875AbgKITkz (ORCPT
+        id S1729935AbgKJAQn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Nov 2020 19:16:43 -0500
+Received: from out30-56.freemail.mail.aliyun.com ([115.124.30.56]:36305 "EHLO
+        out30-56.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729243AbgKJAQn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Nov 2020 14:40:55 -0500
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D86DC0613CF
-        for <kernel-janitors@vger.kernel.org>; Mon,  9 Nov 2020 11:40:55 -0800 (PST)
-Received: by mail-oi1-x244.google.com with SMTP id k26so11520255oiw.0
-        for <kernel-janitors@vger.kernel.org>; Mon, 09 Nov 2020 11:40:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dubeyko-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=RYG5aRqtt1oTe5ehg+dvQZG6g+L+lFoK4HtUJA+r5KM=;
-        b=S9hFOP+Ssq7NyJgZ90LPdfpgmbTnVaBk1SKVIeH1g8gjMUNx6T6NsiGHwyfXHZRZdl
-         rN2R7/sUH/33WrJAZ6eJth6m0PZ8nt7gCUOJNA/+NnH+vmqeJ76NBriWvZDAWObVv7aC
-         puQDLDAL0iZys7rVbPs12KY1ekzhrtKA9OKm7Q08xYn3OKfPiSGE/gXpRU+OggRL7hCD
-         t9dyAUXmlUU7ZJJ1N/Vbyk0MDNYEMJeqbFDivxyIHO1gFH3oruvecsYflB/LUHhqycLA
-         f86pbbJBKMhsFfwfdZ5RKifIbF3uqbaeAMYVHT/C3DiXWVL8ejpdCyZASQnrJAFpSSPH
-         WOtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=RYG5aRqtt1oTe5ehg+dvQZG6g+L+lFoK4HtUJA+r5KM=;
-        b=DXHojhA2KPl1qoOFkKpKidIdf1Rrs1vOeyimeyAMudhHdmJqxLDtT3td2QQweWfFdt
-         TlQrKVXNyNbfuDNjeGae2/rBZ0FtRbzGlYHbFTVgbYLykomoUWcSbhF8zV0zgj0Ybrug
-         5/x7isTQvpT97JaGH+epMnqAhHP4eNkBDJzIqhbnatMARbxJRqZthaJwKevdzNotOoxS
-         efUyuDcuvzvpGKfX9DtHmT+9hKDqCDT+poTaZSOP8VOPdYblIL+sLi8mKRdl3FxyE1Ed
-         gjscgQZTo7BoUlgS42x29dPymo8PPv6aNAGE28lagG3zQGTZCplwhiATwuRxStRFlfOc
-         kU9A==
-X-Gm-Message-State: AOAM533SG0bCV2mQBPaDRgUYKMvv8ssalbdPYolY0weWmo/6aPwatWq0
-        Ka2I32RCOlJsBlygUV2QdEdOjg==
-X-Google-Smtp-Source: ABdhPJxQj9r/hWa4Api3frfCsBoxa7VOjekt3gZz5yrRq2nyQzcGhbWOR3ec2irEkqcm4H5r7tFXMA==
-X-Received: by 2002:aca:ac06:: with SMTP id v6mr485050oie.97.1604950854672;
-        Mon, 09 Nov 2020 11:40:54 -0800 (PST)
-Received: from ?IPv6:2600:1700:42f0:6600:2015:92de:6a58:e331? ([2600:1700:42f0:6600:2015:92de:6a58:e331])
-        by smtp.gmail.com with ESMTPSA id w21sm1052968otq.20.2020.11.09.11.40.53
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 09 Nov 2020 11:40:53 -0800 (PST)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.4\))
-Subject: Re: [PATCH] hfsplus: remove pr_err message on ENOSPC file extend
- error
-From:   Viacheslav Dubeyko <slava@dubeyko.com>
-In-Reply-To: <20201106215518.390664-1-colin.king@canonical.com>
-Date:   Mon, 9 Nov 2020 11:40:52 -0800
-Cc:     Linux FS devel list <linux-fsdevel@vger.kernel.org>,
+        Mon, 9 Nov 2020 19:16:43 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R311e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=wenan.mao@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0UEpA7Z3_1604967392;
+Received: from VM20200710-3.tbsite.net(mailfrom:wenan.mao@linux.alibaba.com fp:SMTPD_---0UEpA7Z3_1604967392)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Tue, 10 Nov 2020 08:16:39 +0800
+From:   Mao Wenan <wenan.mao@linux.alibaba.com>
+To:     edumazet@google.com, davem@davemloft.net, kuznet@ms2.inr.ac.ru,
+        yoshfuji@linux-ipv6.org, kuba@kernel.org
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C65DFC10-FEF7-4117-894D-F347310ED13E@dubeyko.com>
-References: <20201106215518.390664-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-X-Mailer: Apple Mail (2.3608.120.23.2.4)
+        Mao Wenan <wenan.mao@linux.alibaba.com>
+Subject: [PATCH net v5] net: Update window_clamp if SOCK_RCVBUF is set
+Date:   Tue, 10 Nov 2020 08:16:31 +0800
+Message-Id: <1604967391-123737-1-git-send-email-wenan.mao@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <CANn89i+ABLMJTEKat=9=qujNwe0BFavphzqYc1CQGtrdkwUnXg@mail.gmail.com>
+References: <CANn89i+ABLMJTEKat=9=qujNwe0BFavphzqYc1CQGtrdkwUnXg@mail.gmail.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+When net.ipv4.tcp_syncookies=1 and syn flood is happened,
+cookie_v4_check or cookie_v6_check tries to redo what
+tcp_v4_send_synack or tcp_v6_send_synack did,
+rsk_window_clamp will be changed if SOCK_RCVBUF is set,
+which will make rcv_wscale is different, the client
+still operates with initial window scale and can overshot
+granted window, the client use the initial scale but local
+server use new scale to advertise window value, and session
+work abnormally.
 
+Fixes: e88c64f0a425 ("tcp: allow effective reduction of TCP's rcv-buffer via setsockopt")
+Signed-off-by: Mao Wenan <wenan.mao@linux.alibaba.com>
+---
+ v5: fix variable to adapat to Christmas tree format.
+ v4: change fixes tag format, and delay the actual call to
+     tcp_full_space().
+ v3: add local variable full_space, add fixes tag.
+ v2: fix for ipv6.
+ net/ipv4/syncookies.c |  9 +++++++--
+ net/ipv6/syncookies.c | 10 ++++++++--
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-> On Nov 6, 2020, at 1:55 PM, Colin King <colin.king@canonical.com> =
-wrote:
->=20
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> Currently ENOSPC errors that are triggered from extending a file
-> are spamming the kernel log with messages.  Since ENOSPC is being
-> returned there is enough information to userspace to inform why
-> the extend is failing and the error message is unnecessary and
-> just more logging noise.  This is particularly noticeable when
-> exercising a full hfs filesystem with stress-ng file stress tests.
->=20
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
-> fs/hfsplus/extents.c | 6 +-----
-> 1 file changed, 1 insertion(+), 5 deletions(-)
->=20
-> diff --git a/fs/hfsplus/extents.c b/fs/hfsplus/extents.c
-> index a930ddd15681..6cc30482c82c 100644
-> --- a/fs/hfsplus/extents.c
-> +++ b/fs/hfsplus/extents.c
-> @@ -446,13 +446,9 @@ int hfsplus_file_extend(struct inode *inode, bool =
-zeroout)
-> 	int res;
->=20
-> 	if (sbi->alloc_file->i_size * 8 <
-> -	    sbi->total_blocks - sbi->free_blocks + 8) {
-> +	    sbi->total_blocks - sbi->free_blocks + 8)
-> 		/* extend alloc file */
-> -		pr_err("extend alloc file! (%llu,%u,%u)\n",
-> -		       sbi->alloc_file->i_size * 8,
-> -		       sbi->total_blocks, sbi->free_blocks);
-> 		return -ENOSPC;
-> -	}
-
-Looks good and sounds reasonable.
-
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-
-Thanks,
-Viacheslav Dubeyko.
-
->=20
-> 	mutex_lock(&hip->extents_lock);
-> 	if (hip->alloc_blocks =3D=3D hip->first_blocks)
-> --=20
-> 2.28.0
->=20
+diff --git a/net/ipv4/syncookies.c b/net/ipv4/syncookies.c
+index 6ac473b..00dc3f9 100644
+--- a/net/ipv4/syncookies.c
++++ b/net/ipv4/syncookies.c
+@@ -331,7 +331,7 @@ struct sock *cookie_v4_check(struct sock *sk, struct sk_buff *skb)
+ 	__u32 cookie = ntohl(th->ack_seq) - 1;
+ 	struct sock *ret = sk;
+ 	struct request_sock *req;
+-	int mss;
++	int full_space, mss;
+ 	struct rtable *rt;
+ 	__u8 rcv_wscale;
+ 	struct flowi4 fl4;
+@@ -427,8 +427,13 @@ struct sock *cookie_v4_check(struct sock *sk, struct sk_buff *skb)
+ 
+ 	/* Try to redo what tcp_v4_send_synack did. */
+ 	req->rsk_window_clamp = tp->window_clamp ? :dst_metric(&rt->dst, RTAX_WINDOW);
++	/* limit the window selection if the user enforce a smaller rx buffer */
++	full_space = tcp_full_space(sk);
++	if (sk->sk_userlocks & SOCK_RCVBUF_LOCK &&
++	    (req->rsk_window_clamp > full_space || req->rsk_window_clamp == 0))
++		req->rsk_window_clamp = full_space;
+ 
+-	tcp_select_initial_window(sk, tcp_full_space(sk), req->mss,
++	tcp_select_initial_window(sk, full_space, req->mss,
+ 				  &req->rsk_rcv_wnd, &req->rsk_window_clamp,
+ 				  ireq->wscale_ok, &rcv_wscale,
+ 				  dst_metric(&rt->dst, RTAX_INITRWND));
+diff --git a/net/ipv6/syncookies.c b/net/ipv6/syncookies.c
+index e796a64..9b6cae1 100644
+--- a/net/ipv6/syncookies.c
++++ b/net/ipv6/syncookies.c
+@@ -136,7 +136,7 @@ struct sock *cookie_v6_check(struct sock *sk, struct sk_buff *skb)
+ 	__u32 cookie = ntohl(th->ack_seq) - 1;
+ 	struct sock *ret = sk;
+ 	struct request_sock *req;
+-	int mss;
++	int full_space, mss;
+ 	struct dst_entry *dst;
+ 	__u8 rcv_wscale;
+ 	u32 tsoff = 0;
+@@ -241,7 +241,13 @@ struct sock *cookie_v6_check(struct sock *sk, struct sk_buff *skb)
+ 	}
+ 
+ 	req->rsk_window_clamp = tp->window_clamp ? :dst_metric(dst, RTAX_WINDOW);
+-	tcp_select_initial_window(sk, tcp_full_space(sk), req->mss,
++	/* limit the window selection if the user enforce a smaller rx buffer */
++	full_space = tcp_full_space(sk);
++	if (sk->sk_userlocks & SOCK_RCVBUF_LOCK &&
++	    (req->rsk_window_clamp > full_space || req->rsk_window_clamp == 0))
++		req->rsk_window_clamp = full_space;
++
++	tcp_select_initial_window(sk, full_space, req->mss,
+ 				  &req->rsk_rcv_wnd, &req->rsk_window_clamp,
+ 				  ireq->wscale_ok, &rcv_wscale,
+ 				  dst_metric(dst, RTAX_INITRWND));
+-- 
+1.8.3.1
 

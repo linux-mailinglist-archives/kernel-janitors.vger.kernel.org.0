@@ -2,140 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B6CE2ADF15
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Nov 2020 20:07:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B43B2AE116
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Nov 2020 21:54:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730174AbgKJTHm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 10 Nov 2020 14:07:42 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:51538 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726400AbgKJTHl (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 10 Nov 2020 14:07:41 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kcYzR-0002fO-Lu; Tue, 10 Nov 2020 19:07:37 +0000
-Subject: Re: [PATCH][next] cpumask: allocate enough space for string and
- trailing '\0' char
-To:     paulmck@kernel.org
-Cc:     Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Qian Cai <cai@redhat.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-References: <20201109130447.2080491-1-colin.king@canonical.com>
- <737d5be9eb5af55b1a61bd8bfb49b1829a3ff916.camel@redhat.com>
- <e0458a3f-7635-bc80-9496-731bdfceed0d@windriver.com>
- <20201110152437.GS3249@paulmck-ThinkPad-P72>
- <6050d075-52cc-d1b8-51c4-4d0dac62a42e@canonical.com>
- <20201110183826.GV3249@paulmck-ThinkPad-P72>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <431c72da-1f85-ed4f-1023-08c844d572ac@canonical.com>
-Date:   Tue, 10 Nov 2020 19:07:37 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.1
+        id S1730749AbgKJUyk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 Nov 2020 15:54:40 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58884 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726307AbgKJUyk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 10 Nov 2020 15:54:40 -0500
+Received: from localhost (230.sub-72-107-127.myvzw.com [72.107.127.230])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6DAD620665;
+        Tue, 10 Nov 2020 20:54:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1605041678;
+        bh=8kpsa4r/BRs2QEoPXMPzzCIoySjMMv+Iw5TZ2VJvq8U=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=Rb03Dp+6ZQpwg1CccJpHyrVMck3Wx80wpqcWNyV7umMj+4AUCZCRiI51xSgf1alvl
+         Q5jBGoF5pi6Kw9UFyKNZrIgLl564ysrMdtmW+tOn9lRhUazHzfSQWJfshG+8ZLZwuB
+         FDkf8+YksaW4koqhTVqa1r8kAEXO0o27Rt6N8Qyk=
+Date:   Tue, 10 Nov 2020 14:54:36 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Stephen Bates <sbates@raithlin.com>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] PCI: fix a potential uninitentional integer overflow
+ issue
+Message-ID: <20201110205436.GA692055@bjorn-Precision-5520>
 MIME-Version: 1.0
-In-Reply-To: <20201110183826.GV3249@paulmck-ThinkPad-P72>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201106080419.GC29398@kadam>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 10/11/2020 18:38, Paul E. McKenney wrote:
-> On Tue, Nov 10, 2020 at 03:34:05PM +0000, Colin Ian King wrote:
->> On 10/11/2020 15:24, Paul E. McKenney wrote:
->>> On Mon, Nov 09, 2020 at 11:57:15PM -0500, Paul Gortmaker wrote:
->>>>
->>>>
->>>> On 2020-11-09 8:07 p.m., Qian Cai wrote:
->>>>> On Mon, 2020-11-09 at 13:04 +0000, Colin King wrote:
->>>>>> From: Colin Ian King <colin.king@canonical.com>
->>>>>>
->>>>>> Currently the allocation of cpulist is based on the length of buf but does
->>>>>> not include the addition end of string '\0' terminator. Static analysis is
->>>>>> reporting this as a potential out-of-bounds access on cpulist. Fix this by
->>>>>> allocating enough space for the additional '\0' terminator.
->>>>>>
->>>>>> Addresses-Coverity: ("Out-of-bounds access")
->>>>>> Fixes: 65987e67f7ff ("cpumask: add "last" alias for cpu list specifications")
->>>>>
->>>>> Yeah, this bad commit also introduced KASAN errors everywhere and then will
->>>>> disable lockdep that makes our linux-next CI miserable. Confirmed that this
->>>>> patch will fix it.
->>>>
->>>> I appreciate the reports reminding me why I hate touching string handling.
->>>>
->>>> But let us not lose sight of why linux-next exists.  We want to
->>>> encourage code to appear there as a sounding board before it goes
->>>> mainline, so we can fix things and not pollute mainline git history
->>>> with those trivialities.
->>>>
->>>> If you've decided to internalize linux-next as part of your CI, then
->>>> great, but do note that does not elevate linux-next to some pristine
->>>> status for the world at large.  That only means you have to watch more
->>>> closely what is going on.
->>>>
->>>> If you want to declare linux-next unbreakable -- well that would scare
->>>> away others to get the multi-arch or multi-config coverage that they may
->>>> not be able to do themselves.  We are not going to do that.
->>>>
->>>> I have (hopefully) fixed the "bad commit" in v2 -- as part of the
->>>> implicit linux-next rule "you broke it, you better fix it ASAP".
->>>>
->>>> But "bad" and "miserable" can be things that might scare people off of
->>>> making use of linux-next for what it is meant to be for.  And I am not
->>>> OK with that.
->>>
->>> They would need to use much stronger language to scare me off.  That said,
->>> what on earth is the point of running tests if they do not from time to
->>> time find bugs?  ;-)
->>
->> For me, part of the QA process is statically analyzing linux-next to
->> catch bugs before they land in linux. I think other testing is equally
->> worth while as catching bugs early saves time and money.
+On Fri, Nov 06, 2020 at 11:04:19AM +0300, Dan Carpenter wrote:
+> On Thu, Nov 05, 2020 at 04:24:30PM -0600, Bjorn Helgaas wrote:
+> > On Wed, Oct 07, 2020 at 03:33:45PM +0300, Dan Carpenter wrote:
+> > > On Wed, Oct 07, 2020 at 12:46:15PM +0100, Colin King wrote:
+> > > > From: Colin Ian King <colin.king@canonical.com>
+> > > > 
+> > > > The shift of 1 by align_order is evaluated using 32 bit arithmetic
+> > > > and the result is assigned to a resource_size_t type variable that
+> > > > is a 64 bit unsigned integer on 64 bit platforms. Fix an overflow
+> > > > before widening issue by using the BIT_ULL macro to perform the
+> > > > shift.
+> > > > 
+> > > > Addresses-Coverity: ("Uninitentional integer overflow")
+> > 
+> > s/Uninitentional/Unintentional/
+> > Also in subject (please also capitalize subject)
+> > 
+> > Doesn't Coverity also assign an ID number for this specific issue?
+> > Can you include that as well, e.g.,
+> > 
+> >   Addresses-Coverity-ID: 1226899 ("Unintentional integer overflow")
+> > 
+> > > > Fixes: 07d8d7e57c28 ("PCI: Make specifying PCI devices in kernel parameters reusable")
+> > > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > > > ---
+> > > >  drivers/pci/pci.c | 2 +-
+> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> > > > index 6d4d5a2f923d..1a5844d7af35 100644
+> > > > --- a/drivers/pci/pci.c
+> > > > +++ b/drivers/pci/pci.c
+> > > > @@ -6209,7 +6209,7 @@ static resource_size_t pci_specified_resource_alignment(struct pci_dev *dev,
+> > > >  			if (align_order == -1)
+> > > >  				align = PAGE_SIZE;
+> > > >  			else
+> > > > -				align = 1 << align_order;
+> > > > +				align = BIT_ULL(align_order);
+> > > 
+> > > "align_order" comes from sscanf() so Smatch thinks it's not trusted.
+> > > Anything above 63 is undefined behavior.  There should be a bounds check
+> > > on this but I don't know what the valid values of "align" are.
+> > 
+> > The spec doesn't explicitly say what the size limit for 64-bit BARs
+> > is, but it does say 32-bit BARs can support up to 2GB (2^31).  So I
+> > infer that 2^63 would be the limit for 64-bit BARs.
+> > 
+> > What about something like the following?  To me, BIT_ULL doesn't seem
+> > like an advantage over "1ULL << ", but maybe there's a reason to use
+> > it.
 > 
-> All kidding aside, the fact that this appeared in -next was due to a
-> mistake on my part, namely failing to push the changes before starting
-> the test.  Please accept my apologies, and I will continue to do my
-> best to avoid this sort of thing.
-> 
-> 							Thanx, Paul
+> The advantage of BIT_ULL() is that checkpatch and I think Coccinelle
+> will suggest using it.  It's only recently where a few people have
+> complained (actually you're probably the second person) that BIT() is
+> sort of a weird thing to use for size variables.
 
-No problem. I'm glad we have tools to catch issues like this.
+If that's the only reason, I definitely prefer "1ULL << align_order".
 
-Colin
-
-> 
->> Colin
->>
->>>
->>>> Thanks,
->>>> Paul.
->>>> --
->>>>
->>>>>
->>>>>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->>>>>> ---
->>>>>>   lib/cpumask.c | 2 +-
->>>>>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>>
->>>>>> diff --git a/lib/cpumask.c b/lib/cpumask.c
->>>>>> index 34ecb3005941..cb8a3ef0e73e 100644
->>>>>> --- a/lib/cpumask.c
->>>>>> +++ b/lib/cpumask.c
->>>>>> @@ -185,7 +185,7 @@ int __ref cpulist_parse(const char *buf, struct cpumask
->>>>>> *dstp)
->>>>>>   {
->>>>>>   	int r;
->>>>>>   	char *cpulist, last_cpu[5];	/* NR_CPUS <= 9999 */
->>>>>> -	size_t len = strlen(buf);
->>>>>> +	size_t len = strlen(buf) + 1;
->>>>>>   	bool early = !slab_is_available();
->>>>>>   	if (!strcmp(buf, "all")) {
->>>>>
->>
-
+BIT_ULL is just a pointless abstraction in this case.

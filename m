@@ -2,84 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B8FD2AD085
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Nov 2020 08:33:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14CBD2AD0D6
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Nov 2020 09:06:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730541AbgKJHdM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 10 Nov 2020 02:33:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52318 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727389AbgKJHdG (ORCPT
+        id S1731131AbgKJIGk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 Nov 2020 03:06:40 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:48720 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728579AbgKJIGk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 10 Nov 2020 02:33:06 -0500
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9195FC0613CF
-        for <kernel-janitors@vger.kernel.org>; Mon,  9 Nov 2020 23:33:04 -0800 (PST)
-Received: by mail-io1-xd42.google.com with SMTP id m9so12769362iox.10
-        for <kernel-janitors@vger.kernel.org>; Mon, 09 Nov 2020 23:33:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=o42yGNfUzOTdDPMZ3l6k7Cu/Tlmyay1zu48jmpASnXo=;
-        b=Bab2g9wnlFOdi/TfY6YIOWflmuIFwIHWvW+UQ8g9wuKqnu2gokJkIVhoGPs/zuFUWR
-         jIDj+cDiTAaPP46Y+p15eLHbDUHvcZvnAEQu0v41Xn4IOg/pP94cY6JHYbhopGRLuv9Q
-         90c6vd+0UbBZ+YWv38kcIcwIM/6/LYUazCgbDgD+VYBNpxw57TC6yhhkI+jhcN2Oi4ax
-         JAZjyMajGAMJIOwfeP0FaFBjw+HcggDQNt05ajNW1wcryUsp1dVQ1n1ROGiZ48SthM1W
-         jge5/bI+y2K+BwPs6YfVs+MTULHNdBnZ5lLI8HTnm81Q6mdSWqd1mi2DHVMgwaDEj59z
-         5shg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=o42yGNfUzOTdDPMZ3l6k7Cu/Tlmyay1zu48jmpASnXo=;
-        b=CEID99jVG64fJWzXOikvLcymOOmIjdPq3Xf0Dj+fGLbf9t6vTGYODIe9nDHuIBmtIH
-         /NaJ5dtllpgcgxruE6RtVrehYNLnf/aHpsgbDSNOUsMeQ7eSZtSbOMX5ymwUjSaY4BqD
-         DtqZ4AepbduoPOm+S3ah74B2IhIlIKdkPX0Uhu9VPOrj8O3lg/jeN2HNeAqhyr9SnpLG
-         ZaL7v9inKvDF/FOdIPQMYcIpGwPz/23nXh1yLcFMUeT47GqiflkPhHFiLmvDcODSTwtH
-         srnsHbBRsAMqehHeGQLY860EOJwH2pyFE6MjtASVwo1N1DNih+PZwGrYYA6TD6crkG6P
-         kOzQ==
-X-Gm-Message-State: AOAM532T+OaV7nU7aPHwASbaHfVnThsD4QnMHtupugdgTtxA4JejXSds
-        4cvy+tBmDTw9Dw4HIcfCDp1inPW/1UoG/+mugFsfog==
-X-Google-Smtp-Source: ABdhPJyCBy+StTa8YbefPs//qaLrA521z8TjMcBYMBBGBGWOOM43GVtYy+eGtrbbiJr3uDykhgeeYY66LGg9YDDIxiY=
-X-Received: by 2002:a5e:980e:: with SMTP id s14mr13190769ioj.195.1604993583691;
- Mon, 09 Nov 2020 23:33:03 -0800 (PST)
+        Tue, 10 Nov 2020 03:06:40 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AA85PfF032636;
+        Tue, 10 Nov 2020 08:06:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=8Yc+JuCBcxw5njKSI0AKPzOTkerHm9T7cEaGIy0DBvU=;
+ b=omBLIIFpLmMdKJNUyk8r4/REAbd6LhGG4zz1ijRbQtloSS081SRIj1R4iQDFpQ8mqsXy
+ kEVkyi2R5p69dSGnmYRIuhX05lsFs5mFQF7YNLY/o57DbK30hEm9glMD2cGrIWZBfB5o
+ POIiXz0hTGvWmL5ObCrqEbiwJO3OaIiUEHv50J/SL/gBBkYmI2P0dK+2sn8i4oXZSw8b
+ 2aKGvT6hRP9wsyjTWHu+cJSUlv36EOEjezGl0u+/zm9uQEs1BeLxqermMFSZj+1C8x9F
+ GRg8R56rnfWHteYeAoRKKAeklQg3fG0qMbzVli0kLBo7i9lQsP8hzCpaBGAgy2v4o+1Z 4w== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 34p72eg8n8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 10 Nov 2020 08:06:20 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AA80qTo181652;
+        Tue, 10 Nov 2020 08:06:19 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 34p5fyvhk5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 10 Nov 2020 08:06:19 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0AA86HU7010913;
+        Tue, 10 Nov 2020 08:06:17 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 10 Nov 2020 00:06:16 -0800
+Date:   Tue, 10 Nov 2020 11:06:09 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
+Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Balbir Singh <bsingharora@gmail.com>,
+        Tom Rix <trix@redhat.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech,
+        linux-kernel@vger.kernel.org
+Subject: Re: [linux-safety] [PATCH] taskstats: remove unneeded dead assignment
+Message-ID: <20201110080609.GD29398@kadam>
+References: <20201106062210.27920-1-lukas.bulwahn@gmail.com>
+ <6ab2415b-0642-16ee-4be0-c909e07e7565@codethink.co.uk>
+ <alpine.DEB.2.21.2011061126130.20338@felia>
+ <aea9d12d-88ee-f262-4328-03993521668f@codethink.co.uk>
 MIME-Version: 1.0
-References: <CANn89i+ABLMJTEKat=9=qujNwe0BFavphzqYc1CQGtrdkwUnXg@mail.gmail.com>
- <1604967391-123737-1-git-send-email-wenan.mao@linux.alibaba.com>
-In-Reply-To: <1604967391-123737-1-git-send-email-wenan.mao@linux.alibaba.com>
-From:   Eric Dumazet <edumazet@google.com>
-Date:   Tue, 10 Nov 2020 08:32:52 +0100
-Message-ID: <CANn89iL6UW9mG6hW7f3Yv+32Pe_i9F-5cQhfo2uV68wdcgSuZA@mail.gmail.com>
-Subject: Re: [PATCH net v5] net: Update window_clamp if SOCK_RCVBUF is set
-To:     Mao Wenan <wenan.mao@linux.alibaba.com>
-Cc:     David Miller <davem@davemloft.net>,
-        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aea9d12d-88ee-f262-4328-03993521668f@codethink.co.uk>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9800 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 malwarescore=0
+ adultscore=0 phishscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011100057
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9800 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999 mlxscore=0
+ malwarescore=0 suspectscore=0 lowpriorityscore=0 adultscore=0 phishscore=0
+ priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011100057
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Nov 10, 2020 at 1:16 AM Mao Wenan <wenan.mao@linux.alibaba.com> wrote:
->
-> When net.ipv4.tcp_syncookies=1 and syn flood is happened,
-> cookie_v4_check or cookie_v6_check tries to redo what
-> tcp_v4_send_synack or tcp_v6_send_synack did,
-> rsk_window_clamp will be changed if SOCK_RCVBUF is set,
-> which will make rcv_wscale is different, the client
-> still operates with initial window scale and can overshot
-> granted window, the client use the initial scale but local
-> server use new scale to advertise window value, and session
-> work abnormally.
->
-> Fixes: e88c64f0a425 ("tcp: allow effective reduction of TCP's rcv-buffer via setsockopt")
-> Signed-off-by: Mao Wenan <wenan.mao@linux.alibaba.com>
+On Fri, Nov 06, 2020 at 12:04:53PM +0000, Sudip Mukherjee wrote:
+> Hi Lukas,
+> 
+> On 06/11/2020 10:31, Lukas Bulwahn wrote:
+> > 
+> > 
+> > On Fri, 6 Nov 2020, Sudip Mukherjee wrote:
+> > 
+> >> Hi Lukas,
+> >>
+> 
+> <snip>
+> 
+> > 
+> > I did not try but I bet (a beverage of your choice) that the object code
+> > remains the same also for your suggested patch. Try to disprove my claim 
+> > and possibly earn yourself a beverage when we meet...
+> 
+> Lets decide which beverage.. ;-)
+> 
+> Using gcc-7.2.0 for MIPS:
+> 
+> original:- ab81d3305d578c2568fbc73aad2f9e61  kernel/taskstats.o
+> After your change:- ab81d3305d578c2568fbc73aad2f9e61  kernel/taskstats.o
+> After my change:- 0acae2c8d72abd3e15bf805fccdca711  kernel/taskstats.o
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+I'm surprised the line numbers from the printks aren't affecting it...
 
-Thanks !
+I personally prefer Lukas's patch.  "rc" should be function scope...
+
+regards,
+dan carpenter
+

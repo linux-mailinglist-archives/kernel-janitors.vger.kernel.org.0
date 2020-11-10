@@ -2,112 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14CBD2AD0D6
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Nov 2020 09:06:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA3F72AD5BE
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Nov 2020 12:58:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731131AbgKJIGk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 10 Nov 2020 03:06:40 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:48720 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728579AbgKJIGk (ORCPT
+        id S1729227AbgKJL6V (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 Nov 2020 06:58:21 -0500
+Received: from szxga02-in.huawei.com ([45.249.212.188]:2429 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726152AbgKJL6V (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 10 Nov 2020 03:06:40 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AA85PfF032636;
-        Tue, 10 Nov 2020 08:06:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=8Yc+JuCBcxw5njKSI0AKPzOTkerHm9T7cEaGIy0DBvU=;
- b=omBLIIFpLmMdKJNUyk8r4/REAbd6LhGG4zz1ijRbQtloSS081SRIj1R4iQDFpQ8mqsXy
- kEVkyi2R5p69dSGnmYRIuhX05lsFs5mFQF7YNLY/o57DbK30hEm9glMD2cGrIWZBfB5o
- POIiXz0hTGvWmL5ObCrqEbiwJO3OaIiUEHv50J/SL/gBBkYmI2P0dK+2sn8i4oXZSw8b
- 2aKGvT6hRP9wsyjTWHu+cJSUlv36EOEjezGl0u+/zm9uQEs1BeLxqermMFSZj+1C8x9F
- GRg8R56rnfWHteYeAoRKKAeklQg3fG0qMbzVli0kLBo7i9lQsP8hzCpaBGAgy2v4o+1Z 4w== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 34p72eg8n8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 10 Nov 2020 08:06:20 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AA80qTo181652;
-        Tue, 10 Nov 2020 08:06:19 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 34p5fyvhk5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 10 Nov 2020 08:06:19 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0AA86HU7010913;
-        Tue, 10 Nov 2020 08:06:17 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 10 Nov 2020 00:06:16 -0800
-Date:   Tue, 10 Nov 2020 11:06:09 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Balbir Singh <bsingharora@gmail.com>,
-        Tom Rix <trix@redhat.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        clang-built-linux@googlegroups.com,
-        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech,
-        linux-kernel@vger.kernel.org
-Subject: Re: [linux-safety] [PATCH] taskstats: remove unneeded dead assignment
-Message-ID: <20201110080609.GD29398@kadam>
-References: <20201106062210.27920-1-lukas.bulwahn@gmail.com>
- <6ab2415b-0642-16ee-4be0-c909e07e7565@codethink.co.uk>
- <alpine.DEB.2.21.2011061126130.20338@felia>
- <aea9d12d-88ee-f262-4328-03993521668f@codethink.co.uk>
+        Tue, 10 Nov 2020 06:58:21 -0500
+Received: from dggeme755-chm.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4CVmb50XQBz53g0;
+        Tue, 10 Nov 2020 19:58:09 +0800 (CST)
+Received: from [10.140.157.68] (10.140.157.68) by
+ dggeme755-chm.china.huawei.com (10.3.19.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.1913.5; Tue, 10 Nov 2020 19:58:16 +0800
+Subject: Re: [PATCH v2] clk: hisilicon: Free clk_data and unmap region
+ obtained by of_iomap
+To:     Markus Elfring <Markus.Elfring@web.de>, <linux-clk@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>
+References: <20201109180920.43193-1-gengdongjiu@huawei.com>
+ <c6d2fe3b-3261-2c0f-f245-49bb5e63c1ed@web.de>
+From:   Dongjiu Geng <gengdongjiu@huawei.com>
+Message-ID: <3252231f-dfb9-789f-e164-11d0e579defe@huawei.com>
+Date:   Tue, 10 Nov 2020 19:58:15 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aea9d12d-88ee-f262-4328-03993521668f@codethink.co.uk>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9800 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 malwarescore=0
- adultscore=0 phishscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011100057
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9800 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999 mlxscore=0
- malwarescore=0 suspectscore=0 lowpriorityscore=0 adultscore=0 phishscore=0
- priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011100057
+In-Reply-To: <c6d2fe3b-3261-2c0f-f245-49bb5e63c1ed@web.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.140.157.68]
+X-ClientProxiedBy: dggeme714-chm.china.huawei.com (10.1.199.110) To
+ dggeme755-chm.china.huawei.com (10.3.19.101)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Nov 06, 2020 at 12:04:53PM +0000, Sudip Mukherjee wrote:
-> Hi Lukas,
-> 
-> On 06/11/2020 10:31, Lukas Bulwahn wrote:
-> > 
-> > 
-> > On Fri, 6 Nov 2020, Sudip Mukherjee wrote:
-> > 
-> >> Hi Lukas,
-> >>
-> 
-> <snip>
-> 
-> > 
-> > I did not try but I bet (a beverage of your choice) that the object code
-> > remains the same also for your suggested patch. Try to disprove my claim 
-> > and possibly earn yourself a beverage when we meet...
-> 
-> Lets decide which beverage.. ;-)
-> 
-> Using gcc-7.2.0 for MIPS:
-> 
-> original:- ab81d3305d578c2568fbc73aad2f9e61  kernel/taskstats.o
-> After your change:- ab81d3305d578c2568fbc73aad2f9e61  kernel/taskstats.o
-> After my change:- 0acae2c8d72abd3e15bf805fccdca711  kernel/taskstats.o
 
-I'm surprised the line numbers from the printks aren't affecting it...
 
-I personally prefer Lukas's patch.  "rc" should be function scope...
+On 2020/11/10 1:54, Markus Elfring wrote:
+> …
+>> +++ b/drivers/clk/hisilicon/clk-hi3620.c
+> …
+>> @@ -478,6 +478,10 @@ static void __init hi3620_mmc_clk_init(struct device_node *node)
+>>
+>>  	clk_data->clk_num = num;
+>>  	of_clk_add_provider(node, of_clk_src_onecell_get, clk_data);
+>> +free_clk_data:
+>> +	kfree(clk_data);
+> …
+> 
+> * Should any system resources be kept allocated if the execution
+>   of this function implementation succeeded?
+> 
+> * How do you think about to add the statement “return;”
+>   after the call of the function “of_clk_add_provider”?
+> 
+> * Should another return value be also checked here?
 
-regards,
-dan carpenter
+sure.
 
+> 
+>   See also:
+>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/clk/clk.c?id=f8394f232b1eab649ce2df5c5f15b0e528c92091#n4414
+>   https://elixir.bootlin.com/linux/v5.10-rc2/source/drivers/clk/clk.c#L4414
+> 
+> * Would you like to use the function “of_clk_add_hw_provider” instead?
+
+    How about we still use of_clk_add_provider()? It doesn't seem to make difference using of_clk_add_hw_provider().
+
+> 
+> Regards,
+> Markus

@@ -2,114 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7AE42AC99E
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Nov 2020 01:16:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFF462ACA07
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Nov 2020 02:07:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729935AbgKJAQn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Nov 2020 19:16:43 -0500
-Received: from out30-56.freemail.mail.aliyun.com ([115.124.30.56]:36305 "EHLO
-        out30-56.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729243AbgKJAQn (ORCPT
+        id S1730581AbgKJBHR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Nov 2020 20:07:17 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:52035 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727311AbgKJBHR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Nov 2020 19:16:43 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R311e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=wenan.mao@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0UEpA7Z3_1604967392;
-Received: from VM20200710-3.tbsite.net(mailfrom:wenan.mao@linux.alibaba.com fp:SMTPD_---0UEpA7Z3_1604967392)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 10 Nov 2020 08:16:39 +0800
-From:   Mao Wenan <wenan.mao@linux.alibaba.com>
-To:     edumazet@google.com, davem@davemloft.net, kuznet@ms2.inr.ac.ru,
-        yoshfuji@linux-ipv6.org, kuba@kernel.org
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Mao Wenan <wenan.mao@linux.alibaba.com>
-Subject: [PATCH net v5] net: Update window_clamp if SOCK_RCVBUF is set
-Date:   Tue, 10 Nov 2020 08:16:31 +0800
-Message-Id: <1604967391-123737-1-git-send-email-wenan.mao@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <CANn89i+ABLMJTEKat=9=qujNwe0BFavphzqYc1CQGtrdkwUnXg@mail.gmail.com>
-References: <CANn89i+ABLMJTEKat=9=qujNwe0BFavphzqYc1CQGtrdkwUnXg@mail.gmail.com>
+        Mon, 9 Nov 2020 20:07:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1604970436;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mTXlKfTWyct7ELa6NUDaZ2WTzRPRy3oG569ol0gWKuc=;
+        b=bB2rmL4gk0mc+6nOzR1T2/dWzIBcKodvotGx+zuxGQRikD0mLW296cj47EKZ2wEPsmdnLm
+        /SxXa3BPmulY4LrrcS/9Y0JJUAcZJWdFyoRrQQ5OYvQyOW7Q49GQpNz+2JpGzx/IXZ/Hxu
+        SPJJfFhXzdUh8o57KELBVRH1ueZkYCU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-471-n82JQp1uOrCTpvc-D-ELlg-1; Mon, 09 Nov 2020 20:07:14 -0500
+X-MC-Unique: n82JQp1uOrCTpvc-D-ELlg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DF1AD56C2E;
+        Tue, 10 Nov 2020 01:07:12 +0000 (UTC)
+Received: from ovpn-66-145.rdu2.redhat.com (unknown [10.10.67.145])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B433C100238C;
+        Tue, 10 Nov 2020 01:07:11 +0000 (UTC)
+Message-ID: <737d5be9eb5af55b1a61bd8bfb49b1829a3ff916.camel@redhat.com>
+Subject: Re: [PATCH][next] cpumask: allocate enough space for string and
+ trailing '\0' char
+From:   Qian Cai <cai@redhat.com>
+To:     Colin King <colin.king@canonical.com>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Date:   Mon, 09 Nov 2020 20:07:10 -0500
+In-Reply-To: <20201109130447.2080491-1-colin.king@canonical.com>
+References: <20201109130447.2080491-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-When net.ipv4.tcp_syncookies=1 and syn flood is happened,
-cookie_v4_check or cookie_v6_check tries to redo what
-tcp_v4_send_synack or tcp_v6_send_synack did,
-rsk_window_clamp will be changed if SOCK_RCVBUF is set,
-which will make rcv_wscale is different, the client
-still operates with initial window scale and can overshot
-granted window, the client use the initial scale but local
-server use new scale to advertise window value, and session
-work abnormally.
+On Mon, 2020-11-09 at 13:04 +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently the allocation of cpulist is based on the length of buf but does
+> not include the addition end of string '\0' terminator. Static analysis is
+> reporting this as a potential out-of-bounds access on cpulist. Fix this by
+> allocating enough space for the additional '\0' terminator.
+> 
+> Addresses-Coverity: ("Out-of-bounds access")
+> Fixes: 65987e67f7ff ("cpumask: add "last" alias for cpu list specifications")
 
-Fixes: e88c64f0a425 ("tcp: allow effective reduction of TCP's rcv-buffer via setsockopt")
-Signed-off-by: Mao Wenan <wenan.mao@linux.alibaba.com>
----
- v5: fix variable to adapat to Christmas tree format.
- v4: change fixes tag format, and delay the actual call to
-     tcp_full_space().
- v3: add local variable full_space, add fixes tag.
- v2: fix for ipv6.
- net/ipv4/syncookies.c |  9 +++++++--
- net/ipv6/syncookies.c | 10 ++++++++--
- 2 files changed, 15 insertions(+), 4 deletions(-)
+Yeah, this bad commit also introduced KASAN errors everywhere and then will
+disable lockdep that makes our linux-next CI miserable. Confirmed that this
+patch will fix it.
 
-diff --git a/net/ipv4/syncookies.c b/net/ipv4/syncookies.c
-index 6ac473b..00dc3f9 100644
---- a/net/ipv4/syncookies.c
-+++ b/net/ipv4/syncookies.c
-@@ -331,7 +331,7 @@ struct sock *cookie_v4_check(struct sock *sk, struct sk_buff *skb)
- 	__u32 cookie = ntohl(th->ack_seq) - 1;
- 	struct sock *ret = sk;
- 	struct request_sock *req;
--	int mss;
-+	int full_space, mss;
- 	struct rtable *rt;
- 	__u8 rcv_wscale;
- 	struct flowi4 fl4;
-@@ -427,8 +427,13 @@ struct sock *cookie_v4_check(struct sock *sk, struct sk_buff *skb)
- 
- 	/* Try to redo what tcp_v4_send_synack did. */
- 	req->rsk_window_clamp = tp->window_clamp ? :dst_metric(&rt->dst, RTAX_WINDOW);
-+	/* limit the window selection if the user enforce a smaller rx buffer */
-+	full_space = tcp_full_space(sk);
-+	if (sk->sk_userlocks & SOCK_RCVBUF_LOCK &&
-+	    (req->rsk_window_clamp > full_space || req->rsk_window_clamp == 0))
-+		req->rsk_window_clamp = full_space;
- 
--	tcp_select_initial_window(sk, tcp_full_space(sk), req->mss,
-+	tcp_select_initial_window(sk, full_space, req->mss,
- 				  &req->rsk_rcv_wnd, &req->rsk_window_clamp,
- 				  ireq->wscale_ok, &rcv_wscale,
- 				  dst_metric(&rt->dst, RTAX_INITRWND));
-diff --git a/net/ipv6/syncookies.c b/net/ipv6/syncookies.c
-index e796a64..9b6cae1 100644
---- a/net/ipv6/syncookies.c
-+++ b/net/ipv6/syncookies.c
-@@ -136,7 +136,7 @@ struct sock *cookie_v6_check(struct sock *sk, struct sk_buff *skb)
- 	__u32 cookie = ntohl(th->ack_seq) - 1;
- 	struct sock *ret = sk;
- 	struct request_sock *req;
--	int mss;
-+	int full_space, mss;
- 	struct dst_entry *dst;
- 	__u8 rcv_wscale;
- 	u32 tsoff = 0;
-@@ -241,7 +241,13 @@ struct sock *cookie_v6_check(struct sock *sk, struct sk_buff *skb)
- 	}
- 
- 	req->rsk_window_clamp = tp->window_clamp ? :dst_metric(dst, RTAX_WINDOW);
--	tcp_select_initial_window(sk, tcp_full_space(sk), req->mss,
-+	/* limit the window selection if the user enforce a smaller rx buffer */
-+	full_space = tcp_full_space(sk);
-+	if (sk->sk_userlocks & SOCK_RCVBUF_LOCK &&
-+	    (req->rsk_window_clamp > full_space || req->rsk_window_clamp == 0))
-+		req->rsk_window_clamp = full_space;
-+
-+	tcp_select_initial_window(sk, full_space, req->mss,
- 				  &req->rsk_rcv_wnd, &req->rsk_window_clamp,
- 				  ireq->wscale_ok, &rcv_wscale,
- 				  dst_metric(dst, RTAX_INITRWND));
--- 
-1.8.3.1
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  lib/cpumask.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/lib/cpumask.c b/lib/cpumask.c
+> index 34ecb3005941..cb8a3ef0e73e 100644
+> --- a/lib/cpumask.c
+> +++ b/lib/cpumask.c
+> @@ -185,7 +185,7 @@ int __ref cpulist_parse(const char *buf, struct cpumask
+> *dstp)
+>  {
+>  	int r;
+>  	char *cpulist, last_cpu[5];	/* NR_CPUS <= 9999 */
+> -	size_t len = strlen(buf);
+> +	size_t len = strlen(buf) + 1;
+>  	bool early = !slab_is_available();
+>  
+>  	if (!strcmp(buf, "all")) {
 

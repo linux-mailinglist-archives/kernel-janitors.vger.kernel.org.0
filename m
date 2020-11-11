@@ -2,84 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA4612AF8F9
-	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Nov 2020 20:24:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB1FC2AFA25
+	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Nov 2020 22:05:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727442AbgKKTYB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 11 Nov 2020 14:24:01 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:35583 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726157AbgKKTYA (ORCPT
+        id S1726748AbgKKVFq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 11 Nov 2020 16:05:46 -0500
+Received: from asavdk3.altibox.net ([109.247.116.14]:34338 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725949AbgKKVFq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 11 Nov 2020 14:24:00 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kcvin-0005qG-Ux; Wed, 11 Nov 2020 19:23:58 +0000
-Subject: Re: [PATCH][next] mptcp: fix a dereference of pointer before msk is
- null checked.
-To:     Mat Martineau <mathew.j.martineau@linux.intel.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     Matthieu Baerts <matthieu.baerts@tessares.net>,
-        "David S . Miller" <davem@davemloft.net>,
-        Geliang Tang <geliangtang@gmail.com>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        mptcp@lists.01.org, kernel-janitors@vger.kernel.org,
+        Wed, 11 Nov 2020 16:05:46 -0500
+Received: from ravnborg.org (unknown [188.228.123.71])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk3.altibox.net (Postfix) with ESMTPS id C762B2006B;
+        Wed, 11 Nov 2020 22:05:42 +0100 (CET)
+Date:   Wed, 11 Nov 2020 22:05:41 +0100
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
+        Edmund Dea <edmund.j.dea@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20201109125215.2080172-1-colin.king@canonical.com>
- <cb9fba1-b399-325f-c956-ede9da1b1b7@linux.intel.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <e493452c-4dc1-d2b2-e05b-9bace72af2dc@canonical.com>
-Date:   Wed, 11 Nov 2020 19:23:57 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.1
+Subject: Re: [PATCH][next] drm/kmb: fix spelling mistakes in drm_info and
+ drm_dbg messages
+Message-ID: <20201111210541.GC3013948@ravnborg.org>
+References: <20201109111225.1485190-1-colin.king@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <cb9fba1-b399-325f-c956-ede9da1b1b7@linux.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201109111225.1485190-1-colin.king@canonical.com>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=VbvZwmh9 c=1 sm=1 tr=0
+        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
+        a=kj9zAlcOel0A:10 a=DfNHnWVPAAAA:8 a=PDJ5SSlNGPTDK7a3TiwA:9
+        a=CjuIK1q_8ugA:10 a=rjTVMONInIDnV1a_A2c_:22
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 11/11/2020 18:49, Mat Martineau wrote:
-> On Mon, 9 Nov 2020, Colin King wrote:
-> 
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> Currently the assignment of pointer net from the sock_net(sk) call
->> is potentially dereferencing a null pointer sk. sk points to the
->> same location as pointer msk and msk is being null checked after
->> the sock_net call.  Fix this by calling sock_net after the null
->> check on pointer msk.
->>
->> Addresses-Coverity: ("Dereference before null check")
->> Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->> net/mptcp/pm_netlink.c | 4 +++-
->> 1 file changed, 3 insertions(+), 1 deletion(-)
->>
-> 
-> Hi Colin and Jakub -
-> 
-> I noticed that the follow-up discussion on this patch didn't go to the
-> netdev list, so patchwork did not get updated.
-> 
-> This patch is superseded by the following, which already has a
-> Reviewed-by tag from Matthieu:
-> 
-> http://patchwork.ozlabs.org/project/netdev/patch/078a2ef5bdc4e3b2c25ef852461692001f426495.1604976945.git.geliangtang@gmail.com/
-> 
-> 
-OK, thanks for letting me know. Good to see it got fixed!
+Hi Colin,
 
-Colin
+On Mon, Nov 09, 2020 at 11:12:25AM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Thanks!
+> There are two spelling mistakes of the word sync in drm_info
+> and drm_dbg messages. Fix these.
 > 
-> -- 
-> Mat Martineau
-> Intel
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
+Thanks, applied to drm-misc-next.
+
+	Sam

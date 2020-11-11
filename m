@@ -2,68 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4434F2AE605
-	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Nov 2020 02:48:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C4E7E2AE7A8
+	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Nov 2020 05:55:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732533AbgKKBse (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 10 Nov 2020 20:48:34 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37098 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731805AbgKKBse (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 10 Nov 2020 20:48:34 -0500
-Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.7])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 27A87216C4;
-        Wed, 11 Nov 2020 01:48:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605059313;
-        bh=8ZoXFi19cRFxurUpEO5osza2tLaJVaBLs/a+W0ovF1c=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Q+jPt3Nt8m8DXdJcqcPyssEU7Br3tkPgCzb5XIORN1OLhAFgMJknyUmyBrzhIZdjN
-         kcX/8hLGdtUMkj0WJFs99Qe0fAbmTAf7vmho8iFR/BVq6qHO28n9Ez/qgFnwuS6j6k
-         MfSackoKWIR0fOla91sG3lNObegpHFomKRKzTEgM=
-Date:   Tue, 10 Nov 2020 17:48:32 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Kurt Kanzenbach <kurt@linutronix.de>,
-        Colin King <colin.king@canonical.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] net: dsa: fix unintended sign extension on a u16
- left shift
-Message-ID: <20201110174832.437b4951@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <87y2jar76v.fsf@kurt>
-References: <20201109124008.2079873-1-colin.king@canonical.com>
-        <87y2jar76v.fsf@kurt>
+        id S1725898AbgKKEzm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 Nov 2020 23:55:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54758 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725468AbgKKEzl (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 10 Nov 2020 23:55:41 -0500
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89FD4C0613D1;
+        Tue, 10 Nov 2020 20:55:41 -0800 (PST)
+Received: by mail-qk1-x735.google.com with SMTP id u4so626126qkk.10;
+        Tue, 10 Nov 2020 20:55:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=OJIv0opzVbfrAjXNpwUzELsHB6itnaiepO4pAicv9Tk=;
+        b=PFzZkcSpK0l2foKtH3NnzBLmIzTFVVNSCLcSoKOCRFyeYqtDMKmd12s8R3Q1gM3YtC
+         AKbxRZGf4Uf57kSKXVeYp/JioYr9nac2LveVBXD/TVy2mMrZZlXCWkc5H5NkiyVp07vy
+         CXqFE7uqnXSIlgcx+R+BiKvEiD4MT1SL019bRuyFCoCH47z763QP+N9gVzPikUi98VyB
+         r0PiOlrBINuHhrfMPK6Negp89xASdN15N+goWCs4mhq9pUcWnDVvkalSr8SxqJ0KlHAi
+         avhHB8i6S7F3wziKrC9oJemGvASaBZ+PlII+nHLN+j6pdKXu4DfMnXJf0xeXIF1gABEr
+         6e7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=OJIv0opzVbfrAjXNpwUzELsHB6itnaiepO4pAicv9Tk=;
+        b=ZFRpI1ao0k6Kc5+vM5/dYs59SmCKKDeE0yl60U1tJ1I4ShE2dtXDaA7V51dJL+sqUx
+         RBSWgDxxclo4AisVifp5mxQJX72qrbaZwfPzIplnz3NMW1gk6731Sy1G85RnqXc6wL2l
+         ajhkzqtV0I2Oe9i1uWI+YZE2klzWBPctYtx/bTn4IbCSzjMYcjb5VZAzcFyaF+NMBL6W
+         sNhgTuaNOiufzxIM+uo0hFr4wkw8Gc3m/2ZHhZf7w89FQMt1h1zULcCtSPI9QIzM8WF4
+         dxR8Nd22DBPmRYDSBDvNmSpoymxkS7ShFn56HyFY5IY8HTpzfsb8RRsHAAxm3/iapgCZ
+         oqWA==
+X-Gm-Message-State: AOAM531cQiXmABkvsBZDhi2XpnXlFsdiKcyJfwl2hV6/3Nf028oqegxS
+        EFJiuyI5mttqiTjz3Y7YbbA=
+X-Google-Smtp-Source: ABdhPJwPCDxMsqGDi538lzx9L1zKn6yWdHktJ2upA0OEbwDv5HCWNQXsVkuVrgvSN29eRIy9uxxdRA==
+X-Received: by 2002:a05:620a:886:: with SMTP id b6mr3789982qka.427.1605070540846;
+        Tue, 10 Nov 2020 20:55:40 -0800 (PST)
+Received: from fedora-project ([172.98.75.205])
+        by smtp.gmail.com with ESMTPSA id h129sm1148142qkd.35.2020.11.10.20.55.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2020 20:55:40 -0800 (PST)
+Date:   Tue, 10 Nov 2020 23:55:38 -0500
+From:   Nigel Christian <nigel.l.christian@gmail.com>
+To:     marcel@holtmann.org
+Cc:     johan.hedberg@gmail.com, kernel-janitors@vger.kernel.org,
+        linux-bluetooth@vger.kernel.org
+Subject: [PATCH][v2] Bluetooth: hci_qca: resolve various warnings
+Message-ID: <20201111045538.GA90261@fedora-project>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 09 Nov 2020 14:27:52 +0100 Kurt Kanzenbach wrote:
-> On Mon Nov 09 2020, Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> >
-> > The left shift of u16 variable high is promoted to the type int and
-> > then sign extended to a 64 bit u64 value.  If the top bit of high is
-> > set then the upper 32 bits of the result end up being set by the
-> > sign extension. Fix this by explicitly casting the value in high to
-> > a u64 before left shifting by 16 places.
-> >
-> > Also, remove the initialisation of variable value to 0 at the start
-> > of each loop iteration as the value is never read and hence the
-> > assignment it is redundant.
-> >
-> > Addresses-Coverity: ("Unintended sign extension")
-> > Fixes: e4b27ebc780f ("net: dsa: Add DSA driver for Hirschmann Hellcreek switches")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>  
-> 
-> Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+Replace symbolic permissions with octal values. Use usleep_range
+for small msec values due to the fact that msleep() less than 
+20ms may have unexpected behavior/sleep longer.
 
-Applied, thanks!
+- https://lkml.org/lkml/2016/8/2/1945
+- Documentation/timers/timers-howto.rst
+
+Signed-off-by: Nigel Christian <nigel.l.christian@gmail.com>
+---
+ drivers/bluetooth/hci_qca.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index 2d3f1f179a1e..039fb117bd8f 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -631,7 +631,7 @@ static void qca_debugfs_init(struct hci_dev *hdev)
+ 	ibs_dir = debugfs_create_dir("ibs", hdev->debugfs);
+ 
+ 	/* read only */
+-	mode = S_IRUGO;
++	mode = 0444;
+ 	debugfs_create_u8("tx_ibs_state", mode, ibs_dir, &qca->tx_ibs_state);
+ 	debugfs_create_u8("rx_ibs_state", mode, ibs_dir, &qca->rx_ibs_state);
+ 	debugfs_create_u64("ibs_sent_sleeps", mode, ibs_dir,
+@@ -658,7 +658,7 @@ static void qca_debugfs_init(struct hci_dev *hdev)
+ 	debugfs_create_u32("vote_off_ms", mode, ibs_dir, &qca->vote_off_ms);
+ 
+ 	/* read/write */
+-	mode = S_IRUGO | S_IWUSR;
++	mode = 0644;
+ 	debugfs_create_u32("wake_retrans", mode, ibs_dir, &qca->wake_retrans);
+ 	debugfs_create_u32("tx_idle_delay", mode, ibs_dir,
+ 			   &qca->tx_idle_delay);
+@@ -1302,7 +1302,7 @@ static int qca_set_baudrate(struct hci_dev *hdev, uint8_t baudrate)
+ 
+ 	/* Give the controller time to process the request */
+ 	if (qca_is_wcn399x(qca_soc_type(hu)))
+-		msleep(10);
++		usleep_range(1000, 10000);
+ 	else
+ 		msleep(300);
+ 
+@@ -1350,7 +1350,7 @@ static int qca_send_power_pulse(struct hci_uart *hu, bool on)
+ 	if (on)
+ 		msleep(100);
+ 	else
+-		msleep(10);
++		usleep_range(1000, 10000);
+ 
+ 	return 0;
+ }
+-- 
+2.28.0
+

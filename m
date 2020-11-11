@@ -2,49 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3D782AE9F9
-	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Nov 2020 08:24:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A072C2AEE2F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Nov 2020 10:55:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726698AbgKKHYR convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 11 Nov 2020 02:24:17 -0500
-Received: from sw73-70-41.adsl.seed.net.tw ([203.73.70.41]:44188 "EHLO
-        oa.trendtek.com.tw" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S1726573AbgKKHYN (ORCPT
+        id S1726007AbgKKJzL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 11 Nov 2020 04:55:11 -0500
+Received: from coyote.holtmann.net ([212.227.132.17]:44315 "EHLO
+        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725870AbgKKJzK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 11 Nov 2020 02:24:13 -0500
-Received: from [156.96.44.214] ([156.96.44.214])
-        (authenticated bits=0)
-        by oa.trendtek.com.tw (8.13.8/8.13.1) with ESMTP id 0AB7NxBP024859
-        for <kernel-janitors@vger.kernel.org>; Wed, 11 Nov 2020 15:24:11 +0800
-Message-Id: <202011110724.0AB7NxBP024859@oa.trendtek.com.tw>
-Content-Type: text/plain; charset="iso-8859-1"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Corporate and Personal Loan *
-To:     kernel-janitors@vger.kernel.org
-From:   "Investment  Corporate" <financialcapability6@gmail.com>
-Date:   Wed, 11 Nov 2020 00:31:22 -0800
-Reply-To: hmurrah39@gmail.com
+        Wed, 11 Nov 2020 04:55:10 -0500
+Received: from marcel-macbook.holtmann.net (unknown [37.83.201.106])
+        by mail.holtmann.org (Postfix) with ESMTPSA id 8DF1BCECFC;
+        Wed, 11 Nov 2020 11:02:15 +0100 (CET)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.4\))
+Subject: Re: [PATCH][v2] Bluetooth: hci_qca: resolve various warnings
+From:   Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <20201111045538.GA90261@fedora-project>
+Date:   Wed, 11 Nov 2020 10:55:05 +0100
+Cc:     Johan Hedberg <johan.hedberg@gmail.com>,
+        kernel-janitors@vger.kernel.org, linux-bluetooth@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <054F4CD9-1A1B-41EB-8C18-EB02CC3E9E56@holtmann.org>
+References: <20201111045538.GA90261@fedora-project>
+To:     Nigel Christian <nigel.l.christian@gmail.com>
+X-Mailer: Apple Mail (2.3608.120.23.2.4)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello kernel-janitors@vger.kernel.org
+Hi Nigel,
 
+> Replace symbolic permissions with octal values. Use usleep_range
+> for small msec values due to the fact that msleep() less than 
+> 20ms may have unexpected behavior/sleep longer.
+> 
+> - https://lkml.org/lkml/2016/8/2/1945
+> - Documentation/timers/timers-howto.rst
+> 
+> Signed-off-by: Nigel Christian <nigel.l.christian@gmail.com>
+> ---
+> drivers/bluetooth/hci_qca.c | 8 ++++----
+> 1 file changed, 4 insertions(+), 4 deletions(-)
 
-We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
+patch has been applied to bluetooth-next tree.
 
+Regards
 
-We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
+Marcel
 
-
-Please get back to me if you are interested for more
-
-details.
-
-
-Yours faithfully,
-
-Hashim Murrah

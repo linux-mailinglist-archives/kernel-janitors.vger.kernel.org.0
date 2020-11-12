@@ -2,57 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB1FC2AFA25
-	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Nov 2020 22:05:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 351162B0242
+	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Nov 2020 10:50:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726748AbgKKVFq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 11 Nov 2020 16:05:46 -0500
-Received: from asavdk3.altibox.net ([109.247.116.14]:34338 "EHLO
-        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725949AbgKKVFq (ORCPT
+        id S1727035AbgKLJuR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 12 Nov 2020 04:50:17 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:57589 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725928AbgKLJuR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 11 Nov 2020 16:05:46 -0500
-Received: from ravnborg.org (unknown [188.228.123.71])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk3.altibox.net (Postfix) with ESMTPS id C762B2006B;
-        Wed, 11 Nov 2020 22:05:42 +0100 (CET)
-Date:   Wed, 11 Nov 2020 22:05:41 +0100
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
-        Edmund Dea <edmund.j.dea@intel.com>,
-        David Airlie <airlied@linux.ie>,
+        Thu, 12 Nov 2020 04:50:17 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kd9F7-0002R2-Ru; Thu, 12 Nov 2020 09:50:13 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Christian Koenig <christian.koenig@amd.com>,
+        Huang Rui <ray.huang@amd.com>, David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] drm/kmb: fix spelling mistakes in drm_info and
- drm_dbg messages
-Message-ID: <20201111210541.GC3013948@ravnborg.org>
-References: <20201109111225.1485190-1-colin.king@canonical.com>
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/ttm: fix spelling mistake "swaput" -> "swapout"
+Date:   Thu, 12 Nov 2020 09:50:13 +0000
+Message-Id: <20201112095013.53619-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201109111225.1485190-1-colin.king@canonical.com>
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=VbvZwmh9 c=1 sm=1 tr=0
-        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
-        a=kj9zAlcOel0A:10 a=DfNHnWVPAAAA:8 a=PDJ5SSlNGPTDK7a3TiwA:9
-        a=CjuIK1q_8ugA:10 a=rjTVMONInIDnV1a_A2c_:22
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Colin,
+From: Colin Ian King <colin.king@canonical.com>
 
-On Mon, Nov 09, 2020 at 11:12:25AM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There are two spelling mistakes of the word sync in drm_info
-> and drm_dbg messages. Fix these.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+There is a spelling mistake in a warning message, fix it.
 
-Thanks, applied to drm-misc-next.
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/ttm/ttm_bo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-	Sam
+diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
+index e6bcbfe530ec..d32ca8734aa7 100644
+--- a/drivers/gpu/drm/ttm/ttm_bo.c
++++ b/drivers/gpu/drm/ttm/ttm_bo.c
+@@ -1494,7 +1494,7 @@ int ttm_bo_swapout(struct ttm_operation_ctx *ctx)
+ 
+ 		ret = ttm_bo_handle_move_mem(bo, &evict_mem, true, &ctx, &hop);
+ 		if (unlikely(ret != 0)) {
+-			WARN(ret == -EMULTIHOP, "Unexpected multihop in swaput - likely driver bug.\n");
++			WARN(ret == -EMULTIHOP, "Unexpected multihop in swapout - likely driver bug.\n");
+ 			goto out;
+ 		}
+ 	}
+-- 
+2.28.0
+

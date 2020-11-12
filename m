@@ -2,37 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A747D2B0DFE
-	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Nov 2020 20:26:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52E082B0EE0
+	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Nov 2020 21:13:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727022AbgKLT0C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 12 Nov 2020 14:26:02 -0500
-Received: from netrider.rowland.org ([192.131.102.5]:57523 "HELO
-        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with SMTP id S1726865AbgKLT0C (ORCPT
+        id S1727034AbgKLUNB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 12 Nov 2020 15:13:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56184 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726876AbgKLUNB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 12 Nov 2020 14:26:02 -0500
-Received: (qmail 288115 invoked by uid 1000); 12 Nov 2020 14:26:01 -0500
-Date:   Thu, 12 Nov 2020 14:26:01 -0500
-From:   Alan Stern <stern@rowland.harvard.edu>
+        Thu, 12 Nov 2020 15:13:01 -0500
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D78A2C0613D1;
+        Thu, 12 Nov 2020 12:13:00 -0800 (PST)
+Received: by mail-qt1-x844.google.com with SMTP id p12so5031945qtp.7;
+        Thu, 12 Nov 2020 12:13:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=jSLiwf45DctnZlDAuzdiBpZq++0HKZoLZ6SkMPPn0Lc=;
+        b=T0m21NbnuzVFIlMwyubECMfP9v2p6loVrpJFqHZnT9DLrqu99Qddv9vw4pgOyrXD5x
+         2P8Kgh6qTZ4akl7IKVAXVTVnZtNpjD8v8eSapzD+wwXWhX+bF4bKPu86XOYM1HeyoS3I
+         ABG39Klv2C3qmEG6YMQYcIJcODxqT7+eZvGXRMFQQS94e94HuRoaEwC+9wgygVhO93OW
+         NGiOjtdJ1Tb1ID9UK1NsjXyGzibOVvqbhI4mu0q+k7/w/8iFi+ioW3Nxht1kw7ZbuBqH
+         loKv5LTYSJlTxwWEVYpibJO0LbJYLF1yjOdGokCcRpKihGlUYFvnABQdjd4Nyi11djmQ
+         WWFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=jSLiwf45DctnZlDAuzdiBpZq++0HKZoLZ6SkMPPn0Lc=;
+        b=Q9FNrNd+f9zuU2yI8Xc2jL+I/m1/zJe3DXYRElGQvm1HAMCo8rE6e3bsJVmRADlEJQ
+         Kk54nsglo/xif6by/evw3oQpKSyUtF74oRfwTzK4ovLXbx258TreWQS8WE72ris0T4tv
+         6Gwz/yXxSWLOTsywz+ysQKQtvrNdY4o5T/1HxYVMb/Y35xpdRNX1FBfWmBzfJxr8sgY4
+         ZqZrg+/thDVeAyk0vcGIGxGW+6C7MGNtc/sneNWnYh1quVFerYPAlLNvRkoxJX0DaFLC
+         WniNlkLnpWbfwAjeYuqRJV5sNOg+VyndlL7YbmA3laKyjHSAIDEZ0T1GPYXF56yD0q+0
+         bUMQ==
+X-Gm-Message-State: AOAM532mGOxRiy3xBugjt6dmqzBgxhvVyeknyikWBPSJsNS+4I/je510
+        HuPR8NF2OdFynaaVg/XGOgk=
+X-Google-Smtp-Source: ABdhPJyww+5zAVmXn72kJFjtR3QIx2kTV6PHDyJEmNwoMrp7p2o5iZ4kKYJgx3pPMDma1yO7B7hWEA==
+X-Received: by 2002:ac8:6898:: with SMTP id m24mr901388qtq.157.1605211980076;
+        Thu, 12 Nov 2020 12:13:00 -0800 (PST)
+Received: from ubuntu-m3-large-x86 ([2604:1380:45f1:1d00::1])
+        by smtp.gmail.com with ESMTPSA id z26sm5147041qki.40.2020.11.12.12.12.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2020 12:12:58 -0800 (PST)
+Date:   Thu, 12 Nov 2020 13:12:57 -0700
+From:   Nathan Chancellor <natechancellor@gmail.com>
 To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc:     Alan Stern <stern@rowland.harvard.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
         Tom Rix <trix@redhat.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
         Nick Desaulniers <ndesaulniers@google.com>,
         clang-built-linux@googlegroups.com,
         kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] USB: storage: avoid use of uninitialized values in error
  path
-Message-ID: <20201112192601.GC287229@rowland.harvard.edu>
+Message-ID: <20201112201257.GA1665022@ubuntu-m3-large-x86>
 References: <20201112191255.13372-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20201112191255.13372-1-lukas.bulwahn@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -76,6 +110,12 @@ On Thu, Nov 12, 2020 at 08:12:55PM +0100, Lukas Bulwahn wrote:
 > Link: https://lore.kernel.org/linux-usb/alpine.DEB.2.21.2011112146110.13119@felia/
 > 
 > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+
+Assuming that setting it to zero is okay (sounds like it is based on the
+other thread), this is a reasonable fix.
+
+Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+
 > ---
 > applies cleanly on current master and next-20201112
 > 
@@ -120,5 +160,6 @@ On Thu, Nov 12, 2020 at 08:12:55PM +0100, Lukas Bulwahn wrote:
 >  }
 >  
 >  /*
-
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
+> -- 
+> 2.17.1
+> 

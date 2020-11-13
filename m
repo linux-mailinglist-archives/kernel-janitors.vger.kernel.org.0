@@ -2,163 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0BFA2B178F
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Nov 2020 09:53:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0460F2B18C4
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Nov 2020 11:09:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726172AbgKMIxF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Nov 2020 03:53:05 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:35258 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726149AbgKMIxF (ORCPT
+        id S1726268AbgKMKJY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Nov 2020 05:09:24 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:45084 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726176AbgKMKJX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Nov 2020 03:53:05 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AD8ji0G017504;
-        Fri, 13 Nov 2020 08:53:02 GMT
+        Fri, 13 Nov 2020 05:09:23 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0ADA44We195662;
+        Fri, 13 Nov 2020 10:09:06 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=dSCB3F9tXjR+0oVnueJkEEL6OzCz1yRorYE096X609o=;
- b=PY0THt58/Xsq1ym5xGBJYGBm7FE/RdGzGnu+94Rt/OTom5KnH27+5Wf/7cYmWR19FN7n
- vBmnOpPuNFFohEOmArDJ21Gqotqb4KJs0WagOz7l1vxDIkwXNzkFVrT5kQygCcOKSfAl
- SVSvExfra6g/1vAq5JEK84HFbi+TsDoaoMSSaAJYkymCSGWLwJj8ffCI1Rv3sQc6iVdN
- XRZCwgkEXnn86OuiS7MWnqBk0bT4oxxX8sHN1DLZwVW3PA9SQUstVCZInTdcvHCxq0jE
- DDeoYQNv5nzZPK/x6gpih3nbf3YIRtSMEKnRqd4HaMVzklXb5KNasAolv+4rFi0Lww3e QQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 34p72eyjrh-1
+ bh=CmOkNnoq4aouIzIKH5BdnPNOjPDxlp5PbgvCa+MCvGk=;
+ b=dI57/+8hQXv2he9Ovg5TnVAUuFuHYAM82lFIXcQbjrtLPV7GerAapaQ4Z5wj6gIZUA5J
+ 02MituRHDV5X2aTmzaLiekpz0kBe35D1QMLql5cjsnS7DhN5gCd5otHEHBghGj4D0yt1
+ tlcAqHg9lT2x53EUUUwVSqwIGHR2PPO82BtGShXH8WNJVzj158EV3F2DfkQOb4PvGPIN
+ w40wsZcCk6rzf7vWGFJVw5KWFAlRxy/9zergNwvCyc41Bzhxh6T/1eJArspl29WcVmyn
+ eArnpahUzu1ng5OYO48vULf6UTTq/VCFaxjgC/JmKIKQB8nfeiJnU8erSPeskB7jeh/1 Xg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 34nkhm9rnh-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 13 Nov 2020 08:53:02 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AD8jEsg139438;
-        Fri, 13 Nov 2020 08:53:02 GMT
+        Fri, 13 Nov 2020 10:09:06 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0ADA6HoS164926;
+        Fri, 13 Nov 2020 10:09:05 GMT
 Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 34rt57gpqg-1
+        by userp3030.oracle.com with ESMTP id 34rtktbk6j-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 13 Nov 2020 08:53:02 +0000
-Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0AD8r1uO026942;
-        Fri, 13 Nov 2020 08:53:01 GMT
+        Fri, 13 Nov 2020 10:09:05 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0ADA8vq3027309;
+        Fri, 13 Nov 2020 10:08:57 GMT
 Received: from mwanda (/10.175.206.108)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 13 Nov 2020 00:53:00 -0800
-Date:   Fri, 13 Nov 2020 11:52:55 +0300
+        with ESMTP ; Fri, 13 Nov 2020 02:08:56 -0800
+Date:   Fri, 13 Nov 2020 13:08:50 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     paul@paul-moore.com
-Cc:     kernel-janitors@vger.kernel.org
-Subject: [bug report] netlabel: fix our progress tracking in
- netlbl_unlabel_staticlist()
-Message-ID: <20201113085255.GA91999@mwanda>
+To:     Joel Stanley <joel@jms.id.au>
+Cc:     Andrew Jeffery <andrew@aj.id.au>, Tom Rix <trix@redhat.com>,
+        linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] soc: aspeed: Fix a reference leak in aspeed_socinfo_init()
+Message-ID: <20201113100850.GA168908@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9803 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 mlxscore=0
- mlxlogscore=999 suspectscore=3 adultscore=0 phishscore=0 malwarescore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 phishscore=0
+ suspectscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011130053
+ definitions=main-2011130060
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9803 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999 mlxscore=0
- malwarescore=0 suspectscore=3 lowpriorityscore=0 adultscore=0 phishscore=0
- priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1011
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 priorityscore=1501
+ mlxscore=0 suspectscore=0 mlxlogscore=999 lowpriorityscore=0 spamscore=0
+ malwarescore=0 adultscore=0 clxscore=1011 bulkscore=0 impostorscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011130053
+ definitions=main-2011130060
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello Paul Moore,
+This needs to call of_node_put(np) before returning if of_iomap() fails.
 
-The patch 866358ec331f: "netlabel: fix our progress tracking in
-netlbl_unlabel_staticlist()" from Nov 8, 2020, leads to the following
-static checker warning:
+Fixes: e0218dca5787 ("soc: aspeed: Add soc info driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/soc/aspeed/aspeed-socinfo.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-	net/netlabel/netlabel_unlabeled.c:1190 netlbl_unlabel_staticlist()
-	error: uninitialized symbol 'iter_chain'.
+diff --git a/drivers/soc/aspeed/aspeed-socinfo.c b/drivers/soc/aspeed/aspeed-socinfo.c
+index 20a1d4aeb051..773930e0cb10 100644
+--- a/drivers/soc/aspeed/aspeed-socinfo.c
++++ b/drivers/soc/aspeed/aspeed-socinfo.c
+@@ -74,8 +74,10 @@ static int __init aspeed_socinfo_init(void)
+ 	}
+ 
+ 	reg = of_iomap(np, 0);
+-	if (!reg)
++	if (!reg) {
++		of_node_put(np);
+ 		return -ENODEV;
++	}
+ 	siliconid = readl(reg);
+ 	iounmap(reg);
+ 
+-- 
+2.28.0
 
-net/netlabel/netlabel_unlabeled.c
-  1163  static int netlbl_unlabel_staticlist(struct sk_buff *skb,
-  1164                                       struct netlink_callback *cb)
-  1165  {
-  1166          struct netlbl_unlhsh_walk_arg cb_arg;
-  1167          u32 skip_bkt = cb->args[0];
-  1168          u32 skip_chain = cb->args[1];
-  1169          u32 skip_addr4 = cb->args[2];
-  1170          u32 iter_bkt, iter_chain, iter_addr4 = 0, iter_addr6 = 0;
-                              ^^^^^^^^^^
-This used to be initialized here.
-
-  1171          struct netlbl_unlhsh_iface *iface;
-  1172          struct list_head *iter_list;
-  1173          struct netlbl_af4list *addr4;
-  1174  #if IS_ENABLED(CONFIG_IPV6)
-  1175          u32 skip_addr6 = cb->args[3];
-  1176          struct netlbl_af6list *addr6;
-  1177  #endif
-  1178  
-  1179          cb_arg.nl_cb = cb;
-  1180          cb_arg.skb = skb;
-  1181          cb_arg.seq = cb->nlh->nlmsg_seq;
-  1182  
-  1183          rcu_read_lock();
-  1184          for (iter_bkt = skip_bkt;
-  1185               iter_bkt < rcu_dereference(netlbl_unlhsh)->size;
-  1186               iter_bkt++) {
-  1187                  iter_list = &rcu_dereference(netlbl_unlhsh)->tbl[iter_bkt];
-  1188                  list_for_each_entry_rcu(iface, iter_list, list) {
-  1189                          if (!iface->valid ||
-  1190                              iter_chain++ < skip_chain)
-                                    ^^^^^^^^^^^^
-warning here.
-
-  1191                                  continue;
-  1192                          netlbl_af4list_foreach_rcu(addr4,
-  1193                                                     &iface->addr4_list) {
-  1194                                  if (iter_addr4++ < skip_addr4)
-  1195                                          continue;
-  1196                                  if (netlbl_unlabel_staticlist_gen(
-  1197                                                NLBL_UNLABEL_C_STATICLIST,
-  1198                                                iface,
-  1199                                                netlbl_unlhsh_addr4_entry(addr4),
-  1200                                                NULL,
-  1201                                                &cb_arg) < 0) {
-  1202                                          iter_addr4--;
-  1203                                          iter_chain--;
-  1204                                          goto unlabel_staticlist_return;
-  1205                                  }
-  1206                          }
-  1207                          iter_addr4 = 0;
-  1208                          skip_addr4 = 0;
-  1209  #if IS_ENABLED(CONFIG_IPV6)
-  1210                          netlbl_af6list_foreach_rcu(addr6,
-  1211                                                     &iface->addr6_list) {
-  1212                                  if (iter_addr6++ < skip_addr6)
-  1213                                          continue;
-  1214                                  if (netlbl_unlabel_staticlist_gen(
-  1215                                                NLBL_UNLABEL_C_STATICLIST,
-  1216                                                iface,
-  1217                                                NULL,
-  1218                                                netlbl_unlhsh_addr6_entry(addr6),
-  1219                                                &cb_arg) < 0) {
-  1220                                          iter_addr6--;
-  1221                                          iter_chain--;
-  1222                                          goto unlabel_staticlist_return;
-  1223                                  }
-  1224                          }
-  1225                          iter_addr6 = 0;
-  1226                          skip_addr6 = 0;
-  1227  #endif /* IPv6 */
-  1228                  }
-  1229                  iter_chain = 0;
-  1230                  skip_chain = 0;
-  1231          }
-  1232  
-  1233  unlabel_staticlist_return:
-  1234          rcu_read_unlock();
-  1235          cb->args[0] = iter_bkt;
-  1236          cb->args[1] = iter_chain;
-  1237          cb->args[2] = iter_addr4;
-  1238          cb->args[3] = iter_addr6;
-  1239          return skb->len;
-  1240  }
-
-regards,
-dan carpenter

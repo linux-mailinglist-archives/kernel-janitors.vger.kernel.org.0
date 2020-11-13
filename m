@@ -2,120 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CCEC2B23D5
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Nov 2020 19:34:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B27E2B23E3
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Nov 2020 19:36:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726311AbgKMSd7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Nov 2020 13:33:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41342 "EHLO
+        id S1726291AbgKMSgw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Nov 2020 13:36:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726081AbgKMSd7 (ORCPT
+        with ESMTP id S1726081AbgKMSgw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Nov 2020 13:33:59 -0500
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06F3C0613D1;
-        Fri, 13 Nov 2020 10:33:57 -0800 (PST)
-Received: by mail-qk1-x743.google.com with SMTP id l2so9727803qkf.0;
-        Fri, 13 Nov 2020 10:33:57 -0800 (PST)
+        Fri, 13 Nov 2020 13:36:52 -0500
+Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6C29C0613D1;
+        Fri, 13 Nov 2020 10:36:51 -0800 (PST)
+Received: by mail-qt1-x841.google.com with SMTP id j31so7352194qtb.8;
+        Fri, 13 Nov 2020 10:36:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=tTop0L3WKYeLlzcN6n9MVUWYqI+MjrZ5s3ciISRrjWI=;
-        b=rxYBxl6xsCyjd4FwJDuAloDkQzKFN3PNapO7YsvOTsYTOfRewJT0N578wrdbvEGnIl
-         dPtIFJBNT0eWCgO0yd32zHNrR6t/KU44IZbBbMpQ6qdgDSCXLp5gZbqfJdl2AvhdPcxL
-         2zDHHnkdJHPfXKyWUFXBwqYU408nCDD6Pdq9YnyO7D/RYU26LVW//jodotjavOa9S8ee
-         QENFbR/wFm9WZlPz2+ad9bOJNK+tmMsZndWaT1n3JjA8PuekH1ix5kyMM3LNsqDXLGP0
-         e0401NJ5p0FAeU40bxu2r2OvSwb6IfWUP/CEKTr+WywQX5KxnBy7pVctATK189g7s1yP
-         BZpQ==
+        bh=uLLsU6PNK7gn2ZF6sgEbNvfAguFm+Twkz8HSYgMSdHA=;
+        b=P1KvIekJ77d1TC7nitWKAlL3pVw7ss+zZBh//e/EsaQTKTD1eTBf/bNMZilOhD09KE
+         c94opGCTQBZuuYQCTknaMU0siEiPFIJt8oO05DdL3g7VRP297jy2Xl36RZGE3ELtcy9z
+         +hq5cbu+4HY4DaxM7NF+wHbToWVOmCOwArSpbr69cRvHmgycLc2SNx23eV7Y5jYBOVXQ
+         QXX9MsQA1z4zHVTm/Rxq8kiiGqsXVZE1CRdAmgwSiNbcEyi1yUiy94al76ldaZcijdcZ
+         kJ0kDyg21X0AgmsekCsCH1afCsnVT3pM7f4XCEkHPrUn5QLdN5Rw8WlqkJij98IjXYjT
+         INrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=tTop0L3WKYeLlzcN6n9MVUWYqI+MjrZ5s3ciISRrjWI=;
-        b=coFMs4ob20zjUU25iNNaNLRtFQew77Kh3+WFz+D4i5+gueE2ReAfxGMMNTNsi/9cSN
-         voeHOW+t55IErp36ZID1yttrfwG0Z837e26Kn4wVkLPwi+ociWiEKVXq4uvsUDw1XwdA
-         JnAe8Vi/I68Nud7Uas7i8AbmjQGe4LmC+nNnL59xCka3pdxJHKONDIw9fFFe6+9/XWRP
-         Uul7mN7c7jNYvV3pQnYuH90g66glzdQ2O53PO3v0/Zv6qkhU/+ysEfldRm5wfTxQV2z9
-         7/8icOvqPZpQstxGJYEW86ccyqRzhCuckyrvpaXNPseMHJoPSKzvDedNZjzMAoOOS4DW
-         doOw==
-X-Gm-Message-State: AOAM532msbmjcM9mq7GE6d3TGd/yj8Il2VStzoTBf9GP3ZDy2eRMJbMd
-        y4ZwsbKgB9xcM7j9Z00q5Ig=
-X-Google-Smtp-Source: ABdhPJyINnvGblcrdNoVnqkFbBeH/EHFF6e90JDj+uK0oZQEjVkWvfmVDHDCapd/swUXQ17YOyYAgg==
-X-Received: by 2002:a37:991:: with SMTP id 139mr3306876qkj.185.1605292436793;
-        Fri, 13 Nov 2020 10:33:56 -0800 (PST)
+        bh=uLLsU6PNK7gn2ZF6sgEbNvfAguFm+Twkz8HSYgMSdHA=;
+        b=amCOnonJi33wBE2zhbMuq37f9BPc/APMGTqje43pIAyuQkxmnVX/nGjOnK0CmZFuCb
+         8qS0KenDZb3RbOyZS/GSb7xHg5nak3Vxty1l3DzIqbYAnggKE2ZX7psaR+2nNL5svNOv
+         Pv+KAYXnFRfUZfL+2OUhTSMp4Cxgig/IheD/8llWAirM1JdH2dSlcMXjZwgy/HLwqa7S
+         xDPy9gKlwFb+ces1fgJtmxer3BbiaCuq0gYJko7q+KYjEErYNa7eCNOjZqULW8hsbK8b
+         pndsil9naiDFM9ONfTInDNw/xguUEgXLnW5y7v/h4I+SQXCux2UYRkDhdaDlGXj4pkpX
+         UkvQ==
+X-Gm-Message-State: AOAM530uGN4PRVJ3dnk6cdBaTUl9PcJ99XaRVmbTlslUOEnFzNfIhnZ4
+        GtZGbPLcIDow3vk3sjez3TM=
+X-Google-Smtp-Source: ABdhPJzrJwUQP7TRzyMS8vsdEmfnLmQuPHfTT7JGfv+V/qtg7cxxikUGbbygCkFIgOnjPJiFhQDYnQ==
+X-Received: by 2002:a05:622a:86:: with SMTP id o6mr3179517qtw.147.1605292611012;
+        Fri, 13 Nov 2020 10:36:51 -0800 (PST)
 Received: from ubuntu-m3-large-x86 ([2604:1380:45f1:1d00::1])
-        by smtp.gmail.com with ESMTPSA id q1sm7028411qti.95.2020.11.13.10.33.55
+        by smtp.gmail.com with ESMTPSA id 207sm2500356qki.91.2020.11.13.10.36.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2020 10:33:56 -0800 (PST)
-Date:   Fri, 13 Nov 2020 11:33:54 -0700
+        Fri, 13 Nov 2020 10:36:50 -0800 (PST)
+Date:   Fri, 13 Nov 2020 11:36:49 -0700
 From:   Nathan Chancellor <natechancellor@gmail.com>
 To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Maciej Sosnowski <maciej.sosnowski@intel.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        dmaengine@vger.kernel.org, Tom Rix <trix@redhat.com>,
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, Tom Rix <trix@redhat.com>,
         Nick Desaulniers <ndesaulniers@google.com>,
         clang-built-linux@googlegroups.com,
-        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dmaengine: ioatdma: remove unused function missed during
- dma_v2 removal
-Message-ID: <20201113183354.GA1435913@ubuntu-m3-large-x86>
-References: <20201113081248.26416-1-lukas.bulwahn@gmail.com>
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ipv6: remove unused function ipv6_skb_idev()
+Message-ID: <20201113183649.GA1436199@ubuntu-m3-large-x86>
+References: <20201113135012.32499-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201113081248.26416-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <20201113135012.32499-1-lukas.bulwahn@gmail.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Nov 13, 2020 at 09:12:48AM +0100, Lukas Bulwahn wrote:
-> Commit 7f832645d0e5 ("dmaengine: ioatdma: remove ioatdma v2 registration")
-> missed to remove dca2_tag_map_valid() during its removal. Hence, since
-> then, dca2_tag_map_valid() is unused and make CC=clang W=1 warns:
+On Fri, Nov 13, 2020 at 02:50:12PM +0100, Lukas Bulwahn wrote:
+> Commit bdb7cc643fc9 ("ipv6: Count interface receive statistics on the
+> ingress netdev") removed all callees for ipv6_skb_idev(). Hence, since
+> then, ipv6_skb_idev() is unused and make CC=clang W=1 warns:
 > 
->   drivers/dma/ioat/dca.c:44:19:
->     warning: unused function 'dca2_tag_map_valid' [-Wunused-function]
+>   net/ipv6/exthdrs.c:909:33:
+>     warning: unused function 'ipv6_skb_idev' [-Wunused-function]
 > 
-> So, remove this unused function and get rid of a -Wused-function warning.
+> So, remove this unused function and a -Wunused-function warning.
 > 
 > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
 Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
 
 > ---
-> applies cleanly on current master and next-20201112
+> Alexey, Hideaki-san, please ack.
 > 
-> Maciej, please ack.
+> David, Jakub, please pick this minor non-urgent clean-up patch.
 > 
-> Vinod, Dan, please pick this minor non-urgent clean-up patch.
+>  net/ipv6/exthdrs.c | 4 ----
+>  1 file changed, 4 deletions(-)
 > 
->  drivers/dma/ioat/dca.c | 10 ----------
->  1 file changed, 10 deletions(-)
-> 
-> diff --git a/drivers/dma/ioat/dca.c b/drivers/dma/ioat/dca.c
-> index 0be385587c4c..289c59ed74b9 100644
-> --- a/drivers/dma/ioat/dca.c
-> +++ b/drivers/dma/ioat/dca.c
-> @@ -40,16 +40,6 @@
->  #define DCA2_TAG_MAP_BYTE3 0x82
->  #define DCA2_TAG_MAP_BYTE4 0x82
->  
-> -/* verify if tag map matches expected values */
-> -static inline int dca2_tag_map_valid(u8 *tag_map)
-> -{
-> -	return ((tag_map[0] == DCA2_TAG_MAP_BYTE0) &&
-> -		(tag_map[1] == DCA2_TAG_MAP_BYTE1) &&
-> -		(tag_map[2] == DCA2_TAG_MAP_BYTE2) &&
-> -		(tag_map[3] == DCA2_TAG_MAP_BYTE3) &&
-> -		(tag_map[4] == DCA2_TAG_MAP_BYTE4));
-> -}
-> -
+> diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+> index 374105e4394f..584d1b06eb90 100644
+> --- a/net/ipv6/exthdrs.c
+> +++ b/net/ipv6/exthdrs.c
+> @@ -906,10 +906,6 @@ void ipv6_exthdrs_exit(void)
 >  /*
->   * "Legacy" DCA systems do not implement the DCA register set in the
->   * I/OAT device.  Software needs direct support for their tag mappings.
+>   * Note: we cannot rely on skb_dst(skb) before we assign it in ip6_route_input().
+>   */
+> -static inline struct inet6_dev *ipv6_skb_idev(struct sk_buff *skb)
+> -{
+> -	return skb_dst(skb) ? ip6_dst_idev(skb_dst(skb)) : __in6_dev_get(skb->dev);
+> -}
+>  
+>  static inline struct net *ipv6_skb_net(struct sk_buff *skb)
+>  {
 > -- 
 > 2.17.1
 > 

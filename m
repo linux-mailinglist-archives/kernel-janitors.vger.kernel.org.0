@@ -2,134 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 464552B1E0E
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Nov 2020 16:04:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DE6E2B2200
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Nov 2020 18:20:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726802AbgKMPEh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Nov 2020 10:04:37 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:58480 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726773AbgKMPEg (ORCPT
+        id S1726827AbgKMRUO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Nov 2020 12:20:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57826 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726815AbgKMRUK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Nov 2020 10:04:36 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kdacs-0003QC-Qr; Fri, 13 Nov 2020 15:04:34 +0000
-Subject: Re: [PATCH][next] drm/kmb: fix array out-of-bounds writes to
- kmb->plane_status[]
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
-        Edmund Dea <edmund.j.dea@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20201113120121.33212-1-colin.king@canonical.com>
- <20201113145557.GB3647624@ravnborg.org>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <8dd5b960-d6c4-73cc-703e-349dc66f2937@canonical.com>
-Date:   Fri, 13 Nov 2020 15:04:34 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.2
-MIME-Version: 1.0
-In-Reply-To: <20201113145557.GB3647624@ravnborg.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Fri, 13 Nov 2020 12:20:10 -0500
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEDCDC0613D1;
+        Fri, 13 Nov 2020 09:20:22 -0800 (PST)
+Received: by mail-ej1-x641.google.com with SMTP id y17so8905332ejh.11;
+        Fri, 13 Nov 2020 09:20:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=sjc8KniBtNjED/lBoWeTXk5F0n8iK1Duyq0rjSX4Y94=;
+        b=hRL+SO3Mj1STQTn+Ism6mIuT45SR6dDFOrEjt4N15P6O2reg/rJDNIK9fqNVqQLz3Q
+         0tsRjJfVKWjz5uunupGeIj9HAuUqz7tZkXzXMO6PRaS2OCgpw1vi0EDqT5oosN1bQIP9
+         k0stku+xCMVMVIDTM165rS6MXyIMF/mSM1JS/7fcys2/Qe/49Px/6tjjXdzlswoxg+E2
+         siAN/gGlmRdeeD/B8b+HKFNd2mCbvalL4NHo0c44UboKIoanBlJPeOcF1d1aYp6gzgAH
+         ftgB/1bmlL14c6xROWIZhZ62UDA+0MdLvm1KldI9Y5aEL28CwU1HBDputuX0PrB7d7Tl
+         HUvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=sjc8KniBtNjED/lBoWeTXk5F0n8iK1Duyq0rjSX4Y94=;
+        b=BnuBvAeJsTQEmCDxfwvJ40kubj31vBIn31h+7sCV7XM3fQQbZ5lX8GpKinKqPyJHG7
+         quprPmP/chgkVnAmIDydZL9QpJq43ihgZedbhYZ2uHzDQ3JSAz0261PdVNZCYBY/O7DO
+         tPzc9lW3bMH8vj9SZTFV0GJgyvnNtY2M2zxVlV/Mz3q783pP6+Vh731HYvJWsqo1XXAL
+         LBv9J2U6PGi+UcwSlAa2wEvsRGl00Dnq4slN3guVehT2clZpTdGJnNwfBghbJZi81D57
+         k3ncD0kav+EYL7phWzQot1qongnRnazbVTXs3DFTib8euT2PdBpFFPGoWiEUcX7e6wNY
+         GkJg==
+X-Gm-Message-State: AOAM532qQUzjDRbvBs5BGVKUf+LHWDapgSt3NjeWFdWBGl0lnh4pSFZS
+        N84k7LrU2s40/maidYK7YmwlcItiXfEH5VUn
+X-Google-Smtp-Source: ABdhPJwuDaTxb0lO0Wnuj5q68KUEAxyMowFqWC9oYietaqCcwXHI/GIzLiarYE8HhzEyNgDRaoDOnQ==
+X-Received: by 2002:a17:906:3813:: with SMTP id v19mr3050721ejc.462.1605288021328;
+        Fri, 13 Nov 2020 09:20:21 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2de6:6700:3137:43ab:602a:9934])
+        by smtp.gmail.com with ESMTPSA id rv19sm4152379ejb.38.2020.11.13.09.20.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2020 09:20:20 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>
+Cc:     Darren Hart <dvhart@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
+        Tom Rix <trix@redhat.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] futex: remove unused empty compat_exit_robust_list()
+Date:   Fri, 13 Nov 2020 18:20:12 +0100
+Message-Id: <20201113172012.27221-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 13/11/2020 14:55, Sam Ravnborg wrote:
-> Hi Colin.
-> 
-> On Fri, Nov 13, 2020 at 12:01:21PM +0000, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> Writes to elements in the kmb->plane_status array in function
->> kmb_plane_atomic_disable are overrunning the array when plane_id is
->> more than 1 because currently the array is KMB_MAX_PLANES elements
->> in size and this is currently #defined as 1.  Fix this by defining
->> KMB_MAX_PLANES to 4.
-> 
-> I fail to follow you here.
-> In kmb_plane_init() only one plane is allocated - with id set to 0.
-> So for now only one plane is allocated thus kmb_plane_atomic_disable()
-> is only called for this plane.
-> 
-> With your change we will start allocating four planes, something that is
-> not tested.
-> 
-> Do I miss something?
-> 
-> 	Sam
-> 
+Commit ba31c1a48538 ("futex: Move futex exit handling into futex code")
+introduced compat_exit_robust_list() with a full-fledged implementation for
+CONFIG_COMPAT, and an empty-body function for !CONFIG_COMPAT.
+However, compat_exit_robust_list() is only used in futex_mm_release() under
+ifdef CONFIG_COMPAT.
 
-The static analysis from coverity on linux-next suggested that there was
-an array overflow as follows:
+Hence for !CONFIG_COMPAT, make CC=clang W=1 warns:
 
-108 static void kmb_plane_atomic_disable(struct drm_plane *plane,
-109                                     struct drm_plane_state *state)
-110 {
+  kernel/futex.c:314:20:
+    warning: unused function 'compat_exit_robust_list' [-Wunused-function]
 
-   1. Condition 0 /* !!(!__builtin_types_compatible_p() &&
-!__builtin_types_compatible_p()) */, taking false branch.
+There is no need to declare the unused empty function for !CONFIG_COMPAT.
+Simply, remove it to address the -Wunused-function warning.
 
-111        struct kmb_plane *kmb_plane = to_kmb_plane(plane);
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on current master and next-20201113
 
-   2. assignment: Assigning: plane_id = kmb_plane->id.
+Thomas, please pick this minor non-urgent clean-up patch.
 
-112        int plane_id = kmb_plane->id;
-113        struct kmb_drm_private *kmb;
-114
-115        kmb = to_kmb(plane->dev);
-116
+ kernel/futex.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-   3. Switch case value LAYER_3.
+diff --git a/kernel/futex.c b/kernel/futex.c
+index 00259c7e288e..c47d1015d759 100644
+--- a/kernel/futex.c
++++ b/kernel/futex.c
+@@ -310,8 +310,6 @@ static inline bool should_fail_futex(bool fshared)
+ 
+ #ifdef CONFIG_COMPAT
+ static void compat_exit_robust_list(struct task_struct *curr);
+-#else
+-static inline void compat_exit_robust_list(struct task_struct *curr) { }
+ #endif
+ 
+ /*
+-- 
+2.17.1
 
-117        switch (plane_id) {
-118        case LAYER_0:
-119                kmb->plane_status[plane_id].ctrl = LCD_CTRL_VL1_ENABLE;
-120                break;
-121        case LAYER_1:
-
-   (#2 of 4): Out-of-bounds write (OVERRUN)
-
-122                kmb->plane_status[plane_id].ctrl = LCD_CTRL_VL2_ENABLE;
-123                break;
-124        case LAYER_2:
-
-   (#3 of 4): Out-of-bounds write (OVERRUN)
-
-125                kmb->plane_status[plane_id].ctrl = LCD_CTRL_GL1_ENABLE;
-126                break;
-
-   4. equality_cond: Jumping to case LAYER_3.
-
-127        case LAYER_3:
-
-   (#1 of 4): Out-of-bounds write (OVERRUN)
-   5. overrun-local: Overrunning array kmb->plane_status of 1 8-byte
-elements at element index 3 (byte offset 31) using index plane_id (which
-evaluates to 3).
-
-128                kmb->plane_status[plane_id].ctrl = LCD_CTRL_GL2_ENABLE;
-129                break;
-130        }
-131
-
-   (#4 of 4): Out-of-bounds write (OVERRUN)
-
-132        kmb->plane_status[plane_id].disable = true;
-133 }
-134
-
-So it seems the assignments to  kmb->plane_status[plane_id] are
-overrunning the array since plane_status is allocated as 1 element and
-yet plane_id can be 0..3
-
-I could be misunderstanding this, or it may be a false positive.
-
-Colin

@@ -2,102 +2,141 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A26752B1C86
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Nov 2020 14:53:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C3612B1CFF
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Nov 2020 15:17:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727237AbgKMNvZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Nov 2020 08:51:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52544 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727097AbgKMNuY (ORCPT
+        id S1726732AbgKMORG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Nov 2020 09:17:06 -0500
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:36999 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726278AbgKMORF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Nov 2020 08:50:24 -0500
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4761DC061A04;
-        Fri, 13 Nov 2020 05:50:24 -0800 (PST)
-Received: by mail-ej1-x644.google.com with SMTP id o21so13528804ejb.3;
-        Fri, 13 Nov 2020 05:50:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=EO37OAJNAbmZmGUhAeyjfYFiO66b5FlhyGH1+SemRIc=;
-        b=BbzicZpiGaE2YQjZhlr8r9r8+LJ1YvlfarJx6O14McwTt7deIy0GDIRHlEFPLw14y8
-         u2HywTB8JkgkcnMsr4ArHWl4vNVnqx1eCv43hBQUVkYZWcnj5tC/oRIqYhNhzRAH1xlD
-         7k7L7EP4IbWLl25MrLidnnIXDNAuy6PsJ0rl/0oeyRY2bY0Qqv4p6QjImnqjicPPzH+J
-         2zJECPh8R4hM2ZytYgDcq9NYOWNKXOeL5wrvqR+by/z/A4gqxBzIgwKqlggP1Z++uaxn
-         TJzfZHHdXp7gw9nYXxc9TP/iVT0dvSOZ/AYQUs2c+Z81KotFWavBegZkq4M2l1G66uB3
-         fKzQ==
+        Fri, 13 Nov 2020 09:17:05 -0500
+Received: by mail-pg1-f194.google.com with SMTP id h6so7183440pgk.4;
+        Fri, 13 Nov 2020 06:17:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=EO37OAJNAbmZmGUhAeyjfYFiO66b5FlhyGH1+SemRIc=;
-        b=MUkVL357Q1TSP/xhJ0Xkds8TMWXBBAO7mkGfrZ3iaTDoh01R3JcGqTlgHKW299u8E6
-         e8Z/3vBziSzvt+XZCUVekBB4tU+yOWmNj0/3IQFZgV4VWxkVQqpeQKzfy0FEbQj7dp+x
-         t0x6CeHOvcYjwFXZqUvHR0MONm95ar6sD5ULfCnBuZMhA+jg5leCm93hVAXavlCy0O+5
-         Y6ge2+kPU3BGHpg8Aa1V8UzumPZB1+cRkuPI+DSrKx2eZSoJn1/r87VP1N5ujrPRfPRB
-         AKywtGySM5hTVw5bo5VS4LVmEEnVQSXRsmY6/66Gw+FPBZ0FXZyVe9qudzCvQxJeFdd5
-         XZFg==
-X-Gm-Message-State: AOAM530FtuwNhhU/iGFZwr+QLXm1jDs2XGe7/v7ZU3XJdO1kQH1M4v/g
-        41V6aRD9fGaIZIxNCyHgbsrFCY3Dovpuctoj
-X-Google-Smtp-Source: ABdhPJwCiN1IhzDUmykftILZUE+1nPETpYWuOraunwhwZRNk6s+PGuUWEvwGxGCf+NHtYTf1whfzgw==
-X-Received: by 2002:a17:906:14d:: with SMTP id 13mr1935709ejh.516.1605275422982;
-        Fri, 13 Nov 2020 05:50:22 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2de6:6700:4456:5b6d:36a2:24a6])
-        by smtp.gmail.com with ESMTPSA id n16sm3687783ejz.46.2020.11.13.05.50.21
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=muGv9UA2yOWJO8OBFbyd4k8hs7CA6S1+a06CR/bKjo0=;
+        b=a7snw+4SwNswVwSyh8ObbHjccJGc4woMjHl2HUvI66uOyW3Mkp98hqma1Ccz3hZYKu
+         BjPL3jDRFnq7M+kJZ81EtJSGSoPxSbJGso8uK0WEqnolwpPo1+uv4BauW6Ir6xRbgX69
+         xmsvcmuS+vOapwQAOOKir4HMSgT8ZHW4IVKC+CEazLQnh0OgtVq+M445JCWc4NrP9kGl
+         jPplIEIbLTt12bWiHJ0DdLpr7fMItDam+tK8jRXcpAaHhjxq6/8ehEds6RPPLEE1W+Zm
+         3z2Mp1RoE/yBASMFmAEsNzfdrZVshII8k1g5eHpr3VH1ZRYd0jnaMko4qDZ1lknaNoy4
+         borg==
+X-Gm-Message-State: AOAM531aacbHgKIdqi48ByQ6SpRRm4ziRiBLUJMI8FV7l79E4liT4Lvx
+        xtvOM1MbE9pKzS+RVNxUVwQ=
+X-Google-Smtp-Source: ABdhPJwf+kmdqj5fHCuVENwx3brb/hOK2x7YpCjn9y4whApg85xDwT+NwgTnI+3VzgDEqylCFRsE5Q==
+X-Received: by 2002:a05:6a00:c8:b029:18b:b0e:e51 with SMTP id e8-20020a056a0000c8b029018b0b0e0e51mr2143971pfj.37.1605277024230;
+        Fri, 13 Nov 2020 06:17:04 -0800 (PST)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+        by smtp.gmail.com with ESMTPSA id mt2sm11475078pjb.7.2020.11.13.06.17.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2020 05:50:22 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     "David S . Miller" <davem@davemloft.net>,
-        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-Cc:     Arnd Bergmann <arnd@arndb.de>, Tom Rix <trix@redhat.com>,
+        Fri, 13 Nov 2020 06:17:03 -0800 (PST)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+        id 3854240715; Fri, 13 Nov 2020 14:17:02 +0000 (UTC)
+Date:   Fri, 13 Nov 2020 14:17:02 +0000
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Tom Rix <trix@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Iurii Zaikin <yzaikin@google.com>,
+        linux-fsdevel@vger.kernel.org,
         Nathan Chancellor <natechancellor@gmail.com>,
         Nick Desaulniers <ndesaulniers@google.com>,
         clang-built-linux@googlegroups.com,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] ipv6: remove unused function ipv6_skb_idev()
-Date:   Fri, 13 Nov 2020 14:50:12 +0100
-Message-Id: <20201113135012.32499-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] sysctl: move local variable in proc_do_large_bitmap() to
+ proper scope
+Message-ID: <20201113141702.GI4332@42.do-not-panic.com>
+References: <20201109071107.22560-1-lukas.bulwahn@gmail.com>
+ <e0cf83dc-2978-70ce-aeb2-37873cc81c03@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e0cf83dc-2978-70ce-aeb2-37873cc81c03@redhat.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit bdb7cc643fc9 ("ipv6: Count interface receive statistics on the
-ingress netdev") removed all callees for ipv6_skb_idev(). Hence, since
-then, ipv6_skb_idev() is unused and make CC=clang W=1 warns:
+On Mon, Nov 09, 2020 at 05:26:37PM -0800, Tom Rix wrote:
+> 
+> On 11/8/20 11:11 PM, Lukas Bulwahn wrote:
+> > make clang-analyzer caught my attention with:
+> >
+> >   kernel/sysctl.c:1511:4: warning: Value stored to 'first' is never read \
+> >   [clang-analyzer-deadcode.DeadStores]
+> >                           first = 0;
+> >                           ^
+> >
+> > Commit 9f977fb7ae9d ("sysctl: add proc_do_large_bitmap") introduced
+> > proc_do_large_bitmap(), where the variable first is only effectively used
+> > when write is false; when write is true, the variable first is only used in
+> > a dead assignment.
+> >
+> > So, simply remove this dead assignment and put the variable in local scope.
+> >
+> > As compilers will detect this unneeded assignment and optimize this anyway,
+> > the resulting object code is identical before and after this change.
+> >
+> > No functional change. No change to object code.
+> >
+> > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> > ---
+> > applies cleanly on v5.10-rc3 and next-20201106
+> >
+> > Luis, Kees, Iurii, please pick this minor non-urgent clean-up patch.
+> >
+> >  kernel/sysctl.c | 3 +--
+> >  1 file changed, 1 insertion(+), 2 deletions(-)
+> >
+> > diff --git a/kernel/sysctl.c b/kernel/sysctl.c
+> > index ce75c67572b9..cc274a431d91 100644
+> > --- a/kernel/sysctl.c
+> > +++ b/kernel/sysctl.c
+> > @@ -1423,7 +1423,6 @@ int proc_do_large_bitmap(struct ctl_table *table, int write,
+> >  			 void *buffer, size_t *lenp, loff_t *ppos)
+> >  {
+> >  	int err = 0;
+> > -	bool first = 1;
+> >  	size_t left = *lenp;
+> >  	unsigned long bitmap_len = table->maxlen;
+> >  	unsigned long *bitmap = *(unsigned long **) table->data;
+> > @@ -1508,12 +1507,12 @@ int proc_do_large_bitmap(struct ctl_table *table, int write,
+> >  			}
+> >  
+> >  			bitmap_set(tmp_bitmap, val_a, val_b - val_a + 1);
+> > -			first = 0;
+> >  			proc_skip_char(&p, &left, '\n');
+> >  		}
+> >  		left += skipped;
+> >  	} else {
+> >  		unsigned long bit_a, bit_b = 0;
+> > +		bool first = 1;
+> 
+> This looks fine, but while you are here how about setting, to match the type
+> 
+> first = true
+> 
+> And then only clearing first once
+> 
+> if (!first)                                                                            
+>   proc_put_char(&buffer, &left, ',');
+> 
+> else
+> 
+>   first = false
+> 
+> Instead of at every loop iteraction
 
-  net/ipv6/exthdrs.c:909:33:
-    warning: unused function 'ipv6_skb_idev' [-Wunused-function]
+Thanks for your patch Lukas!
 
-So, remove this unused function and a -Wunused-function warning.
+Agreed, please resend with that change as requested by Tom. And also
+please add Andrew Morton <akpm@linux-foundation.org> to your To address.
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-Alexey, Hideaki-san, please ack.
-
-David, Jakub, please pick this minor non-urgent clean-up patch.
-
- net/ipv6/exthdrs.c | 4 ----
- 1 file changed, 4 deletions(-)
-
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 374105e4394f..584d1b06eb90 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -906,10 +906,6 @@ void ipv6_exthdrs_exit(void)
- /*
-  * Note: we cannot rely on skb_dst(skb) before we assign it in ip6_route_input().
-  */
--static inline struct inet6_dev *ipv6_skb_idev(struct sk_buff *skb)
--{
--	return skb_dst(skb) ? ip6_dst_idev(skb_dst(skb)) : __in6_dev_get(skb->dev);
--}
- 
- static inline struct net *ipv6_skb_net(struct sk_buff *skb)
- {
--- 
-2.17.1
-
+  Luis

@@ -2,99 +2,129 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01F632B18E4
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Nov 2020 11:17:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8E682B18E0
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Nov 2020 11:16:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726237AbgKMKRf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Nov 2020 05:17:35 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:42948 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726176AbgKMKRe (ORCPT
+        id S1726427AbgKMKQo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Nov 2020 05:16:44 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:33748 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726176AbgKMKQo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Nov 2020 05:17:34 -0500
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0ADAALTB020506;
-        Fri, 13 Nov 2020 10:17:20 GMT
+        Fri, 13 Nov 2020 05:16:44 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0ADA9Sjk143006;
+        Fri, 13 Nov 2020 10:16:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=inc1zjdMjBlZg9MiLcacClnp+wUmqZ7Ux97na0z9F6E=;
- b=ebO49LzKp3IfCpmqtsTgDQoSIBx9YbeXGW77t8pGCPojR4mz6muafLp0OY08ZS0nDmE5
- YfE3un87tG49EHUQ3DhsNe6x3Jmm8YrZIMJ3lNE9jruc163WPflEM9ca2yw8rs9S0icH
- HngiT6qS7bF8wlR+wdCsRZ+GFlFulwSPPdHavKtb3XwtA3qHWU0q90TcQllL4tnKCoyv
- QvbqeASOdY8j/6lUdgKLlL2oxEoekJiZaCMb89qZHNDKnFNmDfMvGNFzC5xxXOZ3tmca
- uqipLuRZo8ELGpSrCbY3BNRpSSvb2PmHLN1Z7+kbyhJgMXUbofYSnNZrKEwoEiO3kx95 1g== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2130.oracle.com with ESMTP id 34nh3ba1gk-1
+ bh=cfFkbwO4n7/hA0Zrtzj7joxsa8P/uEHYLoV2Ks+djZ4=;
+ b=MHO2RcT1PHx3O+4BfGgzYXcNNF7bs5xzA249tJsJ1d58Hl5fEn+J09wc2R0wpfCsFL0Z
+ 39hNxNV0EDgM5Rc26lkHVXmvY8luP+XLqjRQ870Yhd8+TbYd8JJLlhH0/2i50yYpww4m
+ XQNPFZuoK5GC3WKwdPK8RrNYjBX7dMrO+3h4pfv8yR4B8+h8Oyft4m7cu7h6igr+n9Dc
+ wPikhp7K9e6zMvCFOlbtwvkvSKVECkVnmwCwkoD74+lWmSDEjRgKjcnTC1nqkNqC1+Bc
+ vyM1Wo99QFjqzVqB8CSg1D2m/1uk2sUCaZN3RFC6glXzr02gzxbM2XDiquRv2EBzJ+9Z Zw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 34p72f00bf-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 13 Nov 2020 10:17:20 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0ADAAIqm179205;
-        Fri, 13 Nov 2020 10:15:19 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 34rtktbun6-1
+        Fri, 13 Nov 2020 10:16:40 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0ADABN89097157;
+        Fri, 13 Nov 2020 10:16:40 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 34p55stj88-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 13 Nov 2020 10:15:19 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0ADAFAx1003790;
-        Fri, 13 Nov 2020 10:15:11 GMT
+        Fri, 13 Nov 2020 10:16:39 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0ADAGct5030571;
+        Fri, 13 Nov 2020 10:16:38 GMT
 Received: from mwanda (/10.175.206.108)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 13 Nov 2020 02:15:10 -0800
-Date:   Fri, 13 Nov 2020 13:15:02 +0300
+        with ESMTP ; Fri, 13 Nov 2020 02:16:38 -0800
+Date:   Fri, 13 Nov 2020 13:16:31 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Dave Airlie <airlied@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Emil Velikov <emil.velikov@collabora.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] drm/udl: Fix missing error code in udl_handle_damage()
-Message-ID: <20201113101502.GD168908@mwanda>
+To:     Vinod Koul <vkoul@kernel.org>
+Cc:     Vinod Koul <vkoul@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+        dmaengine@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] dmaengine: fix error codes in channel_register()
+Message-ID: <20201113101631.GE168908@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9803 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 phishscore=0
- suspectscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999 adultscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 phishscore=0
+ mlxlogscore=999 mlxscore=0 malwarescore=0 bulkscore=0 suspectscore=2
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2011130061
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9803 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 priorityscore=1501
- clxscore=1011 malwarescore=0 mlxscore=0 spamscore=0 suspectscore=0
- mlxlogscore=999 impostorscore=0 phishscore=0 adultscore=0 bulkscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999 mlxscore=0
+ malwarescore=0 suspectscore=2 lowpriorityscore=0 adultscore=0 phishscore=0
+ priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1011
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2011130061
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If udl_get_urb() fails then this should return a negative error code
-but currently it returns success.
+The error codes were not set on some of these error paths.
 
-Fixes: 798ce3fe1c3a ("drm/udl: Begin/end access to imported buffers in damage-handler")
+Also the error handling was more confusing than it needed to be so I
+cleaned it up and shuffled it around a bit.
+
+Fixes: d2fb0a043838 ("dmaengine: break out channel registration")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/gpu/drm/udl/udl_modeset.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/dma/dmaengine.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/udl/udl_modeset.c b/drivers/gpu/drm/udl/udl_modeset.c
-index 42eeba1dfdbf..9d34ec9d03f6 100644
---- a/drivers/gpu/drm/udl/udl_modeset.c
-+++ b/drivers/gpu/drm/udl/udl_modeset.c
-@@ -305,8 +305,10 @@ static int udl_handle_damage(struct drm_framebuffer *fb, int x, int y,
- 	vaddr = map.vaddr; /* TODO: Use mapping abstraction properly */
+diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+index 7974fa0400d8..962cbb5e5f7f 100644
+--- a/drivers/dma/dmaengine.c
++++ b/drivers/dma/dmaengine.c
+@@ -1039,16 +1039,15 @@ static int get_dma_id(struct dma_device *device)
+ static int __dma_async_device_channel_register(struct dma_device *device,
+ 					       struct dma_chan *chan)
+ {
+-	int rc = 0;
++	int rc;
  
- 	urb = udl_get_urb(dev);
--	if (!urb)
-+	if (!urb) {
-+		ret = -ENOMEM;
- 		goto out_drm_gem_shmem_vunmap;
-+	}
- 	cmd = urb->transfer_buffer;
+ 	chan->local = alloc_percpu(typeof(*chan->local));
+ 	if (!chan->local)
+-		goto err_out;
++		return -ENOMEM;
+ 	chan->dev = kzalloc(sizeof(*chan->dev), GFP_KERNEL);
+ 	if (!chan->dev) {
+-		free_percpu(chan->local);
+-		chan->local = NULL;
+-		goto err_out;
++		rc = -ENOMEM;
++		goto err_free_local;
+ 	}
  
- 	for (i = clip.y1; i < clip.y2; i++) {
+ 	/*
+@@ -1061,7 +1060,8 @@ static int __dma_async_device_channel_register(struct dma_device *device,
+ 	if (chan->chan_id < 0) {
+ 		pr_err("%s: unable to alloc ida for chan: %d\n",
+ 		       __func__, chan->chan_id);
+-		goto err_out;
++		rc = chan->chan_id;
++		goto err_free_dev;
+ 	}
+ 
+ 	chan->dev->device.class = &dma_devclass;
+@@ -1082,9 +1082,10 @@ static int __dma_async_device_channel_register(struct dma_device *device,
+ 	mutex_lock(&device->chan_mutex);
+ 	ida_free(&device->chan_ida, chan->chan_id);
+ 	mutex_unlock(&device->chan_mutex);
+- err_out:
+-	free_percpu(chan->local);
++ err_free_dev:
+ 	kfree(chan->dev);
++ err_free_local:
++	free_percpu(chan->local);
+ 	return rc;
+ }
+ 
 -- 
 2.28.0
 

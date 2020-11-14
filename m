@@ -2,100 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CAC42B2BAD
-	for <lists+kernel-janitors@lfdr.de>; Sat, 14 Nov 2020 06:56:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64CE22B2C76
+	for <lists+kernel-janitors@lfdr.de>; Sat, 14 Nov 2020 10:47:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726394AbgKNFzp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 14 Nov 2020 00:55:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34072 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726367AbgKNFzp (ORCPT
+        id S1726586AbgKNJr0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 14 Nov 2020 04:47:26 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:37930 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726495AbgKNJrZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 14 Nov 2020 00:55:45 -0500
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA65BC0613D1;
-        Fri, 13 Nov 2020 21:55:44 -0800 (PST)
-Received: by mail-io1-xd43.google.com with SMTP id n12so12047724ioc.2;
-        Fri, 13 Nov 2020 21:55:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=28KMHK7WHb3PmjIuLt9tU5MoKaeMpTfWBvE3Nma3970=;
-        b=U2qxBSZo6RJZQY+8KjTEPlrotMSfO10zE4KGuRZv4AG2EYUyWT/0TtlmdE3/uDAoCv
-         qb/fG/zsvd6FASPpCIpp3MsGr47Md0yAplJpkePD0f75BLKSh5/LE8AXvtiqTlD2luOc
-         4WaAYKjFfdyzmn5S3NcxD4LYYSk531Ec8bbruLxfgKEGQtzpw9wbF9gloJIz3TIpwuC/
-         KAwg49CAP0WaGnj4NxRkVxPsBhrDNIMnB2Bv/8j9eass7ZtIvw5XIHEIXc2+A9wAI84G
-         nZrXNeyg0+6RLZ/JYbCtx7g/Or70AaA/vpRGMAOz1kmv5PjQ25HWCPGy+g0+o+d2zZKX
-         gOYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=28KMHK7WHb3PmjIuLt9tU5MoKaeMpTfWBvE3Nma3970=;
-        b=nThP5rGV2gaxT30oxXeE0TUNkb3hQ8ibMhJm1OI5YnHtWquTUn7Si6ZFr06mPWn21Y
-         nSyWpU4R/WSK+LzGSx+ATps06Q01vJ1089aRdwD8ZsYjyKI1pFO6LcJ944edTmk9kAWF
-         Fdl4WAcvmYllU4EdrjpkIzvyYpkxL5pQA+/mPO6Pneht5ZYfAqTZaY+6JOB/m/UZjFPY
-         2adXlVQSA1aSRqOVp5rV9ITCjxc813wv2X9deESwOI3KO7gu3BhQinZkWd1svSzwcwUf
-         CayRHWCMM2uTVBIxn/XsDH2Lvae00yB207NLhkVU4bMtiN5tMief+wCsBzVIzzyqOjIe
-         P/yg==
-X-Gm-Message-State: AOAM5312ceO0CSDAs5eFptY+m6PsXmbJ2AYD47QVUAOhMtfZcBx738OY
-        dL4KsFxDmEPA89fpk2vcalM=
-X-Google-Smtp-Source: ABdhPJzmPgAY+kxhPB0nCvdwwe6zQ0W1CdMLR8LXk8rV3e9K1FrUHcpnodnNkJCMzxfjmici+XO5MQ==
-X-Received: by 2002:a02:cc16:: with SMTP id n22mr4803268jap.52.1605333344178;
-        Fri, 13 Nov 2020 21:55:44 -0800 (PST)
-Received: from fedora-project ([195.181.168.216])
-        by smtp.gmail.com with ESMTPSA id l11sm6038691ilj.16.2020.11.13.21.55.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2020 21:55:43 -0800 (PST)
-Date:   Sat, 14 Nov 2020 00:55:40 -0500
-From:   Nigel Christian <nigel.l.christian@gmail.com>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     krzk@kernel.org, thierry.reding@gmail.com, jonathanh@nvidia.com,
-        kernel-janitors@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH] memory: tegra20-emc: remove redundant error message
-Message-ID: <20201114055540.GA5516@fedora-project>
-References: <20201114051219.GA4746@fedora-project>
- <1ab114f2-b63e-464d-2022-6571fbf02511@gmail.com>
+        Sat, 14 Nov 2020 04:47:25 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AE9UBhL100066;
+        Sat, 14 Nov 2020 09:47:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=M0DSU4xL9ZMjcnoJdtVzr+y/mnzMYRXt41BMxzADVwI=;
+ b=xLo7w10UzXAw6UAKQOG7o+0qsd+ZTdX2cKhf0VJORx3nn4ZeBG4loPWRPczJ3MFN07ZD
+ JZIXOoh+qFhqSnoVZaebVKgkMVIWbgrfrF1FZgqQ1Sb5o/Jd8GQ3h/snaxFzzlqivLZq
+ jEgDYukDm/qCLmg/oOZEUcqX7xkfbvVEJHCA+Pte0UECCPmKX2WXSxHGDEvcQlCpTzMO
+ C0YCKltCSjiTtiQaOvRFG7emJM2xCusxW3reJAWNiy/meWVNN3yLpVSJ8wHJGG6S5wcN
+ eIMGosowk6WCqvMWMWyQzGHCWxr1JEquVca+mcu+xPDsaOF42CJAibbC77hPPeBteffB Lg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 34t76kgewf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 14 Nov 2020 09:47:22 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AE9V5oO030536;
+        Sat, 14 Nov 2020 09:45:22 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 34t71yt197-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 14 Nov 2020 09:45:22 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0AE9jLRO006639;
+        Sat, 14 Nov 2020 09:45:21 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 14 Nov 2020 01:45:21 -0800
+Date:   Sat, 14 Nov 2020 12:45:16 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     kernel-janitors@vger.kernel.org
+Subject: Re: [bug report] netlabel: fix our progress tracking in
+ netlbl_unlabel_staticlist()
+Message-ID: <20201114094516.GZ18329@kadam>
+References: <20201113085255.GA91999@mwanda>
+ <CAHC9VhQHas2FGcheAaizAHA65pfxa+oz5B88AP9WO4-hPF4kFg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1ab114f2-b63e-464d-2022-6571fbf02511@gmail.com>
+In-Reply-To: <CAHC9VhQHas2FGcheAaizAHA65pfxa+oz5B88AP9WO4-hPF4kFg@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9804 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 adultscore=0
+ malwarescore=0 mlxlogscore=999 suspectscore=0 mlxscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011140060
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9804 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 phishscore=0
+ adultscore=0 priorityscore=1501 bulkscore=0 clxscore=1015 mlxlogscore=999
+ malwarescore=0 mlxscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011140060
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Nov 14, 2020 at 08:33:47AM +0300, Dmitry Osipenko wrote:
-> 14.11.2020 08:12, Nigel Christian пишет:
-> > There is no need for dev_err() since irq already prints an error. 
-> > Eliminate unnecessary curly braces for single statement block.
-> > 
-> > Signed-off-by: Nigel Christian <nigel.l.christian@gmail.com>
-> > ---
-> >  drivers/memory/tegra/tegra20-emc.c | 4 +---
-> >  1 file changed, 1 insertion(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/memory/tegra/tegra20-emc.c b/drivers/memory/tegra/tegra20-emc.c
-> > index 5e10aa97809f..181a360d7d6b 100644
-> > --- a/drivers/memory/tegra/tegra20-emc.c
-> > +++ b/drivers/memory/tegra/tegra20-emc.c
-> > @@ -959,10 +959,8 @@ static int tegra_emc_probe(struct platform_device *pdev)
-> >  	int irq, err;
-> >  
-> >  	irq = platform_get_irq(pdev, 0);
-> > -	if (irq < 0) {
-> > -		dev_err(&pdev->dev, "please update your device tree\n");
-> > +	if (irq < 0)
-> >  		return irq;
-> > -	}
-> >  
-> >  	emc = devm_kzalloc(&pdev->dev, sizeof(*emc), GFP_KERNEL);
-> >  	if (!emc)
-> > 
+On Fri, Nov 13, 2020 at 09:41:01AM -0500, Paul Moore wrote:
+> On Fri, Nov 13, 2020 at 3:53 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> >
+> > Hello Paul Moore,
+> >
+> > The patch 866358ec331f: "netlabel: fix our progress tracking in
+> > netlbl_unlabel_staticlist()" from Nov 8, 2020, leads to the following
+> > static checker warning:
+> >
+> >         net/netlabel/netlabel_unlabeled.c:1190 netlbl_unlabel_staticlist()
+> >         error: uninitialized symbol 'iter_chain'.
 > 
-> This message has a special purpose, it shouldn't be removed. Please
-> always check what auto-generated patches actually do.
+> Thanks Dan, I'll look at it today.  I'm a little confused as to why
+> the compiler didn't flag that, but perhaps I just missed it.  Anyway,
+> patch later today ...
 
-Apologies, understood. Thank you for your time.
+GCC has stopped warning about these for some reason.  Very frustrating.
+
+regards,
+dan carpenter

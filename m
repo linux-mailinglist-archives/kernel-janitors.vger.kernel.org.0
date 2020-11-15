@@ -2,79 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAEE72B3492
-	for <lists+kernel-janitors@lfdr.de>; Sun, 15 Nov 2020 12:19:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25A4A2B356A
+	for <lists+kernel-janitors@lfdr.de>; Sun, 15 Nov 2020 15:43:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726955AbgKOLT2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 15 Nov 2020 06:19:28 -0500
-Received: from correo.us.es ([193.147.175.20]:45530 "EHLO mail.us.es"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726917AbgKOLT2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 15 Nov 2020 06:19:28 -0500
-Received: from antivirus1-rhel7.int (unknown [192.168.2.11])
-        by mail.us.es (Postfix) with ESMTP id 95E96E4B8C
-        for <kernel-janitors@vger.kernel.org>; Sun, 15 Nov 2020 12:19:22 +0100 (CET)
-Received: from antivirus1-rhel7.int (localhost [127.0.0.1])
-        by antivirus1-rhel7.int (Postfix) with ESMTP id 83BDADA73D
-        for <kernel-janitors@vger.kernel.org>; Sun, 15 Nov 2020 12:19:22 +0100 (CET)
-Received: by antivirus1-rhel7.int (Postfix, from userid 99)
-        id 74806FC5E9; Sun, 15 Nov 2020 12:19:22 +0100 (CET)
-X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on antivirus1-rhel7.int
-X-Spam-Level: 
-X-Spam-Status: No, score=-108.2 required=7.5 tests=ALL_TRUSTED,BAYES_50,
-        SMTPAUTH_US2,URIBL_BLOCKED,USER_IN_WELCOMELIST,USER_IN_WHITELIST
-        autolearn=disabled version=3.4.1
-Received: from antivirus1-rhel7.int (localhost [127.0.0.1])
-        by antivirus1-rhel7.int (Postfix) with ESMTP id 517F8DA704;
-        Sun, 15 Nov 2020 12:19:20 +0100 (CET)
-Received: from 192.168.1.97 (192.168.1.97)
- by antivirus1-rhel7.int (F-Secure/fsigk_smtp/550/antivirus1-rhel7.int);
- Sun, 15 Nov 2020 12:19:20 +0100 (CET)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/antivirus1-rhel7.int)
-Received: from us.es (unknown [90.77.255.23])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: 1984lsi)
-        by entrada.int (Postfix) with ESMTPSA id 30D1A4265A5A;
-        Sun, 15 Nov 2020 12:19:20 +0100 (CET)
-Date:   Sun, 15 Nov 2020 12:19:19 +0100
-X-SMTPAUTHUS: auth mail.us.es
-From:   Pablo Neira Ayuso <pablo@netfilter.org>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: rectify file patterns for NETFILTER
-Message-ID: <20201115111919.GA24901@salvia>
-References: <20201109091942.32280-1-lukas.bulwahn@gmail.com>
+        id S1726631AbgKOOnE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 15 Nov 2020 09:43:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51682 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726438AbgKOOnD (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 15 Nov 2020 09:43:03 -0500
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39F92C0613D1
+        for <kernel-janitors@vger.kernel.org>; Sun, 15 Nov 2020 06:43:01 -0800 (PST)
+Received: by mail-ej1-x631.google.com with SMTP id cw8so20689892ejb.8
+        for <kernel-janitors@vger.kernel.org>; Sun, 15 Nov 2020 06:43:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=hfEcfY5w3QyHGmc1GrUsrjUR/RKnJ/e1nTf9oT7EoXc=;
+        b=WHxrZJi+vH6zpwxEzE4QRw66UiMV/TbeUslirc882GZZJ7uob+hcZqtmg4MwK8msBH
+         gNZB8QlSsJnXwzn8mMdes/WQwMErvtRMG+AEFlxGrvel5wEk7fG3CYowLrLtLHXdhzU4
+         +l36CIJrBQBFxIBw3wx4cQwTOh3HGqRpDvFLozplFowH7llq7NE8R6T59t0MIIKZlKM/
+         ICaFmgC2BzqoY/xhFPDVOsG887SDlY7PDzuUf/jbn5d+uQxAB5f80i37EkmoX2qDO1cb
+         h46ZP9O/vVZxhCBlWjwpojUE7Bi+Ey/HRBgygjdnbgakF17n/ZBbqYqeuOUFGTZLn4FQ
+         y6bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=hfEcfY5w3QyHGmc1GrUsrjUR/RKnJ/e1nTf9oT7EoXc=;
+        b=Cd4uuw53rii9FncOr0XCPN7RmxoB6fAPpcoWmtKLgckLda+sQD6QXSj9F5UwurKSIk
+         4BEalyETpi09fkDrEl8IdHogkaRkfJtv5ppH7iqLf4TcfvdOL/wVXsYvDJEM0zvRXe8A
+         p6VOQopbRwu0key6GrD+qNDu5WDYLZHyfr0GwFQEClv8YY4411uQpHn35ekxXgE+ffsp
+         v8hXHvlX+yJYP5m8LSXbBXdXITBWKKkIikShd4SzXkbDt4iO2lP14qzdJoGEMFPjbLwC
+         Evv5i7/0u+ya+LyM3NmPAoPLLZHshNp4qmnAhnqnxx1a6F/nJHYzkWJcPa7mkzonQltB
+         OZiQ==
+X-Gm-Message-State: AOAM530hj0m1Vn7M94iNKae/85t4B/nUNxpJSVITksa8iV0aqFbczhLV
+        w32wV64BIdqwJdInFVqY6Z7xvPG5Bmf61aChmYt9
+X-Google-Smtp-Source: ABdhPJyUiZf7FRbgtu3xET31wGb/IooI0N5pi3DZfisrcg++JRqQO7wyNZC8FuHoKa6bLe2pn7WmjzxdeclAcv92d1w=
+X-Received: by 2002:a17:906:c096:: with SMTP id f22mr10303991ejz.488.1605451379603;
+ Sun, 15 Nov 2020 06:42:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201109091942.32280-1-lukas.bulwahn@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Virus-Scanned: ClamAV using ClamSMTP
+References: <20201113085255.GA91999@mwanda> <CAHC9VhQHas2FGcheAaizAHA65pfxa+oz5B88AP9WO4-hPF4kFg@mail.gmail.com>
+ <20201114094516.GZ18329@kadam> <20201115030023.GA927@Ryzen-9-3900X.localdomain>
+In-Reply-To: <20201115030023.GA927@Ryzen-9-3900X.localdomain>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Sun, 15 Nov 2020 09:42:48 -0500
+Message-ID: <CAHC9VhRjUt4MBuzur-4gE4VhG2Ao2SJVP5ouWLs992nNtZwrzg@mail.gmail.com>
+Subject: Re: [bug report] netlabel: fix our progress tracking in netlbl_unlabel_staticlist()
+To:     Nathan Chancellor <natechancellor@gmail.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Nov 09, 2020 at 10:19:42AM +0100, Lukas Bulwahn wrote:
-> The two file patterns in the NETFILTER section:
-> 
->   F:      include/linux/netfilter*
->   F:      include/uapi/linux/netfilter*
-> 
-> intended to match the directories:
-> 
->   ./include{/uapi}/linux/netfilter_{arp,bridge,ipv4,ipv6}
-> 
-> A quick check with ./scripts/get_maintainer.pl --letters -f will show that
-> they are not matched, though, because this pattern only matches files, but
-> not directories.
-> 
-> Rectify the patterns to match the intended directories.
+On Sat, Nov 14, 2020 at 10:00 PM Nathan Chancellor
+<natechancellor@gmail.com> wrote:
+> On Sat, Nov 14, 2020 at 12:45:16PM +0300, Dan Carpenter wrote:
+> > On Fri, Nov 13, 2020 at 09:41:01AM -0500, Paul Moore wrote:
+> > > On Fri, Nov 13, 2020 at 3:53 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> > > >
+> > > > Hello Paul Moore,
+> > > >
+> > > > The patch 866358ec331f: "netlabel: fix our progress tracking in
+> > > > netlbl_unlabel_staticlist()" from Nov 8, 2020, leads to the following
+> > > > static checker warning:
+> > > >
+> > > >         net/netlabel/netlabel_unlabeled.c:1190 netlbl_unlabel_staticlist()
+> > > >         error: uninitialized symbol 'iter_chain'.
+> > >
+> > > Thanks Dan, I'll look at it today.  I'm a little confused as to why
+> > > the compiler didn't flag that, but perhaps I just missed it.  Anyway,
+> > > patch later today ...
+> >
+> > GCC has stopped warning about these for some reason.  Very frustrating.
+>
+> Most likely due to commit 78a5255ffb6a ("Stop the ad-hoc games with
+> -Wno-maybe-initialized").
 
-Applied, thanks.
+That does look like the culprit, thanks.  It looks like I need to
+start training my fingers to type W=X more often now when building.
+
+-- 
+paul moore
+www.paul-moore.com

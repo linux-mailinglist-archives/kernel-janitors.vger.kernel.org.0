@@ -2,116 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE85E2B3CB3
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Nov 2020 06:51:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46FF02B3D6F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Nov 2020 08:03:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726136AbgKPFu4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 16 Nov 2020 00:50:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49102 "EHLO
+        id S1727236AbgKPHAq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Nov 2020 02:00:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725300AbgKPFuz (ORCPT
+        with ESMTP id S1726524AbgKPHAq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 16 Nov 2020 00:50:55 -0500
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D888C0613CF;
-        Sun, 15 Nov 2020 21:50:55 -0800 (PST)
-Received: by mail-ej1-x644.google.com with SMTP id f23so22759889ejk.2;
-        Sun, 15 Nov 2020 21:50:55 -0800 (PST)
+        Mon, 16 Nov 2020 02:00:46 -0500
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA65CC0613CF;
+        Sun, 15 Nov 2020 23:00:44 -0800 (PST)
+Received: by mail-wm1-x343.google.com with SMTP id h21so1827882wmb.2;
+        Sun, 15 Nov 2020 23:00:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
-        bh=bMCt60rqT+zbnmmu8mIiXqNzcowO0BqJlZFilJ3Doeo=;
-        b=l2N6UPXztssB0BIvdQTVtoH2uBhHn7UeL7GZOqiJHymxU/o40kBJboG/xwwJ0dZ+cw
-         n1KO2j8bOsgqGfSu/Gks3g2zXimC/L45Zq1Vtw6IBhErbes7kYBG5Z4+iwogQJxm56yX
-         8eJtxaKvCz6uHpp/6j8Ow/A7n9mAFktsHac1tWj8Ihzt3aglcMo9yjTlUknFm5aaH2nW
-         P3zfAIHUMuCP7T4vWeYCZL/dh4UbYvnzwzQrRAg97uqoMX4cfjg4Y+Rvz/Mx5rPpLvon
-         KKdJ0tN6fWaK8sA144XP8eVvWUUAA4FY8HKz+VyprSzyZ8VqEozquOocB26xYFvnFQj+
-         OvVA==
+        bh=/WS+PJRE2OGyeY6RdUzMuAsaLGec+mJ+W+Kppo7JUTk=;
+        b=mT6a5U26s+LjfpqwX2Q+Ilm57J/7WiUUItSDp3s462F7bbtdwHhev2bL9n671X6x0X
+         lbtarwKYDmxY7ZrnrOMAy9dDvLTPGxplGnFsChFmTrueaFHMFuEIPOlme7iPMPu9s6bH
+         remHDWst0JePDJqZkOoEPryZeORpe8+X8hTYJN/k7bw/4hn873VcSY2Q9CxvmiPZ8MAc
+         d2zahCvE0JoKfA+DcmGEBbqjfZaeMXqFoxQQryTcG2+TZZ+8lpaveEnjC7uajvXSPy9p
+         Lde3nDgNnLnwAQU2SM4kKrjgtXGaHog3VbSfq//aNy+JOWxgV5IL1QrKhtEglJZ9Wc+b
+         J8XA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=bMCt60rqT+zbnmmu8mIiXqNzcowO0BqJlZFilJ3Doeo=;
-        b=rqG7jxH8bLfItl64K/bp49UdV9xrcswWePumTqdPM3kgOTZ5Owy4EMUFiXI0rp2AF1
-         D3rzzLD9aBlFC4e6CCv/iPWpozkpH94oXzQmrQOrQmB21TVO4C0OK5AcH13XoCGGDXnV
-         Bk3StGw08CMVRDrh9Y2jD7IYphpHIAtX+OZMXKi+G15hdbuQZoWjee0i5CreFVA9aKu8
-         RXcGYVyDCn3Q7ZEj4D8bT+utjYi9qzcD9jjnDIWroqSTi61rjzqBp7Ipy513oNjLGN1p
-         0mvo+DXZmPzbLQ5ZtNok0doKfIYWv9BL3CcRcb6atMUpW/ZsTwLOVPnmGLfwajN3Dlug
-         LWvQ==
-X-Gm-Message-State: AOAM532COiRhhp+K1DUK2H9yVLFF1laFz5KXMC/1V84lBXBl9/9GjPHJ
-        rl7EwKOUKHzPmIAZKHmfQb8=
-X-Google-Smtp-Source: ABdhPJxZbKUtzcgQIOuCyBy7CGfW5JkOEuHKZALohI5J1FH2WeJ62lL9BDzOSL78BB+LKiR25Ex7Hg==
-X-Received: by 2002:a17:906:3294:: with SMTP id 20mr13143545ejw.239.1605505853911;
-        Sun, 15 Nov 2020 21:50:53 -0800 (PST)
+        bh=/WS+PJRE2OGyeY6RdUzMuAsaLGec+mJ+W+Kppo7JUTk=;
+        b=d/9MHg8bdWSTMqYDqO8TCH4DPgEIrXKpIkjfCn5OXRpk4oDcXbfLUq99WLNNXpc7Oa
+         OXuG9qn7hJPWBNPt6WQkmeyJFuFqnxyktuw7KDAQQk2vsG91UmKSHlItcaVqJbT0APAv
+         4Bp0A06KNt1m7NoF0fLDmsBjimbcKd4+frgMDWUlwP7TF2l1sv9g8foFEvocccZ8Y2gA
+         oxtOLREMv9F2kFZFXmuBiY5+Zgn/DjS8SYU46fJfxfbcMHWiVlVEJp9YC53NIVuTq5pE
+         txrlrUoXRGXYwQcQNqrvtnwNPra34Yuv5zdeIYmhaiVMl8XKI4jJeuW6d7iDXD1jbntP
+         /z0A==
+X-Gm-Message-State: AOAM533w801J3ijYH8mRw6O3bsAc+73lnpNnizPnaJU2vIFsb+Ci1BFM
+        zZ9/EiSyHQcvRbiBxwNzHb8=
+X-Google-Smtp-Source: ABdhPJyRr2lPY09u6b19zO7iBZ3oI+I7YiQQo5QkM5PA4TRlPOgnU6fg+mtPEQtiEzTLzvvJ0iCLNw==
+X-Received: by 2002:a7b:c1ce:: with SMTP id a14mr13996360wmj.126.1605510043378;
+        Sun, 15 Nov 2020 23:00:43 -0800 (PST)
 Received: from felia.fritz.box ([2001:16b8:2de6:ad00:939:47a9:70b9:fe5b])
-        by smtp.gmail.com with ESMTPSA id h24sm9907059ejg.15.2020.11.15.21.50.52
+        by smtp.gmail.com with ESMTPSA id o63sm18676667wmo.2.2020.11.15.23.00.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Nov 2020 21:50:53 -0800 (PST)
+        Sun, 15 Nov 2020 23:00:42 -0800 (PST)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Roman Gushchin <guro@fb.com>, Johannes Weiner <hannes@cmpxchg.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        cgroups@vger.kernel.org, linux-mm@kvack.org
-Cc:     Michal Hocko <mhocko@kernel.org>,
-        Vladimir Davydov <vdavydov.dev@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, Tom Rix <trix@redhat.com>,
+To:     Christoph Hellwig <hch@lst.de>, Hannes Reinecke <hare@suse.de>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        linux-scsi@vger.kernel.org
+Cc:     Arnd Bergmann <arnd@arndb.de>, Tom Rix <trix@redhat.com>,
         Nathan Chancellor <natechancellor@gmail.com>,
         Nick Desaulniers <ndesaulniers@google.com>,
         clang-built-linux@googlegroups.com,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] mm: memcg: remove obsolete memcg_has_children()
-Date:   Mon, 16 Nov 2020 06:50:43 +0100
-Message-Id: <20201116055043.20886-1-lukas.bulwahn@gmail.com>
+Subject: [PATCH] scsi: sd: remove obsolete variable in sd_remove()
+Date:   Mon, 16 Nov 2020 08:00:35 +0100
+Message-Id: <20201116070035.11870-1-lukas.bulwahn@gmail.com>
 X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 2ef1bf118c40 ("mm: memcg: deprecate the non-hierarchical mode")
-removed the only use of memcg_has_children() in
-mem_cgroup_hierarchy_write() as part of the feature deprecation.
+Commit 140ea3bbf39a ("sd: use __register_blkdev to avoid a modprobe for an
+unregistered dev_t") removed blk_register_region(devt, ...) in sd_remove()
+and since then, devt is unused in sd_remove().
 
-Hence, since then, make CC=clang W=1 warns:
+Hence, make W=1 warns:
 
-  mm/memcontrol.c:3421:20:
-    warning: unused function 'memcg_has_children' [-Wunused-function]
+  drivers/scsi/sd.c:3516:8:
+      warning: variable 'devt' set but not used [-Wunused-but-set-variable]
 
-Simply remove this obsolete unused function.
+Simply remove this obsolete variable.
 
 Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
-applies cleanly on next-20201113, not on current master
+applies cleanly on current master and next-20201113
 
-Roman, please ack.
+Christoph, Hannes, please ack.
 
-Andrew, please pick this minor non-urgent patch into your -next tree.
+Martin, James, please pick this minor non-urgent clean-up patch.
 
- mm/memcontrol.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ drivers/scsi/sd.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index f95ddb3e9898..d49d7c507284 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3415,19 +3415,6 @@ unsigned long mem_cgroup_soft_limit_reclaim(pg_data_t *pgdat, int order,
- 	return nr_reclaimed;
- }
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index 106a9cda0eb7..82d0cb97b758 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -3513,10 +3513,8 @@ static int sd_probe(struct device *dev)
+ static int sd_remove(struct device *dev)
+ {
+ 	struct scsi_disk *sdkp;
+-	dev_t devt;
  
--/*
-- * Test whether @memcg has children, dead or alive.
-- */
--static inline bool memcg_has_children(struct mem_cgroup *memcg)
--{
--	bool ret;
--
--	rcu_read_lock();
--	ret = css_next_child(NULL, &memcg->css);
--	rcu_read_unlock();
--	return ret;
--}
--
- /*
-  * Reclaims as many pages from the given memcg as possible.
-  *
+ 	sdkp = dev_get_drvdata(dev);
+-	devt = disk_devt(sdkp->disk);
+ 	scsi_autopm_get_device(sdkp->device);
+ 
+ 	async_synchronize_full_domain(&scsi_sd_pm_domain);
 -- 
 2.17.1
 

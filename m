@@ -2,101 +2,125 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 956052B4438
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Nov 2020 14:01:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 438DD2B4939
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Nov 2020 16:27:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728550AbgKPNAd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 16 Nov 2020 08:00:33 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:34822 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727849AbgKPNAa (ORCPT
+        id S1731434AbgKPP1T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Nov 2020 10:27:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:20091 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1731340AbgKPP1S (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 16 Nov 2020 08:00:30 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AGD00AJ053317;
-        Mon, 16 Nov 2020 13:00:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=bN1JOGDwmqyy+KHv+zxQrD8gAc0Gh6sp/wEQJplAPXk=;
- b=mlmTDdRkhp6zpryf6Vn+fxTa8g+SyUvRmgRVjYsY5bsdV7iICZbM5fk3BaOzTsEdH1jj
- bCXH4aaU1jWBd2jCdWjGEH0y+YgV65copq2+OvdvGhfmn4fJEz66431yOPIdHX+e1cf0
- SAOMDN+6md409CPXsAcYkbeayDEMY6BOGV8lviDLcjDGyFi3uKsJ7vgOMlmisXZRx/eg
- LEujLp3OGsaLi43tiM3Y/04u6GjOZ7IbepgQxlYFfbLADxNwKPy+Ndg+J4a1TzyS5nyb
- Sn6nqqiVOw/fVtArJ1cmNkIVtVbwD3o/4o8rWRZ7e2QnPz4qYGZtd9nRapIpMFzHVaNV 0w== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 34t7vmvu1x-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 16 Nov 2020 13:00:02 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AGCoiFl079689;
-        Mon, 16 Nov 2020 13:00:02 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 34ts5unfdb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 16 Nov 2020 13:00:02 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0AGCxvQH023727;
-        Mon, 16 Nov 2020 12:59:57 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 16 Nov 2020 04:59:57 -0800
-Date:   Mon, 16 Nov 2020 15:59:50 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Patrick Lai <plai@codeaurora.org>,
-        xuyuqing <xuyuqing@huaqin.corp-partner.google.com>
-Cc:     Banajit Goswami <bgoswami@codeaurora.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] ASoC: qcom: sc7180: initialize the "no_headphone" variable
-Message-ID: <20201116125950.GA44063@mwanda>
+        Mon, 16 Nov 2020 10:27:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1605540436;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=p+R8S0WweOXQR+OUWh+p2mp3xbX8KKGAJ9nOo8kOgR4=;
+        b=G7SNdW2ZRKNbZ+VqijtENFANksl3dpxksG8387mqaIGYjvkCNSRY4fm2MRaP0C5XGjllE2
+        Y07paf1QDMidMHLOoq5BUxIWEzPmy9CoTfza2shlLB8vgI5Ri57Rrwn1c/qnfd2iwEgHeI
+        5X6DkdfBdbd6dHgp18N9xQTt7OmR7pM=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-403-AmKW1Q_lNN6wWpaM6HoV5w-1; Mon, 16 Nov 2020 10:27:15 -0500
+X-MC-Unique: AmKW1Q_lNN6wWpaM6HoV5w-1
+Received: by mail-qk1-f198.google.com with SMTP id s128so11864335qke.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 16 Nov 2020 07:27:14 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=p+R8S0WweOXQR+OUWh+p2mp3xbX8KKGAJ9nOo8kOgR4=;
+        b=R1OupWFU3eRwOqoMKeElVuuChCKn3waBqI6QwDClxytq2L23R9tfH4d3CvARCbaBZ1
+         H9ynS6bkXithKUu+XWerrXuXIr+ZbxuSE0D4/pssTHTI2jMG7jNydKSlVMBKoNSV1Yzp
+         Qd5aqRRs7bUZmod/kjvZjVYIn0EJmAKBaNuHQ6VBOdXD9aaTW/L5SC7CwDw/IGFYW5jw
+         pUr4Mhv+aI3yrhJwF2jeQ53miwR2mNXte+je6vcvfG2FGqHXDSuI9zbWhMJVDnwdBYVe
+         eJkjVb+J6jmXoFQtyXV89R6mA1LErfLHljHX3jvNTTT9FXLOrYsDQf5mmMUeNf75Fece
+         uULw==
+X-Gm-Message-State: AOAM533X7/cfC0ykNnyeAhurH8G6w16UZkyLJQplf/+FiVRdi8rAYQER
+        /ScnACC7isYNVJKacS+m8XPnUoU2nyU9jXDZU4Wy8gY1zJwYxqNxC6Ig5bMWg82En1gOT3EMpW1
+        jPkMz0BE8HMlgXEL9Q7vaW4jHXL4N
+X-Received: by 2002:ac8:1201:: with SMTP id x1mr14518594qti.339.1605540434520;
+        Mon, 16 Nov 2020 07:27:14 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJweYUi7z+e1csf1aHOAl0LBwV0fhzYY74cOs4DFOjr1KPvzcJcBf8KAaqsUcutRvmM9V9J4rg==
+X-Received: by 2002:ac8:1201:: with SMTP id x1mr14518574qti.339.1605540434310;
+        Mon, 16 Nov 2020 07:27:14 -0800 (PST)
+Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id z88sm10751007qtd.46.2020.11.16.07.27.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Nov 2020 07:27:13 -0800 (PST)
+Subject: Re: [PATCH] x86/cpu: remove needless definition for !CONFIG_X86_32
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org
+Cc:     "H . Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20201116094218.10508-1-lukas.bulwahn@gmail.com>
+From:   Tom Rix <trix@redhat.com>
+Message-ID: <ef9fc100-78f9-4b8a-7c28-d413db041c1d@redhat.com>
+Date:   Mon, 16 Nov 2020 07:27:11 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9806 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 phishscore=0
- suspectscore=0 mlxscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011160076
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9806 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
- malwarescore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0 spamscore=0
- adultscore=0 mlxscore=0 priorityscore=1501 phishscore=0 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011160077
+In-Reply-To: <20201116094218.10508-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "no_headphone" variable is never set to "false" so it could be
-uninitialized.
 
-Fixes: e936619b7ce7 ("ASoC: qcom: sc7180: Modify machine driver for sound card")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-Apparently we recently turned off uninitialized variable warnings by
-default in commit 78a5255ffb6a ("Stop the ad-hoc games with
--Wno-maybe-initialized")
+On 11/16/20 1:42 AM, Lukas Bulwahn wrote:
+> The function flag_is_changeable_p() is used in:
+>
+>   - have_cpuid_p() for its CONFIG_X86_32 definition
+>   - identify_cpu_without_cpuid() within its CONFIG_X86_32 ifdef-block
 
- sound/soc/qcom/sc7180.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This looks fine.
 
-diff --git a/sound/soc/qcom/sc7180.c b/sound/soc/qcom/sc7180.c
-index e2e6567566af..de70fa792aea 100644
---- a/sound/soc/qcom/sc7180.c
-+++ b/sound/soc/qcom/sc7180.c
-@@ -316,7 +316,7 @@ static int sc7180_snd_platform_probe(struct platform_device *pdev)
- 	struct snd_soc_dai_link *link;
- 	int ret;
- 	int i;
--	bool no_headphone;
-+	bool no_headphone = false;
- 
- 	/* Allocate the private data */
- 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
--- 
-2.29.2
+Reviewed-by: Tom Rix <trix@redhat.com>
+
+a bit of cleanup, identify_cpu_without_cpuid() be moved into the main CONFIG_X86_32 ifdef with stub for x86_64.
+
+>
+> So, there is no need to define flag_is_changeable_p() if !CONFIG_X86_32.
+> Simply remove this needless definition.
+>
+> This was discovered with make CC=clang W=1:
+>
+>   arch/x86/kernel/cpu/common.c:283:19:
+>     warning: unused function 'flag_is_changeable_p' [-Wunused-function]
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+> applies cleanly on current master and next-20201116
+>
+> Thomas, Boris, please pick this minor non-urgent patch.
+>
+>  arch/x86/kernel/cpu/common.c | 4 ----
+>  1 file changed, 4 deletions(-)
+>
+> diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+> index 35ad8480c464..b89dbc7ccb0c 100644
+> --- a/arch/x86/kernel/cpu/common.c
+> +++ b/arch/x86/kernel/cpu/common.c
+> @@ -280,10 +280,6 @@ static int __init x86_serial_nr_setup(char *s)
+>  }
+>  __setup("serialnumber", x86_serial_nr_setup);
+>  #else
+> -static inline int flag_is_changeable_p(u32 flag)
+> -{
+> -	return 1;
+> -}
+>  static inline void squash_the_stupid_serial_number(struct cpuinfo_x86 *c)
+>  {
+>  }
 

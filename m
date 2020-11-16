@@ -2,53 +2,41 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 675822B3DF5
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Nov 2020 08:52:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F41A02B3EA2
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Nov 2020 09:29:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727971AbgKPHwA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 16 Nov 2020 02:52:00 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48400 "EHLO mail.kernel.org"
+        id S1726995AbgKPI2Q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Nov 2020 03:28:16 -0500
+Received: from verein.lst.de ([213.95.11.211]:53510 "EHLO verein.lst.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726524AbgKPHwA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 16 Nov 2020 02:52:00 -0500
-Received: from localhost (unknown [122.171.203.152])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B6FCB206D8;
-        Mon, 16 Nov 2020 07:51:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605513119;
-        bh=kIDHVv2Ym+BUKnQTKS5yXXz7Bo9fBdvlozH3Mp6LzZc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lYn5MyHDC+hMuypGUTjD4UlI/0ltk6q0YIK5KJEt4NeUniKmUl4F4TAgJKfoA+Q+G
-         VsdYsMhR7Rf/i/aoLRxZiIgtQjyuJc9M/ZA8i1YTBj4LRYsl5JTmJRUndGwe1uAoY9
-         nk2s2gD+kH8zk4NfN48hqgzMjhY/0fMp4UfSuqfY=
-Date:   Mon, 16 Nov 2020 13:21:55 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-mediatek@lists.infradead.org,
+        id S1726172AbgKPI2Q (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 16 Nov 2020 03:28:16 -0500
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 0F2F56736F; Mon, 16 Nov 2020 09:28:13 +0100 (CET)
+Date:   Mon, 16 Nov 2020 09:28:12 +0100
+From:   Christoph Hellwig <hch@lst.de>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Christoph Hellwig <hch@lst.de>, Hannes Reinecke <hare@suse.de>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        linux-scsi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Tom Rix <trix@redhat.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        clang-built-linux@googlegroups.com,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] phy: mediatek: fix spelling mistake in Kconfig "veriosn"
- -> "version"
-Message-ID: <20201116075155.GR7499@vkoul-mobl>
-References: <20201114120518.416120-1-colin.king@canonical.com>
+Subject: Re: [PATCH] scsi: sd: remove obsolete variable in sd_remove()
+Message-ID: <20201116082812.GA17192@lst.de>
+References: <20201116070035.11870-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201114120518.416120-1-colin.king@canonical.com>
+In-Reply-To: <20201116070035.11870-1-lukas.bulwahn@gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 14-11-20, 12:05, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in the Kconfig. Fix it.
+Looks good,
 
-Applied, thanks
-
--- 
-~Vinod
+Reviewed-by: Christoph Hellwig <hch@lst.de>

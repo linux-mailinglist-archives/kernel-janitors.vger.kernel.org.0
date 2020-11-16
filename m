@@ -2,106 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 204C22B3AA2
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Nov 2020 00:50:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5504B2B3BEF
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Nov 2020 04:58:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728019AbgKOXsZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 15 Nov 2020 18:48:25 -0500
-Received: from mga03.intel.com ([134.134.136.65]:49230 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726369AbgKOXsZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 15 Nov 2020 18:48:25 -0500
-IronPort-SDR: G0IzlSGXZ/YLjGvgCL/wa3FBzOk5qPJUUqfdF9XZdkW2ADssQcgKJSmcqgRXGj9v8tm+WFk9/i
- K16BslmkaiQg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9806"; a="170787072"
-X-IronPort-AV: E=Sophos;i="5.77,481,1596524400"; 
-   d="scan'208";a="170787072"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2020 15:48:24 -0800
-IronPort-SDR: QFsXTK8yVJAJVshqFuARa27KZZ7lQvmrMDwIx7oqw5NiZ71abynlHnruwa681+tBsBtddcg0E6
- mVNxTG+UtNqQ==
-X-IronPort-AV: E=Sophos;i="5.77,481,1596524400"; 
-   d="scan'208";a="358279683"
-Received: from chenyudo-mobl.ccr.corp.intel.com (HELO [10.254.215.59]) ([10.254.215.59])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2020 15:48:21 -0800
-Cc:     baolu.lu@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
-        Tom Rix <trix@redhat.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        clang-built-linux@googlegroups.com,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iommu/vt-d: include conditionally on
- CONFIG_INTEL_IOMMU_SVM
+        id S1726784AbgKPD6h (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 15 Nov 2020 22:58:37 -0500
+Received: from smtprelay0094.hostedemail.com ([216.40.44.94]:35450 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726532AbgKPD6h (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 15 Nov 2020 22:58:37 -0500
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 5630C1730858;
+        Mon, 16 Nov 2020 03:58:36 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:967:973:982:988:989:1260:1263:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2525:2561:2564:2682:2685:2693:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3352:3622:3865:3867:3870:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4250:4321:4605:4659:5007:9010:9025:9388:10004:10049:10400:10848:11232:11657:11658:11783:11914:12043:12048:12297:12555:12740:12895:13069:13311:13357:13439:13894:14094:14106:14181:14659:14721:14764:14849:21080:21451:21627:21691:21740:21781:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: scent45_491207927325
+X-Filterd-Recvd-Size: 2428
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf04.hostedemail.com (Postfix) with ESMTPA;
+        Mon, 16 Nov 2020 03:58:34 +0000 (UTC)
+Message-ID: <d03c87f9fcc4bb68c148cfad12cafef5f2385eef.camel@perches.com>
+Subject: Re: [PATCH] MAINTAINERS: rectify file patterns for NETFILTER
+From:   Joe Perches <joe@perches.com>
 To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Liu Yi L <yi.l.liu@intel.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Joerg Roedel <joro@8bytes.org>,
-        iommu@lists.linux-foundation.org
-References: <20201115205951.20698-1-lukas.bulwahn@gmail.com>
-From:   Lu Baolu <baolu.lu@linux.intel.com>
-Message-ID: <188313a2-ec53-28ef-2349-66594e116a2e@linux.intel.com>
-Date:   Mon, 16 Nov 2020 07:47:55 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.3
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org
+Cc:     Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Sun, 15 Nov 2020 19:58:33 -0800
+In-Reply-To: <20201109091942.32280-1-lukas.bulwahn@gmail.com>
+References: <20201109091942.32280-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-In-Reply-To: <20201115205951.20698-1-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020/11/16 4:59, Lukas Bulwahn wrote:
-> Commit 6ee1b77ba3ac ("iommu/vt-d: Add svm/sva invalidate function")
-> introduced intel_iommu_sva_invalidate() when CONFIG_INTEL_IOMMU_SVM.
-> This function uses the dedicated static variable inv_type_granu_table
-> and functions to_vtd_granularity() and to_vtd_size().
+On Mon, 2020-11-09 at 10:19 +0100, Lukas Bulwahn wrote:
+> The two file patterns in the NETFILTER section:
 > 
-> These parts are unused when !CONFIG_INTEL_IOMMU_SVM, and hence,
-> make CC=clang W=1 warns with an -Wunused-function warning.
+>   F:      include/linux/netfilter*
+>   F:      include/uapi/linux/netfilter*
 > 
-> Include these parts conditionally on CONFIG_INTEL_IOMMU_SVM.
+> intended to match the directories:
 > 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+>   ./include{/uapi}/linux/netfilter_{arp,bridge,ipv4,ipv6}
+> 
+> A quick check with ./scripts/get_maintainer.pl --letters -f will show that
+> they are not matched, though, because this pattern only matches files, but
+> not directories.
+> 
+> Rectify the patterns to match the intended directories.
+[]
+diff --git a/MAINTAINERS b/MAINTAINERS
+[]
+> @@ -12139,10 +12139,10 @@ W:	http://www.nftables.org/
+>  Q:	http://patchwork.ozlabs.org/project/netfilter-devel/list/
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pablo/nf.git
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pablo/nf-next.git
+> -F:	include/linux/netfilter*
+> +F:	include/linux/netfilter*/
+>  F:	include/linux/netfilter/
 
-Fixes: 6ee1b77ba3ac0 ("iommu/vt-d: Add svm/sva invalidate function")
-Acked-by: Lu Baolu <baolu.lu@linux.intel.com>
+This line could be deleted or perhaps moved up one line above
 
-Best regards,
-baolu
+F:	include/linux/netfilter/
+F:	include/linux/netfilter*/
 
-> ---
-> applies cleanly on current master and next-20201113
-> 
-> Liu Yi L, Jakob Pan, Lu Baolu, please ack.
-> 
-> Joerg, please pick this minor non-urgent clean-up patch.
-> 
->   drivers/iommu/intel/iommu.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> index c6622011d493..7b32703c0b47 100644
-> --- a/drivers/iommu/intel/iommu.c
-> +++ b/drivers/iommu/intel/iommu.c
-> @@ -5386,6 +5386,7 @@ static void intel_iommu_aux_detach_device(struct iommu_domain *domain,
->   	aux_domain_remove_dev(to_dmar_domain(domain), dev);
->   }
->   
-> +#ifdef CONFIG_INTEL_IOMMU_SVM
->   /*
->    * 2D array for converting and sanitizing IOMMU generic TLB granularity to
->    * VT-d granularity. Invalidation is typically included in the unmap operation
-> @@ -5432,7 +5433,6 @@ static inline u64 to_vtd_size(u64 granu_size, u64 nr_granules)
->   	return order_base_2(nr_pages);
->   }
->   
-> -#ifdef CONFIG_INTEL_IOMMU_SVM
->   static int
->   intel_iommu_sva_invalidate(struct iommu_domain *domain, struct device *dev,
->   			   struct iommu_cache_invalidate_info *inv_info)
-> 
+(as the second line already matches the first line's files too)
+
+>  F:	include/net/netfilter/
+> -F:	include/uapi/linux/netfilter*
+> +F:	include/uapi/linux/netfilter*/
+>  F:	include/uapi/linux/netfilter/
+
+same here.
+
+>  F:	net/*/netfilter.c
+>  F:	net/*/netfilter/
+
+

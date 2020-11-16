@@ -1,91 +1,84 @@
 Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5504B2B3BEF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Nov 2020 04:58:58 +0100 (CET)
+Received: from vger.kernel.org (unknown [23.128.96.18])
+	by mail.lfdr.de (Postfix) with ESMTP id 1E67D2B3C01
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Nov 2020 05:12:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726784AbgKPD6h (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 15 Nov 2020 22:58:37 -0500
-Received: from smtprelay0094.hostedemail.com ([216.40.44.94]:35450 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726532AbgKPD6h (ORCPT
+        id S1727037AbgKPELT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 15 Nov 2020 23:11:19 -0500
+Received: from out4-smtp.messagingengine.com ([66.111.4.28]:34037 "EHLO
+        out4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726198AbgKPELT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 15 Nov 2020 22:58:37 -0500
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 5630C1730858;
-        Mon, 16 Nov 2020 03:58:36 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:967:973:982:988:989:1260:1263:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2525:2561:2564:2682:2685:2693:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3352:3622:3865:3867:3870:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4250:4321:4605:4659:5007:9010:9025:9388:10004:10049:10400:10848:11232:11657:11658:11783:11914:12043:12048:12297:12555:12740:12895:13069:13311:13357:13439:13894:14094:14106:14181:14659:14721:14764:14849:21080:21451:21627:21691:21740:21781:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: scent45_491207927325
-X-Filterd-Recvd-Size: 2428
-Received: from XPS-9350.home (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf04.hostedemail.com (Postfix) with ESMTPA;
-        Mon, 16 Nov 2020 03:58:34 +0000 (UTC)
-Message-ID: <d03c87f9fcc4bb68c148cfad12cafef5f2385eef.camel@perches.com>
-Subject: Re: [PATCH] MAINTAINERS: rectify file patterns for NETFILTER
-From:   Joe Perches <joe@perches.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org
-Cc:     Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Sun, 15 Nov 2020 19:58:33 -0800
-In-Reply-To: <20201109091942.32280-1-lukas.bulwahn@gmail.com>
-References: <20201109091942.32280-1-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Sun, 15 Nov 2020 23:11:19 -0500
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.nyi.internal (Postfix) with ESMTP id CBB0C5C0054;
+        Sun, 15 Nov 2020 23:11:16 -0500 (EST)
+Received: from imap2 ([10.202.2.52])
+  by compute3.internal (MEProxy); Sun, 15 Nov 2020 23:11:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=
+        mime-version:message-id:in-reply-to:references:date:from:to:cc
+        :subject:content-type; s=fm1; bh=L1/AgPHqizdnomLrXS0OIGSD6EAbY5E
+        Ccvh31UQ1hJQ=; b=FzAvqnDBlcDPjSiXOE0YpM0321NTERJcxsExT/OH5hgXIav
+        gGEK8B5HvIlj0RZFdyazkcarcbFqdHByITeqejOMxksowEasauDYCyHFIZhP9Bwk
+        YYXYEfiIrmaGwb/ld0qQC4XQ9TrOtgA1hmPSV3/a8hzl39Wgr5RMnWuithc58Mqy
+        2lC/dTl7qZTrf/3za5lPPbiXBrQYLmcrXEccQ1MQntFDUTAtNjxNbSd6NK1Q/3wE
+        FvlWHD+z5ekWqWAiCUamTmwA+blIWf8+NYAqReVWK9qcHzsD1b+PLFPMsD7GM+W8
+        yiO9xDSt5QlnGJhtqWV1dDe0yZ0ZOZkUmtNWSIw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=L1/AgP
+        HqizdnomLrXS0OIGSD6EAbY5ECcvh31UQ1hJQ=; b=pMKEAPa+Iwd4j16QUeU2Yi
+        t3bFlSzGoM4qeHHZtNyN3XZ8NzFxwjzktTXVyFar2dbVCwZOCeUQrXeUwGpaYftd
+        lwU+Txe4951P1pCxGqyaMp7UA6gpkhNYvA3ja0edyByvI9BhqpOrGHhm6hHAmzju
+        g4PS8sKrLyc7ve/nxnarcKI2xBsIyVT34Jg/ULCgsfdwWM4Wg13LQbEQ1TV9IMSq
+        ziyHVeqNyft+B6V76uWdHTxCuKpNCyxl8rnXrhClYSNtxzC77fQ4sH2f/NRcmiAz
+        +qmkkc5Gxjb2FMZgCb8o3HewvdQDlAO6G0m0FhyAg5XhMGsPWYywxiHXUa7qyT0A
+        ==
+X-ME-Sender: <xms:5PuxX7NLxY2bO5Ludd_9Kuk7vewcBpTfVzaVfZaCEVJcghRpGy2Bvw>
+    <xme:5PuxX18p_umOmFLUd4xmGgmGbb_wQGJ6IefvGhGBEyBrytVF1VHvj25pndhg-jOTE
+    mDTg4sYIu-SKDyAnQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrudeftddgjedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvffutgesthdtredtreerjeenucfhrhhomhepfdetnhgu
+    rhgvficulfgvfhhfvghrhidfuceorghnughrvgifsegrjhdrihgurdgruheqnecuggftrf
+    grthhtvghrnhepuddttdekueeggedvtddtueekiedutdfguedutdefieeuteefieelteet
+    vddthfeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    eprghnughrvgifsegrjhdrihgurdgruh
+X-ME-Proxy: <xmx:5PuxX6RPV3da2DaxK6dTxnAleiTNZT9uD-U-RKtBU8_GA7rUSXO9Cw>
+    <xmx:5PuxX_uszSmPZ9kfaDT_CNrg2ix3ocRUKzEFQlOZ1V5H13y42sjyVQ>
+    <xmx:5PuxXzfto_O1lTEAmZcfwzgsdZEcyjQV_akUlOYAaFROgAJXSv8W6A>
+    <xmx:5PuxX_6mbxYjCj7nWq8ZFoSgkCSQWBW90Gn2xkrUlPnNgzH8Ffq6dQ>
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 18129E00A6; Sun, 15 Nov 2020 23:11:14 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.3.0-570-gba0a262-fm-20201106.001-gba0a2623
+Mime-Version: 1.0
+Message-Id: <07558590-438a-4347-820e-c117b19dac20@www.fastmail.com>
+In-Reply-To: <20201113100850.GA168908@mwanda>
+References: <20201113100850.GA168908@mwanda>
+Date:   Mon, 16 Nov 2020 14:40:55 +1030
+From:   "Andrew Jeffery" <andrew@aj.id.au>
+To:     "Dan Carpenter" <dan.carpenter@oracle.com>,
+        "Joel Stanley" <joel@jms.id.au>
+Cc:     "Tom Rix" <trix@redhat.com>, linux-aspeed@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: =?UTF-8?Q?Re:_[PATCH]_soc:_aspeed:_Fix_a_reference_leak_in_aspeed=5Fsoci?=
+ =?UTF-8?Q?nfo=5Finit()?=
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 2020-11-09 at 10:19 +0100, Lukas Bulwahn wrote:
-> The two file patterns in the NETFILTER section:
+
+
+On Fri, 13 Nov 2020, at 20:38, Dan Carpenter wrote:
+> This needs to call of_node_put(np) before returning if of_iomap() fails.
 > 
->   F:      include/linux/netfilter*
->   F:      include/uapi/linux/netfilter*
-> 
-> intended to match the directories:
-> 
->   ./include{/uapi}/linux/netfilter_{arp,bridge,ipv4,ipv6}
-> 
-> A quick check with ./scripts/get_maintainer.pl --letters -f will show that
-> they are not matched, though, because this pattern only matches files, but
-> not directories.
-> 
-> Rectify the patterns to match the intended directories.
-[]
-diff --git a/MAINTAINERS b/MAINTAINERS
-[]
-> @@ -12139,10 +12139,10 @@ W:	http://www.nftables.org/
->  Q:	http://patchwork.ozlabs.org/project/netfilter-devel/list/
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pablo/nf.git
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pablo/nf-next.git
-> -F:	include/linux/netfilter*
-> +F:	include/linux/netfilter*/
->  F:	include/linux/netfilter/
+> Fixes: e0218dca5787 ("soc: aspeed: Add soc info driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-This line could be deleted or perhaps moved up one line above
-
-F:	include/linux/netfilter/
-F:	include/linux/netfilter*/
-
-(as the second line already matches the first line's files too)
-
->  F:	include/net/netfilter/
-> -F:	include/uapi/linux/netfilter*
-> +F:	include/uapi/linux/netfilter*/
->  F:	include/uapi/linux/netfilter/
-
-same here.
-
->  F:	net/*/netfilter.c
->  F:	net/*/netfilter/
-
-
+Reviewed-by: Andrew Jeffery <andrew@aj.id.au>

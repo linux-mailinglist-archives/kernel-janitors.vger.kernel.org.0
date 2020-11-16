@@ -1,84 +1,117 @@
 Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from vger.kernel.org (unknown [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E67D2B3C01
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Nov 2020 05:12:06 +0100 (CET)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.lfdr.de (Postfix) with ESMTP id CE85E2B3CB3
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Nov 2020 06:51:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727037AbgKPELT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 15 Nov 2020 23:11:19 -0500
-Received: from out4-smtp.messagingengine.com ([66.111.4.28]:34037 "EHLO
-        out4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726198AbgKPELT (ORCPT
+        id S1726136AbgKPFu4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Nov 2020 00:50:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49102 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725300AbgKPFuz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 15 Nov 2020 23:11:19 -0500
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id CBB0C5C0054;
-        Sun, 15 Nov 2020 23:11:16 -0500 (EST)
-Received: from imap2 ([10.202.2.52])
-  by compute3.internal (MEProxy); Sun, 15 Nov 2020 23:11:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=
-        mime-version:message-id:in-reply-to:references:date:from:to:cc
-        :subject:content-type; s=fm1; bh=L1/AgPHqizdnomLrXS0OIGSD6EAbY5E
-        Ccvh31UQ1hJQ=; b=FzAvqnDBlcDPjSiXOE0YpM0321NTERJcxsExT/OH5hgXIav
-        gGEK8B5HvIlj0RZFdyazkcarcbFqdHByITeqejOMxksowEasauDYCyHFIZhP9Bwk
-        YYXYEfiIrmaGwb/ld0qQC4XQ9TrOtgA1hmPSV3/a8hzl39Wgr5RMnWuithc58Mqy
-        2lC/dTl7qZTrf/3za5lPPbiXBrQYLmcrXEccQ1MQntFDUTAtNjxNbSd6NK1Q/3wE
-        FvlWHD+z5ekWqWAiCUamTmwA+blIWf8+NYAqReVWK9qcHzsD1b+PLFPMsD7GM+W8
-        yiO9xDSt5QlnGJhtqWV1dDe0yZ0ZOZkUmtNWSIw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=L1/AgP
-        HqizdnomLrXS0OIGSD6EAbY5ECcvh31UQ1hJQ=; b=pMKEAPa+Iwd4j16QUeU2Yi
-        t3bFlSzGoM4qeHHZtNyN3XZ8NzFxwjzktTXVyFar2dbVCwZOCeUQrXeUwGpaYftd
-        lwU+Txe4951P1pCxGqyaMp7UA6gpkhNYvA3ja0edyByvI9BhqpOrGHhm6hHAmzju
-        g4PS8sKrLyc7ve/nxnarcKI2xBsIyVT34Jg/ULCgsfdwWM4Wg13LQbEQ1TV9IMSq
-        ziyHVeqNyft+B6V76uWdHTxCuKpNCyxl8rnXrhClYSNtxzC77fQ4sH2f/NRcmiAz
-        +qmkkc5Gxjb2FMZgCb8o3HewvdQDlAO6G0m0FhyAg5XhMGsPWYywxiHXUa7qyT0A
-        ==
-X-ME-Sender: <xms:5PuxX7NLxY2bO5Ludd_9Kuk7vewcBpTfVzaVfZaCEVJcghRpGy2Bvw>
-    <xme:5PuxX18p_umOmFLUd4xmGgmGbb_wQGJ6IefvGhGBEyBrytVF1VHvj25pndhg-jOTE
-    mDTg4sYIu-SKDyAnQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrudeftddgjedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvffutgesthdtredtreerjeenucfhrhhomhepfdetnhgu
-    rhgvficulfgvfhhfvghrhidfuceorghnughrvgifsegrjhdrihgurdgruheqnecuggftrf
-    grthhtvghrnhepuddttdekueeggedvtddtueekiedutdfguedutdefieeuteefieelteet
-    vddthfeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    eprghnughrvgifsegrjhdrihgurdgruh
-X-ME-Proxy: <xmx:5PuxX6RPV3da2DaxK6dTxnAleiTNZT9uD-U-RKtBU8_GA7rUSXO9Cw>
-    <xmx:5PuxX_uszSmPZ9kfaDT_CNrg2ix3ocRUKzEFQlOZ1V5H13y42sjyVQ>
-    <xmx:5PuxXzfto_O1lTEAmZcfwzgsdZEcyjQV_akUlOYAaFROgAJXSv8W6A>
-    <xmx:5PuxX_6mbxYjCj7nWq8ZFoSgkCSQWBW90Gn2xkrUlPnNgzH8Ffq6dQ>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 18129E00A6; Sun, 15 Nov 2020 23:11:14 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.3.0-570-gba0a262-fm-20201106.001-gba0a2623
-Mime-Version: 1.0
-Message-Id: <07558590-438a-4347-820e-c117b19dac20@www.fastmail.com>
-In-Reply-To: <20201113100850.GA168908@mwanda>
-References: <20201113100850.GA168908@mwanda>
-Date:   Mon, 16 Nov 2020 14:40:55 +1030
-From:   "Andrew Jeffery" <andrew@aj.id.au>
-To:     "Dan Carpenter" <dan.carpenter@oracle.com>,
-        "Joel Stanley" <joel@jms.id.au>
-Cc:     "Tom Rix" <trix@redhat.com>, linux-aspeed@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: =?UTF-8?Q?Re:_[PATCH]_soc:_aspeed:_Fix_a_reference_leak_in_aspeed=5Fsoci?=
- =?UTF-8?Q?nfo=5Finit()?=
-Content-Type: text/plain
+        Mon, 16 Nov 2020 00:50:55 -0500
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D888C0613CF;
+        Sun, 15 Nov 2020 21:50:55 -0800 (PST)
+Received: by mail-ej1-x644.google.com with SMTP id f23so22759889ejk.2;
+        Sun, 15 Nov 2020 21:50:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=bMCt60rqT+zbnmmu8mIiXqNzcowO0BqJlZFilJ3Doeo=;
+        b=l2N6UPXztssB0BIvdQTVtoH2uBhHn7UeL7GZOqiJHymxU/o40kBJboG/xwwJ0dZ+cw
+         n1KO2j8bOsgqGfSu/Gks3g2zXimC/L45Zq1Vtw6IBhErbes7kYBG5Z4+iwogQJxm56yX
+         8eJtxaKvCz6uHpp/6j8Ow/A7n9mAFktsHac1tWj8Ihzt3aglcMo9yjTlUknFm5aaH2nW
+         P3zfAIHUMuCP7T4vWeYCZL/dh4UbYvnzwzQrRAg97uqoMX4cfjg4Y+Rvz/Mx5rPpLvon
+         KKdJ0tN6fWaK8sA144XP8eVvWUUAA4FY8HKz+VyprSzyZ8VqEozquOocB26xYFvnFQj+
+         OvVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=bMCt60rqT+zbnmmu8mIiXqNzcowO0BqJlZFilJ3Doeo=;
+        b=rqG7jxH8bLfItl64K/bp49UdV9xrcswWePumTqdPM3kgOTZ5Owy4EMUFiXI0rp2AF1
+         D3rzzLD9aBlFC4e6CCv/iPWpozkpH94oXzQmrQOrQmB21TVO4C0OK5AcH13XoCGGDXnV
+         Bk3StGw08CMVRDrh9Y2jD7IYphpHIAtX+OZMXKi+G15hdbuQZoWjee0i5CreFVA9aKu8
+         RXcGYVyDCn3Q7ZEj4D8bT+utjYi9qzcD9jjnDIWroqSTi61rjzqBp7Ipy513oNjLGN1p
+         0mvo+DXZmPzbLQ5ZtNok0doKfIYWv9BL3CcRcb6atMUpW/ZsTwLOVPnmGLfwajN3Dlug
+         LWvQ==
+X-Gm-Message-State: AOAM532COiRhhp+K1DUK2H9yVLFF1laFz5KXMC/1V84lBXBl9/9GjPHJ
+        rl7EwKOUKHzPmIAZKHmfQb8=
+X-Google-Smtp-Source: ABdhPJxZbKUtzcgQIOuCyBy7CGfW5JkOEuHKZALohI5J1FH2WeJ62lL9BDzOSL78BB+LKiR25Ex7Hg==
+X-Received: by 2002:a17:906:3294:: with SMTP id 20mr13143545ejw.239.1605505853911;
+        Sun, 15 Nov 2020 21:50:53 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2de6:ad00:939:47a9:70b9:fe5b])
+        by smtp.gmail.com with ESMTPSA id h24sm9907059ejg.15.2020.11.15.21.50.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Nov 2020 21:50:53 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Roman Gushchin <guro@fb.com>, Johannes Weiner <hannes@cmpxchg.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        cgroups@vger.kernel.org, linux-mm@kvack.org
+Cc:     Michal Hocko <mhocko@kernel.org>,
+        Vladimir Davydov <vdavydov.dev@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Tom Rix <trix@redhat.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] mm: memcg: remove obsolete memcg_has_children()
+Date:   Mon, 16 Nov 2020 06:50:43 +0100
+Message-Id: <20201116055043.20886-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Commit 2ef1bf118c40 ("mm: memcg: deprecate the non-hierarchical mode")
+removed the only use of memcg_has_children() in
+mem_cgroup_hierarchy_write() as part of the feature deprecation.
 
+Hence, since then, make CC=clang W=1 warns:
 
-On Fri, 13 Nov 2020, at 20:38, Dan Carpenter wrote:
-> This needs to call of_node_put(np) before returning if of_iomap() fails.
-> 
-> Fixes: e0218dca5787 ("soc: aspeed: Add soc info driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+  mm/memcontrol.c:3421:20:
+    warning: unused function 'memcg_has_children' [-Wunused-function]
 
-Reviewed-by: Andrew Jeffery <andrew@aj.id.au>
+Simply remove this obsolete unused function.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on next-20201113, not on current master
+
+Roman, please ack.
+
+Andrew, please pick this minor non-urgent patch into your -next tree.
+
+ mm/memcontrol.c | 13 -------------
+ 1 file changed, 13 deletions(-)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index f95ddb3e9898..d49d7c507284 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3415,19 +3415,6 @@ unsigned long mem_cgroup_soft_limit_reclaim(pg_data_t *pgdat, int order,
+ 	return nr_reclaimed;
+ }
+ 
+-/*
+- * Test whether @memcg has children, dead or alive.
+- */
+-static inline bool memcg_has_children(struct mem_cgroup *memcg)
+-{
+-	bool ret;
+-
+-	rcu_read_lock();
+-	ret = css_next_child(NULL, &memcg->css);
+-	rcu_read_unlock();
+-	return ret;
+-}
+-
+ /*
+  * Reclaims as many pages from the given memcg as possible.
+  *
+-- 
+2.17.1
+

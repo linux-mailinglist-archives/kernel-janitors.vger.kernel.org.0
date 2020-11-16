@@ -2,102 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4773C2B3EBD
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Nov 2020 09:36:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02B282B4012
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Nov 2020 10:45:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726759AbgKPIeO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 16 Nov 2020 03:34:14 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:55120 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726395AbgKPIeN (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 16 Nov 2020 03:34:13 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AG8Y5cd001969;
-        Mon, 16 Nov 2020 08:34:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=bc1Jtu4U6ojxQdJN9tEn8qClCtroAfzUsB9+z9NVLUU=;
- b=nvVSx8nwl31OAqCp+KVlT6/f2t5/vs98wvSZNFJAo8Knq7/VDbXo/5uCQbVYDbLuyZ2U
- /V50m0wq4Z303XBaLQ+2cBAX70Ej6aRTijy/WDcfmM4FxyZKxwV65LBR1F/a2z9ZNk7W
- q5byUGaEOx9ECYa98WSidf9KewmfPZpzKleQsF8yNgswNpOxHzivY3+gHgjmPmnqQKH5
- +JbEDjsRW8kvxVl3OYw4WlZ6WanPB9zwifSzFpIOZXhYu/adFbOv4vP9c35DUyUmOoKu
- s+Rv4+xYJlEtGkQ68si6AxGVJ6scv6eE0FbQk7jom0biI9Qy6Hjh9uWfqj3HxSehOLCx sw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 34t76kkutw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 16 Nov 2020 08:34:10 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AG8OSq3140261;
-        Mon, 16 Nov 2020 08:34:10 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 34ts5udu8q-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 16 Nov 2020 08:34:10 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0AG8Y9hf020485;
-        Mon, 16 Nov 2020 08:34:09 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 16 Nov 2020 00:34:08 -0800
-Date:   Mon, 16 Nov 2020 11:34:02 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Nathan Chancellor <natechancellor@gmail.com>
-Cc:     Paul Moore <paul@paul-moore.com>, kernel-janitors@vger.kernel.org
-Subject: Re: [bug report] netlabel: fix our progress tracking in
- netlbl_unlabel_staticlist()
-Message-ID: <20201116083402.GA18329@kadam>
-References: <20201113085255.GA91999@mwanda>
- <CAHC9VhQHas2FGcheAaizAHA65pfxa+oz5B88AP9WO4-hPF4kFg@mail.gmail.com>
- <20201114094516.GZ18329@kadam>
- <20201115030023.GA927@Ryzen-9-3900X.localdomain>
+        id S1728620AbgKPJnC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Nov 2020 04:43:02 -0500
+Received: from correo.us.es ([193.147.175.20]:51660 "EHLO mail.us.es"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728617AbgKPJnC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 16 Nov 2020 04:43:02 -0500
+Received: from antivirus1-rhel7.int (unknown [192.168.2.11])
+        by mail.us.es (Postfix) with ESMTP id 941E8D2DA1A
+        for <kernel-janitors@vger.kernel.org>; Mon, 16 Nov 2020 10:42:58 +0100 (CET)
+Received: from antivirus1-rhel7.int (localhost [127.0.0.1])
+        by antivirus1-rhel7.int (Postfix) with ESMTP id 61721DA78C
+        for <kernel-janitors@vger.kernel.org>; Mon, 16 Nov 2020 10:42:58 +0100 (CET)
+Received: by antivirus1-rhel7.int (Postfix, from userid 99)
+        id 7AB92BBFA7; Mon, 16 Nov 2020 10:39:28 +0100 (CET)
+X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on antivirus1-rhel7.int
+X-Spam-Level: 
+X-Spam-Status: No, score=-108.2 required=7.5 tests=ALL_TRUSTED,BAYES_50,
+        SMTPAUTH_US2,USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=disabled
+        version=3.4.1
+Received: from antivirus1-rhel7.int (localhost [127.0.0.1])
+        by antivirus1-rhel7.int (Postfix) with ESMTP id 1931523B9D8;
+        Mon, 16 Nov 2020 10:17:37 +0100 (CET)
+Received: from 192.168.1.97 (192.168.1.97)
+ by antivirus1-rhel7.int (F-Secure/fsigk_smtp/550/antivirus1-rhel7.int);
+ Mon, 16 Nov 2020 10:17:32 +0100 (CET)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/antivirus1-rhel7.int)
+Received: from us.es (unknown [90.77.255.23])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: 1984lsi)
+        by entrada.int (Postfix) with ESMTPSA id CF2AE4265A5A;
+        Mon, 16 Nov 2020 10:17:36 +0100 (CET)
+Date:   Mon, 16 Nov 2020 10:17:36 +0100
+X-SMTPAUTHUS: auth mail.us.es
+From:   Pablo Neira Ayuso <pablo@netfilter.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: rectify file patterns for NETFILTER
+Message-ID: <20201116091736.GA32490@salvia>
+References: <20201109091942.32280-1-lukas.bulwahn@gmail.com>
+ <d03c87f9fcc4bb68c148cfad12cafef5f2385eef.camel@perches.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20201115030023.GA927@Ryzen-9-3900X.localdomain>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9806 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 phishscore=0
- suspectscore=0 mlxscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011160049
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9806 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 phishscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 clxscore=1015 mlxlogscore=999
- malwarescore=0 mlxscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011160050
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d03c87f9fcc4bb68c148cfad12cafef5f2385eef.camel@perches.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Nov 14, 2020 at 08:00:23PM -0700, Nathan Chancellor wrote:
-> On Sat, Nov 14, 2020 at 12:45:16PM +0300, Dan Carpenter wrote:
-> > On Fri, Nov 13, 2020 at 09:41:01AM -0500, Paul Moore wrote:
-> > > On Fri, Nov 13, 2020 at 3:53 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> > > >
-> > > > Hello Paul Moore,
-> > > >
-> > > > The patch 866358ec331f: "netlabel: fix our progress tracking in
-> > > > netlbl_unlabel_staticlist()" from Nov 8, 2020, leads to the following
-> > > > static checker warning:
-> > > >
-> > > >         net/netlabel/netlabel_unlabeled.c:1190 netlbl_unlabel_staticlist()
-> > > >         error: uninitialized symbol 'iter_chain'.
-> > > 
-> > > Thanks Dan, I'll look at it today.  I'm a little confused as to why
-> > > the compiler didn't flag that, but perhaps I just missed it.  Anyway,
-> > > patch later today ...
+Hi Lukas,
+
+On Sun, Nov 15, 2020 at 07:58:33PM -0800, Joe Perches wrote:
+> On Mon, 2020-11-09 at 10:19 +0100, Lukas Bulwahn wrote:
+> > The two file patterns in the NETFILTER section:
 > > 
-> > GCC has stopped warning about these for some reason.  Very frustrating.
+> >   F:      include/linux/netfilter*
+> >   F:      include/uapi/linux/netfilter*
+> > 
+> > intended to match the directories:
+> > 
+> >   ./include{/uapi}/linux/netfilter_{arp,bridge,ipv4,ipv6}
+> > 
+> > A quick check with ./scripts/get_maintainer.pl --letters -f will show that
+> > they are not matched, though, because this pattern only matches files, but
+> > not directories.
+> > 
+> > Rectify the patterns to match the intended directories.
+> []
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> []
+> > @@ -12139,10 +12139,10 @@ W:	http://www.nftables.org/
+> >  Q:	http://patchwork.ozlabs.org/project/netfilter-devel/list/
+> >  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pablo/nf.git
+> >  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pablo/nf-next.git
+> > -F:	include/linux/netfilter*
+> > +F:	include/linux/netfilter*/
+> >  F:	include/linux/netfilter/
 > 
-> Most likely due to commit 78a5255ffb6a ("Stop the ad-hoc games with
-> -Wno-maybe-initialized").
+> This line could be deleted or perhaps moved up one line above
+> 
+> F:	include/linux/netfilter/
+> F:	include/linux/netfilter*/
+> 
+> (as the second line already matches the first line's files too)
+> 
+> >  F:	include/net/netfilter/
+> > -F:	include/uapi/linux/netfilter*
+> > +F:	include/uapi/linux/netfilter*/
+> >  F:	include/uapi/linux/netfilter/
+> 
+> same here.
+> 
+> >  F:	net/*/netfilter.c
+> >  F:	net/*/netfilter/
 
-Ugh...  That explains it.  These days we have the GCC plugging which
-initializes things to zero so some of these don't show up in testing.
-
-regards,
-dan carpenter
-
+Please, send a v2 to address this feedback. Thank you.

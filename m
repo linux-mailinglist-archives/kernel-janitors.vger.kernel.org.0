@@ -2,87 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F7A92B573E
-	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Nov 2020 03:56:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CFF32B5892
+	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Nov 2020 04:57:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727401AbgKQCzz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 16 Nov 2020 21:55:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47868 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727377AbgKQCzy (ORCPT
+        id S1727227AbgKQD4q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Nov 2020 22:56:46 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:46164 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727156AbgKQD4q (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 16 Nov 2020 21:55:54 -0500
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E18AC0613CF;
-        Mon, 16 Nov 2020 18:55:54 -0800 (PST)
-Received: by mail-qk1-x744.google.com with SMTP id 199so19175341qkg.9;
-        Mon, 16 Nov 2020 18:55:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=rph6elS4sVb6X0aZV8oBI4KEro3xkFbil1su2bbIStE=;
-        b=USQyK3bB+z/rsRt1AELXV8ctRWtIiY5icuzdfAECiIyyhTqCjd/cubqHwqXKSUrpNW
-         jS0x+7FDLMQEfX5d7LQRDJHMhIRUHZF7ZyjiIzz9U1hm4GfyOWrcoaA437AVuzPTV8jD
-         gPnd6rltXsXDr1sppsRO9SurjxkcvrJY9DaPtvKkm38dDeNTSA+354EJG7j5ZVdclpAn
-         oz/RVsDsjTwbuaICvAL+c02bw1WRI2G1FJ+tljpDFR8an2UnbZAvBcHpkmo4aS1mSE9w
-         nBDJ91GZEg6FqhfGkMA0vfYxJtfEqU73B3egT2cKvmkDKOWEzPGV2v85V43YHu74tHYP
-         09tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=rph6elS4sVb6X0aZV8oBI4KEro3xkFbil1su2bbIStE=;
-        b=e1cXfGi0EelZDDCIZL3DCkzrUoE4K0pNQc8qI0XMbNhq2iE3/4DwFCqcvo5Y5x8c7s
-         CpWsPgq3IRxEmJnSxtd1EbSWqpVHVts6JC7itRuytO7pA4BjcJXzSbx4Yddl0rP30MTl
-         U+l4/Y/8/NoGWagaH6U16x98mTaJe+7mMgxXzYJdS2nANC9oKNWkinZZ+cuK06BOgYap
-         Cj17jowHXa8okNS/uZzC1ZHfZBdcPNgaMSxhZq35ot4juhG0wDusRmO2u0jRU8RdrpKK
-         il487YLgOnIarnYyAHI/54LIB9+VlAveW9fSL1IX6pmp9IzzUJX2e/r64NUAlsAGbesJ
-         R46w==
-X-Gm-Message-State: AOAM532qIy0un2715zRgb5+t8nshbfzyjuwkpslq3YdJIOKS6o2VoDMg
-        laHbFN3l5oykH5uuArasIFE=
-X-Google-Smtp-Source: ABdhPJwMRPqQ+amOILxvnHFquv3aE3v+OBpkNV+6SrgJ/aizT1KI3eZnAQXhApmCEhRAYQUTMxaztQ==
-X-Received: by 2002:a37:8305:: with SMTP id f5mr17316880qkd.209.1605581753676;
-        Mon, 16 Nov 2020 18:55:53 -0800 (PST)
-Received: from ubuntu-m3-large-x86 ([2604:1380:45f1:1d00::1])
-        by smtp.gmail.com with ESMTPSA id r14sm13431270qtu.25.2020.11.16.18.55.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2020 18:55:53 -0800 (PST)
-Date:   Mon, 16 Nov 2020 19:55:51 -0700
-From:   Nathan Chancellor <natechancellor@gmail.com>
+        Mon, 16 Nov 2020 22:56:46 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AH3dvHZ166136;
+        Tue, 17 Nov 2020 03:56:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : mime-version :
+ content-type; s=corp-2020-01-29;
+ bh=k78HJVH6abX6dGonUUcLQUJZtzYGy/GNj74+82yaRGk=;
+ b=XajkD24v0gKNwpvuAJQznAsfeMmscrSVcbHIZT0Qs8CyT9gmHUDXfSxGHX2Z1qvwJ3D8
+ 9mzlXB4RPbJJIeN3GSlM2dPhuOjQK234IrXCQ7B3LB+zG7LA3euqL7/Mkg18Y2jA115n
+ W+h0nR3dVa2nUmGNAtWbZIUYL0h7EBUmeneowhzyDg+OSKn+WmcVxPx2uvur+iHdAJVg
+ tQRPpv55/W74wcA/6gtTyUg748jViM8G1OtuTGw6T5GHHU5ovn/ektUyHTHV1Md11CR9
+ jF4Ju2vcpk+AG7/bu38j0Ze7bh88TegGV7WG5o+Y/9wbspQsFu8CsbebQORDIg/pT/z/ EA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 34t7vn0cdf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 17 Nov 2020 03:56:30 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AH3db4f117417;
+        Tue, 17 Nov 2020 03:54:29 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 34uspsu1ct-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 17 Nov 2020 03:54:29 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0AH3sJhq022399;
+        Tue, 17 Nov 2020 03:54:19 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 16 Nov 2020 19:54:19 -0800
 To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Roman Gushchin <guro@fb.com>, Johannes Weiner <hannes@cmpxchg.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        cgroups@vger.kernel.org, linux-mm@kvack.org,
-        Michal Hocko <mhocko@kernel.org>,
-        Vladimir Davydov <vdavydov.dev@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, Tom Rix <trix@redhat.com>,
+Cc:     Christoph Hellwig <hch@lst.de>, Hannes Reinecke <hare@suse.de>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        linux-scsi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Tom Rix <trix@redhat.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
         Nick Desaulniers <ndesaulniers@google.com>,
         clang-built-linux@googlegroups.com,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: memcg: remove obsolete memcg_has_children()
-Message-ID: <20201117025551.GA1103291@ubuntu-m3-large-x86>
-References: <20201116055043.20886-1-lukas.bulwahn@gmail.com>
+Subject: Re: [PATCH] scsi: sd: remove obsolete variable in sd_remove()
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1ft5863ku.fsf@ca-mkp.ca.oracle.com>
+References: <20201116070035.11870-1-lukas.bulwahn@gmail.com>
+Date:   Mon, 16 Nov 2020 22:54:16 -0500
+In-Reply-To: <20201116070035.11870-1-lukas.bulwahn@gmail.com> (Lukas Bulwahn's
+        message of "Mon, 16 Nov 2020 08:00:35 +0100")
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201116055043.20886-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9807 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
+ mlxscore=0 bulkscore=0 suspectscore=1 adultscore=0 spamscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011170027
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9807 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=1
+ malwarescore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0 spamscore=0
+ adultscore=0 mlxscore=0 priorityscore=1501 phishscore=0 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011170027
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Nov 16, 2020 at 06:50:43AM +0100, Lukas Bulwahn wrote:
-> Commit 2ef1bf118c40 ("mm: memcg: deprecate the non-hierarchical mode")
-> removed the only use of memcg_has_children() in
-> mem_cgroup_hierarchy_write() as part of the feature deprecation.
-> 
-> Hence, since then, make CC=clang W=1 warns:
-> 
->   mm/memcontrol.c:3421:20:
->     warning: unused function 'memcg_has_children' [-Wunused-function]
-> 
-> Simply remove this obsolete unused function.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+Lukas,
+
+> Commit 140ea3bbf39a ("sd: use __register_blkdev to avoid a modprobe
+> for an unregistered dev_t") removed blk_register_region(devt, ...) in
+> sd_remove() and since then, devt is unused in sd_remove().
+
+Applied to 5.11/scsi-staging, thanks!
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

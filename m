@@ -2,28 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1CFE2B66C3
-	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Nov 2020 15:06:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB2882B663F
+	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Nov 2020 15:05:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729142AbgKQOGy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 17 Nov 2020 09:06:54 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:47164 "EHLO
+        id S1729114AbgKQNLp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 17 Nov 2020 08:11:45 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:47496 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729021AbgKQNHJ (ORCPT
+        with ESMTP id S1729710AbgKQNLn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 17 Nov 2020 08:07:09 -0500
+        Tue, 17 Nov 2020 08:11:43 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kf0hM-00087K-NP; Tue, 17 Nov 2020 13:07:04 +0000
+        id 1kf0lm-0000AT-7g; Tue, 17 Nov 2020 13:11:38 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Xiaojian Du <Xiaojian.Du@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] btrfs: fix spelling mistake "inititialize" -> "initialize"
-Date:   Tue, 17 Nov 2020 13:07:04 +0000
-Message-Id: <20201117130704.420088-1-colin.king@canonical.com>
+Subject: [PATCH][next] drm/amd/pm: fix spelling mistakes in dev_warn messages
+Date:   Tue, 17 Nov 2020 13:11:37 +0000
+Message-Id: <20201117131137.420396-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -34,26 +38,34 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in a btrfs_err error message. Fix it.
+There are two spelling mistakes in dev_warn messages. Fix these.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- fs/btrfs/disk-io.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 4402dcb00cb5..70633fafff54 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -3310,7 +3310,7 @@ int __cold open_ctree(struct super_block *sb, struct btrfs_fs_devices *fs_device
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+index afa542a5af5f..9a2f72f21ed8 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+@@ -689,14 +689,14 @@ static int vangogh_od_edit_dpm_table(struct smu_context *smu, enum PP_OD_DPM_TAB
  
- 	ret = btrfs_check_zoned_mode(fs_info);
- 	if (ret) {
--		btrfs_err(fs_info, "failed to inititialize zoned mode: %d",
-+		btrfs_err(fs_info, "failed to initialize zoned mode: %d",
- 			  ret);
- 		goto fail_block_groups;
- 	}
+ 		if (input[0] == 0) {
+ 			if (input[1] < smu->gfx_default_hard_min_freq) {
+-				dev_warn(smu->adev->dev, "Fine grain setting minimun sclk (%ld) MHz is less than the minimum allowed (%d) MHz\n",
++				dev_warn(smu->adev->dev, "Fine grain setting minimum sclk (%ld) MHz is less than the minimum allowed (%d) MHz\n",
+ 					input[1], smu->gfx_default_hard_min_freq);
+ 				return -EINVAL;
+ 			}
+ 			smu->gfx_actual_hard_min_freq = input[1];
+ 		} else if (input[0] == 1) {
+ 			if (input[1] > smu->gfx_default_soft_max_freq) {
+-				dev_warn(smu->adev->dev, "Fine grain setting maximun sclk (%ld) MHz is greater than the maximum allowed (%d) MHz\n",
++				dev_warn(smu->adev->dev, "Fine grain setting maximum sclk (%ld) MHz is greater than the maximum allowed (%d) MHz\n",
+ 					input[1], smu->gfx_default_soft_max_freq);
+ 				return -EINVAL;
+ 			}
 -- 
 2.28.0
 

@@ -2,111 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD1872B6DA2
-	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Nov 2020 19:46:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 717F32B7257
+	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Nov 2020 00:25:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727925AbgKQSnB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 17 Nov 2020 13:43:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53060 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726794AbgKQSnB (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 17 Nov 2020 13:43:01 -0500
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 745CBC0613CF;
-        Tue, 17 Nov 2020 10:42:59 -0800 (PST)
-Received: by mail-wr1-x442.google.com with SMTP id c17so24188547wrc.11;
-        Tue, 17 Nov 2020 10:42:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=sCMQ/QonvivA+lIMBxKQU3+hpAIR8NvsAFKTyOancic=;
-        b=GvXFWHCgA+OCToZUPLj9a0WvXhkO+wcsaN34rwur1n8sRxT3eIe2VSgX0Qm5R5Sogs
-         JTdWc2LRy6jtqkaMHA4E1BCp0oAXKj1yvJLOQQ04C1xADC9TN3Xhil2Mi3phOLIM0diZ
-         eOm2CEMWHqsgyriBBGxULfRWvpm6p0ym6dR9ggLfo8vVTZ1wfEKDO4WULuffA1ivfE3p
-         CO6HsAyrmuHft+150tGUARYOIPm9af6LjYqrGa53flJy7Lw8Fh8WjizLO5KLncFIl1eP
-         dCDojQVDAbAgwk/dkNUqJc98UQRDncud/7nTlQecShy3GdOvr5cR1Yk1E6XzLcj2YM4p
-         E+6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sCMQ/QonvivA+lIMBxKQU3+hpAIR8NvsAFKTyOancic=;
-        b=fI1nybFRK8CL83LwaOKHbaKGkQJhbXuOHapu1lbu9GrvYHg5Yp8YWKa6BkhIicoxL5
-         hCcR7Fmai1uRNmSkRiUFfy4KAwg/jv1I0Dg4oTglv3lgBODpqX9WNwaiAsXeX3SgYflS
-         fQopJ+Xk/hSV44bMRY1MOKk8UAvha4qaKpwVvvCuxAuHPLppx7zM2r/g5hGLNI6jeEkW
-         Ss6mQGQHqQhg0XTQuNu2mOHyx7uE0ZlubFPholbOGCnEw60cL8hdvDvvUNo6W18C+u/f
-         daacT4jnOs5sVGGCgVRtFB7JXGvvmTRA47C5r+7HjhWyovpv6QN1YDxt7pB82U/6D13E
-         bmvA==
-X-Gm-Message-State: AOAM531NDkoze3wkvrr+V9jPgmE978bX0dq1su4NSqHfSc+43gUld7WR
-        lve7g6FTsd9RbHg1mTdT97iP7eoVbLFKt5CiPA0=
-X-Google-Smtp-Source: ABdhPJyhhbPWxQDD0L/vTj/Ph0WR5F1wMtAKEbsL4r39UQpFucNpmyQfQlTisLjsWBuS1l+uhFLwNKL2xtOl+y3bt9g=
-X-Received: by 2002:adf:e551:: with SMTP id z17mr951496wrm.374.1605638578216;
- Tue, 17 Nov 2020 10:42:58 -0800 (PST)
+        id S1729844AbgKQXYj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 17 Nov 2020 18:24:39 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55814 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729826AbgKQXYi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 17 Nov 2020 18:24:38 -0500
+Received: from localhost.localdomain (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 406D720E65;
+        Tue, 17 Nov 2020 23:24:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1605655478;
+        bh=ykBfaRygbX5Nw3if+S2/MztoXt+36i7yOP+dAhUU160=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=hJ5yCFwnqDrHfIUSeFtOe7Y7I/hz5GzuTTM6WqQ5rxOKayYl3T/BMO7PwZnyLtWaO
+         IKd/ZAKW9b0YoaJ2x5p4bPH15w8iWEDXwp3o9YSBdtzlDfEGEPy+9jX9j4riZ+LzTw
+         QW72i6M5fUrcnzA9hihBFkQeIgc+ITMUvrol46Yk=
+From:   Will Deacon <will@kernel.org>
+To:     Lu Baolu <baolu.lu@linux.intel.com>,
+        Joerg Roedel <joro@8bytes.org>, Liu Yi L <yi.l.liu@intel.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        iommu@lists.linux-foundation.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>
+Cc:     catalin.marinas@arm.com, kernel-team@android.com,
+        Will Deacon <will@kernel.org>,
+        clang-built-linux@googlegroups.com, Tom Rix <trix@redhat.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH] iommu/vt-d: include conditionally on CONFIG_INTEL_IOMMU_SVM
+Date:   Tue, 17 Nov 2020 23:24:28 +0000
+Message-Id: <160565219047.2773717.5820442945194882017.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20201115205951.20698-1-lukas.bulwahn@gmail.com>
+References: <20201115205951.20698-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-References: <20201117131137.420396-1-colin.king@canonical.com>
-In-Reply-To: <20201117131137.420396-1-colin.king@canonical.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Tue, 17 Nov 2020 13:42:46 -0500
-Message-ID: <CADnq5_PK_Z3eAwK6gNOu-KP1nV2=xiMS3O3RbQbYuRaQUOn7qA@mail.gmail.com>
-Subject: Re: [PATCH][next] drm/amd/pm: fix spelling mistakes in dev_warn messages
-To:     Colin King <colin.king@canonical.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Xiaojian Du <Xiaojian.Du@amd.com>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Nov 17, 2020 at 8:11 AM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> There are two spelling mistakes in dev_warn messages. Fix these.
->
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On Sun, 15 Nov 2020 21:59:51 +0100, Lukas Bulwahn wrote:
+> Commit 6ee1b77ba3ac ("iommu/vt-d: Add svm/sva invalidate function")
+> introduced intel_iommu_sva_invalidate() when CONFIG_INTEL_IOMMU_SVM.
+> This function uses the dedicated static variable inv_type_granu_table
+> and functions to_vtd_granularity() and to_vtd_size().
+> 
+> These parts are unused when !CONFIG_INTEL_IOMMU_SVM, and hence,
+> make CC=clang W=1 warns with an -Wunused-function warning.
+> 
+> [...]
 
-Applied.  Thanks!
+Applied to arm64 (for-next/iommu/vt-d), thanks!
 
-Alex
+[1/1] iommu/vt-d: include conditionally on CONFIG_INTEL_IOMMU_SVM
+      https://git.kernel.org/arm64/c/68dd9d89eaf5
 
-> ---
->  drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-> index afa542a5af5f..9a2f72f21ed8 100644
-> --- a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-> +++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-> @@ -689,14 +689,14 @@ static int vangogh_od_edit_dpm_table(struct smu_context *smu, enum PP_OD_DPM_TAB
->
->                 if (input[0] == 0) {
->                         if (input[1] < smu->gfx_default_hard_min_freq) {
-> -                               dev_warn(smu->adev->dev, "Fine grain setting minimun sclk (%ld) MHz is less than the minimum allowed (%d) MHz\n",
-> +                               dev_warn(smu->adev->dev, "Fine grain setting minimum sclk (%ld) MHz is less than the minimum allowed (%d) MHz\n",
->                                         input[1], smu->gfx_default_hard_min_freq);
->                                 return -EINVAL;
->                         }
->                         smu->gfx_actual_hard_min_freq = input[1];
->                 } else if (input[0] == 1) {
->                         if (input[1] > smu->gfx_default_soft_max_freq) {
-> -                               dev_warn(smu->adev->dev, "Fine grain setting maximun sclk (%ld) MHz is greater than the maximum allowed (%d) MHz\n",
-> +                               dev_warn(smu->adev->dev, "Fine grain setting maximum sclk (%ld) MHz is greater than the maximum allowed (%d) MHz\n",
->                                         input[1], smu->gfx_default_soft_max_freq);
->                                 return -EINVAL;
->                         }
-> --
-> 2.28.0
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+Cheers,
+-- 
+Will
+
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev

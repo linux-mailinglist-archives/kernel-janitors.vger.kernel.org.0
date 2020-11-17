@@ -2,85 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 626E52B69E5
-	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Nov 2020 17:20:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F7D42B6D63
+	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Nov 2020 19:30:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727231AbgKQQTn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 17 Nov 2020 11:19:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58842 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727013AbgKQQTm (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 17 Nov 2020 11:19:42 -0500
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62716C0613CF;
-        Tue, 17 Nov 2020 08:19:42 -0800 (PST)
-Received: by mail-qk1-x743.google.com with SMTP id r7so20923920qkf.3;
-        Tue, 17 Nov 2020 08:19:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=0bP0N5G3q4990O7UPG9qRselKLApk1bnmbnwIqPu2sM=;
-        b=quCQWsqM/G7NUW8nG/cRtbhFeRATbrfM9fvJTlEYihkQrZEOLYtBP0T5+AdNrmyCSk
-         Ds9CtnwjcEjJeU2bGSCgXIowOWbO1KxckhDVCCfD9uhxcFcI0UFdc/6QEuc9iqFBSFSn
-         Zmn1RHMubmXzoY5sR8r5Ge9hBIk9e5DQaDICCibObS3rDRDWeBjCfZhGbNWXfKlHPrc2
-         BUSBWsxSdbwNSN0r7r/tSKHNL7fiwuNnZuxNhO6fNYFWCFUmc2EJ9vmdbEzCsQYruclj
-         dynVQvYLjIx2dY9EegBovc3Xw/x3onkQC6A5TDyjY+NnGZwzm92vv5LDgFfLe9emkO6O
-         IsJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=0bP0N5G3q4990O7UPG9qRselKLApk1bnmbnwIqPu2sM=;
-        b=PAuuM/3QzcQzYUK8nLlOnK3/+1uPQ89BLAt5aUq0ys7Wwz8TiYxRoQ7DxQt3DgQjcj
-         X3wF2r4XNHlqc3uO/QwXgHb0xkCobzJCktX6QS+aGxaqYlaMhalU2tBvNST7gtygLZL8
-         GViEoIg46crj3pgk2txUMnk9xWfIPBAELDRTVGXRa7qN0uqw776p7LQyoAKtCCWlikMb
-         oGs/gQ/wzt75I0V9xNRLpDrz45npPLW6yif/Qdnr0j3/9AOpArmN58kGuEuzRHkCJX+N
-         Sc0zuyQaHIWjhuHFXu+5YZ0usIuo5WX4Q8nA4h489NnUveau4Pm2+hHeTocS10VV8LTj
-         rmEw==
-X-Gm-Message-State: AOAM532hFzjvjG6DYi5YaYvVvxDxBHOrgp0G2fP5jjf62LHtY2Aw4/BG
-        sZkuuEzCQz1S2vNy9efvltM=
-X-Google-Smtp-Source: ABdhPJzufKely6Ve/NrxH3TgVvKFp2euIaxPShtuwEADEG9FSgYwKaPVuHGMV+IJYsywA6Hamm8K6w==
-X-Received: by 2002:a37:4948:: with SMTP id w69mr299290qka.472.1605629981408;
-        Tue, 17 Nov 2020 08:19:41 -0800 (PST)
-Received: from ubuntu-m3-large-x86 ([2604:1380:45f1:1d00::1])
-        by smtp.gmail.com with ESMTPSA id b64sm2779946qkg.19.2020.11.17.08.19.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2020 08:19:40 -0800 (PST)
-Date:   Tue, 17 Nov 2020 09:19:38 -0700
-From:   Nathan Chancellor <natechancellor@gmail.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
-        Tom Rix <trix@redhat.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        clang-built-linux@googlegroups.com,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ring-buffer: remove obsolete rb_event_is_commit()
-Message-ID: <20201117161938.GA1271942@ubuntu-m3-large-x86>
-References: <20201117053703.11275-1-lukas.bulwahn@gmail.com>
+        id S1731055AbgKQS34 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 17 Nov 2020 13:29:56 -0500
+Received: from mga02.intel.com ([134.134.136.20]:38826 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727552AbgKQS34 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 17 Nov 2020 13:29:56 -0500
+IronPort-SDR: clbDYXNjeA//uF0zpld3OH2bgnuWR1IquFYlhA2/8udJ3BdbVh/lhcFLyiU+Sec1edR/TWv/+V
+ RYxmeXC73nWQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9808"; a="158013858"
+X-IronPort-AV: E=Sophos;i="5.77,486,1596524400"; 
+   d="scan'208";a="158013858"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2020 10:29:52 -0800
+IronPort-SDR: cEInBk2OrWdvd1dUPcjaL7srNnC/CGuisYnaZJjoAGdvqMaAuPAX+K78AOJbfxoLoAPNby5txb
+ ESW0SvKoDkgA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,486,1596524400"; 
+   d="scan'208";a="532317905"
+Received: from linux.intel.com ([10.54.29.200])
+  by fmsmga006.fm.intel.com with ESMTP; 17 Nov 2020 10:29:51 -0800
+Received: from debox1-desk1.jf.intel.com (debox1-desk1.jf.intel.com [10.7.201.137])
+        by linux.intel.com (Postfix) with ESMTP id 59CD15801CF;
+        Tue, 17 Nov 2020 10:29:51 -0800 (PST)
+Message-ID: <ed41e77dd19971faf01b3062c5e25e7ed8ed69db.camel@linux.intel.com>
+Subject: Re: [PATCH] platform/x86: pmt: Fix a potential Oops on error in
+ probe
+From:   "David E. Box" <david.e.box@linux.intel.com>
+Reply-To: david.e.box@linux.intel.com
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        platform-driver-x86@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Date:   Tue, 17 Nov 2020 10:29:51 -0800
+In-Reply-To: <20201117072251.GC1111239@mwanda>
+References: <20201117072251.GC1111239@mwanda>
+Organization: David E. Box
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201117053703.11275-1-lukas.bulwahn@gmail.com>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Nov 17, 2020 at 06:37:03AM +0100, Lukas Bulwahn wrote:
-> Commit a389d86f7fd0 ("ring-buffer: Have nested events still record running
-> time stamp") removed the only uses of rb_event_is_commit() in
-> rb_update_event() and rb_update_write_stamp().
-> 
-> Hence, since then, make CC=clang W=1 warns:
-> 
->   kernel/trace/ring_buffer.c:2763:1:
->     warning: unused function 'rb_event_is_commit' [-Wunused-function]
-> 
-> Remove this obsolete function.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
+Thanks Dan.
 
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+Reviewed-by: David E. Box <david.e.box@linux.intel.com>
+
+On Tue, 2020-11-17 at 10:22 +0300, Dan Carpenter wrote:
+> The "ns->attr_grp" pointer can be NULL so this error handling code
+> needs
+> to check for that to avoid an Oops.
+> 
+> Fixes: e2729113ce66 ("platform/x86: Intel PMT class driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/platform/x86/intel_pmt_class.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/platform/x86/intel_pmt_class.c
+> b/drivers/platform/x86/intel_pmt_class.c
+> index aa88dc23bbde..c8939fba4509 100644
+> --- a/drivers/platform/x86/intel_pmt_class.c
+> +++ b/drivers/platform/x86/intel_pmt_class.c
+> @@ -225,7 +225,8 @@ static int intel_pmt_dev_register(struct
+> intel_pmt_entry *entry,
+>  		return 0;
+>  
+>  fail_ioremap:
+> -	sysfs_remove_group(entry->kobj, ns->attr_grp);
+> +	if (ns->attr_grp)
+> +		sysfs_remove_group(entry->kobj, ns->attr_grp);
+>  fail_sysfs:
+>  	device_unregister(dev);
+>  fail_dev_create:
+

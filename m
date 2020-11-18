@@ -2,34 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06CAC2B7E46
-	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Nov 2020 14:25:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC5CC2B7E64
+	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Nov 2020 14:40:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726251AbgKRNZI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Nov 2020 08:25:08 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:58352 "EHLO
+        id S1726411AbgKRNht (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Nov 2020 08:37:49 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:58688 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725747AbgKRNZI (ORCPT
+        with ESMTP id S1725822AbgKRNht (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Nov 2020 08:25:08 -0500
+        Wed, 18 Nov 2020 08:37:49 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kfNSI-00022Q-BM; Wed, 18 Nov 2020 13:25:02 +0000
+        id 1kfNea-0002zN-EB; Wed, 18 Nov 2020 13:37:44 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Sunil Goutham <sgoutham@marvell.com>,
-        Linu Cherian <lcherian@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Jerin Jacob <jerinj@marvell.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Naveen Mamindlapalli <naveenm@marvell.com>,
-        Vamsi Attunuru <vattunuru@marvell.com>, netdev@vger.kernel.org
+To:     James Smart <james.smart@broadcom.com>,
+        Dick Kennedy <dick.kennedy@broadcom.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] octeontx2-af: Fix return of uninitialized variable err
-Date:   Wed, 18 Nov 2020 13:25:02 +0000
-Message-Id: <20201118132502.461098-1-colin.king@canonical.com>
+Subject: [PATCH][next] scsi: lpfc: remove dead code on second !ndlp check
+Date:   Wed, 18 Nov 2020 13:37:44 +0000
+Message-Id: <20201118133744.461385-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -40,31 +37,35 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently the variable err may be uninitialized if several of the if
-statements are not executed in function nix_tx_vtag_decfg and a garbage
-value in err is returned.  Fix this by initialized ret at the start of
-the function.
+Currently there is a null check on the pointer ndlp that exits via
+error path issue_ct_rsp_exit followed by another null check on the
+same pointer that is almost identical to the previous null check
+stanza and yet can never can be reached because the previous check
+exited via issue_ct_rsp_exit. This is deadcode and can be removed.
 
-Addresses-Coverity: ("Uninitialized scalar variable")
-Fixes: 9a946def264d ("octeontx2-af: Modify nix_vtag_cfg mailbox to support TX VTAG entries")
+Addresses-Coverity: ("Logically dead code")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_bsg.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index e8d039503097..739b37034bdf 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -2085,7 +2085,7 @@ static int nix_tx_vtag_decfg(struct rvu *rvu, int blkaddr,
- 	u16 pcifunc = req->hdr.pcifunc;
- 	int idx0 = req->tx.vtag0_idx;
- 	int idx1 = req->tx.vtag1_idx;
--	int err;
-+	int err = 0;
+diff --git a/drivers/scsi/lpfc/lpfc_bsg.c b/drivers/scsi/lpfc/lpfc_bsg.c
+index 35f4998504c1..41e3657c2d8d 100644
+--- a/drivers/scsi/lpfc/lpfc_bsg.c
++++ b/drivers/scsi/lpfc/lpfc_bsg.c
+@@ -1526,12 +1526,6 @@ lpfc_issue_ct_rsp(struct lpfc_hba *phba, struct bsg_job *job, uint32_t tag,
+ 			goto issue_ct_rsp_exit;
+ 		}
  
- 	if (req->tx.free_vtag0 && req->tx.free_vtag1)
- 		if (vlan->entry2pfvf_map[idx0] != pcifunc ||
+-		/* Check if the ndlp is active */
+-		if (!ndlp) {
+-			rc = IOCB_ERROR;
+-			goto issue_ct_rsp_exit;
+-		}
+-
+ 		/* get a refernece count so the ndlp doesn't go away while
+ 		 * we respond
+ 		 */
 -- 
 2.28.0
 

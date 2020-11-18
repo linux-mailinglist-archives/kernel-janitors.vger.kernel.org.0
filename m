@@ -2,78 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE02D2B7E21
-	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Nov 2020 14:16:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 428A92B7E29
+	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Nov 2020 14:16:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726249AbgKRNNt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Nov 2020 08:13:49 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:57997 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725772AbgKRNNt (ORCPT
+        id S1726085AbgKRNP4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Nov 2020 08:15:56 -0500
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:13181 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725814AbgKRNP4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Nov 2020 08:13:49 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kfNHN-0001Bz-Bc; Wed, 18 Nov 2020 13:13:45 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     James Smart <james.smart@broadcom.com>,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] scsi: lpfc: fix pointer defereference before it is null checked issue
-Date:   Wed, 18 Nov 2020 13:13:45 +0000
-Message-Id: <20201118131345.460631-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.28.0
+        Wed, 18 Nov 2020 08:15:56 -0500
+X-IronPort-AV: E=Sophos;i="5.77,486,1596492000"; 
+   d="scan'208";a="478177596"
+Received: from 173.121.68.85.rev.sfr.net (HELO hadrien) ([85.68.121.173])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Nov 2020 14:15:54 +0100
+Date:   Wed, 18 Nov 2020 14:15:53 +0100 (CET)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [Cocci] [PATCH v2] coccinelle: locks: Add balancedlock.cocci
+ script
+In-Reply-To: <62af4a93-dbc3-8aa0-6924-4dc479001d34@web.de>
+Message-ID: <alpine.DEB.2.22.394.2011181413280.2641@hadrien>
+References: <20201118080242.t6u6lchj5ww2fac4@adolin> <62af4a93-dbc3-8aa0-6924-4dc479001d34@web.de>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="8323329-1777813137-1605705354=:2641"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-There is a null check on pointer lpfc_cmd after the pointer has been
-dereferenced when pointers rdata and ndlp are initialized at the start
-of the function. Fix this by only assigning rdata and ndlp after the
-pointer lpfc_cmd has been null checked.
+--8323329-1777813137-1605705354=:2641
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 
-Addresses-Coverity: ("Dereference before null check")
-Fixes: 96e209be6ecb ("scsi: lpfc: Convert SCSI I/O completions to SLI-3 and SLI-4 handlers")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/scsi/lpfc/lpfc_scsi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+> > +++ b/scripts/coccinelle/locks/balancedlock.cocci
+> …
+> > +//# False positives may be generated due to locks released within a nested
+> > +//# function call or a goto block.
+> > +///
+> > +// Confidence: Moderate
+>
+> How good does such information fit together?
+>
 
-diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
-index f989490359a5..3b989f720937 100644
---- a/drivers/scsi/lpfc/lpfc_scsi.c
-+++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -4022,8 +4022,8 @@ lpfc_fcp_io_cmd_wqe_cmpl(struct lpfc_hba *phba, struct lpfc_iocbq *pwqeIn,
- 	struct lpfc_io_buf *lpfc_cmd =
- 		(struct lpfc_io_buf *)pwqeIn->context1;
- 	struct lpfc_vport *vport = pwqeIn->vport;
--	struct lpfc_rport_data *rdata = lpfc_cmd->rdata;
--	struct lpfc_nodelist *ndlp = rdata->pnode;
-+	struct lpfc_rport_data *rdata;
-+	struct lpfc_nodelist *ndlp;
- 	struct scsi_cmnd *cmd;
- 	unsigned long flags;
- 	struct lpfc_fast_path_event *fast_path_evt;
-@@ -4040,6 +4040,9 @@ lpfc_fcp_io_cmd_wqe_cmpl(struct lpfc_hba *phba, struct lpfc_iocbq *pwqeIn,
- 		return;
- 	}
- 
-+	rdata = lpfc_cmd->rdata;
-+	ndlp = rdata->pnode;
-+
- 	if (bf_get(lpfc_wcqe_c_xb, wcqe)) {
- 		/* TOREMOVE - currently this flag is checked during
- 		 * the release of lpfc_iocbq. Remove once we move
--- 
-2.28.0
+What kind of response do you expect?  There are some concerns, so it's not
+High confidence.  It works pretty well so it's not low confidence.  So
+it's moderate confidence.  What else is there to say?
 
+> …
+> >+ (
+> > +mutex_lock@p(E);
+> > +|
+> > +read_lock@p(E);
+> > +|
+> …
+>
+> Why did you not reorder the elements of such a SmPL disjunctions according to
+> an usage incidence (which can be determined by another SmPL script like
+> “report_lock_calls.cocci”)?
+
+I don't recall ever seeing any evidence that it has an impact for function
+calls.  Furthermore, the numbers will change over time.  So why change it?
+
+> …
+> > +msg = "This code segment might have an unbalanced lock."
+> > +coccilib.org.print_todo(j0[0], msg)
+>
+> Please pass the string literal directly.
+>
+> +coccilib.org.print_todo(j0[0], "This code segment might have an unbalanced lock.")
+
+The code is fine as it is.
+
+julia
+--8323329-1777813137-1605705354=:2641--

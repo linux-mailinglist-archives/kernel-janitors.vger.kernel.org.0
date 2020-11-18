@@ -2,86 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 428A92B7E29
-	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Nov 2020 14:16:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06CAC2B7E46
+	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Nov 2020 14:25:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726085AbgKRNP4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Nov 2020 08:15:56 -0500
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:13181 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725814AbgKRNP4 (ORCPT
+        id S1726251AbgKRNZI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Nov 2020 08:25:08 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:58352 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725747AbgKRNZI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Nov 2020 08:15:56 -0500
-X-IronPort-AV: E=Sophos;i="5.77,486,1596492000"; 
-   d="scan'208";a="478177596"
-Received: from 173.121.68.85.rev.sfr.net (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Nov 2020 14:15:54 +0100
-Date:   Wed, 18 Nov 2020 14:15:53 +0100 (CET)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Sumera Priyadarsini <sylphrenadin@gmail.com>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [Cocci] [PATCH v2] coccinelle: locks: Add balancedlock.cocci
- script
-In-Reply-To: <62af4a93-dbc3-8aa0-6924-4dc479001d34@web.de>
-Message-ID: <alpine.DEB.2.22.394.2011181413280.2641@hadrien>
-References: <20201118080242.t6u6lchj5ww2fac4@adolin> <62af4a93-dbc3-8aa0-6924-4dc479001d34@web.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        Wed, 18 Nov 2020 08:25:08 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kfNSI-00022Q-BM; Wed, 18 Nov 2020 13:25:02 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Sunil Goutham <sgoutham@marvell.com>,
+        Linu Cherian <lcherian@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Jerin Jacob <jerinj@marvell.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Naveen Mamindlapalli <naveenm@marvell.com>,
+        Vamsi Attunuru <vattunuru@marvell.com>, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] octeontx2-af: Fix return of uninitialized variable err
+Date:   Wed, 18 Nov 2020 13:25:02 +0000
+Message-Id: <20201118132502.461098-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1777813137-1605705354=:2641"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Colin Ian King <colin.king@canonical.com>
 
---8323329-1777813137-1605705354=:2641
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+Currently the variable err may be uninitialized if several of the if
+statements are not executed in function nix_tx_vtag_decfg and a garbage
+value in err is returned.  Fix this by initialized ret at the start of
+the function.
 
-> > +++ b/scripts/coccinelle/locks/balancedlock.cocci
-> …
-> > +//# False positives may be generated due to locks released within a nested
-> > +//# function call or a goto block.
-> > +///
-> > +// Confidence: Moderate
->
-> How good does such information fit together?
->
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: 9a946def264d ("octeontx2-af: Modify nix_vtag_cfg mailbox to support TX VTAG entries")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-What kind of response do you expect?  There are some concerns, so it's not
-High confidence.  It works pretty well so it's not low confidence.  So
-it's moderate confidence.  What else is there to say?
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index e8d039503097..739b37034bdf 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -2085,7 +2085,7 @@ static int nix_tx_vtag_decfg(struct rvu *rvu, int blkaddr,
+ 	u16 pcifunc = req->hdr.pcifunc;
+ 	int idx0 = req->tx.vtag0_idx;
+ 	int idx1 = req->tx.vtag1_idx;
+-	int err;
++	int err = 0;
+ 
+ 	if (req->tx.free_vtag0 && req->tx.free_vtag1)
+ 		if (vlan->entry2pfvf_map[idx0] != pcifunc ||
+-- 
+2.28.0
 
-> …
-> >+ (
-> > +mutex_lock@p(E);
-> > +|
-> > +read_lock@p(E);
-> > +|
-> …
->
-> Why did you not reorder the elements of such a SmPL disjunctions according to
-> an usage incidence (which can be determined by another SmPL script like
-> “report_lock_calls.cocci”)?
-
-I don't recall ever seeing any evidence that it has an impact for function
-calls.  Furthermore, the numbers will change over time.  So why change it?
-
-> …
-> > +msg = "This code segment might have an unbalanced lock."
-> > +coccilib.org.print_todo(j0[0], msg)
->
-> Please pass the string literal directly.
->
-> +coccilib.org.print_todo(j0[0], "This code segment might have an unbalanced lock.")
-
-The code is fine as it is.
-
-julia
---8323329-1777813137-1605705354=:2641--

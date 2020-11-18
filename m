@@ -2,50 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F4A32B7D8D
-	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Nov 2020 13:23:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE3802B7DCA
+	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Nov 2020 13:46:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726985AbgKRMWE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Nov 2020 07:22:04 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46122 "EHLO mail.kernel.org"
+        id S1726635AbgKRMqU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Nov 2020 07:46:20 -0500
+Received: from mx2.suse.de ([195.135.220.15]:53684 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726505AbgKRMWE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Nov 2020 07:22:04 -0500
-Received: from localhost (unknown [122.171.203.152])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6228A221FB;
-        Wed, 18 Nov 2020 12:22:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605702123;
-        bh=tIA/t6e122ugF/U3mrN8/HJnf0maNRhfg3eOvuIx+xk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tPpItYLiSMA23gTq1iUZDB2JJakHHe3OReEv5i8FYpWHQdQO/js66p4UJJ5ciL3Yg
-         KiVBQ3TRlvGzvcfOHc3Ilb604mIWrloAn4YT6OFQknsw6HepxKi8Zy+hp1dqZIc2yJ
-         rGUTLUbXkl9cCkteHWtbHB3QdO08h+mITeE/3jM8=
-Date:   Wed, 18 Nov 2020 17:51:58 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Dave Jiang <dave.jiang@intel.com>, dmaengine@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] dmaengine: fix error codes in channel_register()
-Message-ID: <20201118122158.GT50232@vkoul-mobl>
-References: <20201113101631.GE168908@mwanda>
+        id S1726020AbgKRMqT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 18 Nov 2020 07:46:19 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1605703578; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=I+Qzkkhk4C6GtBU8xVUeEofjQe9CXbPuBs8NdbyYcoo=;
+        b=WCfWgtAO+igB5OcpcKj8XOlT7ogXI+httgsZpXzYSpk3Km0SZhrb6ps0ZOT5fbIm96o19n
+        vdUme6DBKNrcaRw6s/+riMxSYyKWQ6nn3SO4dsmP8RXVu+XeNwdfKVshKdhIM/P48G/xyx
+        H/ktOrSgKNdjYtJKma1fDR8T0nAoays=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 3BFBAAC91;
+        Wed, 18 Nov 2020 12:46:18 +0000 (UTC)
+Date:   Wed, 18 Nov 2020 13:46:17 +0100
+From:   Michal Hocko <mhocko@suse.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Roman Gushchin <guro@fb.com>, Johannes Weiner <hannes@cmpxchg.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        cgroups@vger.kernel.org, linux-mm@kvack.org,
+        Vladimir Davydov <vdavydov.dev@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Tom Rix <trix@redhat.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: memcg: remove obsolete memcg_has_children()
+Message-ID: <20201118124617.GR12284@dhcp22.suse.cz>
+References: <20201116055043.20886-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201113101631.GE168908@mwanda>
+In-Reply-To: <20201116055043.20886-1-lukas.bulwahn@gmail.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 13-11-20, 13:16, Dan Carpenter wrote:
-> The error codes were not set on some of these error paths.
+On Mon 16-11-20 06:50:43, Lukas Bulwahn wrote:
+> Commit 2ef1bf118c40 ("mm: memcg: deprecate the non-hierarchical mode")
+> removed the only use of memcg_has_children() in
+> mem_cgroup_hierarchy_write() as part of the feature deprecation.
 > 
-> Also the error handling was more confusing than it needed to be so I
-> cleaned it up and shuffled it around a bit.
+> Hence, since then, make CC=clang W=1 warns:
+> 
+>   mm/memcontrol.c:3421:20:
+>     warning: unused function 'memcg_has_children' [-Wunused-function]
+> 
+> Simply remove this obsolete unused function.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-Applied, thanks
+git grep agrees
+Acked-by: Michal Hocko <mhocko@suse.com>
+
+> ---
+> applies cleanly on next-20201113, not on current master
+> 
+> Roman, please ack.
+> 
+> Andrew, please pick this minor non-urgent patch into your -next tree.
+> 
+>  mm/memcontrol.c | 13 -------------
+>  1 file changed, 13 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index f95ddb3e9898..d49d7c507284 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -3415,19 +3415,6 @@ unsigned long mem_cgroup_soft_limit_reclaim(pg_data_t *pgdat, int order,
+>  	return nr_reclaimed;
+>  }
+>  
+> -/*
+> - * Test whether @memcg has children, dead or alive.
+> - */
+> -static inline bool memcg_has_children(struct mem_cgroup *memcg)
+> -{
+> -	bool ret;
+> -
+> -	rcu_read_lock();
+> -	ret = css_next_child(NULL, &memcg->css);
+> -	rcu_read_unlock();
+> -	return ret;
+> -}
+> -
+>  /*
+>   * Reclaims as many pages from the given memcg as possible.
+>   *
+> -- 
+> 2.17.1
 
 -- 
-~Vinod
+Michal Hocko
+SUSE Labs

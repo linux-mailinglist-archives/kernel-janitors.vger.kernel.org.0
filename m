@@ -2,119 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70E262B9C4B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Nov 2020 21:55:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AE2B2B9C5F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Nov 2020 22:01:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726281AbgKSUxI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Nov 2020 15:53:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38602 "EHLO
+        id S1726308AbgKSU55 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Nov 2020 15:57:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725917AbgKSUxH (ORCPT
+        with ESMTP id S1726123AbgKSU54 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Nov 2020 15:53:07 -0500
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9C72C0613CF
-        for <kernel-janitors@vger.kernel.org>; Thu, 19 Nov 2020 12:53:07 -0800 (PST)
-Received: by mail-pf1-x444.google.com with SMTP id b63so5633215pfg.12
-        for <kernel-janitors@vger.kernel.org>; Thu, 19 Nov 2020 12:53:07 -0800 (PST)
+        Thu, 19 Nov 2020 15:57:56 -0500
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9659DC0613CF
+        for <kernel-janitors@vger.kernel.org>; Thu, 19 Nov 2020 12:57:56 -0800 (PST)
+Received: by mail-pg1-x52c.google.com with SMTP id j19so5331456pgg.5
+        for <kernel-janitors@vger.kernel.org>; Thu, 19 Nov 2020 12:57:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to;
-        bh=LJlsoiKBH3CSEniRskv0nh0qkiui3bGU9eJZjnjqkOM=;
-        b=Dz23123EhpCQIO+08u75hMD3ty9VeeUftnqqitltcRgus22wB4pbfUIHLnZ+grSmLM
-         tmeoI6lhOSzGqqPTQo538GTdyzcMFVJ0+bpKq40WBQi/5li/AD+5z8P/TnOv+UByhAUm
-         Q9GJdwZHfistNjhP991n9mSwL2QMaDWLtsKzA=
+        bh=U3qvDtV9ab9Mm5Zzng+Xoq8q/sJTN4KHFwuBKl313Bg=;
+        b=LANlGdESqKPYsBmlsJpkCxZnMdbvXikCu3YZwmSZZc2z7N1fZ4DdMWDm+lD2iji49O
+         fmvlrWoo24dEKjuTt+eBy3FBbEUB9WGPOB0si+pVGcTTOZu6wKqka+E4UpEfRuobXcqe
+         4nHUy4c+Rhg+1KwEXE+eXV7cDmNxEqb/zX4IY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to;
-        bh=LJlsoiKBH3CSEniRskv0nh0qkiui3bGU9eJZjnjqkOM=;
-        b=iOODZ2ad22fxwYoJFZNChOC3JQ/ozAUeHoRgl8X1rDt/fp07q1qwvJVg+4DzUEhplb
-         qkL3/gbQ0lZY3UQwqPyyoxB5nMOXKkp9nohOMm3OJCinRbLw92XcW9M1f+YpXDbtE9rX
-         72ygkoXyo0myt6xx3jWKpAlv9bq21gx7oVYT6SpK0avJkV9EQlJ41EUv/5V3I2p1bLDy
-         lxwWvbCTFAE0HrenyPG5/iPIdLQIhGtI4Z0UV/DFOoj4hMi/4K9L/esmOB7mmFHPORsm
-         saE9YiCW4h4PEyx5fEGpZUJuDMH4ntuZ2q0l7/TqpoZlWBb2zUYNoBjQOoEWiv1SbKfz
-         +DIQ==
-X-Gm-Message-State: AOAM532HA3mmxjEqLnOrTf4hg8H1Mxj57rhZKDfOJUkkrME1HY6LqGfi
-        rvaE5JBK9RFmUxmZBlhAHpeXzg==
-X-Google-Smtp-Source: ABdhPJyBuJnDWelkqHzM6B0uttvpiZLkOpwGFj1jOgdv13EGlgwTeykLHmXYyb21ruVXZLKp2VjJcQ==
-X-Received: by 2002:a63:1959:: with SMTP id 25mr13927074pgz.201.1605819187256;
-        Thu, 19 Nov 2020 12:53:07 -0800 (PST)
+        bh=U3qvDtV9ab9Mm5Zzng+Xoq8q/sJTN4KHFwuBKl313Bg=;
+        b=oEo0G+6Df4Z87qHSrAQYqlExCNuQBxk+rovHUpZjHGg89nsMcchmnOPDMQ3oed2Lvm
+         WDBKjzK3nN0DQjdLjVtaintAHu/m+pacpIQ3vVVuANTVSrzJiSbRrRd8sw7bp4yORjY/
+         eohGIym95/h7Go8+MkYfnShoihBumyeqFdrDWUyMGY4r7AhfCb3zWkqmdfnqpfsYlJPI
+         Jo3CaGxEv2yPUtfwpsVb0wo8xe8u/Wi4g7vyM9s8C382EaWypRGEXUxPexlepXShTyEm
+         ngp1b78vhKi4KoLvR6e3jRj0cYvloTC5O5nxHf0egckohZINsqH4S3OddwvQ9tD0EyBd
+         FVlQ==
+X-Gm-Message-State: AOAM5327h31ajMwa8vvCf5QasUQGCijyZrW6ZsOFF/gAmNLWi49g6FpG
+        rQIMz2Zdau9r4gXX0xwzjjj/Xg==
+X-Google-Smtp-Source: ABdhPJy5emCThuh7b20r1EJe/RPSOlVX8gi//Bikfv22uE0Qq/Zl68XbOGXfCKTXn//vddxeZeK+6w==
+X-Received: by 2002:a63:b05:: with SMTP id 5mr14044421pgl.267.1605819475934;
+        Thu, 19 Nov 2020 12:57:55 -0800 (PST)
 Received: from [10.69.69.102] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id e10sm808110pfl.162.2020.11.19.12.53.05
+        by smtp.gmail.com with ESMTPSA id q12sm625798pjl.41.2020.11.19.12.57.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Nov 2020 12:53:06 -0800 (PST)
-Subject: Re: [PATCH][next] scsi: lpfc: fix pointer defereference before it is
- null checked issue
+        Thu, 19 Nov 2020 12:57:55 -0800 (PST)
+Subject: Re: [PATCH][next] scsi: lpfc: remove dead code on second !ndlp check
 To:     Colin King <colin.king@canonical.com>,
         Dick Kennedy <dick.kennedy@broadcom.com>,
         "James E . J . Bottomley" <jejb@linux.ibm.com>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         linux-scsi@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20201118131345.460631-1-colin.king@canonical.com>
+References: <20201118133744.461385-1-colin.king@canonical.com>
 From:   James Smart <james.smart@broadcom.com>
-Message-ID: <43444621-8476-ade2-f980-030b5dedfa9d@broadcom.com>
-Date:   Thu, 19 Nov 2020 12:53:05 -0800
+Message-ID: <1f69784f-989d-a4b2-8d6f-c336916c5731@broadcom.com>
+Date:   Thu, 19 Nov 2020 12:57:52 -0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.4.3
 MIME-Version: 1.0
-In-Reply-To: <20201118131345.460631-1-colin.king@canonical.com>
+In-Reply-To: <20201118133744.461385-1-colin.king@canonical.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000405fba05b47beae7"
+        boundary="00000000000076ee6c05b47bfbc6"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
---000000000000405fba05b47beae7
+--00000000000076ee6c05b47bfbc6
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 
 
 
-On 11/18/2020 5:13 AM, Colin King wrote:
+On 11/18/2020 5:37 AM, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 >
-> There is a null check on pointer lpfc_cmd after the pointer has been
-> dereferenced when pointers rdata and ndlp are initialized at the start
-> of the function. Fix this by only assigning rdata and ndlp after the
-> pointer lpfc_cmd has been null checked.
+> Currently there is a null check on the pointer ndlp that exits via
+> error path issue_ct_rsp_exit followed by another null check on the
+> same pointer that is almost identical to the previous null check
+> stanza and yet can never can be reached because the previous check
+> exited via issue_ct_rsp_exit. This is deadcode and can be removed.
 >
-> Addresses-Coverity: ("Dereference before null check")
-> Fixes: 96e209be6ecb ("scsi: lpfc: Convert SCSI I/O completions to SLI-3 and SLI-4 handlers")
+> Addresses-Coverity: ("Logically dead code")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->   drivers/scsi/lpfc/lpfc_scsi.c | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
+>   drivers/scsi/lpfc/lpfc_bsg.c | 6 ------
+>   1 file changed, 6 deletions(-)
 >
-> diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
-> index f989490359a5..3b989f720937 100644
-> --- a/drivers/scsi/lpfc/lpfc_scsi.c
-> +++ b/drivers/scsi/lpfc/lpfc_scsi.c
-> @@ -4022,8 +4022,8 @@ lpfc_fcp_io_cmd_wqe_cmpl(struct lpfc_hba *phba, struct lpfc_iocbq *pwqeIn,
->   	struct lpfc_io_buf *lpfc_cmd =
->   		(struct lpfc_io_buf *)pwqeIn->context1;
->   	struct lpfc_vport *vport = pwqeIn->vport;
-> -	struct lpfc_rport_data *rdata = lpfc_cmd->rdata;
-> -	struct lpfc_nodelist *ndlp = rdata->pnode;
-> +	struct lpfc_rport_data *rdata;
-> +	struct lpfc_nodelist *ndlp;
->   	struct scsi_cmnd *cmd;
->   	unsigned long flags;
->   	struct lpfc_fast_path_event *fast_path_evt;
-> @@ -4040,6 +4040,9 @@ lpfc_fcp_io_cmd_wqe_cmpl(struct lpfc_hba *phba, struct lpfc_iocbq *pwqeIn,
->   		return;
->   	}
+> diff --git a/drivers/scsi/lpfc/lpfc_bsg.c b/drivers/scsi/lpfc/lpfc_bsg.c
+> index 35f4998504c1..41e3657c2d8d 100644
+> --- a/drivers/scsi/lpfc/lpfc_bsg.c
+> +++ b/drivers/scsi/lpfc/lpfc_bsg.c
+> @@ -1526,12 +1526,6 @@ lpfc_issue_ct_rsp(struct lpfc_hba *phba, struct bsg_job *job, uint32_t tag,
+>   			goto issue_ct_rsp_exit;
+>   		}
 >   
-> +	rdata = lpfc_cmd->rdata;
-> +	ndlp = rdata->pnode;
-> +
->   	if (bf_get(lpfc_wcqe_c_xb, wcqe)) {
->   		/* TOREMOVE - currently this flag is checked during
->   		 * the release of lpfc_iocbq. Remove once we move
-
+> -		/* Check if the ndlp is active */
+> -		if (!ndlp) {
+> -			rc = IOCB_ERROR;
+> -			goto issue_ct_rsp_exit;
+> -		}
+> -
+>   		/* get a refernece count so the ndlp doesn't go away while
+>   		 * we respond
+>   		 */
 Looks good.
 
 Reviewed-by: James Smart <james.smart@broadcom.com>
@@ -122,7 +112,7 @@ Reviewed-by: James Smart <james.smart@broadcom.com>
 -- james
 
 
---000000000000405fba05b47beae7
+--00000000000076ee6c05b47bfbc6
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -192,14 +182,14 @@ ZwPZfsjYiUuaCWDGMvVpuBgJtdADOE1v24vgyyLZjtCbvSUzsgKKda3/Z/iwLFCRrIogixS1L6Vg
 9SybOi1fAXGcISX8GzOd85ygu/3dFqvMyCBpNke4vdweIll52KZIMyWji3y2PKJYfgqO+bxo7BAa
 ROYxggJvMIICawIBATBtMF0xCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNh
 MTMwMQYDVQQDEypHbG9iYWxTaWduIFBlcnNvbmFsU2lnbiAyIENBIC0gU0hBMjU2IC0gRzMCDH5i
-rbJ+nCPBux48wjANBglghkgBZQMEAgEFAKCB1DAvBgkqhkiG9w0BCQQxIgQgaznEqktNJAPTIqZG
-s5ZbSCN6AQG+n7YAbUETGbJuOsMwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0B
-CQUxDxcNMjAxMTE5MjA1MzA3WjBpBgkqhkiG9w0BCQ8xXDBaMAsGCWCGSAFlAwQBKjALBglghkgB
+rbJ+nCPBux48wjANBglghkgBZQMEAgEFAKCB1DAvBgkqhkiG9w0BCQQxIgQgbRcw3x5rqtM23cuv
+3+PTGPFVao6kSmyK9uoQ5HYW6IowGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0B
+CQUxDxcNMjAxMTE5MjA1NzU2WjBpBgkqhkiG9w0BCQ8xXDBaMAsGCWCGSAFlAwQBKjALBglghkgB
 ZQMEARYwCwYJYIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBCjALBgkqhkiG9w0BAQcw
-CwYJYIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBACYECcESJKIl4XOdk7DAImG1VEGKvbLfhaug
-595YoVCgQ6quOOATwCTYnDWIz+KUOPgLIuDqzS/h67w//GTYxG5WIzSMWBYd6LhdB5zRSOdMDDzp
-Nw4u6TUggm0f1ft0A+vzJbrjtv8anXtpoYsbmtvhs4Nt0UTkLFolcDb6ay+ssmNaNm8zBM3FMmOG
-OEkhgOiQGX67k0jMho+YotPafd+4V3LXoqtD4uyyxHfgDiA4KjWHh5xOau1rEB5LqU0ucYi7rXRH
-IUes0zDY/20yz76cELtTSrEBF5CSol9ZVVsoaEYi+T5dMfUD4SjnjVHqpt9yzBttKlvX6bxBVXK7
-Z+Q=
---000000000000405fba05b47beae7--
+CwYJYIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBACe3s9idZCiqt1oyelJLEyJj2JzRfREtdJsZ
+LaeXXJDLwEYNbY4DrOrsavOScSx/gLJx/lEvbm5kY6uDH/JL8FHtGiRdroxEVUOfmRur8WC6i+hx
+Wynl7vcPq04iCQ/hX6Uo8bYLTtmP3WRgR9pwXH/sk2LJylJJyWY8mqTTB2gMWv43W4FnxqcD7e4W
+2Y2g85b4A18djiq76pVxEWSoI3E1d1TNfT54RttNFqKKi+EEnlJ3fYvAcVWKDJ41vz58ZlhKVmb7
+6udN8FTJ4Nmz2xemhFfVURRJMZHZWaNrZjG0nwOnl75BXl/2r7f/FiRWKmD2v/bFwTzO8XaXCR+n
+1DU=
+--00000000000076ee6c05b47bfbc6--

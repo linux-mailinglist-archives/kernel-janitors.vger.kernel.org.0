@@ -2,86 +2,204 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D058B2B91F6
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Nov 2020 13:01:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 70E262B9C4B
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Nov 2020 21:55:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726830AbgKSMBa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Nov 2020 07:01:30 -0500
-Received: from szxga01-in.huawei.com ([45.249.212.187]:4098 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726775AbgKSMB1 (ORCPT
+        id S1726281AbgKSUxI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Nov 2020 15:53:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38602 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725917AbgKSUxH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Nov 2020 07:01:27 -0500
-Received: from dggeme755-chm.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4CcJDR0K8RzXnbW;
-        Thu, 19 Nov 2020 20:01:11 +0800 (CST)
-Received: from [10.140.157.68] (10.140.157.68) by
- dggeme755-chm.china.huawei.com (10.3.19.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.1913.5; Thu, 19 Nov 2020 20:01:23 +0800
-Subject: Re: [PATCH v3] clk: hisilicon: refine hi3620_mmc_clk_init() and fix
- memory leak issues
-To:     Markus Elfring <Markus.Elfring@web.de>, <linux-clk@vger.kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Julia Lawall <julia.lawall@lip6.fr>
-References: <20201112192214.48926-1-gengdongjiu@huawei.com>
- <ef1eac81-c4f9-ca4d-f056-3cdbddcaad73@web.de>
-From:   Dongjiu Geng <gengdongjiu@huawei.com>
-Message-ID: <5b976ad4-43e2-a021-6a93-25642b44cec5@huawei.com>
-Date:   Thu, 19 Nov 2020 20:01:22 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
+        Thu, 19 Nov 2020 15:53:07 -0500
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9C72C0613CF
+        for <kernel-janitors@vger.kernel.org>; Thu, 19 Nov 2020 12:53:07 -0800 (PST)
+Received: by mail-pf1-x444.google.com with SMTP id b63so5633215pfg.12
+        for <kernel-janitors@vger.kernel.org>; Thu, 19 Nov 2020 12:53:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to;
+        bh=LJlsoiKBH3CSEniRskv0nh0qkiui3bGU9eJZjnjqkOM=;
+        b=Dz23123EhpCQIO+08u75hMD3ty9VeeUftnqqitltcRgus22wB4pbfUIHLnZ+grSmLM
+         tmeoI6lhOSzGqqPTQo538GTdyzcMFVJ0+bpKq40WBQi/5li/AD+5z8P/TnOv+UByhAUm
+         Q9GJdwZHfistNjhP991n9mSwL2QMaDWLtsKzA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to;
+        bh=LJlsoiKBH3CSEniRskv0nh0qkiui3bGU9eJZjnjqkOM=;
+        b=iOODZ2ad22fxwYoJFZNChOC3JQ/ozAUeHoRgl8X1rDt/fp07q1qwvJVg+4DzUEhplb
+         qkL3/gbQ0lZY3UQwqPyyoxB5nMOXKkp9nohOMm3OJCinRbLw92XcW9M1f+YpXDbtE9rX
+         72ygkoXyo0myt6xx3jWKpAlv9bq21gx7oVYT6SpK0avJkV9EQlJ41EUv/5V3I2p1bLDy
+         lxwWvbCTFAE0HrenyPG5/iPIdLQIhGtI4Z0UV/DFOoj4hMi/4K9L/esmOB7mmFHPORsm
+         saE9YiCW4h4PEyx5fEGpZUJuDMH4ntuZ2q0l7/TqpoZlWBb2zUYNoBjQOoEWiv1SbKfz
+         +DIQ==
+X-Gm-Message-State: AOAM532HA3mmxjEqLnOrTf4hg8H1Mxj57rhZKDfOJUkkrME1HY6LqGfi
+        rvaE5JBK9RFmUxmZBlhAHpeXzg==
+X-Google-Smtp-Source: ABdhPJyBuJnDWelkqHzM6B0uttvpiZLkOpwGFj1jOgdv13EGlgwTeykLHmXYyb21ruVXZLKp2VjJcQ==
+X-Received: by 2002:a63:1959:: with SMTP id 25mr13927074pgz.201.1605819187256;
+        Thu, 19 Nov 2020 12:53:07 -0800 (PST)
+Received: from [10.69.69.102] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id e10sm808110pfl.162.2020.11.19.12.53.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Nov 2020 12:53:06 -0800 (PST)
+Subject: Re: [PATCH][next] scsi: lpfc: fix pointer defereference before it is
+ null checked issue
+To:     Colin King <colin.king@canonical.com>,
+        Dick Kennedy <dick.kennedy@broadcom.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20201118131345.460631-1-colin.king@canonical.com>
+From:   James Smart <james.smart@broadcom.com>
+Message-ID: <43444621-8476-ade2-f980-030b5dedfa9d@broadcom.com>
+Date:   Thu, 19 Nov 2020 12:53:05 -0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.3
 MIME-Version: 1.0
-In-Reply-To: <ef1eac81-c4f9-ca4d-f056-3cdbddcaad73@web.de>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.140.157.68]
-X-ClientProxiedBy: dggeme709-chm.china.huawei.com (10.1.199.105) To
- dggeme755-chm.china.huawei.com (10.3.19.101)
-X-CFilter-Loop: Reflected
+In-Reply-To: <20201118131345.460631-1-colin.king@canonical.com>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="000000000000405fba05b47beae7"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020/11/19 17:07, Markus Elfring wrote:
->> Refine hi3620_mmc_clk_init() to use of_clk_add_hw_provider()
->> instead of of_clk_add_provider(), …
-> 
-> …
->> +++ b/drivers/clk/hisilicon/clk-hi3620.c
-> …
->> @@ -439,17 +440,22 @@  static struct clk *hisi_register_clk_mmc(struct hisi_mmc_clock *mmc_clk,
-> …
->> +	err = clk_hw_register(NULL, hw);
->> +
->> +	if (err) {
-> 
-> I suggest to omit a blank line here.
-> 
-> 
-> …
->> +++ b/drivers/clk/hisilicon/clk.c
->> @@ -65,25 +65,26 @@  struct hisi_clock_data *hisi_clk_init(struct device_node *np,
-> …
->>  	of_clk_add_provider(np, of_clk_src_onecell_get, &clk_data->clk_data);
->>  	return clk_data;
->> -err_data:
->> +free_clk_data:
-> 
-> How do you think about to adjust also such a function call for this function implementation?
-> 
-> Will further collateral evolution become interesting?
-> https://elixir.bootlin.com/linux/v5.10-rc4/C/ident/of_clk_add_provider
-Thanks for the review.
+--000000000000405fba05b47beae7
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 
-How about we adjust such a function call in another series patches?  I suggest do it in another series.
-For this patch, how about we firstly merge it after I fix the above comments(omit a blank line)?
 
-> 
-> Regards,
-> Markus
-> .
-> 
+
+On 11/18/2020 5:13 AM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There is a null check on pointer lpfc_cmd after the pointer has been
+> dereferenced when pointers rdata and ndlp are initialized at the start
+> of the function. Fix this by only assigning rdata and ndlp after the
+> pointer lpfc_cmd has been null checked.
+>
+> Addresses-Coverity: ("Dereference before null check")
+> Fixes: 96e209be6ecb ("scsi: lpfc: Convert SCSI I/O completions to SLI-3 and SLI-4 handlers")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>   drivers/scsi/lpfc/lpfc_scsi.c | 7 +++++--
+>   1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
+> index f989490359a5..3b989f720937 100644
+> --- a/drivers/scsi/lpfc/lpfc_scsi.c
+> +++ b/drivers/scsi/lpfc/lpfc_scsi.c
+> @@ -4022,8 +4022,8 @@ lpfc_fcp_io_cmd_wqe_cmpl(struct lpfc_hba *phba, struct lpfc_iocbq *pwqeIn,
+>   	struct lpfc_io_buf *lpfc_cmd =
+>   		(struct lpfc_io_buf *)pwqeIn->context1;
+>   	struct lpfc_vport *vport = pwqeIn->vport;
+> -	struct lpfc_rport_data *rdata = lpfc_cmd->rdata;
+> -	struct lpfc_nodelist *ndlp = rdata->pnode;
+> +	struct lpfc_rport_data *rdata;
+> +	struct lpfc_nodelist *ndlp;
+>   	struct scsi_cmnd *cmd;
+>   	unsigned long flags;
+>   	struct lpfc_fast_path_event *fast_path_evt;
+> @@ -4040,6 +4040,9 @@ lpfc_fcp_io_cmd_wqe_cmpl(struct lpfc_hba *phba, struct lpfc_iocbq *pwqeIn,
+>   		return;
+>   	}
+>   
+> +	rdata = lpfc_cmd->rdata;
+> +	ndlp = rdata->pnode;
+> +
+>   	if (bf_get(lpfc_wcqe_c_xb, wcqe)) {
+>   		/* TOREMOVE - currently this flag is checked during
+>   		 * the release of lpfc_iocbq. Remove once we move
+
+Looks good.
+
+Reviewed-by: James Smart <james.smart@broadcom.com>
+
+-- james
+
+
+--000000000000405fba05b47beae7
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+AanDaJF6fE9TEzbfn5AWgVgHkbqS3VY3Gq05xkLhRugDQ60IGwT29K1B+wGfcujKSaalhQIDAQAB
+o4IBzzCCAcswDgYDVR0PAQH/BAQDAgWgMIGeBggrBgEFBQcBAQSBkTCBjjBNBggrBgEFBQcwAoZB
+aHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NwZXJzb25hbHNpZ24yc2hhMmcz
+b2NzcC5jcnQwPQYIKwYBBQUHMAGGMWh0dHA6Ly9vY3NwMi5nbG9iYWxzaWduLmNvbS9nc3BlcnNv
+bmFsc2lnbjJzaGEyZzMwTQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYBBQUHAgEWJmh0
+dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwRAYDVR0fBD0w
+OzA5oDegNYYzaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc3BlcnNvbmFsc2lnbjJzaGEyZzMu
+Y3JsMCMGA1UdEQQcMBqBGGphbWVzLnNtYXJ0QGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEF
+BQcDBDAfBgNVHSMEGDAWgBRpcoJiMWeVRIV3kYDEBDZJnXsLYTAdBgNVHQ4EFgQUUXCHNA1n5KXj
+CXL1nHkJ8oKX5wYwDQYJKoZIhvcNAQELBQADggEBAGQDKmIdULu06w+bE15XZJOwlarihiP2PHos
+/4bNU3NRgy/tCQbTpJJr3L7LU9ldcPam9qQsErGZKmb5ypUjVdmS5n5M7KN42mnfLs/p7+lOOY5q
+ZwPZfsjYiUuaCWDGMvVpuBgJtdADOE1v24vgyyLZjtCbvSUzsgKKda3/Z/iwLFCRrIogixS1L6Vg
+2JU2wwirL0Sy5S1DREQmTMAuHL+M9Qwbl+uh/AprkVqaSYuvUzWFwBVgafOl2XgGdn8r6ubxSZhX
+9SybOi1fAXGcISX8GzOd85ygu/3dFqvMyCBpNke4vdweIll52KZIMyWji3y2PKJYfgqO+bxo7BAa
+ROYxggJvMIICawIBATBtMF0xCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNh
+MTMwMQYDVQQDEypHbG9iYWxTaWduIFBlcnNvbmFsU2lnbiAyIENBIC0gU0hBMjU2IC0gRzMCDH5i
+rbJ+nCPBux48wjANBglghkgBZQMEAgEFAKCB1DAvBgkqhkiG9w0BCQQxIgQgaznEqktNJAPTIqZG
+s5ZbSCN6AQG+n7YAbUETGbJuOsMwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0B
+CQUxDxcNMjAxMTE5MjA1MzA3WjBpBgkqhkiG9w0BCQ8xXDBaMAsGCWCGSAFlAwQBKjALBglghkgB
+ZQMEARYwCwYJYIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBCjALBgkqhkiG9w0BAQcw
+CwYJYIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBACYECcESJKIl4XOdk7DAImG1VEGKvbLfhaug
+595YoVCgQ6quOOATwCTYnDWIz+KUOPgLIuDqzS/h67w//GTYxG5WIzSMWBYd6LhdB5zRSOdMDDzp
+Nw4u6TUggm0f1ft0A+vzJbrjtv8anXtpoYsbmtvhs4Nt0UTkLFolcDb6ay+ssmNaNm8zBM3FMmOG
+OEkhgOiQGX67k0jMho+YotPafd+4V3LXoqtD4uyyxHfgDiA4KjWHh5xOau1rEB5LqU0ucYi7rXRH
+IUes0zDY/20yz76cELtTSrEBF5CSol9ZVVsoaEYi+T5dMfUD4SjnjVHqpt9yzBttKlvX6bxBVXK7
+Z+Q=
+--000000000000405fba05b47beae7--

@@ -2,61 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 630462BA0CE
-	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Nov 2020 04:09:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E22E02BA0EC
+	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Nov 2020 04:16:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726295AbgKTDIf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Nov 2020 22:08:35 -0500
-Received: from szxga01-in.huawei.com ([45.249.212.187]:2070 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726122AbgKTDIf (ORCPT
+        id S1726189AbgKTDOL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Nov 2020 22:14:11 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:35480 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725944AbgKTDOL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Nov 2020 22:08:35 -0500
-Received: from dggeme755-chm.china.huawei.com (unknown [172.30.72.56])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4CchLr07SgzVqM7;
-        Fri, 20 Nov 2020 11:08:04 +0800 (CST)
-Received: from [10.140.157.68] (10.140.157.68) by
- dggeme755-chm.china.huawei.com (10.3.19.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.1913.5; Fri, 20 Nov 2020 11:08:32 +0800
-Subject: Re: [v3] clk: hisilicon: refine hi3620_mmc_clk_init() and fix memory
- leak issues
-To:     Markus Elfring <Markus.Elfring@web.de>, <linux-clk@vger.kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Julia Lawall <julia.lawall@lip6.fr>
-References: <20201112192214.48926-1-gengdongjiu@huawei.com>
- <ef1eac81-c4f9-ca4d-f056-3cdbddcaad73@web.de>
- <5b976ad4-43e2-a021-6a93-25642b44cec5@huawei.com>
- <393a7eca-e6a0-ddf8-e0aa-ca9121acf4f3@web.de>
-From:   Dongjiu Geng <gengdongjiu@huawei.com>
-Message-ID: <ad55207f-5898-c967-fe98-29ea6e9ace0a@huawei.com>
-Date:   Fri, 20 Nov 2020 11:08:31 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
+        Thu, 19 Nov 2020 22:14:11 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AK3AOfF044941;
+        Fri, 20 Nov 2020 03:14:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : mime-version :
+ content-type; s=corp-2020-01-29;
+ bh=s/8N3xCSQsdW1nxIK6iFS39cuZ3X3S3099X+yNSwVNY=;
+ b=UNyZAqzNHYbh92DyeBhBKycv3nrnu/v4KNDn6BoUqSe1Lidew3RZvORL40otx1NnnKR+
+ 1R3atx06DUJUTMxloGzWN1LdgFygK3KdelvDdREaYD8LNyIUmOiNkY0vZjwDgTpscGLW
+ QuA8/GoJ82t5O4IoUyHhjDuT1cycDp6OFYe6uDzZiN13fl9PeJH2QNV+4jdAEED5sJmQ
+ h5lDzb7rexe0DbLMcROYhHrAFutM4F9v9jWHJBcU/PdS+txexRsTx0z7St+P6deJ3Vem
+ ajtjtFCDMJ48UrMrlu+VEh34zKY2B98O5SQQtdC9mLKdcCOYUQej6gI+TnK000lnDRxs OQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 34t4rb8t00-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 20 Nov 2020 03:14:05 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AK35iaK166566;
+        Fri, 20 Nov 2020 03:14:04 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 34uspx1ycv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 20 Nov 2020 03:14:04 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0AK3E3jp021197;
+        Fri, 20 Nov 2020 03:14:03 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 19 Nov 2020 19:14:03 -0800
+To:     Colin King <colin.king@canonical.com>
+Cc:     James Smart <james.smart@broadcom.com>,
+        Dick Kennedy <dick.kennedy@broadcom.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] scsi: lpfc: fix pointer defereference before it
+ is null checked issue
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1zh3cwwi5.fsf@ca-mkp.ca.oracle.com>
+References: <20201118131345.460631-1-colin.king@canonical.com>
+Date:   Thu, 19 Nov 2020 22:14:01 -0500
+In-Reply-To: <20201118131345.460631-1-colin.king@canonical.com> (Colin King's
+        message of "Wed, 18 Nov 2020 13:13:45 +0000")
 MIME-Version: 1.0
-In-Reply-To: <393a7eca-e6a0-ddf8-e0aa-ca9121acf4f3@web.de>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.140.157.68]
-X-ClientProxiedBy: dggeme703-chm.china.huawei.com (10.1.199.99) To
- dggeme755-chm.china.huawei.com (10.3.19.101)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9810 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
+ mlxscore=0 bulkscore=0 suspectscore=1 adultscore=0 spamscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011200022
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9810 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 clxscore=1011
+ malwarescore=0 impostorscore=0 lowpriorityscore=0 priorityscore=1501
+ mlxlogscore=999 adultscore=0 phishscore=0 suspectscore=1 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011200022
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020/11/19 22:40, Markus Elfring wrote:
->> How about we adjust such a function call in another series patches?
-> 
-> You can try to offer desirable changes also in a corresponding patch series as usual.
 
-sure, ok
+Colin,
 
-> 
-> Regards,
-> Markus
-> .
-> 
+> There is a null check on pointer lpfc_cmd after the pointer has been
+> dereferenced when pointers rdata and ndlp are initialized at the start
+> of the function. Fix this by only assigning rdata and ndlp after the
+> pointer lpfc_cmd has been null checked.
+
+Applied to 5.11/scsi-staging, thanks!
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

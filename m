@@ -2,33 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C0AB2BBE4B
-	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Nov 2020 10:53:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AEDE2BC75B
+	for <lists+kernel-janitors@lfdr.de>; Sun, 22 Nov 2020 18:05:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727423AbgKUJvc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 21 Nov 2020 04:51:32 -0500
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:54302 "EHLO
+        id S1728189AbgKVRDx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 22 Nov 2020 12:03:53 -0500
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:32298 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727276AbgKUJvb (ORCPT
+        with ESMTP id S1728162AbgKVRDw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 21 Nov 2020 04:51:31 -0500
-Received: from localhost.localdomain ([81.185.161.242])
-        by mwinf5d61 with ME
-        id uxrS230045E5lq903xrSLm; Sat, 21 Nov 2020 10:51:27 +0100
+        Sun, 22 Nov 2020 12:03:52 -0500
+Received: from localhost.localdomain ([81.185.166.181])
+        by mwinf5d28 with ME
+        id vV3j230033v9GFD03V3j3k; Sun, 22 Nov 2020 18:03:47 +0100
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 21 Nov 2020 10:51:27 +0100
-X-ME-IP: 81.185.161.242
+X-ME-Date: Sun, 22 Nov 2020 18:03:47 +0100
+X-ME-IP: 81.185.166.181
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     dennis.dalessandro@cornelisnetworks.com,
-        mike.marciniszyn@cornelisnetworks.com, dledford@redhat.com,
-        jgg@ziepe.ca
-Cc:     linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        erik.stromdahl@gmail.com
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] IB/qib: Use dma_set_mask_and_coherent to simplify code
-Date:   Sat, 21 Nov 2020 10:51:27 +0100
-Message-Id: <20201121095127.1335228-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH 1/2] ath10k: Fix an error handling path
+Date:   Sun, 22 Nov 2020 18:03:42 +0100
+Message-Id: <20201122170342.1346011-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -36,46 +36,28 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'pci_set_dma_mask()' + 'pci_set_consistent_dma_mask()' can be replaced by
-an equivalent 'dma_set_mask_and_coherent()' which is much less verbose.
+If 'ath10k_usb_create()' fails, we should release some resources and report
+an error instead of silently continuing.
 
+Fixes: 4db66499df91 ("ath10k: add initial USB support")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/infiniband/hw/qib/qib_pcie.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ drivers/net/wireless/ath/ath10k/usb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/qib/qib_pcie.c b/drivers/infiniband/hw/qib/qib_pcie.c
-index 3dc6ce033319..2e07b3749b88 100644
---- a/drivers/infiniband/hw/qib/qib_pcie.c
-+++ b/drivers/infiniband/hw/qib/qib_pcie.c
-@@ -90,25 +90,18 @@ int qib_pcie_init(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto bail;
- 	}
+diff --git a/drivers/net/wireless/ath/ath10k/usb.c b/drivers/net/wireless/ath/ath10k/usb.c
+index 05a620ff6fe2..0b47c3a09794 100644
+--- a/drivers/net/wireless/ath/ath10k/usb.c
++++ b/drivers/net/wireless/ath/ath10k/usb.c
+@@ -997,6 +997,8 @@ static int ath10k_usb_probe(struct usb_interface *interface,
  
--	ret = pci_set_dma_mask(pdev, DMA_BIT_MASK(64));
-+	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
- 	if (ret) {
- 		/*
- 		 * If the 64 bit setup fails, try 32 bit.  Some systems
- 		 * do not setup 64 bit maps on systems with 2GB or less
- 		 * memory installed.
- 		 */
--		ret = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
-+		ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
- 		if (ret) {
- 			qib_devinfo(pdev, "Unable to set DMA mask: %d\n", ret);
- 			goto bail;
- 		}
--		ret = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32));
--	} else
--		ret = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(64));
--	if (ret) {
--		qib_early_err(&pdev->dev,
--			      "Unable to set DMA consistent mask: %d\n", ret);
--		goto bail;
- 	}
+ 	ar_usb = ath10k_usb_priv(ar);
+ 	ret = ath10k_usb_create(ar, interface);
++	if (ret)
++		goto err;
+ 	ar_usb->ar = ar;
  
- 	pci_set_master(pdev);
+ 	ar->dev_id = product_id;
 -- 
 2.27.0
 

@@ -2,103 +2,137 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B23502C0E9E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Nov 2020 16:20:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BAD12C1859
+	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Nov 2020 23:25:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389430AbgKWPSI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 23 Nov 2020 10:18:08 -0500
-Received: from mail-dm6nam12on2114.outbound.protection.outlook.com ([40.107.243.114]:8160
-        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731162AbgKWPSH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 23 Nov 2020 10:18:07 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SomMrIURgxR/8ZVJvzWH2mePotEqETQ0NABWToX7Zm9ft0NfduAVuveL/rGRE2CleQi2tWlOzyVszfEXCGCCnN9qhPrzsJEb+30jsXlnlsVaj/qQGhFsR2mFBTSlDLoy195b2fYV/yA0ocLJiNLO8aWi3TeWSEMwDOTYlQQMkmSKOo6AGHloYbKt9jlmgUG0YYi3xM34MFzMfC11zgxOE0dttyL1SHjkVLAelfpSCIdgl+UZlIBPia6VqoO8jrIwZZHGQyXoHyNNowl3/ojNn4VFTMUhOAlhYCndV8v9XArxihhaoKz5PFOl91s61hZFFg9q/0EeTdS6Q1QsziJtcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B7aCvJWP8oTe/p2RGpmA8n6qha+jo/ydzPYN+o9i3kE=;
- b=AeMNjEceGJexGAtuAHjhCVKfglBwwmvaPnVmGcEUvujMIdKll5nwc9KdEXfvQKtCy8jqAvfUo0oM244TDDlcoChD/e1bwixte3qpB4UGJxG4MsYjrsQnBIJcTF3dzMx5m1XqjZJ8xAeuDZuNNl6XecTxm4FBeUmJpVPFUTgoDDt9gAqDD8RWnL49XWf4wobYhm/jnVMj6y8V7uD2iNmIF+tmML57m4IPGwaO/GH8i7N7Rr9ooompFHuJXC8sj78QhkEMCfrR/1bCn7UBSlO9Swa4/VC95Ei8TlwYItVAoaOSSlw+Z12B3eW21y0eG9GI+1Btnxg4DAdHYgsd2xDOmg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cornelisnetworks.com; dmarc=pass action=none
- header.from=cornelisnetworks.com; dkim=pass header.d=cornelisnetworks.com;
- arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=CornelisNetworks.onmicrosoft.com;
- s=selector1-CornelisNetworks-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B7aCvJWP8oTe/p2RGpmA8n6qha+jo/ydzPYN+o9i3kE=;
- b=Ax+mSnezgaIXCEqwMiFCVPS7teR7717Srz4Eczx0DH5RQdBi3b6YkgLfqOBpwv+Gqr/x8Y04uFlWoO4S+C2pfqmVyDYGnT1mJ+0+plIuIXdI4viJlrZHkgg3vjGsl5T7JShReAW2kqwh2dY2XDhPypcYgkpy1PfxwIBlmqBRIEjNacE48xqlB/pHXR+hInaKgoWs1G+d8hHBN5Sivou/Q4DQ6s2NgmKhz+b1QXkP1cBan0Z1qCcx/qmCZW/CsVk+fxLgN+NqF2H7DcDaoGKEmYHXpD5wyqM+MhpCtrSsVT3cAhWXlaZfTHjXic2FKCO9xFwHE7NtsVLP3GEHmAycpw==
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=cornelisnetworks.com;
-Received: from BYAPR01MB3816.prod.exchangelabs.com (2603:10b6:a02:88::20) by
- BYAPR01MB5365.prod.exchangelabs.com (2603:10b6:a03:11a::26) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3589.30; Mon, 23 Nov 2020 15:18:02 +0000
-Received: from BYAPR01MB3816.prod.exchangelabs.com
- ([fe80::c436:2a2e:75d9:ebc6]) by BYAPR01MB3816.prod.exchangelabs.com
- ([fe80::c436:2a2e:75d9:ebc6%5]) with mapi id 15.20.3589.025; Mon, 23 Nov 2020
- 15:18:01 +0000
-Subject: Re: [PATCH] IB/qib: Use dma_set_mask_and_coherent to simplify code
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        dennis.dalessandro@cornelisnetworks.com, dledford@redhat.com,
-        jgg@ziepe.ca
-Cc:     linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20201121095127.1335228-1-christophe.jaillet@wanadoo.fr>
-From:   Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>
-Message-ID: <eb1144c2-f54b-621f-0d7e-d6b8e3d47462@cornelisnetworks.com>
-Date:   Mon, 23 Nov 2020 10:17:56 -0500
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
-In-Reply-To: <20201121095127.1335228-1-christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [192.55.54.42]
-X-ClientProxiedBy: MWHPR20CA0035.namprd20.prod.outlook.com
- (2603:10b6:300:ed::21) To BYAPR01MB3816.prod.exchangelabs.com
- (2603:10b6:a02:88::20)
+        id S1731057AbgKWWYM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 Nov 2020 17:24:12 -0500
+Received: from smtprelay0199.hostedemail.com ([216.40.44.199]:34174 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728161AbgKWWYL (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 23 Nov 2020 17:24:11 -0500
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay01.hostedemail.com (Postfix) with ESMTP id 3C1C0100E7B43;
+        Mon, 23 Nov 2020 22:24:10 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:800:960:966:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1543:1593:1594:1711:1730:1747:1777:1792:2196:2198:2199:2200:2393:2553:2559:2562:2731:2828:3138:3139:3140:3141:3142:3355:3622:3653:3865:3866:3867:3868:3870:3871:3872:3873:3874:4250:4321:4385:4559:4605:5007:6119:6120:7514:7809:7903:10004:10400:10848:11026:11232:11657:11658:11914:12043:12295:12296:12297:12438:12555:12679:12681:12740:12760:12895:12986:13095:13161:13181:13229:13439:14181:14659:14721:21080:21324:21433:21451:21611:21627:21939:21990:30012:30046:30054:30055:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:87,LUA_SUMMARY:none
+X-HE-Tag: skin07_30012d527369
+X-Filterd-Recvd-Size: 4485
+Received: from XPS-9350.home (unknown [47.151.128.180])
+        (Authenticated sender: joe@perches.com)
+        by omf03.hostedemail.com (Postfix) with ESMTPA;
+        Mon, 23 Nov 2020 22:24:08 +0000 (UTC)
+Message-ID: <afd4d5199527b33c4c428090b8a3d360b9565549.camel@perches.com>
+Subject: [RFC PATCH] Add a new "Frozen" status to MAINTAINERS subsystem
+ entries
+From:   Joe Perches <joe@perches.com>
+To:     Sam Ravnborg <sam@ravnborg.org>, Bernard Zhao <bernard@vivo.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>
+Date:   Mon, 23 Nov 2020 14:24:07 -0800
+In-Reply-To: <20201123214208.GB675342@ravnborg.org>
+References: <20201119072957.108941-1-bernard@vivo.com>
+         <20201123214208.GB675342@ravnborg.org>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.55.54.42] (192.55.54.42) by MWHPR20CA0035.namprd20.prod.outlook.com (2603:10b6:300:ed::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3589.21 via Frontend Transport; Mon, 23 Nov 2020 15:17:59 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a9f85098-2638-4067-2781-08d88fc2f70c
-X-MS-TrafficTypeDiagnostic: BYAPR01MB5365:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BYAPR01MB536526C00159C2AA89583BA1F2FC0@BYAPR01MB5365.prod.exchangelabs.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2331;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: b9fewKFJk/KGUNwUKWpkPzl98PtRm18xNtvv5rOcgE7Ab1DTmm/l379ar3nmVMh4m0WVFwW6eMCYlsZjUAdkb5at7XFYd05lCpXcI+1QQn7yazCU9ZA/dR/q5LjfqkUxjm6cFgZcT+tFceYaG4JpOnOgZI4vHHTYnXNcuC25WBwm3GQdNJde8fKbuvS9G2r32QhJPKpFL7xAYdMl859LbfsJJlD9l5Ul5adLhq36q2prdlJW8mie7vNDRmpVDw3tUWCIDS+lDPHpVyGNv5ZzUMko6/sE+P3C4EFT6pPAlpTfeUlFthpGkSXEnhAqS5j57EnO/b5UskoN3wD6jK3IgkA/qXKe3Q3Dyue7Djtd9uY83X/GukowPEOrMP61DOCMD+ddGbeApCRxGZ6A7XqTJshBvC5prM0fl9/yYWauSy0=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR01MB3816.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(39830400003)(346002)(376002)(396003)(136003)(186003)(16526019)(26005)(31696002)(316002)(8676002)(2616005)(36756003)(2906002)(86362001)(5660300002)(478600001)(53546011)(956004)(6706004)(8936002)(66476007)(66556008)(66946007)(31686004)(52116002)(4744005)(6666004)(6486002)(16576012)(4326008)(44832011)(3940600001)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: 3SbUSPtn+eGRURaHDFDGW1HUR0x1aR1pg4bnCIt5Sds4XPN3+F4u98d9psfuXKXVWmvBEB1A6yXVEEZ4FxuOAa7OwbzbGEYgp5qaIfpkRoSVlhKqMB/0mZ6X1YnXuw3MT5HrnnX9NPsUW9cvawL/7tQjoHEXdtZleH5QPyGDhYMOxQerxhkAwEvlxtvPMNz+D/B8PJJ24H09gzdy2TZki54V1rk6wr/DhlHrATjDP2bQFDsKl5YvDE3QhxUQ5eq3bdpGuFwmEP48KJ7aiToryvdt9d6vc92s/HoK2KpMYGk6R8+mTVbxMYocb0BbmOF6+o9Lhnyb37S+DAlSi0vvkitxKOqYW+CQgFQIjcUeeYSeklJVWMlc1bdRpwqC81j3dMWljGSq/phPIncSuzkakXMRUzaqztKfbkAXKIWR9xfAaNARC05GMb/481GEuqed1EO6NR/CB21n4hAyJGvGwVGtoOmmkMAblsgu1MXWGrFLFfKr2AWoNBKYLkaD8WUhMHoWEl+3FmoBe2SVqZuvrTelcmzt2eglRE+5wXv6IOEOUY+hm7pYtMeGWndC1J+z4/cR4z6YNgtroHmY5ntnTYiT1oM87zjjZXEUUGSzlO+j+dvnISACnm62d8m53kYleMnJ5uj1lzY1BvuvX7kZvQ==
-X-OriginatorOrg: cornelisnetworks.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a9f85098-2638-4067-2781-08d88fc2f70c
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR01MB3816.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2020 15:18:01.3535
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4dbdb7da-74ee-4b45-8747-ef5ce5ebe68a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oICzIU8/enDgHlwkwd+XedY39DrKUvF+YfcKSwFrkOfMqTqNi8uJ6uPTSwilaPzPvNZVaX5VIENiSiUb8cAO52EmqGmXP6DRBXC1n9hwFGq9q1sY1PW1K3FXWKjCdW6d
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR01MB5365
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Mon, 2020-11-23 at 22:42 +0100, Sam Ravnborg wrote:
+> For this old driver we should try to limit patches to bug fixing and
+> infrastructure updates.
 
-On 11/21/2020 4:51 AM, Christophe JAILLET wrote:
-> 'pci_set_dma_mask()' + 'pci_set_consistent_dma_mask()' can be replaced by
-> an equivalent 'dma_set_mask_and_coherent()' which is much less verbose.
->
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+It might be useful to add a new "S:" entry type to these old drivers
+as supported/maintained/obsolete may not really be appropriate.
 
-Thanks for the patch.
+How about something like "S: Frozen" and checkpatch could emit a
+message similar to the one for unnecessary changes to obsolete code?
 
-Looks ok to me.
+So using the below would emit:
 
-Acked-by: Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>
+$ ./scripts/checkpatch.pl -f drivers/gpu/drm/via/via_dma.c
+WARNING: drivers/gpu/drm/via/via_dma.c is marked as 'frozen' in the MAINTAINERS hierarchy.  No unnecessary modifications please.
+
+Maybe like the below (and fyi there's no additional git lookup overhead as
+the initial obsolete check already caches the git result).
+
+---
+ MAINTAINERS           | 10 +++++++++-
+ scripts/checkpatch.pl | 11 +++++++----
+ 2 files changed, 16 insertions(+), 5 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5f10105cac6f..6374d29180b8 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -88,7 +88,10 @@ Descriptions of section entries and preferred order
+ 	   Supported:	Someone is actually paid to look after this.
+ 	   Maintained:	Someone actually looks after it.
+ 	   Odd Fixes:	It has a maintainer but they don't have time to do
+-			much other than throw the odd patch in. See below..
++			much other than throw the odd patch in.
++	   Frozen:	Old code that should not be modified unless changes
++			are to correct actual defects or API infrastructure.
++			Cleanup/style changes are not generally accepted.
+ 	   Orphan:	No current maintainer [but maybe you could take the
+ 			role as you write your new code].
+ 	   Obsolete:	Old code. Something tagged obsolete generally means
+@@ -5718,6 +5721,11 @@ S:	Supported
+ T:	git git://anongit.freedesktop.org/drm/drm-misc
+ F:	drivers/gpu/drm/udl/
+ 
++DRM DRIVER FOR VIA
++L:	dri-devel@lists.freedesktop.org
++S:	Frozen
++F:	drivers/gpu/drm/via/
++
+ DRM DRIVER FOR VIRTUAL KERNEL MODESETTING (VKMS)
+ M:	Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+ M:	Melissa Wen <melissa.srw@gmail.com>
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index fdfd5ec09be6..79321cbfb761 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -902,8 +902,8 @@ sub seed_camelcase_file {
+ 
+ our %maintained_status = ();
+ 
+-sub is_maintained_obsolete {
+-	my ($filename) = @_;
++sub is_maintained {
++	my ($filename, $test) = @_;
+ 
+ 	return 0 if (!$tree || !(-e "$root/scripts/get_maintainer.pl"));
+ 
+@@ -911,7 +911,7 @@ sub is_maintained_obsolete {
+ 		$maintained_status{$filename} = `perl $root/scripts/get_maintainer.pl --status --nom --nol --nogit --nogit-fallback -f $filename 2>&1`;
+ 	}
+ 
+-	return $maintained_status{$filename} =~ /obsolete/i;
++	return $maintained_status{$filename} =~ /$test/i;
+ }
+ 
+ sub is_SPDX_License_valid {
+@@ -2633,9 +2633,12 @@ sub process {
+ 		}
+ 
+ 		if ($found_file) {
+-			if (is_maintained_obsolete($realfile)) {
++			if (is_maintained($realfile, "obsolete")) {
+ 				WARN("OBSOLETE",
+ 				     "$realfile is marked as 'obsolete' in the MAINTAINERS hierarchy.  No unnecessary modifications please.\n");
++			} elsif (is_maintained($realfile, "frozen")) {
++				WARN("FROZEN",
++				     "$realfile is marked as 'frozen' in the MAINTAINERS hierarchy.  No unnecessary modifications please.\n");
+ 			}
+ 			if ($realfile =~ m@^(?:drivers/net/|net/|drivers/staging/)@) {
+ 				$check = 1;
+
 

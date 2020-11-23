@@ -2,31 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A37522C0365
-	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Nov 2020 11:37:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5771A2C03B7
+	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Nov 2020 11:55:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728570AbgKWKfA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 23 Nov 2020 05:35:00 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:40126 "EHLO
+        id S1728523AbgKWKyV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 Nov 2020 05:54:21 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:40618 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728181AbgKWKe7 (ORCPT
+        with ESMTP id S1728340AbgKWKyV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 23 Nov 2020 05:34:59 -0500
+        Mon, 23 Nov 2020 05:54:21 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kh9BN-000356-1A; Mon, 23 Nov 2020 10:34:53 +0000
+        id 1kh9U9-0004UE-89; Mon, 23 Nov 2020 10:54:17 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Huazhong Tan <tanhuazhong@huawei.com>, netdev@vger.kernel.org
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, Evan Quan <evan.quan@amd.com>,
+        Kevin Wang <kevin1.wang@amd.com>,
+        Chengming Gui <Jack.Gui@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] net: hns3: fix spelling mistake "memroy" -> "memory"
-Date:   Mon, 23 Nov 2020 10:34:52 +0000
-Message-Id: <20201123103452.197708-1-colin.king@canonical.com>
+Subject: [PATCH] drm/amd/powerplay: fix spelling mistake "smu_state_memroy_block" -> "smu_state_memory_block"
+Date:   Mon, 23 Nov 2020 10:54:17 +0000
+Message-Id: <20201123105417.198314-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,40 +39,37 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There are spelling mistakes in two dev_err messages. Fix them.
+The struct name smu_state_memroy_block contains a spelling mistake, rename
+it to smu_state_memory_block
 
+Fixes: 8554e67d6e22 ("drm/amd/powerplay: implement power_dpm_state sys interface for SMU11")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 2 +-
- drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/inc/amdgpu_smu.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 500cc19225f3..ca668a47121e 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -9924,7 +9924,7 @@ static int hclge_dev_mem_map(struct hclge_dev *hdev)
- 				       pci_resource_start(pdev, HCLGE_MEM_BAR),
- 				       pci_resource_len(pdev, HCLGE_MEM_BAR));
- 	if (!hw->mem_base) {
--		dev_err(&pdev->dev, "failed to map device memroy\n");
-+		dev_err(&pdev->dev, "failed to map device memory\n");
- 		return -EFAULT;
- 	}
+diff --git a/drivers/gpu/drm/amd/pm/inc/amdgpu_smu.h b/drivers/gpu/drm/amd/pm/inc/amdgpu_smu.h
+index 7550757cc059..a559ea2204c1 100644
+--- a/drivers/gpu/drm/amd/pm/inc/amdgpu_smu.h
++++ b/drivers/gpu/drm/amd/pm/inc/amdgpu_smu.h
+@@ -99,7 +99,7 @@ struct smu_state_display_block {
+ 	bool              enable_vari_bright;
+ };
  
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-index 5d6b419b8a78..5b2f9a56f1d8 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-@@ -2904,7 +2904,7 @@ static int hclgevf_dev_mem_map(struct hclgevf_dev *hdev)
- 							  HCLGEVF_MEM_BAR),
- 				       pci_resource_len(pdev, HCLGEVF_MEM_BAR));
- 	if (!hw->mem_base) {
--		dev_err(&pdev->dev, "failed to map device memroy\n");
-+		dev_err(&pdev->dev, "failed to map device memory\n");
- 		return -EFAULT;
- 	}
- 
+-struct smu_state_memroy_block {
++struct smu_state_memory_block {
+ 	bool              dll_off;
+ 	uint8_t                 m3arb;
+ 	uint8_t                 unused[3];
+@@ -146,7 +146,7 @@ struct smu_power_state {
+ 	struct smu_state_validation_block             validation;
+ 	struct smu_state_pcie_block                   pcie;
+ 	struct smu_state_display_block                display;
+-	struct smu_state_memroy_block                 memory;
++	struct smu_state_memory_block                 memory;
+ 	struct smu_state_software_algorithm_block     software;
+ 	struct smu_uvd_clocks                         uvd_clocks;
+ 	struct smu_hw_power_state                     hardware;
 -- 
 2.28.0
 

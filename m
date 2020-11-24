@@ -2,93 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE9902C27F9
-	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Nov 2020 14:33:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 324192C2BBA
+	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Nov 2020 16:48:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388362AbgKXNcA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 24 Nov 2020 08:32:00 -0500
-Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:39644 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388348AbgKXNb7 (ORCPT
+        id S2389828AbgKXPsD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 24 Nov 2020 10:48:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55432 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389529AbgKXPsD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 24 Nov 2020 08:31:59 -0500
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-268-_XpbmZMuMe6EpfsWNrm87w-1; Tue, 24 Nov 2020 13:31:55 +0000
-X-MC-Unique: _XpbmZMuMe6EpfsWNrm87w-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Tue, 24 Nov 2020 13:31:49 +0000
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Tue, 24 Nov 2020 13:31:49 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Arnd Bergmann' <arnd@kernel.org>,
-        Christoph Hellwig <hch@infradead.org>
-CC:     Jann Horn <jannh@google.com>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>, Tom Rix <trix@redhat.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        kernel list <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] zlib: define get_unaligned16() only when used
-Thread-Topic: [PATCH] zlib: define get_unaligned16() only when used
-Thread-Index: AQHWwllpnHAMCQpgAEWSudK6othSeqnXR0Dg
-Date:   Tue, 24 Nov 2020 13:31:49 +0000
-Message-ID: <9e4edaa0061c4de2b3b1a7aa53987b94@AcuMS.aculab.com>
-References: <20201124104030.903-1-lukas.bulwahn@gmail.com>
- <CAG48ez1FqJYay1F=LUt84DVHd+k0=gXohwhTnwv=t1sv=hTSjw@mail.gmail.com>
- <20201124115058.GA32060@infradead.org>
- <CAK8P3a2rVKQ5UHzcycu=0QpjtSQ3Nne4Xre-7+V27vmCe9yfKg@mail.gmail.com>
-In-Reply-To: <CAK8P3a2rVKQ5UHzcycu=0QpjtSQ3Nne4Xre-7+V27vmCe9yfKg@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Tue, 24 Nov 2020 10:48:03 -0500
+Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com [IPv6:2607:f8b0:4864:20::f43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF9DCC0613D6
+        for <kernel-janitors@vger.kernel.org>; Tue, 24 Nov 2020 07:48:02 -0800 (PST)
+Received: by mail-qv1-xf43.google.com with SMTP id y11so10776738qvu.10
+        for <kernel-janitors@vger.kernel.org>; Tue, 24 Nov 2020 07:48:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:in-reply-to:message-id:references
+         :mime-version;
+        bh=ubJInrGSsPLGKGouG7fpjnMRMu6mjU1dee+kkLRQJso=;
+        b=hHQILDw03u/sl9BOCAlhrVjo9pT1JNk1zqKicW8pDpjpdemn2tv0bQrmpqWWp9TJPp
+         9WRL3NIb6Oyo/7pQmptCxsdnzIgS4TZC+smRhtxd34Vj6OvTCQWwuPS7kFj2+UAO0Xgy
+         4/0c9vuOfTsKe5SFMTjEs+G8oz0P5j3G7CxmCLKbzuAE8hevvUEVPk5huxPVSZ4cBm7f
+         JVIG/DOVhd6fUdJA+yPBVPBoMjucv8i/mhsuJdwb+V9mEc8pocbx72lGwXRhFQ7FxBYO
+         c4k508M0ay+aTrTr3wbwrpo4b+kQu5nNDoW/aFjAK/pypvbh7Cby3FBjs7cmT3ChR44g
+         IlVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
+         :references:mime-version;
+        bh=ubJInrGSsPLGKGouG7fpjnMRMu6mjU1dee+kkLRQJso=;
+        b=qQI2+rUNuJgBmYkCjzwDaTlBYNbJE8q4d/y4g7IRt2PCSq5vtl4AE3awZuJB3W5i31
+         sdLfZukvane0Ksv3HmtniIMBELkS7BDxyjp+oFyZdxIKnMjcdGbXxx7ckQHddvVfkV6t
+         vvgwfubnR7je+zYGYoCC1ddVxCYoz+soxIKRoMzI5xZVaC7LGkcnz7enxqT1fdOslVgX
+         a5u157wDIKfrN1/i1RC9oExi8iuYnCGzbrpo61o8TztfwIp6n9cwh+1qDhFaCnLsNMbT
+         QVeUqmOHAdOxg7Wct+lXJfHq7TQXhyU8wzx+OmRe3d9XLBf/IJ23O2UgNd2ix7AFYOcK
+         Ozfw==
+X-Gm-Message-State: AOAM5320ngyGMu61mSZJ5SfmYyUl0RAZXJiNA13KJAjIrJDkAZRx7kiH
+        TRxZLyHDyNbUS54yCUUjck5j3Q==
+X-Google-Smtp-Source: ABdhPJydlpNAWXjt4Gk87KvAf/FoPLdSEj4YPKw88iYN9nz6ZjtmfbEXGr3ZkwuOUekwx2ztrZ7ydg==
+X-Received: by 2002:ad4:524b:: with SMTP id s11mr5485759qvq.3.1606232882237;
+        Tue, 24 Nov 2020 07:48:02 -0800 (PST)
+Received: from xanadu.home (modemcable076.50-203-24.mc.videotron.ca. [24.203.50.76])
+        by smtp.gmail.com with ESMTPSA id i9sm12931180qtp.72.2020.11.24.07.48.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2020 07:48:01 -0800 (PST)
+Date:   Tue, 24 Nov 2020 10:48:00 -0500 (EST)
+From:   Nicolas Pitre <npitre@baylibre.com>
+To:     Colin King <colin.king@canonical.com>
+cc:     Boris Brezillon <bbrezillon@kernel.org>,
+        linux-i3c@lists.infradead.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] i3c/master: Fix uninitialized variable next_addr
+In-Reply-To: <20201124123504.396249-1-colin.king@canonical.com>
+Message-ID: <nycvar.YSQ.7.78.906.2011241046530.2184@knanqh.ubzr>
+References: <20201124123504.396249-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-RnJvbTogQXJuZCBCZXJnbWFubg0KPiBTZW50OiAyNCBOb3ZlbWJlciAyMDIwIDExOjU3DQo+IA0K
-PiBPbiBUdWUsIE5vdiAyNCwgMjAyMCBhdCAxMjo1MSBQTSBDaHJpc3RvcGggSGVsbHdpZyA8aGNo
-QGluZnJhZGVhZC5vcmc+IHdyb3RlOg0KPiA+IE9uIFR1ZSwgTm92IDI0LCAyMDIwIGF0IDEyOjA4
-OjQwUE0gKzAxMDAsIEphbm4gSG9ybiB3cm90ZToNCj4gPiA+ID4gU2luY2UgY29tbWl0IGFjYWFi
-NzMzNWJkNiAoImxpYi96bGliOiByZW1vdmUgb3V0ZGF0ZWQgYW5kIGluY29ycmVjdA0KPiA+ID4g
-PiBwcmUtaW5jcmVtZW50IG9wdGltaXphdGlvbiIpLCBnZXRfdW5hbGlnbmVkMTYoKSBpcyBvbmx5
-IHVzZWQgd2hlbg0KPiA+ID4gPiAhQ09ORklHX0hBVkVfRUZGSUNJRU5UX1VOQUxJR05FRF9BQ0NF
-U1MuDQo+ID4gPiA+DQo+ID4gPiA+IEhlbmNlLCBtYWtlIENDPWNsYW5nIFc9MSB3YXJuczoNCj4g
-PiA+ID4NCj4gPiA+ID4gICBsaWIvemxpYl9pbmZsYXRlL2luZmZhc3QuYzoyMDoxOg0KPiA+ID4g
-PiAgICAgd2FybmluZzogdW51c2VkIGZ1bmN0aW9uICdnZXRfdW5hbGlnbmVkMTYnIFstV3VudXNl
-ZC1mdW5jdGlvbl0NCj4gPiA+ID4NCj4gPiA+ID4gRGVmaW5lIGdldF91bmFsaWduZWQxNigpIG9u
-bHkgd2hlbiBpdCBpcyBhY3R1YWxseSB1c2VkLg0KPiA+ID4gPg0KPiA+ID4gPiBTaWduZWQtb2Zm
-LWJ5OiBMdWthcyBCdWx3YWhuIDxsdWthcy5idWx3YWhuQGdtYWlsLmNvbT4NCj4gPiA+DQo+ID4g
-PiBBRkFJQ1MgYSBuaWNlciBvcHRpb24gd291bGQgYmUgdG8gIiNpbmNsdWRlIDxhc20vdW5hbGln
-bmVkLmg+IiBhbmQNCj4gPiA+IHRoZW4gdXNlICJnZXRfdW5hbGlnbmVkIiwgd2hpY2ggc2hvdWxk
-IGF1dG9tYXRpY2FsbHkgZG8gdGhlIHJpZ2h0DQo+ID4gPiB0aGluZyBldmVyeXdoZXJlIGFuZCBy
-ZW1vdmUgdGhlIG5lZWQgZm9yIGRlZmluaW5nIGdldF91bmFsaWduZWQxNigpDQo+ID4gPiBhbmQg
-Y2hlY2tpbmcgQ09ORklHX0hBVkVfRUZGSUNJRU5UX1VOQUxJR05FRF9BQ0NFU1MgZW50aXJlbHk/
-DQo+ID4NCj4gPiBZZXMsIHRoYXQgaXMgdGhlIHJpZ2h0IHRoaW5nIHRvIGRvLg0KPiANCj4gSXQn
-cyBwb3NzaWJsZSB0aGF0IHRoaXMgZGlkbid0IHdvcmsgd2hlbiB0aGUgY29kZSB3YXMgb3JpZ2lu
-YWxseSBhZGRlZDoNCj4gVGhlIGRlY29tcHJlc3NvciBmdW5jdGlvbnMgYXJlIGNhbGxlZCBmcm9t
-IHRoZSBjb21wcmVzc2VkIGJvb3QgcGF0aCwNCj4gd2hpY2ggaXMgYSBiaXQgbGltaXRlZCByZWdh
-cmRpbmcgd2hpY2ggaGVhZGVycyBpdCBjYW4gaW5jbHVkZSwgYXQgbGVhc3QNCj4gb24gc29tZSBh
-cmNoaXRlY3R1cmVzLg0KPiANCj4gSSB3b3VsZCByZWNvbW1lbmQgdGVzdC1idWlsZGluZyB0aGlz
-IGZvciBhbGwgYXJjaGl0ZWN0dXJlcyB0aGF0IGluY2x1ZGUNCj4gLi4vLi4vLi4vLi4vbGliL2Rl
-Y29tcHJlc3NfaW5mbGF0ZS5jIGZyb20gdGhlaXIgYm9vdCBjb2RlLg0KDQpQbGF1c2libHkgaXQg
-Y291bGQgaW5jbHVkZSBhIGRpZmZlcmVudCBoZWFkZXIgdGhhdCBkZWZpbmVkIHRoZSByZXF1aXJl
-ZA0KaXRlbXMgZm9yIHRob3NlIGJ1aWxkcy4NCg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRk
-cmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBN
-SzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
+On Tue, 24 Nov 2020, Colin King wrote:
 
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable next_addr is not initialized and is being used in a call
+> to i3c_master_get_free_addr as a starting point to find the next address.
+> Fix this by initializing next_addr to 0 to avoid an uninitialized garbage
+> starting address from being used.
+> 
+> Addresses-Coverity: ("Uninitialized scalar variable")
+> Fixes: 9ad9a52cce28 ("i3c/master: introduce the mipi-i3c-hci driver")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
+Acked-by: Nicolas Pitre <npitre@baylibre.com>
+
+
+
+
+
+> ---
+>  drivers/i3c/master/mipi-i3c-hci/cmd_v1.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c b/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c
+> index 6dd234a82892..d97c3175e0e2 100644
+> --- a/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c
+> +++ b/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c
+> @@ -293,7 +293,7 @@ static int hci_cmd_v1_daa(struct i3c_hci *hci)
+>  {
+>  	struct hci_xfer *xfer;
+>  	int ret, dat_idx = -1;
+> -	u8 next_addr;
+> +	u8 next_addr = 0;
+>  	u64 pid;
+>  	unsigned int dcr, bcr;
+>  	DECLARE_COMPLETION_ONSTACK(done);
+> -- 
+> 2.29.2
+> 
+> 

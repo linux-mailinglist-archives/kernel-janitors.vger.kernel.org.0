@@ -2,49 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B4D32C2EF2
-	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Nov 2020 18:41:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85C902C32E3
+	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Nov 2020 22:30:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403814AbgKXRkm convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 24 Nov 2020 12:40:42 -0500
-Received: from sw73-70-41.adsl.seed.net.tw ([203.73.70.41]:57990 "EHLO
-        oa.trendtek.com.tw" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S2403811AbgKXRkm (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 24 Nov 2020 12:40:42 -0500
-Received: from [156.96.44.214] ([156.96.44.214])
-        (authenticated bits=0)
-        by oa.trendtek.com.tw (8.13.8/8.13.1) with ESMTP id 0AACIEAh004867
-        for <kernel-janitors@vger.kernel.org>; Tue, 10 Nov 2020 20:18:26 +0800
-Message-Id: <202011101218.0AACIEAh004867@oa.trendtek.com.tw>
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1732324AbgKXVaG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 24 Nov 2020 16:30:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41150 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727966AbgKXVaF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 24 Nov 2020 16:30:05 -0500
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606253405;
+        bh=sBYDeMl+n5eapUPjWZI1ZlDIKrnysJy33TDpSf2kRD0=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=wPIpP0/Nq3a50iW8j+rJWAZN+KxQLmkWg5r92zHjIRIXi6fwGjkO0nsnVgzHYpxio
+         ZMAHhBT1iYuHW8nywxPhr+WEa934VD7O8dmq6CbETJ5wooLFcaeYIoBHqMljQqzOgK
+         nDHyTPc7lkjkH5UACD4Q0aNwNbSDIgYi738TxNcA=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Corporate and Personal Loan+
-To:     kernel-janitors@vger.kernel.org
-From:   "Investment  Corporate" <financialcapability6@gmail.com>
-Date:   Tue, 10 Nov 2020 04:18:23 -0800
-Reply-To: hmurrah39@gmail.com
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH][next] net: hns3: fix spelling mistake "memroy" -> "memory"
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <160625340526.29621.15361139996997000498.git-patchwork-notify@kernel.org>
+Date:   Tue, 24 Nov 2020 21:30:05 +0000
+References: <20201123103452.197708-1-colin.king@canonical.com>
+In-Reply-To: <20201123103452.197708-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     yisen.zhuang@huawei.com, salil.mehta@huawei.com,
+        davem@davemloft.net, kuba@kernel.org, tanhuazhong@huawei.com,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello kernel-janitors@vger.kernel.org
+Hello:
+
+This patch was applied to netdev/net-next.git (refs/heads/master):
+
+On Mon, 23 Nov 2020 10:34:52 +0000 you wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There are spelling mistakes in two dev_err messages. Fix them.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 2 +-
+>  drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+
+Here is the summary with links:
+  - [next] net: hns3: fix spelling mistake "memroy" -> "memory"
+    https://git.kernel.org/netdev/net-next/c/be419fcacf25
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
-
-
-We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
-
-
-Please get back to me if you are interested for more
-
-details.
-
-
-Yours faithfully,
-
-Hashim Murrah

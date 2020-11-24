@@ -2,59 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E94312C1BD0
-	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Nov 2020 04:02:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 025942C1C5C
+	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Nov 2020 04:58:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728098AbgKXDAH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 23 Nov 2020 22:00:07 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38058 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726256AbgKXDAG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 23 Nov 2020 22:00:06 -0500
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606186805;
-        bh=YnsOH/f7iO3Fr4ckpGtwCt36G6/TTuRCj2NR6vrVQV0=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=dGSVfXtK2qz4ewLcYhLqdReoEnBx1EXDlbGmaib65UjEGxilEEN7+CSTFn5uVXPCO
-         fLvT3AQYNl19jcv3oSFJmLODmePWr7+7KJKS4LWkTVj4Z1IDU30tf/7JkknbKKX1Di
-         +z6oWDfyaNTctYnr6s9mA46McnxkRLEGXQRx0U3k=
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] sctp: Fix some typo
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <160618680549.17854.4429784178862016350.git-patchwork-notify@kernel.org>
-Date:   Tue, 24 Nov 2020 03:00:05 +0000
-References: <20201122180704.1366636-1-christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20201122180704.1366636-1-christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     vyasevich@gmail.com, nhorman@tuxdriver.com,
-        marcelo.leitner@gmail.com, davem@davemloft.net, kuba@kernel.org,
-        linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
+        id S1728300AbgKXD6U (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 Nov 2020 22:58:20 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:50500 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727869AbgKXD6T (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 23 Nov 2020 22:58:19 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AO3saNm090548;
+        Tue, 24 Nov 2020 03:58:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=/ZLENeEnN2+0E1PCxRwxG5g88lZ4hV6KzJ9wcqHyiEc=;
+ b=vP41p4Js/JD286n9Nno0u5Zwaih/AJYPAC0oHTzgAw/oNlzK0NxJyT9kI8nWNavYk2zC
+ ccz9jTBeXGtjAe6VWPd0Mz9ftzUsRPyuiw1c1Cy3DVOS1Nokb9RX+JU6nGze6zV1fGF+
+ 61hQ5ujUM9I9jY6yiCOrtJBYJmFvk61Ifxw/x96s9S50ExiLUiHR61asmy327i+T3it3
+ c3I2mT3ooIkUGdHv5v9TmQbN3eAhmuJ+l2e6bp7Tb1PXhollUAXy0OdmzFgiTyNXnA8T
+ iESzu25K2QkoCgCxWs6xzUUYrT7xGYbNo5h9WPlb10cuUx4dM6Fl7SOKsBwCpyRkIXvR bg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 34xrdarmbv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 24 Nov 2020 03:58:14 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AO3twOf140274;
+        Tue, 24 Nov 2020 03:58:14 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 34ycfmr826-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 24 Nov 2020 03:58:14 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0AO3wDtM006109;
+        Tue, 24 Nov 2020 03:58:13 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 23 Nov 2020 19:58:12 -0800
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     linux-scsi@vger.kernel.org, James Smart <james.smart@broadcom.com>,
+        Colin King <colin.king@canonical.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        Dick Kennedy <dick.kennedy@broadcom.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH][next] scsi: lpfc: remove dead code on second !ndlp check
+Date:   Mon, 23 Nov 2020 22:58:01 -0500
+Message-Id: <160618683552.24173.9532956225953675883.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20201118133744.461385-1-colin.king@canonical.com>
+References: <20201118133744.461385-1-colin.king@canonical.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9814 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 spamscore=0
+ adultscore=0 bulkscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011240021
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9814 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 impostorscore=0 mlxscore=0
+ mlxlogscore=999 spamscore=0 phishscore=0 clxscore=1015 malwarescore=0
+ lowpriorityscore=0 adultscore=0 suspectscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011240021
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
+On Wed, 18 Nov 2020 13:37:44 +0000, Colin King wrote:
 
-This patch was applied to netdev/net-next.git (refs/heads/master):
+> Currently there is a null check on the pointer ndlp that exits via
+> error path issue_ct_rsp_exit followed by another null check on the
+> same pointer that is almost identical to the previous null check
+> stanza and yet can never can be reached because the previous check
+> exited via issue_ct_rsp_exit. This is deadcode and can be removed.
 
-On Sun, 22 Nov 2020 19:07:04 +0100 you wrote:
-> s/tranport/transport/
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->  net/sctp/transport.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+Applied to 5.11/scsi-queue, thanks!
 
-Here is the summary with links:
-  - sctp: Fix some typo
-    https://git.kernel.org/netdev/net-next/c/5112cf59d76d
+[1/1] scsi: lpfc: Remove dead code on second !ndlp check
+      https://git.kernel.org/mkp/scsi/c/61795a5316ad
 
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+-- 
+Martin K. Petersen	Oracle Linux Engineering

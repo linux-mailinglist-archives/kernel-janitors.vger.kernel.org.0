@@ -2,87 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6322A2C1D3A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Nov 2020 06:09:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE53C2C1E8E
+	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Nov 2020 08:01:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726808AbgKXFIz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 24 Nov 2020 00:08:55 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:57700 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725306AbgKXFIz (ORCPT
+        id S1729252AbgKXG7e (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 24 Nov 2020 01:59:34 -0500
+Received: from m176150.mail.qiye.163.com ([59.111.176.150]:46254 "EHLO
+        m176150.mail.qiye.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725786AbgKXG7e (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 24 Nov 2020 00:08:55 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AO3tiwW078846;
-        Tue, 24 Nov 2020 03:58:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=UT1q0ssjr3ASFBM7Q8x9Xmg4gFYhYnL1VbvfVxfMkx4=;
- b=C5WaOft0oQUomsIrVXh6cBW8UqeAkux1AaCNbOfrCfKsXbv5prH1yt/I8mtqPeTwJ3zc
- kdiTG6KVlEHBLxkf5lLQxKybKezFFCYyig6n2E9Lav/S08emEMiEJwpcVh6bD68f0QJs
- iKpHavyiFeSKsTLq9JlaKjNfzLbABwTMZZRqdWPyoilY66ELQM8brBNSmNEWkBuygTxd
- V+9ZOwordu/TXKys21X6rjHJUJ1eQPjK9jMYnPsNIYu994UEaRr7pZhrGR4vU9Wjx84v
- jLzK0ybt+wL8E5ogQBauWirzMmDRhcqUGaPCzoJ5z4Fh75v8+tFB1G/WhYNAwLa0TaJz lg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 34xtaqkyks-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 24 Nov 2020 03:58:13 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AO3toB2080899;
-        Tue, 24 Nov 2020 03:58:12 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 34ycnrvyy2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 24 Nov 2020 03:58:12 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0AO3wBZ5009620;
-        Tue, 24 Nov 2020 03:58:11 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 23 Nov 2020 19:58:11 -0800
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     linux-scsi@vger.kernel.org, James Smart <james.smart@broadcom.com>,
-        Colin King <colin.king@canonical.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        Dick Kennedy <dick.kennedy@broadcom.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH][next] scsi: lpfc: fix pointer defereference before it is null checked issue
-Date:   Mon, 23 Nov 2020 22:58:00 -0500
-Message-Id: <160618683552.24173.13742714512709142456.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20201118131345.460631-1-colin.king@canonical.com>
-References: <20201118131345.460631-1-colin.king@canonical.com>
+        Tue, 24 Nov 2020 01:59:34 -0500
+X-Greylist: delayed 427 seconds by postgrey-1.27 at vger.kernel.org; Tue, 24 Nov 2020 01:59:31 EST
+Received: from vivo.com (wm-10.qy.internal [127.0.0.1])
+        by m176150.mail.qiye.163.com (Hmail) with ESMTP id 659351A31F4;
+        Tue, 24 Nov 2020 14:51:50 +0800 (CST)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <AAoACwDIDVz-8Zy3pozuG4px.3.1606200710396.Hmail.bernard@vivo.com>
+To:     Joe Perches <joe@perches.com>
+Cc:     Sam Ravnborg <sam@ravnborg.org>, linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>
+Subject: =?UTF-8?B?UmU6W1JGQyBQQVRDSF0gQWRkIGEgbmV3ICJGcm96ZW4iIHN0YXR1cyB0byBNQUlOVEFJTkVSUyBzdWJzeXN0ZW0gZW50cmllcw==?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com
+X-Originating-IP: 112.80.34.204
+In-Reply-To: <afd4d5199527b33c4c428090b8a3d360b9565549.camel@perches.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9814 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0
- mlxlogscore=999 phishscore=0 spamscore=0 malwarescore=0 adultscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011240021
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9814 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 phishscore=0
- mlxlogscore=999 clxscore=1015 suspectscore=0 lowpriorityscore=0
- priorityscore=1501 bulkscore=0 impostorscore=0 adultscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011240021
+Received: from bernard@vivo.com( [112.80.34.204) ] by ajax-webmail ( [127.0.0.1] ) ; Tue, 24 Nov 2020 14:51:50 +0800 (GMT+08:00)
+From:   Bernard <bernard@vivo.com>
+Date:   Tue, 24 Nov 2020 14:51:50 +0800 (GMT+08:00)
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZS1VLWVdZKFlBSE83V1ktWUFJV1kPCR
+        oVCBIfWUFZQ09IHkhMSklIH0NDVkpNS01JS0tMSktPSExVEwETFhoSFyQUDg9ZV1kWGg8SFR0UWU
+        FZT0tIVUpKS09ISVVLWQY+
+X-HM-Sender-Digest: e1kJHlYWEh9ZQU5CQk9JTE9MSk5ON1dZDB4ZWUEPCQ4eV1kSHx4VD1lB
+        WUc6OhQ6OAw*Mj8tAVZDIQJICxQBDjxPCwNVSFVKTUtNSUtLTEpLQktOVTMWGhIXVRkeCRUaCR87
+        DRINFFUYFBZFWVdZEgtZQVlKSklVQ0tVSE9VSUtPWVdZCAFZQUxMT0I3Bg++
+X-HM-Tid: 0a75f905d51393b4kuws659351a31f4
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 18 Nov 2020 13:13:45 +0000, Colin King wrote:
-
-> There is a null check on pointer lpfc_cmd after the pointer has been
-> dereferenced when pointers rdata and ndlp are initialized at the start
-> of the function. Fix this by only assigning rdata and ndlp after the
-> pointer lpfc_cmd has been null checked.
-
-Applied to 5.11/scsi-queue, thanks!
-
-[1/1] scsi: lpfc: Fix pointer defereference before it is null checked issue
-      https://git.kernel.org/mkp/scsi/c/1e7dddb2e76a
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+CkZyb206IEpvZSBQZXJjaGVzIDxqb2VAcGVyY2hlcy5jb20+CkRhdGU6IDIwMjAtMTEtMjQgMDY6
+MjQ6MDcKVG86ICBTYW0gUmF2bmJvcmcgPHNhbUByYXZuYm9yZy5vcmc+LEJlcm5hcmQgWmhhbyA8
+YmVybmFyZEB2aXZvLmNvbT4KQ2M6ICBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnLEFuZHJl
+dyBNb3J0b24gPGFrcG1AbGludXgtZm91bmRhdGlvbi5vcmc+LExpbnVzIFRvcnZhbGRzIDx0b3J2
+YWxkc0BsaW51eC1mb3VuZGF0aW9uLm9yZz4sa2VybmVsLWphbml0b3JzIDxrZXJuZWwtamFuaXRv
+cnNAdmdlci5rZXJuZWwub3JnPixHcmVnIEtIIDxncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZz4K
+U3ViamVjdDogW1JGQyBQQVRDSF0gQWRkIGEgbmV3ICJGcm96ZW4iIHN0YXR1cyB0byBNQUlOVEFJ
+TkVSUyBzdWJzeXN0ZW0gZW50cmllcz5PbiBNb24sIDIwMjAtMTEtMjMgYXQgMjI6NDIgKzAxMDAs
+IFNhbSBSYXZuYm9yZyB3cm90ZToKPj4gRm9yIHRoaXMgb2xkIGRyaXZlciB3ZSBzaG91bGQgdHJ5
+IHRvIGxpbWl0IHBhdGNoZXMgdG8gYnVnIGZpeGluZyBhbmQKPj4gaW5mcmFzdHJ1Y3R1cmUgdXBk
+YXRlcy4KPgo+SXQgbWlnaHQgYmUgdXNlZnVsIHRvIGFkZCBhIG5ldyAiUzoiIGVudHJ5IHR5cGUg
+dG8gdGhlc2Ugb2xkIGRyaXZlcnMKPmFzIHN1cHBvcnRlZC9tYWludGFpbmVkL29ic29sZXRlIG1h
+eSBub3QgcmVhbGx5IGJlIGFwcHJvcHJpYXRlLgo+Cj5Ib3cgYWJvdXQgc29tZXRoaW5nIGxpa2Ug
+IlM6IEZyb3plbiIgYW5kIGNoZWNrcGF0Y2ggY291bGQgZW1pdCBhCj5tZXNzYWdlIHNpbWlsYXIg
+dG8gdGhlIG9uZSBmb3IgdW5uZWNlc3NhcnkgY2hhbmdlcyB0byBvYnNvbGV0ZSBjb2RlPwo+Cj5T
+byB1c2luZyB0aGUgYmVsb3cgd291bGQgZW1pdDoKPgo+JCAuL3NjcmlwdHMvY2hlY2twYXRjaC5w
+bCAtZiBkcml2ZXJzL2dwdS9kcm0vdmlhL3ZpYV9kbWEuYwo+V0FSTklORzogZHJpdmVycy9ncHUv
+ZHJtL3ZpYS92aWFfZG1hLmMgaXMgbWFya2VkIGFzICdmcm96ZW4nIGluIHRoZSBNQUlOVEFJTkVS
+UyBoaWVyYXJjaHkuICBObyB1bm5lY2Vzc2FyeSBtb2RpZmljYXRpb25zIHBsZWFzZS4KPgo+TWF5
+YmUgbGlrZSB0aGUgYmVsb3cgKGFuZCBmeWkgdGhlcmUncyBubyBhZGRpdGlvbmFsIGdpdCBsb29r
+dXAgb3ZlcmhlYWQgYXMKPnRoZSBpbml0aWFsIG9ic29sZXRlIGNoZWNrIGFscmVhZHkgY2FjaGVz
+IHRoZSBnaXQgcmVzdWx0KS4KPgo+LS0tCj4gTUFJTlRBSU5FUlMgICAgICAgICAgIHwgMTAgKysr
+KysrKysrLQo+IHNjcmlwdHMvY2hlY2twYXRjaC5wbCB8IDExICsrKysrKystLS0tCj4gMiBmaWxl
+cyBjaGFuZ2VkLCAxNiBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQo+Cj5kaWZmIC0tZ2l0
+IGEvTUFJTlRBSU5FUlMgYi9NQUlOVEFJTkVSUwo+aW5kZXggNWYxMDEwNWNhYzZmLi42Mzc0ZDI5
+MTgwYjggMTAwNjQ0Cj4tLS0gYS9NQUlOVEFJTkVSUwo+KysrIGIvTUFJTlRBSU5FUlMKPkBAIC04
+OCw3ICs4OCwxMCBAQCBEZXNjcmlwdGlvbnMgb2Ygc2VjdGlvbiBlbnRyaWVzIGFuZCBwcmVmZXJy
+ZWQgb3JkZXIKPiAJICAgU3VwcG9ydGVkOglTb21lb25lIGlzIGFjdHVhbGx5IHBhaWQgdG8gbG9v
+ayBhZnRlciB0aGlzLgo+IAkgICBNYWludGFpbmVkOglTb21lb25lIGFjdHVhbGx5IGxvb2tzIGFm
+dGVyIGl0Lgo+IAkgICBPZGQgRml4ZXM6CUl0IGhhcyBhIG1haW50YWluZXIgYnV0IHRoZXkgZG9u
+J3QgaGF2ZSB0aW1lIHRvIGRvCj4tCQkJbXVjaCBvdGhlciB0aGFuIHRocm93IHRoZSBvZGQgcGF0
+Y2ggaW4uIFNlZSBiZWxvdy4uCj4rCQkJbXVjaCBvdGhlciB0aGFuIHRocm93IHRoZSBvZGQgcGF0
+Y2ggaW4uCj4rCSAgIEZyb3plbjoJT2xkIGNvZGUgdGhhdCBzaG91bGQgbm90IGJlIG1vZGlmaWVk
+IHVubGVzcyBjaGFuZ2VzCj4rCQkJYXJlIHRvIGNvcnJlY3QgYWN0dWFsIGRlZmVjdHMgb3IgQVBJ
+IGluZnJhc3RydWN0dXJlLgo+KwkJCUNsZWFudXAvc3R5bGUgY2hhbmdlcyBhcmUgbm90IGdlbmVy
+YWxseSBhY2NlcHRlZC4KPiAJICAgT3JwaGFuOglObyBjdXJyZW50IG1haW50YWluZXIgW2J1dCBt
+YXliZSB5b3UgY291bGQgdGFrZSB0aGUKPiAJCQlyb2xlIGFzIHlvdSB3cml0ZSB5b3VyIG5ldyBj
+b2RlXS4KPiAJICAgT2Jzb2xldGU6CU9sZCBjb2RlLiBTb21ldGhpbmcgdGFnZ2VkIG9ic29sZXRl
+IGdlbmVyYWxseSBtZWFucwo+QEAgLTU3MTgsNiArNTcyMSwxMSBAQCBTOglTdXBwb3J0ZWQKPiBU
+OglnaXQgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZHJtL2RybS1taXNjCj4gRjoJZHJp
+dmVycy9ncHUvZHJtL3VkbC8KPiAKPitEUk0gRFJJVkVSIEZPUiBWSUEKPitMOglkcmktZGV2ZWxA
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4rUzoJRnJvemVuCj4rRjoJZHJpdmVycy9ncHUvZHJtL3Zp
+YS8KPisKPiBEUk0gRFJJVkVSIEZPUiBWSVJUVUFMIEtFUk5FTCBNT0RFU0VUVElORyAoVktNUykK
+PiBNOglSb2RyaWdvIFNpcXVlaXJhIDxyb2RyaWdvc2lxdWVpcmFtZWxvQGdtYWlsLmNvbT4KPiBN
+OglNZWxpc3NhIFdlbiA8bWVsaXNzYS5zcndAZ21haWwuY29tPgo+ZGlmZiAtLWdpdCBhL3Njcmlw
+dHMvY2hlY2twYXRjaC5wbCBiL3NjcmlwdHMvY2hlY2twYXRjaC5wbAo+aW5kZXggZmRmZDVlYzA5
+YmU2Li43OTMyMWNiZmI3NjEgMTAwNzU1Cj4tLS0gYS9zY3JpcHRzL2NoZWNrcGF0Y2gucGwKPisr
+KyBiL3NjcmlwdHMvY2hlY2twYXRjaC5wbAo+QEAgLTkwMiw4ICs5MDIsOCBAQCBzdWIgc2VlZF9j
+YW1lbGNhc2VfZmlsZSB7Cj4gCj4gb3VyICVtYWludGFpbmVkX3N0YXR1cyA9ICgpOwo+IAo+LXN1
+YiBpc19tYWludGFpbmVkX29ic29sZXRlIHsKPi0JbXkgKCRmaWxlbmFtZSkgPSBAXzsKPitzdWIg
+aXNfbWFpbnRhaW5lZCB7Cj4rCW15ICgkZmlsZW5hbWUsICR0ZXN0KSA9IEBfOwo+IAo+IAlyZXR1
+cm4gMCBpZiAoISR0cmVlIHx8ICEoLWUgIiRyb290L3NjcmlwdHMvZ2V0X21haW50YWluZXIucGwi
+KSk7Cj4gCj5AQCAtOTExLDcgKzkxMSw3IEBAIHN1YiBpc19tYWludGFpbmVkX29ic29sZXRlIHsK
+PiAJCSRtYWludGFpbmVkX3N0YXR1c3skZmlsZW5hbWV9ID0gYHBlcmwgJHJvb3Qvc2NyaXB0cy9n
+ZXRfbWFpbnRhaW5lci5wbCAtLXN0YXR1cyAtLW5vbSAtLW5vbCAtLW5vZ2l0IC0tbm9naXQtZmFs
+bGJhY2sgLWYgJGZpbGVuYW1lIDI+JjFgOwo+IAl9Cj4gCj4tCXJldHVybiAkbWFpbnRhaW5lZF9z
+dGF0dXN7JGZpbGVuYW1lfSA9fiAvb2Jzb2xldGUvaTsKPisJcmV0dXJuICRtYWludGFpbmVkX3N0
+YXR1c3skZmlsZW5hbWV9ID1+IC8kdGVzdC9pOwo+IH0KPiAKPiBzdWIgaXNfU1BEWF9MaWNlbnNl
+X3ZhbGlkIHsKPkBAIC0yNjMzLDkgKzI2MzMsMTIgQEAgc3ViIHByb2Nlc3Mgewo+IAkJfQo+IAo+
+IAkJaWYgKCRmb3VuZF9maWxlKSB7Cj4tCQkJaWYgKGlzX21haW50YWluZWRfb2Jzb2xldGUoJHJl
+YWxmaWxlKSkgewo+KwkJCWlmIChpc19tYWludGFpbmVkKCRyZWFsZmlsZSwgIm9ic29sZXRlIikp
+IHsKPiAJCQkJV0FSTigiT0JTT0xFVEUiLAo+IAkJCQkgICAgICIkcmVhbGZpbGUgaXMgbWFya2Vk
+IGFzICdvYnNvbGV0ZScgaW4gdGhlIE1BSU5UQUlORVJTIGhpZXJhcmNoeS4gIE5vIHVubmVjZXNz
+YXJ5IG1vZGlmaWNhdGlvbnMgcGxlYXNlLlxuIik7Cj4rCQkJfSBlbHNpZiAoaXNfbWFpbnRhaW5l
+ZCgkcmVhbGZpbGUsICJmcm96ZW4iKSkgewo+KwkJCQlXQVJOKCJGUk9aRU4iLAo+KwkJCQkgICAg
+ICIkcmVhbGZpbGUgaXMgbWFya2VkIGFzICdmcm96ZW4nIGluIHRoZSBNQUlOVEFJTkVSUyBoaWVy
+YXJjaHkuICBObyB1bm5lY2Vzc2FyeSBtb2RpZmljYXRpb25zIHBsZWFzZS5cbiIpOwo+IAkJCX0K
+PiAJCQlpZiAoJHJlYWxmaWxlID1+IG1AXig/OmRyaXZlcnMvbmV0L3xuZXQvfGRyaXZlcnMvc3Rh
+Z2luZy8pQCkgewo+IAkJCQkkY2hlY2sgPSAxOwoKSGk6CgpGb3IgbWUsIHRoaXMgc2VlbXMgdG8g
+YmUgYSBuaWNlIGlkZWEuCkFzIGEgIG5ld2NvbWVyIHRvIHRoZSBjb21tdW5pdHksIG1heWJlIEkg
+YW0gbm90IHN1cmUgd2hpY2ggZHJpdmVycyBhcmUgaG90IGFuZCB3aGljaCBvbmVzIGRvIG5vdCBu
+ZWVkIHRvbyBtdWNoIGF0dGVudGlvbi4KV2l0aCB0aGlzIHBhdGNoIHNjcmlwdCwgaXQgd2lsbCBn
+aXZlIHVzIGEgYmV0dGVyIGd1aWRlLgoKQlIvL0Jlcm5hcmQKPgoNCg0K

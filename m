@@ -2,64 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B5AF2C25CA
-	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Nov 2020 13:35:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 791B52C269C
+	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Nov 2020 13:55:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387484AbgKXMfJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 24 Nov 2020 07:35:09 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:52429 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729172AbgKXMfI (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 24 Nov 2020 07:35:08 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1khXXE-0004vU-LI; Tue, 24 Nov 2020 12:35:04 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Boris Brezillon <bbrezillon@kernel.org>,
-        Nicolas Pitre <npitre@baylibre.com>,
-        linux-i3c@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] i3c/master: Fix uninitialized variable next_addr
-Date:   Tue, 24 Nov 2020 12:35:04 +0000
-Message-Id: <20201124123504.396249-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.29.2
+        id S2387748AbgKXMzX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 24 Nov 2020 07:55:23 -0500
+Received: from nat-hk.nvidia.com ([203.18.50.4]:37709 "EHLO nat-hk.nvidia.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1733265AbgKXMzW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 24 Nov 2020 07:55:22 -0500
+Received: from HKMAIL104.nvidia.com (Not Verified[10.18.92.9]) by nat-hk.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+        id <B5fbd02b60000>; Tue, 24 Nov 2020 20:55:18 +0800
+Received: from HKMAIL102.nvidia.com (10.18.16.11) by HKMAIL104.nvidia.com
+ (10.18.16.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 24 Nov
+ 2020 12:55:18 +0000
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.177)
+ by HKMAIL102.nvidia.com (10.18.16.11) with Microsoft SMTP Server (TLS) id
+ 15.0.1473.3 via Frontend Transport; Tue, 24 Nov 2020 12:55:18 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fSvzx9ht9qPbnHgIOF2uy156/1Avv0hB8PKD2qDLbLlMYypO5JsANB9oh1XG227mqaWAUwb6w8N7zV15UqSjlnx3f9xEa1+8rvmVrHFHtcx4lnjdTJHfgZAOkOuBD48m2+k09PtRrEZaqrlvc4Od12YuIJkfiaNvOdiS9JtrNIuwZcYisZ85ZrFBUNguZ1vSYr+dRyRtACF+4OGszeZ45WtDdgfS9Cidq9E7psxDPjeX94dZbyJHupNJKm3w06iwNAPlSJ37rO2dgbnOcGrJEwzUWq3CrLUgOeOTQOW+0Yod0C/GRj6fZd2vclTgxFLAn3BFPC3D6geWxWy7yhezFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=do2HQg6+NP23aqNwbeJuyw+TWGJch7Ff/6hfUrkfCr0=;
+ b=j5vG/dHCeKYsxPdeAjk+WEl5PBQvTvJEp5RlSDvXDHzq3QfprftcpksFqx6i2agmSPFOnNU5U57ZpgFgfhMjCMaLNBtxmHf0U+hDD0QgPVYlDVv0eRPsCzeS98A3jUtd8gN3MrWEwTARJVu+8/oJZMsVxPWBmnZcij6sFrpS+nS5157gLOihg3EF1TLJulyHFei4TJc050AiiiMielrAMCsJW6x4r65sCzcn40yHxQU0yaqhQcJcKUHHZWq/ly7CFc6SSw3BjKrs0IV82CJe+HMela85clwYkRDSosgHgwo5343BSByw8mYG5H75R3+GWqWFd2I471uS5ZS1zqg/Zg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
+ by DM6PR12MB4057.namprd12.prod.outlook.com (2603:10b6:5:213::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3589.20; Tue, 24 Nov
+ 2020 12:55:16 +0000
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::e40c:730c:156c:2ef9]) by DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::e40c:730c:156c:2ef9%7]) with mapi id 15.20.3589.022; Tue, 24 Nov 2020
+ 12:55:15 +0000
+Date:   Tue, 24 Nov 2020 08:55:13 -0400
+From:   Jason Gunthorpe <jgg@nvidia.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+CC:     <dennis.dalessandro@cornelisnetworks.com>,
+        <mike.marciniszyn@cornelisnetworks.com>, <dledford@redhat.com>,
+        <linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] IB/qib: Use dma_set_mask_and_coherent to simplify code
+Message-ID: <20201124125513.GA85927@nvidia.com>
+References: <20201121095127.1335228-1-christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20201121095127.1335228-1-christophe.jaillet@wanadoo.fr>
+X-ClientProxiedBy: MN2PR15CA0060.namprd15.prod.outlook.com
+ (2603:10b6:208:237::29) To DM6PR12MB3834.namprd12.prod.outlook.com
+ (2603:10b6:5:14a::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from mlx.ziepe.ca (156.34.48.30) by MN2PR15CA0060.namprd15.prod.outlook.com (2603:10b6:208:237::29) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3611.20 via Frontend Transport; Tue, 24 Nov 2020 12:55:15 +0000
+Received: from jgg by mlx with local (Exim 4.94)        (envelope-from <jgg@nvidia.com>)        id 1khXqj-000jiS-UC; Tue, 24 Nov 2020 08:55:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1606222518; bh=do2HQg6+NP23aqNwbeJuyw+TWGJch7Ff/6hfUrkfCr0=;
+        h=ARC-Seal:ARC-Message-Signature:ARC-Authentication-Results:Date:
+         From:To:CC:Subject:Message-ID:References:Content-Type:
+         Content-Disposition:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+         X-MS-Exchange-MessageSentRepresentingType;
+        b=TECiQojiFPlsFp9RIA04GGM6quEMo7Aef20u5gu9tihiSwOwXgg3pD8suDqwU0wpP
+         Df9aV+0hW+4dSlWVXrXjuI7F6qTlOFW47xM4KxilUBp1+Vl0H2PUFjfLdpsA1TQzQP
+         36AiWMoPYzcvPKMl0C+Ei0zopQwAyADM/6PoWFtqUclmnsOkPIkODr/zPYzBPGw4V9
+         al9k3rYVm61XiGdi3Dt9iAdpaj04mPeEGccebzTBqqhiwUj6D9YiJbwWJLVF7t4Vp3
+         t+KImW7UuZ9KO9AnqWXfNGXYoxuX+MJlxRk1YEfqe2fHUq9OVfxChdluBJ+pEhBmV3
+         odVuKGc4k771w==
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Sat, Nov 21, 2020 at 10:51:27AM +0100, Christophe JAILLET wrote:
+> 'pci_set_dma_mask()' + 'pci_set_consistent_dma_mask()' can be replaced by
+> an equivalent 'dma_set_mask_and_coherent()' which is much less verbose.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Acked-by: Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>
+> ---
+>  drivers/infiniband/hw/qib/qib_pcie.c | 11 ++---------
+>  1 file changed, 2 insertions(+), 9 deletions(-)
 
-The variable next_addr is not initialized and is being used in a call
-to i3c_master_get_free_addr as a starting point to find the next address.
-Fix this by initializing next_addr to 0 to avoid an uninitialized garbage
-starting address from being used.
+Applied to for-next, thanks
 
-Addresses-Coverity: ("Uninitialized scalar variable")
-Fixes: 9ad9a52cce28 ("i3c/master: introduce the mipi-i3c-hci driver")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/i3c/master/mipi-i3c-hci/cmd_v1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c b/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c
-index 6dd234a82892..d97c3175e0e2 100644
---- a/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c
-@@ -293,7 +293,7 @@ static int hci_cmd_v1_daa(struct i3c_hci *hci)
- {
- 	struct hci_xfer *xfer;
- 	int ret, dat_idx = -1;
--	u8 next_addr;
-+	u8 next_addr = 0;
- 	u64 pid;
- 	unsigned int dcr, bcr;
- 	DECLARE_COMPLETION_ONSTACK(done);
--- 
-2.29.2
-
+Jason

@@ -2,35 +2,46 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DE222C24F9
-	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Nov 2020 12:51:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6D092C2512
+	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Nov 2020 12:57:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733052AbgKXLvF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 24 Nov 2020 06:51:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46782 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733039AbgKXLvE (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 24 Nov 2020 06:51:04 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7645CC0613D6;
-        Tue, 24 Nov 2020 03:51:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=5kw0QxLQoOgDyVGj4iKmiuA5NMWKFQFej/HFL8JZlH4=; b=hKJIBhFP4aGspoOz/5N86hxScK
-        ucjZLQ76V2OlRxEZD9uHaySwMEhir8SlIqu34afox2tfguAdfYYjQMenNlaBOoddmuvmXH20p60kN
-        jXXCfLO4YjJY9EN7nosXyN5sAs5lOr+7iQCfScnN+L3+bXkh7HFSI7+bvhKtjhxNDtFXbyVjkHyHf
-        1b+nkIcom9n2+t67POw/+ph54B8edFfXKBD76y6n7tAqipRCRWlxC+HHgSZkHrXHfEJ8GKQvQ5sUM
-        sGfcGhnoEX+0d3NS66+3gdoG7szLA0ZcuPp5y9UmVyqBb/tylyIE+PEtHSEHY0/VkY5I0PQ5JMm9W
-        BK63/xPw==;
-Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1khWqY-0000NM-3G; Tue, 24 Nov 2020 11:50:58 +0000
-Date:   Tue, 24 Nov 2020 11:50:58 +0000
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Jann Horn <jannh@google.com>
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        id S1733168AbgKXL4s (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 24 Nov 2020 06:56:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44246 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728791AbgKXL4s (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 24 Nov 2020 06:56:48 -0500
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4659A2076B;
+        Tue, 24 Nov 2020 11:56:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606219007;
+        bh=y7hNCHDhOzCdJOZUojv/G3eF5vHntYRU1MQ8NUR/VkE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Ubr93BgqQ9elnxKRaC9Uy7kW6GwLt9O4FCZNYRLejie3j/brR5HVW5ioNG+KN2IuL
+         sUw9acNqGq7fbsqGEMgVwe2KVq/Y8+eGyRkBRIdjrTxo806Wp+dVMLh5vXOB4uozLC
+         y6nIIF4TUE5N+aZA/krt5hTNXOMM4uegvBpiYbw4=
+Received: by mail-ot1-f49.google.com with SMTP id z24so5058288oto.6;
+        Tue, 24 Nov 2020 03:56:47 -0800 (PST)
+X-Gm-Message-State: AOAM530rHvvpBrg2sSerYl252eTJ1Su4xRcEBrPPunAUxQhqm3TCQpES
+        NiGo5dxS3V0RzDT+EmIcb/c07j1frO7CGbcYhrs=
+X-Google-Smtp-Source: ABdhPJyIlbxK8kUI/Gd+t4sq0176BR9e9qJAqPwFGr3P2q+YWGeihJdMWgrJLWFUEZQLFdVjeb1/n3JnWGVkwsHznUo=
+X-Received: by 2002:a9d:6317:: with SMTP id q23mr2756972otk.251.1606219006415;
+ Tue, 24 Nov 2020 03:56:46 -0800 (PST)
+MIME-Version: 1.0
+References: <20201124104030.903-1-lukas.bulwahn@gmail.com> <CAG48ez1FqJYay1F=LUt84DVHd+k0=gXohwhTnwv=t1sv=hTSjw@mail.gmail.com>
+ <20201124115058.GA32060@infradead.org>
+In-Reply-To: <20201124115058.GA32060@infradead.org>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Tue, 24 Nov 2020 12:56:30 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a2rVKQ5UHzcycu=0QpjtSQ3Nne4Xre-7+V27vmCe9yfKg@mail.gmail.com>
+Message-ID: <CAK8P3a2rVKQ5UHzcycu=0QpjtSQ3Nne4Xre-7+V27vmCe9yfKg@mail.gmail.com>
+Subject: Re: [PATCH] zlib: define get_unaligned16() only when used
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     Jann Horn <jannh@google.com>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Arnd Bergmann <arnd@arndb.de>, Tom Rix <trix@redhat.com>,
         Nathan Chancellor <natechancellor@gmail.com>,
@@ -38,36 +49,39 @@ Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
         clang-built-linux <clang-built-linux@googlegroups.com>,
         kernel-janitors@vger.kernel.org,
         kernel list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] zlib: define get_unaligned16() only when used
-Message-ID: <20201124115058.GA32060@infradead.org>
-References: <20201124104030.903-1-lukas.bulwahn@gmail.com>
- <CAG48ez1FqJYay1F=LUt84DVHd+k0=gXohwhTnwv=t1sv=hTSjw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAG48ez1FqJYay1F=LUt84DVHd+k0=gXohwhTnwv=t1sv=hTSjw@mail.gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Nov 24, 2020 at 12:08:40PM +0100, Jann Horn wrote:
-> > Since commit acaab7335bd6 ("lib/zlib: remove outdated and incorrect
-> > pre-increment optimization"), get_unaligned16() is only used when
-> > !CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS.
+On Tue, Nov 24, 2020 at 12:51 PM Christoph Hellwig <hch@infradead.org> wrote:
+> On Tue, Nov 24, 2020 at 12:08:40PM +0100, Jann Horn wrote:
+> > > Since commit acaab7335bd6 ("lib/zlib: remove outdated and incorrect
+> > > pre-increment optimization"), get_unaligned16() is only used when
+> > > !CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS.
+> > >
+> > > Hence, make CC=clang W=1 warns:
+> > >
+> > >   lib/zlib_inflate/inffast.c:20:1:
+> > >     warning: unused function 'get_unaligned16' [-Wunused-function]
+> > >
+> > > Define get_unaligned16() only when it is actually used.
+> > >
+> > > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 > >
-> > Hence, make CC=clang W=1 warns:
-> >
-> >   lib/zlib_inflate/inffast.c:20:1:
-> >     warning: unused function 'get_unaligned16' [-Wunused-function]
-> >
-> > Define get_unaligned16() only when it is actually used.
-> >
-> > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> 
-> AFAICS a nicer option would be to "#include <asm/unaligned.h>" and
-> then use "get_unaligned", which should automatically do the right
-> thing everywhere and remove the need for defining get_unaligned16()
-> and checking CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS entirely?
+> > AFAICS a nicer option would be to "#include <asm/unaligned.h>" and
+> > then use "get_unaligned", which should automatically do the right
+> > thing everywhere and remove the need for defining get_unaligned16()
+> > and checking CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS entirely?
+>
+> Yes, that is the right thing to do.
 
-Yes, that is the right thing to do.
+It's possible that this didn't work when the code was originally added:
+The decompressor functions are called from the compressed boot path,
+which is a bit limited regarding which headers it can include, at least
+on some architectures.
+
+I would recommend test-building this for all architectures that include
+../../../../lib/decompress_inflate.c from their boot code.
+
+     Arnd

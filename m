@@ -2,105 +2,135 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 324192C2BBA
-	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Nov 2020 16:48:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE3FA2C2D10
+	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Nov 2020 17:38:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389828AbgKXPsD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 24 Nov 2020 10:48:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55432 "EHLO
+        id S2390500AbgKXQhF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 24 Nov 2020 11:37:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389529AbgKXPsD (ORCPT
+        with ESMTP id S2390077AbgKXQhF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 24 Nov 2020 10:48:03 -0500
-Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com [IPv6:2607:f8b0:4864:20::f43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF9DCC0613D6
-        for <kernel-janitors@vger.kernel.org>; Tue, 24 Nov 2020 07:48:02 -0800 (PST)
-Received: by mail-qv1-xf43.google.com with SMTP id y11so10776738qvu.10
-        for <kernel-janitors@vger.kernel.org>; Tue, 24 Nov 2020 07:48:02 -0800 (PST)
+        Tue, 24 Nov 2020 11:37:05 -0500
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 307CFC0613D6;
+        Tue, 24 Nov 2020 08:37:05 -0800 (PST)
+Received: by mail-wr1-x442.google.com with SMTP id z7so7150268wrn.3;
+        Tue, 24 Nov 2020 08:37:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:in-reply-to:message-id:references
-         :mime-version;
-        bh=ubJInrGSsPLGKGouG7fpjnMRMu6mjU1dee+kkLRQJso=;
-        b=hHQILDw03u/sl9BOCAlhrVjo9pT1JNk1zqKicW8pDpjpdemn2tv0bQrmpqWWp9TJPp
-         9WRL3NIb6Oyo/7pQmptCxsdnzIgS4TZC+smRhtxd34Vj6OvTCQWwuPS7kFj2+UAO0Xgy
-         4/0c9vuOfTsKe5SFMTjEs+G8oz0P5j3G7CxmCLKbzuAE8hevvUEVPk5huxPVSZ4cBm7f
-         JVIG/DOVhd6fUdJA+yPBVPBoMjucv8i/mhsuJdwb+V9mEc8pocbx72lGwXRhFQ7FxBYO
-         c4k508M0ay+aTrTr3wbwrpo4b+kQu5nNDoW/aFjAK/pypvbh7Cby3FBjs7cmT3ChR44g
-         IlVQ==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=D8z5dUSRrl31L37ZHuzIVMwY+qduRSvxquBzIWeK1EA=;
+        b=CP0mL9qyVcg3I0wRgcqt4n4v/oW5jFZdIR00tPbAx/omKbEV+qAUIQLgGdOqJrQSjd
+         h4/W2NkDS3Xyv7HgYsadJ9ugSljPPtKoSTMz8/vkpYaPI/74khn8dtm8vF27VIIxbXvB
+         Rzf4TTJZZ8UPEpU3WakrVDpcEw/YVeZdKayQx2mbBl/+T6nBLhPZBtgkkX9punvKAiF6
+         syOjvrD//GOdyumN24EIkwCrIUAaj0MND21hfUfj7poC3RXk4HVX1LFKrAOJ3uBn1Z7w
+         Bc1UOLwpDnwVS21NQHgnP2PUVMDjHISxPpG4c0zUHjeuhRjXCaLBhDh/PNIDOaLymj2b
+         /9oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
-         :references:mime-version;
-        bh=ubJInrGSsPLGKGouG7fpjnMRMu6mjU1dee+kkLRQJso=;
-        b=qQI2+rUNuJgBmYkCjzwDaTlBYNbJE8q4d/y4g7IRt2PCSq5vtl4AE3awZuJB3W5i31
-         sdLfZukvane0Ksv3HmtniIMBELkS7BDxyjp+oFyZdxIKnMjcdGbXxx7ckQHddvVfkV6t
-         vvgwfubnR7je+zYGYoCC1ddVxCYoz+soxIKRoMzI5xZVaC7LGkcnz7enxqT1fdOslVgX
-         a5u157wDIKfrN1/i1RC9oExi8iuYnCGzbrpo61o8TztfwIp6n9cwh+1qDhFaCnLsNMbT
-         QVeUqmOHAdOxg7Wct+lXJfHq7TQXhyU8wzx+OmRe3d9XLBf/IJ23O2UgNd2ix7AFYOcK
-         Ozfw==
-X-Gm-Message-State: AOAM5320ngyGMu61mSZJ5SfmYyUl0RAZXJiNA13KJAjIrJDkAZRx7kiH
-        TRxZLyHDyNbUS54yCUUjck5j3Q==
-X-Google-Smtp-Source: ABdhPJydlpNAWXjt4Gk87KvAf/FoPLdSEj4YPKw88iYN9nz6ZjtmfbEXGr3ZkwuOUekwx2ztrZ7ydg==
-X-Received: by 2002:ad4:524b:: with SMTP id s11mr5485759qvq.3.1606232882237;
-        Tue, 24 Nov 2020 07:48:02 -0800 (PST)
-Received: from xanadu.home (modemcable076.50-203-24.mc.videotron.ca. [24.203.50.76])
-        by smtp.gmail.com with ESMTPSA id i9sm12931180qtp.72.2020.11.24.07.48.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2020 07:48:01 -0800 (PST)
-Date:   Tue, 24 Nov 2020 10:48:00 -0500 (EST)
-From:   Nicolas Pitre <npitre@baylibre.com>
-To:     Colin King <colin.king@canonical.com>
-cc:     Boris Brezillon <bbrezillon@kernel.org>,
-        linux-i3c@lists.infradead.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] i3c/master: Fix uninitialized variable next_addr
-In-Reply-To: <20201124123504.396249-1-colin.king@canonical.com>
-Message-ID: <nycvar.YSQ.7.78.906.2011241046530.2184@knanqh.ubzr>
-References: <20201124123504.396249-1-colin.king@canonical.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=D8z5dUSRrl31L37ZHuzIVMwY+qduRSvxquBzIWeK1EA=;
+        b=PbVtpBnP2yIN3r8F7BdMYlDvjmI3vH3/YBpcDqqKj+uvUgSOp3m7td5xeIPeKA5Qxe
+         rMVLkXg5M34apoSwmJO1EctuDrtPRFf98oea9LGw/pZLqnJ32+vsGq2nQ9xH1oH+90Vb
+         9QxcVg2yBjEA5CT0ORixGnllCPLoq0+eCjgngkpPxoM+nA2nLat9ieNaMXm0e8T8sq7Y
+         UqsGOY1jXfYvfizMw6s6kntXD5ZP4mul+QF70boLLeQkzaeT/toJilqA6uLXAuefL48Z
+         U5N4b6wAvMQk7THYCRRYYcWOy4ktDMl6VJAMTiZuLdGjnc/phbBVu5m6q3g42F+cCJBo
+         sr+g==
+X-Gm-Message-State: AOAM530ntJrY2u3WLhASDBssc2egS9TyAP/2K0xMXCt+5yBNOW8lFBo4
+        ZNEdFIoHRrYYWctyIuM3EGF7HyQbbpO5Lv6nNDA=
+X-Google-Smtp-Source: ABdhPJzfxDMC7ETJE9yWHcvshWf4V3ciNOuGH8E1IA2nDwH0ep/3485i7wz8onEl34b1p3KBHYSz6fri9+kQaZZcCLw=
+X-Received: by 2002:adf:e9c9:: with SMTP id l9mr6416532wrn.124.1606235823983;
+ Tue, 24 Nov 2020 08:37:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20201123105417.198314-1-colin.king@canonical.com> <DM6PR12MB26197807564F833B9A2E18E8E4FB0@DM6PR12MB2619.namprd12.prod.outlook.com>
+In-Reply-To: <DM6PR12MB26197807564F833B9A2E18E8E4FB0@DM6PR12MB2619.namprd12.prod.outlook.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Tue, 24 Nov 2020 11:36:52 -0500
+Message-ID: <CADnq5_OHzmR4SE4GXukZX2Z2byqYkMRy-G2EXUTvz+yuwsE6fw@mail.gmail.com>
+Subject: Re: [PATCH] drm/amd/powerplay: fix spelling mistake
+ "smu_state_memroy_block" -> "smu_state_memory_block"
+To:     "Quan, Evan" <Evan.Quan@amd.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Koenig, Christian" <Christian.Koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        "Wang, Kevin(Yang)" <Kevin1.Wang@amd.com>,
+        "Gui, Jack" <Jack.Gui@amd.com>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 24 Nov 2020, Colin King wrote:
+Applied.  Thanks!
 
+Alex
+
+On Mon, Nov 23, 2020 at 7:42 PM Quan, Evan <Evan.Quan@amd.com> wrote:
+>
+> [AMD Official Use Only - Internal Distribution Only]
+>
+> Reviewed-by: Evan Quan <evan.quan@amd.com>
+>
+> -----Original Message-----
+> From: Colin King <colin.king@canonical.com>
+> Sent: Monday, November 23, 2020 6:54 PM
+> To: Deucher, Alexander <Alexander.Deucher@amd.com>; Koenig, Christian <Ch=
+ristian.Koenig@amd.com>; David Airlie <airlied@linux.ie>; Daniel Vetter <da=
+niel@ffwll.ch>; Quan, Evan <Evan.Quan@amd.com>; Wang, Kevin(Yang) <Kevin1.W=
+ang@amd.com>; Gui, Jack <Jack.Gui@amd.com>; amd-gfx@lists.freedesktop.org; =
+dri-devel@lists.freedesktop.org
+> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: [PATCH] drm/amd/powerplay: fix spelling mistake "smu_state_memro=
+y_block" -> "smu_state_memory_block"
+>
 > From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable next_addr is not initialized and is being used in a call
-> to i3c_master_get_free_addr as a starting point to find the next address.
-> Fix this by initializing next_addr to 0 to avoid an uninitialized garbage
-> starting address from being used.
-> 
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Fixes: 9ad9a52cce28 ("i3c/master: introduce the mipi-i3c-hci driver")
+>
+> The struct name smu_state_memroy_block contains a spelling mistake, renam=
+e it to smu_state_memory_block
+>
+> Fixes: 8554e67d6e22 ("drm/amd/powerplay: implement power_dpm_state sys in=
+terface for SMU11")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Acked-by: Nicolas Pitre <npitre@baylibre.com>
-
-
-
-
-
 > ---
->  drivers/i3c/master/mipi-i3c-hci/cmd_v1.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c b/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c
-> index 6dd234a82892..d97c3175e0e2 100644
-> --- a/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c
-> +++ b/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c
-> @@ -293,7 +293,7 @@ static int hci_cmd_v1_daa(struct i3c_hci *hci)
->  {
->  	struct hci_xfer *xfer;
->  	int ret, dat_idx = -1;
-> -	u8 next_addr;
-> +	u8 next_addr = 0;
->  	u64 pid;
->  	unsigned int dcr, bcr;
->  	DECLARE_COMPLETION_ONSTACK(done);
-> -- 
-> 2.29.2
-> 
-> 
+>  drivers/gpu/drm/amd/pm/inc/amdgpu_smu.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/pm/inc/amdgpu_smu.h b/drivers/gpu/drm/am=
+d/pm/inc/amdgpu_smu.h
+> index 7550757cc059..a559ea2204c1 100644
+> --- a/drivers/gpu/drm/amd/pm/inc/amdgpu_smu.h
+> +++ b/drivers/gpu/drm/amd/pm/inc/amdgpu_smu.h
+> @@ -99,7 +99,7 @@ struct smu_state_display_block {
+>  bool              enable_vari_bright;
+>  };
+>
+> -struct smu_state_memroy_block {
+> +struct smu_state_memory_block {
+>  bool              dll_off;
+>  uint8_t                 m3arb;
+>  uint8_t                 unused[3];
+> @@ -146,7 +146,7 @@ struct smu_power_state {
+>  struct smu_state_validation_block             validation;
+>  struct smu_state_pcie_block                   pcie;
+>  struct smu_state_display_block                display;
+> -struct smu_state_memroy_block                 memory;
+> +struct smu_state_memory_block                 memory;
+>  struct smu_state_software_algorithm_block     software;
+>  struct smu_uvd_clocks                         uvd_clocks;
+>  struct smu_hw_power_state                     hardware;
+> --
+> 2.28.0
+>
+> _______________________________________________
+> amd-gfx mailing list
+> amd-gfx@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/amd-gfx

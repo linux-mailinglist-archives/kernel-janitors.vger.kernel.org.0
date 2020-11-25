@@ -2,86 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C7102C349D
-	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Nov 2020 00:24:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B01A32C3E60
+	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Nov 2020 11:47:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387752AbgKXXXS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 24 Nov 2020 18:23:18 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:50018 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2387746AbgKXXXS (ORCPT
+        id S1729213AbgKYKqe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Nov 2020 05:46:34 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:36148 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728006AbgKYKqc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 24 Nov 2020 18:23:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1606260197;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=juO2ukM0vWEz2TyhMweuiHZkMxI8vTNzyetnn/4z4BE=;
-        b=A7BpR2UkLEnMKa/0H7Mmu1+00OIJSAnX3Eth5gvI6qTDxrb0TRJqPq488LNsvoJPmBFbwm
-        OH1SmFVQ74q08UyZh8wDqMjMhpaelBtB0sL96hCwSexsvHVryqag0R1oECANvByvjgX+7E
-        aHVnF77qtntPfJa22DcpJ7778QjLhOw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-583-OIAh5lbUNuqNJH_B7lfNAA-1; Tue, 24 Nov 2020 18:23:15 -0500
-X-MC-Unique: OIAh5lbUNuqNJH_B7lfNAA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CB07680F041;
-        Tue, 24 Nov 2020 23:23:13 +0000 (UTC)
-Received: from ovpn-112-111.phx2.redhat.com (ovpn-112-111.phx2.redhat.com [10.3.112.111])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 541061001E73;
-        Tue, 24 Nov 2020 23:23:13 +0000 (UTC)
-Message-ID: <b09bdc573715f51117c788a9b02d6b87c9735c4b.camel@redhat.com>
-Subject: Re: [PATCH][next] scsi: pm8001: remove space in a debug message
-From:   "Ewan D. Milne" <emilne@redhat.com>
-To:     Colin King <colin.king@canonical.com>, linux-scsi@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Tue, 24 Nov 2020 18:23:12 -0500
-In-Reply-To: <20201124093828.307709-1-colin.king@canonical.com>
-References: <20201124093828.307709-1-colin.king@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+        Wed, 25 Nov 2020 05:46:32 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 1B8B51C0B7D; Wed, 25 Nov 2020 11:46:30 +0100 (CET)
+Date:   Wed, 25 Nov 2020 11:46:29 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        dmurphy@ti.com, jacek.anaszewski@gmail.com,
+        linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] leds: lp50xx: Fix an error handling path in
+ 'lp50xx_probe_dt()'
+Message-ID: <20201125104629.GE25562@amd>
+References: <20200922210515.385099-1-christophe.jaillet@wanadoo.fr>
+ <20200923133510.GJ4282@kadam>
+ <faa49efc-5ba5-b6bd-b486-2f7c4611219b@wanadoo.fr>
+ <20200924064932.GP18329@kadam>
+ <20200928115301.GB3987353@kuha.fi.intel.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="idY8LE8SD6/8DnRI"
+Content-Disposition: inline
+In-Reply-To: <20200928115301.GB3987353@kuha.fi.intel.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 2020-11-24 at 09:38 +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There are two words that need separating with a space in a 
-> pm8001_dbg message. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/scsi/pm8001/pm8001_hwi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/scsi/pm8001/pm8001_hwi.c
-> b/drivers/scsi/pm8001/pm8001_hwi.c
-> index 08d6cc9b50db..c8d4d87c5473 100644
-> --- a/drivers/scsi/pm8001/pm8001_hwi.c
-> +++ b/drivers/scsi/pm8001/pm8001_hwi.c
-> @@ -1031,7 +1031,7 @@ pm8001_chip_soft_rst(struct pm8001_hba_info
-> *pm8001_ha)
->  	regVal = pm8001_cr32(pm8001_ha, 2,
-> GSM_WRITE_DATA_PARITY_CHECK);
->  	pm8001_cw32(pm8001_ha, 2, GSM_WRITE_DATA_PARITY_CHECK,
-> regVal3);
->  	pm8001_dbg(pm8001_ha, INIT,
-> -		   "GSM 0x700048 - Write Data Parity Check Enableis set
-> to = 0x%x\n",
-> +		   "GSM 0x700048 - Write Data Parity Check Enable is
-> set to = 0x%x\n",
->  		   pm8001_cr32(pm8001_ha, 2,
-> GSM_WRITE_DATA_PARITY_CHECK));
->  
->  	/* step 13: bring the IOP and AAP1 out of reset */
 
-Reviewed-by: Ewan D. Milne <emilne@redhat.com>
+--idY8LE8SD6/8DnRI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+Hi!
 
+> > > > I have been trying to teach Smatch to understand reference counting=
+ so
+> > > > it can discover these kinds of bugs automatically.
+> > > >=20
+> > > > I don't know how software_node_get_next_child() can work when it do=
+esn't
+> > > > call kobject_get().  This sort of bug would have been caught in tes=
+ting
+> > > > because it affects the success path so I must be reading the code w=
+rong.
+> > > >=20
+> > >=20
+> > > I had the same reading of the code and thought that I was missing som=
+ething
+> > > somewhere.
+> > >=20
+> > > There is the same question about 'acpi_get_next_subnode' which is als=
+o a
+> > > '.get_next_child_node' function, without any ref counting, if I'm cor=
+rect.
+> > >=20
+> >=20
+> > Yeah, but there aren't any ->get/put() ops for the acpi_get_next_subnod=
+e()
+> > stuff so it's not a problem.  (Presumably there is some other sort of
+> > refcounting policy there).
+>=20
+> OK, so I guess we need to make software_node_get_next_child()
+> mimic the behaviour of of_get_next_available_child(), and not
+> acpi_get_next_subnode(). Does the attached patch work?
+
+Does not sound unreasonable. Did it get solved, somehow?
+
+Best regards,
+								Pavel
+
+--=20
+http://www.livejournal.com/~pavelmachek
+
+--idY8LE8SD6/8DnRI
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAl++NgUACgkQMOfwapXb+vIHzwCgworQ7zr2uP1ShsLQgTp5zabE
+BLcAnjZC4LxmDlCixRQv6XHtwCEAST/3
+=iaU9
+-----END PGP SIGNATURE-----
+
+--idY8LE8SD6/8DnRI--

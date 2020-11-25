@@ -2,37 +2,48 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC6242C47A6
-	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Nov 2020 19:30:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 402652C47E9
+	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Nov 2020 19:49:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733089AbgKYS3n (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 25 Nov 2020 13:29:43 -0500
-Received: from verein.lst.de ([213.95.11.211]:60077 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730555AbgKYS3n (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 25 Nov 2020 13:29:43 -0500
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 6C9CA68B02; Wed, 25 Nov 2020 19:29:41 +0100 (CET)
-Date:   Wed, 25 Nov 2020 19:29:41 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
+        id S1730520AbgKYStW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Nov 2020 13:49:22 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:47928 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730416AbgKYStV (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 25 Nov 2020 13:49:21 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212])
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1khzqx-00058N-FB; Wed, 25 Nov 2020 18:49:19 +0000
+Subject: Re: [PATCH] dma-mapping: Fix sizeof() mismatch on tsk allocation
+To:     Christoph Hellwig <hch@lst.de>,
+        "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
+Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
         Robin Murphy <robin.murphy@arm.com>,
         "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
         "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] dma-mapping: Fix sizeof() mismatch on tsk allocation
-Message-ID: <20201125182941.GB10377@lst.de>
-References: <20201125140523.1880669-1-colin.king@canonical.com> <a6c5e5ed9a66485da301c1e91b56ccc7@hisilicon.com>
+References: <20201125140523.1880669-1-colin.king@canonical.com>
+ <a6c5e5ed9a66485da301c1e91b56ccc7@hisilicon.com>
+ <20201125182941.GB10377@lst.de>
+From:   Colin Ian King <colin.king@canonical.com>
+Message-ID: <cf79f1ba-aeba-6237-81c8-ca7efc1425e2@canonical.com>
+Date:   Wed, 25 Nov 2020 18:49:19 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a6c5e5ed9a66485da301c1e91b56ccc7@hisilicon.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20201125182941.GB10377@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-I'll fold this one in as well.
+On 25/11/2020 18:29, Christoph Hellwig wrote:
+> I'll fold this one in as well.
+> 
+OK, so two SoB's disappear?
+

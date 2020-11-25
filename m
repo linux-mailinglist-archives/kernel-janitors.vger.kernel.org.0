@@ -2,31 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 632BA2C41C4
-	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Nov 2020 15:07:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACC032C420A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Nov 2020 15:18:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729895AbgKYOFh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 25 Nov 2020 09:05:37 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:39456 "EHLO
+        id S1729998AbgKYOSN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Nov 2020 09:18:13 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:40072 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725792AbgKYOFg (ORCPT
+        with ESMTP id S1729847AbgKYOSN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 25 Nov 2020 09:05:36 -0500
+        Wed, 25 Nov 2020 09:18:13 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1khvQB-0000Hp-Df; Wed, 25 Nov 2020 14:05:23 +0000
+        id 1khvcU-0001hB-PX; Wed, 25 Nov 2020 14:18:06 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Barry Song <song.bao.hua@hisilicon.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        iommu@lists.linux-foundation.org
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, Tao Zhou <tao.zhou1@amd.com>,
+        Guchun Chen <guchun.chen@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] dma-mapping: Fix sizeof() mismatch on tsk allocation
-Date:   Wed, 25 Nov 2020 14:05:23 +0000
-Message-Id: <20201125140523.1880669-1-colin.king@canonical.com>
+Subject: [PATCH][next] drm/amdgpu: Fix sizeof() mismatch in bps_bo kmalloc_array creation
+Date:   Wed, 25 Nov 2020 14:18:06 +0000
+Message-Id: <20201125141806.1881036-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,29 +38,30 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-An incorrect sizeof() is being used, sizeof(tsk) is not correct, it should
-be sizeof(*tsk). Fix it.
+An incorrect sizeof() is being used, sizeof((*data)->bps_bo) is not
+correct, it should be sizeof(*(*data)->bps_bo).  It just so happens
+to work because the sizes are the same.  Fix it.
 
 Addresses-Coverity: ("Sizeof not portable (SIZEOF_MISMATCH)")
-Fixes: bfd2defed94d ("dma-mapping: add benchmark support for streaming DMA APIs")
+Fixes: 5278a159cf35 ("drm/amdgpu: support reserve bad page for virt (v3)")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- kernel/dma/map_benchmark.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/dma/map_benchmark.c b/kernel/dma/map_benchmark.c
-index e1e37603d01b..b1496e744c68 100644
---- a/kernel/dma/map_benchmark.c
-+++ b/kernel/dma/map_benchmark.c
-@@ -121,7 +121,7 @@ static int do_map_benchmark(struct map_benchmark_data *map)
- 	int ret = 0;
- 	int i;
- 
--	tsk = kmalloc_array(threads, sizeof(tsk), GFP_KERNEL);
-+	tsk = kmalloc_array(threads, sizeof(*tsk), GFP_KERNEL);
- 	if (!tsk)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index 2d51b7694d1f..df15d33e3c5c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -283,7 +283,7 @@ static int amdgpu_virt_init_ras_err_handler_data(struct amdgpu_device *adev)
  		return -ENOMEM;
  
+ 	bps = kmalloc_array(align_space, sizeof((*data)->bps), GFP_KERNEL);
+-	bps_bo = kmalloc_array(align_space, sizeof((*data)->bps_bo), GFP_KERNEL);
++	bps_bo = kmalloc_array(align_space, sizeof(*(*data)->bps_bo), GFP_KERNEL);
+ 
+ 	if (!bps || !bps_bo) {
+ 		kfree(bps);
 -- 
 2.29.2
 

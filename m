@@ -2,69 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B1452C48A7
-	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Nov 2020 20:43:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0E4F2C496F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Nov 2020 22:01:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728658AbgKYTm5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 25 Nov 2020 14:42:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60872 "EHLO
+        id S1730265AbgKYU7j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Nov 2020 15:59:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727251AbgKYTm5 (ORCPT
+        with ESMTP id S1726908AbgKYU7j (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 25 Nov 2020 14:42:57 -0500
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3428C0617A7
-        for <kernel-janitors@vger.kernel.org>; Wed, 25 Nov 2020 11:42:56 -0800 (PST)
-Received: by mail-wm1-x32c.google.com with SMTP id a186so3018281wme.1
-        for <kernel-janitors@vger.kernel.org>; Wed, 25 Nov 2020 11:42:56 -0800 (PST)
+        Wed, 25 Nov 2020 15:59:39 -0500
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05D8CC0613D4
+        for <kernel-janitors@vger.kernel.org>; Wed, 25 Nov 2020 12:59:29 -0800 (PST)
+Received: by mail-lj1-x243.google.com with SMTP id i17so3748760ljd.3
+        for <kernel-janitors@vger.kernel.org>; Wed, 25 Nov 2020 12:59:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=MT4M9SX2NqdNuOObXhIV8Gtkw+yoDX+gRyJnh+feBwM=;
-        b=GNXPEzzLjAlN4OsAlxWZGpEvd2SHdV/pMw4ynkLCx6wnuO0folSrmmmCeipyPlXZb7
-         SQAxQX/G2jk+LXkyWo7lCHWh0BTSf4ZcSU0PT/KdyavPjFD/jAd+bB/DzZURJJIB/XVe
-         F643eO7hTsDJ5A9osKUhSaqU05IPUIwsYwCCLlP8Zjnbi8GOXUvACS2ZHVuJDNfOuo+T
-         vKqt4mub9V6VkRC1Sgtsq1PyMjUNi0aAwYPdWrwM/kekCNNK+hvKstSEdBkrzIfXDVF1
-         fINqQb+1Pph4tH8dTmSLlH7pBF1f2JEQ7Kjmhfr3/Km4LXRlsYbcVInNgbSILlQkBrOb
-         Z9gA==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=KSc+USIpYmzMEHaLwlR/SOzDt5gT00VeWyTNIbEhUIs=;
+        b=M04Q+nJNQ64PNRROT/3tOL0jupqO3QrHou/ful+jKNW2Tnc5EqT1kzFVo31TvCxJpa
+         vWDxJpgmyAvIdvqOfpnoO0MzXwzR69WnX9v84j9YfJsMiDuTGlMbK4mLxlbX/BW5PelV
+         9a25glA2jNbCbCKda1zAE+UgGGcNVQW/u4/BqG3PNYnjqOOeX4bP5qwsvgqta2sFCom7
+         eR9ArC1Vs7xf4OeBy5gHKlB0/zsq6qkj0YqSK0SzRVrzMpbjDIEYLxLTjhZvfUZ2poRe
+         PYWCie8FZPdAbq7aH/rFHHxHzJXUKgp1HmEJ7lvD6xTZw1qvaDtloTnzJerZG4pN5P0I
+         5w8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=MT4M9SX2NqdNuOObXhIV8Gtkw+yoDX+gRyJnh+feBwM=;
-        b=AgichuIEWoeD1kd1tePFMfxBMsnbOk192AF1HD21XeVjg+hi1lxX70dQgDCm7G6ENa
-         T0qlUaJa+2/UYJ4Kp8VSXOBc12pqFV4cVIaRB8hpKd9va/bZHUpS+tldfjUTISOQySHX
-         UjyNfxh5iFkWyFIbNmNuaRDiRs1mEmXxz5I0mmgpFhf+qs6yDKezL2VRAREtmDSRpyM1
-         J57NA90+yh4fZace9xS2qlddAHKsJI1C8AF+ryIO8ncabkIFt00UY/q3R3mR2/0paSLG
-         xQCiARUbf9cVaxJdBW1dOinuw1zjxBD8unkUwFZtNbpBSY1H/XZiw1q6rFpsAhatLtvr
-         GzRw==
-X-Gm-Message-State: AOAM5334ZnKTeHiB5npg+fVDou55hf+TrjZDVp0tMqK5K1NaFSP77me4
-        A1dKfned2W3exIfooNh7ZJI=
-X-Google-Smtp-Source: ABdhPJzYReRpWYuxuAIgS/S7al56xIfM6JJNMQ3Zt4h+uFJhzUqS/2ha+lCOY8KBHiSIOMS/+RyoHg==
-X-Received: by 2002:a7b:c145:: with SMTP id z5mr5614717wmi.164.1606333375475;
-        Wed, 25 Nov 2020 11:42:55 -0800 (PST)
-Received: from [192.168.1.152] ([102.64.149.89])
-        by smtp.gmail.com with ESMTPSA id u129sm5090970wme.9.2020.11.25.11.42.50
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Wed, 25 Nov 2020 11:42:54 -0800 (PST)
-Message-ID: <5fbeb3be.1c69fb81.a9b8d.bce2@mx.google.com>
-From:   "Dailborh R." <ritundailb333@gmail.com>
-X-Google-Original-From: Dailborh R.
-Content-Type: text/plain; charset="iso-8859-1"
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KSc+USIpYmzMEHaLwlR/SOzDt5gT00VeWyTNIbEhUIs=;
+        b=C0RlEF2OYNw0h1uPnilK0yW1NpPiM/lMJM8ThbE6aMpZooVkZDQ46Vk5wkPlHMEKxL
+         WLlhLteE2z4q1xj2MXfXcokrfmNrOxxHYxeGzNcXnZUh/+/DpxDNT120gUmRoh39EpJp
+         5dOQ55Lk8/4kxzES+pml0+xP3/5iN48qpQGco0M2PrpdPtKDVCpsy6YK2CfTbseueLac
+         MCVqYVZ4+5M1L42YE31DBdJUSxZHILJi39zuS0SAQMmha/heOT6bzTb90Nb5GLW3BbSm
+         BVxai0ino0tSZEnC97VOKQTGY32ClzrWn715nAnyJH/5wSVI5jQwUucDbvwrESkhjDwc
+         1YSw==
+X-Gm-Message-State: AOAM531uKsOhWsbu76BKJZOur734vpI1WiSizawawF56I1CwCOIlwKWq
+        uYD3iB9LVvGbiPvilidwtrpCXQLXvApVm5YUb1mwdlecRlDxzQ==
+X-Google-Smtp-Source: ABdhPJwVX3EcY7GPmnzEgXyZTSKFqwyBVhx9q5jqicnILRhlTpWEhBlLh80EasIgAOmyhBRHb6FiPzKjzTcZOErgx0I=
+X-Received: by 2002:a05:651c:c2:: with SMTP id 2mr1997756ljr.104.1606337967492;
+ Wed, 25 Nov 2020 12:59:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Please reply to me
-To:     Recipients <Dailborh@vger.kernel.org>
-Date:   Wed, 25 Nov 2020 19:42:38 +0000
-Reply-To: dailrrob.83@gmail.com
+References: <20201124121528.395681-1-colin.king@canonical.com>
+In-Reply-To: <20201124121528.395681-1-colin.king@canonical.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 25 Nov 2020 21:59:16 +0100
+Message-ID: <CACRpkdbh_d14y2a3zA2HZvfx1hSWw8wQBQ7WZGgp2f4wqzdwkw@mail.gmail.com>
+Subject: Re: [PATCH][next] drm/mcde: fix masking and bitwise-or on variable val
+To:     Colin King <colin.king@canonical.com>
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        kernel-janitors@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-I'm Dailborh R. from US. I picked interest in you and I would like to know
-more about you and establish relationship with you. i will wait for
-your response. thank you.
+On Tue, Nov 24, 2020 at 1:15 PM Colin King <colin.king@canonical.com> wrote:
 
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The masking of val with ~MCDE_CRX1_CLKSEL_MASK is currently being
+> ignored because there seems to be a missing bitwise-or of val in the
+> following statement.  Fix this by replacing the assignment of val
+> with a bitwise-or.
+>
+> Addresses-Coverity: ("Unused valued")
+> Fixes: d795fd322063 ("drm/mcde: Support DPI output")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
+Nice catch!
+Patch applied.
+
+Yours,
+Linus Walleij

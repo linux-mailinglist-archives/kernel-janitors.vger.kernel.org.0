@@ -2,118 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 270452C5402
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Nov 2020 13:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F2642C5690
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Nov 2020 15:02:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732157AbgKZMdp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Nov 2020 07:33:45 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:46364 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726030AbgKZMdp (ORCPT
+        id S2390024AbgKZOCD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Nov 2020 09:02:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33654 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390008AbgKZOCD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Nov 2020 07:33:45 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AQCSnII117356;
-        Thu, 26 Nov 2020 12:33:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=iisJc/UlMMkhfH3VEvBdqDe9vzLbdRcAzuPohWMvODc=;
- b=ND71QmWEXz2yAyK/c5oCLSgjggzrpqIt9rlgur4arECERhm8uzHfvhWW8aJNsolisVm7
- 75ZVnB5SUJUTuYWNeWA4Yz8D8cnVFWIhEQprDw2cKakEx4aeb/B02vRdiZtqJ4H8Nt2k
- KalQoBVDs4HNXWvZB8peyqbeezGvmnGDBzgk5Pi7qqCgho8eH0+2q/S9LQXdBboQ564r
- 00k6PpYvEv01YYmT4N52Fhku/mxyRacAFtU8eh2ovpdCOH6xVDuzRxCN/auZ6PWLUns7
- 6LviYDzAek/9uLsBAZWDNZmvxKrhq2NoN+I9mSKTq0xY+L/Uxm0iPn75nLhR5ErfOuGN CA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 351kwhnw79-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 26 Nov 2020 12:33:42 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AQCP3l9115753;
-        Thu, 26 Nov 2020 12:33:42 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 351kwfv8pv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 26 Nov 2020 12:33:42 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0AQCXf19013366;
-        Thu, 26 Nov 2020 12:33:41 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 26 Nov 2020 04:33:40 -0800
-Date:   Thu, 26 Nov 2020 15:33:34 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     sbhatta@marvell.com
-Cc:     kernel-janitors@vger.kernel.org
-Subject: [bug report] octeontx2-pf: Add support for ethtool ntuple filters
-Message-ID: <20201126123334.GA205581@mwanda>
+        Thu, 26 Nov 2020 09:02:03 -0500
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 635E9C0617A7
+        for <kernel-janitors@vger.kernel.org>; Thu, 26 Nov 2020 06:02:01 -0800 (PST)
+Received: by mail-ej1-x641.google.com with SMTP id f23so3115393ejk.2
+        for <kernel-janitors@vger.kernel.org>; Thu, 26 Nov 2020 06:02:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloud.ionos.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=C//B80UKsPK42OnJkphrjgs/wi9PrOEUKSvu4T2pPCo=;
+        b=Va5VHao16C8ylNksfKF3uVxr4ASphzaBEyKfiBAMrb8Ph1Gkj9FOJwyvAgYhnTeixp
+         WMj8PhmtD/eu7d8rBAxk2ijMYb25zeWj/L5MKrMWwU3nKUEDEG57WaHHj+QozeKiA7CK
+         3lZF82bhvFbi+abXHhsyNh/x0HWoB9Fcu32UCl4a6xci/2jJHMmmoVhCjNezmhTPxwPY
+         8u9m7EcE0T3BHVcjlH2t+gViqwuNjCs9E+cmO9s2Ami3nXzsHjEKu3M/vprHSrjKGxa7
+         khr2UPD2IHKBZ5m9Q1uRMNQYREfOeutaD7oDPg53ldESp6mXV6i3SqVHK73gF7ih5vZK
+         reeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=C//B80UKsPK42OnJkphrjgs/wi9PrOEUKSvu4T2pPCo=;
+        b=p+TA3kk0hL6EAe6MKvaMvWgUKu/ZHPwlqAKlSCJl6BrMg5fMLDd1oBR/XkrsINwkNM
+         +LIKWL7ELoQP+GhdmKGrDykcm3hFTwdB+CHGZwNYLi/vdBtjtR4DTDnxVITRD+p54T+i
+         aVtxhDVVnMLFtPRuLYq4Ae2gyrh3PFS6+vMVDZiEDJjo/Fo2lwJCzu2jwUUbW87seNZl
+         zWFhzyV8vaNILVWuPT5LnOAztXSQi6PLmi4ZefrudRezNdDGeeuW9VEgd2iT9gGenrfJ
+         0lWfdO7hAy4bp8xVmSOvWvP3V8+mCVifcLijEgU3pPpGF86URxcBocYg+6iU9tE2eCo5
+         dhdQ==
+X-Gm-Message-State: AOAM531bk8GjD3aYanxPqNBEPIK8tEFB1qjFfGd5Is/fVx6T9Do7buGA
+        YnU+7/f+2KcDsDbj2mau77k8Ea/52iBBWnf5FzlISw==
+X-Google-Smtp-Source: ABdhPJw137LyNOPuU8evpHIqYGUXPc4VybKBndRUo+PEoVMXB3gSi+WS6uuhYdkyaB2U2vIOPc0TKnzAu2kmaKXGO4Q=
+X-Received: by 2002:a17:906:1e0c:: with SMTP id g12mr2872384ejj.115.1606399319938;
+ Thu, 26 Nov 2020 06:01:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9816 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 mlxlogscore=999
- adultscore=0 malwarescore=0 suspectscore=3 phishscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011260075
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9816 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 malwarescore=0
- lowpriorityscore=0 adultscore=0 priorityscore=1501 suspectscore=3
- bulkscore=0 spamscore=0 mlxlogscore=999 mlxscore=0 clxscore=1011
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011260075
+References: <20201124093828.307709-1-colin.king@canonical.com>
+In-Reply-To: <20201124093828.307709-1-colin.king@canonical.com>
+From:   Jinpu Wang <jinpu.wang@cloud.ionos.com>
+Date:   Thu, 26 Nov 2020 15:01:49 +0100
+Message-ID: <CAMGffEnNkj4GkM-Er-MDuUQiFdZCBD-Bzb1_pGGXazfH=NkCtQ@mail.gmail.com>
+Subject: Re: [PATCH][next] scsi: pm8001: remove space in a debug message
+To:     Colin King <colin.king@canonical.com>
+Cc:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Linux SCSI Mailinglist <linux-scsi@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello Subbaraya Sundeep,
-
-The patch f0a1913f8a6f: "octeontx2-pf: Add support for ethtool ntuple
-filters" from Nov 15, 2020, leads to the following static checker
-warning:
-
-	drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c:51 otx2_alloc_mcam_entries()
-	error: 'rsp' dereferencing possible ERR_PTR()
-
-drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-    22  int otx2_alloc_mcam_entries(struct otx2_nic *pfvf)
-    23  {
-    24          struct otx2_flow_config *flow_cfg = pfvf->flow_cfg;
-    25          struct npc_mcam_alloc_entry_req *req;
-    26          struct npc_mcam_alloc_entry_rsp *rsp;
-    27          int vf_vlan_max_flows;
-    28          int i;
-    29  
-    30          mutex_lock(&pfvf->mbox.lock);
-    31  
-    32          req = otx2_mbox_alloc_msg_npc_mcam_alloc_entry(&pfvf->mbox);
-    33          if (!req) {
-    34                  mutex_unlock(&pfvf->mbox.lock);
-    35                  return -ENOMEM;
-    36          }
-    37  
-    38          vf_vlan_max_flows = pfvf->total_vfs * OTX2_PER_VF_VLAN_FLOWS;
-    39          req->contig = false;
-    40          req->count = OTX2_MCAM_COUNT + vf_vlan_max_flows;
-    41  
-    42          /* Send message to AF */
-    43          if (otx2_sync_mbox_msg(&pfvf->mbox)) {
-    44                  mutex_unlock(&pfvf->mbox.lock);
-    45                  return -EINVAL;
-    46          }
-    47  
-    48          rsp = (struct npc_mcam_alloc_entry_rsp *)otx2_mbox_get_rsp
-    49                 (&pfvf->mbox.mbox, 0, &req->hdr);
-
-The otx2_mbox_get_rsp() function can fail, but this code doesn't check
-for errors.
-
-    50  
-    51          if (rsp->count != req->count) {
-    52                  netdev_info(pfvf->netdev,
-    53                              "Unable to allocate %d MCAM entries, got %d\n",
-    54                              req->count, rsp->count);
-    55                  /* support only ntuples here */
-    56                  flow_cfg->ntuple_max_flows = rsp->count;
-    57                  flow_cfg->ntuple_offset = 0;
-
-regards,
-dan carpenter
+On Tue, Nov 24, 2020 at 10:38 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There are two words that need separating with a space in a
+> pm8001_dbg message. Fix it.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Acked-by: Jack Wang <jinpu.wang@cloud.ionos.com>
+Thanks
+> ---
+>  drivers/scsi/pm8001/pm8001_hwi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/scsi/pm8001/pm8001_hwi.c b/drivers/scsi/pm8001/pm8001_hwi.c
+> index 08d6cc9b50db..c8d4d87c5473 100644
+> --- a/drivers/scsi/pm8001/pm8001_hwi.c
+> +++ b/drivers/scsi/pm8001/pm8001_hwi.c
+> @@ -1031,7 +1031,7 @@ pm8001_chip_soft_rst(struct pm8001_hba_info *pm8001_ha)
+>         regVal = pm8001_cr32(pm8001_ha, 2, GSM_WRITE_DATA_PARITY_CHECK);
+>         pm8001_cw32(pm8001_ha, 2, GSM_WRITE_DATA_PARITY_CHECK, regVal3);
+>         pm8001_dbg(pm8001_ha, INIT,
+> -                  "GSM 0x700048 - Write Data Parity Check Enableis set to = 0x%x\n",
+> +                  "GSM 0x700048 - Write Data Parity Check Enable is set to = 0x%x\n",
+>                    pm8001_cr32(pm8001_ha, 2, GSM_WRITE_DATA_PARITY_CHECK));
+>
+>         /* step 13: bring the IOP and AAP1 out of reset */
+> --
+> 2.29.2
+>

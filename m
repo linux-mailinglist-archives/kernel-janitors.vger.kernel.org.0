@@ -2,115 +2,131 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CE362C5C64
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Nov 2020 20:02:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10C362C5C75
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Nov 2020 20:09:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730872AbgKZS5T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Nov 2020 13:57:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51164 "EHLO
+        id S2405164AbgKZTHh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Nov 2020 14:07:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728722AbgKZS5T (ORCPT
+        with ESMTP id S1731996AbgKZTHg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Nov 2020 13:57:19 -0500
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB895C0613D4;
-        Thu, 26 Nov 2020 10:57:18 -0800 (PST)
-Received: by mail-ej1-x644.google.com with SMTP id f9so2092689ejw.4;
-        Thu, 26 Nov 2020 10:57:18 -0800 (PST)
+        Thu, 26 Nov 2020 14:07:36 -0500
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD8B6C0613D4;
+        Thu, 26 Nov 2020 11:07:36 -0800 (PST)
+Received: by mail-io1-xd42.google.com with SMTP id r9so2643667ioo.7;
+        Thu, 26 Nov 2020 11:07:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=hxouV8TOd4XlVrwIhmMmebV4SGHsuIQGOklsA6qAvCc=;
-        b=P1BA5OZB9H1UMsnEh5lZFDw1h9hn3R4fCP4UNcUKF8r+gVmXGhbKOLQnJdVa0TtOdM
-         g4mp07JHOyZEPhO6FYts5hhu+ohkDJKbRSezLrfpwCKgrcHyrcwDdfk+KtF/E4eXQCCz
-         eag0ShohciEhvzuQJ03Ko1WGjHlDaMDb8BQ9iTxJEAPszwIUroWhJPLpvYIBcqDl+6WY
-         P+5tdGaKllTdPlbUN4IVzoEc9Qdro0WaethqaEKystBBkfvKRYjryxt7JoP+8EKb6jkq
-         4J4iqojkiia8u53TMjoi5qmX9vMcvxCMeIGXKKCFWWxBcsztN1XYd5Xo2cPE/rVltx1L
-         CRHw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=66PSSJ6RKeYPbuWgXpOxV9SLDjS0dT0f8aWOMJMYM0I=;
+        b=ui1qeXKHZqK2ZE8ykAVlGKMTxobti2b7t+KAPNLP3W0UOU2ctMFFxo+nGzfjwgffOi
+         CsFCSfCFxWmoC4FotuOXhJj0HmmH94AzgHkdWp4Wlf3ea098IzIuMBIHHRzEFo1RqLAt
+         j76F2oltRS8J3gA6ITliKqaShd6XhUxSLcCTvYyE9UIeDqjpP0KirKrcvCR/xai6Pjca
+         ONuYJtB9hv2mYZrsf4+y/iZbTCk63AJfmadXo/zSQR3yFmPIZ6lqzF3MLdSfm6BWptBT
+         5YvuikSSRrOxZDR4OpOkWxGdxF35zEE6hzYoBPYLGM2tU9QENnXZjhiGjdBqOCZUOtC+
+         Rd8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=hxouV8TOd4XlVrwIhmMmebV4SGHsuIQGOklsA6qAvCc=;
-        b=TkX4VtuRoj6z3rLieJzQp+Sg+nAnFrR+Q+2ncMHBpOsx3+3fzN4ui9GAQJ2JOIJwTt
-         GQ9wfgGNyLILngL7I/xlzv/TJG4tKhNy2TNdvsd/cv4JMd7Onw5+wZrGE9oMM3wFBc6r
-         XfFvNUncjezLZWO6iDT6rSsXo2s+2iavXwHIoc0Tgv6jkfYyzJxmQPPUMBYxIx3I+Z/d
-         NMMDnmXqTIBS0Pnl65GZ62VBCfjnZeWo+LbAUa4AU+VjNLThnVg5Yu4CjwRY2yO4JnHZ
-         PHOGgXs9Za+O309q549kOss+MwZufO/psOey2l777hMcYX0sQPpPcpOMMbTXLhicKX5V
-         LT4g==
-X-Gm-Message-State: AOAM533bUt57triW1x9B4VzbgKie5tQbgZjbhg2bDxTB6Y5fMbXrzuTw
-        UKeSkIguiRCOBQxuquY1BWQ=
-X-Google-Smtp-Source: ABdhPJySyqwz/r9Kf4d4rxdX4Z3k4Zsrt3FePPH8A2z70ISRpvgRiIK5q333LgaToGDUmeRQ4qyEEg==
-X-Received: by 2002:a17:906:7c48:: with SMTP id g8mr3891042ejp.395.1606417037519;
-        Thu, 26 Nov 2020 10:57:17 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d3f:bc00:d891:6628:cbb1:a6e5])
-        by smtp.gmail.com with ESMTPSA id k2sm3529855ejp.6.2020.11.26.10.57.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2020 10:57:16 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=66PSSJ6RKeYPbuWgXpOxV9SLDjS0dT0f8aWOMJMYM0I=;
+        b=guqJcMer8F8KJ9jlxwbiotA2tCtAZxPKP7SbeyR2hkxjOc3RlV+f/BAubsEvyJwdnI
+         1GVG4L5UNNbIS6RT3fJFl8PXYytxMDEDKpVOWiAKibIPYfSzafDh2oOQ4uwjq8XSDU+q
+         S15VvyeGY5gDa2+2w08UAmL9MplVzUwYxsO2GRkSxyHFAOHNlLzk7/TqmujGswoWxrG8
+         pYAd21hUST13f96Ovul86bEqzh6tdfLbNHDbSbnJymHTzZlUnodrABN5Gxsy869fMYGG
+         2FsEWreRuAQGHK4uTXnbPmbiKNJOgcXEdqmbezy96PKuNO9pWNsE2SnsJkGY9BqeG4FG
+         7qWg==
+X-Gm-Message-State: AOAM533JXy6BMmjbeW70GAVjq00u2F+wqKjYNWg4b/WgwLwcGxR4XC8V
+        JBzOJCYSyetVmHtNiOnuA+R739D0zRJYslAy+tw=
+X-Google-Smtp-Source: ABdhPJwD2gHfjjt7VHrlU8w8fI1hP0H1kJ1p4DSZ2Jr8lOqSqqGIy28ZQ3H+2FpoHs2EwZUkzcDhHuKBDVYGJQERA0k=
+X-Received: by 2002:a6b:8e4e:: with SMTP id q75mr3051640iod.183.1606417655907;
+ Thu, 26 Nov 2020 11:07:35 -0800 (PST)
+MIME-Version: 1.0
+References: <20201126115459.28980-1-lukas.bulwahn@gmail.com> <947b02eb-536f-16a0-fbb1-87b62ab8c13e@citrix.com>
+In-Reply-To: <947b02eb-536f-16a0-fbb1-87b62ab8c13e@citrix.com>
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Thomas Gleixner <tglx@linutronix.de>,
+Date:   Thu, 26 Nov 2020 20:07:25 +0100
+Message-ID: <CAKXUXMybmC=JE3uDnekAuHfRUZcrzSLJ04xB3nR=3BqHCsNVqA@mail.gmail.com>
+Subject: Re: [PATCH] x86/cpu: correct values for GDT_ENTRY_INIT
+To:     Andrew Cooper <andrew.cooper3@citrix.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, Al Viro <viro@zeniv.linux.org.uk>
-Cc:     "H . Peter Anvin" <hpa@zytor.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] x86/usercopy: adjust __user annotation on __copy_user_intel()
-Date:   Thu, 26 Nov 2020 19:56:52 +0100
-Message-Id: <20201126185652.1875-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        X86 ML <x86@kernel.org>, Akinobu Mita <akinobu.mita@gmail.com>,
+        Joerg Roedel <jroedel@suse.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Since commit beba3a20bf90 ("x86: switch to RAW_COPY_USER"),
-__copy_user_ll() is used for copying in both directions, i.e., from user
-memory space to kernel memory space and vice versa.
+On Thu, Nov 26, 2020 at 6:16 PM Andrew Cooper <andrew.cooper3@citrix.com> wrote:
+>
+> On 26/11/2020 11:54, Lukas Bulwahn wrote:
+> > Commit 1e5de18278e6 ("x86: Introduce GDT_ENTRY_INIT()") unintentionally
+> > transformed a few 0xffff values to 0xfffff (note: five times "f" instead of
+> > four) as part of the refactoring.
+>
+> The transformation in that change is correct.
+>
+> Segment bases are 20 bits wide in x86, but the top nibble is folded into
+> the middle of the attributes, which is why the transformation also has
+> xfxx => x0xx for the attributes field.
+>
+> >
+> > A quick check with:
+> >
+> >   git show 1e5de18278e6 | grep "fffff"
+> >
+> > reveals all those 14 occurrences:
+> >
+> >     12 in ./arch/x86/kernel/cpu/common.c, and
+> >     2  in ./arch/x86/include/asm/lguest.h.
+> >
+> > The two occurrences in ./arch/x86/include/asm/lguest.h were deleted with
+> > commit ecda85e70277 ("x86/lguest: Remove lguest support").
+> > Correct the remaining twelve occurrences in ./arch/x86/kernel/cpu/common.c
+> > back to the original values in the source code before the refactoring.
+> >
+> > Commit 866b556efa12 ("x86/head/64: Install startup GDT") probably simply
+> > copied the required startup gdt information from
+> > ./arch/x86/kernel/cpu/common.c to ./arch/x86/kernel/head64.c.
+> > So, correct those three occurrences in ./arch/x86/kernel/head64.c as well.
+> >
+> > As this value is truncated anyway, the object code has not changed when
+> > introducing the mistake and is also not changed with this correction now.
+> >
+> > This was discovered with sparse, which warns with:
+> >
+> >   warning: cast truncates bits from constant value (fffff becomes ffff)
+>
+> Does:
+>
+> diff --git a/arch/x86/include/asm/desc_defs.h
+> b/arch/x86/include/asm/desc_defs.h
+> index f7e7099af595..9561f3c66e9e 100644
+> --- a/arch/x86/include/asm/desc_defs.h
+> +++ b/arch/x86/include/asm/desc_defs.h
+> @@ -22,7 +22,7 @@ struct desc_struct {
+>
+>  #define GDT_ENTRY_INIT(flags, base, limit)                     \
+>         {                                                       \
+> -               .limit0         = (u16) (limit),                \
+> +               .limit0         = (u16) (limit) & 0xFFFF,       \
+>                 .limit1         = ((limit) >> 16) & 0x0F,       \
+>                 .base0          = (u16) (base),                 \
+>                 .base1          = ((base) >> 16) & 0xFF,        \
+>
+> fix the warning?
+>
 
-The underlying __copy_user_intel() is hence also used for copying in both
-directions. The __user annotation on the arguments suggests a
-specification, only copying to user memory space, that simply does not hold
-anymore.
+Thanks, I will try that out, and try compiling a 32-bit kernel as well.
 
-So, reflect this use of __copy_user_intel() by dropping the __user
-annotation, as the __user annotations have already been removed at higher
-level from the pointers in the raw_copy_from_user() and raw_copy_to_user()
-before passing those pointers on to the low-level __copy_user_ll().
 
-__copy_user_intel() is only used in __copy_user_ll(); so checking soundness
-of the __user annotations around __copy_user_ll() is all that is needed.
-
-No functional change. No change in object code.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-applies cleanly on current master and next-20201126
-
-Thomas, Ingo, Boris, please pick this minor non-urgent clean-up patch.
-
- arch/x86/lib/usercopy_32.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/lib/usercopy_32.c b/arch/x86/lib/usercopy_32.c
-index 7d290777246d..4976283a01f0 100644
---- a/arch/x86/lib/usercopy_32.c
-+++ b/arch/x86/lib/usercopy_32.c
-@@ -94,7 +94,7 @@ EXPORT_SYMBOL(__clear_user);
- 
- #ifdef CONFIG_X86_INTEL_USERCOPY
- static unsigned long
--__copy_user_intel(void __user *to, const void *from, unsigned long size)
-+__copy_user_intel(void *to, const void *from, unsigned long size)
- {
- 	int d0, d1;
- 	__asm__ __volatile__(
-@@ -291,7 +291,7 @@ static unsigned long __copy_user_intel_nocache(void *to,
-  * Leave these declared but undefined.  They should not be any references to
-  * them
-  */
--unsigned long __copy_user_intel(void __user *to, const void *from,
-+unsigned long __copy_user_intel(void *to, const void *from,
- 					unsigned long size);
- #endif /* CONFIG_X86_INTEL_USERCOPY */
- 
--- 
-2.17.1
-
+> Changing the limit from 4G to 128M isn't going to be compatible with a
+> 32bit kernel trying to boot :).
+>
+> ~Andrew

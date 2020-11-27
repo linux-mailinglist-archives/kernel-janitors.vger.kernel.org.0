@@ -2,118 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03FF02C638B
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Nov 2020 12:04:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 371E92C63E5
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Nov 2020 12:26:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726471AbgK0LEG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Nov 2020 06:04:06 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:38106 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725889AbgK0LED (ORCPT
+        id S1727039AbgK0LZ7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Nov 2020 06:25:59 -0500
+Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:44164 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726178AbgK0LZ7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Nov 2020 06:04:03 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0ARAwprZ168771;
-        Fri, 27 Nov 2020 11:04:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=K1Ef13sMb8jQdzGdJazAg7zKaeli8npahVrWjEHuV+4=;
- b=ECzFiSMLCS20cRBKyrtFAFJprsWSLWGUKf/+Yk/+2VP6wOK3s38PwmYuACJ2iCY8bHUT
- CFn5Oj0C/odJVb5oIxU3Rzzw/9QZJq+/zkECollOl//eDQqGJpdMFyjelu3yQQZohh8G
- jc0ZorKCcaP3lJdTMp3cmr9ygELOxwVnYrssW2DvI8ucUe3opWc5boImPXYp5BsiMSMj
- BtaOEUY5bZzJXc4jW+nXoQM9q53i8mWFAgtmqMW66NM9KmFdN/WodtWFEChStY9yO2op
- c2aTpQwXPhOaEwbjLpobpWD21naNgfRC79ToVL34R2NfYgw5DkQ+h+gVv2s19p6QDhP1 Cg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 351kwhs00d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 27 Nov 2020 11:04:00 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0ARAxqBv030302;
-        Fri, 27 Nov 2020 11:04:00 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 351kwge7ap-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 27 Nov 2020 11:04:00 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0ARB3xYK010252;
-        Fri, 27 Nov 2020 11:03:59 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 27 Nov 2020 01:58:46 -0800
-Date:   Fri, 27 Nov 2020 12:58:39 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     sbhatta@marvell.com
-Cc:     kernel-janitors@vger.kernel.org
-Subject: [bug report] octeontx2-af: Add mbox messages to install and delete
- MCAM rules
-Message-ID: <20201127095839.GA10400@mwanda>
+        Fri, 27 Nov 2020 06:25:59 -0500
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-260-gbkyh3AuOmu58dLY9RyzNg-1; Fri, 27 Nov 2020 11:25:54 +0000
+X-MC-Unique: gbkyh3AuOmu58dLY9RyzNg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Fri, 27 Nov 2020 11:25:53 +0000
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Fri, 27 Nov 2020 11:25:53 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Andrew Cooper' <andrew.cooper3@citrix.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+CC:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        X86 ML <x86@kernel.org>, Akinobu Mita <akinobu.mita@gmail.com>,
+        Joerg Roedel <jroedel@suse.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] x86/cpu: correct values for GDT_ENTRY_INIT
+Thread-Topic: [PATCH] x86/cpu: correct values for GDT_ENTRY_INIT
+Thread-Index: AQHWxE+DFGTCNd4wOUqkA7q3pMvz06nb06qg
+Date:   Fri, 27 Nov 2020 11:25:53 +0000
+Message-ID: <b4d2750b3d094aac858118aef611a135@AcuMS.aculab.com>
+References: <20201126115459.28980-1-lukas.bulwahn@gmail.com>
+ <947b02eb-536f-16a0-fbb1-87b62ab8c13e@citrix.com>
+ <CAKXUXMybmC=JE3uDnekAuHfRUZcrzSLJ04xB3nR=3BqHCsNVqA@mail.gmail.com>
+ <CALCETrUyoaJyJ8mGpq9bdanKKfHgjg_1B=N0rtmuHCmCP9Q9=g@mail.gmail.com>
+ <3d9f41b1-9687-4aae-ad7d-2e38a33132ba@citrix.com>
+In-Reply-To: <3d9f41b1-9687-4aae-ad7d-2e38a33132ba@citrix.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9817 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 suspectscore=3
- phishscore=0 mlxscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011270068
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9817 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 malwarescore=0
- lowpriorityscore=0 adultscore=0 priorityscore=1501 suspectscore=3
- bulkscore=0 spamscore=0 mlxlogscore=999 mlxscore=0 clxscore=1015
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011270068
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello Subbaraya Sundeep,
+RnJvbTogQW5kcmV3IENvb3Blcg0KPiBTZW50OiAyNiBOb3ZlbWJlciAyMDIwIDIzOjUyDQo+IA0K
+PiBPbiAyNi8xMS8yMDIwIDE5OjE1LCBBbmR5IEx1dG9taXJza2kgd3JvdGU6DQo+ID4gT24gVGh1
+LCBOb3YgMjYsIDIwMjAgYXQgMTE6MDcgQU0gTHVrYXMgQnVsd2FobiA8bHVrYXMuYnVsd2FobkBn
+bWFpbC5jb20+IHdyb3RlOg0KPiA+PiBPbiBUaHUsIE5vdiAyNiwgMjAyMCBhdCA2OjE2IFBNIEFu
+ZHJldyBDb29wZXIgPGFuZHJldy5jb29wZXIzQGNpdHJpeC5jb20+IHdyb3RlOg0KPiA+Pj4gT24g
+MjYvMTEvMjAyMCAxMTo1NCwgTHVrYXMgQnVsd2FobiB3cm90ZToNCj4gPj4+PiBDb21taXQgMWU1
+ZGUxODI3OGU2ICgieDg2OiBJbnRyb2R1Y2UgR0RUX0VOVFJZX0lOSVQoKSIpIHVuaW50ZW50aW9u
+YWxseQ0KPiA+Pj4+IHRyYW5zZm9ybWVkIGEgZmV3IDB4ZmZmZiB2YWx1ZXMgdG8gMHhmZmZmZiAo
+bm90ZTogZml2ZSB0aW1lcyAiZiIgaW5zdGVhZCBvZg0KPiA+Pj4+IGZvdXIpIGFzIHBhcnQgb2Yg
+dGhlIHJlZmFjdG9yaW5nLg0KPiA+Pj4gVGhlIHRyYW5zZm9ybWF0aW9uIGluIHRoYXQgY2hhbmdl
+IGlzIGNvcnJlY3QuDQo+ID4+Pg0KPiA+Pj4gU2VnbWVudCBiYXNlcyBhcmUgMjAgYml0cyB3aWRl
+IGluIHg4NiwNCj4gDQo+IEkgb2YgY291cnNlIG1lYW50IHNlZ21lbnQgbGltaXRzIGhlcmUsIHJh
+dGhlciB0aGFuIGJhc2VzLg0KPiANCj4gPj4+IERvZXM6DQo+ID4+Pg0KPiA+Pj4gZGlmZiAtLWdp
+dCBhL2FyY2gveDg2L2luY2x1ZGUvYXNtL2Rlc2NfZGVmcy5oDQo+ID4+PiBiL2FyY2gveDg2L2lu
+Y2x1ZGUvYXNtL2Rlc2NfZGVmcy5oDQo+ID4+PiBpbmRleCBmN2U3MDk5YWY1OTUuLjk1NjFmM2M2
+NmU5ZSAxMDA2NDQNCj4gPj4+IC0tLSBhL2FyY2gveDg2L2luY2x1ZGUvYXNtL2Rlc2NfZGVmcy5o
+DQo+ID4+PiArKysgYi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9kZXNjX2RlZnMuaA0KPiA+Pj4gQEAg
+LTIyLDcgKzIyLDcgQEAgc3RydWN0IGRlc2Nfc3RydWN0IHsNCj4gPj4+DQo+ID4+PiAgI2RlZmlu
+ZSBHRFRfRU5UUllfSU5JVChmbGFncywgYmFzZSwgbGltaXQpICAgICAgICAgICAgICAgICAgICAg
+XA0KPiA+Pj4gICAgICAgICB7ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIFwNCj4gPj4+IC0gICAgICAgICAgICAgICAubGltaXQwICAgICAgICAg
+PSAodTE2KSAobGltaXQpLCAgICAgICAgICAgICAgICBcDQo+ID4+PiArICAgICAgICAgICAgICAg
+LmxpbWl0MCAgICAgICAgID0gKHUxNikgKGxpbWl0KSAmIDB4RkZGRiwgICAgICAgXA0KPiA+Pj4g
+ICAgICAgICAgICAgICAgIC5saW1pdDEgICAgICAgICA9ICgobGltaXQpID4+IDE2KSAmIDB4MEYs
+ICAgICAgIFwNCj4gPj4+ICAgICAgICAgICAgICAgICAuYmFzZTAgICAgICAgICAgPSAodTE2KSAo
+YmFzZSksICAgICAgICAgICAgICAgICBcDQo+ID4+PiAgICAgICAgICAgICAgICAgLmJhc2UxICAg
+ICAgICAgID0gKChiYXNlKSA+PiAxNikgJiAweEZGLCAgICAgICAgXA0KPiA+Pj4NCj4gPj4+IGZp
+eCB0aGUgd2FybmluZz8NCj4gPj4+DQo+ID4+IFRoYW5rcywgSSB3aWxsIHRyeSB0aGF0IG91dCwg
+YW5kIHRyeSBjb21waWxpbmcgYSAzMi1iaXQga2VybmVsIGFzIHdlbGwuDQo+ID4gWW91IHNob3Vs
+ZCBhbHNvIHRyeSBjb21wYXJpbmcgdGhlIG9iamR1bXAgb3V0cHV0IGJlZm9yZSBhbmQgYWZ0ZXIg
+eW91cg0KPiA+IHBhdGNoLiAgb2JqZHVtcCAtRCB3aWxsIHByb2R1Y2UgYml6YXJyZSBvdXRwdXQg
+YnV0IHNob3VsZCB3b3JrLg0KPiANCj4gRXhwYW5kaW5nIG9uIHRoaXMgYSBsaXR0bGUsIGlmIHRo
+YXQgZG9lcyBpbmRlZWQgZml4IHRoZSBzcGFyc2Ugd2FybmluZywNCj4gdGhlbiBJJ2QgbWFrZSBh
+biBhcmd1bWVudCBmb3IgdGhpcyBiZWluZyBhIGJ1ZyBpbiBzcGFyc2UuwqAgRXhwbGljaXRseQ0K
+PiBjYXN0aW5nIHRvIHUxNiBpcyBzZW1hbnRpY2FsbHkgYW5kIGludGVudGlvbmFsbHkgaWRlbnRp
+Y2FsIHRvICYgMHhmZmZmLg0KDQpFdmVuIHRoZSAodTE2KSBjYXN0IGlzIHBvaW50bGVzcy4NCkkg
+ZG9uJ3QgdGhpbmsgdGhlIGN1cnJlbnQgdmVyc2lvbnMgb2YgZ2NjIGFyZSBhcyBzdHVwaWQgYXMg
+b2xkIG9uZXMsDQpidXQgSSBoYXZlIHNlZW46DQoJKmNwID0gKGNoYXIpKHggJiAweGZmKTsNCmdl
+bmVyYXRlIGNvZGUgdGhhdCBtYXNrcyB3aXRoIDB4ZmYsIG1hc2tzIHdpdGggMHhmZiBhZ2FpbiwN
+CmFuZCB0aGVuIGRvZXMgYSBieXRlIHN0b3JlLg0KDQpJIGhhdmUgYSBzdHJvbmcgZGlzbGlrZSBv
+ZiB0aGUgdXNlIG9mIGludGVnZXIgY2FzdHMgdG8gc2lsZW5jZQ0KY29tcGlsZXIgd2FybmluZ3Mu
+DQpDYXN0cyBzaG91bGQgYmUgcmFyZSBiZWNhdXNlIHRoZXkgY2FuIGhpZGUgdmVyeSBuYXN0eSBi
+dWdzLg0KQWx0aG91Z2ggdGhlICdwb2ludGVyIHRvIGludGVnZXIgb2YgZGlmZmVyZW50IHNpemUn
+IHdhcm5pbmcNCmRvZXMgcGljayB1cCBtb3N0IG9mIHRoZSBiYWQgb25lcy4NCg0KCURhdmlkDQoN
+Ci0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJt
+LCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChX
+YWxlcykNCg==
 
-This is a semi-automatic email about new static checker warnings.
-
-The patch 55307fcb9258: "octeontx2-af: Add mbox messages to install 
-and delete MCAM rules" from Nov 15, 2020, leads to the following 
-Smatch complaint:
-
-    drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c:1001 npc_install_flow()
-    error: we previously assumed 'def_ucast_rule' could be null (see line 975)
-
-drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-   974	
-   975		if (def_ucast_rule)
-                    ^^^^^^^^^^^^^^
-This can be NULL
-
-   976			missing_features = (def_ucast_rule->features ^ features) &
-   977						def_ucast_rule->features;
-   978	
-   979		if (req->default_rule && req->append) {
-   980			/* add to default rule */
-   981			if (missing_features)
-   982				npc_update_flow(rvu, entry, missing_features,
-   983						&def_ucast_rule->packet,
-   984						&def_ucast_rule->mask,
-   985						&dummy, req->intf);
-   986			enable = rvu_npc_write_default_rule(rvu, blkaddr,
-   987							    nixlf, target,
-   988							    pfvf->nix_rx_intf, entry,
-   989							    &entry_index);
-   990			installed_features = req->features | missing_features;
-   991		} else if (req->default_rule && !req->append) {
-   992			/* overwrite default rule */
-   993			enable = rvu_npc_write_default_rule(rvu, blkaddr,
-   994							    nixlf, target,
-   995							    pfvf->nix_rx_intf, entry,
-   996							    &entry_index);
-   997		} else if (msg_from_vf) {
-   998			/* normal rule - include default rule also to it for VF */
-   999			npc_update_flow(rvu, entry, missing_features,
-  1000					&def_ucast_rule->packet, &def_ucast_rule->mask,
-                                        ^^^^^^^^^^^^^^^^^        ^^^^^^^^^^^^^^^
-Unchecked dereferences.  The other paths check if "missing_features" is
-true.
-
-  1001					&dummy, req->intf);
-  1002			installed_features = req->features | missing_features;
-  1003		}
-
-regards,
-dan carpenter

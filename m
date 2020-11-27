@@ -2,106 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A0322C5E56
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Nov 2020 00:55:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB6CA2C5FE5
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Nov 2020 06:51:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392032AbgKZXxZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Nov 2020 18:53:25 -0500
-Received: from esa6.hc3370-68.iphmx.com ([216.71.155.175]:47324 "EHLO
-        esa6.hc3370-68.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392000AbgKZXxZ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Nov 2020 18:53:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=citrix.com; s=securemail; t=1606434804;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=SLCqDVANdN37IdpKE2EPB96P4WCdxVYJYzL//A+bO6c=;
-  b=JULIwyseuDdN1N7n1ihKQvxYxut2FPTeh+Q1sSJkqWHbIHtEEM3MrY8k
-   gkM9KZrGOMJIU/vNuRSY+GDY6b5eNJA3ICGyx/x5HifySlLCfyhhHP33C
-   elgQ/IwTxE/LNI1RXQBRA66pxMAnvthmwpq5ug3tdSZSrUD7TiqV9ISVd
-   U=;
-Authentication-Results: esa6.hc3370-68.iphmx.com; dkim=none (message not signed) header.i=none
-IronPort-SDR: Iw9tRvlxv26rSHbSTrCrHFZS+53Gad/KgOYmH6NGCIbJMA7M0HPQwfWvtiMAKBoPTFUnKNx0I1
- 6GPp/2JQqwyFG8wVDwPA3oMDdYu8NwhpvNCwxIi2JIb5Jh7DyqFzcWJQi6WiS/3wiV2Cucpvc0
- BxGlm4EB8pPXM38rkYs6aguJXiiD0mrU5VkksDBbnxGq6ffkqLMkKKlT607ItHWicJVgjpd2Aj
- OXRxM40hBg0e3LeqhKKljQnGdRccjKrJumEijdww8rr/PswB82S5P8GaehwYdGqwuyjpnwcXnw
- VH4=
-X-SBRS: None
-X-MesageID: 32241856
-X-Ironport-Server: esa6.hc3370-68.iphmx.com
-X-Remote-IP: 162.221.158.21
-X-Policy: $RELAYED
-X-IronPort-AV: E=Sophos;i="5.78,373,1599537600"; 
-   d="scan'208";a="32241856"
-Subject: Re: [PATCH] x86/cpu: correct values for GDT_ENTRY_INIT
-To:     Andy Lutomirski <luto@kernel.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-CC:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        X86 ML <x86@kernel.org>, Akinobu Mita <akinobu.mita@gmail.com>,
-        Joerg Roedel <jroedel@suse.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        <kernel-janitors@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20201126115459.28980-1-lukas.bulwahn@gmail.com>
- <947b02eb-536f-16a0-fbb1-87b62ab8c13e@citrix.com>
- <CAKXUXMybmC=JE3uDnekAuHfRUZcrzSLJ04xB3nR=3BqHCsNVqA@mail.gmail.com>
- <CALCETrUyoaJyJ8mGpq9bdanKKfHgjg_1B=N0rtmuHCmCP9Q9=g@mail.gmail.com>
-From:   Andrew Cooper <andrew.cooper3@citrix.com>
-Message-ID: <3d9f41b1-9687-4aae-ad7d-2e38a33132ba@citrix.com>
-Date:   Thu, 26 Nov 2020 23:52:08 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <CALCETrUyoaJyJ8mGpq9bdanKKfHgjg_1B=N0rtmuHCmCP9Q9=g@mail.gmail.com>
+        id S2392512AbgK0FuR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Nov 2020 00:50:17 -0500
+Received: from kivit.com.ua ([68.183.7.199]:52904 "EHLO kivit.com.ua"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389456AbgK0FuR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 27 Nov 2020 00:50:17 -0500
+X-Greylist: delayed 24674 seconds by postgrey-1.27 at vger.kernel.org; Fri, 27 Nov 2020 00:50:16 EST
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kivit.com.ua (Postfix) with ESMTP id 839A9F45F68;
+        Fri, 27 Nov 2020 03:52:00 +0200 (EET)
+Received: from kivit.com.ua ([127.0.0.1])
+        by localhost (kivit.com.ua [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id TiVf_JFRnHTc; Fri, 27 Nov 2020 03:52:00 +0200 (EET)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kivit.com.ua (Postfix) with ESMTP id E47A7F43FF6;
+        Fri, 27 Nov 2020 03:11:18 +0200 (EET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 kivit.com.ua E47A7F43FF6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kivit.com.ua;
+        s=F63F4CB0-F591-11E9-BB9E-CB59FF2C00BF; t=1606439479;
+        bh=3nrn+IPJ6KsXqLvfEW7959xOeqRxjw7dnMTRz7zfiEA=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=Ap7ReHUuMF1kOZYfqXW82aH0C6hrjUkWPV2NxlMe02iRk76/MUDttpJ0gRe8v2kIG
+         G6i2mbDa28Xt44qRMdIAKtHWl43DlMNYJPfoCHESgUyi+fVU0BGk27SJOSnI7xuPQS
+         aJkGB/iAH2yCHdEZ+aNagajPA2n/IojP64ak6y7uRjbUcVKVzBMmrgBsE6bn0xiWui
+         onfKk2PXBZUeP2h8ETMM9lAYCBYSl1F52Ls1EIn99dUJD9pmO6nLrLdGvhEKrqrt6g
+         YuL5X0hOoohdDHQcyNQPNF6dYGiwEcjQ3ZU8qL+uaUOFCwiA70ScDUvcr2pqTqfxQa
+         ySLgQexPFVQ0g==
+X-Virus-Scanned: amavisd-new at kivit.com.ua
+Received: from kivit.com.ua ([127.0.0.1])
+        by localhost (kivit.com.ua [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id Q7f26vL5gfl9; Fri, 27 Nov 2020 03:11:18 +0200 (EET)
+Received: from [197.174.0.22] (unknown [197.174.0.22])
+        by kivit.com.ua (Postfix) with ESMTPSA id 74229F17430;
+        Fri, 27 Nov 2020 02:12:38 +0200 (EET)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Content-Language: en-GB
-X-ClientProxiedBy: AMSPEX02CAS01.citrite.net (10.69.22.112) To
- FTLPEX02CL04.citrite.net (10.13.108.177)
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Ihre_Spende=3A_=E2=82=AC_2=2C000=2C000=2E00_Euro?=
+To:     Recipients <konstantinov@kivit.com.ua>
+From:   "Jeff Lindsay" <konstantinov@kivit.com.ua>
+Date:   Thu, 26 Nov 2020 16:12:31 -0800
+Reply-To: povertysolutionsorg@gmail.com
+Message-Id: <20201127001238.74229F17430@kivit.com.ua>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 26/11/2020 19:15, Andy Lutomirski wrote:
-> On Thu, Nov 26, 2020 at 11:07 AM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
->> On Thu, Nov 26, 2020 at 6:16 PM Andrew Cooper <andrew.cooper3@citrix.com> wrote:
->>> On 26/11/2020 11:54, Lukas Bulwahn wrote:
->>>> Commit 1e5de18278e6 ("x86: Introduce GDT_ENTRY_INIT()") unintentionally
->>>> transformed a few 0xffff values to 0xfffff (note: five times "f" instead of
->>>> four) as part of the refactoring.
->>> The transformation in that change is correct.
->>>
->>> Segment bases are 20 bits wide in x86,
-
-I of course meant segment limits here, rather than bases.
-
->>> Does:
->>>
->>> diff --git a/arch/x86/include/asm/desc_defs.h
->>> b/arch/x86/include/asm/desc_defs.h
->>> index f7e7099af595..9561f3c66e9e 100644
->>> --- a/arch/x86/include/asm/desc_defs.h
->>> +++ b/arch/x86/include/asm/desc_defs.h
->>> @@ -22,7 +22,7 @@ struct desc_struct {
->>>
->>>  #define GDT_ENTRY_INIT(flags, base, limit)                     \
->>>         {                                                       \
->>> -               .limit0         = (u16) (limit),                \
->>> +               .limit0         = (u16) (limit) & 0xFFFF,       \
->>>                 .limit1         = ((limit) >> 16) & 0x0F,       \
->>>                 .base0          = (u16) (base),                 \
->>>                 .base1          = ((base) >> 16) & 0xFF,        \
->>>
->>> fix the warning?
->>>
->> Thanks, I will try that out, and try compiling a 32-bit kernel as well.
-> You should also try comparing the objdump output before and after your
-> patch.  objdump -D will produce bizarre output but should work.
-
-Expanding on this a little, if that does indeed fix the sparse warning,
-then I'd make an argument for this being a bug in sparse.  Explicitly
-casting to u16 is semantically and intentionally identical to & 0xffff.
-
-~Andrew
+Ich bin Jeff Lindsay, ein =C3=A4lterer B=C3=BCrger aus Kalifornien, USA. Ic=
+h habe einen Jackpot von 447,8 Millionen Dollar gewonnen, der gr=C3=B6=C3=
+=9Fte Lotterie-Jackpot. Im Namen meiner Familie und aus gutem Willen spende=
+n wir Ihnen und Ihrer Familie einen Betrag von (=E2=82=AC 2.000.000,00 EUR)=
+. Ich versuche, die =C3=B6ffentlichen Waisenh=C3=A4user zu erreichen. Trage=
+n Sie zur Armutsbek=C3=A4mpfung bei und sorgen Sie f=C3=BCr eine angemessen=
+e Gesundheitsversorgung f=C3=BCr Einzelpersonen, insbesondere w=C3=A4hrend =
+dieser Welt. Pandemic Covid 19. Ich m=C3=B6chte auch, dass Sie einen Teil d=
+ieser Spende in die =C3=B6ffentliche Infrastruktur investieren, um Arbeitsl=
+osen in Ihrem Land Arbeitspl=C3=A4tze zu bieten. Ich habe dich gew=C3=A4hlt=
+, weil ich an dich glaube. Ich brauche Ihre uneingeschr=C3=A4nkte Mitarbeit=
+ in Bezug auf diese Spende. Bitte kontaktieren Sie mich hier zur=C3=BCck un=
+ter meiner privaten E-Mail: jeffpovertyhome@gmail.com

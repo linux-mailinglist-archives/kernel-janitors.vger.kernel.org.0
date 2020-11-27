@@ -2,92 +2,116 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0EFA2C6098
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Nov 2020 08:44:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43ACE2C61CD
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Nov 2020 10:35:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729990AbgK0HoG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Nov 2020 02:44:06 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:57086 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726408AbgK0HoG (ORCPT
+        id S1728000AbgK0Jef (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Nov 2020 04:34:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44174 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725854AbgK0Jef (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Nov 2020 02:44:06 -0500
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AR7chCU033341;
-        Fri, 27 Nov 2020 07:44:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=4oBBvldraXOOArp5hfpDrfqTTN1jyV+NrA9jh4uwx6w=;
- b=ujE5E1fZcpQa/BuiFKd5Ym8i4gH8jd4GqeJwPgCUQPUkf7wpT7FoOCnYHkzJ7HcrNJL4
- IqJkXuPxdJ07zvi67Cm65eu3OQpyO7ctySdfuv3P9PPIIZzsMDkzep78E5oSTO2g5Gon
- TFmlRUDolx8jlis0OAeG/i4h6ej/ILsaPWphFCuV0sKQ0IqFaqQuQ3ewnH6CnhL3JKGn
- +Qzryynppy9JzlmfCKiEwWph94knrcm9AqoxIuLU+GXTlWFaPCedODoXyFYhd3OA8DaT
- Q/Nzz0UrlInlVJ8srBSXUccnl5LrB5fddSYH8MBpnMa5aQ8C+JJ+TUL39MkeFDEHEJjl nA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2130.oracle.com with ESMTP id 351kwhg82j-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 27 Nov 2020 07:44:01 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AR7a1wG040129;
-        Fri, 27 Nov 2020 07:44:00 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 351kwhpmbm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 27 Nov 2020 07:44:00 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0AR7hwJD012674;
-        Fri, 27 Nov 2020 07:43:58 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 26 Nov 2020 23:43:58 -0800
-Date:   Fri, 27 Nov 2020 10:43:49 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Leon Romanovsky <leon@kernel.org>
-Cc:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] RDMA/mlx5: Fix a error code in devx_umem_reg_cmd_alloc()
-Message-ID: <20201127074349.GA7391@mwanda>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9817 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 phishscore=0
- malwarescore=0 spamscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011270045
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9817 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 impostorscore=0
- suspectscore=0 adultscore=0 bulkscore=0 phishscore=0 malwarescore=0
- lowpriorityscore=0 clxscore=1011 priorityscore=1501 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011270045
+        Fri, 27 Nov 2020 04:34:35 -0500
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDA45C0613D1;
+        Fri, 27 Nov 2020 01:34:34 -0800 (PST)
+Received: by mail-ej1-x644.google.com with SMTP id o9so6717181ejg.1;
+        Fri, 27 Nov 2020 01:34:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=ocarC8hdvKNkrOHjjhwHdlA+zeKn5dsLCEZCQr6M228=;
+        b=PAGl8Tcbwzlwi5WLZGrU/PYAtwIAN4u4L5tE+8VGPFw6RRBbIdpSV5ai1sDksG6QGu
+         9O1qFyIqIZcBpygtk26GEO+CTdaCcTxo+3xcyAdvZreiDPOwR0k1FEWJYZPc4d9mH+Eb
+         aCHIKpb7iuC86Imr/pyNulDweglxYWYsJlmJpacjK672vlRR77dCINBHob9AQhECJD7m
+         1ZJ6vuHstdouROYY4y7Hnm8BkCmG7kTh6d4Al+CL+13uPZJki4LprDunAqhalE3VxK47
+         xYqzs+iqq5oYg+CITmNU64shY0VUav4JiwWOunP+4iNGzdGE/q3jpsocp0u2DhCGrZTO
+         nsPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=ocarC8hdvKNkrOHjjhwHdlA+zeKn5dsLCEZCQr6M228=;
+        b=Ed0AvmTnuDkRbeId60Da5AFx9XfburaBOKzGtbt/D50OC/S3PjmQ2dt+mkAbxFPxQ8
+         XDGk+rvkTwTxNlLbXUiiTvdcXjyj8EA/3EeirM6Z35z7LND/XSMx43c0Vnn1Geez9jMV
+         3TnCO8Hzpv5ChZe+BGoieBCri63lVW35E04qvDskCL6YPMU6+3Bo4iEmEEcBJnJouS/Y
+         lnlnnzCzQBo5fxxhB9g7b87d3d7g2XDw3vGGoR/8KDWsJTEofmA0fBsy1IPJO1uvHGK0
+         BH6pRFekXP0TfyxstE8dv3xADtwy8NRofN9VpFLIUyN2vVfxc/UC62hSGQAphpCwXoNp
+         uu1A==
+X-Gm-Message-State: AOAM533gpYlU0W7ubLFrOiydYi34pgMzzcq7hRnDpX0hoR+9Fn0HvYny
+        RRZm0anKe/PUosncy/8+Kv0=
+X-Google-Smtp-Source: ABdhPJwb0ldMHmgkYADzMIm7QGhxD9ojBKvlvxEUkaZWGdJfpwUdBoM8tx364zb/qd2KfkHlvmcn3A==
+X-Received: by 2002:a17:906:ca0b:: with SMTP id jt11mr6575848ejb.538.1606469673490;
+        Fri, 27 Nov 2020 01:34:33 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d2f:6900:c16c:e89c:9291:845f])
+        by smtp.gmail.com with ESMTPSA id w3sm4756079edt.84.2020.11.27.01.34.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Nov 2020 01:34:32 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Christoph Hellwig <hch@lst.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] net/ipv6: propagate user pointer annotation
+Date:   Fri, 27 Nov 2020 10:34:21 +0100
+Message-Id: <20201127093421.21673-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This code returns PTR_ERR(NULL) which is zero or success but it should
-return -ENOMEM.
+For IPV6_2292PKTOPTIONS, do_ipv6_getsockopt() stores the user pointer
+optval in the msg_control field of the msghdr.
 
-Fixes: 878f7b31c3a7 ("RDMA/mlx5: Use ib_umem_find_best_pgsz() for devx")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Hence, sparse rightfully warns at ./net/ipv6/ipv6_sockglue.c:1151:33:
+
+  warning: incorrect type in assignment (different address spaces)
+      expected void *msg_control
+      got char [noderef] __user *optval
+
+Since commit 1f466e1f15cf ("net: cleanly handle kernel vs user buffers for
+->msg_control"), user pointers shall be stored in the msg_control_user
+field, and kernel pointers in the msg_control field. This allows to
+propagate __user annotations nicely through this struct.
+
+Store optval in msg_control_user to properly record and propagate the
+memory space annotation of this pointer.
+
+Note that msg_control_is_user is set to true, so the key invariant, i.e.,
+use msg_control_user if and only if msg_control_is_user is true, holds.
+
+The msghdr is further used in the six alternative put_cmsg() calls, with
+msg_control_is_user being true, put_cmsg() picks msg_control_user
+preserving the __user annotation and passes that properly to
+copy_to_user().
+
+No functional change. No change in object code.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
- drivers/infiniband/hw/mlx5/devx.c | 2 +-
+Christoph, please review and ack.
+
+David, Alexey, Hideaki-san, Jakub,
+  please pick this minor non-urgent clean-up patch.
+
+ net/ipv6/ipv6_sockglue.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
-index 7c3eefba6197..0b87c74281d3 100644
---- a/drivers/infiniband/hw/mlx5/devx.c
-+++ b/drivers/infiniband/hw/mlx5/devx.c
-@@ -2107,7 +2107,7 @@ static int devx_umem_reg_cmd_alloc(struct mlx5_ib_dev *dev,
- 		      ib_umem_num_dma_blocks(obj->umem, page_size));
- 	cmd->in = uverbs_zalloc(attrs, cmd->inlen);
- 	if (!cmd->in)
--		return PTR_ERR(cmd->in);
-+		return -ENOMEM;
+diff --git a/net/ipv6/ipv6_sockglue.c b/net/ipv6/ipv6_sockglue.c
+index 43a894bf9a1b..a6804a7e34c1 100644
+--- a/net/ipv6/ipv6_sockglue.c
++++ b/net/ipv6/ipv6_sockglue.c
+@@ -1148,7 +1148,7 @@ static int do_ipv6_getsockopt(struct sock *sk, int level, int optname,
+ 		if (sk->sk_type != SOCK_STREAM)
+ 			return -ENOPROTOOPT;
  
- 	umem = MLX5_ADDR_OF(create_umem_in, cmd->in, umem);
- 	mtt = (__be64 *)MLX5_ADDR_OF(umem, umem, mtt);
+-		msg.msg_control = optval;
++		msg.msg_control_user = optval;
+ 		msg.msg_controllen = len;
+ 		msg.msg_flags = flags;
+ 		msg.msg_control_is_user = true;
 -- 
-2.29.2
+2.17.1
 

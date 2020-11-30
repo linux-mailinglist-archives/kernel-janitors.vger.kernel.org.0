@@ -2,101 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28C8A2C8457
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Nov 2020 13:51:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE1392C8474
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Nov 2020 13:55:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726144AbgK3MuJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 30 Nov 2020 07:50:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60090 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725912AbgK3MuJ (ORCPT
+        id S1726376AbgK3Myh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 30 Nov 2020 07:54:37 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:47348 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726343AbgK3Myg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 30 Nov 2020 07:50:09 -0500
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC06FC0613D2;
-        Mon, 30 Nov 2020 04:49:28 -0800 (PST)
-Received: by mail-wr1-x442.google.com with SMTP id 23so16053552wrc.8;
-        Mon, 30 Nov 2020 04:49:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=XgjnfGL7fhRwAvNQvTlzfgUXxKtKFm+93Zmvk2qerpQ=;
-        b=O9JXaJ1jDppA2obNDIfK25wfvYo3KGPkTt0LZTy6DcZU3ryV3Lxa4PbeyvrpFUpJk1
-         OOrlg575a6kEMInbh3kIDz0gyGve5ZTsGP/gnvZsbHGGxInfxyuWoBrLzqRyYgDu2IyI
-         +OjRYRxZInnaIN8pIJQXsU0ExcGAgVuvjAwzrKbS7oWq63AdOXu7luK46KcucfSeG6uM
-         rnFwzQ0EqtTBltqC9S8KrSSF1+LRFGti8J0ZDxaBMARp6XjlVjLg92etMPbOf+GpfnTW
-         WaVMCapmssyLBTc7Cm+HYdBj3BGLBjeE/Fz3gG7BSCCrCanQceTIFE0bs0K9H8+ReGvn
-         +qww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=XgjnfGL7fhRwAvNQvTlzfgUXxKtKFm+93Zmvk2qerpQ=;
-        b=C39Ccbbu3rFLGmT9rVfk3lPwZ8pjgtJE4JfrwoOlsBpp0YNvoM68F06/pn5kQGKdZB
-         R3FckB2VDhlbIvrsXix/qAUqIrHLUiBCXjmhbv118C2AttBtCXaIUNIpSypJ6GCEV4bM
-         sb7bIF7oP3hNZ2u0+LH6rP96H2Mjc17cz+XDMUbI0yW7sbBE73vN+OlIWg1+cB3gqqCm
-         7IWqXAiTksW2MRQ2ut8rtlkd1LsTRB4d5DgXV+L3qa4iLF3ZPbfcJSi/Aema21XFlEOV
-         5NDr6oaDsg6EyObh7M56tZ08acnbZyPeJD1oAap7wPPJrbzYVmXe3nas6zftKhveLzZ3
-         BC7A==
-X-Gm-Message-State: AOAM532fQQKOYuIdD3CjxqwC6mtC4fiKZ5AEU4eDASwQhu1ddQpWyN7J
-        Utl2tmLHdtKNemK8X1FBfCo=
-X-Google-Smtp-Source: ABdhPJxM4TlVkMpABcEDR1NbWu/p2BJ3zySpGa1lfl1C+p3MsU9fPZtsCLlJcirx2aXVoCo5MQk4/g==
-X-Received: by 2002:a5d:4703:: with SMTP id y3mr27218012wrq.416.1606740567358;
-        Mon, 30 Nov 2020 04:49:27 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d4c:d300:8813:e95a:c6db:aa09])
-        by smtp.gmail.com with ESMTPSA id n4sm24474781wmc.30.2020.11.30.04.49.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Nov 2020 04:49:26 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        John Ogness <john.ogness@linutronix.de>
-Cc:     Nathan Chancellor <natechancellor@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] printk: remove obsolete dead assignment
-Date:   Mon, 30 Nov 2020 13:49:15 +0100
-Message-Id: <20201130124915.7573-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 30 Nov 2020 07:54:36 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AUCT3mC013966;
+        Mon, 30 Nov 2020 12:53:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=T4e4SA0nsSEz5R/oPuOynUVhSHa8l4YzlQu9nbAV6w0=;
+ b=Q37V5W8BrV9ozjYfQYey5wQMtLuLQ4dmuxgiTZBdTxDJp0/FHLpDNWXFDvMVmNBdLR+v
+ XssuGqWJVxMTnYzAgT/wMDDY0XqipupHDTedLvuArKTytQ5SWxLNtHRaJ9oSF3+GZCbk
+ +S0h2Zf92kCHJH2lKo0ODJT4OV5FablRJU5o7psx3W5ufD4Dqge78TjQ1Cshr/xe2CJA
+ +eDi8+n/7dlCQLCCw4KjCMhm+2W4Rn8gSLB0CvFBQOsfdE6OJAj/fkM+DQZK1kr6UU8Y
+ /ubilApDr6oJZUlFcgpmIl3DK65hBlIJKn01E8NoVSyfHWhQm0iOx5RWW9orbSgwiFYx cw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 353egkctw6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 30 Nov 2020 12:53:43 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AUCpG43118219;
+        Mon, 30 Nov 2020 12:53:42 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 3540fv1u59-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 30 Nov 2020 12:53:42 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0AUCreQG015374;
+        Mon, 30 Nov 2020 12:53:40 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 30 Nov 2020 04:53:39 -0800
+Date:   Mon, 30 Nov 2020 15:53:30 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Helen Koike <helen.koike@collabora.com>
+Cc:     Dafna Hirschfeld <dafna.hirschfeld@collabora.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Heiko Stuebner <heiko@sntech.de>, linux-media@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] media: rockchip: rkisp1: remove some dead code
+Message-ID: <X8TrSj3PbqVtN5XQ@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9820 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
+ phishscore=0 mlxlogscore=999 adultscore=0 mlxscore=0 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011300082
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9820 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 suspectscore=0
+ phishscore=0 mlxlogscore=999 lowpriorityscore=0 malwarescore=0
+ priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1011 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011300081
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 849f3127bb46 ("switch /dev/kmsg to ->write_iter()") refactored
-devkmsg_write() and left over a dead assignment on the variable 'len'.
+The debugfs_create_dir() function never returns NULLs.  It's not supposed
+to checked for errors in the normal case and there is no need to check
+in this function so let's just delete this dead code.
 
-Hence, make clang-analyzer warns:
-
-  kernel/printk/printk.c:744:4: warning: Value stored to 'len' is never read
-    [clang-analyzer-deadcode.DeadStores]
-                          len -= endp - line;
-                          ^
-
-Simply remove this obsolete dead assignment here.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-applies cleanly on current master and next-20201130
+ drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-Petr, please pick this minor non-urgent clean-up patch.
-
- kernel/printk/printk.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index f279d4fbd9dd..6e4e38b7cd91 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -741,7 +741,6 @@ static ssize_t devkmsg_write(struct kiocb *iocb, struct iov_iter *from)
- 			if (LOG_FACILITY(u) != 0)
- 				facility = LOG_FACILITY(u);
- 			endp++;
--			len -= endp - line;
- 			line = endp;
- 		}
- 	}
+diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+index 9af137e4967f..68da1eed753d 100644
+--- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
++++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+@@ -430,10 +430,6 @@ static void rkisp1_debug_init(struct rkisp1_device *rkisp1)
+ 	struct rkisp1_debug *debug = &rkisp1->debug;
+ 
+ 	debug->debugfs_dir = debugfs_create_dir(RKISP1_DRIVER_NAME, NULL);
+-	if (!debug->debugfs_dir) {
+-		dev_dbg(rkisp1->dev, "failed to create debugfs directory\n");
+-		return;
+-	}
+ 	debugfs_create_ulong("data_loss", 0444, debug->debugfs_dir,
+ 			     &debug->data_loss);
+ 	debugfs_create_ulong("outform_size_err", 0444,  debug->debugfs_dir,
 -- 
-2.17.1
-
+2.29.2

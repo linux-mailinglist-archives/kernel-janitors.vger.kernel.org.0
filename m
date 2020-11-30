@@ -2,236 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D6482C7F29
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Nov 2020 08:52:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28C8A2C8457
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Nov 2020 13:51:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727635AbgK3Htl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 30 Nov 2020 02:49:41 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:41784 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727487AbgK3Htj (ORCPT
+        id S1726144AbgK3MuJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 30 Nov 2020 07:50:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60090 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725912AbgK3MuJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 30 Nov 2020 02:49:39 -0500
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AU7jG23089311;
-        Mon, 30 Nov 2020 07:48:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=qMAbjsB9xIcc9FbOZJHAhVcjJXyVUwDPfnqItTa/5Ug=;
- b=Z6hWS9+sYq8zlMorm5jQmc4LzZT/EQFlBGnQTc5ruOTjHyT/5OKHmy2XvUR8Qf/CKGm5
- sSH9Om4ttPI4x1FFhmbKDSo4sX1Nirc0AYeb6iEalgDLEBzLMceMT+FHjcKV2o1BEdTo
- dx6zMs6TjhZHNp3veKLfnAgBSvnyCW8xMpp6pwDW6tqrWG0B3XXEl0R9p2PnGGErtm2s
- OyA3+QrRPvZch2O3Jw7OeEGc2tvbn1cD/XGVskQkcGOM3itwOO1ST5dtQVq9VNNPNbO9
- 3DFeT3oH2ZCF6GEjGi/zCPxXtMY4JCIvb1WvwKMA9X4s4xOA+KBw+gktXW4Dfb29ye0O fA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2130.oracle.com with ESMTP id 353c2aksm6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 30 Nov 2020 07:48:47 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AU7e08d044463;
-        Mon, 30 Nov 2020 07:48:46 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 3540ew8kbh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 30 Nov 2020 07:48:46 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0AU7megl006138;
-        Mon, 30 Nov 2020 07:48:41 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sun, 29 Nov 2020 23:48:39 -0800
-Date:   Mon, 30 Nov 2020 10:48:29 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "Chrisanthus, Anitha" <anitha.chrisanthus@intel.com>
-Cc:     "Dea, Edmund J" <edmund.j.dea@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH v2] drm/kmb: Fix possible oops in probe error handling
-Message-ID: <20201130074829.GA2767@kadam>
-References: <20201117072103.GA1111239@mwanda>
- <20201120081113.GL18329@kadam>
- <BY5PR11MB41823E214598EC70A9EAEEA08CFF0@BY5PR11MB4182.namprd11.prod.outlook.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BY5PR11MB41823E214598EC70A9EAEEA08CFF0@BY5PR11MB4182.namprd11.prod.outlook.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9820 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 phishscore=0
- suspectscore=0 bulkscore=0 spamscore=0 adultscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011300050
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9820 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 lowpriorityscore=0
- clxscore=1015 bulkscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
- spamscore=0 adultscore=0 mlxscore=0 priorityscore=1501 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011300050
+        Mon, 30 Nov 2020 07:50:09 -0500
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC06FC0613D2;
+        Mon, 30 Nov 2020 04:49:28 -0800 (PST)
+Received: by mail-wr1-x442.google.com with SMTP id 23so16053552wrc.8;
+        Mon, 30 Nov 2020 04:49:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=XgjnfGL7fhRwAvNQvTlzfgUXxKtKFm+93Zmvk2qerpQ=;
+        b=O9JXaJ1jDppA2obNDIfK25wfvYo3KGPkTt0LZTy6DcZU3ryV3Lxa4PbeyvrpFUpJk1
+         OOrlg575a6kEMInbh3kIDz0gyGve5ZTsGP/gnvZsbHGGxInfxyuWoBrLzqRyYgDu2IyI
+         +OjRYRxZInnaIN8pIJQXsU0ExcGAgVuvjAwzrKbS7oWq63AdOXu7luK46KcucfSeG6uM
+         rnFwzQ0EqtTBltqC9S8KrSSF1+LRFGti8J0ZDxaBMARp6XjlVjLg92etMPbOf+GpfnTW
+         WaVMCapmssyLBTc7Cm+HYdBj3BGLBjeE/Fz3gG7BSCCrCanQceTIFE0bs0K9H8+ReGvn
+         +qww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=XgjnfGL7fhRwAvNQvTlzfgUXxKtKFm+93Zmvk2qerpQ=;
+        b=C39Ccbbu3rFLGmT9rVfk3lPwZ8pjgtJE4JfrwoOlsBpp0YNvoM68F06/pn5kQGKdZB
+         R3FckB2VDhlbIvrsXix/qAUqIrHLUiBCXjmhbv118C2AttBtCXaIUNIpSypJ6GCEV4bM
+         sb7bIF7oP3hNZ2u0+LH6rP96H2Mjc17cz+XDMUbI0yW7sbBE73vN+OlIWg1+cB3gqqCm
+         7IWqXAiTksW2MRQ2ut8rtlkd1LsTRB4d5DgXV+L3qa4iLF3ZPbfcJSi/Aema21XFlEOV
+         5NDr6oaDsg6EyObh7M56tZ08acnbZyPeJD1oAap7wPPJrbzYVmXe3nas6zftKhveLzZ3
+         BC7A==
+X-Gm-Message-State: AOAM532fQQKOYuIdD3CjxqwC6mtC4fiKZ5AEU4eDASwQhu1ddQpWyN7J
+        Utl2tmLHdtKNemK8X1FBfCo=
+X-Google-Smtp-Source: ABdhPJxM4TlVkMpABcEDR1NbWu/p2BJ3zySpGa1lfl1C+p3MsU9fPZtsCLlJcirx2aXVoCo5MQk4/g==
+X-Received: by 2002:a5d:4703:: with SMTP id y3mr27218012wrq.416.1606740567358;
+        Mon, 30 Nov 2020 04:49:27 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d4c:d300:8813:e95a:c6db:aa09])
+        by smtp.gmail.com with ESMTPSA id n4sm24474781wmc.30.2020.11.30.04.49.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Nov 2020 04:49:26 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        John Ogness <john.ogness@linutronix.de>
+Cc:     Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] printk: remove obsolete dead assignment
+Date:   Mon, 30 Nov 2020 13:49:15 +0100
+Message-Id: <20201130124915.7573-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Nov 20, 2020 at 10:15:57PM +0000, Chrisanthus, Anitha wrote:
-> Hi Dan,
-> I see the problem now, thanks for the patch.
-> 
-> > -----Original Message-----
-> > From: Dan Carpenter <dan.carpenter@oracle.com>
-> > Sent: Friday, November 20, 2020 12:11 AM
-> > To: Chrisanthus, Anitha <anitha.chrisanthus@intel.com>
-> > Cc: Dea, Edmund J <edmund.j.dea@intel.com>; David Airlie <airlied@linux.ie>;
-> > Daniel Vetter <daniel@ffwll.ch>; Sam Ravnborg <sam@ravnborg.org>; dri-
-> > devel@lists.freedesktop.org; kernel-janitors@vger.kernel.org
-> > Subject: [PATCH v2] drm/kmb: Fix possible oops in probe error handling
-> > 
-> > If kmb_dsi_init() fails the "kmb->kmb_dsi" variable is an error pointer.
-> > The kernel will Oops when we pass it to kmb_dsi_host_unregister().
-> > 
-> > Fixes: 7f7b96a8a0a1 ("drm/kmb: Add support for KeemBay Display")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> > v2: write a better commit message
-> > 
-> >  drivers/gpu/drm/kmb/kmb_drv.c | 5 +++--
-> >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/gpu/drm/kmb/kmb_drv.c
-> > b/drivers/gpu/drm/kmb/kmb_drv.c
-> > index a31a840ce634..8c43b136765c 100644
-> > --- a/drivers/gpu/drm/kmb/kmb_drv.c
-> > +++ b/drivers/gpu/drm/kmb/kmb_drv.c
-> > @@ -504,7 +504,7 @@ static int kmb_probe(struct platform_device *pdev)
-> >  	if (IS_ERR(kmb->kmb_dsi)) {
-> >  		drm_err(&kmb->drm, "failed to initialize DSI\n");
-> >  		ret = PTR_ERR(kmb->kmb_dsi);
-> > -		goto err_free1;
-> > +		goto err_clear_drvdata;
-> >  	}
-> > 
-> >  	kmb->kmb_dsi->dev = &dsi_pdev->dev;
-> > @@ -540,8 +540,9 @@ static int kmb_probe(struct platform_device *pdev)
-> >  	drm_crtc_cleanup(&kmb->crtc);
-> >  	drm_mode_config_cleanup(&kmb->drm);
-> >   err_free1:
-> > -	dev_set_drvdata(dev, NULL);
-> >  	kmb_dsi_host_unregister(kmb->kmb_dsi);
-> > + err_clear_drvdata:
-> We still need to unregister the dsi_host that was registered in this call kmb_dsi_host_bridge_init.
-> This will require more changes in kmb_dsi_host_unregister and/or separate out mipi_dsi_host_unregister.
-> FYI - I will be out all of next week, will be back the next Monday.
+Commit 849f3127bb46 ("switch /dev/kmsg to ->write_iter()") refactored
+devkmsg_write() and left over a dead assignment on the variable 'len'.
 
-Hm...  Yes.  Now that you point it out, there are several bugs related
-to kmb_dsi_host_bridge_init()...
+Hence, make clang-analyzer warns:
 
-   182  void kmb_dsi_host_unregister(struct kmb_dsi *kmb_dsi)
-   183  {
-   184          kmb_dsi_clk_disable(kmb_dsi);
-   185          mipi_dsi_host_unregister(kmb_dsi->host);
-                                         ^^^^^^^^^^^^^
-kmb_dsi->host is dsi_host.
+  kernel/printk/printk.c:744:4: warning: Value stored to 'len' is never read
+    [clang-analyzer-deadcode.DeadStores]
+                          len -= endp - line;
+                          ^
 
-Every user unregisters it, but only the first user registers it.  So
-if there are multiple users it will be unregistered prematurely.  Should
-there be a kfree to prevent a leak?
+Simply remove this obsolete dead assignment here.
 
-		kfree(kmb_dsi->host);
-		dsi_host = NULL;
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on current master and next-20201130
 
-   186  }
+Petr, please pick this minor non-urgent clean-up patch.
 
-[ snip ]
+ kernel/printk/printk.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-   216  int kmb_dsi_host_bridge_init(struct device *dev)
-   217  {
-   218          struct device_node *encoder_node, *dsi_out;
-   219  
-   220          /* Create and register MIPI DSI host */
-   221          if (!dsi_host) {
-                     ^^^^^^^^
-This is only allocated for the first user.
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index f279d4fbd9dd..6e4e38b7cd91 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -741,7 +741,6 @@ static ssize_t devkmsg_write(struct kiocb *iocb, struct iov_iter *from)
+ 			if (LOG_FACILITY(u) != 0)
+ 				facility = LOG_FACILITY(u);
+ 			endp++;
+-			len -= endp - line;
+ 			line = endp;
+ 		}
+ 	}
+-- 
+2.17.1
 
-   222                  dsi_host = kzalloc(sizeof(*dsi_host), GFP_KERNEL);
-   223                  if (!dsi_host)
-   224                          return -ENOMEM;
-   225  
-   226                  dsi_host->ops = &kmb_dsi_host_ops;
-   227  
-   228                  if (!dsi_device) {
-   229                          dsi_device = kzalloc(sizeof(*dsi_device), GFP_KERNEL);
-   230                          if (!dsi_device) {
-   231                                  kfree(dsi_host);
-                                        ^^^^^^^^^^^^^^^
-But now it is non-NULL but it is a freed pointer.  dsi_host = NULL;
-
-   232                                  return -ENOMEM;
-   233                          }
-   234                  }
-   235  
-   236                  dsi_host->dev = dev;
-   237                  mipi_dsi_host_register(dsi_host);
-   238          }
-   239  
-
-[ snip ]
-
-   482  
-   483          of_node_put(dsi_in);
-   484          of_node_put(dsi_node);
-   485          ret = kmb_dsi_host_bridge_init(get_device(&dsi_pdev->dev));
-                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^
-This get_device() needs a matching put_device().  I kind of like to put
-the kref_get() calls on their own line so that they're more obvious to
-the reader.
-
-	get_device(&dsi_pdev->dev);
-	kmb_dsi_host_bridge_init(&dsi_pdev->dev);
-
-   486  
-   487          if (ret == -EPROBE_DEFER) {
-   488                  return -EPROBE_DEFER;
-   489          } else if (ret) {
-   490                  DRM_ERROR("probe failed to initialize DSI host bridge\n");
-   491                  return ret;
-   492          }
-   493  
-   494          /* Create DRM device */
-   495          kmb = devm_drm_dev_alloc(dev, &kmb_driver,
-   496                                   struct kmb_drm_private, drm);
-   497          if (IS_ERR(kmb))
-   498                  return PTR_ERR(kmb);
-
-On these error paths we would want to unwind using a call to
-kmb_dsi_host_unregister().
-
-   499  
-   500          dev_set_drvdata(dev, &kmb->drm);
-   501  
-   502          /* Initialize MIPI DSI */
-   503          kmb->kmb_dsi = kmb_dsi_init(dsi_pdev);
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This is the call where the "kmb_dsi->host = dsi_host;" assignment
-actually happens.
-
-   504          if (IS_ERR(kmb->kmb_dsi)) {
-   505                  drm_err(&kmb->drm, "failed to initialize DSI\n");
-   506                  ret = PTR_ERR(kmb->kmb_dsi);
-   507                  goto err_free1;
-   508          }
-   509  
-   510          kmb->kmb_dsi->dev = &dsi_pdev->dev;
-   511          kmb->kmb_dsi->pdev = dsi_pdev;
-   512          ret = kmb_hw_init(&kmb->drm, 0);
-
-It feels like it would be a lot easier if the kmb_dsi_init() and
-kmb_dsi_host_bridge_init() functions were combined.  Probably the
-dsi_host and dsi_device stuff needs to be refcounted?
-
-Anyway, I can't test this stuff and I'm not really familiar with the
-driver.  Could you fix it and CC me on the fix?
-
-regards,
-dan carpenter

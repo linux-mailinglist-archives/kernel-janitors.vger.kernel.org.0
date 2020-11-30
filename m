@@ -2,80 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76CCC2C7B96
-	for <lists+kernel-janitors@lfdr.de>; Sun, 29 Nov 2020 23:05:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8795B2C7CB9
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Nov 2020 03:25:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726344AbgK2WFA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 29 Nov 2020 17:05:00 -0500
-Received: from asavdk3.altibox.net ([109.247.116.14]:40902 "EHLO
-        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725950AbgK2WFA (ORCPT
+        id S1726486AbgK3CWP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 29 Nov 2020 21:22:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:36851 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726376AbgK3CWP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 29 Nov 2020 17:05:00 -0500
-Received: from ravnborg.org (unknown [188.228.123.71])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Sun, 29 Nov 2020 21:22:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1606702848;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=l+xbRADCNKOvYBKYT87lWC6tQYrlTC4el3mQzUGbbMk=;
+        b=Ay0aoQosgeAkTk94qC+0rTDvKe9tejaALMMKKu8mxMh/I0xjmS+bovbqlidIppwkYQjvTi
+        JucSTB9CwA5+bs/jV1aPZzef/WIRgMwPvBBEZbGpRvWdtsqZv8Igmx9WTeCsW5m0/8RbrE
+        6d90F3CR/8jPl6/9KmwLfLNYw0Smdx0=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-59-SwTHeKNcM1CxPpFYeZtw7A-1; Sun, 29 Nov 2020 21:20:46 -0500
+X-MC-Unique: SwTHeKNcM1CxPpFYeZtw7A-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by asavdk3.altibox.net (Postfix) with ESMTPS id 1EF4120034;
-        Sun, 29 Nov 2020 23:04:12 +0100 (CET)
-Date:   Sun, 29 Nov 2020 23:04:11 +0100
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     "Chrisanthus, Anitha" <anitha.chrisanthus@intel.com>
-Cc:     Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@linux.ie>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "Dea, Edmund J" <edmund.j.dea@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH] drm/kmb: Remove an unnecessary NULL check
-Message-ID: <20201129220411.GG1162850@ravnborg.org>
-References: <20201117072137.GB1111239@mwanda>
- <BY5PR11MB4182EBE4FD5F42AC625945998CFF0@BY5PR11MB4182.namprd11.prod.outlook.com>
- <20201120082146.GA314029@ravnborg.org>
- <460740bc-ffb8-91c1-47ec-94a38dd2308d@suse.de>
- <BY5PR11MB4182170E428502EF005B27E48CFF0@BY5PR11MB4182.namprd11.prod.outlook.com>
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F1C1D107AD50;
+        Mon, 30 Nov 2020 02:20:44 +0000 (UTC)
+Received: from [10.72.13.173] (ovpn-13-173.pek2.redhat.com [10.72.13.173])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3F3F560657;
+        Mon, 30 Nov 2020 02:20:35 +0000 (UTC)
+Subject: Re: [PATCH] vdpa: ifcvf: Use dma_set_mask_and_coherent to simplify
+ code
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>, mst@redhat.com,
+        lingshan.zhu@intel.com, eli@mellanox.com, parav@mellanox.com
+Cc:     virtualization@lists.linux-foundation.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20201129125434.1462638-1-christophe.jaillet@wanadoo.fr>
+From:   Jason Wang <jasowang@redhat.com>
+Message-ID: <4576b2bb-d4d3-6413-c2cb-54e7d781eebf@redhat.com>
+Date:   Mon, 30 Nov 2020 10:20:34 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BY5PR11MB4182170E428502EF005B27E48CFF0@BY5PR11MB4182.namprd11.prod.outlook.com>
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=Ibmpp1ia c=1 sm=1 tr=0
-        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
-        a=kj9zAlcOel0A:10 a=7gkXJVJtAAAA:8 a=QyXUC8HyAAAA:8 a=VwQbUJbxAAAA:8
-        a=e5mUnYsNAAAA:8 a=yPCof4ZbAAAA:8 a=-5daY3v0RUpMMgDoOU4A:9
-        a=CjuIK1q_8ugA:10 a=E9Po1WZjFZOl8hwRPBS3:22 a=AjGcO6oz07-iQ99wixmX:22
-        a=Vxmtnl_E_bksehYqCbjh:22
+In-Reply-To: <20201129125434.1462638-1-christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Anitha,
 
-On Fri, Nov 20, 2020 at 05:28:59PM +0000, Chrisanthus, Anitha wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Thomas Zimmermann <tzimmermann@suse.de>
-> > Sent: Friday, November 20, 2020 12:34 AM
-> > To: Sam Ravnborg <sam@ravnborg.org>; Chrisanthus, Anitha
-> > <anitha.chrisanthus@intel.com>
-> > Cc: David Airlie <airlied@linux.ie>; Dea, Edmund J <edmund.j.dea@intel.com>;
-> > kernel-janitors@vger.kernel.org; dri-devel@lists.freedesktop.org; Dan
-> > Carpenter <dan.carpenter@oracle.com>
-> > Subject: Re: [PATCH] drm/kmb: Remove an unnecessary NULL check
-> > 
-> > Hi
-> > 
-> > Am 20.11.20 um 09:21 schrieb Sam Ravnborg:
-> > > Hi Anitha.
-> > >
-> > > On Fri, Nov 20, 2020 at 01:19:06AM +0000, Chrisanthus, Anitha wrote:
-> > >> Looks good to me.
-> > >
-> > > Can we get either an "Acked-by:" or "Reviewed-by:"?
-> > > Then we can use this while applying.
-> Sorry, forgot that.
-> Reviewed-by: Anitha Chrisanthus <anitha.chrisanthus@intel.com>
+On 2020/11/29 下午8:54, Christophe JAILLET wrote:
+> 'pci_set_dma_mask()' + 'pci_set_consistent_dma_mask()' can be replaced by
+> an equivalent 'dma_set_mask_and_coherent()' which is much less verbose.
+>
+> While at it, fix a typo (s/confiugration/configuration)
+>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
 
-Thanks, patch is now pushed to drm-misc-next.
 
-	Sam
+Acked-by: Jason Wang <jasowang@redhat.com>
+
+
+>   drivers/vdpa/ifcvf/ifcvf_main.c | 11 ++---------
+>   1 file changed, 2 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/vdpa/ifcvf/ifcvf_main.c b/drivers/vdpa/ifcvf/ifcvf_main.c
+> index 8b4028556cb6..fa1af301cf55 100644
+> --- a/drivers/vdpa/ifcvf/ifcvf_main.c
+> +++ b/drivers/vdpa/ifcvf/ifcvf_main.c
+> @@ -417,16 +417,9 @@ static int ifcvf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>   		return ret;
+>   	}
+>   
+> -	ret = pci_set_dma_mask(pdev, DMA_BIT_MASK(64));
+> +	ret = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
+>   	if (ret) {
+> -		IFCVF_ERR(pdev, "No usable DMA confiugration\n");
+> -		return ret;
+> -	}
+> -
+> -	ret = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(64));
+> -	if (ret) {
+> -		IFCVF_ERR(pdev,
+> -			  "No usable coherent DMA confiugration\n");
+> +		IFCVF_ERR(pdev, "No usable DMA configuration\n");
+>   		return ret;
+>   	}
+>   
+

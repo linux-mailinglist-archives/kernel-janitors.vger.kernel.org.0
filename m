@@ -2,37 +2,41 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BD2D2C8C8D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Nov 2020 19:20:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EC092C8C95
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Nov 2020 19:21:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729085AbgK3ST4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 30 Nov 2020 13:19:56 -0500
-Received: from static.214.254.202.116.clients.your-server.de ([116.202.254.214]:34216
-        "EHLO ciao.gmane.io" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727692AbgK3ST4 (ORCPT
+        id S1729660AbgK3SUz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 30 Nov 2020 13:20:55 -0500
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:21150 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727847AbgK3SUz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 30 Nov 2020 13:19:56 -0500
-Received: from list by ciao.gmane.io with local (Exim 4.92)
-        (envelope-from <glkj-kernel-janitors-2@m.gmane-mx.org>)
-        id 1kjnla-0006iG-4m
-        for kernel-janitors@vger.kernel.org; Mon, 30 Nov 2020 19:19:14 +0100
-X-Injected-Via-Gmane: http://gmane.org/
-To:     kernel-janitors@vger.kernel.org
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+        Mon, 30 Nov 2020 13:20:55 -0500
+Received: from [192.168.42.210] ([81.185.173.102])
+        by mwinf5d73 with ME
+        id yiK82300D2CvH0103iK8vB; Mon, 30 Nov 2020 19:19:10 +0100
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 30 Nov 2020 19:19:10 +0100
+X-ME-IP: 81.185.173.102
 Subject: Re: [PATCH] mlxsw: switch from 'pci_' to 'dma_' API
-Date:   Mon, 30 Nov 2020 19:19:09 +0100
-Message-ID: <35052891-4d32-19f0-e991-2aad009917e9@wanadoo.fr>
+To:     Heiner Kallweit <hkallweit1@gmail.com>, jiri@nvidia.com,
+        idosch@nvidia.com, davem@davemloft.net, kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Newsgroups: gmane.linux.kernel.janitors,gmane.linux.kernel.wireless.general,gmane.linux.network,gmane.linux.kernel
 References: <20201129211733.2913-1-christophe.jaillet@wanadoo.fr>
  <a4fde87f-ea73-8ba4-e6cd-689f0f649eb4@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <35052891-4d32-19f0-e991-2aad009917e9@wanadoo.fr>
+Date:   Mon, 30 Nov 2020 19:19:09 +0100
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.5.0
+MIME-Version: 1.0
 In-Reply-To: <a4fde87f-ea73-8ba4-e6cd-689f0f649eb4@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -69,5 +73,4 @@ include/linux/pci-dma-compat.h are gone"
 However, if it is prefered to have only one patch, I can resubmit.
 
 CJ
-
 

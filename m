@@ -2,97 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE1392C8474
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Nov 2020 13:55:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5387B2C8687
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Nov 2020 15:22:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726376AbgK3Myh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 30 Nov 2020 07:54:37 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:47348 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726343AbgK3Myg (ORCPT
+        id S1726661AbgK3OU4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 30 Nov 2020 09:20:56 -0500
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:55706 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726410AbgK3OU4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 30 Nov 2020 07:54:36 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AUCT3mC013966;
-        Mon, 30 Nov 2020 12:53:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=T4e4SA0nsSEz5R/oPuOynUVhSHa8l4YzlQu9nbAV6w0=;
- b=Q37V5W8BrV9ozjYfQYey5wQMtLuLQ4dmuxgiTZBdTxDJp0/FHLpDNWXFDvMVmNBdLR+v
- XssuGqWJVxMTnYzAgT/wMDDY0XqipupHDTedLvuArKTytQ5SWxLNtHRaJ9oSF3+GZCbk
- +S0h2Zf92kCHJH2lKo0ODJT4OV5FablRJU5o7psx3W5ufD4Dqge78TjQ1Cshr/xe2CJA
- +eDi8+n/7dlCQLCCw4KjCMhm+2W4Rn8gSLB0CvFBQOsfdE6OJAj/fkM+DQZK1kr6UU8Y
- /ubilApDr6oJZUlFcgpmIl3DK65hBlIJKn01E8NoVSyfHWhQm0iOx5RWW9orbSgwiFYx cw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 353egkctw6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 30 Nov 2020 12:53:43 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AUCpG43118219;
-        Mon, 30 Nov 2020 12:53:42 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 3540fv1u59-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 30 Nov 2020 12:53:42 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0AUCreQG015374;
-        Mon, 30 Nov 2020 12:53:40 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 30 Nov 2020 04:53:39 -0800
-Date:   Mon, 30 Nov 2020 15:53:30 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Helen Koike <helen.koike@collabora.com>
+        Mon, 30 Nov 2020 09:20:56 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: koike)
+        with ESMTPSA id D7FDC1F45036
+Subject: Re: [PATCH] media: rockchip: rkisp1: remove some dead code
+To:     Dan Carpenter <dan.carpenter@oracle.com>
 Cc:     Dafna Hirschfeld <dafna.hirschfeld@collabora.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Heiko Stuebner <heiko@sntech.de>, linux-media@vger.kernel.org,
         linux-rockchip@lists.infradead.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] media: rockchip: rkisp1: remove some dead code
-Message-ID: <X8TrSj3PbqVtN5XQ@mwanda>
+References: <X8TrSj3PbqVtN5XQ@mwanda>
+From:   Helen Koike <helen.koike@collabora.com>
+Message-ID: <a6d9660f-84ec-317d-c3aa-9b3bda595d49@collabora.com>
+Date:   Mon, 30 Nov 2020 11:20:05 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9820 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
- phishscore=0 mlxlogscore=999 adultscore=0 mlxscore=0 bulkscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011300082
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9820 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 suspectscore=0
- phishscore=0 mlxlogscore=999 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1011 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011300081
+In-Reply-To: <X8TrSj3PbqVtN5XQ@mwanda>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The debugfs_create_dir() function never returns NULLs.  It's not supposed
-to checked for errors in the normal case and there is no need to check
-in this function so let's just delete this dead code.
+Hi Dan,
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c | 4 ----
- 1 file changed, 4 deletions(-)
+Thank you for your patch.
 
-diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-index 9af137e4967f..68da1eed753d 100644
---- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-+++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-@@ -430,10 +430,6 @@ static void rkisp1_debug_init(struct rkisp1_device *rkisp1)
- 	struct rkisp1_debug *debug = &rkisp1->debug;
- 
- 	debug->debugfs_dir = debugfs_create_dir(RKISP1_DRIVER_NAME, NULL);
--	if (!debug->debugfs_dir) {
--		dev_dbg(rkisp1->dev, "failed to create debugfs directory\n");
--		return;
--	}
- 	debugfs_create_ulong("data_loss", 0444, debug->debugfs_dir,
- 			     &debug->data_loss);
- 	debugfs_create_ulong("outform_size_err", 0444,  debug->debugfs_dir,
--- 
-2.29.2
+On 11/30/20 9:53 AM, Dan Carpenter wrote:
+> The debugfs_create_dir() function never returns NULLs.  It's not supposed
+> to checked for errors in the normal case and there is no need to check
+> in this function so let's just delete this dead code.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c | 4 ----
+>  1 file changed, 4 deletions(-)
+> 
+> diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+> index 9af137e4967f..68da1eed753d 100644
+> --- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+> +++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+> @@ -430,10 +430,6 @@ static void rkisp1_debug_init(struct rkisp1_device *rkisp1)
+>  	struct rkisp1_debug *debug = &rkisp1->debug;
+>  
+>  	debug->debugfs_dir = debugfs_create_dir(RKISP1_DRIVER_NAME, NULL);
+> -	if (!debug->debugfs_dir) {
+> -		dev_dbg(rkisp1->dev, "failed to create debugfs directory\n");
+> -		return;
+> -	}
+
+I was taking a look at the debugfs_create_dir() code, and I saw it can
+return ERR_PTR(), so ideally we should check for errors with IS_ERR() / PTR_ERR().
+
+Also from the docs:
+
+ * <snip>  If an error occurs, ERR_PTR(-ERROR) will be
+ * returned.
+ *
+ * If debugfs is not enabled in the kernel, the value -%ENODEV will be
+ * returned.
+
+
+
+>  	debugfs_create_ulong("data_loss", 0444, debug->debugfs_dir,
+>  			     &debug->data_loss);
+>  	debugfs_create_ulong("outform_size_err", 0444,  debug->debugfs_dir,
+> 
+
+
+nit: I would change the name of the commit just to make it clear what it
+does.
+Example: Remove useless error check from debugfs_create_dir()
+
+Thanks,
+Helen

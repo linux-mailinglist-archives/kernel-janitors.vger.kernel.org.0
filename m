@@ -2,62 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E74FD2CADF1
-	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Dec 2020 22:00:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 005B72CADFE
+	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Dec 2020 22:05:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730018AbgLAVAr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 1 Dec 2020 16:00:47 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41308 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729779AbgLAVAr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 1 Dec 2020 16:00:47 -0500
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606856406;
-        bh=OwYHPEelFrLZM4OpnbVKbBbEMe819vJTm/MzzFUOZSs=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=P/obPXY20es4Q0SGy63W8UIRAKjJ26zuy2+Sq4EA59hlRKZ0+Zg/1HFtUH56SVqeP
-         JayppYFM5r2Qahd8W1qwdRIGvUg8hyww3hOibmXt4XhSbSMGo0VWBPdKfbvTehMRcL
-         /3Frvoot4uOavZeCsjVWVqtHdU82zLX14vyYBzk4=
+        id S2388107AbgLAVDe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 1 Dec 2020 16:03:34 -0500
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:50076 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725977AbgLAVDc (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 1 Dec 2020 16:03:32 -0500
+Received: from localhost.localdomain ([81.185.163.171])
+        by mwinf5d20 with ME
+        id z91m230093iBeFl0391nDg; Tue, 01 Dec 2020 22:01:48 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 01 Dec 2020 22:01:48 +0100
+X-ME-IP: 81.185.163.171
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     haver@linux.ibm.com, arnd@arndb.de, gregkh@linuxfoundation.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] misc: genwqe: Use dma_set_mask_and_coherent to simplify code
+Date:   Tue,  1 Dec 2020 22:01:47 +0100
+Message-Id: <20201201210147.7917-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net/ipv6: propagate user pointer annotation
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <160685640652.20133.12792277369637209995.git-patchwork-notify@kernel.org>
-Date:   Tue, 01 Dec 2020 21:00:06 +0000
-References: <20201127093421.21673-1-lukas.bulwahn@gmail.com>
-In-Reply-To: <20201127093421.21673-1-lukas.bulwahn@gmail.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     hch@lst.de, davem@davemloft.net, kuznet@ms2.inr.ac.ru,
-        yoshfuji@linux-ipv6.org, kuba@kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
+'pci_set_dma_mask()' + 'pci_set_consistent_dma_mask()' can be replaced by
+an equivalent 'dma_set_mask_and_coherent()' which is much less verbose.
 
-This patch was applied to netdev/net-next.git (refs/heads/master):
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/misc/genwqe/card_base.c | 19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
-On Fri, 27 Nov 2020 10:34:21 +0100 you wrote:
-> For IPV6_2292PKTOPTIONS, do_ipv6_getsockopt() stores the user pointer
-> optval in the msg_control field of the msghdr.
-> 
-> Hence, sparse rightfully warns at ./net/ipv6/ipv6_sockglue.c:1151:33:
-> 
->   warning: incorrect type in assignment (different address spaces)
->       expected void *msg_control
->       got char [noderef] __user *optval
-> 
-> [...]
-
-Here is the summary with links:
-  - net/ipv6: propagate user pointer annotation
-    https://git.kernel.org/netdev/net-next/c/9e39394faef6
-
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+diff --git a/drivers/misc/genwqe/card_base.c b/drivers/misc/genwqe/card_base.c
+index c9b886618071..2e1befbd1ad9 100644
+--- a/drivers/misc/genwqe/card_base.c
++++ b/drivers/misc/genwqe/card_base.c
+@@ -1089,24 +1089,9 @@ static int genwqe_pci_setup(struct genwqe_dev *cd)
+ 	}
+ 
+ 	/* check for 64-bit DMA address supported (DAC) */
+-	if (!pci_set_dma_mask(pci_dev, DMA_BIT_MASK(64))) {
+-		err = pci_set_consistent_dma_mask(pci_dev, DMA_BIT_MASK(64));
+-		if (err) {
+-			dev_err(&pci_dev->dev,
+-				"err: DMA64 consistent mask error\n");
+-			err = -EIO;
+-			goto out_release_resources;
+-		}
+ 	/* check for 32-bit DMA address supported (SAC) */
+-	} else if (!pci_set_dma_mask(pci_dev, DMA_BIT_MASK(32))) {
+-		err = pci_set_consistent_dma_mask(pci_dev, DMA_BIT_MASK(32));
+-		if (err) {
+-			dev_err(&pci_dev->dev,
+-				"err: DMA32 consistent mask error\n");
+-			err = -EIO;
+-			goto out_release_resources;
+-		}
+-	} else {
++	if (dma_set_mask_and_coherent(&pci_dev->dev, DMA_BIT_MASK(64)) ||
++	    dma_set_mask_and_coherent(&pci_dev->dev, DMA_BIT_MASK(32))) {
+ 		dev_err(&pci_dev->dev,
+ 			"err: neither DMA32 nor DMA64 supported\n");
+ 		err = -EIO;
+-- 
+2.27.0
 

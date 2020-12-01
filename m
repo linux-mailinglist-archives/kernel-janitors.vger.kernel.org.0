@@ -2,128 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FC462CA6E6
-	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Dec 2020 16:23:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 513B52CA75C
+	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Dec 2020 16:46:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391505AbgLAPWe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 1 Dec 2020 10:22:34 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:36076 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390132AbgLAPWd (ORCPT
+        id S2391943AbgLAPoX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 1 Dec 2020 10:44:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57920 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388237AbgLAPoX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 1 Dec 2020 10:22:33 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B1FBOo0165710;
-        Tue, 1 Dec 2020 15:15:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=FrOA1XUFmPKn8mKk+UnDtvZGiAQ6NVgplGG9s+uq6wU=;
- b=RV4iVKxim1xX5+cg5G9TC04TjU2egA+AW/3svD3xDSakxXrHwW9NWePfJjou7ivxwMZQ
- zC2A7FdPXWe5gKWkL8llp0LukPL3tEyAadOcJG/nDdnZxt6FWvZ8LbHOuYMa0ehQBEb9
- iD5cBqfDKVP0wGCVQU41n+YlaJCNy0VtAn5FbnLOMXKrKZ88VosqRPbB03k8UhM3Cs2R
- DfWjs54RatvoeAaQEvbxKcNZEiCPsauPNHRhCO6cPdr7WFv9v3s7b9jVSIT2uhT+rfOi
- kdvT6vgOtVW7z3AoQftch5HBDrGRvbhxqW6n9iaxfflcTmR2VG8J06iTgUDZqv3S/6mm jg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 353dyqk2aq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 01 Dec 2020 15:15:25 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B1FAP3v066373;
-        Tue, 1 Dec 2020 15:15:25 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 35404n0anr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 01 Dec 2020 15:15:25 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B1FFKqd023845;
-        Tue, 1 Dec 2020 15:15:20 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 01 Dec 2020 07:15:19 -0800
-Date:   Tue, 1 Dec 2020 18:15:12 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Martin Schiller <ms@dev.tdt.de>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-x25@vger.kernel.org,
-        netdev@vger.kernel.org, Andrew Hendry <andrew.hendry@gmail.com>,
-        =?utf-8?B?a2l5aW4o5bC55LquKQ==?= <kiyin@tencent.com>,
-        security@kernel.org, linux-distros@vs.openwall.org,
-        =?utf-8?B?aHVudGNoZW4o6ZmI6ZizKQ==?= <huntchen@tencent.com>,
-        =?utf-8?B?ZGFubnl3YW5nKOeOi+Wuhyk=?= <dannywang@tencent.com>,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH net v2] net/x25: prevent a couple of overflows
-Message-ID: <X8ZeAKm8FnFpN//B@mwanda>
+        Tue, 1 Dec 2020 10:44:23 -0500
+Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com [IPv6:2607:f8b0:4864:20::a44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40283C0613D4
+        for <kernel-janitors@vger.kernel.org>; Tue,  1 Dec 2020 07:43:43 -0800 (PST)
+Received: by mail-vk1-xa44.google.com with SMTP id w190so526639vkg.13
+        for <kernel-janitors@vger.kernel.org>; Tue, 01 Dec 2020 07:43:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Ublsz4UjgUbpORn7U8gi9gf1r205x1Lev92pLKzC+V4=;
+        b=Xk6hhXSm+W9hpw1fjMz5TIaHAZ4a3owISlzNaCn3o4SXxNcE7DOPms41QRA+DoWxiZ
+         /au3JLy6qsQUT9OYtQGIFDvqSUgzNm6Fmp9C+S4MQRxnc5FjOJXQ7ibMFMBcn8wYknpy
+         qlG9VoJpHOjHpthKqCDQcyIx4tR4sd3Ieaapk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Ublsz4UjgUbpORn7U8gi9gf1r205x1Lev92pLKzC+V4=;
+        b=ZAwswfkmfKRbBEjHpwEpfDevUbKIqMrpV0IsCQ6Q7LN18hIs+MogWUFGGtkXNX2SFV
+         GndRjv8gBYBJlpaRVvQdcCQ7fFYm7vDabcy8iRHR0FE/EHGoSZXedQA21VRuV8iqXdOZ
+         VQYd5XwQ6xDzfml28ck62w9Wvc1MTzpIsgXmUzobg1APxb9awHRABX2bYlTh7nRw2DZs
+         tL4myc6vOup1Nj6qr2jCLNBjHiq4g6Zb/S1Rqi/RteS6KxuAML3UYQ8W1lNq86WUGGRv
+         LbXxt1k2pXY7/8xcv/LrZPJpKvb5fgyqJR2kBz/EvZqemvwPGfsZ8lEeX+OJ+svk3LMf
+         zVBg==
+X-Gm-Message-State: AOAM532tSE4rFau+qQ3GNLdaRqwkjyVnlu/AvLu270yReE7GMXabjX0+
+        BGbEkoZ3DzNYejj+791ylsdNlDYIGV9QFw==
+X-Google-Smtp-Source: ABdhPJwPNCmQxCY81OCAVmWurJdxQrxhesrdI/FpFuEf9UuF83HVF7O/d3CqCrZEo3slK/FlkexqMw==
+X-Received: by 2002:a1f:2717:: with SMTP id n23mr1669288vkn.25.1606837420916;
+        Tue, 01 Dec 2020 07:43:40 -0800 (PST)
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com. [209.85.222.53])
+        by smtp.gmail.com with ESMTPSA id q11sm356vke.35.2020.12.01.07.43.39
+        for <kernel-janitors@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Dec 2020 07:43:40 -0800 (PST)
+Received: by mail-ua1-f53.google.com with SMTP id y26so712284uan.5
+        for <kernel-janitors@vger.kernel.org>; Tue, 01 Dec 2020 07:43:39 -0800 (PST)
+X-Received: by 2002:ab0:6285:: with SMTP id z5mr2961275uao.0.1606837419257;
+ Tue, 01 Dec 2020 07:43:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ecf3321f20cc4f6dcf02b5b73105da58@dev.tdt.de>
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9822 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 bulkscore=0
- malwarescore=0 mlxscore=0 mlxlogscore=999 phishscore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012010097
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9822 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0
- clxscore=1015 mlxscore=0 spamscore=0 priorityscore=1501 mlxlogscore=999
- suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012010097
+References: <X8XqwK0z//8sSWJR@mwanda>
+In-Reply-To: <X8XqwK0z//8sSWJR@mwanda>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Tue, 1 Dec 2020 07:43:27 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=WVqTX1Ct4wNMghp2+kmz+J5D18r_g9FHF7dQtHUREaoQ@mail.gmail.com>
+Message-ID: <CAD=FV=WVqTX1Ct4wNMghp2+kmz+J5D18r_g9FHF7dQtHUREaoQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: sx9310: Off by one in sx9310_read_thresh()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Daniel Campello <campello@chromium.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The .x25_addr[] address comes from the user and is not necessarily
-NUL terminated.  This leads to a couple problems.  The first problem is
-that the strlen() in x25_bind() can read beyond the end of the buffer.
+Hi,
 
-The second problem is more subtle and could result in memory corruption.
-The call tree is:
-  x25_connect()
-  --> x25_write_internal()
-      --> x25_addr_aton()
+On Mon, Nov 30, 2020 at 11:03 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> This > should be >= to prevent reading one element beyond the end of
+> the sx9310_pthresh_codes[] array.
+>
+> Fixes: ad2b473e2ba3 ("iio: sx9310: Support setting proximity thresholds")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/iio/proximity/sx9310.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-The .x25_addr[] buffers are copied to the "addresses" buffer from
-x25_write_internal() so it will lead to stack corruption.
-
-Verify that the strings are NUL terminated and return -EINVAL if they
-are not.
-
-Reported-by: "kiyin(尹亮)" <kiyin@tencent.com>
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-The first patch put a NUL terminator on the end of the string and this
-patch returns an error instead.  I don't have a strong preference, which
-patch to go with.
-
- net/x25/af_x25.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/net/x25/af_x25.c b/net/x25/af_x25.c
-index 9232cdb42ad9..d41fffb2507b 100644
---- a/net/x25/af_x25.c
-+++ b/net/x25/af_x25.c
-@@ -675,7 +675,8 @@ static int x25_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
- 	int len, i, rc = 0;
- 
- 	if (addr_len != sizeof(struct sockaddr_x25) ||
--	    addr->sx25_family != AF_X25) {
-+	    addr->sx25_family != AF_X25 ||
-+	    strnlen(addr->sx25_addr.x25_addr, X25_ADDR_LEN) == X25_ADDR_LEN) {
- 		rc = -EINVAL;
- 		goto out;
- 	}
-@@ -769,7 +770,8 @@ static int x25_connect(struct socket *sock, struct sockaddr *uaddr,
- 
- 	rc = -EINVAL;
- 	if (addr_len != sizeof(struct sockaddr_x25) ||
--	    addr->sx25_family != AF_X25)
-+	    addr->sx25_family != AF_X25 ||
-+	    strnlen(addr->sx25_addr.x25_addr, X25_ADDR_LEN) == X25_ADDR_LEN)
- 		goto out;
- 
- 	rc = -ENETUNREACH;
--- 
-2.29.2
+Reviewed-by: Douglas Anderson <dianders@chromium.org>

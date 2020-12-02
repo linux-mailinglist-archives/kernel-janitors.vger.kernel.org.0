@@ -2,125 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A0442CB90D
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Dec 2020 10:40:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A1A12CBFF6
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Dec 2020 15:45:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388085AbgLBJhh convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Dec 2020 04:37:37 -0500
-Received: from mxout70.expurgate.net ([91.198.224.70]:8175 "EHLO
-        mxout70.expurgate.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387860AbgLBJhh (ORCPT
+        id S1730190AbgLBOpH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Dec 2020 09:45:07 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:55382 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728156AbgLBOpG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Dec 2020 04:37:37 -0500
-X-Greylist: delayed 502 seconds by postgrey-1.27 at vger.kernel.org; Wed, 02 Dec 2020 04:37:36 EST
-Received: from [127.0.0.1] (helo=localhost)
-        by relay.expurgate.net with smtp (Exim 4.92)
-        (envelope-from <ms@dev.tdt.de>)
-        id 1kkOPy-000URj-0z; Wed, 02 Dec 2020 10:27:22 +0100
-Received: from [195.243.126.94] (helo=securemail.tdt.de)
-        by relay.expurgate.net with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ms@dev.tdt.de>)
-        id 1kkOPw-00095f-SN; Wed, 02 Dec 2020 10:27:20 +0100
-Received: from securemail.tdt.de (localhost [127.0.0.1])
-        by securemail.tdt.de (Postfix) with ESMTP id 95E66240041;
-        Wed,  2 Dec 2020 10:27:20 +0100 (CET)
-Received: from mail.dev.tdt.de (unknown [10.2.4.42])
-        by securemail.tdt.de (Postfix) with ESMTP id E3305240040;
-        Wed,  2 Dec 2020 10:27:19 +0100 (CET)
-Received: from mail.dev.tdt.de (localhost [IPv6:::1])
-        by mail.dev.tdt.de (Postfix) with ESMTP id 7B5C1200C5;
-        Wed,  2 Dec 2020 10:27:18 +0100 (CET)
+        Wed, 2 Dec 2020 09:45:06 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B2EcxT3070405;
+        Wed, 2 Dec 2020 14:44:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=XL/oCNCFV+IXYXsYVyNB7YNAmO1Fc9HeM+CX17d7vHk=;
+ b=Ft/hT4z+OQGJKiXc8WF/FkgSCz2QMposwc5ArplrB7CnI39prspFMbO21PNmdTh5OP4v
+ 7QomkupGYE63lNTSrcsxbvC5iEOpfB8Po+QBlTpM7/VeCYICEqBgjDB+q7AGwSUalPqO
+ xxaxgb/hGqjQd+4yNGY6BkDFOVFXnmiYejeBwkshCiFig6ayhukwj+7Bsook/xk/VuoL
+ DLElWB3KOKk3qkwrGeuUu9+TYiMuEES1M/DAHEp0Vs8cc2Q+8g2StxRXniMvA4UYmluM
+ 9F/k0uCphg/5JkfYDkg/mLIDGZEgBRctI5yMZ7Ut8W+2R+sJhz9qCfDVlwaseSc8JB4I WA== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2130.oracle.com with ESMTP id 353c2b0s82-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 02 Dec 2020 14:44:17 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B2EfMh4191215;
+        Wed, 2 Dec 2020 14:44:17 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 3540fyuayw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 02 Dec 2020 14:44:16 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0B2EiFc9023913;
+        Wed, 2 Dec 2020 14:44:15 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 02 Dec 2020 06:44:14 -0800
+Date:   Wed, 2 Dec 2020 17:44:07 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Justin Ernst <justin.ernst@hpe.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Borislav Petkov <bp@suse.de>, Steve Wahl <steve.wahl@hpe.com>,
+        platform-driver-x86@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] x86/platform/uv: Fix an error code in uv_hubs_init()
+Message-ID: <X8eoN/jMAJb3H3iv@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Date:   Wed, 02 Dec 2020 10:27:18 +0100
-From:   Martin Schiller <ms@dev.tdt.de>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-x25@vger.kernel.org,
-        netdev@vger.kernel.org, Andrew Hendry <andrew.hendry@gmail.com>,
-        =?UTF-8?Q?kiyin=28=E5=B0=B9=E4=BA=AE?= =?UTF-8?Q?=29?= 
-        <kiyin@tencent.com>, security@kernel.org,
-        linux-distros@vs.openwall.org,
-        =?UTF-8?Q?huntchen=28=E9=99=88=E9=98=B3?= =?UTF-8?Q?=29?= 
-        <huntchen@tencent.com>,
-        =?UTF-8?Q?dannywang=28?= =?UTF-8?Q?=E7=8E=8B=E5=AE=87=29?= 
-        <dannywang@tencent.com>, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net v2] net/x25: prevent a couple of overflows
-Organization: TDT AG
-In-Reply-To: <X8ZeAKm8FnFpN//B@mwanda>
-References: <X8ZeAKm8FnFpN//B@mwanda>
-Message-ID: <41de2a35016a1eb9a188a71d11709f16@dev.tdt.de>
-X-Sender: ms@dev.tdt.de
-User-Agent: Roundcube Webmail/1.3.15
-X-Spam-Status: No, score=-1.0 required=5.0 tests=ALL_TRUSTED,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.dev.tdt.de
-Content-Transfer-Encoding: 8BIT
-X-purgate-type: clean
-X-purgate: clean
-X-purgate-ID: 151534::1606901241-00016B9D-D8500775/0/0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9822 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
+ phishscore=0 mlxlogscore=999 adultscore=0 mlxscore=0 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012020090
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9822 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 lowpriorityscore=0
+ clxscore=1011 bulkscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
+ spamscore=0 adultscore=0 mlxscore=0 priorityscore=1501 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012020090
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020-12-01 16:15, Dan Carpenter wrote:
-> The .x25_addr[] address comes from the user and is not necessarily
-> NUL terminated.  This leads to a couple problems.  The first problem is
-> that the strlen() in x25_bind() can read beyond the end of the buffer.
-> 
-> The second problem is more subtle and could result in memory 
-> corruption.
-> The call tree is:
->   x25_connect()
->   --> x25_write_internal()
->       --> x25_addr_aton()
-> 
-> The .x25_addr[] buffers are copied to the "addresses" buffer from
-> x25_write_internal() so it will lead to stack corruption.
-> 
-> Verify that the strings are NUL terminated and return -EINVAL if they
-> are not.
-> 
-> Reported-by: "kiyin(尹亮)" <kiyin@tencent.com>
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> The first patch put a NUL terminator on the end of the string and this
-> patch returns an error instead.  I don't have a strong preference, 
-> which
-> patch to go with.
-> 
->  net/x25/af_x25.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/x25/af_x25.c b/net/x25/af_x25.c
-> index 9232cdb42ad9..d41fffb2507b 100644
-> --- a/net/x25/af_x25.c
-> +++ b/net/x25/af_x25.c
-> @@ -675,7 +675,8 @@ static int x25_bind(struct socket *sock, struct
-> sockaddr *uaddr, int addr_len)
->  	int len, i, rc = 0;
-> 
->  	if (addr_len != sizeof(struct sockaddr_x25) ||
-> -	    addr->sx25_family != AF_X25) {
-> +	    addr->sx25_family != AF_X25 ||
-> +	    strnlen(addr->sx25_addr.x25_addr, X25_ADDR_LEN) == X25_ADDR_LEN) 
-> {
->  		rc = -EINVAL;
->  		goto out;
->  	}
-> @@ -769,7 +770,8 @@ static int x25_connect(struct socket *sock, struct
-> sockaddr *uaddr,
-> 
->  	rc = -EINVAL;
->  	if (addr_len != sizeof(struct sockaddr_x25) ||
-> -	    addr->sx25_family != AF_X25)
-> +	    addr->sx25_family != AF_X25 ||
-> +	    strnlen(addr->sx25_addr.x25_addr, X25_ADDR_LEN) == X25_ADDR_LEN)
->  		goto out;
-> 
->  	rc = -ENETUNREACH;
+Return -ENOMEM on allocation failure instead of returning success.
 
-Acked-by: Martin Schiller <ms@dev.tdt.de>
+Fixes: 4fc2cf1f2daf ("x86/platform/uv: Add new uv_sysfs platform driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/platform/x86/uv_sysfs.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/platform/x86/uv_sysfs.c b/drivers/platform/x86/uv_sysfs.c
+index 54c342579f1c..e17ce8c4cdad 100644
+--- a/drivers/platform/x86/uv_sysfs.c
++++ b/drivers/platform/x86/uv_sysfs.c
+@@ -248,6 +248,7 @@ static int uv_hubs_init(void)
+ 		uv_hubs[i] = kzalloc(sizeof(*uv_hubs[i]), GFP_KERNEL);
+ 		if (!uv_hubs[i]) {
+ 			i--;
++			ret = -ENOMEM;
+ 			goto err_hubs;
+ 		}
+ 
+-- 
+2.29.2
+

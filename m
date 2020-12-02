@@ -2,85 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7632D2CC53D
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Dec 2020 19:34:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E2A92CC556
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Dec 2020 19:40:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389473AbgLBSdD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Dec 2020 13:33:03 -0500
-Received: from a2.mail.mailgun.net ([198.61.254.61]:34784 "EHLO
-        a2.mail.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389451AbgLBSdD (ORCPT
+        id S1729154AbgLBSkN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Dec 2020 13:40:13 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:47686 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728677AbgLBSkN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Dec 2020 13:33:03 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1606933957; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=SHjri5Q2pKqbHfIN5HrVzVX6hwZKO5euUxxgWSJ5eSc=;
- b=ohu1tv6014MwsUzPw844egKk6h9MfzSbBMCrr8H4wsyepghojJHGXrjzkZZKVZjCbXzJCwnN
- cazUJvfXifJqKEo36gR5k94hKMQo58rPXeAbw+LnqcEVLhgVmi/bPpv90E1190jAyuDl0opy
- m3Mxpb1KDJTq5yfw5clMFGDqyx8=
-X-Mailgun-Sending-Ip: 198.61.254.61
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5fc7ddac2ef3e1355ffcb048 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 02 Dec 2020 18:32:12
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 13942C43462; Wed,  2 Dec 2020 18:32:12 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3E940C433ED;
-        Wed,  2 Dec 2020 18:32:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3E940C433ED
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Wed, 2 Dec 2020 13:40:13 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B2ITCEW139287;
+        Wed, 2 Dec 2020 18:38:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=EtihPShjuCPJjG5edj4pxu0NLVh0gWdqqyzMNCOLYHk=;
+ b=lyhZESRfP5E9bQyJuecnCJsPLjdEsSovuo/9IE5AVbxXAoIUhuqKE50bWfCfZloO3JEB
+ UjMHI/A16xG/J7Q8jPQwjHVOx3ozorbzLDm+KkFL//P1KKqrvl/mt9VLwfDVXB1ogr99
+ wA0SxBzJvYee7tmrcc4tEbMr28O3VI2t+UFbKbNV6jrYMkBoa1aCk9E4U+/SKJnt60nf
+ nFANZOBNIBsoMlzsKjfYYdM1loGvtdXRgInoNAapXJbqpYSJxs3sQWF6Zq3NrH+H7mpR
+ /zsKOZOfpkx8CkWUcyRdAMAM5VJqeHUkbJvYt6LRSrLDBs0MtJNcj9WOYfPX0I/k4gjj Aw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 353egkt0y5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 02 Dec 2020 18:38:07 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B2Ic28Q152300;
+        Wed, 2 Dec 2020 18:38:07 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 3540auqa8y-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 02 Dec 2020 18:38:06 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B2IbkS1026781;
+        Wed, 2 Dec 2020 18:37:46 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 02 Dec 2020 10:37:46 -0800
+Date:   Wed, 2 Dec 2020 21:37:39 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] ASoC: codecs: lpass-va-macro: remove some dead code
+Message-ID: <20201202183739.GP2767@kadam>
+References: <X8c5gjZO7YN/CFsq@mwanda>
+ <7e06abb2-a969-aa1a-6adc-6cdd72e3355c@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] ath10k: Fix an error handling path
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201122170342.1346011-1-christophe.jaillet@wanadoo.fr>
-References: <20201122170342.1346011-1-christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     davem@davemloft.net, kuba@kernel.org, erik.stromdahl@gmail.com,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201202183212.13942C43462@smtp.codeaurora.org>
-Date:   Wed,  2 Dec 2020 18:32:12 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7e06abb2-a969-aa1a-6adc-6cdd72e3355c@linaro.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9823 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0
+ phishscore=0 mlxscore=0 adultscore=0 malwarescore=0 suspectscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012020109
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9823 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 suspectscore=0
+ phishscore=0 mlxlogscore=999 lowpriorityscore=0 malwarescore=0
+ priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1015 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012020109
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
-
-> If 'ath10k_usb_create()' fails, we should release some resources and report
-> an error instead of silently continuing.
+On Wed, Dec 02, 2020 at 03:54:53PM +0000, Srinivas Kandagatla wrote:
+> Thanks Dan for the patch!
 > 
-> Fixes: 4db66499df91 ("ath10k: add initial USB support")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> Do you use any tools to do this checks?
+> 
 
-2 patches applied to ath-next branch of ath.git, thanks.
+Yeah.  This was a Smatch warning:
 
-ed3573bc3943 ath10k: Fix an error handling path
-6364e693f4a7 ath10k: Release some resources in an error handling path
+sound/soc/codecs/lpass-va-macro.c:847 va_macro_hw_params() warn: always true condition '(decimator >= 0) => (0-u32max >= 0)'
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20201122170342.1346011-1-christophe.jaillet@wanadoo.fr/
+But every static checker will complain about these.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+regards,
+dan carpenter
 

@@ -2,89 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7B952CB691
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Dec 2020 09:17:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91E3B2CB72D
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Dec 2020 09:30:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728945AbgLBIPd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Dec 2020 03:15:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:20249 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728839AbgLBIPc (ORCPT
+        id S1728830AbgLBI3K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Dec 2020 03:29:10 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:36054 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726148AbgLBI3J (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Dec 2020 03:15:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1606896846;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=TSArC6dGGVsRkfFz7XmGCs7/7Y4wrkwjTBmdaGQey7s=;
-        b=MiMNAbV8v/T8ML09dEAz49/7TN71g8N5iqcrLli//g1w0KOGPmnz0D0feYUYCIRp94jxCu
-        0ETFMp+aG0oMD68d/ypkYLYbPtgmFQYiJMzX52R59mGMimqxRmwuqnbvAYQqag9H61w/pq
-        LGXNokBewsfM3bmFKJ+oA3N2u+ClMDg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-40-aSLoB9UzM86IkAz7KaUL4w-1; Wed, 02 Dec 2020 03:14:02 -0500
-X-MC-Unique: aSLoB9UzM86IkAz7KaUL4w-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C0B9F185E486;
-        Wed,  2 Dec 2020 08:14:00 +0000 (UTC)
-Received: from [10.72.13.145] (ovpn-13-145.pek2.redhat.com [10.72.13.145])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 829575D705;
-        Wed,  2 Dec 2020 08:13:55 +0000 (UTC)
-Subject: Re: [PATCH] vhost_vdpa: return -EFAULT if copy_to_user() fails
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>
-Cc:     kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-        kernel-janitors@vger.kernel.org
-References: <X8c32z5EtDsMyyIL@mwanda>
-From:   Jason Wang <jasowang@redhat.com>
-Message-ID: <a94dfe3f-2202-7848-ed61-a8b682a7643d@redhat.com>
-Date:   Wed, 2 Dec 2020 16:13:53 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Wed, 2 Dec 2020 03:29:09 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B28J4cl159262;
+        Wed, 2 Dec 2020 08:28:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=Cnv7h+z66mzSzDGeCdajbB/GzSuanBp+Js5qEmul55o=;
+ b=gxTGhQPREmIEwMG2PmWJ0VZeoDCxoyTLhmp5gUmadwL84QlgAZkjpV+6XhZEtEYU2iPd
+ N6f4x6pHyP2pVg1i/C50YSuodqMpWQecxtSmKQ1Z2NjkeGTJhfhkrNFa+AmsVTR8dXGQ
+ BknQ87LfOaGyALkBpDsJSnqwiXSZraoX245wiwi/pk8jjjj4bWWkivJA64ICmncUyj7o
+ 3963hn31DwYukYAkTgq99dCPcvOtqRdODaErOCWicwnPvDDP4c7fTID+Ou74GjPia+Mo
+ xNSYvbd1mVbbwDfY6k54gkPv7Z/+PecRGB7AEGJArOcvUZI7DvCWzl1iRVKIzen5tO6h AA== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 353egkps1d-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 02 Dec 2020 08:28:26 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B28LMZD024399;
+        Wed, 2 Dec 2020 08:28:25 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 3540fy9ntw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 02 Dec 2020 08:28:25 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0B28SOqD026915;
+        Wed, 2 Dec 2020 08:28:24 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 02 Dec 2020 00:28:24 -0800
+Date:   Wed, 2 Dec 2020 11:28:18 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Brother Matthew De Angelis <matthew.v.deangelis@gmail.com>
+Cc:     kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] Staging: rtl8723bs/core fix brace coding style issue in
+ rtw_ioctl_set.c.
+Message-ID: <20201202082818.GO2767@kadam>
+References: <20201201214915.GA397311@a>
+ <20201202064223.GN2767@kadam>
 MIME-Version: 1.0
-In-Reply-To: <X8c32z5EtDsMyyIL@mwanda>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201202064223.GN2767@kadam>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9822 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
+ phishscore=0 mlxlogscore=999 adultscore=0 mlxscore=0 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012020050
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9822 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 suspectscore=0
+ phishscore=0 mlxlogscore=999 lowpriorityscore=0 malwarescore=0
+ priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1015 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012020050
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Wed, Dec 02, 2020 at 09:42:23AM +0300, Dan Carpenter wrote:
+> Don't put a period at the end of the subject.  "rtw_ioctl_set.c." If I
+> were reviewing this as a real staging patch to be applied, I probably
+> would not comment on it the first time you did it.  I try ignore trivial
+> stuff like that.  But since you are going to resend the patch then you
+> may as well clean it up.
+> 
+> On Tue, Dec 01, 2020 at 03:49:15PM -0600, Brother Matthew De Angelis wrote:
+> > Fix a brace warning found by the checkpatch.pl tool at line 178.
+> > 
+> > WARNING: braces {} are not necessary for any arm of this statement.
+> > 
+> > Signed-off-by: Brother Matthew De Angelis <matthew.v.deangelis@gmail.com>
+> > ---
+>   ^^^
+> These three lines are the cut off line.  If you put notes after the cut
+> off then the notes are not include in the final commit message.  That's
+> the normal place to put questions and comments about the patch.
+> 
+> > My apologies, I meant to sent this. 
+> 
+> Ah...
+> 
+> > Would a patch like this be worth Greg's time?
+> 
+> Again, this is a situation where Greg will probably not take more than
+> 15 seconds to review or think about your patch.  It fixes a checkpatch
+> warning and doesn't introduce any new issues.  Apply.  I review staging
+> patches as well and I follow the same philosophy as Greg on this.  But
+> often other maintainers have higher standards.
+> 
+> And it's always good for you the developer to take more than the minimum
+> 15 seconds to consider the patch.  There are several other "WARNING:
+> braces {} are not necessary" checkpatch complaints in this file.  You
+> may as well fix them all.
+> 
+> There are other things to clean as well.  But they should be done in
+> separate patches.  For example, what does check_fwstate() mean?  What
+> does it return?  Normally kernel functions return 0 on success and
+> negative error codes.  Boolean functions are supposed to named more
+> obviously like fwstate_set() where the name tells you right away that
+> it returns true when the state is set and false otherwise.
 
-On 2020/12/2 下午2:44, Dan Carpenter wrote:
-> The copy_to_user() function returns the number of bytes remaining to be
-> copied but this should return -EFAULT to the user.
->
-> Fixes: 1b48dc03e575 ("vhost: vdpa: report iova range")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->   drivers/vhost/vdpa.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-> index d6a37b66770b..ef688c8c0e0e 100644
-> --- a/drivers/vhost/vdpa.c
-> +++ b/drivers/vhost/vdpa.c
-> @@ -344,7 +344,9 @@ static long vhost_vdpa_get_iova_range(struct vhost_vdpa *v, u32 __user *argp)
->   		.last = v->range.last,
->   	};
->   
-> -	return copy_to_user(argp, &range, sizeof(range));
-> +	if (copy_to_user(argp, &range, sizeof(range)))
-> +		return -EFAULT;
-> +	return 0;
->   }
->   
->   static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
+Of course, _set() can be a verb or a question.  "set this" vs "is this
+set".  So maybe that's not a good name either.  Naming is hard.  Is it
+worth changing?  Pointless churn is also bad.  Anyway, all these things
+are stuff to think about.
 
-
-Acked-by: Jason Wang <jasowang@redhat.com>
-
-Thanks
-
+regards,
+dan carpenter
 

@@ -2,106 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41A442CC759
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Dec 2020 21:01:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CC782CC760
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Dec 2020 21:04:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388428AbgLBUBX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Dec 2020 15:01:23 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:44612 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728914AbgLBUBX (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Dec 2020 15:01:23 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B2JreDh095338;
-        Wed, 2 Dec 2020 20:00:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=MWzc4cU1jncJjBh7/IzdYkh6gBTDQ3g4PKoAsnasayg=;
- b=HVu35OSuzDoWdQDV/WAQOgqEf9ioeX4rjXKdI8OLM9216bWgXxQ+55FFnX0WTJUu5VZg
- n51/TBQuS6SfmqQg8EAjNAav7jHEpOS5h6waUU17Yu3wOUImE4Aou2HSLKMnlMseXvW4
- sRmsGSoskJY+fdtXvk7lxhHHe2Kftp71uhXhoEwKgL/dKKxGAVEUZ812/ywCrUgTun1D
- iC3AKMYhxsPRVD+xAYWRhQEKHo+fi1f9NPUQ7/MJcY2FCme6+WXQnrWNczNxsxjUXmAO
- pTD6jqFhOwDaliclXFjg9jWdsr8G8JBlvWOFPyUNXhjJxPYjlwQqWF0ExnowaIkIxFoY jQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 353dyqtfu0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 02 Dec 2020 20:00:34 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B2JuSFb039346;
-        Wed, 2 Dec 2020 20:00:33 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 35404pt6vn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 02 Dec 2020 20:00:33 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B2K0TmU028031;
-        Wed, 2 Dec 2020 20:00:29 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 02 Dec 2020 12:00:28 -0800
-Date:   Wed, 2 Dec 2020 23:00:21 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Anton Vorontsov <anton@enomsg.org>,
-        Colin Cross <ccross@android.com>,
-        Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org,
+        id S1731191AbgLBUCL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Dec 2020 15:02:11 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58300 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729165AbgLBUCL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 2 Dec 2020 15:02:11 -0500
+Date:   Wed, 2 Dec 2020 12:01:27 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1606939290;
+        bh=CR+EL2ZIg5zPuyiVUwgwAYmi7H5wK9yp7oqtDbYE/Ec=;
+        h=From:To:Cc:Subject:In-Reply-To:References:From;
+        b=VEmjDoMlah11tBUxdG2tdsnTW/vE4/1L6aQhlJWUs5p8rplWcR6Th09MESX/fRokT
+         inv2VRfXp6qeubM9mvoY2CZ8K3nXr9dBTnhtEamR5EqirUqrJ0brUgYN62gpbXiRQn
+         BAdn7V3cH6seTQOaVbDWUomINbZ1gnh/fqNc0YEbJlfiWsCQZP/q+qaYssu2PbuyrF
+         wL5z2Rvk4bci1BIGKUDpJBUVSsHFDoQ3gbHPz57NQD66Udy25v4MpjnbOxeC9ig+wV
+         wTUYjbQ5bqgfHznWsAip+kqtnwU8cSi6P0p+Q4LR91elwLHFBlHEdUSqhvix1cVPoO
+         laVSQxvmAdKbQ==
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Sunil Kovvuri <sunil.kovvuri@gmail.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Linu Cherian <lcherian@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Jerin Jacob <jerinj@marvell.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Linux Netdev List <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] pstore: Tidy up an error check
-Message-ID: <20201202200021.GJ2789@kadam>
-References: <X8c4C2q6qaZ8qX6L@mwanda>
- <202012021124.ADBFCE999@keescook>
+Subject: Re: [PATCH net-next] octeontx2-af: debugfs: delete dead code
+Message-ID: <20201202120127.7cc7453f@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+In-Reply-To: <CA+sq2Ceo3z1KAuOfZYsmRMHw4dHcnrRLtkRmALNHvj3=tRJKtA@mail.gmail.com>
+References: <X8c6vpapJDYI2eWI@mwanda>
+        <CA+sq2Ceo3z1KAuOfZYsmRMHw4dHcnrRLtkRmALNHvj3=tRJKtA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202012021124.ADBFCE999@keescook>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9823 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 bulkscore=0
- malwarescore=0 mlxscore=0 mlxlogscore=999 phishscore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012020118
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9823 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0
- clxscore=1015 mlxscore=0 spamscore=0 priorityscore=1501 mlxlogscore=999
- suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012020118
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Dec 02, 2020 at 11:25:46AM -0800, Kees Cook wrote:
-> On Wed, Dec 02, 2020 at 09:45:31AM +0300, Dan Carpenter wrote:
-> > The crypto_alloc_comp() function never returns NULL, it returns error
-> > pointers on error.
-> > 
+On Wed, 2 Dec 2020 12:33:00 +0530 Sunil Kovvuri wrote:
+> On Wed, Dec 2, 2020 at 12:28 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> > These debugfs never return NULL so all this code will never be run.
+> >
+> > In the normal case, (and in this case particularly), the debugfs
+> > functions are not supposed to be checked for errors so all this error
+> > checking code can be safely deleted.
+> >
 > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > 
-> I replied to an identical patch yesterday, actually:
-> https://lore.kernel.org/lkml/202012011215.B9BF24A6D@keescook/ 
-> 
-> Using IS_ERR_OR_NULL() is more robust, and this isn't fast path, so I'd
-> prefer to keep it that way.
-> 
+> Thanks for the changes.
 
-The NULL return doesn't make any sense though because crypto_alloc_comp()
-isn't optional...  When a function returns both error pointers and NULLs
-then the NULL is special kind of success.
-
-	p = get_feature();
-
-If "p" is an error pointer that means an error happened.  If "p" is NULL
-that means the feature is disabled in the .config or whatever.  We can't
-return a valid pointer because the feature doesn't exist but it's also
-not an error so it doesn't return an error pointer.  The code should
-not print a warning, maybe an info level printk at most.  Then the
-driver should continue operating with the feature turned off.
-
-Two of the callers for crypto_alloc_comp() check for error pointers and
-NULL and three only check for error pointers.  It's inconsistent.
-
-regards,
-dan carpenter
-
+Applied, thanks!

@@ -2,122 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91E3B2CB72D
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Dec 2020 09:30:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02B542CB86D
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Dec 2020 10:18:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728830AbgLBI3K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Dec 2020 03:29:10 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:36054 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726148AbgLBI3J (ORCPT
+        id S2388123AbgLBJQP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Dec 2020 04:16:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:40171 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2387937AbgLBJQO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Dec 2020 03:29:09 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B28J4cl159262;
-        Wed, 2 Dec 2020 08:28:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=Cnv7h+z66mzSzDGeCdajbB/GzSuanBp+Js5qEmul55o=;
- b=gxTGhQPREmIEwMG2PmWJ0VZeoDCxoyTLhmp5gUmadwL84QlgAZkjpV+6XhZEtEYU2iPd
- N6f4x6pHyP2pVg1i/C50YSuodqMpWQecxtSmKQ1Z2NjkeGTJhfhkrNFa+AmsVTR8dXGQ
- BknQ87LfOaGyALkBpDsJSnqwiXSZraoX245wiwi/pk8jjjj4bWWkivJA64ICmncUyj7o
- 3963hn31DwYukYAkTgq99dCPcvOtqRdODaErOCWicwnPvDDP4c7fTID+Ou74GjPia+Mo
- xNSYvbd1mVbbwDfY6k54gkPv7Z/+PecRGB7AEGJArOcvUZI7DvCWzl1iRVKIzen5tO6h AA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 353egkps1d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 02 Dec 2020 08:28:26 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B28LMZD024399;
-        Wed, 2 Dec 2020 08:28:25 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 3540fy9ntw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 02 Dec 2020 08:28:25 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0B28SOqD026915;
-        Wed, 2 Dec 2020 08:28:24 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 02 Dec 2020 00:28:24 -0800
-Date:   Wed, 2 Dec 2020 11:28:18 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Brother Matthew De Angelis <matthew.v.deangelis@gmail.com>
-Cc:     kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] Staging: rtl8723bs/core fix brace coding style issue in
- rtw_ioctl_set.c.
-Message-ID: <20201202082818.GO2767@kadam>
-References: <20201201214915.GA397311@a>
- <20201202064223.GN2767@kadam>
+        Wed, 2 Dec 2020 04:16:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1606900488;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=U9a9tAI3X6AQ7BbNAQh41bnDnft76uo4aSQuO918v3A=;
+        b=GjV/fhrlefvtntyljA4WlfAd1Hi+Ua9oU+rmijj8b0U13+zJTwRRz+zFtfdmOSyW80sBSn
+        8LGYhrArTkFYuTpR8VoML8ZFNB1lF9Nmedo95pd8fMZjH3P8eDcsV0C0xoqop0scLJgphr
+        w9PgjXlViEZBWV4x/Q8hwKLmlxKSUBc=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-1-92UdgONoOmCsJ9yNItpo1w-1; Wed, 02 Dec 2020 04:14:46 -0500
+X-MC-Unique: 92UdgONoOmCsJ9yNItpo1w-1
+Received: by mail-wm1-f69.google.com with SMTP id g198so2295112wme.7
+        for <kernel-janitors@vger.kernel.org>; Wed, 02 Dec 2020 01:14:45 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=U9a9tAI3X6AQ7BbNAQh41bnDnft76uo4aSQuO918v3A=;
+        b=tE41j3CsiWXFw9ETvx3atjValgjWWsYmj3lh6yxBBsagHGvwpQxdaLjd/nDqth9Zfc
+         GsaZfW1pXqr3bceIyp+Lf5HNdyi53Zvma3Y+5v/wyIrsYKFO1d5teYQbuF1Czp3TsRCG
+         KJR7XUlCcHjWvlF/lhRSxOQifd1ipaFbSUZpfvaOP6LjtKk5zZ5smglhclzXxc6DKgSL
+         fNO3BmHr68DMknatVVlIwC/h+TUhr1vsSI0scow3SgZIFVqtkTxl6dZIintyYrO9vQRp
+         Eh5fBWO1MWec+cRqfEA78dRCg61qUSavZ3jT4ML7hfy+GMpJrZ0KGMLbpR6WmEYOCvBG
+         7XGg==
+X-Gm-Message-State: AOAM5332Ft/UxKNySYRxPkNXBEeUC3dZCV2YwAUpJ+ocDy/FqgowmQzU
+        gBLuZlqG+EFb7neBVdDp9UkUEyCvd+pVqVyBqZgr+bvfpJIGs+5YsUmTSeHkxUiDcri6gs/nf8b
+        tZoU0aOc5TAYOTaCVdlu2z0tWykJ5
+X-Received: by 2002:adf:e502:: with SMTP id j2mr2176108wrm.73.1606900484152;
+        Wed, 02 Dec 2020 01:14:44 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzd3N1Nm5NWQ2An7EyFTzWrqD8MOKunvrEEb+jceRXUA4xdhvoPsOzOY8Ht3HU/mYz2O+pQ+w==
+X-Received: by 2002:adf:e502:: with SMTP id j2mr2176087wrm.73.1606900483978;
+        Wed, 02 Dec 2020 01:14:43 -0800 (PST)
+Received: from steredhat (host-79-17-248-175.retail.telecomitalia.it. [79.17.248.175])
+        by smtp.gmail.com with ESMTPSA id l13sm1247289wrm.24.2020.12.02.01.14.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Dec 2020 01:14:43 -0800 (PST)
+Date:   Wed, 2 Dec 2020 10:14:41 +0100
+From:   Stefano Garzarella <sgarzare@redhat.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        kernel-janitors@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH] vhost_vdpa: return -EFAULT if copy_to_user() fails
+Message-ID: <20201202091441.sjds7e42j5ivdcfi@steredhat>
+References: <X8c32z5EtDsMyyIL@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20201202064223.GN2767@kadam>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9822 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
- phishscore=0 mlxlogscore=999 adultscore=0 mlxscore=0 bulkscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012020050
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9822 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 suspectscore=0
- phishscore=0 mlxlogscore=999 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1015 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012020050
+In-Reply-To: <X8c32z5EtDsMyyIL@mwanda>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Dec 02, 2020 at 09:42:23AM +0300, Dan Carpenter wrote:
-> Don't put a period at the end of the subject.  "rtw_ioctl_set.c." If I
-> were reviewing this as a real staging patch to be applied, I probably
-> would not comment on it the first time you did it.  I try ignore trivial
-> stuff like that.  But since you are going to resend the patch then you
-> may as well clean it up.
-> 
-> On Tue, Dec 01, 2020 at 03:49:15PM -0600, Brother Matthew De Angelis wrote:
-> > Fix a brace warning found by the checkpatch.pl tool at line 178.
-> > 
-> > WARNING: braces {} are not necessary for any arm of this statement.
-> > 
-> > Signed-off-by: Brother Matthew De Angelis <matthew.v.deangelis@gmail.com>
-> > ---
->   ^^^
-> These three lines are the cut off line.  If you put notes after the cut
-> off then the notes are not include in the final commit message.  That's
-> the normal place to put questions and comments about the patch.
-> 
-> > My apologies, I meant to sent this. 
-> 
-> Ah...
-> 
-> > Would a patch like this be worth Greg's time?
-> 
-> Again, this is a situation where Greg will probably not take more than
-> 15 seconds to review or think about your patch.  It fixes a checkpatch
-> warning and doesn't introduce any new issues.  Apply.  I review staging
-> patches as well and I follow the same philosophy as Greg on this.  But
-> often other maintainers have higher standards.
-> 
-> And it's always good for you the developer to take more than the minimum
-> 15 seconds to consider the patch.  There are several other "WARNING:
-> braces {} are not necessary" checkpatch complaints in this file.  You
-> may as well fix them all.
-> 
-> There are other things to clean as well.  But they should be done in
-> separate patches.  For example, what does check_fwstate() mean?  What
-> does it return?  Normally kernel functions return 0 on success and
-> negative error codes.  Boolean functions are supposed to named more
-> obviously like fwstate_set() where the name tells you right away that
-> it returns true when the state is set and false otherwise.
+On Wed, Dec 02, 2020 at 09:44:43AM +0300, Dan Carpenter wrote:
+>The copy_to_user() function returns the number of bytes remaining to be
+>copied but this should return -EFAULT to the user.
+>
+>Fixes: 1b48dc03e575 ("vhost: vdpa: report iova range")
+>Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+>---
+> drivers/vhost/vdpa.c | 4 +++-
+> 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Of course, _set() can be a verb or a question.  "set this" vs "is this
-set".  So maybe that's not a good name either.  Naming is hard.  Is it
-worth changing?  Pointless churn is also bad.  Anyway, all these things
-are stuff to think about.
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
-regards,
-dan carpenter
+>
+>diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+>index d6a37b66770b..ef688c8c0e0e 100644
+>--- a/drivers/vhost/vdpa.c
+>+++ b/drivers/vhost/vdpa.c
+>@@ -344,7 +344,9 @@ static long vhost_vdpa_get_iova_range(struct vhost_vdpa *v, u32 __user *argp)
+> 		.last = v->range.last,
+> 	};
+>
+>-	return copy_to_user(argp, &range, sizeof(range));
+>+	if (copy_to_user(argp, &range, sizeof(range)))
+>+		return -EFAULT;
+>+	return 0;
+> }
+>
+> static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
+>-- 
+>2.29.2
+>
+>_______________________________________________
+>Virtualization mailing list
+>Virtualization@lists.linux-foundation.org
+>https://lists.linuxfoundation.org/mailman/listinfo/virtualization
+>
 

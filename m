@@ -2,90 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E2A92CC556
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Dec 2020 19:40:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 828F62CC69B
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Dec 2020 20:26:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729154AbgLBSkN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Dec 2020 13:40:13 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:47686 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728677AbgLBSkN (ORCPT
+        id S1728978AbgLBT03 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Dec 2020 14:26:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60800 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726082AbgLBT03 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Dec 2020 13:40:13 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B2ITCEW139287;
-        Wed, 2 Dec 2020 18:38:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=EtihPShjuCPJjG5edj4pxu0NLVh0gWdqqyzMNCOLYHk=;
- b=lyhZESRfP5E9bQyJuecnCJsPLjdEsSovuo/9IE5AVbxXAoIUhuqKE50bWfCfZloO3JEB
- UjMHI/A16xG/J7Q8jPQwjHVOx3ozorbzLDm+KkFL//P1KKqrvl/mt9VLwfDVXB1ogr99
- wA0SxBzJvYee7tmrcc4tEbMr28O3VI2t+UFbKbNV6jrYMkBoa1aCk9E4U+/SKJnt60nf
- nFANZOBNIBsoMlzsKjfYYdM1loGvtdXRgInoNAapXJbqpYSJxs3sQWF6Zq3NrH+H7mpR
- /zsKOZOfpkx8CkWUcyRdAMAM5VJqeHUkbJvYt6LRSrLDBs0MtJNcj9WOYfPX0I/k4gjj Aw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 353egkt0y5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 02 Dec 2020 18:38:07 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B2Ic28Q152300;
-        Wed, 2 Dec 2020 18:38:07 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 3540auqa8y-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 02 Dec 2020 18:38:06 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B2IbkS1026781;
-        Wed, 2 Dec 2020 18:37:46 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 02 Dec 2020 10:37:46 -0800
-Date:   Wed, 2 Dec 2020 21:37:39 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] ASoC: codecs: lpass-va-macro: remove some dead code
-Message-ID: <20201202183739.GP2767@kadam>
-References: <X8c5gjZO7YN/CFsq@mwanda>
- <7e06abb2-a969-aa1a-6adc-6cdd72e3355c@linaro.org>
+        Wed, 2 Dec 2020 14:26:29 -0500
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDBC2C0613CF
+        for <kernel-janitors@vger.kernel.org>; Wed,  2 Dec 2020 11:25:48 -0800 (PST)
+Received: by mail-pf1-x443.google.com with SMTP id o9so1859976pfd.10
+        for <kernel-janitors@vger.kernel.org>; Wed, 02 Dec 2020 11:25:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=ihXn3eXulGTXz8oOPMrKv9li6WLwdD/NiffDRntD8oA=;
+        b=jrqcN+DMdh6JlKBJ39HHn9HnOOrFK7MZy8yfjOq2DBliM2RKzv7NdG2zGnx9ZIMbCH
+         PT5x6hlNBHkVQ1w9WKf06qjoqsEVUMV0SyszraqOBikGl5x1WLQlK+zoGmiMtxlCX1EB
+         UyGgCEY29gImempSgNAknKxNua+MhFlIpab2Q=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=ihXn3eXulGTXz8oOPMrKv9li6WLwdD/NiffDRntD8oA=;
+        b=thGI3f3YhfKcqQyhEEohW3TtLbqRZkffZ/v8xP1yftVP1wgqMfw6mesuQM2XVHzMT/
+         x9EzE0Bk1GmdVCSR8od2l43p4Nhoav+gQhPtbWmiGk2Xj7TEQMHe/5CTE+O+s1kk3GNt
+         APyQvoTvqaZaoLm82tuL+kZ0xQ6IbXhWcYHjO1Y5rFi00JT8/JwzxnpzeZxbjezxUE/5
+         nJz4xIAiaoYh4UjQjfy+5TD2Et8alBFIpX0zwfKymYh7MpXnQvC9+qOLMxABNbxJKOe3
+         zMHBoKtzkw3ZkXupJZPnEFiBFSO4UovULDqoIMSp0FA17zVmiA7on3aJWE/BL6x+eCOX
+         8wRA==
+X-Gm-Message-State: AOAM533rt5GfAuxcQFlzb3SD5mqal1q9XP/w/p023IlilbyzlTQvvwlx
+        UhcOmCzYAm2H/1w8T5F2HxqZyg==
+X-Google-Smtp-Source: ABdhPJw/l8VVJcMN/WEipg8NC0NIi+wftvB/ocrtVPoYemUX3GTbPwv/bTzffroBG8aqyArc5qxV6A==
+X-Received: by 2002:a65:44c2:: with SMTP id g2mr1258558pgs.256.1606937148288;
+        Wed, 02 Dec 2020 11:25:48 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id v17sm458655pga.58.2020.12.02.11.25.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Dec 2020 11:25:47 -0800 (PST)
+Date:   Wed, 2 Dec 2020 11:25:46 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] pstore: Tidy up an error check
+Message-ID: <202012021124.ADBFCE999@keescook>
+References: <X8c4C2q6qaZ8qX6L@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7e06abb2-a969-aa1a-6adc-6cdd72e3355c@linaro.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9823 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0
- phishscore=0 mlxscore=0 adultscore=0 malwarescore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012020109
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9823 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 suspectscore=0
- phishscore=0 mlxlogscore=999 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1015 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012020109
+In-Reply-To: <X8c4C2q6qaZ8qX6L@mwanda>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Dec 02, 2020 at 03:54:53PM +0000, Srinivas Kandagatla wrote:
-> Thanks Dan for the patch!
+On Wed, Dec 02, 2020 at 09:45:31AM +0300, Dan Carpenter wrote:
+> The crypto_alloc_comp() function never returns NULL, it returns error
+> pointers on error.
 > 
-> Do you use any tools to do this checks?
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+I replied to an identical patch yesterday, actually:
+https://lore.kernel.org/lkml/202012011215.B9BF24A6D@keescook/
+
+Using IS_ERR_OR_NULL() is more robust, and this isn't fast path, so I'd
+prefer to keep it that way.
+
+-Kees
+
+> ---
+>  fs/pstore/platform.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
+> index 36714df37d5d..b7a2a2a31dee 100644
+> --- a/fs/pstore/platform.c
+> +++ b/fs/pstore/platform.c
+> @@ -315,7 +315,7 @@ static void allocate_buf_for_compression(void)
+>  	}
+>  
+>  	ctx = crypto_alloc_comp(zbackend->name, 0, 0);
+> -	if (IS_ERR_OR_NULL(ctx)) {
+> +	if (IS_ERR(ctx)) {
+>  		kfree(buf);
+>  		pr_err("crypto_alloc_comp('%s') failed: %ld\n", zbackend->name,
+>  		       PTR_ERR(ctx));
+> -- 
+> 2.29.2
 > 
 
-Yeah.  This was a Smatch warning:
-
-sound/soc/codecs/lpass-va-macro.c:847 va_macro_hw_params() warn: always true condition '(decimator >= 0) => (0-u32max >= 0)'
-
-But every static checker will complain about these.
-
-regards,
-dan carpenter
-
+-- 
+Kees Cook

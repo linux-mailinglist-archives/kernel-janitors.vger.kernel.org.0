@@ -2,71 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71CD82CCBA1
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 02:28:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72E502CCCD1
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 03:48:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727445AbgLCB2L (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Dec 2020 20:28:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37286 "EHLO mail.kernel.org"
+        id S1727787AbgLCCrs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Dec 2020 21:47:48 -0500
+Received: from mga14.intel.com ([192.55.52.115]:16063 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726681AbgLCB2L (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Dec 2020 20:28:11 -0500
-Date:   Wed, 2 Dec 2020 17:27:28 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1606958850;
-        bh=NWkqSZZ3ZS7bYCRKGHHjz3mlOO7zls+THqz0Y/Q51Q0=;
-        h=From:To:Cc:Subject:In-Reply-To:References:From;
-        b=MNtOcI6WV8EHJGBU7QUuJXEWVoVTyE2klWVjhX2Q5oABIV+cYxP3hsL8l2UuThLxR
-         iaIY6ZMhn2cRjZkUPUPPa6CuBgONYKwyBro5FORhXJiTMoe2wSzocfRlTXBDVYdGB0
-         erWjz5cJSNmNHvbSaX6XJP/hO15aK8FBK1kXajq4RRMwOrRzOYsHq7yE/NWRYLkpHk
-         3ICSzx3ZzUSkTRhpC8HOmA9o1csI23PZegqZxwRl2GAJRmU9XAqZflCibCudH2mZQl
-         sIvJuuBMSMKU2fC/ZQuQYbOJ6xvxHdqNpg3AomjhWilmPFIOpx3P6KkhkKK+HCZscf
-         o7jkVk5OsQt0A==
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Martin Schiller <ms@dev.tdt.de>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        "David S. Miller" <davem@davemloft.net>, linux-x25@vger.kernel.org,
-        netdev@vger.kernel.org, Andrew Hendry <andrew.hendry@gmail.com>,
-        "=?UTF-8?B?a2l5aW4=?=( =?UTF-8?B?5bC55Lqu?=) " <kiyin@tencent.com>,
-        security@kernel.org, linux-distros@vs.openwall.org,
-        "=?UTF-8?B?aHVudGNoZW4=?=(=?UTF-8?B?6ZmI?= =?UTF-8?B?6Ziz?=) " 
-        <huntchen@tencent.com>,
-        "=?UTF-8?B?ZGFubnl3?= =?UTF-8?B?YW5n?=(=?UTF-8?B?546L5a6H?=) " 
-        <dannywang@tencent.com>, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net v2] net/x25: prevent a couple of overflows
-Message-ID: <20201202172728.43f387a3@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
-In-Reply-To: <41de2a35016a1eb9a188a71d11709f16@dev.tdt.de>
-References: <X8ZeAKm8FnFpN//B@mwanda>
-        <41de2a35016a1eb9a188a71d11709f16@dev.tdt.de>
+        id S1726441AbgLCCrs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 2 Dec 2020 21:47:48 -0500
+IronPort-SDR: rz21ZMU2IyMRFSeZDQwqMod5ezjLG9/AFRkl1r+0EO0w1uBLX57J5cpn2UNDn77adLcbeP9hXc
+ +DNOolKe47GQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9823"; a="172342563"
+X-IronPort-AV: E=Sophos;i="5.78,388,1599548400"; 
+   d="scan'208";a="172342563"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2020 18:46:07 -0800
+IronPort-SDR: up+3Me5C9mLQbPWWBVxTX/2bEKVDdzvU5VjYVl/KVdmVVjEXjvY/ee0lSe/i70Drt1FJqheMxL
+ axTU02Y7428Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,388,1599548400"; 
+   d="scan'208";a="481797093"
+Received: from ipu5-build.bj.intel.com (HELO [10.238.232.196]) ([10.238.232.196])
+  by orsmga004.jf.intel.com with ESMTP; 02 Dec 2020 18:46:05 -0800
+Subject: Re: [PATCH][next] media: ov2740: fix dereference before null check on
+ pointer nvm
+To:     Colin King <colin.king@canonical.com>,
+        Tianshu Qiu <tian.shu.qiu@intel.com>,
+        Shawn Tu <shawnx.tu@intel.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Tomasz Figa <tfiga@chromium.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Qingwu Zhang <qingwu.zhang@intel.com>,
+        linux-media@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20201126114932.1984730-1-colin.king@canonical.com>
+From:   Bingbu Cao <bingbu.cao@linux.intel.com>
+Message-ID: <9d6ef10c-a575-c79b-5ac4-3313bc96e89e@linux.intel.com>
+Date:   Thu, 3 Dec 2020 10:43:29 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20201126114932.1984730-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 02 Dec 2020 10:27:18 +0100 Martin Schiller wrote:
-> On 2020-12-01 16:15, Dan Carpenter wrote:
-> > The .x25_addr[] address comes from the user and is not necessarily
-> > NUL terminated.  This leads to a couple problems.  The first problem is
-> > that the strlen() in x25_bind() can read beyond the end of the buffer.
-> >=20
-> > The second problem is more subtle and could result in memory=20
-> > corruption.
-> > The call tree is:
-> >   x25_connect() =20
-> >   --> x25_write_internal()
-> >       --> x25_addr_aton() =20
-> >=20
-> > The .x25_addr[] buffers are copied to the "addresses" buffer from
-> > x25_write_internal() so it will lead to stack corruption.
-> >=20
-> > Verify that the strings are NUL terminated and return -EINVAL if they
-> > are not.
-> >=20
-> > Reported-by: "kiyin(=E5=B0=B9=E4=BA=AE)" <kiyin@tencent.com>
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
->=20
-> Acked-by: Martin Schiller <ms@dev.tdt.de>
+Hi, Colin
 
-Applied, thanks!
+Thanks for your patch.
+
+On 11/26/20 7:49 PM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently pointer nvm is being dereferenced before it is being null
+> checked.  Fix this by moving the assignments of pointers client and
+> ov2740 so that are after the null check hence avoiding any potential
+> null pointer dereferences on pointer nvm.
+> 
+> Fixes: 5e6fd339b68d ("media: ov2740: allow OTP data access during streaming")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/media/i2c/ov2740.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/media/i2c/ov2740.c b/drivers/media/i2c/ov2740.c
+> index 99016546cbec..b41a90c2aed5 100644
+> --- a/drivers/media/i2c/ov2740.c
+> +++ b/drivers/media/i2c/ov2740.c
+> @@ -600,8 +600,8 @@ static void ov2740_update_pad_format(const struct ov2740_mode *mode,
+>  
+>  static int ov2740_load_otp_data(struct nvm_data *nvm)
+>  {
+> -	struct i2c_client *client = nvm->client;
+> -	struct ov2740 *ov2740 = to_ov2740(i2c_get_clientdata(client));
+> +	struct i2c_client *client;
+> +	struct ov2740 *ov2740;
+>  	u32 isp_ctrl00 = 0;
+>  	u32 isp_ctrl01 = 0;
+>  	int ret;
+> @@ -612,6 +612,9 @@ static int ov2740_load_otp_data(struct nvm_data *nvm)
+>  	if (nvm->nvm_buffer)
+>  		return 0;
+>  
+> +	client = nvm->client;
+> +	ov2740 = to_ov2740(i2c_get_clientdata(client));
+> +
+>  	nvm->nvm_buffer = kzalloc(CUSTOMER_USE_OTP_SIZE, GFP_KERNEL);
+>  	if (!nvm->nvm_buffer)
+>  		return -ENOMEM;
+> 
+
+Reviewed-by: Bingbu Cao <bingbu.cao@intel.com>
+
+
+-- 
+Best regards,
+Bingbu Cao

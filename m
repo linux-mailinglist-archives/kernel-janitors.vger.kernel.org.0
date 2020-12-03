@@ -2,133 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC6722CD2CD
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 10:46:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 34FD82CD349
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 11:18:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728962AbgLCJqp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Dec 2020 04:46:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52294 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725902AbgLCJqo (ORCPT
+        id S1728979AbgLCKRo convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Dec 2020 05:17:44 -0500
+Received: from proxmox-new.maurer-it.com ([212.186.127.180]:36668 "EHLO
+        proxmox-new.maurer-it.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726080AbgLCKRo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Dec 2020 04:46:44 -0500
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94A09C061A4D
-        for <kernel-janitors@vger.kernel.org>; Thu,  3 Dec 2020 01:45:58 -0800 (PST)
-Received: by mail-lj1-x244.google.com with SMTP id z1so1833748ljn.4
-        for <kernel-janitors@vger.kernel.org>; Thu, 03 Dec 2020 01:45:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BTlGzfvUDypCFqBvmwFfmXu7/Iijd722QkVqWCD+4QI=;
-        b=bOPBTRe50dYnkJ7KzuNO3KMBoOL5eDeV4gnBOgpirA/GmSas8uJIVl/0AipZZfHHgU
-         izUtY2aDaCqgfgibTyhMfxUI3Ef650Dyhe/Af/T6Ml1aotfBZhD0ssZMQ8alTNgB9rlf
-         KxqACJO6bCDMENd3UGRJuqM1bmlgMalk1kJn6ekpbu7vcda2NQSEHQuwwelZIWovIYv+
-         sePPGyTUFPvDUVZKJy8yx3nmU22zyii42ryEO/hQtDIoIJB5UGhYDEe8qZPCKoAkc5EK
-         MEmZqomFiLTuOiFQ0bd+9JA4UNIVGuOUUFlRceY200NI+d3QFu5RWT8Ly0JAMchrMVyC
-         VCzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BTlGzfvUDypCFqBvmwFfmXu7/Iijd722QkVqWCD+4QI=;
-        b=aYmbQFTrOUaIYHk/I2EtsP8AB+O4Pmx8+aEtdwRZdMyVGtZ/VTtC+hb9r7ZAtAX3bw
-         GSzkoFW54DWzdIj1SLqHyobXz9wz/r+PWcZCNwZjG/EnDuIVipVYTHfgwLRrCdLp7a+f
-         wqAV7DKvjDZKzUL8uK1LZvUP877mMDLiv8MAcUJqeDNNw78dQloLm7W8mW46uJb2Z0ZR
-         X4VvuF/ExzIkA/JfNxz0skblw4o/aZAX20nAWVajFgTA/Y9jJJxtWnQKGm5QMKhmdxle
-         WICtdm2tFhF70VLmFfJZsa9kQxSfWhZyvTyzQNNinm9U+gePFNadxLBGJ8xJmJdt1ROk
-         R6Cg==
-X-Gm-Message-State: AOAM532bf1iP9Tok9O7Im2Oz0rn4tD1i8y4FxWfBvBnxPew/a7fb91Yj
-        444OTNUElUsyWyjR4apv5jptzAT4TosIm02VcrA=
-X-Google-Smtp-Source: ABdhPJznT/PWInkyvV39FGkv6HV6ouOsc33obT6CjacNijL/qI0gOOjcVcvRx4jTpI/e2HMMVnBgfsYiRZjlIEW/5fQ=
-X-Received: by 2002:a2e:89d7:: with SMTP id c23mr895401ljk.397.1606988757039;
- Thu, 03 Dec 2020 01:45:57 -0800 (PST)
+        Thu, 3 Dec 2020 05:17:44 -0500
+X-Greylist: delayed 411 seconds by postgrey-1.27 at vger.kernel.org; Thu, 03 Dec 2020 05:17:42 EST
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+        by proxmox-new.maurer-it.com (Proxmox) with ESMTP id AF4C944C5A;
+        Thu,  3 Dec 2020 11:10:10 +0100 (CET)
+To:     dan.carpenter@oracle.com
+Cc:     James.Bottomley@suse.de,
+        jayamohank@HDRedirect-LB5-1afb6e2973825a56.elb.us-east-1.amazonaws.com,
+        jejb@linux.ibm.com, jitendra.bhivare@broadcom.com,
+        kernel-janitors@vger.kernel.org, ketan.mukadam@broadcom.com,
+        linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        martin.petersen@oracle.com, subbu.seetharaman@broadcom.com,
+        stable@vger.kernel.org
+References: <20200928091300.GD377727@mwanda>
+From:   Thomas Lamprecht <t.lamprecht@proxmox.com>
+Subject: Re: [PATCH] scsi: be2iscsi: Fix a theoretical leak in
+ beiscsi_create_eqs()
+Message-ID: <54f36c62-10bf-8736-39ce-27ece097d9de@proxmox.com>
+Date:   Thu, 3 Dec 2020 11:10:09 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:84.0) Gecko/20100101
+ Thunderbird/84.0
 MIME-Version: 1.0
-References: <X8ikkAqZfnDO2lu6@mwanda>
-In-Reply-To: <X8ikkAqZfnDO2lu6@mwanda>
-From:   Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Date:   Thu, 3 Dec 2020 10:45:46 +0100
-Message-ID: <CAMeQTsZYx7KB2mUfv7uwOJ+FJ5-UUj-YH7m7y0bTB-LsPm4xvw@mail.gmail.com>
-Subject: Re: [PATCH] gma500: clean up error handling in init
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        Dave Airlie <airlied@redhat.com>,
-        Alan Cox <alan@linux.intel.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200928091300.GD377727@mwanda>
+Content-Type: text/plain; charset=UTF-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Dec 3, 2020 at 9:41 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> The main problem with this error handling was that it didn't clean up if
-> i2c_add_numbered_adapter() failed.  This code is pretty old, and doesn't
-> match with today's checkpatch.pl standards so I took the opportunity to
-> tidy it up a bit.  I changed the NULL comparison, and removed the
-> WARNING message if kzalloc() fails and updated the label names.
-
-Thanks! Looks good.
-
-I'll apply this to drm-misc-next
-
--Patrik
-
->
-> Fixes: 1b082ccf5901 ("gma500: Add Oaktrail support")
+> The be_fill_queue() function can only fail when "eq_vaddress" is NULL
+> and since it's non-NULL here that means the function call can't fail.
+> But imagine if it could, then in that situation we would want to store
+> the "paddr" so that dma memory can be released.
+> 
+> Fixes: bfead3b2cb46 ("[SCSI] be2iscsi: Adding msix and mcc_rings V3")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/gpu/drm/gma500/oaktrail_hdmi_i2c.c | 22 +++++++++++++---------
->  1 file changed, 13 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/gpu/drm/gma500/oaktrail_hdmi_i2c.c b/drivers/gpu/drm/gma500/oaktrail_hdmi_i2c.c
-> index e28107061148..fc9a34ed58bd 100644
-> --- a/drivers/gpu/drm/gma500/oaktrail_hdmi_i2c.c
-> +++ b/drivers/gpu/drm/gma500/oaktrail_hdmi_i2c.c
-> @@ -279,11 +279,8 @@ int oaktrail_hdmi_i2c_init(struct pci_dev *dev)
->         hdmi_dev = pci_get_drvdata(dev);
->
->         i2c_dev = kzalloc(sizeof(struct hdmi_i2c_dev), GFP_KERNEL);
-> -       if (i2c_dev == NULL) {
-> -               DRM_ERROR("Can't allocate interface\n");
-> -               ret = -ENOMEM;
-> -               goto exit;
-> -       }
-> +       if (!i2c_dev)
-> +               return -ENOMEM;
->
->         i2c_dev->adap = &oaktrail_hdmi_i2c_adapter;
->         i2c_dev->status = I2C_STAT_INIT;
-> @@ -300,16 +297,23 @@ int oaktrail_hdmi_i2c_init(struct pci_dev *dev)
->                           oaktrail_hdmi_i2c_adapter.name, hdmi_dev);
->         if (ret) {
->                 DRM_ERROR("Failed to request IRQ for I2C controller\n");
-> -               goto err;
-> +               goto free_dev;
->         }
->
->         /* Adapter registration */
->         ret = i2c_add_numbered_adapter(&oaktrail_hdmi_i2c_adapter);
-> -       return ret;
-> +       if (ret) {
-> +               DRM_ERROR("Failed to add I2C adapter\n");
-> +               goto free_irq;
-> +       }
->
-> -err:
-> +       return 0;
-> +
-> +free_irq:
-> +       free_irq(dev->irq, hdmi_dev);
-> +free_dev:
->         kfree(i2c_dev);
-> -exit:
-> +
->         return ret;
->  }
->
-> --
-> 2.29.2
->
+
+This came in here through the stable 5.4 tree with v5.4.74, and we have some
+users of ours report that it results in kernel oopses and delayed boot on their
+HP DL 380 Gen 9 (and other Gen 9, FWICT) servers:
+
+> systemd-udevd   D    0   501      1 0x80000000
+> Call Trace:
+>  __schedule+0x2e6/0x6f0
+>  schedule+0x33/0xa0
+>  schedule_timeout+0x205/0x330
+>  wait_for_completion+0xb7/0x140
+>  ? wake_up_q+0x80/0x80
+>  __flush_work+0x131/0x1e0
+>  ? worker_detach_from_pool+0xb0/0xb0
+>  work_on_cpu+0x6d/0x90
+>  ? workqueue_congested+0x80/0x80
+>  ? pci_device_shutdown+0x60/0x60
+>  pci_device_probe+0x190/0x1b0
+>  really_probe+0x1c8/0x3e0
+>  driver_probe_device+0xbb/0x100
+>  device_driver_attach+0x58/0x60
+>  __driver_attach+0x8f/0x150
+>  ? device_driver_attach+0x60/0x60
+>  bus_for_each_dev+0x79/0xc0
+>  ? kmem_cache_alloc_trace+0x1a0/0x230
+>  driver_attach+0x1e/0x20
+>  bus_add_driver+0x154/0x1f0
+>  ? 0xffffffffc0453000
+>  driver_register+0x70/0xc0
+>  ? 0xffffffffc0453000
+>  __pci_register_driver+0x57/0x60
+>  beiscsi_module_init+0x62/0x1000 [be2iscsi]
+>  do_one_initcall+0x4a/0x1fa
+>  ? _cond_resched+0x19/0x30
+>  ? kmem_cache_alloc_trace+0x1a0/0x230
+>  do_init_module+0x60/0x230
+>  load_module+0x231b/0x2590
+>  __do_sys_finit_module+0xbd/0x120
+>  ? __do_sys_finit_module+0xbd/0x120
+>  __x64_sys_finit_module+0x1a/0x20
+>  do_syscall_64+0x57/0x190
+>  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+> RIP: 0033:0x7f00aca06f59
+> Code: Bad RIP value.
+> RSP: 002b:00007ffc14380858 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+> RAX: ffffffffffffffda RBX: 0000558c726262e0 RCX: 00007f00aca06f59
+> RDX: 0000000000000000 RSI: 00007f00ac90bcad RDI: 000000000000000e
+> RBP: 00007f00ac90bcad R08: 0000000000000000 R09: 0000000000000000
+> R10: 000000000000000e R11: 0000000000000246 R12: 0000000000000000
+> R13: 0000558c725f6030 R14: 0000000000020000 R15: 0000558c726262e0
+
+Blacklisting the be2iscsi module or reverting this commit helps, I did not get
+around to look further into the mechanics at play and figured you would be
+faster at that, or that this info at least helps someone else when searching
+for the same symptoms.
+
+cheers,
+Thomas
+
+

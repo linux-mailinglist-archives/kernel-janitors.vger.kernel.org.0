@@ -2,96 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 535462CD9F9
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 16:18:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67C902CDAA3
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 17:05:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726422AbgLCPQE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Dec 2020 10:16:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47274 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725962AbgLCPQD (ORCPT
+        id S1731154AbgLCQDH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Dec 2020 11:03:07 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:48499 "EHLO
+        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726267AbgLCQDH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Dec 2020 10:16:03 -0500
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C140CC061A4E;
-        Thu,  3 Dec 2020 07:15:17 -0800 (PST)
-Received: by mail-wr1-x433.google.com with SMTP id o1so2226600wrx.7;
-        Thu, 03 Dec 2020 07:15:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=fFaCriGSYx/jNXnz0XbvUiNq6DB0Sw/tCXGOND8c0og=;
-        b=SST5AJWfppZNIQZ1c71S4pRZRCgOpDQjBFI7O004IV1EmRNpg7MNTNTChLeSluy6b8
-         fr8gFfYFH1zQA+FY3C2DufLFhZWzCtsl+5fnNjqBd17+afqCq19pyYzSFO41g5c0Tvzh
-         679xIVJ88m/lyucAI/F6Pbmc5zqI3vTbP/ci1l459V1GnhILstgOizY3A4qySqeRJk9O
-         DiRlr89YzB49dNS9hbUqt5w3iUnJBsZRI4sFMBdm/iltObUWqy70gcmjjSnrBk1BiFa0
-         yTzGGehtkmFCOSm3Rwk06NYVuOo6oLdgpgAblJ3xOsMIKF9BKya7x9Ykhqv7OV/V0F3U
-         H29Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=fFaCriGSYx/jNXnz0XbvUiNq6DB0Sw/tCXGOND8c0og=;
-        b=uJiJ7la5WWGDB/7VRitZ4FFEpoFlWifh2foelckr4sLqDpTQVuJ9fbceMoRiN5U1e/
-         ZEfuU3hjsKX19mwNHu3bjuH1y/PO4BakTX0fBWWXVaXTJzU9AiB46eVUcOg/pKHITb0T
-         Ry2LJfTNad0xyQhc3EtsQHHfjPB0odJ8ovEs4stD+KnM6YpgnzwfCSF6Yj/wDUGuPrJF
-         ez44W9TvWsnvEa/86wJNtiM6NnUiuTiad/a6W9vzRfmNVtBCVcM+fQZ+sgXGS5FVtTKr
-         wi5RjpLzS8klXLK6YdmXN0j64VQAemHlPZV4nBfngpAJItOVmj45t/snA2Tqh34pso5R
-         BiSQ==
-X-Gm-Message-State: AOAM530Dtad5NKZQ9VdzK9YTQ1DI9zDTXYlqeDr7NuCerPPQReVYdAC5
-        wOFERiu+/nEbv7XHTZsUIVs1w1eedIrjoyQcnO0=
-X-Google-Smtp-Source: ABdhPJxFa6CoW2qkpeaUpLguTFOPv/6+OfkPZg79klK1iRQ7vQVjZnha+cFTtwHNmnpoGelHzHOcchdhsRgIiCveiJo=
-X-Received: by 2002:adf:ed04:: with SMTP id a4mr4273079wro.172.1607008515458;
- Thu, 03 Dec 2020 07:15:15 -0800 (PST)
+        Thu, 3 Dec 2020 11:03:07 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1607011369; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=3t7OU8T4lAsQH0m6lXoZwBbBU7YGr54BEekE7cmhpcw=;
+ b=LiPdOl4mX3UKlIj5iOaQzjYP9nU8J//oCwmC2gsSUL8KWQX2f9WaP1oNql8bwYXCV/MSLxXw
+ HmBzhVC5jhSMPhhd60eg3QfcuyQurictFV8xDVoDm2jaHYK8Tm0AWRlE8/wnvR90jEb9KUt6
+ X5dm3pIdaYAWGYQ4ypLSXzmAlqQ=
+X-Mailgun-Sending-Ip: 69.72.43.15
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n09.prod.us-west-2.postgun.com with SMTP id
+ 5fc90bdb0ad8832631ff7b79 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 03 Dec 2020 16:01:31
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 4B12AC43462; Thu,  3 Dec 2020 16:01:31 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 493B6C433ED;
+        Thu,  3 Dec 2020 16:01:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 493B6C433ED
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20201203114452.1060017-1-colin.king@canonical.com>
-In-Reply-To: <20201203114452.1060017-1-colin.king@canonical.com>
-From:   =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@gmail.com>
-Date:   Thu, 3 Dec 2020 16:15:02 +0100
-Message-ID: <CAJ+HfNiFcyqGYCNigs22k4=g_GQ_hJiZ=eE7f+hguOyN2ScdsA@mail.gmail.com>
-Subject: Re: [PATCH][next] samples/bpf: Fix spelling mistake "recieving" -> "receiving"
-To:     Colin King <colin.king@canonical.com>
-Cc:     Mariusz Dudek <mariuszx.dudek@intel.com>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Magnus Karlsson <magnus.karlsson@intel.com>,
-        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
-        Netdev <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH net] rtw88: debug: Fix uninitialized memory in debugfs
+ code
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <X8ilOfVz3pf0T5ec@mwanda>
+References: <X8ilOfVz3pf0T5ec@mwanda>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20201203160131.4B12AC43462@smtp.codeaurora.org>
+Date:   Thu,  3 Dec 2020 16:01:31 +0000 (UTC)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 3 Dec 2020 at 12:46, Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> There is a spelling mistake in an error message. Fix it.
->
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-Acked-by: Bj=C3=B6rn T=C3=B6pel <bjorn.topel@intel.com>
+> This code does not ensure that the whole buffer is initialized and none
+> of the callers check for errors so potentially none of the buffer is
+> initialized.  Add a memset to eliminate this bug.
+> 
+> Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-> ---
->  samples/bpf/xdpsock_user.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/samples/bpf/xdpsock_user.c b/samples/bpf/xdpsock_user.c
-> index 0fee7f3aef3c..9553c7c47fc4 100644
-> --- a/samples/bpf/xdpsock_user.c
-> +++ b/samples/bpf/xdpsock_user.c
-> @@ -1570,7 +1570,7 @@ recv_xsks_map_fd(int *xsks_map_fd)
->
->         err =3D recv_xsks_map_fd_from_ctrl_node(sock, xsks_map_fd);
->         if (err) {
-> -               fprintf(stderr, "Error %d recieving fd\n", err);
-> +               fprintf(stderr, "Error %d receiving fd\n", err);
->                 return err;
->         }
->         return 0;
-> --
-> 2.29.2
->
+Patch applied to wireless-drivers.git, thanks.
+
+74a8c816fa8f rtw88: debug: Fix uninitialized memory in debugfs code
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/X8ilOfVz3pf0T5ec@mwanda/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+

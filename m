@@ -2,84 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67C902CDAA3
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 17:05:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0BC82CDCA0
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 18:44:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731154AbgLCQDH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Dec 2020 11:03:07 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:48499 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726267AbgLCQDH (ORCPT
+        id S1729522AbgLCRoF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Dec 2020 12:44:05 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:60849 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726869AbgLCRoE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Dec 2020 11:03:07 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1607011369; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=3t7OU8T4lAsQH0m6lXoZwBbBU7YGr54BEekE7cmhpcw=;
- b=LiPdOl4mX3UKlIj5iOaQzjYP9nU8J//oCwmC2gsSUL8KWQX2f9WaP1oNql8bwYXCV/MSLxXw
- HmBzhVC5jhSMPhhd60eg3QfcuyQurictFV8xDVoDm2jaHYK8Tm0AWRlE8/wnvR90jEb9KUt6
- X5dm3pIdaYAWGYQ4ypLSXzmAlqQ=
-X-Mailgun-Sending-Ip: 69.72.43.15
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n09.prod.us-west-2.postgun.com with SMTP id
- 5fc90bdb0ad8832631ff7b79 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 03 Dec 2020 16:01:31
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4B12AC43462; Thu,  3 Dec 2020 16:01:31 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 493B6C433ED;
-        Thu,  3 Dec 2020 16:01:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 493B6C433ED
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Thu, 3 Dec 2020 12:44:04 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kksdQ-0002NT-S4; Thu, 03 Dec 2020 17:43:17 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] wilc1000: remove redundant assignment to pointer vif
+Date:   Thu,  3 Dec 2020 17:43:16 +0000
+Message-Id: <20201203174316.1071446-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net] rtw88: debug: Fix uninitialized memory in debugfs
- code
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <X8ilOfVz3pf0T5ec@mwanda>
-References: <X8ilOfVz3pf0T5ec@mwanda>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201203160131.4B12AC43462@smtp.codeaurora.org>
-Date:   Thu,  3 Dec 2020 16:01:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> This code does not ensure that the whole buffer is initialized and none
-> of the callers check for errors so potentially none of the buffer is
-> initialized.  Add a memset to eliminate this bug.
-> 
-> Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+The assignment to pointer vif is redundant as the assigned value
+is never read, hence it can be removed.
 
-Patch applied to wireless-drivers.git, thanks.
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/microchip/wilc1000/wlan.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-74a8c816fa8f rtw88: debug: Fix uninitialized memory in debugfs code
-
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+index 993ea7c03429..c12f27be9f79 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -685,7 +685,6 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ 			if (!tqe_q[ac])
+ 				continue;
+ 
+-			vif = tqe_q[ac]->vif;
+ 			ac_exist = 1;
+ 			for (k = 0; (k < num_pkts_to_add[ac]) &&
+ 			     (!max_size_over) && tqe_q[ac]; k++) {
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/X8ilOfVz3pf0T5ec@mwanda/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.29.2
 

@@ -2,110 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 34FD82CD349
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 11:18:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13F592CD45D
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 12:13:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728979AbgLCKRo convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Dec 2020 05:17:44 -0500
-Received: from proxmox-new.maurer-it.com ([212.186.127.180]:36668 "EHLO
-        proxmox-new.maurer-it.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726080AbgLCKRo (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Dec 2020 05:17:44 -0500
-X-Greylist: delayed 411 seconds by postgrey-1.27 at vger.kernel.org; Thu, 03 Dec 2020 05:17:42 EST
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-        by proxmox-new.maurer-it.com (Proxmox) with ESMTP id AF4C944C5A;
-        Thu,  3 Dec 2020 11:10:10 +0100 (CET)
-To:     dan.carpenter@oracle.com
-Cc:     James.Bottomley@suse.de,
-        jayamohank@HDRedirect-LB5-1afb6e2973825a56.elb.us-east-1.amazonaws.com,
-        jejb@linux.ibm.com, jitendra.bhivare@broadcom.com,
-        kernel-janitors@vger.kernel.org, ketan.mukadam@broadcom.com,
-        linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
-        martin.petersen@oracle.com, subbu.seetharaman@broadcom.com,
-        stable@vger.kernel.org
-References: <20200928091300.GD377727@mwanda>
-From:   Thomas Lamprecht <t.lamprecht@proxmox.com>
-Subject: Re: [PATCH] scsi: be2iscsi: Fix a theoretical leak in
- beiscsi_create_eqs()
-Message-ID: <54f36c62-10bf-8736-39ce-27ece097d9de@proxmox.com>
-Date:   Thu, 3 Dec 2020 11:10:09 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:84.0) Gecko/20100101
- Thunderbird/84.0
+        id S1730162AbgLCLNM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Dec 2020 06:13:12 -0500
+Received: from mga12.intel.com ([192.55.52.136]:34550 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728548AbgLCLNM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 3 Dec 2020 06:13:12 -0500
+IronPort-SDR: IjYvIlkS3jmgsOerwr7jji3bOji3OHf6ElGCLtTmodtiRspDIHLP+4opD1ZKVoyAUmd8CHj9ly
+ RWtbYETCp31g==
+X-IronPort-AV: E=McAfee;i="6000,8403,9823"; a="152427912"
+X-IronPort-AV: E=Sophos;i="5.78,389,1599548400"; 
+   d="scan'208";a="152427912"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2020 03:12:31 -0800
+IronPort-SDR: gfY19NmtkxHDKSG4JVnhmnvQWWEwwwE4BKcTynSEGMQ4YCIeMCgbsqio2Oc+fj5qz7BRs9OkxQ
+ sjKua80N/W6Q==
+X-IronPort-AV: E=Sophos;i="5.78,389,1599548400"; 
+   d="scan'208";a="550445583"
+Received: from pjfraser-mobl.ger.corp.intel.com (HELO intel.com) ([10.252.11.14])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2020 03:12:27 -0800
+Date:   Thu, 3 Dec 2020 13:12:24 +0200
+From:   Andi Shyti <andi.shyti@intel.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+        Thomas =?iso-8859-15?Q?Hellstr=F6m?= <thomas.hellstrom@intel.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] drm/i915: Check the correct variable
+Message-ID: <X8jH5D//XHDsXKtQ@intel.intel>
+References: <X8ilneOcJAjwqU4t@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20200928091300.GD377727@mwanda>
-Content-Type: text/plain; charset=UTF-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <X8ilneOcJAjwqU4t@mwanda>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> The be_fill_queue() function can only fail when "eq_vaddress" is NULL
-> and since it's non-NULL here that means the function call can't fail.
-> But imagine if it could, then in that situation we would want to store
-> the "paddr" so that dma memory can be released.
+Hi Dan,
+
+> There is a copy and paste bug in this code.  It's supposed to check
+> "obj2" instead of checking "obj" a second time.
 > 
-> Fixes: bfead3b2cb46 ("[SCSI] be2iscsi: Adding msix and mcc_rings V3")
+> Fixes: 80f0b679d6f0 ("drm/i915: Add an implementation for i915_gem_ww_ctx locking, v2.")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/gpu/drm/i915/selftests/i915_gem.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/selftests/i915_gem.c b/drivers/gpu/drm/i915/selftests/i915_gem.c
+> index 23a6132c5f4e..412e21604a05 100644
+> --- a/drivers/gpu/drm/i915/selftests/i915_gem.c
+> +++ b/drivers/gpu/drm/i915/selftests/i915_gem.c
+> @@ -211,8 +211,8 @@ static int igt_gem_ww_ctx(void *arg)
+>  		return PTR_ERR(obj);
+>  
+>  	obj2 = i915_gem_object_create_internal(i915, PAGE_SIZE);
+> -	if (IS_ERR(obj)) {
+> -		err = PTR_ERR(obj);
+> +	if (IS_ERR(obj2)) {
+> +		err = PTR_ERR(obj2);
 
-This came in here through the stable 5.4 tree with v5.4.74, and we have some
-users of ours report that it results in kernel oopses and delayed boot on their
-HP DL 380 Gen 9 (and other Gen 9, FWICT) servers:
+Reviewed-by: Andi Shyti <andi.shyti@intel.com>
 
-> systemd-udevd   D    0   501      1 0x80000000
-> Call Trace:
->  __schedule+0x2e6/0x6f0
->  schedule+0x33/0xa0
->  schedule_timeout+0x205/0x330
->  wait_for_completion+0xb7/0x140
->  ? wake_up_q+0x80/0x80
->  __flush_work+0x131/0x1e0
->  ? worker_detach_from_pool+0xb0/0xb0
->  work_on_cpu+0x6d/0x90
->  ? workqueue_congested+0x80/0x80
->  ? pci_device_shutdown+0x60/0x60
->  pci_device_probe+0x190/0x1b0
->  really_probe+0x1c8/0x3e0
->  driver_probe_device+0xbb/0x100
->  device_driver_attach+0x58/0x60
->  __driver_attach+0x8f/0x150
->  ? device_driver_attach+0x60/0x60
->  bus_for_each_dev+0x79/0xc0
->  ? kmem_cache_alloc_trace+0x1a0/0x230
->  driver_attach+0x1e/0x20
->  bus_add_driver+0x154/0x1f0
->  ? 0xffffffffc0453000
->  driver_register+0x70/0xc0
->  ? 0xffffffffc0453000
->  __pci_register_driver+0x57/0x60
->  beiscsi_module_init+0x62/0x1000 [be2iscsi]
->  do_one_initcall+0x4a/0x1fa
->  ? _cond_resched+0x19/0x30
->  ? kmem_cache_alloc_trace+0x1a0/0x230
->  do_init_module+0x60/0x230
->  load_module+0x231b/0x2590
->  __do_sys_finit_module+0xbd/0x120
->  ? __do_sys_finit_module+0xbd/0x120
->  __x64_sys_finit_module+0x1a/0x20
->  do_syscall_64+0x57/0x190
->  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-> RIP: 0033:0x7f00aca06f59
-> Code: Bad RIP value.
-> RSP: 002b:00007ffc14380858 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
-> RAX: ffffffffffffffda RBX: 0000558c726262e0 RCX: 00007f00aca06f59
-> RDX: 0000000000000000 RSI: 00007f00ac90bcad RDI: 000000000000000e
-> RBP: 00007f00ac90bcad R08: 0000000000000000 R09: 0000000000000000
-> R10: 000000000000000e R11: 0000000000000246 R12: 0000000000000000
-> R13: 0000558c725f6030 R14: 0000000000020000 R15: 0000558c726262e0
-
-Blacklisting the be2iscsi module or reverting this commit helps, I did not get
-around to look further into the mechanics at play and figured you would be
-faster at that, or that this info at least helps someone else when searching
-for the same symptoms.
-
-cheers,
-Thomas
-
-
+Thanks,
+Andi

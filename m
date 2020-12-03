@@ -2,65 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18ECF2CDFA6
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 21:21:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80B162CDFF0
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 21:48:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728098AbgLCUUr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Dec 2020 15:20:47 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41776 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726765AbgLCUUr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Dec 2020 15:20:47 -0500
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607026806;
-        bh=Tkyv4YxmIkfl86eenFjdn9rHENw/f56Yi/8XLBvDLTg=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=lcWLH6aTBD1VDKGAgLs+lutOcUSoAXOxXlB0PXQeE+DtzFwQZkZMmLpkzMQXPPm+z
-         4bhTdP3HTw+QgdbCtP60rPtJo9cnKl8an1OgkfZ/IHIEZdJ+qSGT8MIhCedzOJluZI
-         kYEMqWX47RqFGiLrzrhXgSPMXmh9rGF47bMJlsUUPenTpimlXR/HTcyU24OIVrDZtA
-         rPGemBqqGyOoR5Jd4mATGYqZT/k+nxC+vMkzdi0m73FMB9wIzHRTwAXKUhmLkaS3rT
-         xXe8CeBTQMoCm0kQeuDEkayeVl40zSmmI4lhyFt8AEFIw8jGt8lg9IP/wlGPLvnS8g
-         E434uqEqpnI6w==
+        id S2387448AbgLCUsA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Dec 2020 15:48:00 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:46630 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726761AbgLCUsA (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 3 Dec 2020 15:48:00 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B3Kj8Ru030892;
+        Thu, 3 Dec 2020 20:45:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=1LXP9D1+B9hUfYyzLOZtgb+vEzU/N5ctuPzRovVvNtU=;
+ b=adNHtY5Dw7BRWavEq09fQxsusSS1HmYNQHluL3XKAl2nK4yJIuTzXdrvSNVoWY6IJUfE
+ MtyMFUXdgczzoxTp6+AhbXxf2G0Di19f3LvDGzPJFHnWsPzGzOtq3F0YErEB1kWfn6eH
+ zkRM4uvzOD9uoMMwh/bUppdeJc5HiBrHR4ewaTBAjQw0e1yKAApX7hvJ5msCdgJnskWC
+ ylZWnWZjtVtnjKlFqSkBGC9ifXx7WwuyBNL7utJJyIX9m2bSCNxzSlAwfZj82M6UncVn
+ 2wTPYJIqYrWsmaixYWuHs2XU5vnYJrbkqdpPFf+qxQO4u+aMNhzaLX5FCBLtmO2RKp2c +Q== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2130.oracle.com with ESMTP id 353c2b883v-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 03 Dec 2020 20:45:08 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B3KdSLD029552;
+        Thu, 3 Dec 2020 20:45:07 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 3540g2ds87-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 03 Dec 2020 20:45:07 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0B3Kj4ai031535;
+        Thu, 3 Dec 2020 20:45:04 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 03 Dec 2020 12:45:03 -0800
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     Subbu Seetharaman <subbu.seetharaman@broadcom.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Thomas Lamprecht <t.lamprecht@proxmox.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        jejb@linux.ibm.com, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, stable@vger.kernel.org,
+        jitendra.bhivare@broadcom.com, linux-scsi@vger.kernel.org,
+        jayamohank@hdredirect-lb5-1afb6e2973825a56.elb.us-east-1.amazonaws.com,
+        James.Bottomley@suse.de, ketan.mukadam@broadcom.com,
+        Greg KH <greg@kroah.com>
+Subject: Re: [PATCH] scsi: be2iscsi: revert "Fix a theoretical leak in beiscsi_create_eqs()"
+Date:   Thu,  3 Dec 2020 15:45:01 -0500
+Message-Id: <160702820882.27665.13232983618301808305.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <X8jXkt6eThjyVP1v@mwanda>
+References: <X8jXkt6eThjyVP1v@mwanda>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH][next] samples/bpf: Fix spelling mistake "recieving" ->
- "receiving"
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <160702680632.7769.6625196471588556263.git-patchwork-notify@kernel.org>
-Date:   Thu, 03 Dec 2020 20:20:06 +0000
-References: <20201203114452.1060017-1-colin.king@canonical.com>
-In-Reply-To: <20201203114452.1060017-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     mariuszx.dudek@intel.com, andrii@kernel.org,
-        magnus.karlsson@intel.com, bjorn.topel@intel.com,
-        netdev@vger.kernel.org, bpf@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9824 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
+ phishscore=0 mlxlogscore=971 adultscore=0 mlxscore=0 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012030121
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9824 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 lowpriorityscore=0
+ clxscore=1011 bulkscore=0 mlxlogscore=982 phishscore=0 malwarescore=0
+ spamscore=0 adultscore=0 mlxscore=0 priorityscore=1501 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012030121
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
+On Thu, 3 Dec 2020 15:18:26 +0300, Dan Carpenter wrote:
 
-This patch was applied to bpf/bpf-next.git (refs/heads/master):
-
-On Thu,  3 Dec 2020 11:44:52 +0000 you wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+> My patch caused kernel Oopses and delays in boot.  Revert it.
 > 
-> There is a spelling mistake in an error message. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  samples/bpf/xdpsock_user.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> The problem was that I moved the "mem->dma = paddr;" before the call to
+> be_fill_queue().  But the first thing that the be_fill_queue() function
+> does is memset the whole struct to zero which overwrites the assignment.
 
-Here is the summary with links:
-  - [next] samples/bpf: Fix spelling mistake "recieving" -> "receiving"
-    https://git.kernel.org/bpf/bpf-next/c/2faa7328f53b
+Added Cc: stable and applied to 5.10/scsi-fixes, thanks!
 
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+[1/1] scsi: be2iscsi: revert "Fix a theoretical leak in beiscsi_create_eqs()"
+      https://git.kernel.org/mkp/scsi/c/eeaf06af6f87
 
-
+-- 
+Martin K. Petersen	Oracle Linux Engineering

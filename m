@@ -2,82 +2,133 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC6172CD271
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 10:23:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC6722CD2CD
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 10:46:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727641AbgLCJWq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Dec 2020 04:22:46 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:20008 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726003AbgLCJWp (ORCPT
+        id S1728962AbgLCJqp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Dec 2020 04:46:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52294 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725902AbgLCJqo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Dec 2020 04:22:45 -0500
-X-Greylist: delayed 351 seconds by postgrey-1.27 at vger.kernel.org; Thu, 03 Dec 2020 04:22:45 EST
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1606987340; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=OVTCNbyf8qxmCUM1RVhWGLCfrDA7Yx1fdOR/OounDA4=; b=ZuT8XpTMe0rZSAFiegFpZDbtLXAigNAHnO474VanIv7SeZzDfsNUD2iHmthWhPGXd+vbby9y
- 7KuXIZwzm8FKM8WD4gEyLwM2MdNULmUaI0GhekztOpP8ZzSV9MlPjDx601AAByhjKu9W/TQw
- lbKMzfkfgrIVXN4R2XsD3/b6SYo=
-X-Mailgun-Sending-Ip: 69.72.43.15
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 5fc8acf226ae63a2b4197fc6 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 03 Dec 2020 09:16:34
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 0BDE8C433C6; Thu,  3 Dec 2020 09:16:34 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C0033C43460;
-        Thu,  3 Dec 2020 09:16:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C0033C43460
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] rtw88: debug: Fix uninitialized memory in debugfs code
-References: <X8ilOfVz3pf0T5ec@mwanda>
-Date:   Thu, 03 Dec 2020 11:16:29 +0200
-In-Reply-To: <X8ilOfVz3pf0T5ec@mwanda> (Dan Carpenter's message of "Thu, 3 Dec
-        2020 11:43:37 +0300")
-Message-ID: <87pn3rgsgi.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Thu, 3 Dec 2020 04:46:44 -0500
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94A09C061A4D
+        for <kernel-janitors@vger.kernel.org>; Thu,  3 Dec 2020 01:45:58 -0800 (PST)
+Received: by mail-lj1-x244.google.com with SMTP id z1so1833748ljn.4
+        for <kernel-janitors@vger.kernel.org>; Thu, 03 Dec 2020 01:45:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BTlGzfvUDypCFqBvmwFfmXu7/Iijd722QkVqWCD+4QI=;
+        b=bOPBTRe50dYnkJ7KzuNO3KMBoOL5eDeV4gnBOgpirA/GmSas8uJIVl/0AipZZfHHgU
+         izUtY2aDaCqgfgibTyhMfxUI3Ef650Dyhe/Af/T6Ml1aotfBZhD0ssZMQ8alTNgB9rlf
+         KxqACJO6bCDMENd3UGRJuqM1bmlgMalk1kJn6ekpbu7vcda2NQSEHQuwwelZIWovIYv+
+         sePPGyTUFPvDUVZKJy8yx3nmU22zyii42ryEO/hQtDIoIJB5UGhYDEe8qZPCKoAkc5EK
+         MEmZqomFiLTuOiFQ0bd+9JA4UNIVGuOUUFlRceY200NI+d3QFu5RWT8Ly0JAMchrMVyC
+         VCzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BTlGzfvUDypCFqBvmwFfmXu7/Iijd722QkVqWCD+4QI=;
+        b=aYmbQFTrOUaIYHk/I2EtsP8AB+O4Pmx8+aEtdwRZdMyVGtZ/VTtC+hb9r7ZAtAX3bw
+         GSzkoFW54DWzdIj1SLqHyobXz9wz/r+PWcZCNwZjG/EnDuIVipVYTHfgwLRrCdLp7a+f
+         wqAV7DKvjDZKzUL8uK1LZvUP877mMDLiv8MAcUJqeDNNw78dQloLm7W8mW46uJb2Z0ZR
+         X4VvuF/ExzIkA/JfNxz0skblw4o/aZAX20nAWVajFgTA/Y9jJJxtWnQKGm5QMKhmdxle
+         WICtdm2tFhF70VLmFfJZsa9kQxSfWhZyvTyzQNNinm9U+gePFNadxLBGJ8xJmJdt1ROk
+         R6Cg==
+X-Gm-Message-State: AOAM532bf1iP9Tok9O7Im2Oz0rn4tD1i8y4FxWfBvBnxPew/a7fb91Yj
+        444OTNUElUsyWyjR4apv5jptzAT4TosIm02VcrA=
+X-Google-Smtp-Source: ABdhPJznT/PWInkyvV39FGkv6HV6ouOsc33obT6CjacNijL/qI0gOOjcVcvRx4jTpI/e2HMMVnBgfsYiRZjlIEW/5fQ=
+X-Received: by 2002:a2e:89d7:: with SMTP id c23mr895401ljk.397.1606988757039;
+ Thu, 03 Dec 2020 01:45:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <X8ikkAqZfnDO2lu6@mwanda>
+In-Reply-To: <X8ikkAqZfnDO2lu6@mwanda>
+From:   Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Date:   Thu, 3 Dec 2020 10:45:46 +0100
+Message-ID: <CAMeQTsZYx7KB2mUfv7uwOJ+FJ5-UUj-YH7m7y0bTB-LsPm4xvw@mail.gmail.com>
+Subject: Re: [PATCH] gma500: clean up error handling in init
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Dave Airlie <airlied@redhat.com>,
+        Alan Cox <alan@linux.intel.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> writes:
-
-> This code does not ensure that the whole buffer is initialized and none
-> of the callers check for errors so potentially none of the buffer is
-> initialized.  Add a memset to eliminate this bug.
+On Thu, Dec 3, 2020 at 9:41 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
 >
-> Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+> The main problem with this error handling was that it didn't clean up if
+> i2c_add_numbered_adapter() failed.  This code is pretty old, and doesn't
+> match with today's checkpatch.pl standards so I took the opportunity to
+> tidy it up a bit.  I changed the NULL comparison, and removed the
+> WARNING message if kzalloc() fails and updated the label names.
+
+Thanks! Looks good.
+
+I'll apply this to drm-misc-next
+
+-Patrik
+
+>
+> Fixes: 1b082ccf5901 ("gma500: Add Oaktrail support")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  drivers/net/wireless/realtek/rtw88/debug.c | 2 ++
->  1 file changed, 2 insertions(+)
-
-I'll take this to wireless-drivers, this shouldn't go to net.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>  drivers/gpu/drm/gma500/oaktrail_hdmi_i2c.c | 22 +++++++++++++---------
+>  1 file changed, 13 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/gma500/oaktrail_hdmi_i2c.c b/drivers/gpu/drm/gma500/oaktrail_hdmi_i2c.c
+> index e28107061148..fc9a34ed58bd 100644
+> --- a/drivers/gpu/drm/gma500/oaktrail_hdmi_i2c.c
+> +++ b/drivers/gpu/drm/gma500/oaktrail_hdmi_i2c.c
+> @@ -279,11 +279,8 @@ int oaktrail_hdmi_i2c_init(struct pci_dev *dev)
+>         hdmi_dev = pci_get_drvdata(dev);
+>
+>         i2c_dev = kzalloc(sizeof(struct hdmi_i2c_dev), GFP_KERNEL);
+> -       if (i2c_dev == NULL) {
+> -               DRM_ERROR("Can't allocate interface\n");
+> -               ret = -ENOMEM;
+> -               goto exit;
+> -       }
+> +       if (!i2c_dev)
+> +               return -ENOMEM;
+>
+>         i2c_dev->adap = &oaktrail_hdmi_i2c_adapter;
+>         i2c_dev->status = I2C_STAT_INIT;
+> @@ -300,16 +297,23 @@ int oaktrail_hdmi_i2c_init(struct pci_dev *dev)
+>                           oaktrail_hdmi_i2c_adapter.name, hdmi_dev);
+>         if (ret) {
+>                 DRM_ERROR("Failed to request IRQ for I2C controller\n");
+> -               goto err;
+> +               goto free_dev;
+>         }
+>
+>         /* Adapter registration */
+>         ret = i2c_add_numbered_adapter(&oaktrail_hdmi_i2c_adapter);
+> -       return ret;
+> +       if (ret) {
+> +               DRM_ERROR("Failed to add I2C adapter\n");
+> +               goto free_irq;
+> +       }
+>
+> -err:
+> +       return 0;
+> +
+> +free_irq:
+> +       free_irq(dev->irq, hdmi_dev);
+> +free_dev:
+>         kfree(i2c_dev);
+> -exit:
+> +
+>         return ret;
+>  }
+>
+> --
+> 2.29.2
+>

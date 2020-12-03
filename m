@@ -2,98 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B6652CDD65
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 19:28:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B39AD2CDE1D
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 19:57:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2501925AbgLCSYp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Dec 2020 13:24:45 -0500
-Received: from new2-smtp.messagingengine.com ([66.111.4.224]:42691 "EHLO
-        new2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2436500AbgLCSYo (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Dec 2020 13:24:44 -0500
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailnew.nyi.internal (Postfix) with ESMTP id D7B78580497;
-        Thu,  3 Dec 2020 13:23:57 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Thu, 03 Dec 2020 13:23:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm2; bh=QP4GaR0zm1Ub7XkhQv7Jc4kTE+P
-        vBmdV/xXIkDwGDfw=; b=wT+g8Ll/pQ8FMT4zqCiKH/h9As0f4dO1bzOL/RDUgvA
-        Ch3nfQYuo+pYX95KoSt7eArBrElM4qqm/YXeTHajiDT+KbbXrMJnE8UunuXZceQ6
-        m0m4CTwYxoWjl0LD77aPvNrJ1vcCsNrt2hEDvVwTooJmVFZF8pRF+YdMoB7x06NI
-        0XYpLkWofT3DI3dASB+GB0R/rgzjePtV7C+x2yi5HTlI19ix90bqen2VgBSunZ6i
-        tyKGWQMvQyfd1gbsk7j29LU6dayu3uakkPYXENh7qqO6d2GgKxr2c7b/LZMl3qm5
-        wFrHY9Re9lH3fIsKcW7HirJHDplR/rqROjhCP5mi8Ng==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=QP4GaR
-        0zm1Ub7XkhQv7Jc4kTE+PvBmdV/xXIkDwGDfw=; b=bBI4c2++tMa0ofW+kUNIBf
-        Hd5X/T6hZW7N1ds+yFn2PUI3PqO+xVNSS4IFC17Z+hNr0GyloQ6+NTbKZLVpiY+J
-        rgCQ0jb7patAKWnmO4MsfKM4YeR44xhMRzqSKH2H96Ji0nkjxlC8JfxVcc6O2Vt3
-        txaDnKp9g7gwp739T5xWzEJO/EKdnLf2UdpOJvT1Zam5PZYmdr8LG4vRK0rVTT87
-        3m6gFANslVNlfuRqhseKGEAPM1l5/IK02qWV7qZDN2PT+q6rO+IuH6R6wwQHNU3o
-        2t7OSviN+RxwIfbqwVZQF8nuRnaxGz0ado41B28g5BKOhBHsw6z/s267zK/Z/nYA
-        ==
-X-ME-Sender: <xms:PS3JX9x2kFt4KUjjW5kZ4QVwljZ5dH6nLy4lPMc_r_fMpWL_bmFW5w>
-    <xme:PS3JX9RfEmrzENRtDcRu8BpUh4mv5-rdCTu5M9DIDZTx4nA8jbrHnEpXOGoGsL8jx
-    zbqsk2hy-C5yg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrudeiiedguddufecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepveeuhe
-    ejgfffgfeivddukedvkedtleelleeghfeljeeiueeggeevueduudekvdetnecukfhppeek
-    fedrkeeirdejgedrieegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
-    hilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
-X-ME-Proxy: <xmx:PS3JX3Wdu9LuHIiIUh3vBTKSZoe74V9PK-H5GuTPZk05SepySzrcGw>
-    <xmx:PS3JX_iUGCy_AlDyAPRnLe-Xi7QZs6DLslBc6R-P2ituSA2FSd_HgA>
-    <xmx:PS3JX_ABMn1naBiHJRY0N44GoQOisk4Vpd1B6PyfPrnH9rBNM19_Pg>
-    <xmx:PS3JXz7w3J7NK4BTgOTnOSDEDXj5MLshEAyONZR0npGHxXndIRKdug>
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 693E0108005B;
-        Thu,  3 Dec 2020 13:23:56 -0500 (EST)
-Date:   Thu, 3 Dec 2020 19:25:05 +0100
-From:   Greg KH <greg@kroah.com>
+        id S1727718AbgLCS4a (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Dec 2020 13:56:30 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34192 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726689AbgLCS4a (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 3 Dec 2020 13:56:30 -0500
+Date:   Thu, 3 Dec 2020 10:55:47 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1607021749;
+        bh=EfLvReCiv4Wlz9AfYVhW6cO3n4jUMp+CptkDdC10U7Y=;
+        h=From:To:Cc:Subject:In-Reply-To:References:From;
+        b=LnN3azw7Fd7YbdbrigoY4OqNcA2t/Q6rlk3PoxZ9mEygGTm5Qn1x62EtOUXk2j03K
+         wvMqjNU2qxh8ZWL6dbS57r1mze+AuIHKdN48DaRoRh1WDrcsf5pb31wkUD4KrBSV6F
+         kcjn7Ed9TIDoMzLr5e52fioSSWhccHXcjT1NkbgS9zfDTHDLLaRnv5JbXR4rf0Mm7i
+         IfGfPiN17EdB0D0B2JO/Sw4rwZA1Gmhym8Cu2F3DEAEQlIX1yaosd2byEH7sxOxvEI
+         g+3oOHoGavvj+KRVRUxX67gPJaaIwNKNkIj3MJ79zAauVwC2JMpGyTDp0ISLS4fiJc
+         uPiC4o9dpnbJw==
+From:   Jakub Kicinski <kuba@kernel.org>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Subbu Seetharaman <subbu.seetharaman@broadcom.com>,
-        Thomas Lamprecht <t.lamprecht@proxmox.com>,
-        James.Bottomley@suse.de,
-        jayamohank@hdredirect-lb5-1afb6e2973825a56.elb.us-east-1.amazonaws.com,
-        jejb@linux.ibm.com, jitendra.bhivare@broadcom.com,
-        kernel-janitors@vger.kernel.org, ketan.mukadam@broadcom.com,
-        linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
-        martin.petersen@oracle.com, stable@vger.kernel.org
-Subject: Re: [PATCH] scsi: be2iscsi: revert "Fix a theoretical leak in
- beiscsi_create_eqs()"
-Message-ID: <X8ktgeCVhGPw4wnW@kroah.com>
-References: <54f36c62-10bf-8736-39ce-27ece097d9de@proxmox.com>
- <X8jXkt6eThjyVP1v@mwanda>
+Cc:     Ayush Sawal <ayush.sawal@chelsio.com>,
+        Atul Gupta <atul.gupta@chelsio.com>,
+        Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
+        Rohit Maheshwari <rohitm@chelsio.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net] chelsio/chtls: fix a double free in chtls_setkey()
+Message-ID: <20201203105547.13364c00@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+In-Reply-To: <X8ilb6PtBRLWiSHp@mwanda>
+References: <X8ilb6PtBRLWiSHp@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <X8jXkt6eThjyVP1v@mwanda>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Dec 03, 2020 at 03:18:26PM +0300, Dan Carpenter wrote:
-> My patch caused kernel Oopses and delays in boot.  Revert it.
+On Thu, 3 Dec 2020 11:44:31 +0300 Dan Carpenter wrote:
+> The "skb" is freed by the transmit code in cxgb4_ofld_send() and we
+> shouldn't use it again.  But in the current code, if we hit an error
+> later on in the function then the clean up code will call kfree_skb(skb)
+> and so it causes a double free.
 > 
-> The problem was that I moved the "mem->dma = paddr;" before the call to
-> be_fill_queue().  But the first thing that the be_fill_queue() function
-> does is memset the whole struct to zero which overwrites the assignment.
+> Set the "skb" to NULL and that makes the kfree_skb() a no-op.
 > 
-> Fixes: 38b2db564d9a ("scsi: be2iscsi: Fix a theoretical leak in beiscsi_create_eqs()")
-> Reported-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
+> Fixes: d25f2f71f653 ("crypto: chtls - Program the TLS session Key")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Can someone please add:
-	Cc: stable <stable@vger.kernel.org>
-to this so we know to pick it up quickly there?
-
-thanks,
-
-greg k-h
+Applied, thanks!

@@ -2,103 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65B302CD1B6
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 09:51:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC6172CD271
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Dec 2020 10:23:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730043AbgLCIsY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Dec 2020 03:48:24 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:48058 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726505AbgLCIsX (ORCPT
+        id S1727641AbgLCJWq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Dec 2020 04:22:46 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:20008 "EHLO
+        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726003AbgLCJWp (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Dec 2020 03:48:23 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B38hf2u099371;
-        Thu, 3 Dec 2020 08:47:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=M+k/zGDQThbNKCjsn4dd82clzTq/I1N4YqLVvEgK2U8=;
- b=W9/M7hTPW+Ltz4AkDw8vKYMJgtVHnBvkVzh88+CCh2h9xAVrqI7sQgIArYvwVnNjk0oe
- zcw7hwCCgNkoeetyaC8Ohup4UjDO1jBvzeNod2Ym2L/MWbzweC+Hq0f9ip2Z9+jGWtVY
- xuZfNP8+3gi1KQvpnb3kB5TmkqY2XDTvfhgU6OZy0Cj/96/Wdk/XnLFYuFcJ6uCpu+I1
- 0h4oeUSB0sPaMA2MsXrRepMrcgLAT5s0cw/RguI0NmdiFaJMtqZqXYTzhFdJrfRj530v
- bWpiVf38Y54yxOoKOJAYAdwa8V2x68mtG8F0s1lgsuGJSR4h6uqwxCE84Fu+xO3fim3Q Hw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 353dyqvms4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 03 Dec 2020 08:47:30 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B38eNqh133268;
-        Thu, 3 Dec 2020 08:45:30 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 3540avq27e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 03 Dec 2020 08:45:29 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0B38jR35001450;
-        Thu, 3 Dec 2020 08:45:27 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 03 Dec 2020 00:45:26 -0800
-Date:   Thu, 3 Dec 2020 11:45:17 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jani Nikula <jani.nikula@linux.intel.com>
-Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Andi Shyti <andi.shyti@intel.com>,
-        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
-        Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@intel.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] drm/i915: Check the correct variable
-Message-ID: <X8ilneOcJAjwqU4t@mwanda>
+        Thu, 3 Dec 2020 04:22:45 -0500
+X-Greylist: delayed 351 seconds by postgrey-1.27 at vger.kernel.org; Thu, 03 Dec 2020 04:22:45 EST
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1606987340; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=OVTCNbyf8qxmCUM1RVhWGLCfrDA7Yx1fdOR/OounDA4=; b=ZuT8XpTMe0rZSAFiegFpZDbtLXAigNAHnO474VanIv7SeZzDfsNUD2iHmthWhPGXd+vbby9y
+ 7KuXIZwzm8FKM8WD4gEyLwM2MdNULmUaI0GhekztOpP8ZzSV9MlPjDx601AAByhjKu9W/TQw
+ lbKMzfkfgrIVXN4R2XsD3/b6SYo=
+X-Mailgun-Sending-Ip: 69.72.43.15
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 5fc8acf226ae63a2b4197fc6 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 03 Dec 2020 09:16:34
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 0BDE8C433C6; Thu,  3 Dec 2020 09:16:34 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C0033C43460;
+        Thu,  3 Dec 2020 09:16:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C0033C43460
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net] rtw88: debug: Fix uninitialized memory in debugfs code
+References: <X8ilOfVz3pf0T5ec@mwanda>
+Date:   Thu, 03 Dec 2020 11:16:29 +0200
+In-Reply-To: <X8ilOfVz3pf0T5ec@mwanda> (Dan Carpenter's message of "Thu, 3 Dec
+        2020 11:43:37 +0300")
+Message-ID: <87pn3rgsgi.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9823 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0
- phishscore=0 mlxscore=0 adultscore=0 malwarescore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012030053
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9823 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0
- clxscore=1011 mlxscore=0 spamscore=0 priorityscore=1501 mlxlogscore=999
- suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012030053
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is a copy and paste bug in this code.  It's supposed to check
-"obj2" instead of checking "obj" a second time.
+Dan Carpenter <dan.carpenter@oracle.com> writes:
 
-Fixes: 80f0b679d6f0 ("drm/i915: Add an implementation for i915_gem_ww_ctx locking, v2.")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/gpu/drm/i915/selftests/i915_gem.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> This code does not ensure that the whole buffer is initialized and none
+> of the callers check for errors so potentially none of the buffer is
+> initialized.  Add a memset to eliminate this bug.
+>
+> Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/net/wireless/realtek/rtw88/debug.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/selftests/i915_gem.c b/drivers/gpu/drm/i915/selftests/i915_gem.c
-index 23a6132c5f4e..412e21604a05 100644
---- a/drivers/gpu/drm/i915/selftests/i915_gem.c
-+++ b/drivers/gpu/drm/i915/selftests/i915_gem.c
-@@ -211,8 +211,8 @@ static int igt_gem_ww_ctx(void *arg)
- 		return PTR_ERR(obj);
- 
- 	obj2 = i915_gem_object_create_internal(i915, PAGE_SIZE);
--	if (IS_ERR(obj)) {
--		err = PTR_ERR(obj);
-+	if (IS_ERR(obj2)) {
-+		err = PTR_ERR(obj2);
- 		goto put1;
- 	}
- 
+I'll take this to wireless-drivers, this shouldn't go to net.
+
 -- 
-2.29.2
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

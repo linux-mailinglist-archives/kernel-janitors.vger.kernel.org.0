@@ -2,38 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B23672CF394
-	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Dec 2020 19:05:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A13312CF466
+	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Dec 2020 19:55:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728625AbgLDSFq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 4 Dec 2020 13:05:46 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:46310 "EHLO
+        id S1728508AbgLDSzE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 4 Dec 2020 13:55:04 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:47555 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726330AbgLDSFq (ORCPT
+        with ESMTP id S1726405AbgLDSzD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 4 Dec 2020 13:05:46 -0500
+        Fri, 4 Dec 2020 13:55:03 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1klFRz-0008KB-JP; Fri, 04 Dec 2020 18:04:59 +0000
+        id 1klGDl-0003af-DS; Fri, 04 Dec 2020 18:54:21 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org
+To:     Jeff Layton <jlayton@kernel.org>,
+        Ilya Dryomov <idryomov@gmail.com>, ceph-devel@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] net: brcmfmac: remove redundant assignment to pointer 'entry'
-Date:   Fri,  4 Dec 2020 18:04:59 +0000
-Message-Id: <20201204180459.1148257-1-colin.king@canonical.com>
+Subject: [PATCH] ceph: remove redundant assignment to variable i
+Date:   Fri,  4 Dec 2020 18:54:21 +0000
+Message-Id: <20201204185421.1149669-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -44,29 +34,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The pointer 'entry' is being initialized with a value that is never read
-and it is being updated later with a new value.  The initialization is
-redundant and can be removed.
+The variable i is being initialized with a value that is never read
+and it is being updated later with a new value in a for-loop.  The
+initialization is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c | 2 +-
+ fs/ceph/mds_client.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
-index 437e83ea8902..19b0f318f93e 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
-@@ -746,7 +746,7 @@ brcmf_fws_macdesc_lookup(struct brcmf_fws_info *fws, u8 *ea)
- static struct brcmf_fws_mac_descriptor*
- brcmf_fws_macdesc_find(struct brcmf_fws_info *fws, struct brcmf_if *ifp, u8 *da)
+diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
+index 8f1d7500a7ec..b70937caa7a7 100644
+--- a/fs/ceph/mds_client.c
++++ b/fs/ceph/mds_client.c
+@@ -1243,7 +1243,7 @@ static struct ceph_msg *create_session_open_msg(struct ceph_mds_client *mdsc, u6
  {
--	struct brcmf_fws_mac_descriptor *entry = &fws->desc.other;
-+	struct brcmf_fws_mac_descriptor *entry;
- 	bool multicast;
- 
- 	multicast = is_multicast_ether_addr(da);
+ 	struct ceph_msg *msg;
+ 	struct ceph_mds_session_head *h;
+-	int i = -1;
++	int i;
+ 	int extra_bytes = 0;
+ 	int metadata_key_count = 0;
+ 	struct ceph_options *opt = mdsc->fsc->client->options;
 -- 
 2.29.2
 

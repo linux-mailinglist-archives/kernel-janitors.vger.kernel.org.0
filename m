@@ -2,64 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D40F62CE58C
-	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Dec 2020 03:11:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AEC492CE63E
+	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Dec 2020 03:59:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726727AbgLDCIn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Dec 2020 21:08:43 -0500
-Received: from mailgw02.mediatek.com ([1.203.163.81]:4277 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726492AbgLDCIm (ORCPT
+        id S1727477AbgLDC6j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Dec 2020 21:58:39 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:60608 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727434AbgLDC6i (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Dec 2020 21:08:42 -0500
-X-UUID: c1824fb84b75415992a1dcd6242929c2-20201204
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=xs9eF5fglSIsmijGZu14F0E5pV9HzptzLHDNcPvVCIs=;
-        b=CXPUXZL4sLCAlfchrwMoUS3XmNCzDl34SrYXGro6+x/pC/46Zwn+p/WdSzeSi1bYV6amD+rcDGQ8cl+3M/GUP2YojgUlXnMS9dghtM1irKuFl580HwrQVrNxkn+m1Y7kqNVS3M0KG+I6ADctDQM4lhkHPIJKmFXcxeo5BxzQwKo=;
-X-UUID: c1824fb84b75415992a1dcd6242929c2-20201204
-Received: from mtkcas34.mediatek.inc [(172.27.4.253)] by mailgw02.mediatek.com
-        (envelope-from <chunfeng.yun@mediatek.com>)
-        (mailgw01.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 24793708; Fri, 04 Dec 2020 10:07:58 +0800
-Received: from MTKCAS36.mediatek.inc (172.27.4.186) by MTKMBS32DR.mediatek.inc
- (172.27.6.104) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 4 Dec
- 2020 10:07:56 +0800
-Received: from [10.17.3.153] (10.17.3.153) by MTKCAS36.mediatek.inc
- (172.27.4.170) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 4 Dec 2020 10:07:56 +0800
-Message-ID: <1607047676.7284.18.camel@mhfsdcap03>
-Subject: Re: [PATCH 2/2] usb: mtu3: mtu3_debug: remove an unused struct
- member
-From:   Chunfeng Yun <chunfeng.yun@mediatek.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <linux-usb@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-        <kernel-janitors@vger.kernel.org>
-Date:   Fri, 4 Dec 2020 10:07:56 +0800
-In-Reply-To: <X8ikv1QA3Do50D+R@mwanda>
-References: <X8ikv1QA3Do50D+R@mwanda>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu2 
-MIME-Version: 1.0
-X-TM-SNTS-SMTP: AC0B05F042C3094CF0C98DC0756865E872A5F19AB13B6FEF8FDFC73BD9F1C23B2000:8
-X-MTK:  N
+        Thu, 3 Dec 2020 21:58:38 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 0B42vbW13003556, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmb05.realtek.com.tw[172.21.6.98])
+        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 0B42vbW13003556
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 4 Dec 2020 10:57:37 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2044.4; Fri, 4 Dec 2020 10:57:36 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa]) by
+ RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa%3]) with mapi id
+ 15.01.2044.006; Fri, 4 Dec 2020 10:57:36 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        "colin.king@canonical.com" <colin.king@canonical.com>,
+        DeanKu <ku920601@realtek.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH][next] rtw88: coex: fix missing unitialization of variable 'interval'
+Thread-Topic: [PATCH][next] rtw88: coex: fix missing unitialization of
+ variable 'interval'
+Thread-Index: AQHWyZz6BmIbttp/AEO1y1b2WLtmZKnluRcA
+Date:   Fri, 4 Dec 2020 02:57:36 +0000
+Message-ID: <1607050654.5824.0.camel@realtek.com>
+References: <20201203175142.1071738-1-colin.king@canonical.com>
+In-Reply-To: <20201203175142.1071738-1-colin.king@canonical.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.213]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <824F9D3980CFE44680F4CAE6AF052B8E@realtek.com>
 Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-T24gVGh1LCAyMDIwLTEyLTAzIGF0IDExOjQxICswMzAwLCBEYW4gQ2FycGVudGVyIHdyb3RlOg0K
-PiBUaGUgIm5yZWdzIiBtZW1iZXIgaXMgbm90IHVzZWQuICBUaGUgY29kZSB1c2VzIHRoZSAicmVn
-c2V0Lm5yZWdzIg0KPiBzdHJ1Y3QgbWVtYmVyIGluc3RlYWQuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5
-OiBEYW4gQ2FycGVudGVyIDxkYW4uY2FycGVudGVyQG9yYWNsZS5jb20+DQo+IC0tLQ0KPiAgZHJp
-dmVycy91c2IvbXR1My9tdHUzX2RlYnVnLmggfCAxIC0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGRl
-bGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy91c2IvbXR1My9tdHUzX2RlYnVn
-LmggYi9kcml2ZXJzL3VzYi9tdHUzL210dTNfZGVidWcuaA0KPiBpbmRleCAzMDg0YzQ2MDE3YzMu
-LjlhMzYxMzRiMzIyZCAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy91c2IvbXR1My9tdHUzX2RlYnVn
-LmgNCj4gKysrIGIvZHJpdmVycy91c2IvbXR1My9tdHUzX2RlYnVnLmgNCj4gQEAgLTE5LDcgKzE5
-LDYgQEAgc3RydWN0IHNzdXNiX210azsNCj4gIHN0cnVjdCBtdHUzX3JlZ3NldCB7DQo+ICAJY2hh
-ciBuYW1lW01UVTNfREVCVUdGU19OQU1FX0xFTl07DQo+ICAJc3RydWN0IGRlYnVnZnNfcmVnc2V0
-MzIgcmVnc2V0Ow0KPiAtCXNpemVfdCBucmVnczsNCj4gIH07DQpBY2tlZC1ieTogQ2h1bmZlbmcg
-WXVuIDxjaHVuZmVuZy55dW5AbWVkaWF0ZWsuY29tPg0KDQpUaGFua3MgYSBsb3QNCg0KPiAgDQo+
-ICBzdHJ1Y3QgbXR1M19maWxlX21hcCB7DQoNCg==
-
+T24gVGh1LCAyMDIwLTEyLTAzIGF0IDE3OjUxICswMDAwLCBDb2xpbiBLaW5nIHdyb3RlOg0KPiBG
+cm9tOiBDb2xpbiBJYW4gS2luZyA8Y29saW4ua2luZ0BjYW5vbmljYWwuY29tPg0KPiANCj4gQ3Vy
+cmVudGx5IHRoZSB2YXJpYWJsZSAnaW50ZXJ2YWwnIGlzIG5vdCBpbml0aWFsaXplZCBhbmQgaXMg
+b25seSBzZXQNCj4gdG8gMSB3aGVuIG9leF9zdGF0LT5idF80MThfaGlkX2V4aXN0aSBpcyB0cnVl
+LsKgwqBGaXggdGhpcyBieSBpbmludGlhbGl6aW5nDQo+IHZhcmlhYmxlIGludGVydmFsIHRvIDAg
+KHdoaWNoIEknbSBhc3N1bWluZyBpcyB0aGUgaW50ZW5kZWQgZGVmYXVsdCkuDQo+IA0KPiBBZGRy
+ZXNzZXMtQ292ZXJpdHk6ICgiVW5pbml0YWxpemVkIHNjYWxhciB2YXJpYWJsZSIpDQo+IEZpeGVz
+OiA1YjJlOWEzNWU0NTYgKCJydHc4ODogY29leDogYWRkIGZlYXR1cmUgdG8gZW5oYW5jZSBISUQg
+Y29leGlzdGVuY2UNCj4gcGVyZm9ybWFuY2UiKQ0KPiBTaWduZWQtb2ZmLWJ5OiBDb2xpbiBJYW4g
+S2luZyA8Y29saW4ua2luZ0BjYW5vbmljYWwuY29tPg0KDQpUaGFua3MgZm9yIHlvdXIgZml4Lg0K
+DQpBY2tlZC1ieTogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQoNCj4gLS0tDQo+
+IMKgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9jb2V4LmMgfCAyICstDQo+IMKg
+MSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZm
+IC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9jb2V4LmMNCj4gYi9k
+cml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L2NvZXguYw0KPiBpbmRleCBjNzA0YzY4
+ODVhMTguLjI0NTMwY2FmY2JhNyAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+cmVhbHRlay9ydHc4OC9jb2V4LmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
+ay9ydHc4OC9jb2V4LmMNCj4gQEAgLTIwNTEsNyArMjA1MSw3IEBAIHN0YXRpYyB2b2lkIHJ0d19j
+b2V4X2FjdGlvbl9idF9hMmRwX2hpZChzdHJ1Y3QgcnR3X2Rldg0KPiAqcnR3ZGV2KQ0KPiDCoAlz
+dHJ1Y3QgcnR3X2NvZXhfZG0gKmNvZXhfZG0gPSAmY29leC0+ZG07DQo+IMKgCXN0cnVjdCBydHdf
+ZWZ1c2UgKmVmdXNlID0gJnJ0d2Rldi0+ZWZ1c2U7DQo+IMKgCXN0cnVjdCBydHdfY2hpcF9pbmZv
+ICpjaGlwID0gcnR3ZGV2LT5jaGlwOw0KPiAtCXU4IHRhYmxlX2Nhc2UsIHRkbWFfY2FzZSwgaW50
+ZXJ2YWw7DQo+ICsJdTggdGFibGVfY2FzZSwgdGRtYV9jYXNlLCBpbnRlcnZhbCA9IDA7DQo+IMKg
+CXUzMiBzbG90X3R5cGUgPSAwOw0KPiDCoAlib29sIGlzX3RvZ2dsZV90YWJsZSA9IGZhbHNlOw0K
+PiDCoA0KPiAtLcKgDQo+IDIuMjkuMg0KPiANCj4gDQo+IC0tLS0tLVBsZWFzZSBjb25zaWRlciB0
+aGUgZW52aXJvbm1lbnQgYmVmb3JlIHByaW50aW5nIHRoaXMgZS1tYWlsLg0KDQoNCg==

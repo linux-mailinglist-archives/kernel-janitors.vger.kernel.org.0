@@ -2,30 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 114732CF4CB
-	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Dec 2020 20:32:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3749C2CF4D3
+	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Dec 2020 20:35:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728605AbgLDTbr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 4 Dec 2020 14:31:47 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:48735 "EHLO
+        id S1729710AbgLDTez (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 4 Dec 2020 14:34:55 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:48794 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725923AbgLDTbr (ORCPT
+        with ESMTP id S1726021AbgLDTey (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 4 Dec 2020 14:31:47 -0500
+        Fri, 4 Dec 2020 14:34:54 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1klGnC-0006nw-Cb; Fri, 04 Dec 2020 19:30:58 +0000
+        id 1klGqJ-00070J-Po; Fri, 04 Dec 2020 19:34:11 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-mtd@lists.infradead.org
+To:     Ohad Ben-Cohen <ohad@wizery.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-remoteproc@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mtd: rawnand: Clean up some spelling mistakes and grammar in Kconfig text
-Date:   Fri,  4 Dec 2020 19:30:58 +0000
-Message-Id: <20201204193058.1151768-1-colin.king@canonical.com>
+Subject: [PATCH] remoteproc: fix spelling mistake "Peripherial" -> "Peripherial" in Kconfig
+Date:   Fri,  4 Dec 2020 19:34:11 +0000
+Message-Id: <20201204193411.1152006-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,31 +35,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There are some spelling mistakes in the Kconfig help text, fix
-these. Also clean up the grammar.
+There is a spelling mistake in the Kconfig help text. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/mtd/nand/raw/Kconfig | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/remoteproc/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/Kconfig b/drivers/mtd/nand/raw/Kconfig
-index b93e6cd23259..83b65fb1b93b 100644
---- a/drivers/mtd/nand/raw/Kconfig
-+++ b/drivers/mtd/nand/raw/Kconfig
-@@ -460,9 +460,9 @@ config MTD_NAND_RICOH
- 	select MTD_SM_COMMON
+diff --git a/drivers/remoteproc/Kconfig b/drivers/remoteproc/Kconfig
+index d99548fb5dde..d45be05640ea 100644
+--- a/drivers/remoteproc/Kconfig
++++ b/drivers/remoteproc/Kconfig
+@@ -183,7 +183,7 @@ config QCOM_Q6V5_PAS
+ 	select QCOM_RPROC_COMMON
+ 	select QCOM_SCM
  	help
- 	  Enable support for Ricoh R5C852 xD card reader
--	  You also need to enable ether
--	  NAND SSFDC (SmartMedia) read only translation layer' or new
--	  expermental, readwrite
-+	  You also need to enable either
-+	  'NAND SSFDC (SmartMedia) read only translation layer' or the
-+         new experimental, readwrite
- 	  'SmartMedia/xD new translation layer'
+-	  Say y here to support the TrustZone based Peripherial Image Loader
++	  Say y here to support the TrustZone based Peripheral Image Loader
+ 	  for the Qualcomm Hexagon v5 based remote processors. This is commonly
+ 	  used to control subsystems such as ADSP, Compute and Sensor.
  
- config MTD_NAND_DISKONCHIP
 -- 
 2.29.2
 

@@ -2,56 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 487A82CFAF8
-	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Dec 2020 11:20:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 158B02CFFB9
+	for <lists+kernel-janitors@lfdr.de>; Sun,  6 Dec 2020 00:22:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728798AbgLEKTr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 5 Dec 2020 05:19:47 -0500
-Received: from isilmar-4.linta.de ([136.243.71.142]:48218 "EHLO
-        isilmar-4.linta.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729090AbgLEKRd (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 5 Dec 2020 05:17:33 -0500
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-Received: from light.dominikbrodowski.net (brodo.linta [10.2.0.102])
-        by isilmar-4.linta.de (Postfix) with ESMTPSA id ED40F2010FA;
-        Sat,  5 Dec 2020 09:05:29 +0000 (UTC)
-Received: by light.dominikbrodowski.net (Postfix, from userid 1000)
-        id A49C820EC0; Sat,  5 Dec 2020 09:31:04 +0100 (CET)
-Date:   Sat, 5 Dec 2020 09:31:04 +0100
-From:   Dominik Brodowski <linux@dominikbrodowski.net>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     akpm@linux-foundation.org, peterz@infradead.org, olof@lixom.net,
-        hch@lst.de, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] pcmcia/electra_cf: Fix some return values in
- 'electra_cf_probe()' in case of error
-Message-ID: <X8tFSNBqbAY7caYN@light.dominikbrodowski.net>
-References: <20200617195326.732863-1-christophe.jaillet@wanadoo.fr>
+        id S1726977AbgLEXVF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 5 Dec 2020 18:21:05 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46522 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725270AbgLEXVE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 5 Dec 2020 18:21:04 -0500
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1607210424;
+        bh=pehPkJa7Os4jpeZhw6SlrD3BC+I4x7t0lldxs+Y6drA=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=s8dgANVEMvKVxV4jxLOmtj/EPfH/3w9t5fqliUhMCwoqj+prK3HljuevaJ8BbLGk5
+         +gVwVyEficYr8re9zbVfep6bKLZhLULTGJo9Ik+ck+ZIrJSckltJlbmyYg3P4fbJxI
+         QACBIOHx6yE4F6LbvSALVB8BOaojQXF3ETrHcRNzzJDPLxdIG/JehVpo3bTjAwGhY4
+         eZx/gXHpBf56F3CX+iNWe++mKfNhwXQ/d6baegGMYI7X0anpv2YgcB3q8tXHGg9x75
+         xH2XMFYdtfNi0M8KgmkmcysOsekmClbPnCd8GjoyewIY770BGmzeF5aeOv7H4sviBs
+         d3ABcJJ4OcH7Q==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200617195326.732863-1-christophe.jaillet@wanadoo.fr>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net: fix spelling mistake "wil" -> "will" in Kconfig
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <160721042413.21881.7276554148145917327.git-patchwork-notify@kernel.org>
+Date:   Sat, 05 Dec 2020 23:20:24 +0000
+References: <20201204194549.1153063-1-colin.king@canonical.com>
+In-Reply-To: <20201204194549.1153063-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Am Wed, Jun 17, 2020 at 09:53:26PM +0200 schrieb Christophe JAILLET:
-> 'status' is known to be 0 at this point. It must be set to a meaningful
-> value in order to return an error code if one of the 'of_get_property()'
-> call fails.
-> 
-> Return -EINVAL in such a case.
-> 
-> Fixes: 2b571a066a2f("pcmcia: CompactFlash driver for PA Semi Electra boards")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Hello:
 
-Applied to pcmcia-next. Thanks!
+This patch was applied to netdev/net-next.git (refs/heads/master):
 
-	Dominik
+On Fri,  4 Dec 2020 19:45:49 +0000 you wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a spelling mistake in the Kconfig help text. Fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/net/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Here is the summary with links:
+  - net: fix spelling mistake "wil" -> "will" in Kconfig
+    https://git.kernel.org/netdev/net-next/c/00649542f1ba
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+

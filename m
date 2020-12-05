@@ -2,55 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFF442CF86E
-	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Dec 2020 02:02:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 487A82CFAF8
+	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Dec 2020 11:20:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730964AbgLEBAH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 4 Dec 2020 20:00:07 -0500
-Received: from vsm-gw.hyogo-dai.ac.jp ([202.244.76.12]:36244 "EHLO
-        vsm-gw.hyogo-dai.ac.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726242AbgLEBAG (ORCPT
+        id S1728798AbgLEKTr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 5 Dec 2020 05:19:47 -0500
+Received: from isilmar-4.linta.de ([136.243.71.142]:48218 "EHLO
+        isilmar-4.linta.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729090AbgLEKRd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 4 Dec 2020 20:00:06 -0500
-X-Greylist: delayed 14999 seconds by postgrey-1.27 at vger.kernel.org; Fri, 04 Dec 2020 20:00:06 EST
-Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [202.244.77.11])
-        by vsm-gw.hyogo-dai.ac.jp (Postfix) with ESMTP id 246161A30F1;
-        Sat,  5 Dec 2020 04:48:15 +0900 (JST)
-Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [127.0.0.1])
-        by postfix.imss71 (Postfix) with ESMTP id 000536821CC;
-        Sat,  5 Dec 2020 04:48:14 +0900 (JST)
-Received: from hyogo-dai.ac.jp (unknown [202.244.77.11])
-        by humans-kc.hyogo-dai.ac.jp (Postfix) with SMTP id C85C7838858;
-        Sat,  5 Dec 2020 04:48:14 +0900 (JST)
+        Sat, 5 Dec 2020 05:17:33 -0500
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+Received: from light.dominikbrodowski.net (brodo.linta [10.2.0.102])
+        by isilmar-4.linta.de (Postfix) with ESMTPSA id ED40F2010FA;
+        Sat,  5 Dec 2020 09:05:29 +0000 (UTC)
+Received: by light.dominikbrodowski.net (Postfix, from userid 1000)
+        id A49C820EC0; Sat,  5 Dec 2020 09:31:04 +0100 (CET)
+Date:   Sat, 5 Dec 2020 09:31:04 +0100
+From:   Dominik Brodowski <linux@dominikbrodowski.net>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     akpm@linux-foundation.org, peterz@infradead.org, olof@lixom.net,
+        hch@lst.de, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] pcmcia/electra_cf: Fix some return values in
+ 'electra_cf_probe()' in case of error
+Message-ID: <X8tFSNBqbAY7caYN@light.dominikbrodowski.net>
+References: <20200617195326.732863-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Message-ID: <20201204194814.00003DB9.0690@hyogo-dai.ac.jp>
-Date:   Sat, 05 Dec 2020 04:48:14 +0900
-From:   "Dr.Raymond" <tabata@hyogo-dai.ac.jp>
-To:     <infocarferr1@aim.com>
-Reply-To: <infocarfer@aim.com>
-Subject: I am Vice Chairman of Hang Seng Bank, Dr. Raymond Chien
-         Kuo Fung I have Important Matter to Discuss with you concerning
-         my late client. Died without a NEXT OF KIN. Send me your private
-         email for full details information. 
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MAILER: Active! mail
-X-TM-AS-MML: disable
-X-TM-AS-Product-Ver: IMSS-7.1.0.1808-8.2.0.1013-25446.007
-X-TM-AS-Result: No--4.326-5.0-31-10
-X-imss-scan-details: No--4.326-5.0-31-10
-X-TM-AS-User-Approved-Sender: No
-X-TMASE-MatchedRID: +T4Z3mpR0x5ITndh1lLRASsOycAMAhSTkCM77ifYafsBLhz6t76Ce/bj
-        Enpjm61/Gf23dqZJjE4Erxo5p8V1/E1+zyfzlN7y/sToY2qzpx7w5nZ/qYg41XEWw1TkKAjcYff
-        qdBtG2ocgOkCKsW/kbuunGEBqPil++coAzulIP8gMTyJMXCOBhj9BWL7GG0LsKrauXd3MZDUZaR
-        NzIP3XI5u3uLPgwbAMH5RdHnhWfwyq9gpuf+A6coDeeVSgzszVDx5n520Z3eZyT7DDRtYlKaWBy
-        ZE9nSaC/rhfyjvqkZu/pNa4BidtZEMMprcbiest
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200617195326.732863-1-christophe.jaillet@wanadoo.fr>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-infocarfer@aim.com
+Am Wed, Jun 17, 2020 at 09:53:26PM +0200 schrieb Christophe JAILLET:
+> 'status' is known to be 0 at this point. It must be set to a meaningful
+> value in order to return an error code if one of the 'of_get_property()'
+> call fails.
+> 
+> Return -EINVAL in such a case.
+> 
+> Fixes: 2b571a066a2f("pcmcia: CompactFlash driver for PA Semi Electra boards")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
+Applied to pcmcia-next. Thanks!
 
-
+	Dominik

@@ -2,31 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27D9E2D13F2
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Dec 2020 15:47:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E08552D1421
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Dec 2020 15:55:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726247AbgLGOqG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Dec 2020 09:46:06 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:37219 "EHLO
+        id S1726336AbgLGOza (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Dec 2020 09:55:30 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:37469 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725774AbgLGOqG (ORCPT
+        with ESMTP id S1725772AbgLGOza (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Dec 2020 09:46:06 -0500
+        Mon, 7 Dec 2020 09:55:30 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kmHl9-0004iu-HP; Mon, 07 Dec 2020 14:45:03 +0000
+        id 1kmHuZ-0005Ri-6i; Mon, 07 Dec 2020 14:54:47 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     "David S . Miller" <davem@davemloft.net>,
-        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Andrea Mayer <andrea.mayer@uniroma2.it>, netdev@vger.kernel.org
+To:     Danil Kipnis <danil.kipnis@cloud.ionos.com>,
+        Jack Wang <jinpu.wang@cloud.ionos.com>,
+        Jens Axboe <axboe@kernel.dk>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Bart Van Assche <bvanassche@acm.org>,
+        linux-block@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] seg6: fix unintentional integer overflow on left shift
-Date:   Mon,  7 Dec 2020 14:45:03 +0000
-Message-Id: <20201207144503.169679-1-colin.king@canonical.com>
+Subject: [PATCH][next] block/rnbd: fix a null pointer dereference on dev->blk_symlink_name
+Date:   Mon,  7 Dec 2020 14:54:46 +0000
+Message-Id: <20201207145446.169978-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,31 +37,32 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Shifting the integer value 1 is evaluated using 32-bit arithmetic
-and then used in an expression that expects a unsigned long value
-leads to a potential integer overflow. Fix this by using the BIT
-macro to perform the shift to avoid the overflow.
+Currently in the case where dev->blk_symlink_name fails to be allocates
+the error return path attempts to set an end-of-string character to
+the unallocated dev->blk_symlink_name causing a null pointer dereference
+error. Fix this by returning with an explicity ENOMEM error (which also
+is missing in the original code as was not initialized).
 
-Addresses-Coverity: ("Uninitentional integer overflow")
-Fixes: 964adce526a4 ("seg6: improve management of behavior attributes")
+Addresses-Coverity: ("Dereference after null check")
+Fixes: 1eb54f8f5dd8 ("block/rnbd: client: sysfs interface functions")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- net/ipv6/seg6_local.c | 2 +-
+ drivers/block/rnbd/rnbd-clt-sysfs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-index b07f7c1c82a4..d68de8cd1207 100644
---- a/net/ipv6/seg6_local.c
-+++ b/net/ipv6/seg6_local.c
-@@ -1366,7 +1366,7 @@ static void __destroy_attrs(unsigned long parsed_attrs, int max_parsed,
- 	 * attribute; otherwise, we call the destroy() callback.
- 	 */
- 	for (i = 0; i < max_parsed; ++i) {
--		if (!(parsed_attrs & (1 << i)))
-+		if (!(parsed_attrs & BIT(i)))
- 			continue;
+diff --git a/drivers/block/rnbd/rnbd-clt-sysfs.c b/drivers/block/rnbd/rnbd-clt-sysfs.c
+index c3c96a567568..a7caeedeb198 100644
+--- a/drivers/block/rnbd/rnbd-clt-sysfs.c
++++ b/drivers/block/rnbd/rnbd-clt-sysfs.c
+@@ -499,7 +499,7 @@ static int rnbd_clt_add_dev_symlink(struct rnbd_clt_dev *dev)
+ 	dev->blk_symlink_name = kzalloc(len, GFP_KERNEL);
+ 	if (!dev->blk_symlink_name) {
+ 		rnbd_clt_err(dev, "Failed to allocate memory for blk_symlink_name\n");
+-		goto out_err;
++		return -ENOMEM;
+ 	}
  
- 		param = &seg6_action_params[i];
+ 	ret = rnbd_clt_get_path_name(dev, dev->blk_symlink_name,
 -- 
 2.29.2
 

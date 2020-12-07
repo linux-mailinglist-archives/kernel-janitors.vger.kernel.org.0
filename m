@@ -2,98 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79FEA2D17A1
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Dec 2020 18:34:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E23DB2D17F1
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Dec 2020 18:57:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726069AbgLGRdp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Dec 2020 12:33:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40638 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725866AbgLGRdp (ORCPT
+        id S1726120AbgLGRzm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Dec 2020 12:55:42 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:38666 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726110AbgLGRzl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Dec 2020 12:33:45 -0500
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBB9AC061749;
-        Mon,  7 Dec 2020 09:33:04 -0800 (PST)
-Received: by mail-ej1-x644.google.com with SMTP id g20so20692904ejb.1;
-        Mon, 07 Dec 2020 09:33:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=7jKGCmRFpSDqWM5j4V8mDvoPe7sGMFu/bi/rHpaJIiY=;
-        b=dGcgH2D03mXSPltGOqajF1QUVQHPnz7K6EDNKuvfZsRVKw697VSl53N6im0f2dXp4i
-         xyug9wUP4EX0BPLnJrpGd8J3mkDJ1Sd8tYNXiDWzqD/ON8X3vEkpnZK+sTYFS30usnCV
-         PTDpeOW8d/4v1GfLMpxKXOgNJibqsngofmseqrfTZgjEQWvDP/oZUnOA2bqznqUXEPzq
-         U0UuSUBs3pqBqWzxndVXAxI+/YQFp24+Dgwd2Lj16cwH352H0XvpoPsmwy00WJmO8lco
-         kz7m1bCvOOlP/9JrjI+rSgQ2wPyw3mq5iTYTh1EoLztBhl244zFRi+mYqganI7sLHiXc
-         2klA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=7jKGCmRFpSDqWM5j4V8mDvoPe7sGMFu/bi/rHpaJIiY=;
-        b=BQQdJp/ePyGJSqS3SXctUh+3f3zrfukV1DGtCj/jWCx9qFC7UqJx5YH+rDxDc/HOS9
-         QXDXUp0ToGIHHT2/6c0SoNJhBGyA4UtiuppJ7mdZAFFCUzDFdlLyPUaUXzxtX+7Mi5+h
-         030CgzJm0LOdc1Js4X83mVJijwbcCNDm6elG20M/l/GiUKKyrlU/VZYJw7tDkLHSOb8S
-         gApWzvHDGq82K/bHU5Z1HGjubuxXTmTUlfnTG7bZqpqauRUUiR2V60VFqDrK0HAJiBh3
-         N4SQ9NlOIEKQTvRr5lqgrGQjpkBb5ML2XxoOy7xCWuvvXYzaY3eSqwoJCN/36DSLiq6n
-         TXWQ==
-X-Gm-Message-State: AOAM5322TjYdO+zdHzwZukH0O27oFD9Mi7iI105/Tkdbnd7ppwO9RIDF
-        pnOaCPGh2MDRMh3s0OaNVlU=
-X-Google-Smtp-Source: ABdhPJzGvuAuROG9mIe9RzlBkxu/okyID7XBPoXX7N7jshfPtrLaLaFPCNi6otgxsh3H+1jiwL86Gg==
-X-Received: by 2002:a17:906:f0d0:: with SMTP id dk16mr6452455ejb.144.1607362383543;
-        Mon, 07 Dec 2020 09:33:03 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d4a:c600:a156:c2e7:428c:4f12])
-        by smtp.gmail.com with ESMTPSA id oq7sm3205832ejb.63.2020.12.07.09.33.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Dec 2020 09:33:02 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] RDMA/restrack: update kernel documentation for ib_create_named_qp()
-Date:   Mon,  7 Dec 2020 18:32:55 +0100
-Message-Id: <20201207173255.13355-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 7 Dec 2020 12:55:41 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B7HsLgT168731;
+        Mon, 7 Dec 2020 17:54:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=OgfeLb1sEogV44Jwb3bnAORDTi/aJ1Q4byLVqo2TbaA=;
+ b=OEbzMuxvFzaycBNb7IlH4w4mkq3rxF8R9KAorRIqGu9xqGFNjvmArZ0jEoi9hY9s3ZrE
+ cHKq6CZq3nRhceZgh8jXuj7uDnBET8G3R8mcVe6uudH0QmBCHFR4tDORcUb+NlhM8VJ1
+ CWVgmZHnIA4uW/WlrXGpSeIKja8ML2gy1biu5PWQ7akHCG4sJaej5L7fAylJL0xcd02m
+ dA2ua272Z8mplrmmG7A3H3XDhdOwTdVBaqYJMZqWKSRBaY2UrR4tRBTeYJV9ae24WalT
+ F0/XT1vkLI6hVOezZiYJkK8CHtuvMEs71RXMTezmzWF5edwoF9UwE1yOCmdbtaGJ85eN Kw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 3581mqpnmg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 07 Dec 2020 17:54:53 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B7Hjf7S067382;
+        Mon, 7 Dec 2020 17:54:53 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 358m4wkkdf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 07 Dec 2020 17:54:53 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B7HsqO2015906;
+        Mon, 7 Dec 2020 17:54:52 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 07 Dec 2020 09:54:50 -0800
+Date:   Mon, 7 Dec 2020 20:54:28 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Ritesh Singh <ritesi@codeaurora.org>
+Cc:     Maharaja Kennadyrajan <mkenna@codeaurora.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] ath11k: unlock on error path in ath11k_mac_op_add_interface()
+Message-ID: <X85sVGVP/0XvlrEJ@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9828 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 suspectscore=0
+ bulkscore=0 malwarescore=0 phishscore=0 adultscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012070115
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9828 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
+ clxscore=1011 malwarescore=0 priorityscore=1501 adultscore=0
+ lowpriorityscore=0 phishscore=0 spamscore=0 impostorscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012070116
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 66f57b871efc ("RDMA/restrack: Support all QP types") extends
-ib_create_qp() to a named ib_create_named_qp(), which takes the caller's
-name as argument, but it did not add the new argument description to the
-function's kerneldoc.
+These error paths need to drop the &ar->conf_mutex before returning.
 
-make htmldocs warns:
-
-  ./drivers/infiniband/core/verbs.c:1206: warning: Function parameter or
-  member 'caller' not described in 'ib_create_named_qp'
-
-Add a description for this new argument based on the description of the
-same argument in other related functions.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Fixes: 690ace20ff79 ("ath11k: peer delete synchronization with firmware")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-applies on next-20201207
+ drivers/net/wireless/ath/ath11k/mac.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Doug, Jason, Leon, please pick this minor doc fix on your -next tree.
-
- drivers/infiniband/core/verbs.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/infiniband/core/verbs.c b/drivers/infiniband/core/verbs.c
-index 5d4c7c263665..57206fe1bad2 100644
---- a/drivers/infiniband/core/verbs.c
-+++ b/drivers/infiniband/core/verbs.c
-@@ -1197,6 +1197,7 @@ static struct ib_qp *create_xrc_qp_user(struct ib_qp *qp,
-  * @qp_init_attr: A list of initial attributes required to create the
-  *   QP.  If QP creation succeeds, then the attributes are updated to
-  *   the actual capabilities of the created QP.
-+ * @caller: caller's build-time module name
-  *
-  * NOTE: for user qp use ib_create_qp_user with valid udata!
-  */
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index ebed24ec7368..12cc16003e30 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -4615,13 +4615,13 @@ static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
+ 		if (ret) {
+ 			ath11k_warn(ar->ab, "failed to delete peer vdev_id %d addr %pM\n",
+ 				    arvif->vdev_id, vif->addr);
+-			return ret;
++			goto err;
+ 		}
+ 
+ 		ret = ath11k_wait_for_peer_delete_done(ar, arvif->vdev_id,
+ 						       vif->addr);
+ 		if (ret)
+-			return ret;
++			goto err;
+ 
+ 		ar->num_peers--;
+ 	}
 -- 
-2.17.1
+2.29.2
 

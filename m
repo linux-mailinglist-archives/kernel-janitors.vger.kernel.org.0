@@ -2,101 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 394EA2D10BD
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Dec 2020 13:42:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50A0E2D1143
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Dec 2020 14:02:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725783AbgLGMmc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Dec 2020 07:42:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51594 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725550AbgLGMmb (ORCPT
+        id S1725867AbgLGNB0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Dec 2020 08:01:26 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:35042 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725783AbgLGNBZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Dec 2020 07:42:31 -0500
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4F64C0613D0;
-        Mon,  7 Dec 2020 04:41:50 -0800 (PST)
-Received: by mail-ed1-x542.google.com with SMTP id b73so13508184edf.13;
-        Mon, 07 Dec 2020 04:41:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=P77beCy6AQ8QNMP70wp9CxeR5AsWVGLx/OAVKO8zAHQ=;
-        b=g4PWfcE9CAHUcJFUTPa3Avicm9TbJ/V4xHPkiMGnUBlxALL2bL9ixlTKUuGBNtcbvo
-         XnRf+/P2/2c+madNtqfs1gDguKqwaUFZ7l38Umf6tmV5JyiJTzJjV5b9+rW4kMUF2biR
-         n0lIcs5q3Z7FTrqNkTHDTBMA0Z/d0ZUzCkFrUe3ECxz6jtM+0tNIuDsdGQ7LtFHJLb1y
-         SD3owWUXfZ9/jD+86ohZKcF2+TuuSmBejuibyqXWX6mpXzZCpprHso4U5SAnAA1PFJwh
-         d5mUJmAMdDArTmfsnvekYU5x4xUYHuKGnJ7dfC7unxBLMOEtqJ49RS+GabiNwtYewQSp
-         ZgEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=P77beCy6AQ8QNMP70wp9CxeR5AsWVGLx/OAVKO8zAHQ=;
-        b=qyVmtpK2baU7RsMY5ehe5xS2Muhkcs61zYF7edwLJiLrOeJzJp7XM5s5Uea8xS8L4h
-         PoF0GNDBJMuZYJVKUEAwMIhpldxX+OCrkOrqFlf6JecxBF6y+4C1MPbnytlPDR/twcz8
-         fE50r7RTxAFZiiYqi8yMDD66OM+bO0OV7GUuoGYae/BErXEnTQr49swvRrzjD+iNBt0z
-         GlqKrcRL4ecGfYJxR7ZPOw19SawKMclLfB4Sh6B4aQZKXbLBjnFoosPwIw7l4DiwJ7OB
-         hwTpRJ+TURVabA+LfZNUdA7oFwYtFdUkmyXVho8Wf6Pha+/MAm64cPAfymME79srx+NE
-         3EdA==
-X-Gm-Message-State: AOAM531UK8sPDcwxFjySWN3DqshWEV0rn4qz0XVVrq5mbxAtrHwSwobh
-        wxYOYm8Bjoj6LkTcKDElXeU=
-X-Google-Smtp-Source: ABdhPJxFnWwFbxGDSa3RmuKZqL1EdpyKGz5GO+85Zkj0DIoo4lKfRcE9DR3DI9zHsaApOBFn9bx9RQ==
-X-Received: by 2002:aa7:d94e:: with SMTP id l14mr8251203eds.98.1607344909431;
-        Mon, 07 Dec 2020 04:41:49 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d4a:c600:c0f8:50a9:4ab0:a9ab])
-        by smtp.gmail.com with ESMTPSA id b19sm9540356edx.47.2020.12.07.04.41.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Dec 2020 04:41:48 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org
-Cc:     "H . Peter Anvin" <hpa@zytor.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] x86: ia32_setup_rt_frame(): propagate __user annotations properly
-Date:   Mon,  7 Dec 2020 13:41:41 +0100
-Message-Id: <20201207124141.21859-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 7 Dec 2020 08:01:25 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B7CxS0a095922;
+        Mon, 7 Dec 2020 13:00:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=pxdGBrVVE7UaCWf88p+ugmGqm0nWkYG542hsay/Mr5M=;
+ b=0GZH868dGaahH4ioo5Swhb6k+v2ZCC5NSq4h4CztMFGTP+1rlv7BDCyyLz3MEg944WqN
+ zwhpLz7BAccVUqtkbxYLk4M61fHwCJVf+P24kpER+txzkDABsiysNEKr2nRqSUpAbLI7
+ AFXnC5j6tPqGbvgUyxrIL/Cljw5eLwkspv3ITMs+A+UJ1I70kdUV2W4q09vS5oJvdZyh
+ EewAD6Zw0wBkUyBvYDtP0wKkkf41NTLwm8lmqoFtfHqc87DMvmc7RRwxLqwCof9wVvW7
+ 2DioGil+21pF078P5xoNn56Ab1gvbW2/605J9YFm/CJe6nZzexT6sB9iKMY7/A2WXBD4 oQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2130.oracle.com with ESMTP id 357yqbn9ax-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 07 Dec 2020 13:00:39 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B7CsaXU130494;
+        Mon, 7 Dec 2020 13:00:39 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 358kyr6scn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 07 Dec 2020 13:00:39 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B7D0bIm028559;
+        Mon, 7 Dec 2020 13:00:37 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 07 Dec 2020 05:00:36 -0800
+Date:   Mon, 7 Dec 2020 16:00:29 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Dongchun Zhu <dongchun.zhu@mediatek.com>
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] media: i2c: ov02a10: fix an uninitialized return
+Message-ID: <X84nbdgv0a/ak2ef@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9827 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 mlxscore=0
+ malwarescore=0 suspectscore=0 mlxlogscore=999 bulkscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012070082
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9827 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
+ clxscore=1011 malwarescore=0 bulkscore=0 phishscore=0 adultscore=0
+ spamscore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012070082
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 57d563c82925 ("x86: ia32_setup_rt_frame(): consolidate uaccess
-areas") dropped a __user annotation in a cast when refactoring __put_user()
-to unsafe_put_user().
+The "ret" variable isn't set on the no-op path where we are setting to
+on/off and it's in the on or off state already.
 
-Hence, since then, sparse warns in arch/x86/ia32/ia32_signal.c:350:9:
-
-  warning: cast removes address space '__user' of expression
-  warning: incorrect type in argument 1 (different address spaces)
-    expected void const volatile [noderef] __user *ptr
-    got unsigned long long [usertype] *
-
-Add the __user annotation to restore the propagation of address spaces.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Fixes: 91807efbe8ec ("media: i2c: add OV02A10 image sensor driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-applies cleanly on current master (v5.10-rc7) and next-20201204
-
-Thomas, Ingo, Boris, please pick this minor non-urgent clean-up patch.
-
- arch/x86/ia32/ia32_signal.c | 2 +-
+ drivers/media/i2c/ov02a10.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/ia32/ia32_signal.c b/arch/x86/ia32/ia32_signal.c
-index 81cf22398cd1..5e3d9b7fd5fb 100644
---- a/arch/x86/ia32/ia32_signal.c
-+++ b/arch/x86/ia32/ia32_signal.c
-@@ -347,7 +347,7 @@ int ia32_setup_rt_frame(int sig, struct ksignal *ksig,
- 	 */
- 	unsafe_put_user(*((u64 *)&code), (u64 __user *)frame->retcode, Efault);
- 	unsafe_put_sigcontext32(&frame->uc.uc_mcontext, fp, regs, set, Efault);
--	unsafe_put_user(*(__u64 *)set, (__u64 *)&frame->uc.uc_sigmask, Efault);
-+	unsafe_put_user(*(__u64 *)set, (__u64 __user *)&frame->uc.uc_sigmask, Efault);
- 	user_access_end();
+diff --git a/drivers/media/i2c/ov02a10.c b/drivers/media/i2c/ov02a10.c
+index 391718136ade..cf40e207ea21 100644
+--- a/drivers/media/i2c/ov02a10.c
++++ b/drivers/media/i2c/ov02a10.c
+@@ -530,7 +530,7 @@ static int ov02a10_s_stream(struct v4l2_subdev *sd, int on)
+ {
+ 	struct ov02a10 *ov02a10 = to_ov02a10(sd);
+ 	struct i2c_client *client = v4l2_get_subdevdata(&ov02a10->subdev);
+-	int ret;
++	int ret = 0;
  
- 	if (__copy_siginfo_to_user32(&frame->info, &ksig->info))
+ 	mutex_lock(&ov02a10->mutex);
+ 
 -- 
-2.17.1
+2.29.2
 

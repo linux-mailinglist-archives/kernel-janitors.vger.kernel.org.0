@@ -2,30 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 496472D1386
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Dec 2020 15:25:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27D9E2D13F2
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Dec 2020 15:47:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726303AbgLGOY4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Dec 2020 09:24:56 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:36648 "EHLO
+        id S1726247AbgLGOqG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Dec 2020 09:46:06 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:37219 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726207AbgLGOY4 (ORCPT
+        with ESMTP id S1725774AbgLGOqG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Dec 2020 09:24:56 -0500
+        Mon, 7 Dec 2020 09:46:06 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kmHQw-0003JI-DO; Mon, 07 Dec 2020 14:24:10 +0000
+        id 1kmHl9-0004iu-HP; Mon, 07 Dec 2020 14:45:03 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        linux-hwmon@vger.kernel.org
+To:     "David S . Miller" <davem@davemloft.net>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Andrea Mayer <andrea.mayer@uniroma2.it>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] hwmon: ltc2992: fix less than zero comparisons with an unsigned integer
-Date:   Mon,  7 Dec 2020 14:24:10 +0000
-Message-Id: <20201207142410.168987-1-colin.king@canonical.com>
+Subject: [PATCH][next] seg6: fix unintentional integer overflow on left shift
+Date:   Mon,  7 Dec 2020 14:45:03 +0000
+Message-Id: <20201207144503.169679-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,66 +37,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There are several occurrances of a less than zero error check on
-a u32 unsigned integer. These will never be true. Fix this by making
-reg_value a plain int.
+Shifting the integer value 1 is evaluated using 32-bit arithmetic
+and then used in an expression that expects a unsigned long value
+leads to a potential integer overflow. Fix this by using the BIT
+macro to perform the shift to avoid the overflow.
 
-Addresses-Coverity: ("Unsigned comparison against zero")
-Fixes: e126370240e0 ("hwmon: (ltc2992) Add support")
+Addresses-Coverity: ("Uninitentional integer overflow")
+Fixes: 964adce526a4 ("seg6: improve management of behavior attributes")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/hwmon/ltc2992.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/ipv6/seg6_local.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/ltc2992.c b/drivers/hwmon/ltc2992.c
-index 69dbb5aa5dc2..4382105bf142 100644
---- a/drivers/hwmon/ltc2992.c
-+++ b/drivers/hwmon/ltc2992.c
-@@ -480,7 +480,7 @@ static int ltc2992_read_gpios_in(struct device *dev, u32 attr, int nr_gpio, long
+diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+index b07f7c1c82a4..d68de8cd1207 100644
+--- a/net/ipv6/seg6_local.c
++++ b/net/ipv6/seg6_local.c
+@@ -1366,7 +1366,7 @@ static void __destroy_attrs(unsigned long parsed_attrs, int max_parsed,
+ 	 * attribute; otherwise, we call the destroy() callback.
+ 	 */
+ 	for (i = 0; i < max_parsed; ++i) {
+-		if (!(parsed_attrs & (1 << i)))
++		if (!(parsed_attrs & BIT(i)))
+ 			continue;
  
- static int ltc2992_read_in_alarm(struct ltc2992_state *st, int channel, long *val, u32 attr)
- {
--	u32 reg_val;
-+	int reg_val;
- 	u32 mask;
- 
- 	if (attr == hwmon_in_max_alarm)
-@@ -534,7 +534,7 @@ static int ltc2992_read_in(struct device *dev, u32 attr, int channel, long *val)
- 
- static int ltc2992_get_current(struct ltc2992_state *st, u32 reg, u32 channel, long *val)
- {
--	u32 reg_val;
-+	int reg_val;
- 
- 	reg_val = ltc2992_read_reg(st, reg, 2);
- 	if (reg_val < 0)
-@@ -558,7 +558,7 @@ static int ltc2992_set_current(struct ltc2992_state *st, u32 reg, u32 channel, l
- 
- static int ltc2992_read_curr_alarm(struct ltc2992_state *st, int channel, long *val, u32 attr)
- {
--	u32 reg_val;
-+	int reg_val;
- 	u32 mask;
- 
- 	if (attr == hwmon_curr_max_alarm)
-@@ -609,7 +609,7 @@ static int ltc2992_read_curr(struct device *dev, u32 attr, int channel, long *va
- 
- static int ltc2992_get_power(struct ltc2992_state *st, u32 reg, u32 channel, long *val)
- {
--	u32 reg_val;
-+	int reg_val;
- 
- 	reg_val = ltc2992_read_reg(st, reg, 3);
- 	if (reg_val < 0)
-@@ -633,7 +633,7 @@ static int ltc2992_set_power(struct ltc2992_state *st, u32 reg, u32 channel, lon
- 
- static int ltc2992_read_power_alarm(struct ltc2992_state *st, int channel, long *val, u32 attr)
- {
--	u32 reg_val;
-+	int reg_val;
- 	u32 mask;
- 
- 	if (attr == hwmon_power_max_alarm)
+ 		param = &seg6_action_params[i];
 -- 
 2.29.2
 

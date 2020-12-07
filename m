@@ -2,28 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B68542D151C
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Dec 2020 16:53:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6DA42D1529
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Dec 2020 16:53:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726046AbgLGPuq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Dec 2020 10:50:46 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:39082 "EHLO
+        id S1726607AbgLGPvx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Dec 2020 10:51:53 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:39124 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725814AbgLGPuq (ORCPT
+        with ESMTP id S1725917AbgLGPvw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Dec 2020 10:50:46 -0500
+        Mon, 7 Dec 2020 10:51:52 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kmIm4-0000xs-J5; Mon, 07 Dec 2020 15:50:04 +0000
+        id 1kmIn4-00012n-Tn; Mon, 07 Dec 2020 15:51:06 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org
-Subject: [PATCH] arch: fix spelling mistakes in Kconfig
-Date:   Mon,  7 Dec 2020 15:50:04 +0000
-Message-Id: <20201207155004.171962-1-colin.king@canonical.com>
+To:     Linus Walleij <linusw@kernel.org>, Imre Kaloz <kaloz@openwrt.org>,
+        Krzysztof Halasa <khalasa@piap.pl>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ixp4xx: fix spelling mistake in Kconfig "Devce" -> "Device"
+Date:   Mon,  7 Dec 2020 15:51:06 +0000
+Message-Id: <20201207155106.172057-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -34,53 +36,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There are a few spelling mistakes in the Kconfig comments and help
-text. Fix these.
+There is spelling mistake in the prompt text in the Kconfig. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- arch/Kconfig | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/mach-ixp4xx/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index f7f246e68ff5..a52f8e8d16ad 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -261,7 +261,7 @@ config ARCH_HAS_SET_DIRECT_MAP
+diff --git a/arch/arm/mach-ixp4xx/Kconfig b/arch/arm/mach-ixp4xx/Kconfig
+index f7211b57b1e7..7cf06c4fd8e7 100644
+--- a/arch/arm/mach-ixp4xx/Kconfig
++++ b/arch/arm/mach-ixp4xx/Kconfig
+@@ -7,7 +7,7 @@ comment "IXP4xx Platforms"
  
- #
- # Select if the architecture provides the arch_dma_set_uncached symbol to
--# either provide an uncached segement alias for a DMA allocation, or
-+# either provide an uncached segment alias for a DMA allocation, or
- # to remap the page tables in place.
- #
- config ARCH_HAS_DMA_SET_UNCACHED
-@@ -314,14 +314,14 @@ config ARCH_32BIT_OFF_T
- config HAVE_ASM_MODVERSIONS
+ config MACH_IXP4XX_OF
  	bool
- 	help
--	  This symbol should be selected by an architecure if it provides
-+	  This symbol should be selected by an architecture if it provides
- 	  <asm/asm-prototypes.h> to support the module versioning for symbols
- 	  exported from assembly code.
- 
- config HAVE_REGS_AND_STACK_ACCESS_API
- 	bool
- 	help
--	  This symbol should be selected by an architecure if it supports
-+	  This symbol should be selected by an architecture if it supports
- 	  the API needed to access registers and stack entries from pt_regs,
- 	  declared in asm/ptrace.h
- 	  For example the kprobes-based event tracer needs this API.
-@@ -336,7 +336,7 @@ config HAVE_RSEQ
- config HAVE_FUNCTION_ARG_ACCESS_API
- 	bool
- 	help
--	  This symbol should be selected by an architecure if it supports
-+	  This symbol should be selected by an architecture if it supports
- 	  the API needed to access function arguments from pt_regs,
- 	  declared in asm/ptrace.h
- 
+-	prompt "Devce Tree IXP4xx boards"
++	prompt "Device Tree IXP4xx boards"
+ 	default y
+ 	select ARM_APPENDED_DTB # Old Redboot bootloaders deployed
+ 	select I2C
 -- 
 2.29.2
 

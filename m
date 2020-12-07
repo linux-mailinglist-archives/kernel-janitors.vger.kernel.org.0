@@ -2,114 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A77302D1897
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Dec 2020 19:36:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B91F2D1A49
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Dec 2020 21:11:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725822AbgLGSf2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Dec 2020 13:35:28 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:56984 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725774AbgLGSf1 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Dec 2020 13:35:27 -0500
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B7ITHnx036485;
-        Mon, 7 Dec 2020 18:34:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=0T84XKxfw6bkdwzGfaci/aN/pmZ/9+1cQy5T+5bgdYo=;
- b=0ONs3cg6L4NrPss/lnoAnEqNg6Cal26fzZglU4UeqoEQqp356j44JFcTrfkiViSAjyRG
- yGjdci/XJg/bwziSgGg8eXDnyX8ghzFOAnmGpygu2pfd/8XhA3WCAfEsyzn2F5Fjv2P6
- kqnUAuBq7c7EmZpU33jhAXQw3jIQV7RdrW1CewSu97HlTfp7I530acQ/vvelLbJUm24n
- YAWmtkVWAEpmqAc7QkOzMVZ39ZqHKe8OXNKDmgt1MUDkEibzS/c3H5KdnKkokxSjlQeB
- /vOAQUQXxf5jCohzOZT/2PTFMvvYHHLSi9tMV4XqkZ/lHsgi0hYlSWebLdpRdtgbD3Tt wA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2130.oracle.com with ESMTP id 357yqbq0qt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 07 Dec 2020 18:34:37 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B7ITfuL001667;
-        Mon, 7 Dec 2020 18:34:36 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 358m4wn3em-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 07 Dec 2020 18:34:36 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0B7IYYYb018944;
-        Mon, 7 Dec 2020 18:34:34 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 07 Dec 2020 10:34:34 -0800
-Date:   Mon, 7 Dec 2020 21:34:26 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Arnd Bergmann <arnd.bergmann@linaro.org>,
-        kbuild test robot <lkp@intel.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Dongchun Zhu <dongchun.zhu@mediatek.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] media: i2c: ov02a10: fix an uninitialized return
-Message-ID: <20201207183426.GY2767@kadam>
-References: <X84nbdgv0a/ak2ef@mwanda>
- <20201207131446.GA852@paasikivi.fi.intel.com>
- <CAHp75Vftvtn4DhOU73w7hgOYpw9pJbJCJ0dSW6wUrQHA5HMn-A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75Vftvtn4DhOU73w7hgOYpw9pJbJCJ0dSW6wUrQHA5HMn-A@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9828 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 suspectscore=0
- bulkscore=0 malwarescore=0 phishscore=0 adultscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012070119
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9828 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
- clxscore=1011 malwarescore=0 bulkscore=0 phishscore=0 adultscore=0
- spamscore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012070119
+        id S1725816AbgLGUKO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Dec 2020 15:10:14 -0500
+Received: from smtp.uniroma2.it ([160.80.6.22]:46204 "EHLO smtp.uniroma2.it"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725879AbgLGUKN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 7 Dec 2020 15:10:13 -0500
+X-Greylist: delayed 528 seconds by postgrey-1.27 at vger.kernel.org; Mon, 07 Dec 2020 15:10:11 EST
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
+        by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 0B7JxWEZ000880;
+        Mon, 7 Dec 2020 20:59:37 +0100
+Received: from lubuntu-18.04 (unknown [160.80.103.126])
+        by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 1476D120078;
+        Mon,  7 Dec 2020 20:59:28 +0100 (CET)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+        s=ed201904; t=1607371168; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8GUTq8erjAR+WpqdwgE8Twu+O0oWWwjcJRgvjKDUeB8=;
+        b=ZIP+1mpspntF6b3PVPnTY+UZMZvPgNoKXKzEZjUvD6/e2B/skJnmSgRfVkARPrT2+68bDG
+        VtvKjijzQ1rPVXBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+        t=1607371168; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8GUTq8erjAR+WpqdwgE8Twu+O0oWWwjcJRgvjKDUeB8=;
+        b=aPr8pz1APniZ3QwO8zZTAtRMkVJDWtX/9jsqvwwukNviz248dowf3ZzrdaDeeBr5c+Ihm7
+        iuwb4qWU13dc2Z5Q5PTxmBF3n8OvLLHkmhJZ+HV+myLjQX2tsfr889T5PGYU/SbqLs7E2m
+        RBoouBgf8DG1rmyyBy+xazOBIZsK35MO0ZYzTW07bEgQF3SZyKf5+fpS0z9XiG8VluiuV9
+        bP9Hf0DyVvUJ7ZT0K0UgHOJznj/7yM9CVyZiPAR5XKJZcYyQl18y1/sOotcA/fOmxRjRT0
+        IPYoSHh7OebyIk96Vf3G2uqrgQGhfnaRoSPwJcPH97vbrMLfd9LCMGDMWfLycA==
+Date:   Mon, 7 Dec 2020 20:59:26 +0100
+From:   Andrea Mayer <andrea.mayer@uniroma2.it>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Stefano Salsano <stefano.salsano@uniroma2.it>,
+        Paolo Lungaroni <paolo.lungaroni@cnit.it>,
+        Ahmed Abdelsalam <ahabdels.dev@gmail.com>,
+        Andrea Mayer <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH][next] seg6: fix unintentional integer overflow on left
+ shift
+Message-Id: <20201207205926.6222eca38744c43632248a41@uniroma2.it>
+In-Reply-To: <20201207144503.169679-1-colin.king@canonical.com>
+References: <20201207144503.169679-1-colin.king@canonical.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Dec 07, 2020 at 05:56:15PM +0200, Andy Shevchenko wrote:
-> +Cc: some people who involved in different kernel source checkers
+On Mon,  7 Dec 2020 14:45:03 +0000
+Colin King <colin.king@canonical.com> wrote:
+
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> On Mon, Dec 7, 2020 at 3:19 PM Sakari Ailus
-> <sakari.ailus@linux.intel.com> wrote:
-> > On Mon, Dec 07, 2020 at 04:00:29PM +0300, Dan Carpenter wrote:
-> > > The "ret" variable isn't set on the no-op path where we are setting to
-> > > on/off and it's in the on or off state already.
-> > >
-> > > Fixes: 91807efbe8ec ("media: i2c: add OV02A10 image sensor driver")
-> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> >
-> > Thanks for the patch.
-> >
-> > This issue has been fixed by another patch here:
-> >
-> > <URL:https://patchwork.linuxtv.org/project/linux-media/patch/20201204082037.1658297-1-arnd@kernel.org/>
+> Shifting the integer value 1 is evaluated using 32-bit arithmetic
+> and then used in an expression that expects a unsigned long value
+> leads to a potential integer overflow. Fix this by using the BIT
+> macro to perform the shift to avoid the overflow.
 > 
-> This has been reported by 3 or 4 different people. I'm wondering if
-> it's possible to introduce a common database to somehow reduce the
-> amount of patches against the same findings.
+> Addresses-Coverity: ("Uninitentional integer overflow")
+> Fixes: 964adce526a4 ("seg6: improve management of behavior attributes")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  net/ipv6/seg6_local.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> index b07f7c1c82a4..d68de8cd1207 100644
+> --- a/net/ipv6/seg6_local.c
+> +++ b/net/ipv6/seg6_local.c
+> @@ -1366,7 +1366,7 @@ static void __destroy_attrs(unsigned long parsed_attrs, int max_parsed,
+>  	 * attribute; otherwise, we call the destroy() callback.
+>  	 */
+>  	for (i = 0; i < max_parsed; ++i) {
+> -		if (!(parsed_attrs & (1 << i)))
+> +		if (!(parsed_attrs & BIT(i)))
+>  			continue;
+>  
+>  		param = &seg6_action_params[i];
+> -- 
+> 2.29.2
+>
 
-Tell your devs to stop introducing bugs...  :P  This is your punishment.
+Hi Colin,
+thanks for the fix. I've just given a look a the whole seg6_local.c code and I
+found that such issues is present in other parts of the code.
 
-Linus turned off GCC warnings for uninitialized variables earlier this
-year.  He got annoyed because it doesn't work half the time depending on
-the version and optimization level.  I sort of disagree with that,
-because I reporting these bugs is taking up a lot of my time.  It has
-definitely gotten worse from my perspective.
+If we agree, I can make a fix which explicitly eliminates the several (1 << i)
+in favor of BIT(i).
 
-The best solution would be for the original developer to run Smatch on
-their code.  Another option would be to make a script where you give it
-a function name and it searches patches within the last week on
-lore.kernel.org
-
-regards,
-dan carpenter
+Andrea

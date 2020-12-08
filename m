@@ -2,87 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E797C2D206D
-	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Dec 2020 03:00:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BD302D2178
+	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Dec 2020 04:31:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727132AbgLHB7g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Dec 2020 20:59:36 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:58912 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726396AbgLHB7g (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Dec 2020 20:59:36 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B81sJVP184564;
-        Tue, 8 Dec 2020 01:58:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : message-id : references : date : in-reply-to : mime-version :
- content-type; s=corp-2020-01-29;
- bh=uJmAKfYIx9DInGpoNwj5GXmS4KR81TlTijI3rAt048w=;
- b=rqRBEDZfi5PlCCFi+ZOcKwvLedhpwXjQ/w93HF7NJJGCgW0eTY0kxujF9U2ezCJl8W/t
- aq5fxQXg0rweUjBco9qzMYHaeb986aBwCUGib2fJ3NoylxEmrf/1omcN0VC5F9datDd2
- Dm5OXU32fnRTUmYVqNlQAjNqm02wZfYMDGlINsO1i3hpv3E3i8/eKZiKA5v7T5+oo8fK
- pps1zWTJWwDf8yPtZSo+2bSbQFZFC286jeLQR6Os3URixPQ31JrRX/mXhQqsScXM9HgU
- 6YydTQRcXsJ/9KBvsMmGQFrycyQyJtKF6y8PcJJKIiOOxrUQR5vPPXmewSaO6Xcc3Pru mA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 3581mqre0a-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 08 Dec 2020 01:58:44 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B81uRZ2181030;
-        Tue, 8 Dec 2020 01:58:43 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 358m3x3n0v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 08 Dec 2020 01:58:43 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0B81wfR9014760;
-        Tue, 8 Dec 2020 01:58:41 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 07 Dec 2020 17:58:41 -0800
-To:     Colin King <colin.king@canonical.com>
-Cc:     Nilesh Javali <njavali@marvell.com>,
-        Manish Rangankar <mrangankar@marvell.com>,
-        GR-QLogic-Storage-Upstream@marvell.com,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] scsi: qla4xxx: remove redundant assignment to variable
- rval
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <yq1im9dys6v.fsf@ca-mkp.ca.oracle.com>
-References: <20201204191810.1150995-1-colin.king@canonical.com>
-Date:   Mon, 07 Dec 2020 20:58:39 -0500
-In-Reply-To: <20201204191810.1150995-1-colin.king@canonical.com> (Colin King's
-        message of "Fri, 4 Dec 2020 19:18:10 +0000")
+        id S1727381AbgLHDar (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Dec 2020 22:30:47 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55306 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727009AbgLHDar (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 7 Dec 2020 22:30:47 -0500
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1607398206;
+        bh=UxZHozCqu0pe9rsFuVws+A/XjXB1JmD+DEt1GYhcEVM=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=babfjzNc3eIXs55mUG2drQjXrGFLuqHb0w2OL7fPWgS8SQ+m5Fb75dXkwPQBgQjG8
+         fyd9xtK+uvmp2LabL2lrXg+CzWvgl92WNKN3bW2xZ5pvFFdMUMyuwSMsRDhKBnwQBC
+         0uqiTpehuKJZ6bj7UWRE06It+ZzrkyAgf8KQoYLnBIIJ0aVFF4SQfth7YrWYs6xQXf
+         vbhBJyIZ/YzGqer/11cwcDtmPJYyUO2HoM/c3WWHM3UIdvwOu0iTUVsj+NxneXq8u8
+         yGjlF+PQMseEm/2PhRj6bVAejPBJ8YMmJvL8u61NaK1EZ4CkPp7f+e4J8CDVNlSl/f
+         fI+umF9LN8JGw==
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9828 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 adultscore=0
- bulkscore=0 phishscore=0 suspectscore=1 mlxscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012080009
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9828 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 mlxlogscore=999
- clxscore=1015 malwarescore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 phishscore=0 spamscore=0 impostorscore=0 mlxscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012080009
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] bpf: propagate __user annotations properly
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <160739820678.1788.12048920183003808630.git-patchwork-notify@kernel.org>
+Date:   Tue, 08 Dec 2020 03:30:06 +0000
+References: <20201207123720.19111-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <20201207123720.19111-1-lukas.bulwahn@gmail.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+        netdev@vger.kernel.org, bpf@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kafai@fb.com, songliubraving@fb.com,
+        yhs@fb.com, john.fastabend@gmail.com, kpsingh@chromium.org,
+        kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hello:
 
-Colin,
+This patch was applied to bpf/bpf-next.git (refs/heads/master):
 
-> The variable rval is being initialized with a value that is never read
-> and it is being updated later with a new value.  The initialization is
-> redundant and can be removed.
+On Mon,  7 Dec 2020 13:37:20 +0100 you wrote:
+> __htab_map_lookup_and_delete_batch() stores a user pointer in the local
+> variable ubatch and uses that in copy_{from,to}_user(), but ubatch misses a
+> __user annotation.
+> 
+> So, sparse warns in the various assignments and uses of ubatch:
+> 
+>   kernel/bpf/hashtab.c:1415:24: warning: incorrect type in initializer
+>     (different address spaces)
+>   kernel/bpf/hashtab.c:1415:24:    expected void *ubatch
+>   kernel/bpf/hashtab.c:1415:24:    got void [noderef] __user *
+> 
+> [...]
 
-Applied to 5.11/scsi-staging, thanks!
+Here is the summary with links:
+  - bpf: propagate __user annotations properly
+    https://git.kernel.org/bpf/bpf-next/c/2f4b03195fe8
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+

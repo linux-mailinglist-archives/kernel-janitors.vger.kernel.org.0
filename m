@@ -2,64 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C49B2D2EF3
-	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Dec 2020 17:03:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD4EA2D30A3
+	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Dec 2020 18:12:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730212AbgLHQBT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 8 Dec 2020 11:01:19 -0500
-Received: from mx2.suse.de ([195.135.220.15]:46064 "EHLO mx2.suse.de"
+        id S1730512AbgLHRLm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 8 Dec 2020 12:11:42 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51746 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729948AbgLHQBT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 8 Dec 2020 11:01:19 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1607443232; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=iEt8ZrIXTme7sphbzz4VS0xnGTSo4prvT/46s4rgpQI=;
-        b=UgbnsxKScw4FVDMb4LgMv7MoyeD/QRm9yBCjN2XlNITHuzhL0WWCuU/aWhIQqeMXfsAlt6
-        h6+QGOVBG+7ePU+QKgKw1KHY6X1jDrh5d7KN36LUoVcRAE8wvyZdrUFHpQn7G0yg4+ykZf
-        dw+fExTVDJIesgEsgbePu6aR8TRQtqg=
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 75023AD6B;
-        Tue,  8 Dec 2020 16:00:32 +0000 (UTC)
-Date:   Tue, 8 Dec 2020 17:00:31 +0100
-From:   Petr Mladek <pmladek@suse.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        John Ogness <john.ogness@linutronix.de>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        kernel-janitors@vger.kernel.org, linux-safety@lists.elisa.tech
-Subject: Re: [PATCH] printk: remove obsolete dead assignment
-Message-ID: <X8+jHx7sRlroUM8u@alley>
-References: <20201130124915.7573-1-lukas.bulwahn@gmail.com>
+        id S1730253AbgLHRLm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 8 Dec 2020 12:11:42 -0500
+From:   Mark Brown <broonie@kernel.org>
+Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
+To:     Adam Ward <Adam.Ward.opensource@diasemi.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+In-Reply-To: <X85soGKnWAjPUA7a@mwanda>
+References: <X85soGKnWAjPUA7a@mwanda>
+Subject: Re: [PATCH] regulator: da9121: Potential Oops in da9121_assign_chip_model()
+Message-Id: <160744745469.29972.2193088415551214848.b4-ty@kernel.org>
+Date:   Tue, 08 Dec 2020 17:10:54 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201130124915.7573-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon 2020-11-30 13:49:15, Lukas Bulwahn wrote:
-> Commit 849f3127bb46 ("switch /dev/kmsg to ->write_iter()") refactored
-> devkmsg_write() and left over a dead assignment on the variable 'len'.
-> 
-> Hence, make clang-analyzer warns:
-> 
->   kernel/printk/printk.c:744:4: warning: Value stored to 'len' is never read
->     [clang-analyzer-deadcode.DeadStores]
->                           len -= endp - line;
->                           ^
-> 
-> Simply remove this obsolete dead assignment here.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+On Mon, 7 Dec 2020 20:55:44 +0300, Dan Carpenter wrote:
+> There is a missing "return ret;" on this error path so we call
+> "da9121_check_device_type(i2c, chip);" which will end up dereferencing
+> "chip->regmap" and lead to an Oops.
 
-The patch is committed in printk/linux.git, branch for-5.11.
+Applied to
 
-Best Regards,
-Petr
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+
+Thanks!
+
+[1/1] regulator: da9121: Potential Oops in da9121_assign_chip_model()
+      commit: 8db06423e079b1f6c0657e5bebda0006acf75c3c
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

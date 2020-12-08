@@ -2,63 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD4EA2D30A3
-	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Dec 2020 18:12:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 55E022D3458
+	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Dec 2020 21:52:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730512AbgLHRLm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 8 Dec 2020 12:11:42 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51746 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730253AbgLHRLm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 8 Dec 2020 12:11:42 -0500
-From:   Mark Brown <broonie@kernel.org>
-Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
-To:     Adam Ward <Adam.Ward.opensource@diasemi.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-In-Reply-To: <X85soGKnWAjPUA7a@mwanda>
-References: <X85soGKnWAjPUA7a@mwanda>
-Subject: Re: [PATCH] regulator: da9121: Potential Oops in da9121_assign_chip_model()
-Message-Id: <160744745469.29972.2193088415551214848.b4-ty@kernel.org>
-Date:   Tue, 08 Dec 2020 17:10:54 +0000
+        id S1727049AbgLHUhU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 8 Dec 2020 15:37:20 -0500
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:55264 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726758AbgLHUhR (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 8 Dec 2020 15:37:17 -0500
+Received: from localhost.localdomain ([93.22.132.205])
+        by mwinf5d52 with ME
+        id 1wbU240044S2tpH03wbUSh; Tue, 08 Dec 2020 21:35:32 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 08 Dec 2020 21:35:32 +0100
+X-ME-IP: 93.22.132.205
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     ulf.hansson@linaro.org, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+        linux-imx@nxp.com, wsa+renesas@sang-engineering.com,
+        peter.ujfalusi@ti.com, dianders@chromium.org, cjb@laptop.org
+Cc:     linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] mmc: mxs-mmc: Fix a resource leak in an error handling path in 'mxs_mmc_probe()'
+Date:   Tue,  8 Dec 2020 21:35:27 +0100
+Message-Id: <20201208203527.49262-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 7 Dec 2020 20:55:44 +0300, Dan Carpenter wrote:
-> There is a missing "return ret;" on this error path so we call
-> "da9121_check_device_type(i2c, chip);" which will end up dereferencing
-> "chip->regmap" and lead to an Oops.
+If 'mmc_of_parse()' fails, we must undo the previous 'dma_request_chan()'
+call.
 
-Applied to
+Fixes: abd37cccd47f ("mmc: mxs: use mmc_gpio_get_ro for detecting read-only status")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+I'm not 100% sure of the Fixes tag, but it seems to be the root cause. The
+erroneous 'out_clk_disable' has then been kept around in the following
+commits
+---
+ drivers/mmc/host/mxs-mmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+diff --git a/drivers/mmc/host/mxs-mmc.c b/drivers/mmc/host/mxs-mmc.c
+index 56bbc6cd9c84..947581de7860 100644
+--- a/drivers/mmc/host/mxs-mmc.c
++++ b/drivers/mmc/host/mxs-mmc.c
+@@ -628,7 +628,7 @@ static int mxs_mmc_probe(struct platform_device *pdev)
+ 
+ 	ret = mmc_of_parse(mmc);
+ 	if (ret)
+-		goto out_clk_disable;
++		goto out_free_dma;
+ 
+ 	mmc->ocr_avail = MMC_VDD_32_33 | MMC_VDD_33_34;
+ 
+-- 
+2.27.0
 
-Thanks!
-
-[1/1] regulator: da9121: Potential Oops in da9121_assign_chip_model()
-      commit: 8db06423e079b1f6c0657e5bebda0006acf75c3c
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

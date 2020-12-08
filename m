@@ -2,72 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16B282D2B26
-	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Dec 2020 13:35:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C429E2D2B82
+	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Dec 2020 13:57:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728698AbgLHMez (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 8 Dec 2020 07:34:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59164 "EHLO mail.kernel.org"
+        id S1727258AbgLHM4e (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 8 Dec 2020 07:56:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37882 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728287AbgLHMez (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 8 Dec 2020 07:34:55 -0500
-Message-ID: <58d2f1c5a9ce13f8aecda76604cca35c5165c66d.camel@kernel.org>
+        id S1725881AbgLHM4e (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 8 Dec 2020 07:56:34 -0500
+Date:   Tue, 8 Dec 2020 18:25:49 +0530
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607430855;
-        bh=Er5xcsNPsz3otM9/RXcwk6ynK4/AERkuOk9oTRHck3k=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=FK/FecMZZv2Bn9AbLyqFn7InIaqKyIFArfgNCe9p2Pb9Izj4gOV3KOE+m5YDui9Wn
-         iI0sza3la/vkt99/jE9Z8Za34FnYLTHcy/x5xGLqMSIVaOvfi5+GbelqmuYw33kqZx
-         5K1GkiWndNjPtwN4wTs+8PAVnq/u8yEhoxZfXYQLMWqCuxm67MMLjGO7h0jLLB93Oj
-         7NB9tlj61ujUO3xi/8g9iIU6lmK+oQNyd+MW6qNniHyQJBani8ZYGcDg6eiAvxdoxY
-         jcYN6MnqXm4nvCrg77FdxvbJJtziUublJVtR9PQ7bvyXQo89Qc3hZR7tPmNRyptKqc
-         uPXo4Stb6LkBg==
-Subject: Re: [PATCH] ceph: remove redundant assignment to variable i
-From:   Jeff Layton <jlayton@kernel.org>
-To:     Colin King <colin.king@canonical.com>,
-        Ilya Dryomov <idryomov@gmail.com>, ceph-devel@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Tue, 08 Dec 2020 07:34:13 -0500
-In-Reply-To: <20201204185421.1149669-1-colin.king@canonical.com>
-References: <20201204185421.1149669-1-colin.king@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.1 (3.38.1-1.fc33) 
+        s=k20201202; t=1607432154;
+        bh=DwAV7zH+P8yCLLppVdnEWm7jEyFYcY0buhiThYP1IpQ=;
+        h=From:To:Cc:Subject:References:In-Reply-To:From;
+        b=resxd2wxBAM0ElayHYdUDK8fD16d3qFWPlTzJ9Pa+uA4NBMOiSMCECIniE5STbceD
+         p9M2qOxsWdRLIGK5SGHHryzOiwFBJI9bCZ9vpQ86EpC2U5x79WgyN8geNp96pRdRId
+         3pE2mT/z9Nl5X1nEctSWVktg2oR0/sH7Ns0/1j0XjqK/Wc7z1TgxEISIgkuo/xtogQ
+         Tmz8sMn6tEyk93pdykDJbIjdk0xgQ4IbsJ5ocXtf6V63eyedtzEtLrBOmst3/F0E2v
+         NtFQmTOoK6tynjIH0JXY/L4zgYffzJxwjGKA8dpQN94BXgJMMg/Qicwac/1Xu9QBJV
+         QsxLKmNRk8LCw==
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Chunfeng Yun <chunfeng.yun@mediatek.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        CK Hu <ck.hu@mediatek.com>,
+        chunhui dai <chunhui.dai@mediatek.com>,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] drm/mediatek: avoid dereferencing a null hdmi_phy
+ on an error message
+Message-ID: <20201208125549.GG8403@vkoul-mobl>
+References: <20201207150937.170435-1-colin.king@canonical.com>
+ <1607392202.23328.1.camel@mhfsdcap03>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1607392202.23328.1.camel@mhfsdcap03>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 2020-12-04 at 18:54 +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable i is being initialized with a value that is never read
-> and it is being updated later with a new value in a for-loop.  The
-> initialization is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  fs/ceph/mds_client.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
-> index 8f1d7500a7ec..b70937caa7a7 100644
-> --- a/fs/ceph/mds_client.c
-> +++ b/fs/ceph/mds_client.c
-> @@ -1243,7 +1243,7 @@ static struct ceph_msg *create_session_open_msg(struct ceph_mds_client *mdsc, u6
->  {
->  	struct ceph_msg *msg;
->  	struct ceph_mds_session_head *h;
-> -	int i = -1;
-> +	int i;
->  	int extra_bytes = 0;
->  	int metadata_key_count = 0;
->  	struct ceph_options *opt = mdsc->fsc->client->options;
+On 08-12-20, 09:50, Chunfeng Yun wrote:
+> On Mon, 2020-12-07 at 15:09 +0000, Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > Currently there is a null pointer check for hdmi_phy that implies it
+> > may be null, however a dev_err messages dereferences this potential null
+> > pointer.  Avoid a null pointer dereference by only emitting the dev_err
+> > message if hdmi_phy is non-null.  It is a moot point if the error message
+> > needs to be printed at all, but since this is a relatively new piece of
+> > code it may be useful to keep the message in for the moment in case there
+> > are unforseen errors that need to be reported.
+> > 
+> > Addresses-Coverity: ("Dereference after null check")
+> > Fixes: be28b6507c46 ("drm/mediatek: separate hdmi phy to different file")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > ---
+> >  drivers/phy/mediatek/phy-mtk-hdmi.c | 5 +++--
+> >  1 file changed, 3 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/phy/mediatek/phy-mtk-hdmi.c b/drivers/phy/mediatek/phy-mtk-hdmi.c
+> > index c5c61f5a9ea0..5184054783c7 100644
+> > --- a/drivers/phy/mediatek/phy-mtk-hdmi.c
+> > +++ b/drivers/phy/mediatek/phy-mtk-hdmi.c
+> > @@ -84,8 +84,9 @@ mtk_hdmi_phy_dev_get_ops(const struct mtk_hdmi_phy *hdmi_phy)
+> >  	    hdmi_phy->conf->hdmi_phy_disable_tmds)
+> >  		return &mtk_hdmi_phy_dev_ops;
+> >  
+> > -	dev_err(hdmi_phy->dev, "Failed to get dev ops of phy\n");
+> > -		return NULL;
+> > +	if (hdmi_phy)
+> > +		dev_err(hdmi_phy->dev, "Failed to get dev ops of phy\n");
+> > +			return NULL;
+> indentation: one tab before return
 
-Meh, ok. Merged into ceph-client/testing branch. It should make v5.11.
+I have applied this and fixed the indent while applying
 
-Thanks,
 -- 
-Jeff Layton <jlayton@kernel.org>
-
+~Vinod

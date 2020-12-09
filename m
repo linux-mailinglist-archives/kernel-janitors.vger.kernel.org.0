@@ -2,94 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 550E42D4069
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Dec 2020 11:58:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D8492D43D3
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Dec 2020 15:05:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730272AbgLIK5e (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Dec 2020 05:57:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60184 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730261AbgLIK5e (ORCPT
+        id S1726730AbgLIOEL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Dec 2020 09:04:11 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:43814 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726354AbgLIOEL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Dec 2020 05:57:34 -0500
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E849CC0613CF
-        for <kernel-janitors@vger.kernel.org>; Wed,  9 Dec 2020 02:56:53 -0800 (PST)
-Received: by mail-pf1-x443.google.com with SMTP id c79so785943pfc.2
-        for <kernel-janitors@vger.kernel.org>; Wed, 09 Dec 2020 02:56:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=7VihS8UZRpLZrdHjYOKQ2pp7IsLDsu9GnvDVWQGO/T0=;
-        b=R++eJ29cYWxAN+/F/3ChxmEWxhJgn5BVqlVzAlVejga10koM7L39MsylEZw3A2QorG
-         x53uTZoW0SzI+tTpQNOsB8RZOL1SVzch3wHzb0jlRAcGE3Y4049nAlxJT6aYWq6dDVG4
-         wVrk/oQ7B5karjipcYl0GIT9lBWDYtf7N2YTW6xsOLIfZYDCpOdYddNucKJQU4seDxQo
-         0w7XqhRq4OVq7u24z+TWx4OYq7Qlzq0kc6aXfmroahkviJW4tA+Uj9pD42/sATEddAMe
-         xLXa3SAfjhKVMytZZSE/IKm2SRl3A4o9tTLBUDTpg8Lxw8k/ctiRkyeRNURkuSzyy/aB
-         Qm0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7VihS8UZRpLZrdHjYOKQ2pp7IsLDsu9GnvDVWQGO/T0=;
-        b=PA4rz4fW+92n44QUL+Az3NnMEdwXWCbYQLO5aqTaXx/KPmeFIw2lXn9+Pjoo+7c+nC
-         H63TgZDh2vyP6V0sxQ1NH0CwCjGIy+fvudS79lGpK/suUYyVnHC7o9UcTp+LydYWZ6m7
-         AUVooRQwDTwh7UgULZ0LL7XUUw1o09KGdxgk+tkOQLWoEkllirD6vf1YyY/K70q/uz9K
-         TGWgiZBezzfwQtNTsWX3YF478KlsHha01lyYSkdJy098nKLNB5OJ5O1x4M6pBLBGHvwy
-         Mb/T+UgOiYAFA+6n+dZw8F1pVvHa1ImxEkCl8Z/SzJVO01UD8oE1H2nTIplnZhs6LSXy
-         vyfA==
-X-Gm-Message-State: AOAM5317MnEUQl3LiqM145AehIcrVgNz3UcVE18/drgm0iV7KrBqBef1
-        j6vg8MlwRCCMTcEqZWjNFHKfMavhg3w7PZbjUjzwZg==
-X-Google-Smtp-Source: ABdhPJzLaiyGpxIFRGP60i7SgoyYNy5UI77xOAibOeDYqF4rGR+pWCgiM53zWz3su6YV8uM6t3HbFAW3boTRFA5qOEA=
-X-Received: by 2002:a05:6a00:2382:b029:198:15a2:aaf9 with SMTP id
- f2-20020a056a002382b029019815a2aaf9mr1582890pfc.39.1607511413578; Wed, 09 Dec
- 2020 02:56:53 -0800 (PST)
-MIME-Version: 1.0
-References: <X9BzujGgPAM/s+rG@mwanda> <X9Bz8pRFNhR2x11I@mwanda>
-In-Reply-To: <X9Bz8pRFNhR2x11I@mwanda>
-From:   Robert Foss <robert.foss@linaro.org>
-Date:   Wed, 9 Dec 2020 11:56:38 +0100
-Message-ID: <CAG3jFytWd3p3sBoC8PLUES-SJFu=DxQWED9jGmLO7zCaCXdRFg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] media: camss: missing error code in msm_video_register()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Todor Tomov <todor.too@gmail.com>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Hans Verkuil <hansverk@cisco.com>,
-        linux-media <linux-media@vger.kernel.org>,
+        Wed, 9 Dec 2020 09:04:11 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B9DxhsX022579;
+        Wed, 9 Dec 2020 14:03:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=wjXaibiyUyP3RuhV5ySGnBOfVuKv/KKTDQcwJxezvCo=;
+ b=wHvIdTVSxEOQHSLBEPv0iZICCe2f1mhch6czjVaV+qJJ4iNTmVcleiF4QxANo7DfdiP0
+ Llmxk3G834A6bffvX3Ho/yZOlbb1PKkaBfPu9dC5okGkJJy3WkBK+vSRVo4I1ZmugFOl
+ uw1WVw+gMM7t8DplSDHOMV5OohqssgdiIkazIeSf8tvkgOP4o6/L8BGIncyj2i5y24WN
+ tWkAk5uPfb1/ejmba3Ax3fbo9Hn45ErRvtD5gRdukILCTLEVymxyVAPTLxqEazuf82D7
+ AxJJvvsOkMRLePhFXGJMpS4u2eIsB6Ut9pCAcIVKi0XPMdhPpM29KsM8zgYCFsVx2584 JA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 35825m892h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 09 Dec 2020 14:03:22 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B9E0i3Q083686;
+        Wed, 9 Dec 2020 14:03:21 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 358kyuqe6m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 09 Dec 2020 14:03:21 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0B9E3KTR019021;
+        Wed, 9 Dec 2020 14:03:20 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 09 Dec 2020 06:03:19 -0800
+Date:   Wed, 9 Dec 2020 17:03:11 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Sathya Prakash <sathya.prakash@broadcom.com>
+Cc:     Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: [PATCH] scsi: mpt3sas: Signedness bug in _base_get_diag_triggers()
+Message-ID: <X9DZH37bYPHwSQRP@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 mlxscore=0
+ malwarescore=0 suspectscore=0 mlxlogscore=999 bulkscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012090100
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 bulkscore=0
+ phishscore=0 mlxlogscore=999 clxscore=1011 priorityscore=1501 mlxscore=0
+ spamscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012090100
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Thanks for submitting this Dan.
+The "trigger_flags" variable needs to be signed for the error checking
+to work.
 
-Reviewed-by: Robert Foss <robert.foss@linaro.org>
+Fixes: 5767aaffbb8b ("scsi: mpt3sas: Add persistent trigger pages support")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/scsi/mpt3sas/mpt3sas_base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Wed, 9 Dec 2020 at 07:51, Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> This error path returns success but it should return -EINVAL.
->
-> Fixes: cba3819d1e93 ("media: camss: Format configuration per hardware version")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/media/platform/qcom/camss/camss-video.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/media/platform/qcom/camss/camss-video.c b/drivers/media/platform/qcom/camss/camss-video.c
-> index 2fa3214775d5..97cea7c4d769 100644
-> --- a/drivers/media/platform/qcom/camss/camss-video.c
-> +++ b/drivers/media/platform/qcom/camss/camss-video.c
-> @@ -961,6 +961,7 @@ int msm_video_register(struct camss_video *video, struct v4l2_device *v4l2_dev,
->                         video->nformats = ARRAY_SIZE(formats_rdi_8x96);
->                 }
->         } else {
-> +               ret = -EINVAL;
->                 goto error_video_register;
->         }
->
-> --
-> 2.29.2
->
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
+index 969baf4cd3f5..6e23dc3209fe 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -5034,7 +5034,7 @@ _base_check_for_trigger_pages_support(struct MPT3SAS_ADAPTER *ioc)
+ static void
+ _base_get_diag_triggers(struct MPT3SAS_ADAPTER *ioc)
+ {
+-	u16 trigger_flags;
++	int trigger_flags;
+ 
+ 	/*
+ 	 * Default setting of master trigger.
+-- 
+2.29.2
+

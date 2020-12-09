@@ -2,88 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 284D02D3C68
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Dec 2020 08:37:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA81C2D3C7C
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Dec 2020 08:49:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727938AbgLIHhY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Dec 2020 02:37:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57432 "EHLO
+        id S1728106AbgLIHr5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Dec 2020 02:47:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727798AbgLIHhY (ORCPT
+        with ESMTP id S1727961AbgLIHrz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Dec 2020 02:37:24 -0500
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99268C061793
-        for <kernel-janitors@vger.kernel.org>; Tue,  8 Dec 2020 23:36:43 -0800 (PST)
-Received: by mail-ej1-x643.google.com with SMTP id ga15so684515ejb.4
-        for <kernel-janitors@vger.kernel.org>; Tue, 08 Dec 2020 23:36:43 -0800 (PST)
+        Wed, 9 Dec 2020 02:47:55 -0500
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA9AAC0613CF;
+        Tue,  8 Dec 2020 23:47:14 -0800 (PST)
+Received: by mail-ed1-x543.google.com with SMTP id b73so467363edf.13;
+        Tue, 08 Dec 2020 23:47:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloud.ionos.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=UA44RrXj/Op8plv0v8h0D8Z4mBnynfJmnSPQ6/b9gLY=;
-        b=LZX1uYunDFgDIxR6Lnkx6UdTzZlmqfRGkqrFxy8lsqpObwm8MJXc7nZ8yo2t6r9yVL
-         n6cNFUqFLqomN1h8VuODjwheM6wXalgBw43+cUB5yk5Hp3MVofxrb5kX2YNr35HA6Oxk
-         YW+x3N7gJYx2eh30VoLL6bWDr8ohtYw7ca3yxdqYmgMKkUSPysFGoQO5ESm41c1JMmFz
-         CIWD4r/O0udeqhibEtol4wz0Gyl9uh/s0EiaF8DY3TVS3XPoCoakm86uX11JeGHEZh+0
-         GOcFuS1C1QcQNtW/9vByhTygy9OR0QqbIAJOj9yc55oZOwhWK9dZKvEb+/Y+MFfTOcYm
-         1ong==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=vUdxfkrGNNo1FQF9h31XnihJ3y4Ce36/DE99SxLOEN4=;
+        b=bGrV5DiIZKcVT0Gqqw7i2bRWbLWwLyR6mnhe+fZmJTZ8Y51HGfViIKPBFFw9tSAWao
+         L1U+AxUyCuqECRICZCdgrhQRLagai+A/HFjKWITuhjeTOHRDW6dY+yh8h0oYpDYFuN9R
+         VBCkUMm8w6zj9TA2WYPhzssQ78984Y/AshzOl4n6fj/Poq08iKKzCl3q+xRYtbmOk8y6
+         gAHj4R2I0ZO5b3oR40rap/7WLxnccrLAP6eGEjAxQWhcjayaqVFi9Q8WLCjh2C8zN6OZ
+         HHAWmsyhyXz1ht5VeMymEP78/7NBuMRWwHB+Z2Q/ZKyK0CTbswU67a0eGqOYapsMWlsw
+         1QlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UA44RrXj/Op8plv0v8h0D8Z4mBnynfJmnSPQ6/b9gLY=;
-        b=X7XiNnzCtRcModerREpsL0yjwI5n0ieAIdEniq1j0bkSZnzjaYKjn8HTtR1bf0UHtv
-         KJ7Bd5IZJoyEt3UbFhInzIoWShdDxRkS72IyFcRbAWCv9M0bllAZnHFprK5u3xz7gaYa
-         SNwPhHF1J2cVjDlwdcM8wi506piCXnHiWmQKQI0Gee/frickNDbLbfo/4bZmjpEe1F2D
-         qj0DvQOD6uFm8K6UC7mDf9+qu1ZF+YwGz3wf695SULFQ729cKBYBAtOabkDPrFk5VB+K
-         cLvYxBdhJ5SePXaWrzG/UY7LFBS8xo88twNcvrKvDzMFprnlowA7hWa9hp3Zkn5uKbYI
-         Gdfg==
-X-Gm-Message-State: AOAM533wO+MUBgiz6x/V/JkHAmTg6qhYSAYN7WVCjddp/ZLeoy5qdf7t
-        A/Nf/P3sY0qbv8qjAjZku4xYsca3eoKb9G9yURU+cw==
-X-Google-Smtp-Source: ABdhPJy4xAuX5Q3bGZ4jdHtO3el9O1QyJABOEBrHlTFr+KeC6eOsQgQ21Wa+c4RzNjXDBBwQJLtuwWK/2Ow7dNbE0w8=
-X-Received: by 2002:a17:906:94ca:: with SMTP id d10mr942078ejy.62.1607499402342;
- Tue, 08 Dec 2020 23:36:42 -0800 (PST)
-MIME-Version: 1.0
-References: <X9B0IyxwbBDq+cSS@mwanda>
-In-Reply-To: <X9B0IyxwbBDq+cSS@mwanda>
-From:   Jinpu Wang <jinpu.wang@cloud.ionos.com>
-Date:   Wed, 9 Dec 2020 08:36:31 +0100
-Message-ID: <CAMGffEn6a92UDBgzkR2L6wutNBpxY_xNf3cakvbivkaGRnk_uQ@mail.gmail.com>
-Subject: Re: [PATCH] block/rnbd-clt: Fix error code in rnbd_clt_add_dev_symlink()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Danil Kipnis <danil.kipnis@cloud.ionos.com>,
-        Md Haris Iqbal <haris.iqbal@cloud.ionos.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Lutz Pogrell <lutz.pogrell@cloud.ionos.com>,
-        linux-block <linux-block@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=vUdxfkrGNNo1FQF9h31XnihJ3y4Ce36/DE99SxLOEN4=;
+        b=Qw9LN4rMsbLikqBc+D+F+sifIw9ZtlhP1ugb/PVy+83LkFfumYcoD67JtDCRNdDtXx
+         LeHC+er8dOXvCFHTjNi4IwrSJw7WkuRUnZReaWAE5zsUQZGB8NoCMGascHdzfDdyC1jt
+         YiC157hLsXxGrqDf1foTj2pqWiFcpG28x0o8tATIJ73MKba0D3Sp8TvdKj31AyxmCN/t
+         92OBB91VtnjF/eqcU3x7ENzRcrjPodmHmydkbaSw1lFlQIZ9mBFG0jFXnU3IRJAvR54h
+         JGxhc3Q8chE5cyTyhBGogxyLWqP9EsPlrcaSrWNJdMAhOJewWYw3CwBj2c43m3RK8zqy
+         nTrA==
+X-Gm-Message-State: AOAM5301lLXYnJM7g7rHFkJMlxLa6NgaOKtPm8V6ib3TX3BYBIuZ/V07
+        8M8cKnLw1n5K2nX8Uk++uhE=
+X-Google-Smtp-Source: ABdhPJzRUVwqvvYMGn7Q5wEQjFknCl0J9KFE+fWL45OvQrRbCU6SJw0LKaabiA09tJ4CdpmT2J/TQQ==
+X-Received: by 2002:a05:6402:1d15:: with SMTP id dg21mr828807edb.280.1607500033479;
+        Tue, 08 Dec 2020 23:47:13 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2db8:be00:8188:da9:1e3d:a30d])
+        by smtp.gmail.com with ESMTPSA id eb14sm723692edb.20.2020.12.08.23.47.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Dec 2020 23:47:12 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Neil Armstrong <narmstrong@baylibre.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org, linux-amlogic@lists.infradead.org
+Cc:     Joe Perches <joe@perches.com>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] media: MAINTAINERS: correct entry in Amlogic GE2D driver section
+Date:   Wed,  9 Dec 2020 08:46:58 +0100
+Message-Id: <20201209074658.11557-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
+Commit aa821b2b9269 ("media: MAINTAINERS: Add myself as maintainer of the
+Amlogic GE2D driver") introduced a new MAINTAINERS section, but the file
+entry points to the wrong location.
 
+Hence, ./scripts/get_maintainer.pl --self-test=patterns warns:
 
+  warning: no file matches    F:    drivers/media/meson/ge2d/
 
-On Wed, Dec 9, 2020 at 7:52 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> The "ret" variable should be set to -ENOMEM but it returns uninitialized
-> stack data.
->
-> Fixes: 64e8a6ece1a5 ("block/rnbd-clt: Dynamically alloc buffer for pathname & blk_symlink_name")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Adjust the entry to the actual location of the driver.
 
-Thanks for the patch. But there is already a fix from Colin merged in
-block tree:
-https://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux-block.git/commit/?h=for-5.11/drivers&id=733c15bd3a944b8eeaacdddf061759b6a83dd3f4
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies on next-20201208, not on current master
 
-There is still other problem through with commit 64e8a6ece1a5
-("block/rnbd-clt: Dynamically alloc buffer for pathname &
-blk_symlink_name")
+Neil, please ack.
+Hans, Mauro, please pick this minor non-urgent fix-up for your -next tree.
 
-I will send the fix today together with other changes.
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Regards!
-Jack
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5b20babb9f7b..d66bf50fc640 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -11520,7 +11520,7 @@ L:	linux-amlogic@lists.infradead.org
+ S:	Supported
+ T:	git git://linuxtv.org/media_tree.git
+ F:	Documentation/devicetree/bindings/media/amlogic,axg-ge2d.yaml
+-F:	drivers/media/meson/ge2d/
++F:	drivers/media/platform/meson/ge2d/
+ 
+ MESON NAND CONTROLLER DRIVER FOR AMLOGIC SOCS
+ M:	Liang Yang <liang.yang@amlogic.com>
+-- 
+2.17.1
+

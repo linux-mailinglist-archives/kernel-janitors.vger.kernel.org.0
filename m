@@ -2,145 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED0D22D3C31
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Dec 2020 08:30:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 284D02D3C68
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Dec 2020 08:37:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726987AbgLIH36 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Dec 2020 02:29:58 -0500
-Received: from esa2.hgst.iphmx.com ([68.232.143.124]:7150 "EHLO
-        esa2.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726935AbgLIH34 (ORCPT
+        id S1727938AbgLIHhY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Dec 2020 02:37:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57432 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727798AbgLIHhY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Dec 2020 02:29:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1607499070; x=1639035070;
-  h=from:to:cc:subject:date:message-id:references:
-   content-transfer-encoding:mime-version;
-  bh=jtX8S+4PCo0WAbOd5mOV2qeB7Ds/HAraUNUzJUb4Vsw=;
-  b=VltWiIsniEw1njX1tr6QH+6tN1kruG2RJgxekgJiKu3UdGsHh3XyA8Zn
-   mvqmZZ471piHB3jr1qLvrLRqD46nwPmpIZfUv/3KqMP/pEF6QL+7z3AK0
-   i4yFmx15smFk2o17xI2S2M7DVfJega/QIczH1TJRkvDu3BqcTjE43WGZq
-   tetjlStOkKZeq6uTftwwS/CarTl49iB11R01c4LUJf3jyfN/ALP4XMYUf
-   Z2QjFzXZWpDSuZkHRn6vQBSOTxqTmxGmzDztmKze9dnioUTOlxfes067G
-   z5I5TLuRT7KfSmxXjIIXVjvvQOut4jYB/T+HbQMSEavXBrCP5Z3bKA8oH
-   A==;
-IronPort-SDR: Yo8ve1hbuQm3N5fIw4HLUB8V9iRhPM3QzhzPFtYrleOqT9TY9azFyG6obABjigdgXeOzgpyJC7
- pkPxQ3oK+wGYMwZ80qZi9OYDg17WR2KTORZIPIwIIyomZODpj3qvejKhrXVD2KuFMOi8dGmZKq
- odyJSF61V+1vHkvTeTJ5R1QbQanWmSuzA9LzfLFoHx5tIyqLQA+3gNXPHj4n6y6xCek5YLDHzI
- uOYi0MDLF5hW6KWdXbXuv9h9YpXtHG/pYEsOc+LVFGL2jiH3hUCnklSwBeSlmWiq4Vw1AlgFce
- jOM=
-X-IronPort-AV: E=Sophos;i="5.78,404,1599494400"; 
-   d="scan'208";a="258472791"
-Received: from mail-bn8nam11lp2168.outbound.protection.outlook.com (HELO NAM11-BN8-obe.outbound.protection.outlook.com) ([104.47.58.168])
-  by ob1.hgst.iphmx.com with ESMTP; 09 Dec 2020 15:29:25 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k1nsDZ340H2JhCYGI3s3Hw8swGgELCjahk+rjdYsH+AEtOIedmqbamGGPyz2eDK5E1eseotWr5Zkurlg5pY9FYOuJlCZ2uAlf9aZYHD+ofzJ6fYVDMAz49qpw09p9Z8uIptLeCFqDL9XhMmjG3vnVBaSYByS/fQJO7cFEUlA9YJp9YFiJCQnU47yZ1QO7Q6TxwrnmXrV0lOiVWJIeozrYC+TmEZ4HffVNeUzSo/6NxLKL75y9aFA2ysqVvyMVGBt+L8fkGjw1tY8xDHxCIcfBUOlvkiua9OpUQDf5TUiNA1Pk2148o36GIdghcnytv5y2UZ4bVzqE6q8AbzLtJsXiA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jtX8S+4PCo0WAbOd5mOV2qeB7Ds/HAraUNUzJUb4Vsw=;
- b=ayyCqGfsFdceNtgaJjFpx0ZaNj/keSgGkvrh59gpW2UVWAMJ6OqOjIAUdq1dlXMz6KVbW4oyy2mxHh4X+wIRN/e+fvItJiJ79m//UMJtoJwcBk2XzIMJogA1LPFX3iQdcULqu3WNcNqv2z9qIrs2pOJ886lvsMsu+CrB1g8RsbJM+kTcgGliV9R0vUACB9S0cRC+673XLtADdCDMlqa5JEwyjWiEYWxX7o4kbdTJScnAFF+8FJwgPOddE4si4d5PW4er8M+DKNasDfnxR/70gVvmjBRP6MHVb5wSujRZhFm/0k7MkngIehzttUQAxkDQY1V4CE8OYGg665098GY5vQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
- header.d=wdc.com; arc=none
+        Wed, 9 Dec 2020 02:37:24 -0500
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99268C061793
+        for <kernel-janitors@vger.kernel.org>; Tue,  8 Dec 2020 23:36:43 -0800 (PST)
+Received: by mail-ej1-x643.google.com with SMTP id ga15so684515ejb.4
+        for <kernel-janitors@vger.kernel.org>; Tue, 08 Dec 2020 23:36:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jtX8S+4PCo0WAbOd5mOV2qeB7Ds/HAraUNUzJUb4Vsw=;
- b=U4nX7GG2oFfblYQRe2DZOpLjUsdozOEtReGnfPRIMVRNJkxMiQ4wZiKSyPPmZO/jyC1DVXB59sZh5lQgPFaSY8VN7G5SAsvpN2n3KJyUFAETjSnv3Ee4OYk1xC2Fag8twUBzxSK/GSqsi+fMd99Q75k6Dxpbt/n/dO0Bwmvtvgs=
-Received: from BYAPR04MB4965.namprd04.prod.outlook.com (2603:10b6:a03:4d::25)
- by BYAPR04MB4039.namprd04.prod.outlook.com (2603:10b6:a02:ab::25) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17; Wed, 9 Dec
- 2020 07:28:45 +0000
-Received: from BYAPR04MB4965.namprd04.prod.outlook.com
- ([fe80::99ae:ab95:7c27:99e4]) by BYAPR04MB4965.namprd04.prod.outlook.com
- ([fe80::99ae:ab95:7c27:99e4%7]) with mapi id 15.20.3632.021; Wed, 9 Dec 2020
- 07:28:45 +0000
-From:   Chaitanya Kulkarni <Chaitanya.Kulkarni@wdc.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Danil Kipnis <danil.kipnis@cloud.ionos.com>,
-        Md Haris Iqbal <haris.iqbal@cloud.ionos.com>
-CC:     Jack Wang <jinpu.wang@cloud.ionos.com>,
+        d=cloud.ionos.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=UA44RrXj/Op8plv0v8h0D8Z4mBnynfJmnSPQ6/b9gLY=;
+        b=LZX1uYunDFgDIxR6Lnkx6UdTzZlmqfRGkqrFxy8lsqpObwm8MJXc7nZ8yo2t6r9yVL
+         n6cNFUqFLqomN1h8VuODjwheM6wXalgBw43+cUB5yk5Hp3MVofxrb5kX2YNr35HA6Oxk
+         YW+x3N7gJYx2eh30VoLL6bWDr8ohtYw7ca3yxdqYmgMKkUSPysFGoQO5ESm41c1JMmFz
+         CIWD4r/O0udeqhibEtol4wz0Gyl9uh/s0EiaF8DY3TVS3XPoCoakm86uX11JeGHEZh+0
+         GOcFuS1C1QcQNtW/9vByhTygy9OR0QqbIAJOj9yc55oZOwhWK9dZKvEb+/Y+MFfTOcYm
+         1ong==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=UA44RrXj/Op8plv0v8h0D8Z4mBnynfJmnSPQ6/b9gLY=;
+        b=X7XiNnzCtRcModerREpsL0yjwI5n0ieAIdEniq1j0bkSZnzjaYKjn8HTtR1bf0UHtv
+         KJ7Bd5IZJoyEt3UbFhInzIoWShdDxRkS72IyFcRbAWCv9M0bllAZnHFprK5u3xz7gaYa
+         SNwPhHF1J2cVjDlwdcM8wi506piCXnHiWmQKQI0Gee/frickNDbLbfo/4bZmjpEe1F2D
+         qj0DvQOD6uFm8K6UC7mDf9+qu1ZF+YwGz3wf695SULFQ729cKBYBAtOabkDPrFk5VB+K
+         cLvYxBdhJ5SePXaWrzG/UY7LFBS8xo88twNcvrKvDzMFprnlowA7hWa9hp3Zkn5uKbYI
+         Gdfg==
+X-Gm-Message-State: AOAM533wO+MUBgiz6x/V/JkHAmTg6qhYSAYN7WVCjddp/ZLeoy5qdf7t
+        A/Nf/P3sY0qbv8qjAjZku4xYsca3eoKb9G9yURU+cw==
+X-Google-Smtp-Source: ABdhPJy4xAuX5Q3bGZ4jdHtO3el9O1QyJABOEBrHlTFr+KeC6eOsQgQ21Wa+c4RzNjXDBBwQJLtuwWK/2Ow7dNbE0w8=
+X-Received: by 2002:a17:906:94ca:: with SMTP id d10mr942078ejy.62.1607499402342;
+ Tue, 08 Dec 2020 23:36:42 -0800 (PST)
+MIME-Version: 1.0
+References: <X9B0IyxwbBDq+cSS@mwanda>
+In-Reply-To: <X9B0IyxwbBDq+cSS@mwanda>
+From:   Jinpu Wang <jinpu.wang@cloud.ionos.com>
+Date:   Wed, 9 Dec 2020 08:36:31 +0100
+Message-ID: <CAMGffEn6a92UDBgzkR2L6wutNBpxY_xNf3cakvbivkaGRnk_uQ@mail.gmail.com>
+Subject: Re: [PATCH] block/rnbd-clt: Fix error code in rnbd_clt_add_dev_symlink()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Danil Kipnis <danil.kipnis@cloud.ionos.com>,
+        Md Haris Iqbal <haris.iqbal@cloud.ionos.com>,
         Jens Axboe <axboe@kernel.dk>,
         Lutz Pogrell <lutz.pogrell@cloud.ionos.com>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH] block/rnbd-clt: Fix error code in
- rnbd_clt_add_dev_symlink()
-Thread-Topic: [PATCH] block/rnbd-clt: Fix error code in
- rnbd_clt_add_dev_symlink()
-Thread-Index: AQHWzfgzbnqEn0dHhEOXfMmFdQneAw==
-Date:   Wed, 9 Dec 2020 07:28:45 +0000
-Message-ID: <BYAPR04MB4965FB681969584B8F3E1F4586CC0@BYAPR04MB4965.namprd04.prod.outlook.com>
-References: <X9B0IyxwbBDq+cSS@mwanda>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: oracle.com; dkim=none (message not signed)
- header.d=none;oracle.com; dmarc=none action=none header.from=wdc.com;
-x-originating-ip: [2600:1700:31ee:290:cca3:bd64:f1e4:9572]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 77d5fe86-c299-410f-0457-08d89c141043
-x-ms-traffictypediagnostic: BYAPR04MB4039:
-x-microsoft-antispam-prvs: <BYAPR04MB4039479BEC9E8EC1C09EC92386CC0@BYAPR04MB4039.namprd04.prod.outlook.com>
-wdcipoutbound: EOP-TRUE
-x-ms-oob-tlc-oobclassifiers: OLM:4714;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: QqXihXMg0FlfHkViBglWBGQ+n28YY16vj5V01GfWXYwieW3tgcvOsPeW27LWpeumDlVDuVB54USyJTLPVXxuN5qYTI2swUQ15RXTuvFc5nEj+EWWnMnA03m2lTHhGkdftuwcxjKLpPMuxNP2f4f1iTTb04lMeYo4f41I5f8v/FuoXMV2bgBDJrhW3qqgEhWOrx6VFXGB8A8VH+x4MIbokdoOO+IBwaubCPohP03JFF1/aLXDfqB/RW+gG1qWwFfIbkkJlbhSbQfwUTxctPnJqrIEHoRpdSI+ShTKMDkj8SRs6odCAKKJR2AE1jTMHusJqhI2UQdHSsLdEglqVFGNiA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR04MB4965.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(366004)(376002)(136003)(33656002)(5660300002)(7696005)(71200400001)(6506007)(55016002)(66446008)(53546011)(66556008)(110136005)(52536014)(4326008)(508600001)(8676002)(76116006)(186003)(66476007)(86362001)(2906002)(64756008)(4744005)(8936002)(9686003)(66946007)(83380400001)(54906003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: =?us-ascii?Q?NQQ9jCnaLa48LYCbkIFjt6H3reWCjgYleZQ7N86Ao7OIBeVoqDjpkvZ5U2c2?=
- =?us-ascii?Q?emCtfbsxIr6qps/30QNxeKBHH+U1beDbNpUFM+Cfwmxn398xD0J8AagkmrSI?=
- =?us-ascii?Q?9Mkvo2Si4OLznrlt3/SxWlAnf7Us74mSkQm0dmKpiPWR9/NjYDojpjSXuJ/z?=
- =?us-ascii?Q?m47L03c4HNZrEn7hUBk8ZR3+SeVoDmTUqAtOVcEIH+nMcLhWx6O9acc/xFPE?=
- =?us-ascii?Q?wAXVjmyx0nbEt878VzyqzQQNRHZ4PiMu3eid8F0DLvF4qloT97AM5ii/rOZ8?=
- =?us-ascii?Q?8enfEuUC3jkEha9HmH++9su/jqf83ov8+UZzIGZXIQybQXWAcb6HkdQF14VK?=
- =?us-ascii?Q?uJnTKzVZMUJ4a3sUd+XIFJrL5LCxtg0KwU5p0e1n98EHtzhVftIgsnMwyfHd?=
- =?us-ascii?Q?sXDhKgAzWPgYpZRYuSte9LndtQrfEyLFZAdJL9cdV0xhM9hE+eHV4oYcmuBq?=
- =?us-ascii?Q?R6yb16jwjIDfe0YBelPp9Puj38193OX1z88m0ED0P8Lb/M6b7T9M92qAelwr?=
- =?us-ascii?Q?6NEi9sRQVkrsLTKi5DaX+o7SqLs04YwsVF7UuGPrt0DTHu+KhI6x8c1Mp8Cr?=
- =?us-ascii?Q?6Jn95x5vs0rjbcLkLnvKLb0ZxYGe99jg6gLud2ajcEofLHeUrnwNORv00sN8?=
- =?us-ascii?Q?I6SYo5VvFUOnDgJ9f6vMKVlrBkgMqLyQQYTRu90tkI0TopUG8xxRIOxS1Va2?=
- =?us-ascii?Q?vtyJJZjN3kJOal6Lqe0VyGp0sb0bluudkTamLsbPATKZKSwAGVrl4vVjhhQL?=
- =?us-ascii?Q?TOQSinAzQ2r4UD7ASvgkTYqdPHleZpf6NCbxzgEUfje0tMssx3SXx/0Jahdu?=
- =?us-ascii?Q?gcML/Et+uEogiGTXTUo/tgVAEecXwGTu+i9eKlheBMHcv4ALpo5Io7DmZFzI?=
- =?us-ascii?Q?5a7rSFN7Vrd2wU3yKXQ0a3fih5gCrUgNb1JgxKGxoekTIyxQ7qXi0HrYBnlL?=
- =?us-ascii?Q?0g9pGNJZS4zJcUxGyP74Q6S5AZFS0yfkTzKh+2PHU+tEhpgDUBbTiNC6qI34?=
- =?us-ascii?Q?jIlU0t09TNpVaAgd4LdmOEngf9EEZONjPUn0ZLGLoVMwwklXytyARzgW1s2d?=
- =?us-ascii?Q?cA0/9JWz?=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-OriginatorOrg: wdc.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR04MB4965.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 77d5fe86-c299-410f-0457-08d89c141043
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Dec 2020 07:28:45.8422
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 9ik+IOoQs4+IAk3MBTs+lz3uuZZ//eAL3tYx9WFRYXulsMENv57EP/nlaZxdkwiJaWk5wTbJTGjAKHigb4UAoKkqHPRXTwArtwwWXIDfFUc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR04MB4039
+        linux-block <linux-block@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 12/8/20 10:54 PM, Dan Carpenter wrote:=0A=
-> The "ret" variable should be set to -ENOMEM but it returns uninitialized=
-=0A=
-> stack data.=0A=
->=0A=
-> Fixes: 64e8a6ece1a5 ("block/rnbd-clt: Dynamically alloc buffer for pathna=
-me & blk_symlink_name")=0A=
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>=0A=
-=0A=
-Looks good.=0A=
-=0A=
-Reviewed-by: Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>=0A=
-=0A=
+Hi Dan,
+
+
+
+On Wed, Dec 9, 2020 at 7:52 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> The "ret" variable should be set to -ENOMEM but it returns uninitialized
+> stack data.
+>
+> Fixes: 64e8a6ece1a5 ("block/rnbd-clt: Dynamically alloc buffer for pathname & blk_symlink_name")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+Thanks for the patch. But there is already a fix from Colin merged in
+block tree:
+https://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux-block.git/commit/?h=for-5.11/drivers&id=733c15bd3a944b8eeaacdddf061759b6a83dd3f4
+
+There is still other problem through with commit 64e8a6ece1a5
+("block/rnbd-clt: Dynamically alloc buffer for pathname &
+blk_symlink_name")
+
+I will send the fix today together with other changes.
+
+Regards!
+Jack

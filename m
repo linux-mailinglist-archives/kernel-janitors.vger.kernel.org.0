@@ -2,100 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA81C2D3C7C
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Dec 2020 08:49:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA9672D3D0E
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Dec 2020 09:11:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728106AbgLIHr5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Dec 2020 02:47:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59048 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727961AbgLIHrz (ORCPT
+        id S1728630AbgLIIEU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Dec 2020 03:04:20 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:50194 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728616AbgLIIET (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Dec 2020 02:47:55 -0500
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA9AAC0613CF;
-        Tue,  8 Dec 2020 23:47:14 -0800 (PST)
-Received: by mail-ed1-x543.google.com with SMTP id b73so467363edf.13;
-        Tue, 08 Dec 2020 23:47:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=vUdxfkrGNNo1FQF9h31XnihJ3y4Ce36/DE99SxLOEN4=;
-        b=bGrV5DiIZKcVT0Gqqw7i2bRWbLWwLyR6mnhe+fZmJTZ8Y51HGfViIKPBFFw9tSAWao
-         L1U+AxUyCuqECRICZCdgrhQRLagai+A/HFjKWITuhjeTOHRDW6dY+yh8h0oYpDYFuN9R
-         VBCkUMm8w6zj9TA2WYPhzssQ78984Y/AshzOl4n6fj/Poq08iKKzCl3q+xRYtbmOk8y6
-         gAHj4R2I0ZO5b3oR40rap/7WLxnccrLAP6eGEjAxQWhcjayaqVFi9Q8WLCjh2C8zN6OZ
-         HHAWmsyhyXz1ht5VeMymEP78/7NBuMRWwHB+Z2Q/ZKyK0CTbswU67a0eGqOYapsMWlsw
-         1QlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=vUdxfkrGNNo1FQF9h31XnihJ3y4Ce36/DE99SxLOEN4=;
-        b=Qw9LN4rMsbLikqBc+D+F+sifIw9ZtlhP1ugb/PVy+83LkFfumYcoD67JtDCRNdDtXx
-         LeHC+er8dOXvCFHTjNi4IwrSJw7WkuRUnZReaWAE5zsUQZGB8NoCMGascHdzfDdyC1jt
-         YiC157hLsXxGrqDf1foTj2pqWiFcpG28x0o8tATIJ73MKba0D3Sp8TvdKj31AyxmCN/t
-         92OBB91VtnjF/eqcU3x7ENzRcrjPodmHmydkbaSw1lFlQIZ9mBFG0jFXnU3IRJAvR54h
-         JGxhc3Q8chE5cyTyhBGogxyLWqP9EsPlrcaSrWNJdMAhOJewWYw3CwBj2c43m3RK8zqy
-         nTrA==
-X-Gm-Message-State: AOAM5301lLXYnJM7g7rHFkJMlxLa6NgaOKtPm8V6ib3TX3BYBIuZ/V07
-        8M8cKnLw1n5K2nX8Uk++uhE=
-X-Google-Smtp-Source: ABdhPJzRUVwqvvYMGn7Q5wEQjFknCl0J9KFE+fWL45OvQrRbCU6SJw0LKaabiA09tJ4CdpmT2J/TQQ==
-X-Received: by 2002:a05:6402:1d15:: with SMTP id dg21mr828807edb.280.1607500033479;
-        Tue, 08 Dec 2020 23:47:13 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2db8:be00:8188:da9:1e3d:a30d])
-        by smtp.gmail.com with ESMTPSA id eb14sm723692edb.20.2020.12.08.23.47.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Dec 2020 23:47:12 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Neil Armstrong <narmstrong@baylibre.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org, linux-amlogic@lists.infradead.org
-Cc:     Joe Perches <joe@perches.com>,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] media: MAINTAINERS: correct entry in Amlogic GE2D driver section
-Date:   Wed,  9 Dec 2020 08:46:58 +0100
-Message-Id: <20201209074658.11557-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Wed, 9 Dec 2020 03:04:19 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B97xNqi006094;
+        Wed, 9 Dec 2020 08:03:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=JgWUramQ4RWjeQKitCLWZEl8JrsgQKifBI74AB7jLB8=;
+ b=OhgPKeNvaIjlHpKIt9U4k5bRSNW9yKHo8S257oiYb7C4Bxy+TxVuEDtwFWrqNwr0x2ic
+ zKdQhs27UOOpR90+Z5vIbLbERB0k6s0rwN0NKHJng/bEphQmMcIx2mgNRyM9iPOl+tB3
+ IlKoQt3do4/rBjuV09IoE5k5CHEi3RZH650JTAH+PM28Zv9/V9L7wsty3tZp4qRrfvUT
+ uHfOLiIHWXMNkDAk1xMKmmkRx6b+nmsqmSMBXBBhffzj4tOT42+zV1QzLroS5a/Hery3
+ h1B2EOcedlg1T8mF+E6T4v42/CwC7ZD4x4cONhAgkTL1s2xzc8NNVwiYoMrc9tnV8sTV fg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 357yqbxu6s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 09 Dec 2020 08:03:32 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B980osC020588;
+        Wed, 9 Dec 2020 08:03:32 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 358kspqrj9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 09 Dec 2020 08:03:32 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B983Vn3029963;
+        Wed, 9 Dec 2020 08:03:31 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 09 Dec 2020 00:03:30 -0800
+Date:   Wed, 9 Dec 2020 11:03:23 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jinpu Wang <jinpu.wang@cloud.ionos.com>
+Cc:     Danil Kipnis <danil.kipnis@cloud.ionos.com>,
+        Md Haris Iqbal <haris.iqbal@cloud.ionos.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Lutz Pogrell <lutz.pogrell@cloud.ionos.com>,
+        linux-block <linux-block@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] block/rnbd-clt: Fix error code in
+ rnbd_clt_add_dev_symlink()
+Message-ID: <20201209080323.GE2767@kadam>
+References: <X9B0IyxwbBDq+cSS@mwanda>
+ <CAMGffEn6a92UDBgzkR2L6wutNBpxY_xNf3cakvbivkaGRnk_uQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMGffEn6a92UDBgzkR2L6wutNBpxY_xNf3cakvbivkaGRnk_uQ@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
+ bulkscore=0 malwarescore=0 phishscore=0 mlxscore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012090056
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
+ clxscore=1015 malwarescore=0 bulkscore=0 phishscore=0 adultscore=0
+ spamscore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012090056
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit aa821b2b9269 ("media: MAINTAINERS: Add myself as maintainer of the
-Amlogic GE2D driver") introduced a new MAINTAINERS section, but the file
-entry points to the wrong location.
+On Wed, Dec 09, 2020 at 08:36:31AM +0100, Jinpu Wang wrote:
+> Hi Dan,
+> 
+> 
+> 
+> On Wed, Dec 9, 2020 at 7:52 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> >
+> > The "ret" variable should be set to -ENOMEM but it returns uninitialized
+> > stack data.
+> >
+> > Fixes: 64e8a6ece1a5 ("block/rnbd-clt: Dynamically alloc buffer for pathname & blk_symlink_name")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> 
+> Thanks for the patch. But there is already a fix from Colin merged in
+> block tree:
+> https://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux-block.git/commit/?h=for-5.11/drivers&id=733c15bd3a944b8eeaacdddf061759b6a83dd3f4
+> 
+> There is still other problem through with commit 64e8a6ece1a5
+> ("block/rnbd-clt: Dynamically alloc buffer for pathname &
+> blk_symlink_name")
+> 
+> I will send the fix today together with other changes.
 
-Hence, ./scripts/get_maintainer.pl --self-test=patterns warns:
+Ah...  Haha...  Sorry about that.  We already discussed this yesterday.
 
-  warning: no file matches    F:    drivers/media/meson/ge2d/
+What happens is that when I write a patch, I normally save it in my
+postponed messages until the next day.  But then I decided to not fix it
+but instead to just report it.  Unfortunately, I forgot to delete it and
+I also forgot about yesterday's discussion because I have the memory of
+a gnat.  :P
 
-Adjust the entry to the actual location of the driver.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-applies on next-20201208, not on current master
-
-Neil, please ack.
-Hans, Mauro, please pick this minor non-urgent fix-up for your -next tree.
-
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5b20babb9f7b..d66bf50fc640 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11520,7 +11520,7 @@ L:	linux-amlogic@lists.infradead.org
- S:	Supported
- T:	git git://linuxtv.org/media_tree.git
- F:	Documentation/devicetree/bindings/media/amlogic,axg-ge2d.yaml
--F:	drivers/media/meson/ge2d/
-+F:	drivers/media/platform/meson/ge2d/
- 
- MESON NAND CONTROLLER DRIVER FOR AMLOGIC SOCS
- M:	Liang Yang <liang.yang@amlogic.com>
--- 
-2.17.1
+regards,
+dan carpenter
 

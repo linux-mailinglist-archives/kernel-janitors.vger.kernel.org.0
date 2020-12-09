@@ -2,86 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E9362D474F
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Dec 2020 18:01:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B18E2D47F1
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Dec 2020 18:30:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732221AbgLIQ6q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Dec 2020 11:58:46 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:33198 "EHLO
+        id S1731919AbgLIRYc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Dec 2020 12:24:32 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:60296 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731748AbgLIQ6j (ORCPT
+        with ESMTP id S1731346AbgLIRYV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Dec 2020 11:58:39 -0500
+        Wed, 9 Dec 2020 12:24:21 -0500
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B9Gtdxh045778;
-        Wed, 9 Dec 2020 16:57:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : message-id : references : date : in-reply-to : mime-version :
- content-type; s=corp-2020-01-29;
- bh=c1I0nlR7jgfWedPW3jV53XSfpcSGwN/wSxs+VvsS4kQ=;
- b=imfOs17U3SdGmUs6xmBcfDcUlh2tFcwhqU84RQUwtdC2jZm+ppdrZdpn1BtJEe3DDK0I
- 80n5jmE9UaK7+cNDqcMCILnco5luLMASTd2artuMwbVhKqG+CVi9Z0bHqAHmxFSoOdcs
- g9tZSD5qStdmRFTZaHw6ngPkNdCkhK7q42m5Fp7uAvfVcQxzqjcpNQUewiLMYsZTYGUl
- XIxTgGj2Twm9U28IxzABq28Yhg4qxvu2VOeNaV+3IpkaGa2FBH16/H2KVOJTyKm3Xw9V
- pFBfYrUNY83kPoMZKgnCf0+i03rH6fvrMLymW0btx/yCzqAM/RrKqZWRWTKYFhXEpwhd 1g== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 35825m9874-1
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B9HJWlv111588;
+        Wed, 9 Dec 2020 17:23:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=VnN6soBlGi/0SCbEGBCIPTtcbq0lk8ftwSQHlFY9W2c=;
+ b=bdiS+b4cqUlD4wyfQqnFY5YvZBEbEoh/ZZGJ6+URhC8NQhdy+bg2hFbd8/VJ+ih+D1Qt
+ oDbydpYRZrTKIhgfrMl/XVE/mWsOM03iQ45AP0mcQ2WPhvS2keZ/XyL69of7Fg2j/rqp
+ YlD7KtUIEPNkhxX9d0ul0KeUpOtVGNWMoBSoh0juoUzWFP7tSQooq2Rb6ueuV/7xqK+E
+ bKnqy2qLzU4ZJe7KVlTZuaFpUQY8u9et3z0hodsV+560nJgV7Ba5xm8aVLVIua8BgmWK
+ necrH5Bs2Q+6m83Uuca2cPcARWI+o5fJ2BarwULvLZ9TivGIZuqk/4prfolcHtHhHcMF hw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 35825m9ct1-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 09 Dec 2020 16:57:55 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B9GtmoR191165;
-        Wed, 9 Dec 2020 16:57:54 GMT
+        Wed, 09 Dec 2020 17:23:34 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B9HKjkd142185;
+        Wed, 9 Dec 2020 17:23:33 GMT
 Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 358m50vchv-1
+        by userp3020.oracle.com with ESMTP id 358kyv0gr1-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 09 Dec 2020 16:57:54 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B9GvrDb006147;
-        Wed, 9 Dec 2020 16:57:53 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        Wed, 09 Dec 2020 17:23:33 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B9HNWs7022582;
+        Wed, 9 Dec 2020 17:23:32 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 09 Dec 2020 08:57:52 -0800
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Sathya Prakash <sathya.prakash@broadcom.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] scsi: mpt3sas: Signedness bug in _base_get_diag_triggers()
+        with ESMTP ; Wed, 09 Dec 2020 09:23:32 -0800
 From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <yq1mtymrk6v.fsf@ca-mkp.ca.oracle.com>
-References: <X9DZH37bYPHwSQRP@mwanda>
-Date:   Wed, 09 Dec 2020 11:57:50 -0500
-In-Reply-To: <X9DZH37bYPHwSQRP@mwanda> (Dan Carpenter's message of "Wed, 9 Dec
-        2020 17:03:11 +0300")
+To:     Nilesh Javali <njavali@marvell.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        Manish Rangankar <mrangankar@marvell.com>,
+        Colin King <colin.king@canonical.com>,
+        linux-scsi@vger.kernel.org, GR-QLogic-Storage-Upstream@marvell.com
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] scsi: qla4xxx: remove redundant assignment to variable rval
+Date:   Wed,  9 Dec 2020 12:23:16 -0500
+Message-Id: <160753457756.14816.15596316150027507404.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20201204191810.1150995-1-colin.king@canonical.com>
+References: <20201204191810.1150995-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 suspectscore=1
- bulkscore=0 malwarescore=0 phishscore=0 adultscore=0 mlxlogscore=999
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 mlxscore=0
+ malwarescore=0 suspectscore=0 mlxlogscore=999 bulkscore=0 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012090119
+ definitions=main-2012090122
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 adultscore=0 bulkscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 bulkscore=0
  phishscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501 mlxscore=0
  spamscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012090119
+ definitions=main-2012090122
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Fri, 4 Dec 2020 19:18:10 +0000, Colin King wrote:
 
-Dan,
+> The variable rval is being initialized with a value that is never read
+> and it is being updated later with a new value.  The initialization is
+> redundant and can be removed.
 
-> The "trigger_flags" variable needs to be signed for the error checking
-> to work.
+Applied to 5.11/scsi-queue, thanks!
 
-Applied to 5.11/scsi-staging, thanks!
+[1/1] scsi: qla4xxx: remove redundant assignment to variable rval
+      https://git.kernel.org/mkp/scsi/c/3a5b9fa2cc5f
 
 -- 
 Martin K. Petersen	Oracle Linux Engineering

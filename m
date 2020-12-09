@@ -2,87 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B18E2D47F1
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Dec 2020 18:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51A2B2D4ABA
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Dec 2020 20:45:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731919AbgLIRYc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Dec 2020 12:24:32 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:60296 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731346AbgLIRYV (ORCPT
+        id S2387947AbgLIToC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Dec 2020 14:44:02 -0500
+Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:17787 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387937AbgLITnv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Dec 2020 12:24:21 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B9HJWlv111588;
-        Wed, 9 Dec 2020 17:23:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=VnN6soBlGi/0SCbEGBCIPTtcbq0lk8ftwSQHlFY9W2c=;
- b=bdiS+b4cqUlD4wyfQqnFY5YvZBEbEoh/ZZGJ6+URhC8NQhdy+bg2hFbd8/VJ+ih+D1Qt
- oDbydpYRZrTKIhgfrMl/XVE/mWsOM03iQ45AP0mcQ2WPhvS2keZ/XyL69of7Fg2j/rqp
- YlD7KtUIEPNkhxX9d0ul0KeUpOtVGNWMoBSoh0juoUzWFP7tSQooq2Rb6ueuV/7xqK+E
- bKnqy2qLzU4ZJe7KVlTZuaFpUQY8u9et3z0hodsV+560nJgV7Ba5xm8aVLVIua8BgmWK
- necrH5Bs2Q+6m83Uuca2cPcARWI+o5fJ2BarwULvLZ9TivGIZuqk/4prfolcHtHhHcMF hw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 35825m9ct1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 09 Dec 2020 17:23:34 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B9HKjkd142185;
-        Wed, 9 Dec 2020 17:23:33 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 358kyv0gr1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 09 Dec 2020 17:23:33 +0000
-Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B9HNWs7022582;
-        Wed, 9 Dec 2020 17:23:32 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 09 Dec 2020 09:23:32 -0800
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Nilesh Javali <njavali@marvell.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        Manish Rangankar <mrangankar@marvell.com>,
-        Colin King <colin.king@canonical.com>,
-        linux-scsi@vger.kernel.org, GR-QLogic-Storage-Upstream@marvell.com
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] scsi: qla4xxx: remove redundant assignment to variable rval
-Date:   Wed,  9 Dec 2020 12:23:16 -0500
-Message-Id: <160753457756.14816.15596316150027507404.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20201204191810.1150995-1-colin.king@canonical.com>
-References: <20201204191810.1150995-1-colin.king@canonical.com>
+        Wed, 9 Dec 2020 14:43:51 -0500
+Received: from localhost.localdomain ([93.23.14.30])
+        by mwinf5d59 with ME
+        id 2Ki3240020euSfR03Ki3UJ; Wed, 09 Dec 2020 20:42:06 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 09 Dec 2020 20:42:06 +0100
+X-ME-IP: 93.23.14.30
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     ulf.hansson@linaro.org, afaerber@suse.de,
+        manivannan.sadhasivam@linaro.org
+Cc:     linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] mmc: owl-mmc: Fix a resource leak in an error handling path and in the remove function
+Date:   Wed,  9 Dec 2020 20:42:02 +0100
+Message-Id: <20201209194202.54099-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 mlxscore=0
- malwarescore=0 suspectscore=0 mlxlogscore=999 bulkscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012090122
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 bulkscore=0
- phishscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501 mlxscore=0
- spamscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012090122
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 4 Dec 2020 19:18:10 +0000, Colin King wrote:
+'dma_request_chan()' calls should be balanced by a corresponding
+'dma_release_channel()' call.
 
-> The variable rval is being initialized with a value that is never read
-> and it is being updated later with a new value.  The initialization is
-> redundant and can be removed.
+Add the missing call both in the error handling path of the probe function
+and in the remove function.
 
-Applied to 5.11/scsi-queue, thanks!
+Fixes: ff65ffe46d28 ("mmc: Add Actions Semi Owl SoCs SD/MMC driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/mmc/host/owl-mmc.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-[1/1] scsi: qla4xxx: remove redundant assignment to variable rval
-      https://git.kernel.org/mkp/scsi/c/3a5b9fa2cc5f
-
+diff --git a/drivers/mmc/host/owl-mmc.c b/drivers/mmc/host/owl-mmc.c
+index 53b81582f1af..5490962dc8e5 100644
+--- a/drivers/mmc/host/owl-mmc.c
++++ b/drivers/mmc/host/owl-mmc.c
+@@ -640,7 +640,7 @@ static int owl_mmc_probe(struct platform_device *pdev)
+ 	owl_host->irq = platform_get_irq(pdev, 0);
+ 	if (owl_host->irq < 0) {
+ 		ret = -EINVAL;
+-		goto err_free_host;
++		goto err_release_channel;
+ 	}
+ 
+ 	ret = devm_request_irq(&pdev->dev, owl_host->irq, owl_irq_handler,
+@@ -648,19 +648,21 @@ static int owl_mmc_probe(struct platform_device *pdev)
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to request irq %d\n",
+ 			owl_host->irq);
+-		goto err_free_host;
++		goto err_release_channel;
+ 	}
+ 
+ 	ret = mmc_add_host(mmc);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to add host\n");
+-		goto err_free_host;
++		goto err_release_channel;
+ 	}
+ 
+ 	dev_dbg(&pdev->dev, "Owl MMC Controller Initialized\n");
+ 
+ 	return 0;
+ 
++err_release_channel:
++	dma_release_channel(owl_host->dma);
+ err_free_host:
+ 	mmc_free_host(mmc);
+ 
+@@ -674,6 +676,7 @@ static int owl_mmc_remove(struct platform_device *pdev)
+ 
+ 	mmc_remove_host(mmc);
+ 	disable_irq(owl_host->irq);
++	dma_release_channel(owl_host->dma);
+ 	mmc_free_host(mmc);
+ 
+ 	return 0;
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.27.0
+

@@ -2,115 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59B532D641D
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Dec 2020 18:54:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 440342D645F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Dec 2020 19:05:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390050AbgLJRy3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 10 Dec 2020 12:54:29 -0500
-Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:22742 "EHLO
+        id S2391010AbgLJSDa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 10 Dec 2020 13:03:30 -0500
+Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:53193 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392889AbgLJRyW (ORCPT
+        with ESMTP id S2392426AbgLJSDT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 10 Dec 2020 12:54:22 -0500
-Received: from localhost.localdomain ([93.22.150.71])
+        Thu, 10 Dec 2020 13:03:19 -0500
+Received: from [192.168.42.210] ([93.22.150.71])
         by mwinf5d35 with ME
-        id 2hsb2400F1YgGEM03hscul; Thu, 10 Dec 2020 18:52:37 +0100
-X-ME-Helo: localhost.localdomain
+        id 2i1a2400T1YgGEM03i1bqn; Thu, 10 Dec 2020 19:01:35 +0100
+X-ME-Helo: [192.168.42.210]
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 10 Dec 2020 18:52:37 +0100
+X-ME-Date: Thu, 10 Dec 2020 19:01:35 +0100
 X-ME-IP: 93.22.150.71
+Subject: =?UTF-8?Q?Re=3a_=5bPATCH=5d_cxl=3a_Reduce_scope_for_the_variable_?=
+ =?UTF-8?B?4oCcbW3igJ0gaW4gY3hsbGliX2dldF9QRV9hdHRyaWJ1dGVzKCk=?=
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+References: <5cee2b25-71e0-15aa-fba6-12211b8308aa@web.de>
+ <X9I1GLYCkw/q/xMu@kroah.com> <507d607a-0551-ec11-e1dc-5b9c96a361cb@web.de>
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     apw@canonical.com, joe@perches.com, gregkh@linuxfoundation.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] checkpatch: Fix "Missing a blank line after declarations" test on patches
-Date:   Thu, 10 Dec 2020 18:52:35 +0100
-Message-Id: <20201210175235.65657-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.27.0
+Message-ID: <6da89e4e-1f29-0dde-ad5b-a168f4cc1e85@wanadoo.fr>
+Date:   Thu, 10 Dec 2020 19:01:36 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
+In-Reply-To: <507d607a-0551-ec11-e1dc-5b9c96a361cb@web.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-"Missing a blank line after declarations" is not triggered on patches.
-Tweak the regex to match such cases.
+Le 10/12/2020 à 17:04, Markus Elfring a écrit :
+>>> A local variable was used only within an if branch.
+>>> Thus move the definition for the variable “mm” into the corresponding
+>>> code block.
+>>
+>> You did nothing here except add a checkpatch warning :(
+> 
+> elfring@Sonne:~/Projekte/Linux/next-patched> scripts/checkpatch.pl /home/elfring/Projekte/Bau/Linux/scripts/Coccinelle/tuning1/next/20201204/Flicken/0001-cxl-Reduce-scope-for-the-variable-mm-in-cxllib_get_P.patch
+> total: 0 errors, 0 warnings, 16 lines checked
+> 
+> Regards,
+> Markus
+> 
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-This patch is mostly a PoC. I don't know enough about checkpatch.pl to be
-sure that the fix is the right thing to do.
-At least, it works for me :)
+Maybe:
+    script/checkpatch.pl -f drivers/misc/cxl/cxllib.c
 
-The [\+ ] is taken from the test just above.
-
-I also wonder if there is a missing ^ in the last test:
-  (($prevline =~ /[\+ ](\s+)\S/) && $sline =~ /^[\+ ]$1\S/))
-                  ^
-                  |___ here
----
- scripts/checkpatch.pl | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
-
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 7b086d1cd6c2..854868b5dbbc 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -3783,39 +3783,39 @@ sub process {
- 		}
- 
- # check for missing blank lines after declarations
--		if ($sline =~ /^\+\s+\S/ &&			#Not at char 1
-+		if ($sline =~ /^[\+ ]\s+\S/ &&			#Not at char 1
- 			# actual declarations
--		    ($prevline =~ /^\+\s+$Declare\s*$Ident\s*[=,;:\[]/ ||
-+		    ($prevline =~ /^[\+ ]\s+$Declare\s*$Ident\s*[=,;:\[]/ ||
- 			# function pointer declarations
--		     $prevline =~ /^\+\s+$Declare\s*\(\s*\*\s*$Ident\s*\)\s*[=,;:\[\(]/ ||
-+		     $prevline =~ /^[\+ ]\s+$Declare\s*\(\s*\*\s*$Ident\s*\)\s*[=,;:\[\(]/ ||
- 			# foo bar; where foo is some local typedef or #define
--		     $prevline =~ /^\+\s+$Ident(?:\s+|\s*\*\s*)$Ident\s*[=,;\[]/ ||
-+		     $prevline =~ /^[\+ ]\s+$Ident(?:\s+|\s*\*\s*)$Ident\s*[=,;\[]/ ||
- 			# known declaration macros
--		     $prevline =~ /^\+\s+$declaration_macros/) &&
-+		     $prevline =~ /^[\+ ]\s+$declaration_macros/) &&
- 			# for "else if" which can look like "$Ident $Ident"
--		    !($prevline =~ /^\+\s+$c90_Keywords\b/ ||
-+		    !($prevline =~ /^[\+ ]\s+$c90_Keywords\b/ ||
- 			# other possible extensions of declaration lines
- 		      $prevline =~ /(?:$Compare|$Assignment|$Operators)\s*$/ ||
- 			# not starting a section or a macro "\" extended line
- 		      $prevline =~ /(?:\{\s*|\\)$/) &&
- 			# looks like a declaration
--		    !($sline =~ /^\+\s+$Declare\s*$Ident\s*[=,;:\[]/ ||
-+		    !($sline =~ /^[\+ ]\s+$Declare\s*$Ident\s*[=,;:\[]/ ||
- 			# function pointer declarations
--		      $sline =~ /^\+\s+$Declare\s*\(\s*\*\s*$Ident\s*\)\s*[=,;:\[\(]/ ||
-+		      $sline =~ /^[\+ ]\s+$Declare\s*\(\s*\*\s*$Ident\s*\)\s*[=,;:\[\(]/ ||
- 			# foo bar; where foo is some local typedef or #define
--		      $sline =~ /^\+\s+$Ident(?:\s+|\s*\*\s*)$Ident\s*[=,;\[]/ ||
-+		      $sline =~ /^[\+ ]\s+$Ident(?:\s+|\s*\*\s*)$Ident\s*[=,;\[]/ ||
- 			# known declaration macros
--		      $sline =~ /^\+\s+$declaration_macros/ ||
-+		      $sline =~ /^[\+ ]\s+$declaration_macros/ ||
- 			# start of struct or union or enum
--		      $sline =~ /^\+\s+(?:static\s+)?(?:const\s+)?(?:union|struct|enum|typedef)\b/ ||
-+		      $sline =~ /^[\+ ]\s+(?:static\s+)?(?:const\s+)?(?:union|struct|enum|typedef)\b/ ||
- 			# start or end of block or continuation of declaration
--		      $sline =~ /^\+\s+(?:$|[\{\}\.\#\"\?\:\(\[])/ ||
-+		      $sline =~ /^[\+ ]\s+(?:$|[\{\}\.\#\"\?\:\(\[])/ ||
- 			# bitfield continuation
--		      $sline =~ /^\+\s+$Ident\s*:\s*\d+\s*[,;]/ ||
-+		      $sline =~ /^[\+ ]\s+$Ident\s*:\s*\d+\s*[,;]/ ||
- 			# other possible extensions of declaration lines
--		      $sline =~ /^\+\s+\(?\s*(?:$Compare|$Assignment|$Operators)/) &&
-+		      $sline =~ /^[\+ ]\s+\(?\s*(?:$Compare|$Assignment|$Operators)/) &&
- 			# indentation of previous and current line are the same
--		    (($prevline =~ /\+(\s+)\S/) && $sline =~ /^\+$1\S/)) {
-+		    (($prevline =~ /[\+ ](\s+)\S/) && $sline =~ /^[\+ ]$1\S/)) {
- 			if (WARN("LINE_SPACING",
- 				 "Missing a blank line after declarations\n" . $hereprev) &&
- 			    $fix) {
--- 
-2.27.0
-
+?

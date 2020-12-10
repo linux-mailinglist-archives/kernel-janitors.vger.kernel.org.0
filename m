@@ -2,77 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2524F2D64A2
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Dec 2020 19:15:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC96A2D64CC
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Dec 2020 19:23:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404025AbgLJSOm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 10 Dec 2020 13:14:42 -0500
-Received: from smtprelay0010.hostedemail.com ([216.40.44.10]:56408 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2403993AbgLJSO1 (ORCPT
+        id S2393022AbgLJSWm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 10 Dec 2020 13:22:42 -0500
+Received: from relay10.mail.gandi.net ([217.70.178.230]:51879 "EHLO
+        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390976AbgLJSWd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 10 Dec 2020 13:14:27 -0500
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay05.hostedemail.com (Postfix) with ESMTP id BEBA818029146;
-        Thu, 10 Dec 2020 18:13:43 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2197:2198:2199:2200:2393:2559:2562:2691:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:3872:3874:4250:4303:4321:5007:8531:10004:10400:10450:10455:10848:11232:11658:11783:11914:12043:12297:12740:12895:13019:13069:13161:13229:13255:13311:13357:13439:13894:14093:14097:14181:14659:19904:19999:21080:21221:21433:21627:21740:30012:30054:30056:30083:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:3,LUA_SUMMARY:none
-X-HE-Tag: arm83_08169e1273fa
-X-Filterd-Recvd-Size: 1973
-Received: from XPS-9350.home (unknown [47.151.137.21])
-        (Authenticated sender: joe@perches.com)
-        by omf14.hostedemail.com (Postfix) with ESMTPA;
-        Thu, 10 Dec 2020 18:13:42 +0000 (UTC)
-Message-ID: <c0382efac23a4fb18f31974b80f25558cada7243.camel@perches.com>
-Subject: Re: [PATCH] checkpatch: Fix "Missing a blank line after
- declarations" test on patches
-From:   Joe Perches <joe@perches.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        apw@canonical.com, gregkh@linuxfoundation.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Date:   Thu, 10 Dec 2020 10:13:40 -0800
-In-Reply-To: <20201210175235.65657-1-christophe.jaillet@wanadoo.fr>
-References: <20201210175235.65657-1-christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+        Thu, 10 Dec 2020 13:22:33 -0500
+Received: from localhost (lfbn-lyo-1-997-19.w86-194.abo.wanadoo.fr [86.194.74.19])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 5F5E924000D;
+        Thu, 10 Dec 2020 18:21:50 +0000 (UTC)
+Date:   Thu, 10 Dec 2020 19:21:50 +0100
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Colin Ian King <colin.king@canonical.com>
+Subject: Re: [PATCH] mmc: atmel-mci: =?utf-8?Q?Redu?=
+ =?utf-8?Q?ce_scope_for_the_variable_=E2=80=9Cslot?= =?utf-8?B?4oCd?= in
+ atmci_request_end()
+Message-ID: <20201210182150.GE1578121@piout.net>
+References: <466b4c6d-032f-fbcc-58ac-75f6f39d734f@web.de>
+ <20201210151035.GC1578121@piout.net>
+ <ec71d7b8-a36b-04f5-77a8-22874ac241e1@web.de>
+ <20201210170723.GD1578121@piout.net>
+ <2667790c-fad2-aaa9-36e8-6be66949ac8d@web.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <2667790c-fad2-aaa9-36e8-6be66949ac8d@web.de>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 2020-12-10 at 18:52 +0100, Christophe JAILLET wrote:
-> "Missing a blank line after declarations" is not triggered on patches.
-
-That's not true.
-It does work on any patch that does a new function addition.
-There are some patch context complications here when lines are
-added and removed such that '+' add, '-' delete, and ' ' context
-testing isn't always obvious.
-
-So, the code was intentionally limited to just new functions.
-
-If there are simple ways to avoid false positives, great, but I
-believe it's not trivial.
-
-> Tweak the regex to match such cases.
-
-Please send multiple patch examples of different forms where it
-does not work.
-
-> This patch is mostly a PoC. I don't know enough about checkpatch.pl to be
-> sure that the fix is the right thing to do.
-> At least, it works for me :)
-
-Always a starting point...
-
+On 10/12/2020 18:23:05+0100, Markus Elfring wrote:
+> >> Can the extra null pointer initialisation trigger a source code analysis warning
+> >> like â€œAddresses-Coverity: ("Unused value")â€ for this function implementation?
+> >>
+> >
+> > Did you check, does it? It doesn't.
+> >
+> > Are you wasting maintainer and reviewer's time? Yes you are.
 > 
-> The [\+ ] is taken from the test just above.
+> How do you think about a patch like â€œstaging: speakup: remove redundant initialization
+> of pointer p_keyâ€ for comparison?
+> https://lore.kernel.org/patchwork/patch/1199128/
+> https://lore.kernel.org/driverdev-devel/20200223153954.420731-1-colin.king@canonical.com/
 > 
-> I also wonder if there is a missing ^ in the last test:
->   (($prevline =~ /[\+ ](\s+)\S/) && $sline =~ /^[\+ ]$1\S/))
->                   ^
->                   |___ here
+> Would you tolerate to omit the initialisation for the variable â€œslotâ€?
+> 
 
+If you were able to provide one good technical reason.
 
-
+-- 
+Alexandre Belloni, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

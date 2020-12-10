@@ -2,76 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B6FE2D61E3
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Dec 2020 17:32:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F8A22D6361
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Dec 2020 18:22:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392216AbgLJQFE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 10 Dec 2020 11:05:04 -0500
-Received: from mx2.suse.de ([195.135.220.15]:51824 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391491AbgLJQFD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 10 Dec 2020 11:05:03 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 6FCE3AF22;
-        Thu, 10 Dec 2020 16:04:20 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
-        id EFC9C1E1354; Thu, 10 Dec 2020 17:04:19 +0100 (CET)
-Date:   Thu, 10 Dec 2020 17:04:19 +0100
-From:   Jan Kara <jack@suse.cz>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Theodore Ts'o <tytso@mit.edu>,
-        Harshad Shirwadkar <harshadshirwadkar@gmail.com>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        linux-ext4@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] ext4: Fix an IS_ERR() vs NULL check
-Message-ID: <20201210160419.GA31725@quack2.suse.cz>
-References: <20201023112232.GB282278@mwanda>
+        id S2391616AbgLJRVN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 10 Dec 2020 12:21:13 -0500
+Received: from mslow2.mail.gandi.net ([217.70.178.242]:38566 "EHLO
+        mslow2.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389954AbgLJRT3 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 10 Dec 2020 12:19:29 -0500
+Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
+        by mslow2.mail.gandi.net (Postfix) with ESMTP id EBFED3A5AD5;
+        Thu, 10 Dec 2020 17:08:34 +0000 (UTC)
+X-Originating-IP: 86.194.74.19
+Received: from localhost (lfbn-lyo-1-997-19.w86-194.abo.wanadoo.fr [86.194.74.19])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 46927FF80D;
+        Thu, 10 Dec 2020 17:07:24 +0000 (UTC)
+Date:   Thu, 10 Dec 2020 18:07:23 +0100
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] mmc: atmel-mci: =?utf-8?Q?Redu?=
+ =?utf-8?Q?ce_scope_for_the_variable_=E2=80=9Cslot?= =?utf-8?B?4oCd?= in
+ atmci_request_end()
+Message-ID: <20201210170723.GD1578121@piout.net>
+References: <466b4c6d-032f-fbcc-58ac-75f6f39d734f@web.de>
+ <20201210151035.GC1578121@piout.net>
+ <ec71d7b8-a36b-04f5-77a8-22874ac241e1@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20201023112232.GB282278@mwanda>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ec71d7b8-a36b-04f5-77a8-22874ac241e1@web.de>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri 23-10-20 14:22:32, Dan Carpenter wrote:
-> The ext4_find_extent() function never returns NULL, it returns error
-> pointers.
+On 10/12/2020 17:35:31+0100, Markus Elfring wrote:
+> >> A local variable was used only within an if branch.
+> >> Thus move the definition for the variable “slot” into the corresponding
+> >> code block.
+> >>
+> >
+> > What is the improvement here?
 > 
-> Fixes: 44059e503b03 ("ext4: fast commit recovery path")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-I think this fix has fallen through the cracks? It looks good to me so feel
-free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  fs/ext4/extents.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> A possible refactoring.
+> https://refactoring.com/catalog/reduceScopeOfVariable.html
 > 
-> diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-> index 6b33b9c86b00..a19d0e3a4126 100644
-> --- a/fs/ext4/extents.c
-> +++ b/fs/ext4/extents.c
-> @@ -5820,8 +5820,8 @@ int ext4_ext_replay_update_ex(struct inode *inode, ext4_lblk_t start,
->  	int ret;
->  
->  	path = ext4_find_extent(inode, start, NULL, 0);
-> -	if (!path)
-> -		return -EINVAL;
-> +	if (IS_ERR(path))
-> +		return PTR_ERR(path);
->  	ex = path[path->p_depth].p_ext;
->  	if (!ex) {
->  		ret = -EFSCORRUPTED;
-> -- 
-> 2.28.0
+
+I quote:
+"Since declarations of variables in many cases costs computational
+cycles, you may end up wasting time for nothing."
+
+This is false, it doesn't.
+
+I also quote:
+"When I'm writing new code I find I don't scope my temps any less than
+method scope. This is because I keep my methods short, so reducing scope
+any further doesn't add much value. The value of this refactoring is in
+breaking up a large method."
+
+Is that function large? It is not.
+
+
 > 
+> > This makes the code harder to read.
+> 
+> Can the extra null pointer initialisation trigger a source code analysis warning
+> like “Addresses-Coverity: ("Unused value")” for this function implementation?
+> 
+
+Did you check, does it? It doesn't.
+
+Are you wasting maintainer and reviewer's time? Yes you are.
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Alexandre Belloni, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

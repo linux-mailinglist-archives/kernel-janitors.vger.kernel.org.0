@@ -2,41 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 819822D64DD
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Dec 2020 19:26:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CEC32D64D0
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Dec 2020 19:23:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393035AbgLJSZQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 10 Dec 2020 13:25:16 -0500
-Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:33360 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392987AbgLJSXn (ORCPT
+        id S2393064AbgLJSWx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 10 Dec 2020 13:22:53 -0500
+Received: from static.214.254.202.116.clients.your-server.de ([116.202.254.214]:38434
+        "EHLO ciao.gmane.io" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2393024AbgLJSWs (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 10 Dec 2020 13:23:43 -0500
-Received: from [192.168.42.210] ([93.22.150.71])
-        by mwinf5d35 with ME
-        id 2iMy2400H1YgGEM03iMzpl; Thu, 10 Dec 2020 19:21:59 +0100
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 10 Dec 2020 19:21:59 +0100
-X-ME-IP: 93.22.150.71
+        Thu, 10 Dec 2020 13:22:48 -0500
+Received: from list by ciao.gmane.io with local (Exim 4.92)
+        (envelope-from <glkj-kernel-janitors-2@m.gmane-mx.org>)
+        id 1knQZo-0004Ti-Lz
+        for kernel-janitors@vger.kernel.org; Thu, 10 Dec 2020 19:22:04 +0100
+X-Injected-Via-Gmane: http://gmane.org/
+To:     kernel-janitors@vger.kernel.org
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Subject: Re: [PATCH] checkpatch: Fix "Missing a blank line after declarations"
  test on patches
-To:     Joe Perches <joe@perches.com>, apw@canonical.com,
-        gregkh@linuxfoundation.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Newsgroups: gmane.linux.kernel.janitors,gmane.linux.kernel
+Date:   Thu, 10 Dec 2020 19:22:00 +0100
+Message-ID: <f748fbd5-f646-caa9-aec1-52ba882f9665@wanadoo.fr>
 References: <20201210175235.65657-1-christophe.jaillet@wanadoo.fr>
  <c0382efac23a4fb18f31974b80f25558cada7243.camel@perches.com>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <f748fbd5-f646-caa9-aec1-52ba882f9665@wanadoo.fr>
-Date:   Thu, 10 Dec 2020 19:22:00 +0100
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.5.1
-MIME-Version: 1.0
 In-Reply-To: <c0382efac23a4fb18f31974b80f25558cada7243.camel@perches.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Cc:     linux-kernel@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -117,4 +113,5 @@ index 2a1783f32254..53b919856426 100644
   		/*
 --
 2.29.2
+
 

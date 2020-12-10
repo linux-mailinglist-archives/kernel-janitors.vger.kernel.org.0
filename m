@@ -2,88 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F8A22D6361
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Dec 2020 18:22:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB4C02D6394
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Dec 2020 18:33:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391616AbgLJRVN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 10 Dec 2020 12:21:13 -0500
-Received: from mslow2.mail.gandi.net ([217.70.178.242]:38566 "EHLO
-        mslow2.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389954AbgLJRT3 (ORCPT
+        id S2391616AbgLJRbj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 10 Dec 2020 12:31:39 -0500
+Received: from hqnvemgate25.nvidia.com ([216.228.121.64]:11569 "EHLO
+        hqnvemgate25.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2392714AbgLJRab (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 10 Dec 2020 12:19:29 -0500
-Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
-        by mslow2.mail.gandi.net (Postfix) with ESMTP id EBFED3A5AD5;
-        Thu, 10 Dec 2020 17:08:34 +0000 (UTC)
-X-Originating-IP: 86.194.74.19
-Received: from localhost (lfbn-lyo-1-997-19.w86-194.abo.wanadoo.fr [86.194.74.19])
-        (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 46927FF80D;
-        Thu, 10 Dec 2020 17:07:24 +0000 (UTC)
-Date:   Thu, 10 Dec 2020 18:07:23 +0100
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] mmc: atmel-mci: =?utf-8?Q?Redu?=
- =?utf-8?Q?ce_scope_for_the_variable_=E2=80=9Cslot?= =?utf-8?B?4oCd?= in
- atmci_request_end()
-Message-ID: <20201210170723.GD1578121@piout.net>
-References: <466b4c6d-032f-fbcc-58ac-75f6f39d734f@web.de>
- <20201210151035.GC1578121@piout.net>
- <ec71d7b8-a36b-04f5-77a8-22874ac241e1@web.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+        Thu, 10 Dec 2020 12:30:31 -0500
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate25.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+        id <B5fd25b090000>; Thu, 10 Dec 2020 09:29:45 -0800
+Received: from HQMAIL101.nvidia.com (172.20.187.10) by HQMAIL111.nvidia.com
+ (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 10 Dec
+ 2020 17:29:45 +0000
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.171)
+ by HQMAIL101.nvidia.com (172.20.187.10) with Microsoft SMTP Server (TLS) id
+ 15.0.1473.3 via Frontend Transport; Thu, 10 Dec 2020 17:29:45 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mCbr7wogg5X+Yd539Igho5jaJXYSYQWv8zTaHjJDT5iRfqljmNbAVmwquVV4A0IDsTuskNJXMGsRlI1oa/x9otIF4w1ZFJYL2eyUGazqdibHUxorFWAtrWg8bCUsyG1Tjd97nFzkFKLXl6VOTAAHMlbx83lLX23lyx/8cs8OVef5Keb6yZinqYXvoE4tBvC19GyLBe5eETW5MzTcgO0a2Q/3icFoY84BfXJ9HmubG1I/I9AkiqRbqvsPK7M7yO2105I6aD96iK2fNDc1Kax7vfbAnTmk/46R6LCqpD7sDnN7kdqvykTDB/FBdTKxfKPaKC6alTXJGWT3FldzuXMayA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ijhB3/xMnWFMU6pv3I+YOoyRHDzZS6DgitkxaOu5XE8=;
+ b=mF4wVkMK07m35pJ/mwaeQqd7jkhTwAYA+cc6TC+rycwQvZVN/uDZh85nmn4JLsgx8oMRrzpCNytGZKK1qdZuphqjxmDnEN+boQEEvotXU9X3L+NBV9hWrXSS65LS429+ieMCGY3swe2ylAluMAC2pDPeL2Zu8HuV9LeHOTP4YKau93Rg0gCZej6j281u0dO3Z60LKoU9s9kWYroiceKph/qqpPx9p1scMJrP6wPwgkVurQ/KbZR3loOFMzdvUMkrze1v+psq4S84aPQimeBbVQtCK1J5I5VnwqMvwTcbXjIL5udnHgEBqo+j4HiNSPI7hHsJNTntVcx5nEk/ikvvHA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
+ by DM5PR1201MB0107.namprd12.prod.outlook.com (2603:10b6:4:55::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.20; Thu, 10 Dec
+ 2020 17:29:43 +0000
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::1ce9:3434:90fe:3433]) by DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::1ce9:3434:90fe:3433%3]) with mapi id 15.20.3632.023; Thu, 10 Dec 2020
+ 17:29:43 +0000
+Date:   Thu, 10 Dec 2020 13:29:41 -0400
+From:   Jason Gunthorpe <jgg@nvidia.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+CC:     Doug Ledford <dledford@redhat.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        <linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH] RDMA/restrack: update kernel documentation for
+ ib_create_named_qp()
+Message-ID: <20201210172941.GC2117013@nvidia.com>
+References: <20201207173255.13355-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ec71d7b8-a36b-04f5-77a8-22874ac241e1@web.de>
+In-Reply-To: <20201207173255.13355-1-lukas.bulwahn@gmail.com>
+X-ClientProxiedBy: MN2PR01CA0064.prod.exchangelabs.com (2603:10b6:208:23f::33)
+ To DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from mlx.ziepe.ca (142.162.115.133) by MN2PR01CA0064.prod.exchangelabs.com (2603:10b6:208:23f::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3654.12 via Frontend Transport; Thu, 10 Dec 2020 17:29:42 +0000
+Received: from jgg by mlx with local (Exim 4.94)        (envelope-from <jgg@nvidia.com>)        id 1knPl7-008slJ-ND; Thu, 10 Dec 2020 13:29:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1607621385; bh=ijhB3/xMnWFMU6pv3I+YOoyRHDzZS6DgitkxaOu5XE8=;
+        h=ARC-Seal:ARC-Message-Signature:ARC-Authentication-Results:Date:
+         From:To:CC:Subject:Message-ID:References:Content-Type:
+         Content-Disposition:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+         X-MS-Exchange-MessageSentRepresentingType;
+        b=cawpmPkB6QKhHtOu7b4VSHF1zZpcmhJ7vu/RAZmL6K+BBO3wFzKnWZicAU00ZM+9b
+         TIxX2OtRvk5S5j+16vj19c1exo42/AR4RhY6gd+d+LowLIeX5XoMFkHmB4z+GKTIVp
+         /q9ciTKa1h9WYqR6aafV9JcIRrItmQrJh0hRkMS1sm9uT8Tixqregq9Avi8SfRfsmK
+         9wnijmUL/pmC2PNOu4ztKL04l6oZ28+M2z+/16HNlxJ+tFkNeqQnR8HDa6o3PRUNMz
+         lpJGXaAr4htqdiYKVLtN9eKtq3pyxIsExWCy52ie+sid1C5ps1bAq+qwBZGVwj18jT
+         o00mHnCKWVsqg==
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 10/12/2020 17:35:31+0100, Markus Elfring wrote:
-> >> A local variable was used only within an if branch.
-> >> Thus move the definition for the variable “slot” into the corresponding
-> >> code block.
-> >>
-> >
-> > What is the improvement here?
+On Mon, Dec 07, 2020 at 06:32:55PM +0100, Lukas Bulwahn wrote:
+> Commit 66f57b871efc ("RDMA/restrack: Support all QP types") extends
+> ib_create_qp() to a named ib_create_named_qp(), which takes the caller's
+> name as argument, but it did not add the new argument description to the
+> function's kerneldoc.
 > 
-> A possible refactoring.
-> https://refactoring.com/catalog/reduceScopeOfVariable.html
+> make htmldocs warns:
 > 
-
-I quote:
-"Since declarations of variables in many cases costs computational
-cycles, you may end up wasting time for nothing."
-
-This is false, it doesn't.
-
-I also quote:
-"When I'm writing new code I find I don't scope my temps any less than
-method scope. This is because I keep my methods short, so reducing scope
-any further doesn't add much value. The value of this refactoring is in
-breaking up a large method."
-
-Is that function large? It is not.
-
-
+>   ./drivers/infiniband/core/verbs.c:1206: warning: Function parameter or
+>   member 'caller' not described in 'ib_create_named_qp'
 > 
-> > This makes the code harder to read.
+> Add a description for this new argument based on the description of the
+> same argument in other related functions.
 > 
-> Can the extra null pointer initialisation trigger a source code analysis warning
-> like “Addresses-Coverity: ("Unused value")” for this function implementation?
-> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+> ---
+>  drivers/infiniband/core/verbs.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-Did you check, does it? It doesn't.
+Applies to for-next, thanks
 
-Are you wasting maintainer and reviewer's time? Yes you are.
-
--- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Jason

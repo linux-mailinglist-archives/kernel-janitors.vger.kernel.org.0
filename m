@@ -2,100 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB4C02D6394
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Dec 2020 18:33:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59B532D641D
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Dec 2020 18:54:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391616AbgLJRbj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 10 Dec 2020 12:31:39 -0500
-Received: from hqnvemgate25.nvidia.com ([216.228.121.64]:11569 "EHLO
-        hqnvemgate25.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392714AbgLJRab (ORCPT
+        id S2390050AbgLJRy3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 10 Dec 2020 12:54:29 -0500
+Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:22742 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2392889AbgLJRyW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 10 Dec 2020 12:30:31 -0500
-Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate25.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B5fd25b090000>; Thu, 10 Dec 2020 09:29:45 -0800
-Received: from HQMAIL101.nvidia.com (172.20.187.10) by HQMAIL111.nvidia.com
- (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 10 Dec
- 2020 17:29:45 +0000
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.171)
- by HQMAIL101.nvidia.com (172.20.187.10) with Microsoft SMTP Server (TLS) id
- 15.0.1473.3 via Frontend Transport; Thu, 10 Dec 2020 17:29:45 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mCbr7wogg5X+Yd539Igho5jaJXYSYQWv8zTaHjJDT5iRfqljmNbAVmwquVV4A0IDsTuskNJXMGsRlI1oa/x9otIF4w1ZFJYL2eyUGazqdibHUxorFWAtrWg8bCUsyG1Tjd97nFzkFKLXl6VOTAAHMlbx83lLX23lyx/8cs8OVef5Keb6yZinqYXvoE4tBvC19GyLBe5eETW5MzTcgO0a2Q/3icFoY84BfXJ9HmubG1I/I9AkiqRbqvsPK7M7yO2105I6aD96iK2fNDc1Kax7vfbAnTmk/46R6LCqpD7sDnN7kdqvykTDB/FBdTKxfKPaKC6alTXJGWT3FldzuXMayA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ijhB3/xMnWFMU6pv3I+YOoyRHDzZS6DgitkxaOu5XE8=;
- b=mF4wVkMK07m35pJ/mwaeQqd7jkhTwAYA+cc6TC+rycwQvZVN/uDZh85nmn4JLsgx8oMRrzpCNytGZKK1qdZuphqjxmDnEN+boQEEvotXU9X3L+NBV9hWrXSS65LS429+ieMCGY3swe2ylAluMAC2pDPeL2Zu8HuV9LeHOTP4YKau93Rg0gCZej6j281u0dO3Z60LKoU9s9kWYroiceKph/qqpPx9p1scMJrP6wPwgkVurQ/KbZR3loOFMzdvUMkrze1v+psq4S84aPQimeBbVQtCK1J5I5VnwqMvwTcbXjIL5udnHgEBqo+j4HiNSPI7hHsJNTntVcx5nEk/ikvvHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
- by DM5PR1201MB0107.namprd12.prod.outlook.com (2603:10b6:4:55::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.20; Thu, 10 Dec
- 2020 17:29:43 +0000
-Received: from DM6PR12MB3834.namprd12.prod.outlook.com
- ([fe80::1ce9:3434:90fe:3433]) by DM6PR12MB3834.namprd12.prod.outlook.com
- ([fe80::1ce9:3434:90fe:3433%3]) with mapi id 15.20.3632.023; Thu, 10 Dec 2020
- 17:29:43 +0000
-Date:   Thu, 10 Dec 2020 13:29:41 -0400
-From:   Jason Gunthorpe <jgg@nvidia.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-CC:     Doug Ledford <dledford@redhat.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        <linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH] RDMA/restrack: update kernel documentation for
- ib_create_named_qp()
-Message-ID: <20201210172941.GC2117013@nvidia.com>
-References: <20201207173255.13355-1-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20201207173255.13355-1-lukas.bulwahn@gmail.com>
-X-ClientProxiedBy: MN2PR01CA0064.prod.exchangelabs.com (2603:10b6:208:23f::33)
- To DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
+        Thu, 10 Dec 2020 12:54:22 -0500
+Received: from localhost.localdomain ([93.22.150.71])
+        by mwinf5d35 with ME
+        id 2hsb2400F1YgGEM03hscul; Thu, 10 Dec 2020 18:52:37 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 10 Dec 2020 18:52:37 +0100
+X-ME-IP: 93.22.150.71
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     apw@canonical.com, joe@perches.com, gregkh@linuxfoundation.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] checkpatch: Fix "Missing a blank line after declarations" test on patches
+Date:   Thu, 10 Dec 2020 18:52:35 +0100
+Message-Id: <20201210175235.65657-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from mlx.ziepe.ca (142.162.115.133) by MN2PR01CA0064.prod.exchangelabs.com (2603:10b6:208:23f::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3654.12 via Frontend Transport; Thu, 10 Dec 2020 17:29:42 +0000
-Received: from jgg by mlx with local (Exim 4.94)        (envelope-from <jgg@nvidia.com>)        id 1knPl7-008slJ-ND; Thu, 10 Dec 2020 13:29:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1607621385; bh=ijhB3/xMnWFMU6pv3I+YOoyRHDzZS6DgitkxaOu5XE8=;
-        h=ARC-Seal:ARC-Message-Signature:ARC-Authentication-Results:Date:
-         From:To:CC:Subject:Message-ID:References:Content-Type:
-         Content-Disposition:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-         X-MS-Exchange-MessageSentRepresentingType;
-        b=cawpmPkB6QKhHtOu7b4VSHF1zZpcmhJ7vu/RAZmL6K+BBO3wFzKnWZicAU00ZM+9b
-         TIxX2OtRvk5S5j+16vj19c1exo42/AR4RhY6gd+d+LowLIeX5XoMFkHmB4z+GKTIVp
-         /q9ciTKa1h9WYqR6aafV9JcIRrItmQrJh0hRkMS1sm9uT8Tixqregq9Avi8SfRfsmK
-         9wnijmUL/pmC2PNOu4ztKL04l6oZ28+M2z+/16HNlxJ+tFkNeqQnR8HDa6o3PRUNMz
-         lpJGXaAr4htqdiYKVLtN9eKtq3pyxIsExWCy52ie+sid1C5ps1bAq+qwBZGVwj18jT
-         o00mHnCKWVsqg==
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Dec 07, 2020 at 06:32:55PM +0100, Lukas Bulwahn wrote:
-> Commit 66f57b871efc ("RDMA/restrack: Support all QP types") extends
-> ib_create_qp() to a named ib_create_named_qp(), which takes the caller's
-> name as argument, but it did not add the new argument description to the
-> function's kerneldoc.
-> 
-> make htmldocs warns:
-> 
->   ./drivers/infiniband/core/verbs.c:1206: warning: Function parameter or
->   member 'caller' not described in 'ib_create_named_qp'
-> 
-> Add a description for this new argument based on the description of the
-> same argument in other related functions.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-> ---
->  drivers/infiniband/core/verbs.c | 1 +
->  1 file changed, 1 insertion(+)
+"Missing a blank line after declarations" is not triggered on patches.
+Tweak the regex to match such cases.
 
-Applies to for-next, thanks
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+This patch is mostly a PoC. I don't know enough about checkpatch.pl to be
+sure that the fix is the right thing to do.
+At least, it works for me :)
 
-Jason
+The [\+ ] is taken from the test just above.
+
+I also wonder if there is a missing ^ in the last test:
+  (($prevline =~ /[\+ ](\s+)\S/) && $sline =~ /^[\+ ]$1\S/))
+                  ^
+                  |___ here
+---
+ scripts/checkpatch.pl | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 7b086d1cd6c2..854868b5dbbc 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -3783,39 +3783,39 @@ sub process {
+ 		}
+ 
+ # check for missing blank lines after declarations
+-		if ($sline =~ /^\+\s+\S/ &&			#Not at char 1
++		if ($sline =~ /^[\+ ]\s+\S/ &&			#Not at char 1
+ 			# actual declarations
+-		    ($prevline =~ /^\+\s+$Declare\s*$Ident\s*[=,;:\[]/ ||
++		    ($prevline =~ /^[\+ ]\s+$Declare\s*$Ident\s*[=,;:\[]/ ||
+ 			# function pointer declarations
+-		     $prevline =~ /^\+\s+$Declare\s*\(\s*\*\s*$Ident\s*\)\s*[=,;:\[\(]/ ||
++		     $prevline =~ /^[\+ ]\s+$Declare\s*\(\s*\*\s*$Ident\s*\)\s*[=,;:\[\(]/ ||
+ 			# foo bar; where foo is some local typedef or #define
+-		     $prevline =~ /^\+\s+$Ident(?:\s+|\s*\*\s*)$Ident\s*[=,;\[]/ ||
++		     $prevline =~ /^[\+ ]\s+$Ident(?:\s+|\s*\*\s*)$Ident\s*[=,;\[]/ ||
+ 			# known declaration macros
+-		     $prevline =~ /^\+\s+$declaration_macros/) &&
++		     $prevline =~ /^[\+ ]\s+$declaration_macros/) &&
+ 			# for "else if" which can look like "$Ident $Ident"
+-		    !($prevline =~ /^\+\s+$c90_Keywords\b/ ||
++		    !($prevline =~ /^[\+ ]\s+$c90_Keywords\b/ ||
+ 			# other possible extensions of declaration lines
+ 		      $prevline =~ /(?:$Compare|$Assignment|$Operators)\s*$/ ||
+ 			# not starting a section or a macro "\" extended line
+ 		      $prevline =~ /(?:\{\s*|\\)$/) &&
+ 			# looks like a declaration
+-		    !($sline =~ /^\+\s+$Declare\s*$Ident\s*[=,;:\[]/ ||
++		    !($sline =~ /^[\+ ]\s+$Declare\s*$Ident\s*[=,;:\[]/ ||
+ 			# function pointer declarations
+-		      $sline =~ /^\+\s+$Declare\s*\(\s*\*\s*$Ident\s*\)\s*[=,;:\[\(]/ ||
++		      $sline =~ /^[\+ ]\s+$Declare\s*\(\s*\*\s*$Ident\s*\)\s*[=,;:\[\(]/ ||
+ 			# foo bar; where foo is some local typedef or #define
+-		      $sline =~ /^\+\s+$Ident(?:\s+|\s*\*\s*)$Ident\s*[=,;\[]/ ||
++		      $sline =~ /^[\+ ]\s+$Ident(?:\s+|\s*\*\s*)$Ident\s*[=,;\[]/ ||
+ 			# known declaration macros
+-		      $sline =~ /^\+\s+$declaration_macros/ ||
++		      $sline =~ /^[\+ ]\s+$declaration_macros/ ||
+ 			# start of struct or union or enum
+-		      $sline =~ /^\+\s+(?:static\s+)?(?:const\s+)?(?:union|struct|enum|typedef)\b/ ||
++		      $sline =~ /^[\+ ]\s+(?:static\s+)?(?:const\s+)?(?:union|struct|enum|typedef)\b/ ||
+ 			# start or end of block or continuation of declaration
+-		      $sline =~ /^\+\s+(?:$|[\{\}\.\#\"\?\:\(\[])/ ||
++		      $sline =~ /^[\+ ]\s+(?:$|[\{\}\.\#\"\?\:\(\[])/ ||
+ 			# bitfield continuation
+-		      $sline =~ /^\+\s+$Ident\s*:\s*\d+\s*[,;]/ ||
++		      $sline =~ /^[\+ ]\s+$Ident\s*:\s*\d+\s*[,;]/ ||
+ 			# other possible extensions of declaration lines
+-		      $sline =~ /^\+\s+\(?\s*(?:$Compare|$Assignment|$Operators)/) &&
++		      $sline =~ /^[\+ ]\s+\(?\s*(?:$Compare|$Assignment|$Operators)/) &&
+ 			# indentation of previous and current line are the same
+-		    (($prevline =~ /\+(\s+)\S/) && $sline =~ /^\+$1\S/)) {
++		    (($prevline =~ /[\+ ](\s+)\S/) && $sline =~ /^[\+ ]$1\S/)) {
+ 			if (WARN("LINE_SPACING",
+ 				 "Missing a blank line after declarations\n" . $hereprev) &&
+ 			    $fix) {
+-- 
+2.27.0
+

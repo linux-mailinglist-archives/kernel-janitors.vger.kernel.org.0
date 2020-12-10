@@ -2,77 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD77F2D5010
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Dec 2020 02:10:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C10E2D5099
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Dec 2020 03:07:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729445AbgLJBIw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Dec 2020 20:08:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50596 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728218AbgLJBIv (ORCPT
+        id S1727618AbgLJCG6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Dec 2020 21:06:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:35270 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727665AbgLJCGo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Dec 2020 20:08:51 -0500
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3A94C0613CF;
-        Wed,  9 Dec 2020 17:08:11 -0800 (PST)
-Received: by mail-pg1-x544.google.com with SMTP id v29so2586827pgk.12;
-        Wed, 09 Dec 2020 17:08:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=ScTXQXoCHt8Q2ANMh2aNx7O1cu5jo7H5Ik1s8yBzefE=;
-        b=p+HK4b7+lVUo32xiSZnW0Y4wOtu5qTrmXlaw96EmrAejZ49VAydnDgF72Y7p9C04cH
-         elpNuAxs+fPdjpXGQwEVE/jDqR4dhVlmdLR6aP/UfLoMrDaYNtERDiGBp/BGMX5HK+z8
-         nAnMio2sEBfgGmjrPw+r4R7VZzmSdX3k1YRypaX6yr3FM1krIoW6nkXMlI63pfwnq49O
-         i7RrLIZa8GzS8RUKKxNp3aBqeW9z7wN4Zz+0VZNmiW4qyOKssUuzcP2zC+st6ihV/g34
-         pCTYX19XgiFE2kWuSMcrhbGJfpLf+yUq6/D1PlbmLC/FUJQviXZhOi2UxkN+mepdqfZr
-         gBQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ScTXQXoCHt8Q2ANMh2aNx7O1cu5jo7H5Ik1s8yBzefE=;
-        b=jl1YtiYK9kjT8gmgkN31qT7UtsdbbK1RVfZyNK7p/HFNWog5umRYGt0X+zFlxIkc2/
-         qKpTTJoIoOMD9zZYXZpwLGsKmC8f2LWHukmNSVH6TgbilpdUfLyKzGi7jPqweqIQt6wW
-         Rb9VvACrQt68X0pO0unyueS0JWhGLCX8hQ+8ZUfmNOLTfXUxuwjRaBeutYmI3JitSsXz
-         Snjq02d4Eyq6H3/U6pRU+yLDeybLw4IhGADUyCvSzLyaPMgIA9pOmYCdIsOMwkxPfSFb
-         ISOidRXu5lEFoW4Ko8+z+DD83FsY1yQi5ZE2ZbuOa1+offbAjuPtnzViNXmvqp3vpRji
-         1N7A==
-X-Gm-Message-State: AOAM533/+mBQzHXWJsGmdHk0IdWeUeb5NhqMrowHp81KDY4QAhsJgMB5
-        XctZptblbIH3EiSvneH0f0w=
-X-Google-Smtp-Source: ABdhPJz9xp2q6470RJ1ErlaT+HUPLkT2Gnf7i4KJmqojsdHzaNNZbE6Yr70eU3JLtCc7d/OKVK9MSg==
-X-Received: by 2002:a65:6a4e:: with SMTP id o14mr4366032pgu.65.1607562491232;
-        Wed, 09 Dec 2020 17:08:11 -0800 (PST)
-Received: from google.com ([2620:15c:202:201:a6ae:11ff:fe11:fcc3])
-        by smtp.gmail.com with ESMTPSA id f126sm4181079pfg.153.2020.12.09.17.08.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Dec 2020 17:08:10 -0800 (PST)
-Date:   Wed, 9 Dec 2020 17:08:08 -0800
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     linux-input@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Input: fix spelling mistake "theses" -> "these" in
- Kconfig
-Message-ID: <X9F0+B9EwXtJBBS6@google.com>
-References: <20201204193635.1152241-1-colin.king@canonical.com>
+        Wed, 9 Dec 2020 21:06:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1607565918;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=bMTsarmZ3rdaAqV3OBcsA5tbkP+r5zT+YS2adqptF7A=;
+        b=izhlQsTRhuB10B9/QSGB3uSBrCzfOOL+zVFdX6ckrXcg+YI44a1jcUiaQg3pwRZPmVfYwQ
+        /lGydVeXszmT9Uni68gXI+GKNK2VNxVJrGa+/Ui518AE3H+6KvGJB/hT1y45klQ1TmvgWM
+        Zkn7GgpXRGnYDK9jktVZmYHHC5g2xk4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-139-5XKOH-0oPaCiEVTgP1yXkw-1; Wed, 09 Dec 2020 21:05:16 -0500
+X-MC-Unique: 5XKOH-0oPaCiEVTgP1yXkw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C336B858183;
+        Thu, 10 Dec 2020 02:05:14 +0000 (UTC)
+Received: from dhcp-128-65.nay.redhat.com (ovpn-13-57.pek2.redhat.com [10.72.13.57])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 57C305C1C4;
+        Thu, 10 Dec 2020 02:05:11 +0000 (UTC)
+Date:   Thu, 10 Dec 2020 10:05:08 +0800
+From:   Dave Young <dyoung@redhat.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Eric Biederman <ebiederm@xmission.com>, kexec@lists.infradead.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] kexec: Fix error code in kexec_calculate_store_digests()
+Message-ID: <20201210020508.GB2950@dhcp-128-65.nay.redhat.com>
+References: <X9B03LFICh/QykQ6@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201204193635.1152241-1-colin.king@canonical.com>
+In-Reply-To: <X9B03LFICh/QykQ6@mwanda>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Dec 04, 2020 at 07:36:35PM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On 12/08/20 at 10:55pm, Dan Carpenter wrote:
+> Return -ENOMEM on allocation failure instead of returning success.
 > 
-> There is a spelling mistake in the Kconfig help text. Fix it.
+> Fixes: a43cac0d9dc2 ("kexec: split kexec_file syscall code to kexec_file.c")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  kernel/kexec_file.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+> index b02086d70492..9570f380a825 100644
+> --- a/kernel/kexec_file.c
+> +++ b/kernel/kexec_file.c
+> @@ -735,8 +735,10 @@ static int kexec_calculate_store_digests(struct kimage *image)
+>  
+>  	sha_region_sz = KEXEC_SEGMENT_MAX * sizeof(struct kexec_sha_region);
+>  	sha_regions = vzalloc(sha_region_sz);
+> -	if (!sha_regions)
+> +	if (!sha_regions) {
+> +		ret = -ENOMEM;
+>  		goto out_free_desc;
+> +	}
+>  
+>  	desc->tfm   = tfm;
+>  
+> -- 
+> 2.29.2
+> 
 
-Applied, thank you.
+Good catch, thanks!
 
--- 
-Dmitry
+Acked-by: Dave Young <dyoung@redhat.com>
+
+Thanks
+Dave
+

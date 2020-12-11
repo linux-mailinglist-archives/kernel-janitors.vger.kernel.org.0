@@ -2,122 +2,198 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8817E2D6B8A
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Dec 2020 00:38:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E7B42D712E
+	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Dec 2020 09:05:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728679AbgLJXGC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 10 Dec 2020 18:06:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38246 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391536AbgLJWcK (ORCPT
+        id S2391678AbgLKIEM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Dec 2020 03:04:12 -0500
+Received: from relay8-d.mail.gandi.net ([217.70.183.201]:52553 "EHLO
+        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389056AbgLKIDq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 10 Dec 2020 17:32:10 -0500
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B9DCC061793
-        for <kernel-janitors@vger.kernel.org>; Thu, 10 Dec 2020 14:31:54 -0800 (PST)
-Received: by mail-oi1-x241.google.com with SMTP id 15so7600317oix.8
-        for <kernel-janitors@vger.kernel.org>; Thu, 10 Dec 2020 14:31:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=+ZVJHFSrcvg/rM3/coktBI0ATZzEEYOYnQ3lqpo3zPA=;
-        b=hqUoJ4fB1Go3B36ZXoSqCONvRMX3UglfC0KFpIREBDUqSWlcaJ1Fm51MG+zW7WCsaB
-         t5XbdNuLFtPEIXQT0X0ZxGOtWF6Nef85e39e5KDbKVh6mzlonrCXEkMLk25rYa/hQsKv
-         L1h8KGq/nzTDSQpUfRZyKWFuOU+G5Xukb3vBB3x5KBw3oLNh1hV6eDrJXgvUPMZ4y3TV
-         F5ry2bcvkM767TUXw9gdlLo9jmrX/Orp6n1CD+DL+YBtVb74nA2j8b/p/zZcZsSpxaxN
-         l9ZCYWlZArdz5YXxdg9flTbNqQ7E8IkaM6BMFSxcOjMimBwn5fA+DF0RQjPmAFhrMkST
-         EG6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=+ZVJHFSrcvg/rM3/coktBI0ATZzEEYOYnQ3lqpo3zPA=;
-        b=Y+8+BsYLyvW8KmDmy9BWTlUciJnC1ehkljmn6uZIeBHTjW8XRmLjOwmLKoR1WpDc8M
-         BIQQlrO3lUvYLFBC2IDbRpityQm0skcKmW+z7WfQWDz/UkWJQ5Blstc4sfwt0Be44/4f
-         xiybVdRSzT4KmMmxyeJGqiY0nraRDC5HZ8gx0f30TrH7kllaeO0yNCjbVMxYOMngOIqI
-         mehTs2pcY2c0Rg3PPCiU5/Lz2/eoB8MPRrAMytjXBeOcHdMmY9/nSoWtKMJo6l7LIoUr
-         XAmFhYfS3pzPMMtiWTeUgkYpT8xmyYoCVnHJu0rq15roGtsZyZz0QUi3dlxc1iyGWQdx
-         /phw==
-X-Gm-Message-State: AOAM530uhJxVoembQkIcUbwd80hAd4QMDgFeq+yWDpPXvFLHVT2yQyjw
-        0VYoJrQhFRbyztLlRwDEqwXdxZ9yH2k7U5qp
-X-Google-Smtp-Source: ABdhPJwexAnTD2OyB+f9YLdh4DYY/daLokkk5nfPNf9Bp86JdqDn2v42AAaZLxb9w+rOMqo4p6o35Q==
-X-Received: by 2002:a17:90a:d194:: with SMTP id fu20mr6126132pjb.111.1607637343315;
-        Thu, 10 Dec 2020 13:55:43 -0800 (PST)
-Received: from xps15 (S0106889e681aac74.cg.shawcable.net. [68.147.0.187])
-        by smtp.gmail.com with ESMTPSA id 77sm6915281pfx.156.2020.12.10.13.55.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Dec 2020 13:55:42 -0800 (PST)
-Date:   Thu, 10 Dec 2020 14:55:40 -0700
-From:   Mathieu Poirier <mathieu.poirier@linaro.org>
+        Fri, 11 Dec 2020 03:03:46 -0500
+X-Originating-IP: 86.194.74.19
+Received: from localhost (lfbn-lyo-1-997-19.w86-194.abo.wanadoo.fr [86.194.74.19])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 86C791BF205;
+        Fri, 11 Dec 2020 08:03:01 +0000 (UTC)
+Date:   Fri, 11 Dec 2020 09:03:01 +0100
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Leo Yan <leo.yan@linaro.org>,
-        Mike Leach <mike.leach@linaro.org>,
-        "Suzuki K. Poulose" <suzuki.poulose@arm.com>,
+Cc:     linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] coresight: cti: =?utf-8?Q?Redu?=
- =?utf-8?Q?ce_scope_for_the_variable_=E2=80=9Ccs=5Ffwnode?= =?utf-8?B?4oCd?=
- in cti_plat_create_connection()
-Message-ID: <20201210215540.GA1860012@xps15>
-References: <c1b09b27-9012-324f-28d0-ba820dc468a5@web.de>
+        kernel-janitors@vger.kernel.org,
+        Colin Ian King <colin.king@canonical.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: Re: mmc: atmel-mci: Reduce =?utf-8?Q?scope?=
+ =?utf-8?Q?_for_the_variable_=E2=80=9Cslot=E2=80=9D?= in atmci_request_end()
+Message-ID: <20201211080301.GC1781038@piout.net>
+References: <466b4c6d-032f-fbcc-58ac-75f6f39d734f@web.de>
+ <20201210151035.GC1578121@piout.net>
+ <ec71d7b8-a36b-04f5-77a8-22874ac241e1@web.de>
+ <20201210170723.GD1578121@piout.net>
+ <2667790c-fad2-aaa9-36e8-6be66949ac8d@web.de>
+ <20201210182150.GE1578121@piout.net>
+ <4c0d8efe-de25-f168-8b8d-b7f1ede6c6b1@web.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c1b09b27-9012-324f-28d0-ba820dc468a5@web.de>
+In-Reply-To: <4c0d8efe-de25-f168-8b8d-b7f1ede6c6b1@web.de>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Dec 09, 2020 at 09:42:20PM +0100, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Wed, 9 Dec 2020 21:34:48 +0100
+On 11/12/2020 07:34:41+0100, Markus Elfring wrote:
+> >> How do you think about a patch like “staging: speakup: remove redundant initialization
+> >> of pointer p_key” for comparison?
+> >> https://lore.kernel.org/patchwork/patch/1199128/
+> >> https://lore.kernel.org/driverdev-devel/20200223153954.420731-1-colin.king@canonical.com/
+> >>
+> >> Would you tolerate to omit the initialisation for the variable “slot”?
+> >
+> > If you were able to provide one good technical reason.
 > 
-> A local variable was used only within an else branch.
-> Thus move the definition for the variable “cs_fwnode” into
-> the corresponding code block.
+> I find that the positions of variable definitions (and similar assignments) influence
+> the generation of executable code.
 > 
-> This issue was detected by using the Coccinelle software.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
->  drivers/hwtracing/coresight/coresight-cti-platform.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/hwtracing/coresight/coresight-cti-platform.c b/drivers/hwtracing/coresight/coresight-cti-platform.c
-> index 98f830c6ed50..ccef04f27f12 100644
-> --- a/drivers/hwtracing/coresight/coresight-cti-platform.c
-> +++ b/drivers/hwtracing/coresight/coresight-cti-platform.c
-> @@ -343,7 +343,6 @@ static int cti_plat_create_connection(struct device *dev,
->  {
->  	struct cti_trig_con *tc = NULL;
->  	int cpuid = -1, err = 0;
-> -	struct fwnode_handle *cs_fwnode = NULL;
->  	struct coresight_device *csdev = NULL;
->  	const char *assoc_name = "unknown";
->  	char cpu_name_str[16];
-> @@ -397,8 +396,9 @@ static int cti_plat_create_connection(struct device *dev,
->  		assoc_name = cpu_name_str;
->  	} else {
->  		/* associated device ? */
-> -		cs_fwnode = fwnode_find_reference(fwnode,
-> -						  CTI_DT_CSDEV_ASSOC, 0);
-> +		struct fwnode_handle *cs_fwnode = fwnode_find_reference(fwnode,
-> +									CTI_DT_CSDEV_ASSOC,
-> +									0);
 
-I have applied your patch.
+And you are wrong, it doesn't. Before:
 
-Thanks,
-Mathieu
+c044a0f0 <atmci_request_end>:
+{
+c044a0f0:	e92d4070 	push	{r4, r5, r6, lr}
+c044a0f4:	e1a04000 	mov	r4, r0
+	WARN_ON(host->cmd || host->data);
+c044a0f8:	e5902024 	ldr	r2, [r0, #36]	; 0x24
+{
+c044a0fc:	e1a06001 	mov	r6, r1
+	struct mmc_host		*prev_mmc = host->cur_slot->mmc;
+c044a100:	e590301c 	ldr	r3, [r0, #28]
+	WARN_ON(host->cmd || host->data);
+c044a104:	e3520000 	cmp	r2, #0
+	struct mmc_host		*prev_mmc = host->cur_slot->mmc;
+c044a108:	e5935000 	ldr	r5, [r3]
+	WARN_ON(host->cmd || host->data);
+c044a10c:	0a00002d 	beq	c044a1c8 <atmci_request_end+0xd8>
+c044a110:	e3000000 	movw	r0, #0
+			c044a110: R_ARM_MOVW_ABS_NC	.LC0
+c044a114:	e3a03000 	mov	r3, #0
+c044a118:	e3400000 	movt	r0, #0
+			c044a118: R_ARM_MOVT_ABS	.LC0
+c044a11c:	e3a02009 	mov	r2, #9
+c044a120:	e300161c 	movw	r1, #1564	; 0x61c
+c044a124:	ebfffffe 	bl	0 <warn_slowpath_fmt>
+			c044a124: R_ARM_CALL	warn_slowpath_fmt
+	del_timer(&host->timer);
+c044a128:	e28400a4 	add	r0, r4, #164	; 0xa4
+c044a12c:	ebfffffe 	bl	0 <del_timer>
+			c044a12c: R_ARM_CALL	del_timer
+	if (host->need_clock_update) {
+c044a130:	e5d430a0 	ldrb	r3, [r4, #160]	; 0xa0
+c044a134:	e3530000 	cmp	r3, #0
+c044a138:	0a000005 	beq	c044a154 <atmci_request_end+0x64>
+		atmci_writel(host, ATMCI_MR, host->mode_reg);
+c044a13c:	e59420b8 	ldr	r2, [r4, #184]	; 0xb8
+c044a140:	e5943000 	ldr	r3, [r4]
+	asm volatile("str %1, %0"
+c044a144:	e5832004 	str	r2, [r3, #4]
+		if (host->caps.has_cfg_reg)
+c044a148:	e5d420da 	ldrb	r2, [r4, #218]	; 0xda
+c044a14c:	e3520000 	cmp	r2, #0
+c044a150:	1a000019 	bne	c044a1bc <atmci_request_end+0xcc>
+	host->cur_slot->mrq = NULL;
+c044a154:	e594101c 	ldr	r1, [r4, #28]
+	return READ_ONCE(head->next) == head;
+c044a158:	e1a03004 	mov	r3, r4
+c044a15c:	e3a02000 	mov	r2, #0
+c044a160:	e5812010 	str	r2, [r1, #16]
+	host->mrq = NULL;
+c044a164:	e5842020 	str	r2, [r4, #32]
+c044a168:	e5b31098 	ldr	r1, [r3, #152]!	; 0x98
+	if (!list_empty(&host->queue)) {
+c044a16c:	e1510003 	cmp	r1, r3
+		host->state = STATE_IDLE;
+c044a170:	05842094 	streq	r2, [r4, #148]	; 0x94
+	if (!list_empty(&host->queue)) {
+c044a174:	0a00000c 	beq	c044a1ac <atmci_request_end+0xbc>
+		slot = list_entry(host->queue.next,
+c044a178:	e5943098 	ldr	r3, [r4, #152]	; 0x98
 
->  		if (!IS_ERR(cs_fwnode)) {
->  			assoc_name = cti_plat_get_csdev_or_node_name(cs_fwnode,
->  								     &csdev);
-> --
-> 2.29.2
-> 
+
+After:
+
+c044a0f0 <atmci_request_end>:
+{
+c044a0f0:	e92d4070 	push	{r4, r5, r6, lr}
+c044a0f4:	e1a04000 	mov	r4, r0
+	WARN_ON(host->cmd || host->data);
+c044a0f8:	e5902024 	ldr	r2, [r0, #36]	; 0x24
+{
+c044a0fc:	e1a06001 	mov	r6, r1
+	struct mmc_host		*prev_mmc = host->cur_slot->mmc;
+c044a100:	e590301c 	ldr	r3, [r0, #28]
+	WARN_ON(host->cmd || host->data);
+c044a104:	e3520000 	cmp	r2, #0
+	struct mmc_host		*prev_mmc = host->cur_slot->mmc;
+c044a108:	e5935000 	ldr	r5, [r3]
+	WARN_ON(host->cmd || host->data);
+c044a10c:	0a00002d 	beq	c044a1c8 <atmci_request_end+0xd8>
+c044a110:	e3000000 	movw	r0, #0
+			c044a110: R_ARM_MOVW_ABS_NC	.LC0
+c044a114:	e3a03000 	mov	r3, #0
+c044a118:	e3400000 	movt	r0, #0
+			c044a118: R_ARM_MOVT_ABS	.LC0
+c044a11c:	e3a02009 	mov	r2, #9
+c044a120:	e300161b 	movw	r1, #1563	; 0x61b
+c044a124:	ebfffffe 	bl	0 <warn_slowpath_fmt>
+			c044a124: R_ARM_CALL	warn_slowpath_fmt
+	del_timer(&host->timer);
+c044a128:	e28400a4 	add	r0, r4, #164	; 0xa4
+c044a12c:	ebfffffe 	bl	0 <del_timer>
+			c044a12c: R_ARM_CALL	del_timer
+	if (host->need_clock_update) {
+c044a130:	e5d430a0 	ldrb	r3, [r4, #160]	; 0xa0
+c044a134:	e3530000 	cmp	r3, #0
+c044a138:	0a000005 	beq	c044a154 <atmci_request_end+0x64>
+		atmci_writel(host, ATMCI_MR, host->mode_reg);
+c044a13c:	e59420b8 	ldr	r2, [r4, #184]	; 0xb8
+c044a140:	e5943000 	ldr	r3, [r4]
+	asm volatile("str %1, %0"
+c044a144:	e5832004 	str	r2, [r3, #4]
+		if (host->caps.has_cfg_reg)
+c044a148:	e5d420da 	ldrb	r2, [r4, #218]	; 0xda
+c044a14c:	e3520000 	cmp	r2, #0
+c044a150:	1a000019 	bne	c044a1bc <atmci_request_end+0xcc>
+	host->cur_slot->mrq = NULL;
+c044a154:	e594101c 	ldr	r1, [r4, #28]
+	return READ_ONCE(head->next) == head;
+c044a158:	e1a03004 	mov	r3, r4
+c044a15c:	e3a02000 	mov	r2, #0
+c044a160:	e5812010 	str	r2, [r1, #16]
+	host->mrq = NULL;
+c044a164:	e5842020 	str	r2, [r4, #32]
+c044a168:	e5b31098 	ldr	r1, [r3, #152]!	; 0x98
+	if (!list_empty(&host->queue)) {
+c044a16c:	e1510003 	cmp	r1, r3
+		host->state = STATE_IDLE;
+c044a170:	05842094 	streq	r2, [r4, #148]	; 0x94
+	if (!list_empty(&host->queue)) {
+c044a174:	0a00000c 	beq	c044a1ac <atmci_request_end+0xbc>
+		struct atmel_mci_slot *slot = list_entry(host->queue.next,
+c044a178:	e5943098 	ldr	r3, [r4, #152]	; 0x98
+
+
+Do you realize your patch is just unnecessary churn now?
+
+Is it too difficult for you to actually compile the driver and look
+at the changes before submitting patches?
+
+
+-- 
+Alexandre Belloni, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

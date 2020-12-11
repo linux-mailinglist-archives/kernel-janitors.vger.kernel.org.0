@@ -2,69 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B77B62D7D4C
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Dec 2020 18:52:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40FE72D7DD0
+	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Dec 2020 19:14:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436579AbgLKRvG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Dec 2020 12:51:06 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60354 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2436551AbgLKRvA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Dec 2020 12:51:00 -0500
-From:   Mark Brown <broonie@kernel.org>
-Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
-To:     Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Liam Girdwood <lgirdwood@gmail.com>
-Cc:     Luo Meng <luomeng12@huawei.com>, Takashi Iwai <tiwai@suse.com>,
-        James Schulman <james.schulman@cirrus.com>,
-        David Rhodes <david.rhodes@cirrus.com>,
-        kernel-janitors@vger.kernel.org, patches@opensource.cirrus.com,
-        Vlad Karpovich <Vlad.Karpovich@cirrus.com>,
-        alsa-devel@alsa-project.org,
-        Adam Brickman <Adam.Brickman@cirrus.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-In-Reply-To: <X9B0keV/02wrx9Xs@mwanda>
-References: <X9B0keV/02wrx9Xs@mwanda>
-Subject: Re: [PATCH] ASoC: wm_adsp: remove "ctl" from list on error in wm_adsp_create_control()
-Message-Id: <160770898111.26354.10129109008284234263.b4-ty@kernel.org>
-Date:   Fri, 11 Dec 2020 17:49:41 +0000
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        id S2390657AbgLKSNb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Dec 2020 13:13:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50948 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388079AbgLKSNZ (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 11 Dec 2020 13:13:25 -0500
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34D58C0613D3;
+        Fri, 11 Dec 2020 10:12:45 -0800 (PST)
+Received: by mail-ej1-x644.google.com with SMTP id g20so13624085ejb.1;
+        Fri, 11 Dec 2020 10:12:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=jXNCL1l6e/6115GRYXv1hRB54orJ1B3shh8vugN/3Pw=;
+        b=qhyj3EQJNwQ/3D6OUfCWA4D2e62t7pnzDMZYS3v3pJMMV+ReNqh0iUKz6A6fsA5GT4
+         U7dcXm/JNUkQlfLn3CLN62x2t+nNurtUe6+s/lHvddDAuS3+6vKbsxpmqu8cSh3bHAl+
+         5Pg6DcPR/8eR1U3R/Q1fyswYLvoU7EiWR5XEAYdEvw5SUP+DJ/yD5Ttr9lajJ3zQt7mK
+         VZFwspepb98fxekOgZnPzFzzQ1pl9GGZO1YLqDuxLB7N6PKdCK4jL7RSeDlHBwDR/woS
+         ofbLQp/Ox2N2KiSyFR10Mzjmx5yrKH/ll0S0cMeLtrpB3XrNHQk8kQRSEFHd6wlgZZWx
+         74Rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=jXNCL1l6e/6115GRYXv1hRB54orJ1B3shh8vugN/3Pw=;
+        b=hVqrZrHOML2ZthgSARlWDIISxSEK1qZxe7rCDNwHM2oWeUI1BHqnGavPQVBVQDm4Vg
+         S05OBFiRkhH3kLqqUvZDnM6ea1rfRKWNCmNnJoh3YBSa/JJ/IAcj2UZNLRNXC2Xx/zyy
+         XBxk1Ja2niCTDH1ca9tdkFCa0fsc2Ac8VXzJ9BxN/vObhpa4+DS1t0N/NpSihDxs4pSR
+         1AgBHsPpRGTdcZN44GtyEp/WZnFUPTk4jWIdSx7o7ncxVXp1kXPqwM/e1YgkQt89DAmQ
+         sief7m2Vb3/AF1m7GPzlozpGueb9TF9hsb0Hr6kgwVGyDmIJHzpZhLSmRe7DtKWKkzwS
+         uSNA==
+X-Gm-Message-State: AOAM530EbdSkx/kT+shu/vp3vv+nAlFdIkM9BI8LkHX8Q8Az4l3CnKRp
+        MhnXCK1/H9NWrwEmLRoSbVU=
+X-Google-Smtp-Source: ABdhPJyx+onXAuuShWmy6955djm1AEHtWv491E16bAkjwZvMrUAywnC+LKDsAlkf4s11EFqOsjOc2g==
+X-Received: by 2002:a17:906:6b88:: with SMTP id l8mr12186390ejr.482.1607710363877;
+        Fri, 11 Dec 2020 10:12:43 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d8e:cf00:1134:a93b:bd3b:5cd6])
+        by smtp.gmail.com with ESMTPSA id ho12sm6914344ejc.45.2020.12.11.10.12.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Dec 2020 10:12:42 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+        linux-block@vger.kernel.org
+Cc:     Hannes Reinecke <hare@suse.de>, linux-kernel@vger.kernel.org,
+        clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] block: drop dead assignments in loop_init()
+Date:   Fri, 11 Dec 2020 19:12:36 +0100
+Message-Id: <20201211181236.25755-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 9 Dec 2020 09:54:09 +0300, Dan Carpenter wrote:
-> The error handling frees "ctl" but it's still on the "dsp->ctl_list"
-> list so that could result in a use after free.  Remove it from the list
-> before returning.
+Commit 8410d38c2552 ("loop: use __register_blkdev to allocate devices on
+demand") simplified loop_init(); so computing the range of the block region
+is not required anymore and can be dropped.
 
-Applied to
+Drop dead assignments in loop_init().
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+As compilers will detect these unneeded assignments and optimize this,
+the resulting object code is identical before and after this change.
 
-Thanks!
+No functional change. No change in object code.
 
-[1/1] ASoC: wm_adsp: remove "ctl" from list on error in wm_adsp_create_control()
-      commit: 85a7555575a0e48f9b73db310d0d762a08a46d63
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+Christoph, please ack.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Jens, please pick this minor non-urgent clean-up patch on your
+block -next tree on top of Christoph's commit above.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+ drivers/block/loop.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index d2ce1ddc192d..eed4bc5ef5c5 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -2304,7 +2304,6 @@ MODULE_ALIAS("devname:loop-control");
+ static int __init loop_init(void)
+ {
+ 	int i, nr;
+-	unsigned long range;
+ 	struct loop_device *lo;
+ 	int err;
+ 
+@@ -2343,10 +2342,8 @@ static int __init loop_init(void)
+ 	 */
+ 	if (max_loop) {
+ 		nr = max_loop;
+-		range = max_loop << part_shift;
+ 	} else {
+ 		nr = CONFIG_BLK_DEV_LOOP_MIN_COUNT;
+-		range = 1UL << MINORBITS;
+ 	}
+ 
+ 	err = misc_register(&loop_misc);
+-- 
+2.17.1
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

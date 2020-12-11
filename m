@@ -2,86 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A4922D7EED
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Dec 2020 19:58:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 478A22D7F01
+	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Dec 2020 20:04:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729958AbgLKS5O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Dec 2020 13:57:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57616 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729004AbgLKS4l (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Dec 2020 13:56:41 -0500
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7B32C0613D3;
-        Fri, 11 Dec 2020 10:56:01 -0800 (PST)
-Received: by mail-il1-x144.google.com with SMTP id g1so9739142ilk.7;
-        Fri, 11 Dec 2020 10:56:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=C3JIqd3VgqewKlHZM6tzMlpEMTcnPyfODQAc8wyzPew=;
-        b=DLQ5nY8COzu/4PrdsvhACosOqtuecoDrWLZTt9oj5rueoZQFtvUyCvArbjw9renmHH
-         xAOHRgwFX1JOJruJxHLR4ylqgd8qEy85p3lxt3yw6fbjGyXS1ZiNOVKcjxw5TDhserfD
-         XQmaqXEYG5DErm60nDwZC5x1JQ0iLcH4fbszoZ64c8VQ5Lf1SqnouocxMdKPYbqSRHBG
-         3Jnd1ucmKT12s40PTkPV+pejiGvytHsMln7fmCRNomhbL08BC95Lu6mTV8xSdU8aEM1h
-         0jjnQ+dYI1zEFFD720oYBMBOV8KDMIV43oc4chlB0ZxitENBgw+DWlGLDoZLY2nGzoHW
-         klmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=C3JIqd3VgqewKlHZM6tzMlpEMTcnPyfODQAc8wyzPew=;
-        b=k+Lz1fpVC1trjsd6QIvHYmomlJ9j+yQbkox8Kth9/tRj/j1HX0KTngoEdJOtTpuae4
-         Fbr69lYT22sozXMYx9rOFqiReGvk08KG1AlZA6Jv/ZphsMuLcApHcjBPoJuCDoh/CPR5
-         RjqG/P6pg3RU1KU48AshHNFd2xxaelooN3j7M9fDK9b6+xIeHtTK5K31b9Q6eypu7HN/
-         b+wSVpwh/1G4YElfZ4Yo/FhYEt+rS7nUNUOac1qR7x15528RL5BKCRh2pPhSPXnkyQSP
-         t1Rk+7a2DChAN/dr602hjKz02tMEWpwm5jdhRJWNOAHskYa2ZAYMke/S39X6eozckfyD
-         8r5A==
-X-Gm-Message-State: AOAM530+6CsB5lBlupCtrIwWErYf6niF97qWQmwR0Ie8D0HL+YV9WiIH
-        wFwbQC/iIjoBhbna8E8t3D2ISw3uaqkQtW0KdJU=
-X-Google-Smtp-Source: ABdhPJywYmd6DB/U6CuCiry05M7A8s458wz4gy74dtYaFHpwLWBUVh9RTtSO2d/YB2sNPjyrlQBf0t8SbYHNiV+L1uw=
-X-Received: by 2002:a92:cd8c:: with SMTP id r12mr16786086ilb.221.1607712960988;
- Fri, 11 Dec 2020 10:56:00 -0800 (PST)
-MIME-Version: 1.0
-References: <20201207124141.21859-1-lukas.bulwahn@gmail.com> <20201211184715.GE25974@zn.tnic>
-In-Reply-To: <20201211184715.GE25974@zn.tnic>
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Date:   Fri, 11 Dec 2020 19:55:50 +0100
-Message-ID: <CAKXUXMzZ7ejn1JrznDP6d7dk8tSsTznBO+423NAwf_nYsix=_w@mail.gmail.com>
-Subject: Re: [PATCH] x86: ia32_setup_rt_frame(): propagate __user annotations properly
-To:     Borislav Petkov <bp@alien8.de>
+        id S2392163AbgLKTDH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Dec 2020 14:03:07 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:42870 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2391551AbgLKTCr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 11 Dec 2020 14:02:47 -0500
+Received: from zn.tnic (p200300ec2f124300da799288a8bc7530.dip0.t-ipconnect.de [IPv6:2003:ec:2f12:4300:da79:9288:a8bc:7530])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A729A1EC038E;
+        Fri, 11 Dec 2020 20:02:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1607713325;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=G1QdGYcDTW0B9pLacQcKlGP5gjL9zeHP1/bEwt95B1k=;
+        b=Eco9TFSPdJj7r1rA2XJTfjc/YX8L5J91rNmAnvoLKEscJHoy9dlQ9LTWhZOHMVprHvKtOC
+        R9y4YKvp5rP6KeFEWj+ilQpEy001BbvpIEOh+yEnjhbCIaMzryi8lGtfWd+gmh8YkAyejk
+        i5Z1wHatgT0O3scmg6+ZouStMnvXb8k=
+Date:   Fri, 11 Dec 2020 20:02:00 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, X86 ML <x86@kernel.org>,
         "H . Peter Anvin" <hpa@zytor.com>,
         Al Viro <viro@zeniv.linux.org.uk>,
         kernel-janitors@vger.kernel.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH] x86: ia32_setup_rt_frame(): propagate __user annotations
+ properly
+Message-ID: <20201211190200.GF25974@zn.tnic>
+References: <20201207124141.21859-1-lukas.bulwahn@gmail.com>
+ <20201211184715.GE25974@zn.tnic>
+ <CAKXUXMzZ7ejn1JrznDP6d7dk8tSsTznBO+423NAwf_nYsix=_w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAKXUXMzZ7ejn1JrznDP6d7dk8tSsTznBO+423NAwf_nYsix=_w@mail.gmail.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Dec 11, 2020 at 7:47 PM Borislav Petkov <bp@alien8.de> wrote:
->
-> On Mon, Dec 07, 2020 at 01:41:41PM +0100, Lukas Bulwahn wrote:
-> > Thomas, Ingo, Boris, please pick this minor non-urgent clean-up patch.
->
-> Why?
->
-> Isn't it obvious that when you send a patch to us, the final goal is for
-> it to be applied. Eventually.
->
+On Fri, Dec 11, 2020 at 07:55:50PM +0100, Lukas Bulwahn wrote:
+> Yes, agree. Other maintainers noted that I should point out that the
+> patch is only a minor clean-up and it is not urgent to be considered.
+> 
+> So, I add this remark to make clear that it is not top priority to
+> apply just that the maintainers know.
+> 
+> You will sure review it eventually, and hopefully accept it then.
 
-Yes, agree. Other maintainers noted that I should point out that the
-patch is only a minor clean-up and it is not urgent to be considered.
+Well, after I review it, I probably should know what the priority is,
+right?
 
-So, I add this remark to make clear that it is not top priority to
-apply just that the maintainers know.
+> If that comment disturbs you, please ignore it.
 
-You will sure review it eventually, and hopefully accept it then.
+I was just wondering why you're writing something which is not really
+needed. Notes under "---" are usually used to clarify aspects of the
+patch handling, versioning, etc.
 
-If that comment disturbs you, please ignore it.
+Thx.
 
-Lukas
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette

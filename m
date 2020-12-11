@@ -2,116 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D65E2D7E71
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Dec 2020 19:48:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A67C2D7E86
+	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Dec 2020 19:52:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388739AbgLKSrG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Dec 2020 13:47:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56076 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389228AbgLKSqx (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Dec 2020 13:46:53 -0500
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DB5EC0613CF;
-        Fri, 11 Dec 2020 10:46:13 -0800 (PST)
-Received: by mail-ed1-x544.google.com with SMTP id cm17so10424444edb.4;
-        Fri, 11 Dec 2020 10:46:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=/vy2vMYsdZgPjSFh+ZUUZIX8+S3sHf8WTmPjKwG5z4w=;
-        b=jL8afGSOCnG6zKPRVY1Z/B4pNfhC40FL4x8M+KAi9P/grPebeUmCsu6PZOjDT5de51
-         zu4+rwljwUHwUouHkz2idsbUwS/B4VXI+UMejsmxiQIxo04F4R+5589/UVCzetzoPFVb
-         1lBGnSuFwjeo6l3KJ25oO65uEbdmzVjrb8Ij1xwasqFy1oVi5CWoAZnW/PRFXKJsozBy
-         kvjHgL2XbXAZBTKcSFUOJbvKzlBBohOSr3uBbCM+DSzS2yN9/JoCIO/vDi6SdGhlp9WU
-         EzQL3gto4MDYtqMgdYiuk9xdswHuUS265RePsBh/RWU45XLq7619yrt3lXwbxThKRHkS
-         iv5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=/vy2vMYsdZgPjSFh+ZUUZIX8+S3sHf8WTmPjKwG5z4w=;
-        b=OxmdTME7AyxkS+JuEONTdCcZt2+17TiJbjLXtqDXbmUnDH1daQ8vFRAFqdF+rchtIS
-         Ch9yMZvg7MFXYKOaerKbPcDg4iVydzWfOzZrFdewGpph0BtY5qf56LHU3hBqgbT3wmMC
-         zRkJHDwaBn+pUlWssqb6ExlteWVrMgd9Rhs68Kf5+2wt+szyAodc45N2I3WxuLaJhJuK
-         zmk3Wn6urirReaE2gSaCWFhQKOT01PRWycAeRBSwmnKulnH10xZwDMm2idnnCyT4vsNt
-         JzdPQmkKTaE5kMFmBsmWLoR5I68xAhBmjazzgxFmyGxLWkFG5xwP+jhcf+DEC+Fo4MuN
-         xu+Q==
-X-Gm-Message-State: AOAM5323ctT/HQFKO35UdJo5OqaBlRZmvFJckNMn+HcRj4h8lgi03m28
-        ecIsIoA76hN4ZU9Q3BlNdp8=
-X-Google-Smtp-Source: ABdhPJzcwdiQXe4iPx+GDUIVk3Os7vSdHfB0TPq5xa9x+bqLr9hIVDeCZHxAdY5jUl7sJ8+qkGNMxw==
-X-Received: by 2002:a50:8e0e:: with SMTP id 14mr12856121edw.171.1607712372086;
-        Fri, 11 Dec 2020 10:46:12 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d8e:cf00:1134:a93b:bd3b:5cd6])
-        by smtp.gmail.com with ESMTPSA id h12sm7279190eja.113.2020.12.11.10.46.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Dec 2020 10:46:11 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-        linux-block@vger.kernel.org
-Cc:     Hannes Reinecke <hare@suse.de>, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com,
-        kernel-janitors@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH v2] block: drop dead assignments in loop_init()
-Date:   Fri, 11 Dec 2020 19:46:04 +0100
-Message-Id: <20201211184604.27646-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S2394479AbgLKSsO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Dec 2020 13:48:14 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:40746 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389463AbgLKSsD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 11 Dec 2020 13:48:03 -0500
+Received: from zn.tnic (p200300ec2f124300da799288a8bc7530.dip0.t-ipconnect.de [IPv6:2003:ec:2f12:4300:da79:9288:a8bc:7530])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8C1EE1EC038E;
+        Fri, 11 Dec 2020 19:47:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1607712441;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=n+nVQjIL9a/TTwRThg50YCcK8aGzmm3tICUXOfYFAAk=;
+        b=i2FZ88Dj215UkdDZvbDavPDGDyaVGSKstBVZZP0uaXADOQYrNVgkWOEq7MRtYJ9+z606Tk
+        n/R6E2+xUNstUyVLkUZI6LlQwqtT8Gv6oQf6oe5bwM8xxrUfvWiK6cgyMaddzyHfiqDlrG
+        CXf9LvV0VW6d8e5I0EQqY24hu/Zr2iI=
+Date:   Fri, 11 Dec 2020 19:47:15 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] x86: ia32_setup_rt_frame(): propagate __user annotations
+ properly
+Message-ID: <20201211184715.GE25974@zn.tnic>
+References: <20201207124141.21859-1-lukas.bulwahn@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20201207124141.21859-1-lukas.bulwahn@gmail.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 8410d38c2552 ("loop: use __register_blkdev to allocate devices on
-demand") simplified loop_init(); so computing the range of the block region
-is not required anymore and can be dropped.
+On Mon, Dec 07, 2020 at 01:41:41PM +0100, Lukas Bulwahn wrote:
+> Thomas, Ingo, Boris, please pick this minor non-urgent clean-up patch.
 
-Drop dead assignments in loop_init().
+Why?
 
-As compilers will detect these unneeded assignments and optimize this,
-the resulting object code is identical before and after this change.
+Isn't it obvious that when you send a patch to us, the final goal is for
+it to be applied. Eventually.
 
-No functional change. No change in object code.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-v1 -> v2:
-  - replaced if block with ternary operator after Julia's style comment
-
-Christoph, please ack.
-
-Jens, please pick this minor non-urgent clean-up patch on your
-block -next tree on top of Christoph's commit above.
-
- drivers/block/loop.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
-
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index d2ce1ddc192d..10c7c154c114 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -2304,7 +2304,6 @@ MODULE_ALIAS("devname:loop-control");
- static int __init loop_init(void)
- {
- 	int i, nr;
--	unsigned long range;
- 	struct loop_device *lo;
- 	int err;
- 
-@@ -2341,13 +2340,7 @@ static int __init loop_init(void)
- 	 * /dev/loop-control interface, or be instantiated by accessing
- 	 * a 'dead' device node.
- 	 */
--	if (max_loop) {
--		nr = max_loop;
--		range = max_loop << part_shift;
--	} else {
--		nr = CONFIG_BLK_DEV_LOOP_MIN_COUNT;
--		range = 1UL << MINORBITS;
--	}
-+	nr = max_loop ? max_loop : CONFIG_BLK_DEV_LOOP_MIN_COUNT;
- 
- 	err = misc_register(&loop_misc);
- 	if (err < 0)
 -- 
-2.17.1
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette

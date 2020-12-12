@@ -2,32 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56A3F2D8578
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Dec 2020 10:58:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 367062D8671
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Dec 2020 13:30:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437183AbgLLJ4j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 12 Dec 2020 04:56:39 -0500
-Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:45551 "EHLO
+        id S2390468AbgLLMaI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 12 Dec 2020 07:30:08 -0500
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:58126 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2407215AbgLLJ43 (ORCPT
+        with ESMTP id S2392814AbgLLMaH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 12 Dec 2020 04:56:29 -0500
+        Sat, 12 Dec 2020 07:30:07 -0500
 Received: from localhost.localdomain ([93.22.36.60])
-        by mwinf5d05 with ME
-        id 3Mmz2400z1HrHD103Mn0mg; Sat, 12 Dec 2020 10:47:01 +0100
+        by mwinf5d61 with ME
+        id 3QUL2400B1HrHD103QULvm; Sat, 12 Dec 2020 13:28:22 +0100
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 12 Dec 2020 10:47:01 +0100
+X-ME-Date: Sat, 12 Dec 2020 13:28:22 +0100
 X-ME-IP: 93.22.36.60
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     agross@kernel.org, bjorn.andersson@linaro.org, marcel@holtmann.org,
-        johan.hedberg@gmail.com
-Cc:     linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+To:     krzk@kernel.org, b.zolnierkie@samsung.com, mturquette@baylibre.com,
+        sboyd@kernel.org, yadi.brar@samsung.com, mturquette@linaro.org
+Cc:     linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] Bluetooth: btqcomsmd: Fix a resource leak in error handling paths in the probe function
-Date:   Sat, 12 Dec 2020 10:46:58 +0100
-Message-Id: <20201212094658.83861-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] clk: s2mps11: Fix a resource leak in error handling paths in the probe function
+Date:   Sat, 12 Dec 2020 13:28:18 +0100
+Message-Id: <20201212122818.86195-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -38,66 +38,27 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 Some resource should be released in the error handling path of the probe
 function, as already done in the remove function.
 
-The remove function was fixed in commit 5052de8deff5 ("soc: qcom: smd:
-Transition client drivers from smd to rpmsg")
+The remove function was fixed in commit bf416bd45738 ("clk: s2mps11: Add
+missing of_node_put and of_clk_del_provider")
 
-Fixes: 1511cc750c3d ("Bluetooth: Introduce Qualcomm WCNSS SMD based HCI driver")
+Fixes: 7cc560dea415 ("clk: s2mps11: Add support for s2mps11")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/bluetooth/btqcomsmd.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ drivers/clk/clk-s2mps11.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bluetooth/btqcomsmd.c b/drivers/bluetooth/btqcomsmd.c
-index 98d53764871f..2acb719e596f 100644
---- a/drivers/bluetooth/btqcomsmd.c
-+++ b/drivers/bluetooth/btqcomsmd.c
-@@ -142,12 +142,16 @@ static int btqcomsmd_probe(struct platform_device *pdev)
+diff --git a/drivers/clk/clk-s2mps11.c b/drivers/clk/clk-s2mps11.c
+index aa21371f9104..a3e883a9f406 100644
+--- a/drivers/clk/clk-s2mps11.c
++++ b/drivers/clk/clk-s2mps11.c
+@@ -195,6 +195,7 @@ static int s2mps11_clk_probe(struct platform_device *pdev)
+ 	return ret;
  
- 	btq->cmd_channel = qcom_wcnss_open_channel(wcnss, "APPS_RIVA_BT_CMD",
- 						   btqcomsmd_cmd_callback, btq);
--	if (IS_ERR(btq->cmd_channel))
--		return PTR_ERR(btq->cmd_channel);
-+	if (IS_ERR(btq->cmd_channel)) {
-+		ret = PTR_ERR(btq->cmd_channel);
-+		goto destroy_acl_channel;
-+	}
+ err_reg:
++	of_node_put(s2mps11_clks[0].clk_np);
+ 	while (--i >= 0)
+ 		clkdev_drop(s2mps11_clks[i].lookup);
  
- 	hdev = hci_alloc_dev();
--	if (!hdev)
--		return -ENOMEM;
-+	if (!hdev) {
-+		ret = -ENOMEM;
-+		goto destroy_cmd_channel;
-+	}
- 
- 	hci_set_drvdata(hdev, btq);
- 	btq->hdev = hdev;
-@@ -161,14 +165,21 @@ static int btqcomsmd_probe(struct platform_device *pdev)
- 	hdev->set_bdaddr = qca_set_bdaddr_rome;
- 
- 	ret = hci_register_dev(hdev);
--	if (ret < 0) {
--		hci_free_dev(hdev);
--		return ret;
--	}
-+	if (ret < 0)
-+		goto hci_free_dev;
- 
- 	platform_set_drvdata(pdev, btq);
- 
- 	return 0;
-+
-+hci_free_dev:
-+	hci_free_dev(hdev);
-+destroy_cmd_channel:
-+	rpmsg_destroy_ept(btq->cmd_channel);
-+destroy_acl_channel:
-+	rpmsg_destroy_ept(btq->acl_channel);
-+
-+	return ret;
- }
- 
- static int btqcomsmd_remove(struct platform_device *pdev)
 -- 
 2.27.0
 

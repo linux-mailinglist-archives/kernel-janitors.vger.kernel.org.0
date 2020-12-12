@@ -2,67 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48A612D8142
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Dec 2020 22:49:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAB3A2D847B
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Dec 2020 05:30:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390817AbgLKVq4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Dec 2020 16:46:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55550 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390810AbgLKVqm (ORCPT
+        id S2436856AbgLLE25 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Dec 2020 23:28:57 -0500
+Received: from smtprelay0156.hostedemail.com ([216.40.44.156]:43902 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2390895AbgLLE2e (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Dec 2020 16:46:42 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2605C0613CF
-        for <kernel-janitors@vger.kernel.org>; Fri, 11 Dec 2020 13:46:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=hdv0a9V3+tspYcXx56XU7Wm5wIrbtmUO7wb5Jsv2R6w=; b=YOV/+sfeiX8P7/k6vQUAim95bq
-        eXIcRmNVqm7x7jGp0oc1AUtFKlqZPJ2z/J8IwWpIVgsfSUF9e4BOtN4pxVQrAAKYU2zuOZpq+yrzZ
-        4RTNmaTj1Hsy4hTOqOEHrgOdNYAj7IyAu0cQKn21ky4S/pLvRRM17vNCBvNYQJ0AH9YpjZ8XlmGAK
-        IyMP79AwMrlkwAGi5u9Fxopj/A2LgEgkNLnQw36vPXVzoCuR7OYfxkUXP96ytSMUUpC84SwjxcJ07
-        WL145WdWK0xqaZy6oW7agjqOYd01ACtnt/CTdVdSdALMB30G9KE/nYAIf/83OCg39tNOQsjtykNbj
-        uJPwPbuw==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1knqEa-000655-Qj; Fri, 11 Dec 2020 21:45:52 +0000
-Date:   Fri, 11 Dec 2020 21:45:52 +0000
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Souptick Joarder <jrdr.linux@gmail.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Mina Almasry <almasrymina@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Rientjes <rientjes@google.com>,
-        Linux-MM <linux-mm@kvack.org>, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] hugetlb: Fix an error code in hugetlb_reserve_pages()
-Message-ID: <20201211214552.GC2443@casper.infradead.org>
-References: <X9NGZWnZl5/Mt99R@mwanda>
- <CAFqt6zYtQ0BR_KZjJsicmmGDT1WYyYYOHqEVe1Vd5ZWLBSAVWA@mail.gmail.com>
+        Fri, 11 Dec 2020 23:28:34 -0500
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay06.hostedemail.com (Postfix) with ESMTP id 92A341802DA2D;
+        Sat, 12 Dec 2020 04:27:52 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2693:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:3872:4321:5007:6119:7903:10004:10400:10848:11026:11232:11473:11658:11914:12043:12297:12438:12740:12760:12895:13069:13141:13230:13311:13357:13439:13972:14096:14097:14181:14659:14721:21080:21451:21627:30012:30054:30060:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: shoe55_600a68027406
+X-Filterd-Recvd-Size: 2115
+Received: from XPS-9350.home (unknown [47.151.137.21])
+        (Authenticated sender: joe@perches.com)
+        by omf11.hostedemail.com (Postfix) with ESMTPA;
+        Sat, 12 Dec 2020 04:27:50 +0000 (UTC)
+Message-ID: <4257c266dd5edf3ad6617657331abcabfd59188f.camel@perches.com>
+Subject: Re: [PATCH] block: drop dead assignments in loop_init()
+From:   Joe Perches <joe@perches.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Julia Lawall <julia.lawall@inria.fr>
+Cc:     Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+        linux-block@vger.kernel.org, Hannes Reinecke <hare@suse.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        kernel-janitors@vger.kernel.org
+Date:   Fri, 11 Dec 2020 20:27:49 -0800
+In-Reply-To: <CAKXUXMxjtv5B4ekC58=Ww8R4Ju2MvT0pXbPi7XH+OU7JuYnP3w@mail.gmail.com>
+References: <20201211181236.25755-1-lukas.bulwahn@gmail.com>
+         <alpine.DEB.2.22.394.2012111923020.2669@hadrien>
+         <CAKXUXMxjtv5B4ekC58=Ww8R4Ju2MvT0pXbPi7XH+OU7JuYnP3w@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFqt6zYtQ0BR_KZjJsicmmGDT1WYyYYOHqEVe1Vd5ZWLBSAVWA@mail.gmail.com>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Dec 12, 2020 at 01:19:28AM +0530, Souptick Joarder wrote:
-> > @@ -5113,6 +5113,7 @@ int hugetlb_reserve_pages(struct inode *inode,
-> >
-> >                 if (unlikely(add < 0)) {
-> >                         hugetlb_acct_memory(h, -gbl_reserve);
-> > +                       ret = add;
+On Fri, 2020-12-11 at 19:40 +0100, Lukas Bulwahn wrote:
+> On Fri, Dec 11, 2020 at 7:23 PM Julia Lawall <julia.lawall@inria.fr> wrote:
+> > On Fri, 11 Dec 2020, Lukas Bulwahn wrote:
+> > > Commit 8410d38c2552 ("loop: use __register_blkdev to allocate devices on
+> > > demand") simplified loop_init(); so computing the range of the block region
+> > > is not required anymore and can be dropped.
+> > > 
+> > > Drop dead assignments in loop_init().
+> > > 
+> > > As compilers will detect these unneeded assignments and optimize this,
+> > > the resulting object code is identical before and after this change.
+> > > 
+> > > No functional change. No change in object code.
+> > 
+> > It looks like some braces should be dropped too?
+
+> I just rewrote it to:
 > 
-> This function returns int but ret is long type.
-> Does it need correction ?
+> nr = max_loop ? max_loop : CONFIG_BLK_DEV_LOOP_MIN_COUNT;
 
-I wouold say "no", because 'ret' isn't returned _by_ this function (*),
-its purpose is to capture the return value from other functions.
+A relatively common gcc extension would use ?: like:
 
-(*) OK, it is, if ret < 0.  But ret < 0 really means "Is this an error
-number", which can be perfectly well represented in an int, short or long.
-char is too small ;-)
+	nr = max_loop ?: CONFIG_BLK_DEV_LOOP_MIN_COUNT;
 
-So the range of values which will be placed in 'ret' is (-4096-LONG_MAX]
+

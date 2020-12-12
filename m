@@ -2,72 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AAB3A2D847B
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Dec 2020 05:30:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A14652D84A3
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Dec 2020 06:16:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436856AbgLLE25 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Dec 2020 23:28:57 -0500
-Received: from smtprelay0156.hostedemail.com ([216.40.44.156]:43902 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2390895AbgLLE2e (ORCPT
+        id S1727298AbgLLFOU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 12 Dec 2020 00:14:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39472 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727081AbgLLFNw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Dec 2020 23:28:34 -0500
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay06.hostedemail.com (Postfix) with ESMTP id 92A341802DA2D;
-        Sat, 12 Dec 2020 04:27:52 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2693:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:3872:4321:5007:6119:7903:10004:10400:10848:11026:11232:11473:11658:11914:12043:12297:12438:12740:12760:12895:13069:13141:13230:13311:13357:13439:13972:14096:14097:14181:14659:14721:21080:21451:21627:30012:30054:30060:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: shoe55_600a68027406
-X-Filterd-Recvd-Size: 2115
-Received: from XPS-9350.home (unknown [47.151.137.21])
-        (Authenticated sender: joe@perches.com)
-        by omf11.hostedemail.com (Postfix) with ESMTPA;
-        Sat, 12 Dec 2020 04:27:50 +0000 (UTC)
-Message-ID: <4257c266dd5edf3ad6617657331abcabfd59188f.camel@perches.com>
-Subject: Re: [PATCH] block: drop dead assignments in loop_init()
-From:   Joe Perches <joe@perches.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Julia Lawall <julia.lawall@inria.fr>
-Cc:     Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-        linux-block@vger.kernel.org, Hannes Reinecke <hare@suse.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        kernel-janitors@vger.kernel.org
-Date:   Fri, 11 Dec 2020 20:27:49 -0800
-In-Reply-To: <CAKXUXMxjtv5B4ekC58=Ww8R4Ju2MvT0pXbPi7XH+OU7JuYnP3w@mail.gmail.com>
-References: <20201211181236.25755-1-lukas.bulwahn@gmail.com>
-         <alpine.DEB.2.22.394.2012111923020.2669@hadrien>
-         <CAKXUXMxjtv5B4ekC58=Ww8R4Ju2MvT0pXbPi7XH+OU7JuYnP3w@mail.gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        Sat, 12 Dec 2020 00:13:52 -0500
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F085C0613CF;
+        Fri, 11 Dec 2020 21:13:11 -0800 (PST)
+Received: by mail-ej1-x643.google.com with SMTP id b2so7730eje.13;
+        Fri, 11 Dec 2020 21:13:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=6YGQCYdK4dZk4LHF+Fjyb1bMQOpJVKHPbyiDsunhQ5k=;
+        b=t5Fbb3Em4y/9B778CFhfGEIk73X47XZQ+TWn8gDGL/JKXPqSld8p4sYTd1HfPufa5n
+         +8E8N6LwQT5RxWZ6ipgcTmHo1cLVMpyE3fPjj7tPlghhHe5toow4LnQnrVh1LExfNtlS
+         h72auKXOPBgkHOzFekchOSZ3FWQH8qyOtIY1kj+d07UdDHPHCHFAJC96wCUNWImAEEId
+         uVHBbjZTO0VueC/JWpW7edYRahAU/Gs2cQFULfmcmsVzQIoaBYUxb2AY8/1dfn6RQTj0
+         9k3MVAzvyQ2UQNgaGyCVWyJht+mvzD8diRiBlZpg+B/IBF4RvF8FQLU9HfgNmswp7zSC
+         dz5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=6YGQCYdK4dZk4LHF+Fjyb1bMQOpJVKHPbyiDsunhQ5k=;
+        b=QszkLN5dXdsbporgYSUXdtYOXhdnv9zU7IfLad7cNVbnFAanc3+wMS8iQDLozifugA
+         G1G63E7rrkBq2UBsdWZSJ6uqAJTGV9k7xFkbFoUuLdJY5AGkcfn8wA/TrmNcWMXKYhgc
+         hiyzhpzGSTGFaKjWL3WKR5/5zuvLBk6kuCWGq5yzFuYtRJN2jVimi0qsZcNwO858AY3G
+         1T6x1iwzLklEz+ONXodtRTECCbitPLYC5cO7mt2bI9Z2XGBonMs4UcvYT1viCFuIP9KU
+         /VXvSSC3Oo0iOgJdSXB0zt7sZNhtHEeEnoXIUKlAaQRUvswNpNk/Foy4hocet313FX5x
+         jOHw==
+X-Gm-Message-State: AOAM533hnmQ3H/2oxtBoYGJqOOI2OU/pkz/JN9c29LNVdtqttIWYlr8y
+        TJlwW0ZynrsF8UCL+I+lBvo=
+X-Google-Smtp-Source: ABdhPJzaCrRkVrLK1pM/hRSZQ1n4wNhKvzksghXATWAjjooLwPd89ICEc2QFppj2shb/X4DmPsFSAg==
+X-Received: by 2002:a17:906:1102:: with SMTP id h2mr13769297eja.296.1607749990171;
+        Fri, 11 Dec 2020 21:13:10 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2df4:6c00:bdb5:f209:34cb:5e76])
+        by smtp.gmail.com with ESMTPSA id ck27sm9465988edb.13.2020.12.11.21.13.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Dec 2020 21:13:09 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+        linux-block@vger.kernel.org
+Cc:     Hannes Reinecke <hare@suse.de>, linux-kernel@vger.kernel.org,
+        clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH v3] block: drop dead assignments in loop_init()
+Date:   Sat, 12 Dec 2020 06:13:02 +0100
+Message-Id: <20201212051302.26008-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 2020-12-11 at 19:40 +0100, Lukas Bulwahn wrote:
-> On Fri, Dec 11, 2020 at 7:23 PM Julia Lawall <julia.lawall@inria.fr> wrote:
-> > On Fri, 11 Dec 2020, Lukas Bulwahn wrote:
-> > > Commit 8410d38c2552 ("loop: use __register_blkdev to allocate devices on
-> > > demand") simplified loop_init(); so computing the range of the block region
-> > > is not required anymore and can be dropped.
-> > > 
-> > > Drop dead assignments in loop_init().
-> > > 
-> > > As compilers will detect these unneeded assignments and optimize this,
-> > > the resulting object code is identical before and after this change.
-> > > 
-> > > No functional change. No change in object code.
-> > 
-> > It looks like some braces should be dropped too?
+Commit 8410d38c2552 ("loop: use __register_blkdev to allocate devices on
+demand") simplified loop_init(); so computing the range of the block region
+is not required anymore and can be dropped.
 
-> I just rewrote it to:
-> 
-> nr = max_loop ? max_loop : CONFIG_BLK_DEV_LOOP_MIN_COUNT;
+Drop dead assignments in loop_init().
 
-A relatively common gcc extension would use ?: like:
+As compilers will detect these unneeded assignments and optimize this,
+the resulting object code is identical before and after this change.
 
-	nr = max_loop ?: CONFIG_BLK_DEV_LOOP_MIN_COUNT;
+No functional change. No change in object code.
 
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+v1 -> v2:
+  - replaced if block with ternary operator after Julia's style comment
+
+v2 -> v3:
+  - use if instead of ternary following Jens' preference
+
+Christoph, please ack.
+
+Jens, please pick this minor non-urgent clean-up patch on your
+block -next tree on top of Christoph's commit above.
+
+
+ drivers/block/loop.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index d2ce1ddc192d..e5ff328f0917 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -2304,7 +2304,6 @@ MODULE_ALIAS("devname:loop-control");
+ static int __init loop_init(void)
+ {
+ 	int i, nr;
+-	unsigned long range;
+ 	struct loop_device *lo;
+ 	int err;
+ 
+@@ -2341,13 +2340,10 @@ static int __init loop_init(void)
+ 	 * /dev/loop-control interface, or be instantiated by accessing
+ 	 * a 'dead' device node.
+ 	 */
+-	if (max_loop) {
++	if (max_loop)
+ 		nr = max_loop;
+-		range = max_loop << part_shift;
+-	} else {
++	else
+ 		nr = CONFIG_BLK_DEV_LOOP_MIN_COUNT;
+-		range = 1UL << MINORBITS;
+-	}
+ 
+ 	err = misc_register(&loop_misc);
+ 	if (err < 0)
+-- 
+2.17.1
 

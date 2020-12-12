@@ -2,61 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9B1D2D8688
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Dec 2020 14:01:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 001162D86D6
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Dec 2020 14:18:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438993AbgLLNBC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 12 Dec 2020 08:01:02 -0500
-Received: from smtp01.smtpout.orange.fr ([80.12.242.123]:27628 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2438987AbgLLNAu (ORCPT
+        id S2406109AbgLLNSM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 12 Dec 2020 08:18:12 -0500
+Received: from relay9-d.mail.gandi.net ([217.70.183.199]:42241 "EHLO
+        relay9-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725966AbgLLNSL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 12 Dec 2020 08:00:50 -0500
-Received: from localhost.localdomain ([93.22.36.60])
-        by mwinf5d19 with ME
-        id 3KxH2400D1HrHD103KxJ4V; Sat, 12 Dec 2020 08:57:19 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 12 Dec 2020 08:57:19 +0100
-X-ME-IP: 93.22.36.60
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     axboe@kernel.dk, qiang.liu@freescale.com, jgarzik@redhat.com
-Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Sat, 12 Dec 2020 08:18:11 -0500
+X-Greylist: delayed 159006 seconds by postgrey-1.27 at vger.kernel.org; Sat, 12 Dec 2020 08:18:11 EST
+X-Originating-IP: 86.194.74.19
+Received: from localhost (lfbn-lyo-1-997-19.w86-194.abo.wanadoo.fr [86.194.74.19])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id AE282FF804;
+        Sat, 12 Dec 2020 13:17:27 +0000 (UTC)
+Date:   Sat, 12 Dec 2020 14:17:27 +0100
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Joe Perches <joe@perches.com>
+Cc:     Markus Elfring <Markus.Elfring@web.de>, linux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] sata_fsl: Fix a resource leak in an error handling path in the probe function
-Date:   Sat, 12 Dec 2020 08:57:16 +0100
-Message-Id: <20201212075716.78986-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.27.0
+        Colin Ian King <colin.king@canonical.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: Re: mmc: atmel-mci: Reduce =?utf-8?Q?scope?=
+ =?utf-8?Q?_for_the_variable_=E2=80=9Cslot=E2=80=9D?= in atmci_request_end()
+Message-ID: <20201212131727.GL1781038@piout.net>
+References: <466b4c6d-032f-fbcc-58ac-75f6f39d734f@web.de>
+ <20201210151035.GC1578121@piout.net>
+ <ec71d7b8-a36b-04f5-77a8-22874ac241e1@web.de>
+ <20201210170723.GD1578121@piout.net>
+ <2667790c-fad2-aaa9-36e8-6be66949ac8d@web.de>
+ <20201210182150.GE1578121@piout.net>
+ <4c0d8efe-de25-f168-8b8d-b7f1ede6c6b1@web.de>
+ <20201211080301.GC1781038@piout.net>
+ <031a64e4261e1543a136d737436abefd63dbaee1.camel@perches.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <031a64e4261e1543a136d737436abefd63dbaee1.camel@perches.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'irq_dispose_mapping()' should be called in the error handling path of the
-probe function, as already done in the remove function.
+On 12/12/2020 01:16:39-0800, Joe Perches wrote:
+> On Fri, 2020-12-11 at 09:03 +0100, Alexandre Belloni wrote:
+> > On 11/12/2020 07:34:41+0100, Markus Elfring wrote:
+> > > > > How do you think about a patch like “staging: speakup: remove redundant initialization
+> > > > > of pointer p_key” for comparison?
+> > > > > https://lore.kernel.org/patchwork/patch/1199128/
+> > > > > https://lore.kernel.org/driverdev-devel/20200223153954.420731-1-colin.king@canonical.com/
+> > > > > 
+> > > > > Would you tolerate to omit the initialisation for the variable “slot”?
+> > > > 
+> > > > If you were able to provide one good technical reason.
+> > > 
+> > > I find that the positions of variable definitions (and similar assignments) influence
+> > > the generation of executable code.
+> > > 
+> > And you are wrong, it doesn't.
+> 
+> I rarely reply or read any Markus' emails as everything
+> from Markus goes into a 'don't read' folder but I was cc'd
+> directly on one from someone else recently so I think I
+> should reply to this one too.
+> 
+> In this case Alexandre it seems true, but in the generic case
+> it may be false.  It may depend on stack size and location.
+> 
+> For instance, with large structs declared either at the top
+> of a function or in separate branches within the function:
+> 
 
-Fixes: 6b4b8fc87dc5 ("sata_fsl: add support for interrupt coalsecing feature")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/ata/sata_fsl.c | 3 +++
- 1 file changed, 3 insertions(+)
+I think you realize your example is way more complicated than
+initializing basic type variable to 0 or NULL which has probably been
+optimized forever.
 
-diff --git a/drivers/ata/sata_fsl.c b/drivers/ata/sata_fsl.c
-index d55ee244d693..49ecbc55a804 100644
---- a/drivers/ata/sata_fsl.c
-+++ b/drivers/ata/sata_fsl.c
-@@ -1540,6 +1540,9 @@ static int sata_fsl_probe(struct platform_device *ofdev)
- 	if (host)
- 		ata_host_detach(host);
- 
-+	if (host_priv && host_priv->irq)
-+		irq_dispose_mapping(host_priv->irq);
-+
- 	if (hcr_base)
- 		iounmap(hcr_base);
- 	kfree(host_priv);
+This patch is just unnecessary churn that was generated without giving
+any thought. It was easy to check whether the patch actually improved
+anything. It doesn't and makes readability worse.
+
+
 -- 
-2.27.0
-
+Alexandre Belloni, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

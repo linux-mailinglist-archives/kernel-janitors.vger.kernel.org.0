@@ -2,121 +2,161 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A14652D84A3
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Dec 2020 06:16:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 24DFE2D8573
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Dec 2020 10:57:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727298AbgLLFOU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 12 Dec 2020 00:14:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39472 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727081AbgLLFNw (ORCPT
+        id S2438334AbgLLJ5B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 12 Dec 2020 04:57:01 -0500
+Received: from smtprelay0078.hostedemail.com ([216.40.44.78]:39894 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2407339AbgLLJ4s (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 12 Dec 2020 00:13:52 -0500
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F085C0613CF;
-        Fri, 11 Dec 2020 21:13:11 -0800 (PST)
-Received: by mail-ej1-x643.google.com with SMTP id b2so7730eje.13;
-        Fri, 11 Dec 2020 21:13:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=6YGQCYdK4dZk4LHF+Fjyb1bMQOpJVKHPbyiDsunhQ5k=;
-        b=t5Fbb3Em4y/9B778CFhfGEIk73X47XZQ+TWn8gDGL/JKXPqSld8p4sYTd1HfPufa5n
-         +8E8N6LwQT5RxWZ6ipgcTmHo1cLVMpyE3fPjj7tPlghhHe5toow4LnQnrVh1LExfNtlS
-         h72auKXOPBgkHOzFekchOSZ3FWQH8qyOtIY1kj+d07UdDHPHCHFAJC96wCUNWImAEEId
-         uVHBbjZTO0VueC/JWpW7edYRahAU/Gs2cQFULfmcmsVzQIoaBYUxb2AY8/1dfn6RQTj0
-         9k3MVAzvyQ2UQNgaGyCVWyJht+mvzD8diRiBlZpg+B/IBF4RvF8FQLU9HfgNmswp7zSC
-         dz5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=6YGQCYdK4dZk4LHF+Fjyb1bMQOpJVKHPbyiDsunhQ5k=;
-        b=QszkLN5dXdsbporgYSUXdtYOXhdnv9zU7IfLad7cNVbnFAanc3+wMS8iQDLozifugA
-         G1G63E7rrkBq2UBsdWZSJ6uqAJTGV9k7xFkbFoUuLdJY5AGkcfn8wA/TrmNcWMXKYhgc
-         hiyzhpzGSTGFaKjWL3WKR5/5zuvLBk6kuCWGq5yzFuYtRJN2jVimi0qsZcNwO858AY3G
-         1T6x1iwzLklEz+ONXodtRTECCbitPLYC5cO7mt2bI9Z2XGBonMs4UcvYT1viCFuIP9KU
-         /VXvSSC3Oo0iOgJdSXB0zt7sZNhtHEeEnoXIUKlAaQRUvswNpNk/Foy4hocet313FX5x
-         jOHw==
-X-Gm-Message-State: AOAM533hnmQ3H/2oxtBoYGJqOOI2OU/pkz/JN9c29LNVdtqttIWYlr8y
-        TJlwW0ZynrsF8UCL+I+lBvo=
-X-Google-Smtp-Source: ABdhPJzaCrRkVrLK1pM/hRSZQ1n4wNhKvzksghXATWAjjooLwPd89ICEc2QFppj2shb/X4DmPsFSAg==
-X-Received: by 2002:a17:906:1102:: with SMTP id h2mr13769297eja.296.1607749990171;
-        Fri, 11 Dec 2020 21:13:10 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2df4:6c00:bdb5:f209:34cb:5e76])
-        by smtp.gmail.com with ESMTPSA id ck27sm9465988edb.13.2020.12.11.21.13.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Dec 2020 21:13:09 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-        linux-block@vger.kernel.org
-Cc:     Hannes Reinecke <hare@suse.de>, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com,
+        Sat, 12 Dec 2020 04:56:48 -0500
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave04.hostedemail.com (Postfix) with ESMTP id B5F1918019963;
+        Sat, 12 Dec 2020 09:16:45 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 6AE8E180A7FEF;
+        Sat, 12 Dec 2020 09:16:42 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 10,1,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:46:150:152:355:379:599:800:967:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:1981:2194:2199:2393:2525:2553:2561:2564:2682:2685:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3355:3622:3865:3866:3867:3868:3870:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:5007:6119:6248:7903:7904:8603:9025:10004:10400:10471:10848:10967:11232:11658:11914:12043:12297:12555:12740:12895:12986:13255:13894:14181:14659:14721:21080:21212:21324:21433:21451:21627:21740:21749:21811:21819:30003:30012:30025:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: pie68_1b0f4b527408
+X-Filterd-Recvd-Size: 4202
+Received: from XPS-9350.home (unknown [47.151.137.21])
+        (Authenticated sender: joe@perches.com)
+        by omf10.hostedemail.com (Postfix) with ESMTPA;
+        Sat, 12 Dec 2020 09:16:40 +0000 (UTC)
+Message-ID: <031a64e4261e1543a136d737436abefd63dbaee1.camel@perches.com>
+Subject: Re: mmc: atmel-mci: Reduce scope for the variable
+ =?UTF-8?Q?=E2=80=9Cslot=E2=80=9D?= in atmci_request_end()
+From:   Joe Perches <joe@perches.com>
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH v3] block: drop dead assignments in loop_init()
-Date:   Sat, 12 Dec 2020 06:13:02 +0100
-Message-Id: <20201212051302.26008-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Colin Ian King <colin.king@canonical.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Date:   Sat, 12 Dec 2020 01:16:39 -0800
+In-Reply-To: <20201211080301.GC1781038@piout.net>
+References: <466b4c6d-032f-fbcc-58ac-75f6f39d734f@web.de>
+         <20201210151035.GC1578121@piout.net>
+         <ec71d7b8-a36b-04f5-77a8-22874ac241e1@web.de>
+         <20201210170723.GD1578121@piout.net>
+         <2667790c-fad2-aaa9-36e8-6be66949ac8d@web.de>
+         <20201210182150.GE1578121@piout.net>
+         <4c0d8efe-de25-f168-8b8d-b7f1ede6c6b1@web.de>
+         <20201211080301.GC1781038@piout.net>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.1-1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 8410d38c2552 ("loop: use __register_blkdev to allocate devices on
-demand") simplified loop_init(); so computing the range of the block region
-is not required anymore and can be dropped.
+On Fri, 2020-12-11 at 09:03 +0100, Alexandre Belloni wrote:
+> On 11/12/2020 07:34:41+0100, Markus Elfring wrote:
+> > > > How do you think about a patch like “staging: speakup: remove redundant initialization
+> > > > of pointer p_key” for comparison?
+> > > > https://lore.kernel.org/patchwork/patch/1199128/
+> > > > https://lore.kernel.org/driverdev-devel/20200223153954.420731-1-colin.king@canonical.com/
+> > > > 
+> > > > Would you tolerate to omit the initialisation for the variable “slot”?
+> > > 
+> > > If you were able to provide one good technical reason.
+> > 
+> > I find that the positions of variable definitions (and similar assignments) influence
+> > the generation of executable code.
+> > 
+> And you are wrong, it doesn't.
 
-Drop dead assignments in loop_init().
+I rarely reply or read any Markus' emails as everything
+from Markus goes into a 'don't read' folder but I was cc'd
+directly on one from someone else recently so I think I
+should reply to this one too.
 
-As compilers will detect these unneeded assignments and optimize this,
-the resulting object code is identical before and after this change.
+In this case Alexandre it seems true, but in the generic case
+it may be false.  It may depend on stack size and location.
 
-No functional change. No change in object code.
+For instance, with large structs declared either at the top
+of a function or in separate branches within the function:
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-v1 -> v2:
-  - replaced if block with ternary operator after Julia's style comment
+$ cat t_structs.c
+struct a {
+	int a[2000];
+	int b[4000];
+};
 
-v2 -> v3:
-  - use if instead of ternary following Jens' preference
+struct b {
+	char a[100];
+	char b[10000];
+};
 
-Christoph, please ack.
+void foo1(struct a *a);
+void foo2(struct b *b);
 
-Jens, please pick this minor non-urgent clean-up patch on your
-block -next tree on top of Christoph's commit above.
+void foo(int index)
+{
+	if (index) {
+		struct a ai = {};
 
+		ai.a[index] = index;
+		foo1(&ai);
+	} else {
+		struct b bi = {};
 
- drivers/block/loop.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+		bi.b[0] = 1;
+		foo2(&bi);
+	}
+}
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index d2ce1ddc192d..e5ff328f0917 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -2304,7 +2304,6 @@ MODULE_ALIAS("devname:loop-control");
- static int __init loop_init(void)
- {
- 	int i, nr;
--	unsigned long range;
- 	struct loop_device *lo;
- 	int err;
- 
-@@ -2341,13 +2340,10 @@ static int __init loop_init(void)
- 	 * /dev/loop-control interface, or be instantiated by accessing
- 	 * a 'dead' device node.
- 	 */
--	if (max_loop) {
-+	if (max_loop)
- 		nr = max_loop;
--		range = max_loop << part_shift;
--	} else {
-+	else
- 		nr = CONFIG_BLK_DEV_LOOP_MIN_COUNT;
--		range = 1UL << MINORBITS;
--	}
- 
- 	err = misc_register(&loop_misc);
- 	if (err < 0)
--- 
-2.17.1
+void bar(int index)
+{
+	struct a ai = {};
+	struct b bi = {};
+
+	if (index) {
+		ai.a[index] = index;
+		foo1(&ai);
+	} else {
+		bi.b[0] = 1;
+		foo2(&bi);
+	}
+}
+
+$
+
+newer gcc versions are smart enough to minimize
+stack use in foo() but not bar() so ai and bi start
+at the same address in foo() so the total stack
+used is smaller.
+
+older gcc versions like 4.8 use separate addresses
+for ai and bi in foo() so the total stack used is
+larger.
+
+$ gcc-4.8 -Wframe-larger-than=1000 -c t_structs.c
+t_structs.c: In function ‘foo’:
+t_structs.c:27:1: warning: the frame size of 34116 bytes is larger than 1000 bytes [-Wframe-larger-than=]
+ }
+ ^
+t_structs.c: In function ‘bar’:
+t_structs.c:41:1: warning: the frame size of 34116 bytes is larger than 1000 bytes [-Wframe-larger-than=]
+ }
+ ^
+
+$ gcc-5 -Wframe-larger-than=1000 -c t_structs.c
+t_structs.c: In function ‘foo’:
+t_structs.c:27:1: warning: the frame size of 24032 bytes is larger than 1000 bytes [-Wframe-larger-than=]
+ }
+ ^
+t_structs.c: In function ‘bar’:
+t_structs.c:41:1: warning: the frame size of 34144 bytes is larger than 1000 bytes [-Wframe-larger-than=]
+ }
+ ^
+
 

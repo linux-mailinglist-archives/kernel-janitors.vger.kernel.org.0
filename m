@@ -2,161 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24DFE2D8573
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Dec 2020 10:57:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56A3F2D8578
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Dec 2020 10:58:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438334AbgLLJ5B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 12 Dec 2020 04:57:01 -0500
-Received: from smtprelay0078.hostedemail.com ([216.40.44.78]:39894 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2407339AbgLLJ4s (ORCPT
+        id S2437183AbgLLJ4j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 12 Dec 2020 04:56:39 -0500
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:45551 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2407215AbgLLJ43 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 12 Dec 2020 04:56:48 -0500
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave04.hostedemail.com (Postfix) with ESMTP id B5F1918019963;
-        Sat, 12 Dec 2020 09:16:45 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 6AE8E180A7FEF;
-        Sat, 12 Dec 2020 09:16:42 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 10,1,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:46:150:152:355:379:599:800:967:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:1981:2194:2199:2393:2525:2553:2561:2564:2682:2685:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3355:3622:3865:3866:3867:3868:3870:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:5007:6119:6248:7903:7904:8603:9025:10004:10400:10471:10848:10967:11232:11658:11914:12043:12297:12555:12740:12895:12986:13255:13894:14181:14659:14721:21080:21212:21324:21433:21451:21627:21740:21749:21811:21819:30003:30012:30025:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: pie68_1b0f4b527408
-X-Filterd-Recvd-Size: 4202
-Received: from XPS-9350.home (unknown [47.151.137.21])
-        (Authenticated sender: joe@perches.com)
-        by omf10.hostedemail.com (Postfix) with ESMTPA;
-        Sat, 12 Dec 2020 09:16:40 +0000 (UTC)
-Message-ID: <031a64e4261e1543a136d737436abefd63dbaee1.camel@perches.com>
-Subject: Re: mmc: atmel-mci: Reduce scope for the variable
- =?UTF-8?Q?=E2=80=9Cslot=E2=80=9D?= in atmci_request_end()
-From:   Joe Perches <joe@perches.com>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Colin Ian King <colin.king@canonical.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Date:   Sat, 12 Dec 2020 01:16:39 -0800
-In-Reply-To: <20201211080301.GC1781038@piout.net>
-References: <466b4c6d-032f-fbcc-58ac-75f6f39d734f@web.de>
-         <20201210151035.GC1578121@piout.net>
-         <ec71d7b8-a36b-04f5-77a8-22874ac241e1@web.de>
-         <20201210170723.GD1578121@piout.net>
-         <2667790c-fad2-aaa9-36e8-6be66949ac8d@web.de>
-         <20201210182150.GE1578121@piout.net>
-         <4c0d8efe-de25-f168-8b8d-b7f1ede6c6b1@web.de>
-         <20201211080301.GC1781038@piout.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.1-1 
+        Sat, 12 Dec 2020 04:56:29 -0500
+Received: from localhost.localdomain ([93.22.36.60])
+        by mwinf5d05 with ME
+        id 3Mmz2400z1HrHD103Mn0mg; Sat, 12 Dec 2020 10:47:01 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 12 Dec 2020 10:47:01 +0100
+X-ME-IP: 93.22.36.60
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     agross@kernel.org, bjorn.andersson@linaro.org, marcel@holtmann.org,
+        johan.hedberg@gmail.com
+Cc:     linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] Bluetooth: btqcomsmd: Fix a resource leak in error handling paths in the probe function
+Date:   Sat, 12 Dec 2020 10:46:58 +0100
+Message-Id: <20201212094658.83861-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 2020-12-11 at 09:03 +0100, Alexandre Belloni wrote:
-> On 11/12/2020 07:34:41+0100, Markus Elfring wrote:
-> > > > How do you think about a patch like “staging: speakup: remove redundant initialization
-> > > > of pointer p_key” for comparison?
-> > > > https://lore.kernel.org/patchwork/patch/1199128/
-> > > > https://lore.kernel.org/driverdev-devel/20200223153954.420731-1-colin.king@canonical.com/
-> > > > 
-> > > > Would you tolerate to omit the initialisation for the variable “slot”?
-> > > 
-> > > If you were able to provide one good technical reason.
-> > 
-> > I find that the positions of variable definitions (and similar assignments) influence
-> > the generation of executable code.
-> > 
-> And you are wrong, it doesn't.
+Some resource should be released in the error handling path of the probe
+function, as already done in the remove function.
 
-I rarely reply or read any Markus' emails as everything
-from Markus goes into a 'don't read' folder but I was cc'd
-directly on one from someone else recently so I think I
-should reply to this one too.
+The remove function was fixed in commit 5052de8deff5 ("soc: qcom: smd:
+Transition client drivers from smd to rpmsg")
 
-In this case Alexandre it seems true, but in the generic case
-it may be false.  It may depend on stack size and location.
+Fixes: 1511cc750c3d ("Bluetooth: Introduce Qualcomm WCNSS SMD based HCI driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/bluetooth/btqcomsmd.c | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-For instance, with large structs declared either at the top
-of a function or in separate branches within the function:
-
-$ cat t_structs.c
-struct a {
-	int a[2000];
-	int b[4000];
-};
-
-struct b {
-	char a[100];
-	char b[10000];
-};
-
-void foo1(struct a *a);
-void foo2(struct b *b);
-
-void foo(int index)
-{
-	if (index) {
-		struct a ai = {};
-
-		ai.a[index] = index;
-		foo1(&ai);
-	} else {
-		struct b bi = {};
-
-		bi.b[0] = 1;
-		foo2(&bi);
-	}
-}
-
-void bar(int index)
-{
-	struct a ai = {};
-	struct b bi = {};
-
-	if (index) {
-		ai.a[index] = index;
-		foo1(&ai);
-	} else {
-		bi.b[0] = 1;
-		foo2(&bi);
-	}
-}
-
-$
-
-newer gcc versions are smart enough to minimize
-stack use in foo() but not bar() so ai and bi start
-at the same address in foo() so the total stack
-used is smaller.
-
-older gcc versions like 4.8 use separate addresses
-for ai and bi in foo() so the total stack used is
-larger.
-
-$ gcc-4.8 -Wframe-larger-than=1000 -c t_structs.c
-t_structs.c: In function ‘foo’:
-t_structs.c:27:1: warning: the frame size of 34116 bytes is larger than 1000 bytes [-Wframe-larger-than=]
+diff --git a/drivers/bluetooth/btqcomsmd.c b/drivers/bluetooth/btqcomsmd.c
+index 98d53764871f..2acb719e596f 100644
+--- a/drivers/bluetooth/btqcomsmd.c
++++ b/drivers/bluetooth/btqcomsmd.c
+@@ -142,12 +142,16 @@ static int btqcomsmd_probe(struct platform_device *pdev)
+ 
+ 	btq->cmd_channel = qcom_wcnss_open_channel(wcnss, "APPS_RIVA_BT_CMD",
+ 						   btqcomsmd_cmd_callback, btq);
+-	if (IS_ERR(btq->cmd_channel))
+-		return PTR_ERR(btq->cmd_channel);
++	if (IS_ERR(btq->cmd_channel)) {
++		ret = PTR_ERR(btq->cmd_channel);
++		goto destroy_acl_channel;
++	}
+ 
+ 	hdev = hci_alloc_dev();
+-	if (!hdev)
+-		return -ENOMEM;
++	if (!hdev) {
++		ret = -ENOMEM;
++		goto destroy_cmd_channel;
++	}
+ 
+ 	hci_set_drvdata(hdev, btq);
+ 	btq->hdev = hdev;
+@@ -161,14 +165,21 @@ static int btqcomsmd_probe(struct platform_device *pdev)
+ 	hdev->set_bdaddr = qca_set_bdaddr_rome;
+ 
+ 	ret = hci_register_dev(hdev);
+-	if (ret < 0) {
+-		hci_free_dev(hdev);
+-		return ret;
+-	}
++	if (ret < 0)
++		goto hci_free_dev;
+ 
+ 	platform_set_drvdata(pdev, btq);
+ 
+ 	return 0;
++
++hci_free_dev:
++	hci_free_dev(hdev);
++destroy_cmd_channel:
++	rpmsg_destroy_ept(btq->cmd_channel);
++destroy_acl_channel:
++	rpmsg_destroy_ept(btq->acl_channel);
++
++	return ret;
  }
- ^
-t_structs.c: In function ‘bar’:
-t_structs.c:41:1: warning: the frame size of 34116 bytes is larger than 1000 bytes [-Wframe-larger-than=]
- }
- ^
-
-$ gcc-5 -Wframe-larger-than=1000 -c t_structs.c
-t_structs.c: In function ‘foo’:
-t_structs.c:27:1: warning: the frame size of 24032 bytes is larger than 1000 bytes [-Wframe-larger-than=]
- }
- ^
-t_structs.c: In function ‘bar’:
-t_structs.c:41:1: warning: the frame size of 34144 bytes is larger than 1000 bytes [-Wframe-larger-than=]
- }
- ^
-
+ 
+ static int btqcomsmd_remove(struct platform_device *pdev)
+-- 
+2.27.0
 

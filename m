@@ -2,72 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A70682D8D3A
-	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Dec 2020 14:25:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20C602D8E2F
+	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Dec 2020 16:14:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406826AbgLMNYB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 13 Dec 2020 08:24:01 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51546 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726302AbgLMNXt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 13 Dec 2020 08:23:49 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 146EB22EBE;
-        Sun, 13 Dec 2020 13:23:06 +0000 (UTC)
-Date:   Sun, 13 Dec 2020 13:23:03 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Stephen Boyd <swboyd@chromium.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Daniel Campello <campello@chromium.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] iio: sx9310: Off by one in sx9310_read_thresh()
-Message-ID: <20201213132303.4b362987@archlinux>
-In-Reply-To: <X8XqwK0z//8sSWJR@mwanda>
-References: <X8XqwK0z//8sSWJR@mwanda>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S2436788AbgLMPMw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 13 Dec 2020 10:12:52 -0500
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:43782 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2436568AbgLMPMw (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 13 Dec 2020 10:12:52 -0500
+Received: from localhost.localdomain ([93.23.12.208])
+        by mwinf5d78 with ME
+        id 3rB5240064VKWNM03rB5ND; Sun, 13 Dec 2020 16:11:07 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 13 Dec 2020 16:11:07 +0100
+X-ME-IP: 93.23.12.208
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     mchehab+huawei@kernel.org, gregkh@linuxfoundation.org
+Cc:     devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] staging: spmi: hisi-spmi-controller: Fix some error handling paths
+Date:   Sun, 13 Dec 2020 16:11:05 +0100
+Message-Id: <20201213151105.137731-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 1 Dec 2020 10:03:28 +0300
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+IN the probe function, if an error occurs after calling
+'spmi_controller_alloc()', it must be undone by a corresponding
+'spmi_controller_put() call.
 
-> This > should be >= to prevent reading one element beyond the end of
-> the sx9310_pthresh_codes[] array.
-> 
-> Fixes: ad2b473e2ba3 ("iio: sx9310: Support setting proximity thresholds")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Applied to the fixes-togreg branch of iio.git which won't go anywhere now
-until after rc1 (and is based on the stuff queued up for the merge window)
+In the remove function, use 'spmi_controller_put(ctrl)' instead of
+'kfree(ctrl)'.
 
-thanks,
+While a it fix an error message
+(s/spmi_add_controller/spmi_controller_add/)
 
-Jonathan
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ .../staging/hikey9xx/hisi-spmi-controller.c   | 21 +++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-> ---
->  drivers/iio/proximity/sx9310.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-> index a2f820997afc..62eacb22e9bc 100644
-> --- a/drivers/iio/proximity/sx9310.c
-> +++ b/drivers/iio/proximity/sx9310.c
-> @@ -601,7 +601,7 @@ static int sx9310_read_thresh(struct sx9310_data *data,
->  		return ret;
->  
->  	regval = FIELD_GET(SX9310_REG_PROX_CTRL8_9_PTHRESH_MASK, regval);
-> -	if (regval > ARRAY_SIZE(sx9310_pthresh_codes))
-> +	if (regval >= ARRAY_SIZE(sx9310_pthresh_codes))
->  		return -EINVAL;
->  
->  	*val = sx9310_pthresh_codes[regval];
+diff --git a/drivers/staging/hikey9xx/hisi-spmi-controller.c b/drivers/staging/hikey9xx/hisi-spmi-controller.c
+index 861aedd5de48..0d42bc65f39b 100644
+--- a/drivers/staging/hikey9xx/hisi-spmi-controller.c
++++ b/drivers/staging/hikey9xx/hisi-spmi-controller.c
+@@ -278,21 +278,24 @@ static int spmi_controller_probe(struct platform_device *pdev)
+ 	iores = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (!iores) {
+ 		dev_err(&pdev->dev, "can not get resource!\n");
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto err_put_controller;
+ 	}
+ 
+ 	spmi_controller->base = devm_ioremap(&pdev->dev, iores->start,
+ 					     resource_size(iores));
+ 	if (!spmi_controller->base) {
+ 		dev_err(&pdev->dev, "can not remap base addr!\n");
+-		return -EADDRNOTAVAIL;
++		ret = -EADDRNOTAVAIL;
++		goto err_put_controller;
+ 	}
+ 
+ 	ret = of_property_read_u32(pdev->dev.of_node, "spmi-channel",
+ 				   &spmi_controller->channel);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "can not get channel\n");
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto err_put_controller;
+ 	}
+ 
+ 	platform_set_drvdata(pdev, spmi_controller);
+@@ -309,9 +312,15 @@ static int spmi_controller_probe(struct platform_device *pdev)
+ 	ctrl->write_cmd = spmi_write_cmd;
+ 
+ 	ret = spmi_controller_add(ctrl);
+-	if (ret)
+-		dev_err(&pdev->dev, "spmi_add_controller failed with error %d!\n", ret);
++	if (ret) {
++		dev_err(&pdev->dev, "spmi_controller_add failed with error %d!\n", ret);
++		goto err_put_controller;
++	}
++
++	return 0;
+ 
++err_put_controller:
++	spmi_controller_put(ctrl);
+ 	return ret;
+ }
+ 
+@@ -320,7 +329,7 @@ static int spmi_del_controller(struct platform_device *pdev)
+ 	struct spmi_controller *ctrl = platform_get_drvdata(pdev);
+ 
+ 	spmi_controller_remove(ctrl);
+-	kfree(ctrl);
++	spmi_controller_put(ctrl);
+ 	return 0;
+ }
+ 
+-- 
+2.27.0
 

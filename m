@@ -2,78 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 355842D8CDF
-	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Dec 2020 12:51:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A70682D8D3A
+	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Dec 2020 14:25:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406125AbgLMLu0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 13 Dec 2020 06:50:26 -0500
-Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:32677 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726753AbgLMLu0 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 13 Dec 2020 06:50:26 -0500
-Received: from localhost.localdomain ([93.22.148.240])
-        by mwinf5d68 with ME
-        id 3nod2400K5BSGut03noeyE; Sun, 13 Dec 2020 12:48:42 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 13 Dec 2020 12:48:42 +0100
-X-ME-IP: 93.22.148.240
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     UNGLinuxDriver@microchip.com, vladimir.oltean@nxp.com,
-        claudiu.manoil@nxp.com, alexandre.belloni@bootlin.com,
-        davem@davemloft.net, kuba@kernel.org, andrew@lunn.ch
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] net: mscc: ocelot: Fix a resource leak in the error handling path of the probe function
-Date:   Sun, 13 Dec 2020 12:48:38 +0100
-Message-Id: <20201213114838.126922-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.27.0
+        id S2406826AbgLMNYB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 13 Dec 2020 08:24:01 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51546 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726302AbgLMNXt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 13 Dec 2020 08:23:49 -0500
+Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 146EB22EBE;
+        Sun, 13 Dec 2020 13:23:06 +0000 (UTC)
+Date:   Sun, 13 Dec 2020 13:23:03 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Stephen Boyd <swboyd@chromium.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Daniel Campello <campello@chromium.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: sx9310: Off by one in sx9310_read_thresh()
+Message-ID: <20201213132303.4b362987@archlinux>
+In-Reply-To: <X8XqwK0z//8sSWJR@mwanda>
+References: <X8XqwK0z//8sSWJR@mwanda>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error after calling 'ocelot_init()', it must be undone by a
-corresponding 'ocelot_deinit()' call, as already done in the remove
-function.
+On Tue, 1 Dec 2020 10:03:28 +0300
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-Fixes: a556c76adc05 ("net: mscc: Add initial Ocelot switch support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/net/ethernet/mscc/ocelot_vsc7514.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+> This > should be >= to prevent reading one element beyond the end of
+> the sx9310_pthresh_codes[] array.
+> 
+> Fixes: ad2b473e2ba3 ("iio: sx9310: Support setting proximity thresholds")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Applied to the fixes-togreg branch of iio.git which won't go anywhere now
+until after rc1 (and is based on the stuff queued up for the merge window)
 
-diff --git a/drivers/net/ethernet/mscc/ocelot_vsc7514.c b/drivers/net/ethernet/mscc/ocelot_vsc7514.c
-index 1e7729421a82..9cf2bc5f4289 100644
---- a/drivers/net/ethernet/mscc/ocelot_vsc7514.c
-+++ b/drivers/net/ethernet/mscc/ocelot_vsc7514.c
-@@ -1267,7 +1267,7 @@ static int mscc_ocelot_probe(struct platform_device *pdev)
- 
- 	err = mscc_ocelot_init_ports(pdev, ports);
- 	if (err)
--		goto out_put_ports;
-+		goto out_ocelot_deinit;
- 
- 	if (ocelot->ptp) {
- 		err = ocelot_init_timestamp(ocelot, &ocelot_ptp_clock_info);
-@@ -1282,8 +1282,14 @@ static int mscc_ocelot_probe(struct platform_device *pdev)
- 	register_switchdev_notifier(&ocelot_switchdev_nb);
- 	register_switchdev_blocking_notifier(&ocelot_switchdev_blocking_nb);
- 
-+	of_node_put(ports);
-+
- 	dev_info(&pdev->dev, "Ocelot switch probed\n");
- 
-+	return 0;
-+
-+out_ocelot_deinit:
-+	ocelot_deinit(ocelot);
- out_put_ports:
- 	of_node_put(ports);
- 	return err;
--- 
-2.27.0
+thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/proximity/sx9310.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+> index a2f820997afc..62eacb22e9bc 100644
+> --- a/drivers/iio/proximity/sx9310.c
+> +++ b/drivers/iio/proximity/sx9310.c
+> @@ -601,7 +601,7 @@ static int sx9310_read_thresh(struct sx9310_data *data,
+>  		return ret;
+>  
+>  	regval = FIELD_GET(SX9310_REG_PROX_CTRL8_9_PTHRESH_MASK, regval);
+> -	if (regval > ARRAY_SIZE(sx9310_pthresh_codes))
+> +	if (regval >= ARRAY_SIZE(sx9310_pthresh_codes))
+>  		return -EINVAL;
+>  
+>  	*val = sx9310_pthresh_codes[regval];
 

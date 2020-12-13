@@ -2,74 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73C2E2D8E4A
-	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Dec 2020 16:37:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D83CC2D8EB7
+	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Dec 2020 17:28:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436591AbgLMPh2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 13 Dec 2020 10:37:28 -0500
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:45389 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406101AbgLMPh1 (ORCPT
+        id S1732158AbgLMQ0f (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 13 Dec 2020 11:26:35 -0500
+Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:60096 "EHLO
+        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725996AbgLMQ0X (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 13 Dec 2020 10:37:27 -0500
-Received: from localhost.localdomain ([93.23.12.208])
-        by mwinf5d78 with ME
-        id 3rbg2401A4VKWNM03rbhAU; Sun, 13 Dec 2020 16:35:43 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 13 Dec 2020 16:35:43 +0100
-X-ME-IP: 93.23.12.208
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     gregkh@linuxfoundation.org, matthias.bgg@gmail.com,
-        gokcekuler@gmail.com, romain.perier@gmail.com,
-        siddhantgupta416@gmail.com, apais@linux.microsoft.com,
-        blogic@openwrt.org, neil@brown.name
-Cc:     devel@driverdev.osuosl.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] staging: mt7621-dma: Fix a resource leak in an error handling path
-Date:   Sun, 13 Dec 2020 16:35:13 +0100
-Message-Id: <20201213153513.138723-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.27.0
+        Sun, 13 Dec 2020 11:26:23 -0500
+Received: from callcc.thunk.org (pool-72-74-133-215.bstnma.fios.verizon.net [72.74.133.215])
+        (authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 0BDGPPet024833
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 13 Dec 2020 11:25:25 -0500
+Received: by callcc.thunk.org (Postfix, from userid 15806)
+        id 29CAF420136; Sun, 13 Dec 2020 11:25:25 -0500 (EST)
+Date:   Sun, 13 Dec 2020 11:25:25 -0500
+From:   "Theodore Y. Ts'o" <tytso@mit.edu>
+To:     Jan Kara <jack@suse.cz>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Harshad Shirwadkar <harshadshirwadkar@gmail.com>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        linux-ext4@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] ext4: Fix an IS_ERR() vs NULL check
+Message-ID: <20201213162525.GA835709@mit.edu>
+References: <20201023112232.GB282278@mwanda>
+ <20201210160419.GA31725@quack2.suse.cz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201210160419.GA31725@quack2.suse.cz>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If an error occurs after calling 'mtk_hsdma_init()', it must be undone by
-a corresponding call to 'mtk_hsdma_uninit()' as already done in the
-remove function.
+On Thu, Dec 10, 2020 at 05:04:19PM +0100, Jan Kara wrote:
+> On Fri 23-10-20 14:22:32, Dan Carpenter wrote:
+> > The ext4_find_extent() function never returns NULL, it returns error
+> > pointers.
+> > 
+> > Fixes: 44059e503b03 ("ext4: fast commit recovery path")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> 
+> I think this fix has fallen through the cracks? It looks good to me so feel
+> free to add:
+> 
+> Reviewed-by: Jan Kara <jack@suse.cz>
 
-Fixes: 0853c7a53eb3 ("staging: mt7621-dma: ralink: add rt2880 dma engine")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/staging/mt7621-dma/mtk-hsdma.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+This had indeed slipped through the cracks.  Thanks for pointing it
+out; I've applied it.
 
-diff --git a/drivers/staging/mt7621-dma/mtk-hsdma.c b/drivers/staging/mt7621-dma/mtk-hsdma.c
-index d241349214e7..bc4bb4374313 100644
---- a/drivers/staging/mt7621-dma/mtk-hsdma.c
-+++ b/drivers/staging/mt7621-dma/mtk-hsdma.c
-@@ -712,7 +712,7 @@ static int mtk_hsdma_probe(struct platform_device *pdev)
- 	ret = dma_async_device_register(dd);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register dma device\n");
--		return ret;
-+		goto err_uninit_hsdma;
- 	}
- 
- 	ret = of_dma_controller_register(pdev->dev.of_node,
-@@ -728,6 +728,8 @@ static int mtk_hsdma_probe(struct platform_device *pdev)
- 
- err_unregister:
- 	dma_async_device_unregister(dd);
-+err_uninit_hsdma:
-+	mtk_hsdma_uninit(hsdma);
- 	return ret;
- }
- 
--- 
-2.27.0
-
+					- Ted

@@ -2,66 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EA722D9ECE
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 19:20:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5472A2DA085
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 20:33:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440690AbgLNSSq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Dec 2020 13:18:46 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42130 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2440685AbgLNSSc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Dec 2020 13:18:32 -0500
-From:   Mark Brown <broonie@kernel.org>
-Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
+        id S2408553AbgLNTbA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Dec 2020 14:31:00 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:35822 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2408575AbgLNTao (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 14 Dec 2020 14:30:44 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BEJOTgd173260;
+        Mon, 14 Dec 2020 19:29:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=B9veKK6RS8BjzhYYkonv/wRvP3TajCIALIsGxb6pXDs=;
+ b=ObR9Uu+n7w+esaYRArJ0QtqW9vbmfm54jNTNUyw+HDchaMPSglW6nt+rg3ARuBkK8uj0
+ byK/eyANnlM8WckCtJE4GSJvir0UYlBJhwLehNlPmmpHPkIL3eyRDmGQPggPwFNC3V+q
+ b1MGkBOPK/JCtJRjTtblRag93Q6wPXywkcbUposSJP/l0IQ/8bWo1y+LIrNBKkoFQT8P
+ +cziYyilwB1GFxcZQNR6ysMmJRtuEacc6y4UWhOfBHrBEX7b4nrgcNBT0fyTBsLrYBg2
+ gLsFMMiFFTK+kEYdvQHdLRRHHUBWxC1IgrIVX6QlYkwK1U82nJM3uy7pZG401eV1e5xC Bw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 35cn9r73db-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 14 Dec 2020 19:29:53 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BEJP5ND077765;
+        Mon, 14 Dec 2020 19:27:53 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 35e6jpws7h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 14 Dec 2020 19:27:53 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0BEJRqO6007570;
+        Mon, 14 Dec 2020 19:27:52 GMT
+Received: from [192.168.2.112] (/50.38.35.18)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 14 Dec 2020 11:27:51 -0800
+Subject: Re: [PATCH] hugetlb: Fix an error code in hugetlb_reserve_pages()
 To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        Guneshwor Singh <guneshwor.o.singh@intel.com>
-Cc:     Takashi Iwai <tiwai@suse.com>, kernel-janitors@vger.kernel.org,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        alsa-devel@alsa-project.org,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Jie Yang <yang.jie@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-In-Reply-To: <X9NEvCzuN+IObnTN@mwanda>
-References: <X9NEvCzuN+IObnTN@mwanda>
-Subject: Re: [PATCH] ASoC: Intel: fix error code cnl_set_dsp_D0()
-Message-Id: <160796986130.45789.8331512610981299314.b4-ty@kernel.org>
-Date:   Mon, 14 Dec 2020 18:17:41 +0000
+        Mina Almasry <almasrymina@google.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        David Rientjes <rientjes@google.com>, linux-mm@kvack.org,
+        kernel-janitors@vger.kernel.org
+References: <X9NGZWnZl5/Mt99R@mwanda>
+From:   Mike Kravetz <mike.kravetz@oracle.com>
+Message-ID: <dff4211a-687c-a3e1-fdf6-1562581e0da4@oracle.com>
+Date:   Mon, 14 Dec 2020 11:27:50 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <X9NGZWnZl5/Mt99R@mwanda>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9834 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 bulkscore=0
+ malwarescore=0 adultscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012140128
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9834 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
+ impostorscore=0 lowpriorityscore=0 clxscore=1011 spamscore=0
+ malwarescore=0 priorityscore=1501 phishscore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012140128
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 11 Dec 2020 13:06:52 +0300, Dan Carpenter wrote:
-> Return -ETIMEDOUT if the dsp boot times out instead of returning
-> success.
+On 12/11/20 2:13 AM, Dan Carpenter wrote:
+> Preserve the error code from region_add() instead of returning success.
+> 
+> Fixes: 0db9d74ed884 ("hugetlb: disable region_add file_region coalescing")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> From static analysis.  Untested.
 
-Applied to
+Thanks Dan.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+> 
+>  mm/hugetlb.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 1f3bf1710b66..ac2e48b9f1d7 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -5113,6 +5113,7 @@ int hugetlb_reserve_pages(struct inode *inode,
+>  
+>  		if (unlikely(add < 0)) {
+>  			hugetlb_acct_memory(h, -gbl_reserve);
+> +			ret = add;
+>  			goto out_put_pages;
+>  		} else if (unlikely(chg > add)) {
+>  			/*
+> 
 
-Thanks!
 
-[1/1] ASoC: Intel: fix error code cnl_set_dsp_D0()
-      commit: f373a811fd9a69fc8bafb9bcb41d2cfa36c62665
+That error path is VERY unlikely to be taken, but is indeed incorrect.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+When looking at this, I noticed that callers of hugetlb_reserve_pages only
+check for 0 or !0.  This changed as the code evolved to add reservation
+cgroup support.  The routine type can be changed to a bool and simplified
+some.  I'll send that as a follow up patch not for stable.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
+-- 
+Mike Kravetz

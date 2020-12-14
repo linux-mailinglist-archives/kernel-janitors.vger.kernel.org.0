@@ -2,108 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D36F62D97C7
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 13:00:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5A6E2D97CA
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 13:00:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405383AbgLNL7t (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Dec 2020 06:59:49 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:42080 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731284AbgLNL7t (ORCPT
+        id S2437839AbgLNMAQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Dec 2020 07:00:16 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:60402 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731339AbgLNMAQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Dec 2020 06:59:49 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BEBoSfj141299;
-        Mon, 14 Dec 2020 11:59:03 GMT
+        Mon, 14 Dec 2020 07:00:16 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BEBoebG179710;
+        Mon, 14 Dec 2020 11:59:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=rq0xzwZ3je7Zay+cGeew2R6YygWdjh66V9tw7L6ZUOQ=;
- b=G/ZWYuP/Kxpt7/+fFtDl+y/6+w2QUNNDb2gAgG6PaJu3uaeGYjsjfvcFgs1CJYC65kR9
- PQ0RDiCewxUnDrU85ZdpjUwClIoIf42YB/RPsFJXMeqVHqxzxrL3MrO2PhmxE0Wzuybw
- jFYu0MsiGFxdlwvnj+BNrr2+mhSyM6t/XT4v841Zk1N24JfFXmLsbkSWMV2jj3Vfxl73
- Yt8ia6hsCKjLjOCCMFZVXYycZlkmHHNE+1qBYVYzcvtCJSoUrD/9FQrgklk9kThw2Bco
- 88cSa+4CmiXJzLfT9zxsYtRSqN1PG7ziANkhPw8ZTv2dqllX2nQQXXLk/Gcs8RkUx/aH Hg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 35cntkvre5-1
+ bh=6zvqgCwWDc0LxzwMBvEpsmX5L8GftQWwiFbcTDv2mZ8=;
+ b=eoYoeiXCFyQClBKAZ8/eCFpOdKPkUSBD5uF7nCVL+UcypRFX8GtTfP+93WA5py+sOTuC
+ 7T+gUa/g+F0ls8x9b9rYVdyfEeJIsn+IkX9X1OgWm5sHbMmEGcjQZu6BW93eeUsDLH3y
+ Qc5DDfVXNFLT0ntBbJAi8nMsj87mlHfPfRweDodPEJPSAuZi2yFPIP3l775SZtCjZUui
+ bRCxDKdDB6RFreUVBmDDjMBgdjkI3wWwl01e2WmGYFg9VOo6ssoJp0GGiIUAc/2dM5nN
+ ddvOrh0MnNDJic0FmUcv8F46na/57ab2b7O2BlcWwhvwRhbrcbON0Rr/HJJturIldJNU tQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 35cn9r4svn-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 14 Dec 2020 11:59:03 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BEBt8Bd020614;
-        Mon, 14 Dec 2020 11:57:03 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 35d7ekck0x-1
+        Mon, 14 Dec 2020 11:59:21 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BEBsmSp022063;
+        Mon, 14 Dec 2020 11:59:20 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 35e6entcwr-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 14 Dec 2020 11:57:03 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0BEBv1jN013401;
-        Mon, 14 Dec 2020 11:57:01 GMT
+        Mon, 14 Dec 2020 11:59:20 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0BEBxIjd026571;
+        Mon, 14 Dec 2020 11:59:18 GMT
 Received: from mwanda (/102.36.221.92)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 14 Dec 2020 03:57:01 -0800
-Date:   Mon, 14 Dec 2020 14:56:52 +0300
+        with ESMTP ; Mon, 14 Dec 2020 03:59:17 -0800
+Date:   Mon, 14 Dec 2020 14:59:10 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Gustavo Pimentel <gustavo.pimentel@synopsys.com>
-Cc:     Vinod Koul <vkoul@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        dmaengine@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] dmaengine: dw-edma: Fix use after free in
- dw_edma_alloc_chunk()
-Message-ID: <X9dTBFrUPEvvW7qc@mwanda>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Mark Brown <broonie@opensource.wolfsonmicro.com>,
+        Samuel Ortiz <sameo@linux.intel.com>,
+        patches@opensource.cirrus.com, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] mfd: wm831x-auxadc: Prevent use after free in
+ wm831x_auxadc_read_irq()
+Message-ID: <X9dTjo3VQIMJP6O9@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9834 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 bulkscore=0
- suspectscore=0 adultscore=0 mlxscore=0 mlxlogscore=999 malwarescore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 phishscore=0
+ bulkscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999 spamscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2012140085
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9834 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 mlxscore=0
- lowpriorityscore=0 spamscore=0 adultscore=0 malwarescore=0 suspectscore=0
- mlxlogscore=999 impostorscore=0 priorityscore=1501 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012140084
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
+ impostorscore=0 lowpriorityscore=0 clxscore=1011 spamscore=0
+ malwarescore=0 priorityscore=1501 phishscore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012140084
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If the dw_edma_alloc_burst() function fails then we free "chunk" but
-it's still on the "desc->chunk->list" list so it will lead to a use
-after free.  Also the "->chunks_alloc" count is incremented when it
-shouldn't be.
+The "req" struct is always added to the "wm831x->auxadc_pending" list,
+but it's only removed from the list on the success path.  If a failure
+occurs then the "req" struct is freed but it's still on the list,
+leading to a use after free.
 
-In current kernels small allocations are guaranteed to succeed and
-dw_edma_alloc_burst() can't fail so this will not actually affect
-runtime.
-
-Fixes: e63d79d1ffcd ("dmaengine: Add Synopsys eDMA IP core driver")
+Fixes: 78bb3688ea18 ("mfd: Support multiple active WM831x AUXADC conversions")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-Based on static analysis.  Not tested.
+ drivers/mfd/wm831x-auxadc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
- drivers/dma/dw-edma/dw-edma-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-edma-core.c
-index b971505b8715..08d71dafa001 100644
---- a/drivers/dma/dw-edma/dw-edma-core.c
-+++ b/drivers/dma/dw-edma/dw-edma-core.c
-@@ -86,12 +86,12 @@ static struct dw_edma_chunk *dw_edma_alloc_chunk(struct dw_edma_desc *desc)
+diff --git a/drivers/mfd/wm831x-auxadc.c b/drivers/mfd/wm831x-auxadc.c
+index 8a7cc0f86958..65b98f3fbd92 100644
+--- a/drivers/mfd/wm831x-auxadc.c
++++ b/drivers/mfd/wm831x-auxadc.c
+@@ -93,11 +93,10 @@ static int wm831x_auxadc_read_irq(struct wm831x *wm831x,
+ 	wait_for_completion_timeout(&req->done, msecs_to_jiffies(500));
  
- 	if (desc->chunk) {
- 		/* Create and add new element into the linked list */
--		desc->chunks_alloc++;
--		list_add_tail(&chunk->list, &desc->chunk->list);
- 		if (!dw_edma_alloc_burst(chunk)) {
- 			kfree(chunk);
- 			return NULL;
- 		}
-+		desc->chunks_alloc++;
-+		list_add_tail(&chunk->list, &desc->chunk->list);
- 	} else {
- 		/* List head */
- 		chunk->burst = NULL;
+ 	mutex_lock(&wm831x->auxadc_lock);
+-
+-	list_del(&req->list);
+ 	ret = req->val;
+ 
+ out:
++	list_del(&req->list);
+ 	mutex_unlock(&wm831x->auxadc_lock);
+ 
+ 	kfree(req);
 -- 
 2.29.2
 

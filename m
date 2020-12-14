@@ -2,79 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF0712D9917
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 14:44:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02D9A2D9D6F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 18:18:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408024AbgLNNmU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Dec 2020 08:42:20 -0500
-Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:39034 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2406512AbgLNNmJ (ORCPT
+        id S2408440AbgLNRRU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Dec 2020 12:17:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42774 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2408437AbgLNRRU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Dec 2020 08:42:09 -0500
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-        by mx0b-001ae601.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 0BEDc9eH032162;
-        Mon, 14 Dec 2020 07:41:18 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=PODMain02222019;
- bh=AUJbEVt+xcr9JudRJq6czZ/xGOKIYbyS0jkgoeJnzDI=;
- b=kvpAeMyeXq/jHf8sg2DL3qiIDiza89GLug+UOc/3XZnbZorZ7UMYM/VGagFXcWUx2gnu
- b2jmJTbGFZunLj87HCHVLqqMOxEdEA9t/RbEeZAi0NgP4IoMTn5JmDHJJMBpkTqs56Sf
- KmepCMz1v4Eh93FdWPYDnQ4oMLhu1abwYCzpL379HQmJfKl0TN7JKbxnoBLE1xv9kx5Z
- xfR+27HkqazsGALgziUYGljkcXwDbFKVhKyZlAj/BGGjTm0THHnkeO7P5AxAuAfmMwaj
- Cl4wn0WdS3OWCFH8cDzFY7VOFcyiKGGhyXWLGYcH0f221dbvdDENsb021ZefYAlBuuuM ow== 
-Received: from ediex01.ad.cirrus.com ([87.246.76.36])
-        by mx0b-001ae601.pphosted.com with ESMTP id 35cu5rtcj1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 14 Dec 2020 07:41:18 -0600
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 14 Dec
- 2020 13:41:16 +0000
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.1913.5 via Frontend
- Transport; Mon, 14 Dec 2020 13:41:16 +0000
-Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id BFD6311CA;
-        Mon, 14 Dec 2020 13:41:16 +0000 (UTC)
-Date:   Mon, 14 Dec 2020 13:41:16 +0000
-From:   Charles Keepax <ckeepax@opensource.cirrus.com>
+        Mon, 14 Dec 2020 12:17:20 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0BE3C061794
+        for <kernel-janitors@vger.kernel.org>; Mon, 14 Dec 2020 09:16:39 -0800 (PST)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mtr@pengutronix.de>)
+        id 1korSW-0004ht-Dr; Mon, 14 Dec 2020 18:16:28 +0100
+Received: from mtr by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <mtr@pengutronix.de>)
+        id 1korSV-0004k3-In; Mon, 14 Dec 2020 18:16:27 +0100
+Date:   Mon, 14 Dec 2020 18:16:27 +0100
+From:   Michael Tretter <m.tretter@pengutronix.de>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     Lee Jones <lee.jones@linaro.org>,
-        Mark Brown <broonie@opensource.wolfsonmicro.com>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        <patches@opensource.cirrus.com>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH] mfd: wm831x-auxadc: Prevent use after free in
- wm831x_auxadc_read_irq()
-Message-ID: <20201214134116.GC9673@ediswmail.ad.cirrus.com>
-References: <X9dTjo3VQIMJP6O9@mwanda>
+Cc:     Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Chuhong Yuan <hslester96@gmail.com>,
+        linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] media: allegro: Fix use after free on error
+Message-ID: <20201214171627.GE1861@pengutronix.de>
+Mail-Followup-To: Michael Tretter <m.tretter@pengutronix.de>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Chuhong Yuan <hslester96@gmail.com>, linux-media@vger.kernel.org,
+        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org
+References: <X9dShwq8PrThDpn9@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <X9dTjo3VQIMJP6O9@mwanda>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0 mlxscore=0
- mlxlogscore=999 suspectscore=0 spamscore=0 clxscore=1011 malwarescore=0
- impostorscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012140095
+In-Reply-To: <X9dShwq8PrThDpn9@mwanda>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 17:36:29 up 12 days,  5:03, 46 users,  load average: 0.08, 0.09,
+ 0.86
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: mtr@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Dec 14, 2020 at 02:59:10PM +0300, Dan Carpenter wrote:
-> The "req" struct is always added to the "wm831x->auxadc_pending" list,
-> but it's only removed from the list on the success path.  If a failure
-> occurs then the "req" struct is freed but it's still on the list,
-> leading to a use after free.
+On Mon, 14 Dec 2020 14:54:47 +0300, Dan Carpenter wrote:
+> The "channel" is added to the "dev->channels" but then if
+> v4l2_m2m_ctx_init() fails then we free "channel" but it's still on the
+> list so it could lead to a use after free.  Let's not add it to the
+> list until after v4l2_m2m_ctx_init() succeeds.
+
+Thanks.
+
+The patch conflicts with the series that moves the driver from staging to
+mainline [0]. I'm not sure, which patch should go in first.
+
+It is also correct to not change the order of list_del and
+v4l2_m2m_ctx_release in allegro_release. The list is used to relate messages
+from the VCU to their destination channel and this should be possible until
+the context has been released and no further messages are expected for that
+channel.
+
+[0] https://lore.kernel.org/linux-media/20201202133040.1954837-1-m.tretter@pengutronix.de/
+
 > 
-> Fixes: 78bb3688ea18 ("mfd: Support multiple active WM831x AUXADC conversions")
+> Fixes: cc62c74749a3 ("media: allegro: add missed checks in allegro_open()")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+Reviewed-by: Michael Tretter <m.tretter@pengutronix.de>
+
 > ---
-
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-
-Thanks,
-Charles
+> From static analysis.  Not tested.
+> 
+>  drivers/staging/media/allegro-dvt/allegro-core.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/staging/media/allegro-dvt/allegro-core.c b/drivers/staging/media/allegro-dvt/allegro-core.c
+> index 9f718f43282b..640451134072 100644
+> --- a/drivers/staging/media/allegro-dvt/allegro-core.c
+> +++ b/drivers/staging/media/allegro-dvt/allegro-core.c
+> @@ -2483,8 +2483,6 @@ static int allegro_open(struct file *file)
+>  	INIT_LIST_HEAD(&channel->buffers_reference);
+>  	INIT_LIST_HEAD(&channel->buffers_intermediate);
+>  
+> -	list_add(&channel->list, &dev->channels);
+> -
+>  	channel->fh.m2m_ctx = v4l2_m2m_ctx_init(dev->m2m_dev, channel,
+>  						allegro_queue_init);
+>  
+> @@ -2493,6 +2491,7 @@ static int allegro_open(struct file *file)
+>  		goto error;
+>  	}
+>  
+> +	list_add(&channel->list, &dev->channels);
+>  	file->private_data = &channel->fh;
+>  	v4l2_fh_add(&channel->fh);
+>  
+> -- 
+> 2.29.2
+> 
+> 

@@ -2,93 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C42A2DA172
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 21:26:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9874C2DA367
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 23:31:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2503226AbgLNUXT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Dec 2020 15:23:19 -0500
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:32302 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2503218AbgLNUXG (ORCPT
+        id S2407813AbgLNW3B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Dec 2020 17:29:01 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:39425 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390134AbgLNW26 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Dec 2020 15:23:06 -0500
-Received: from localhost.localdomain ([93.22.36.105])
-        by mwinf5d56 with ME
-        id 4LMJ240012G6YR103LMJPn; Mon, 14 Dec 2020 21:21:22 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 14 Dec 2020 21:21:22 +0100
-X-ME-IP: 93.22.36.105
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     davem@davemloft.net, kuba@kernel.org, mripard@kernel.org,
-        wens@csie.org, jernej.skrabec@siol.net, timur@kernel.org,
-        song.bao.hua@hisilicon.com, f.fainelli@gmail.com, leon@kernel.org,
-        hkallweit1@gmail.com, wangyunjian@huawei.com, sr@denx.de
-Cc:     linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] net: allwinner: Fix some resources leak in the error handling path of the probe and in the remove function
-Date:   Mon, 14 Dec 2020 21:21:17 +0100
-Message-Id: <20201214202117.146293-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.27.0
+        Mon, 14 Dec 2020 17:28:58 -0500
+Received: from cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net ([80.193.200.194] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kowKE-0007OM-Bi; Mon, 14 Dec 2020 22:28:14 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Pawel Laszczak <pawell@cadence.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] usb: cdnsp: fix spelling mistake "delagete" -> "delegate"
+Date:   Mon, 14 Dec 2020 22:28:13 +0000
+Message-Id: <20201214222813.82727-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'irq_of_parse_and_map()' should be balanced by a corresponding
-'irq_dispose_mapping()' call. Otherwise, there is some resources leaks.
+From: Colin Ian King <colin.king@canonical.com>
 
-Add such a call in the error handling path of the probe function and in the
-remove function.
+There is a spelling mistake in a trace message. Fix it.
 
-Fixes: 492205050d77 ("net: Add EMAC ethernet driver found on Allwinner A10 SoC's")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
-Please, carefully check the remove function, I'm not always confident by
-the correct order when releasing resources. This is sometimes tricky.
----
- drivers/net/ethernet/allwinner/sun4i-emac.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/usb/cdns3/cdnsp-ep0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/allwinner/sun4i-emac.c b/drivers/net/ethernet/allwinner/sun4i-emac.c
-index 862ea44beea7..5ed80d9a6b9f 100644
---- a/drivers/net/ethernet/allwinner/sun4i-emac.c
-+++ b/drivers/net/ethernet/allwinner/sun4i-emac.c
-@@ -828,13 +828,13 @@ static int emac_probe(struct platform_device *pdev)
- 	db->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(db->clk)) {
- 		ret = PTR_ERR(db->clk);
--		goto out_iounmap;
-+		goto out_dispose_mapping;
- 	}
+diff --git a/drivers/usb/cdns3/cdnsp-ep0.c b/drivers/usb/cdns3/cdnsp-ep0.c
+index d55b59ed7381..b6a06e6210ba 100644
+--- a/drivers/usb/cdns3/cdnsp-ep0.c
++++ b/drivers/usb/cdns3/cdnsp-ep0.c
+@@ -45,7 +45,7 @@ static int cdnsp_ep0_delegate_req(struct cdnsp_device *pdev,
+ {
+ 	int ret;
  
- 	ret = clk_prepare_enable(db->clk);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Error couldn't enable clock (%d)\n", ret);
--		goto out_iounmap;
-+		goto out_dispose_mapping;
- 	}
+-	trace_cdnsp_ep0_request("delagete");
++	trace_cdnsp_ep0_request("delegate");
  
- 	ret = sunxi_sram_claim(&pdev->dev);
-@@ -893,6 +893,8 @@ static int emac_probe(struct platform_device *pdev)
- 	sunxi_sram_release(&pdev->dev);
- out_clk_disable_unprepare:
- 	clk_disable_unprepare(db->clk);
-+out_dispose_mapping:
-+	irq_dispose_mapping(ndev->irq);
- out_iounmap:
- 	iounmap(db->membase);
- out:
-@@ -911,6 +913,7 @@ static int emac_remove(struct platform_device *pdev)
- 	unregister_netdev(ndev);
- 	sunxi_sram_release(&pdev->dev);
- 	clk_disable_unprepare(db->clk);
-+	irq_dispose_mapping(ndev->irq);
- 	iounmap(db->membase);
- 	free_netdev(ndev);
- 
+ 	spin_unlock(&pdev->lock);
+ 	ret = pdev->gadget_driver->setup(&pdev->gadget, ctrl);
 -- 
-2.27.0
+2.29.2
 

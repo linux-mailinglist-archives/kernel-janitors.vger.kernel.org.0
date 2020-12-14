@@ -2,103 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC94B2D90E7
-	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Dec 2020 23:24:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBE982D9344
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 07:31:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406807AbgLMWX1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 13 Dec 2020 17:23:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38212 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731431AbgLMWX1 (ORCPT
+        id S1727747AbgLNGbT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Dec 2020 01:31:19 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:39208 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725995AbgLNGbT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 13 Dec 2020 17:23:27 -0500
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29C15C0613CF;
-        Sun, 13 Dec 2020 14:22:47 -0800 (PST)
-Received: by mail-qk1-x743.google.com with SMTP id u5so1056943qkf.0;
-        Sun, 13 Dec 2020 14:22:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=c5+vLfFDvNakSqCOtqUMmjeuD2oJjrTqFBik/RumbYg=;
-        b=pKFQ3rsAVTZGSkKZ56Ej2uDnh3330vM32jS+/M9FHwxxfn/rcSonfF2lEjJC0jd7Lr
-         VAOtuRkzWAeqpg79l7PumKyDZEwGvJ8euhkQ7WQSIsRLf6SIvj4STR0jvyzklORraC4d
-         8Y1XV9RyiiFYySt3CMlr6inxVr3GOapSMMQJ+EzZCaZyMYRbbZPIL3GU3pXtB4ZfmqVG
-         PUMMlT7cMgYX9mnFCHceh8n3tT4TDMmQlZJHl7jMzU8uNOiEXXldlnPZZrR8n1oD3Gup
-         h3NiLg8cATH0Fc4eUrtgXU4XjcGAW+H3GA8QUS/mWQdetHvVdCp6qOaxs/cDmg5tsguw
-         a/zA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=c5+vLfFDvNakSqCOtqUMmjeuD2oJjrTqFBik/RumbYg=;
-        b=aVA9lsYkuasbt2nh0MBYkPN863jxhYoJADdXKbPc4rzou5EsYT+eHQBEt6KjsiS4eY
-         gV+NQ6b53BDFHI3xRzkuBwXsS/ThJ9mTZR7f8Gb4dAV+GxHAeIFYzcON3sOHyTfb6zAr
-         CEXlcdA5JpRW1VK8N7g6c5oBrN5Cn9RP0DIKOuO7Bh+MFNbqCAfeby/EfkbXYFv0BCgS
-         vt8wWUSDUithapDPn7LyA2jp74XFIR2uaFQZvYRg3Xh4J1uutptVBqufxA5VfbGiRy0j
-         Tjv0vqxPPUsT4fA+P5itfFYy3yzeqrjw7tqB0gCirqu26JvwaJ00FYvIPoUe7VeyB1U+
-         klPQ==
-X-Gm-Message-State: AOAM530/3uODrRFEa91WKCU4NnpqxIOvFT5L+HaHXtK+/rIrJZ7zLwui
-        ed7W7R2b6tgG4bWolzJfZPOofZENPyf5Fgy3Ros=
-X-Google-Smtp-Source: ABdhPJz8KXbOpPSeBP+31xP0mmE2+4h+400j9puNLy2kH+QGFG8U7j3drWnHtlfWvKPm7KgH8sLGcUHTfN2IM/6RKXI=
-X-Received: by 2002:a37:9a4a:: with SMTP id c71mr24828882qke.56.1607898166358;
- Sun, 13 Dec 2020 14:22:46 -0800 (PST)
+        Mon, 14 Dec 2020 01:31:19 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BE6OjLw135714;
+        Mon, 14 Dec 2020 06:30:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=eTcVx+zYAqt3xiesxfWT+p+5jhqtCGYH972TyzkxRJI=;
+ b=HvFtXlQfp8QpPrFLbgRMLApq8zyjdS80pf5esjgjznwxpvMvMolpJ9tlZsNsaZUdzqzK
+ jmHt50pbZHR4Q25CbkvFcdqxyzELFdo5IV1FjpxNz7J9h0JcGO/r6QZk7J5C5nMhRu7S
+ SY4fjiOZqCEs3nQDjQ9qzDI7DAoemTlKtzhK3UfJrYAuwj6K4YIV5ls1Q1w4HiVdssPQ
+ ZNLiFxgAtrfkHhHgeKMQPmwQBh84AufW+rRMte+Z2+4erGGZxnDwtEbFNNCueWsc+KqH
+ bGUXZL6pb69xl3axS0dG6ta8nqUXXeOOuzwJhLWA7e5i1rNPBI6iw1GErDCdOy1qI99L 7w== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 35cn9r3k3c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 14 Dec 2020 06:30:32 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BE6PDir146658;
+        Mon, 14 Dec 2020 06:30:32 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 35d7mphh8f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 14 Dec 2020 06:30:32 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0BE6UT7d006830;
+        Mon, 14 Dec 2020 06:30:30 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sun, 13 Dec 2020 22:30:29 -0800
+Date:   Mon, 14 Dec 2020 09:30:21 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Souptick Joarder <jrdr.linux@gmail.com>
+Cc:     Mike Kravetz <mike.kravetz@oracle.com>,
+        Mina Almasry <almasrymina@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Rientjes <rientjes@google.com>,
+        Linux-MM <linux-mm@kvack.org>, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] hugetlb: Fix an error code in hugetlb_reserve_pages()
+Message-ID: <20201214063021.GA2809@kadam>
+References: <X9NGZWnZl5/Mt99R@mwanda>
+ <CAFqt6zYtQ0BR_KZjJsicmmGDT1WYyYYOHqEVe1Vd5ZWLBSAVWA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20200911102321.22515-1-colin.king@canonical.com> <20200911175514.766eeaf1@xps13>
-In-Reply-To: <20200911175514.766eeaf1@xps13>
-From:   Richard Weinberger <richard.weinberger@gmail.com>
-Date:   Sun, 13 Dec 2020 23:22:35 +0100
-Message-ID: <CAFLxGvy9LzJmNshqkxoC_kuVLJztgBDhfYPjkBUWtwd1-9UY-Q@mail.gmail.com>
-Subject: Re: [PATCH] mtd: remove redundant assignment to pointer eb
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-mtd@lists.infradead.org, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFqt6zYtQ0BR_KZjJsicmmGDT1WYyYYOHqEVe1Vd5ZWLBSAVWA@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9834 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 suspectscore=0
+ mlxlogscore=999 malwarescore=0 adultscore=0 bulkscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012140048
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9834 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
+ impostorscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0
+ malwarescore=0 priorityscore=1501 phishscore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012140048
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Sep 11, 2020 at 5:59 PM Miquel Raynal <miquel.raynal@bootlin.com> wrote:
->
-> Hi Colin,
->
-> Colin King <colin.king@canonical.com> wrote on Fri, 11 Sep 2020
-> 11:23:21 +0100:
->
-> > From: Colin Ian King <colin.king@canonical.com>
+On Sat, Dec 12, 2020 at 01:19:28AM +0530, Souptick Joarder wrote:
+> Hi Dan,
+> 
+> On Fri, Dec 11, 2020 at 3:44 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
 > >
-> > Pointer eb is being assigned a value that is never read, the assignment
-> > is redundant and can be removed.
+> > Preserve the error code from region_add() instead of returning success.
 > >
-> > Addresses-Coverity: ("Unused value")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > Fixes: 0db9d74ed884 ("hugetlb: disable region_add file_region coalescing")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > > ---
-> >  drivers/mtd/mtdswap.c | 1 -
-> >  1 file changed, 1 deletion(-)
+> > From static analysis.  Untested.
 > >
-> > diff --git a/drivers/mtd/mtdswap.c b/drivers/mtd/mtdswap.c
-> > index 58eefa43af14..795dec4483c2 100644
-> > --- a/drivers/mtd/mtdswap.c
-> > +++ b/drivers/mtd/mtdswap.c
-> > @@ -1053,7 +1053,6 @@ static int mtdswap_writesect(struct mtd_blktrans_dev *dev,
-> >       if (ret < 0)
-> >               return ret;
+> >  mm/hugetlb.c | 1 +
+> >  1 file changed, 1 insertion(+)
 > >
-> > -     eb = d->eb_data + (newblock / d->pages_per_eblk);
-> >       d->page_data[page] = newblock;
+> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> > index 1f3bf1710b66..ac2e48b9f1d7 100644
+> > --- a/mm/hugetlb.c
+> > +++ b/mm/hugetlb.c
+> > @@ -5113,6 +5113,7 @@ int hugetlb_reserve_pages(struct inode *inode,
 > >
-> >       return 0;
+> >                 if (unlikely(add < 0)) {
+> >                         hugetlb_acct_memory(h, -gbl_reserve);
+> > +                       ret = add;
+> 
+> This function returns int but ret is long type.
+> Does it need correction ?
 >
-> Yes it looks unused but perhaps it helps to catch the logic here. This
-> is not a strong disagreement but I'd keep it this way. Let's see what
-> other maintainers think.
 
-This looks like dead code, let's rip it out.
+It doesn't *need* correction.  The code works fine as-is.  Smatch parses
+it correctly, also.  Hard to say if making it "ret" makes the code
+simpler or more complicated for a human reader.
 
--- 
-Thanks,
-//richard
+regards,
+dan carpenter
+

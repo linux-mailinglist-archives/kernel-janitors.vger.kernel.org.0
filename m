@@ -2,74 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 179FA2DA37B
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 23:39:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ABCCB2DA3E6
+	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Dec 2020 00:04:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439546AbgLNWgb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Dec 2020 17:36:31 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:39541 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2439277AbgLNWg2 (ORCPT
+        id S2440519AbgLNWzm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Dec 2020 17:55:42 -0500
+Received: from relay7-d.mail.gandi.net ([217.70.183.200]:46509 "EHLO
+        relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2439348AbgLNWzY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Dec 2020 17:36:28 -0500
-Received: from cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net ([80.193.200.194] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kowRQ-0007kT-F7; Mon, 14 Dec 2020 22:35:40 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>, netdev@vger.kernel.org,
-        bpf@vger.kernel.org, linux-kselftest@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] selftests/bpf: fix spelling mistake "tranmission" -> "transmission"
-Date:   Mon, 14 Dec 2020 22:35:39 +0000
-Message-Id: <20201214223539.83168-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.29.2
+        Mon, 14 Dec 2020 17:55:24 -0500
+X-Originating-IP: 86.202.109.140
+Received: from localhost (lfbn-lyo-1-13-140.w86-202.abo.wanadoo.fr [86.202.109.140])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 6DC6620006;
+        Mon, 14 Dec 2020 22:54:38 +0000 (UTC)
+Date:   Mon, 14 Dec 2020 23:54:38 +0100
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     UNGLinuxDriver@microchip.com, vladimir.oltean@nxp.com,
+        claudiu.manoil@nxp.com, davem@davemloft.net, kuba@kernel.org,
+        andrew@lunn.ch, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] net: mscc: ocelot: Fix a resource leak in the error
+ handling path of the probe function
+Message-ID: <20201214225438.GY1781038@piout.net>
+References: <20201213114838.126922-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201213114838.126922-1-christophe.jaillet@wanadoo.fr>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 13/12/2020 12:48:38+0100, Christophe JAILLET wrote:
+> In case of error after calling 'ocelot_init()', it must be undone by a
+> corresponding 'ocelot_deinit()' call, as already done in the remove
+> function.
+> 
+> Fixes: a556c76adc05 ("net: mscc: Add initial Ocelot switch support")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-There are two spelling mistakes in output messages. Fix these.
+> ---
+>  drivers/net/ethernet/mscc/ocelot_vsc7514.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/mscc/ocelot_vsc7514.c b/drivers/net/ethernet/mscc/ocelot_vsc7514.c
+> index 1e7729421a82..9cf2bc5f4289 100644
+> --- a/drivers/net/ethernet/mscc/ocelot_vsc7514.c
+> +++ b/drivers/net/ethernet/mscc/ocelot_vsc7514.c
+> @@ -1267,7 +1267,7 @@ static int mscc_ocelot_probe(struct platform_device *pdev)
+>  
+>  	err = mscc_ocelot_init_ports(pdev, ports);
+>  	if (err)
+> -		goto out_put_ports;
+> +		goto out_ocelot_deinit;
+>  
+>  	if (ocelot->ptp) {
+>  		err = ocelot_init_timestamp(ocelot, &ocelot_ptp_clock_info);
+> @@ -1282,8 +1282,14 @@ static int mscc_ocelot_probe(struct platform_device *pdev)
+>  	register_switchdev_notifier(&ocelot_switchdev_nb);
+>  	register_switchdev_blocking_notifier(&ocelot_switchdev_blocking_nb);
+>  
+> +	of_node_put(ports);
+> +
+>  	dev_info(&pdev->dev, "Ocelot switch probed\n");
+>  
+> +	return 0;
+> +
+> +out_ocelot_deinit:
+> +	ocelot_deinit(ocelot);
+>  out_put_ports:
+>  	of_node_put(ports);
+>  	return err;
+> -- 
+> 2.27.0
+> 
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- tools/testing/selftests/bpf/xdpxceiver.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/bpf/xdpxceiver.c b/tools/testing/selftests/bpf/xdpxceiver.c
-index 014dedaa4dd2..1e722ee76b1f 100644
---- a/tools/testing/selftests/bpf/xdpxceiver.c
-+++ b/tools/testing/selftests/bpf/xdpxceiver.c
-@@ -715,7 +715,7 @@ static void worker_pkt_dump(void)
- 		int payload = *((uint32_t *)(pkt_buf[iter]->payload + PKT_HDR_SIZE));
- 
- 		if (payload == EOT) {
--			ksft_print_msg("End-of-tranmission frame received\n");
-+			ksft_print_msg("End-of-transmission frame received\n");
- 			fprintf(stdout, "---------------------------------------\n");
- 			break;
- 		}
-@@ -747,7 +747,7 @@ static void worker_pkt_validate(void)
- 			}
- 
- 			if (payloadseqnum == EOT) {
--				ksft_print_msg("End-of-tranmission frame received: PASS\n");
-+				ksft_print_msg("End-of-transmission frame received: PASS\n");
- 				sigvar = 1;
- 				break;
- 			}
 -- 
-2.29.2
-
+Alexandre Belloni, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

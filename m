@@ -2,114 +2,134 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52E902D9592
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 10:56:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFB022D97AD
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 12:51:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387979AbgLNJzS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Dec 2020 04:55:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59316 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729399AbgLNJzN (ORCPT
+        id S2438530AbgLNLts (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Dec 2020 06:49:48 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:59248 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405918AbgLNLts (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Dec 2020 04:55:13 -0500
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7838C0613D3;
-        Mon, 14 Dec 2020 01:54:32 -0800 (PST)
-Received: by mail-ej1-x641.google.com with SMTP id q22so3943992eja.2;
-        Mon, 14 Dec 2020 01:54:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=+TLqkNu+h8gO95ZaplkB/B/fxqrw+QmRfatUThxlnac=;
-        b=pA2b4V26JigMdUJ9g3xzRZKQqhWaOOWSKkyTku3KsiSyBxRN8c3oCSOr/XnVZR0JM9
-         /sMVjJxQp/4KvDXARAwx+xTDXe4tMmM8EB5Nblp5gSSb3+xbtw2wOephhVWbptsYZ9xl
-         4mKsE86ExOV90EV/GLsaIu/d6zxKXZzrMWSwXDLz+Z2hNmtqiqD35bgCbKq9XV9dAml2
-         /vzh8kGui8ZkL8NJ7fHq37+zUa88BsiRbCJn74V5KKYX2/DBvG2Jek0ol1+PjEcuKNTf
-         YXbJACqjP230Y05RBCwxUtRjzbbeGSTlGz2YqkzspKiCz5oYKzfhWH1AFbvzLv3d9hi3
-         pFKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=+TLqkNu+h8gO95ZaplkB/B/fxqrw+QmRfatUThxlnac=;
-        b=i1brFsqzqRy3VZH4mnOC5DNf9YMzoat/kTx2BvcC3O40hSK2kygCT7l+BeI3nEUywp
-         wCn8c/a2OGWuVFjhV1+KLEQEOxIOXWQQ9CDo+bo11ms0cnnEjcey02lPVwb5gR4hfmgg
-         ys4+L8eKptKeBXgepECGQGWHWEPFXd6c3XCyRWp1WfcaFmjypLKB4tvyTJ3tZpi1HtJF
-         iW774Q03Mzw0GQMp1sUNCtAF+grlYUSo75dqWQiavejXsCoVTZtUMpR1m7H/INCbPOcD
-         c0tZpa/FzACqqlPx19+hN2BVB7EUD8Xi1YNqQrxzU0L0zWte1p3WCZkMiZZzD5N9yToC
-         Gg3A==
-X-Gm-Message-State: AOAM5314W4NmcZVUUlD9zNy+k3sE1UM/if8WO8Z/mSBDv0n7a3CkEeG6
-        3d+hotztDeGI6tyN7uF3taU=
-X-Google-Smtp-Source: ABdhPJx2BLvNpvotfHBPfnyEpidTSKq9CyRpYFMgbp28a/tT4rvBmhwGk1WP3mEUKpiXqgxkXWlu1Q==
-X-Received: by 2002:a17:906:7687:: with SMTP id o7mr22009036ejm.209.1607939671569;
-        Mon, 14 Dec 2020 01:54:31 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2dd4:5300:de8:a057:1d20:a710])
-        by smtp.gmail.com with ESMTPSA id d14sm16140932edn.31.2020.12.14.01.54.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Dec 2020 01:54:30 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org
-Cc:     Christoph Hellwig <hch@lst.de>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        clang-built-linux@googlegroups.com,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH v2] scsi: sd: remove obsolete variable in sd_remove()
-Date:   Mon, 14 Dec 2020 10:54:24 +0100
-Message-Id: <20201214095424.12479-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 14 Dec 2020 06:49:48 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BEBi1vg154508;
+        Mon, 14 Dec 2020 11:48:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=V+Mtmc/dxJNvv1aQpXV+lTe9PulaOd5ociZlKtA1G1U=;
+ b=iHHCbfk4PMzDIECX+bmLAPTbnabOQJRub8QG3TZj6zYJj6DrMozK0nRYdkZZpiyWMEBv
+ fbyRIOCCikB1upcbIBpUvTE6n4LlQC9aHWbT3DBfI1VisYY8DadydoTqAXZYXnPbCUtE
+ +Lnq6Vu8k6QvEleDX6gitNkl73oR+05FtEOeTDmPnPOdhuMz+BadKChez7FBgx9TAnPn
+ DJ9U0G04BmF05PrRqc2mSRH/Lv+zDPqVbo23VpLEsyC3BAtJzIvprkT5z2lzzJUvurWZ
+ IPr0e4r8dFIqHsSFQmUEiOjIXtXe2pSjB2IE6x6F4tBnn2C2nPNJrU7icWDG/DnPi1MI iQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2130.oracle.com with ESMTP id 35ckcb4w40-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 14 Dec 2020 11:48:51 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BEBe2BK171801;
+        Mon, 14 Dec 2020 11:48:51 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 35d7sucy82-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 14 Dec 2020 11:48:50 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0BEBml0F009414;
+        Mon, 14 Dec 2020 11:48:47 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 14 Dec 2020 03:48:46 -0800
+Date:   Mon, 14 Dec 2020 14:48:31 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     UNGLinuxDriver@microchip.com, vladimir.oltean@nxp.com,
+        claudiu.manoil@nxp.com, alexandre.belloni@bootlin.com,
+        davem@davemloft.net, kuba@kernel.org, andrew@lunn.ch,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] net: mscc: ocelot: Fix a resource leak in the error
+ handling path of the probe function
+Message-ID: <20201214114831.GE2809@kadam>
+References: <20201213114838.126922-1-christophe.jaillet@wanadoo.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201213114838.126922-1-christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9834 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0
+ mlxlogscore=999 spamscore=0 mlxscore=0 suspectscore=0 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012140083
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9834 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999
+ priorityscore=1501 mlxscore=0 suspectscore=0 adultscore=0 phishscore=0
+ malwarescore=0 impostorscore=0 lowpriorityscore=0 clxscore=1011
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012140083
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 140ea3bbf39a ("sd: use __register_blkdev to avoid a modprobe for an
-unregistered dev_t") removed blk_register_region(devt, ...) in sd_remove()
-and since then, devt is unused in sd_remove().
+On Sun, Dec 13, 2020 at 12:48:38PM +0100, Christophe JAILLET wrote:
+> In case of error after calling 'ocelot_init()', it must be undone by a
+> corresponding 'ocelot_deinit()' call, as already done in the remove
+> function.
+> 
 
-Hence, make W=1 warns:
+This changes the behavior slightly in another way as well, but it's
+probably a bug fix.
 
-  drivers/scsi/sd.c:3516:8:
-      warning: variable 'devt' set but not used [-Wunused-but-set-variable]
+drivers/net/ethernet/mscc/ocelot_vsc7514.c
+  1250          ports = of_get_child_by_name(np, "ethernet-ports");
+  1251          if (!ports) {
+  1252                  dev_err(ocelot->dev, "no ethernet-ports child node found\n");
+  1253                  return -ENODEV;
+  1254          }
+  1255  
+  1256          ocelot->num_phys_ports = of_get_child_count(ports);
+  1257          ocelot->num_flooding_pgids = 1;
+  1258  
+  1259          ocelot->vcap = vsc7514_vcap_props;
+  1260          ocelot->inj_prefix = OCELOT_TAG_PREFIX_NONE;
+  1261          ocelot->xtr_prefix = OCELOT_TAG_PREFIX_NONE;
+  1262          ocelot->npi = -1;
+  1263  
+  1264          err = ocelot_init(ocelot);
+  1265          if (err)
+  1266                  goto out_put_ports;
+  1267  
+  1268          err = mscc_ocelot_init_ports(pdev, ports);
+  1269          if (err)
+  1270                  goto out_put_ports;
+  1271  
+  1272          if (ocelot->ptp) {
+  1273                  err = ocelot_init_timestamp(ocelot, &ocelot_ptp_clock_info);
+  1274                  if (err) {
+  1275                          dev_err(ocelot->dev,
+  1276                                  "Timestamp initialization failed\n");
+  1277                          ocelot->ptp = 0;
+  1278                  }
 
-Simply remove this obsolete variable.
+In the original code, if ocelot_init_timestamp() failed we returned
+a negative error code but now we return success.  This probably is what
+the original authors intended, though.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
-Acked-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-applies cleanly on current master and next-20201113, next-20201211
+  1279          }
+  1280  
+  1281          register_netdevice_notifier(&ocelot_netdevice_nb);
+  1282          register_switchdev_notifier(&ocelot_switchdev_nb);
+  1283          register_switchdev_blocking_notifier(&ocelot_switchdev_blocking_nb);
+  1284  
+  1285          dev_info(&pdev->dev, "Ocelot switch probed\n");
+  1286  
+  1287  out_put_ports:
+  1288          of_node_put(ports);
+  1289          return err;
+  1290  }
 
-The patch was submitted for inclusion in scsi:
-
-  https://lore.kernel.org/lkml/20201116070035.11870-1-lukas.bulwahn@gmail.com/
-
-v1 -> v2:
-
-Christoph and Nathan reviewed, and I added the tags here.
-Martin asked the patch to go through block.
-
-Jens, can you please pick this minor non-urgent clean-up patch?
-
- drivers/scsi/sd.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index 679c2c025047..21675a98620d 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -3510,10 +3510,8 @@ static int sd_probe(struct device *dev)
- static int sd_remove(struct device *dev)
- {
- 	struct scsi_disk *sdkp;
--	dev_t devt;
- 
- 	sdkp = dev_get_drvdata(dev);
--	devt = disk_devt(sdkp->disk);
- 	scsi_autopm_get_device(sdkp->device);
- 
- 	async_synchronize_full_domain(&scsi_sd_pm_domain);
--- 
-2.17.1
+regards,
+dan carpenter
 

@@ -2,71 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B88262D93A9
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 08:33:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C84A52D944E
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 09:48:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439008AbgLNHct (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Dec 2020 02:32:49 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:35027 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2439000AbgLNHcs (ORCPT
+        id S2390767AbgLNIqA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Dec 2020 03:46:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48452 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727842AbgLNIp7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Dec 2020 02:32:48 -0500
-Received: by mail-oi1-f194.google.com with SMTP id s2so18240894oij.2;
-        Sun, 13 Dec 2020 23:32:33 -0800 (PST)
+        Mon, 14 Dec 2020 03:45:59 -0500
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EF9BC0613CF;
+        Mon, 14 Dec 2020 00:45:19 -0800 (PST)
+Received: by mail-ej1-x643.google.com with SMTP id ce23so21399203ejb.8;
+        Mon, 14 Dec 2020 00:45:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=nOHcwlqEDRT0lM53kesWlw3BCTLLVoBAEddAgoVvR/M=;
+        b=el5drreD7BLx+lL/RUsZhAypfycxf1Imjzdg28G7OpYi8Hb4coH3UdiQSe/P9pPt+I
+         tbLMoeXCnXe95t3yjItjBQWmvSQdfYPLFEvlhLoayuXQ2PW8BkM6lzmhOLgxMIp6uXDy
+         fU+WSNoW6jIHRdfv/fvmVkOJ/txjtz/Bbq0/8Go7lzhNgU8ZvG/GTpznOurRlD2iQj00
+         aD6FWDhe+N8px1pvZ+syzQ8ic3srrZ/oF7TMmd16gO0Xo7uJZn8GjoKwSqRZJef88Ocg
+         nq9K6wGiSvf6Q1HqxQEq0gHIUHThM4Md71PpsCvdoN8U0YNdzPdQkgQwmIGSNbr3DxnM
+         1New==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BftzBGcfKzrdavGS134SjsPLLF2ruabtKuv1iEkU87M=;
-        b=aHSCat1cWxgTaolbj/QgwAHvB8PxX0QHYNACP6wj/l6vKhIEI3zcgG9hjw8TUPA5Y7
-         msavVzjnfPB7BCQS3ciIs3UlCG+9JW245W+g6Ch+wPFFICMkISF0IZzyUOGT2RINt4fi
-         PLS8zR5oSBUlT3nl4j1dZ8Id8AiLiWEVZ5jRoYBzSa2WIpOWthmBvrKnlLk1IdZiiZOH
-         LbcHKxE1sKOUuk6tFkIk94tJLzpy2/iutRzDeR6VoL+oJXZzDx2hdJp6Qm77DsFCgQ5y
-         m9Evao3GRZdPRpxM9D/xPAHHkWoct5grIxn3kpJCC0HjZnylLrSTYmX9XthJ16L3vMA1
-         8zYA==
-X-Gm-Message-State: AOAM530VyA2Cm0Vy7ES83Bezwu5q0Zl7KZaw5Y4xvbYr2zar3jEQpffx
-        1B/bqQsSjSeZYPGaant0lYVyJ0A4R/MskqDRRAc=
-X-Google-Smtp-Source: ABdhPJyK95q4KGKvFo9ijVGJmhONVBgouh2E4UAW95p/Qanb/0y6OOaTboohbFwChAeAnqCiwLmCHDMVBfOe7y5EPzA=
-X-Received: by 2002:aca:ec09:: with SMTP id k9mr17359385oih.153.1607931127977;
- Sun, 13 Dec 2020 23:32:07 -0800 (PST)
-MIME-Version: 1.0
-References: <20201212174119.120027-1-christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20201212174119.120027-1-christophe.jaillet@wanadoo.fr>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 14 Dec 2020 08:31:56 +0100
-Message-ID: <CAMuHMdUJVN3ywmSfCDKT05k24hxNtn5C8TdO6nyscUFiCy441w@mail.gmail.com>
-Subject: Re: [PATCH] media: vsp1: Fix an error handling path in the probe function
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=nOHcwlqEDRT0lM53kesWlw3BCTLLVoBAEddAgoVvR/M=;
+        b=WL1O9SKKFJ5dY4MYuUY9NxNgCv6pIFXfeIodG2OlE4TfUWg8CywfaWj52RnJQSGp9I
+         MrFVqPEPb5RwcOwQjae630m9Q0uTyikHUhEOR8DaomppdlhPJRpskJlLfYL8u/QZW3cq
+         XcNAzdI/Au+abJ9W9HEuQWishPiXTafnwrhp3BMxdqwtZwC0mjUUxZ7nst6WbEQ+y/R3
+         nu8mqQ5+Cs6YzhXE0orTFaDfodcvnIppZ0sCABy+fVJT67VZgTHFFAaTl5fxXj84xTrQ
+         VZbcyWUP4YGTBkbN7vckWT4EwuGCP6vEXSjCJUmyHebh3zsldDN5hjZe3MWs+1kfCHhi
+         Wgfw==
+X-Gm-Message-State: AOAM533p580dN3xdbba34qvp4ktDJkfoVEsUwO1deap/mQ19mkaCT6v+
+        CEWOotWaNvgjOQBUOjP7O2o=
+X-Google-Smtp-Source: ABdhPJx6G9yF8J9LtSYqVMXulBGSRXXEaG4AuicJ6Bqc6Brbw194jwgxuuhHfoFOAD+oL/tzkSLeYg==
+X-Received: by 2002:a17:906:524a:: with SMTP id y10mr21913056ejm.97.1607935518226;
+        Mon, 14 Dec 2020 00:45:18 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2dd4:5300:f852:2e6a:155e:5ca])
+        by smtp.gmail.com with ESMTPSA id f13sm12939048ejf.42.2020.12.14.00.45.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Dec 2020 00:45:17 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Qiujun Huang <hqjagain@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] trace: drop unneeded assignment in ring_buffer_resize()
+Date:   Mon, 14 Dec 2020 09:45:03 +0100
+Message-Id: <20201214084503.3079-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Dec 13, 2020 at 5:22 PM Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
-> A previous 'rcar_fcp_get()' call must be undone in the error handling path,
-> as already done in the remove function.
->
-> Fixes: 94fcdf829793 ("[media] v4l: vsp1: Add FCP support")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Since commit 0a1754b2a97e ("ring-buffer: Return 0 on success from
+ring_buffer_resize()"), computing the size is not needed anymore.
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Drop unneeded assignment in ring_buffer_resize().
 
-Gr{oetje,eeting}s,
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+ kernel/trace/ring_buffer.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-                        Geert
-
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 91db9d032a0c..95ecfb107e3e 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1974,8 +1974,6 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
+ 	if (nr_pages < 2)
+ 		nr_pages = 2;
+ 
+-	size = nr_pages * BUF_PAGE_SIZE;
+-
+ 	/* prevent another thread from changing buffer sizes */
+ 	mutex_lock(&buffer->mutex);
+ 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.17.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

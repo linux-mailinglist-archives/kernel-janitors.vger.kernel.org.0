@@ -2,113 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5472A2DA085
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 20:33:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 087D32DA100
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 21:05:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408553AbgLNTbA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Dec 2020 14:31:00 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:35822 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2408575AbgLNTao (ORCPT
+        id S2502894AbgLNUCz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Dec 2020 15:02:55 -0500
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:51479 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2502902AbgLNUCq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Dec 2020 14:30:44 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BEJOTgd173260;
-        Mon, 14 Dec 2020 19:29:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=B9veKK6RS8BjzhYYkonv/wRvP3TajCIALIsGxb6pXDs=;
- b=ObR9Uu+n7w+esaYRArJ0QtqW9vbmfm54jNTNUyw+HDchaMPSglW6nt+rg3ARuBkK8uj0
- byK/eyANnlM8WckCtJE4GSJvir0UYlBJhwLehNlPmmpHPkIL3eyRDmGQPggPwFNC3V+q
- b1MGkBOPK/JCtJRjTtblRag93Q6wPXywkcbUposSJP/l0IQ/8bWo1y+LIrNBKkoFQT8P
- +cziYyilwB1GFxcZQNR6ysMmJRtuEacc6y4UWhOfBHrBEX7b4nrgcNBT0fyTBsLrYBg2
- gLsFMMiFFTK+kEYdvQHdLRRHHUBWxC1IgrIVX6QlYkwK1U82nJM3uy7pZG401eV1e5xC Bw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 35cn9r73db-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 14 Dec 2020 19:29:53 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BEJP5ND077765;
-        Mon, 14 Dec 2020 19:27:53 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 35e6jpws7h-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 14 Dec 2020 19:27:53 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0BEJRqO6007570;
-        Mon, 14 Dec 2020 19:27:52 GMT
-Received: from [192.168.2.112] (/50.38.35.18)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 14 Dec 2020 11:27:51 -0800
-Subject: Re: [PATCH] hugetlb: Fix an error code in hugetlb_reserve_pages()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Mina Almasry <almasrymina@google.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        David Rientjes <rientjes@google.com>, linux-mm@kvack.org,
+        Mon, 14 Dec 2020 15:02:46 -0500
+Received: from [192.168.42.210] ([93.22.36.105])
+        by mwinf5d56 with ME
+        id 4L0t2400Q2G6YR103L0uuQ; Mon, 14 Dec 2020 21:01:01 +0100
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 14 Dec 2020 21:01:01 +0100
+X-ME-IP: 93.22.36.105
+Subject: Re: [PATCH] net: mscc: ocelot: Fix a resource leak in the error
+ handling path of the probe function
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     UNGLinuxDriver@microchip.com, vladimir.oltean@nxp.com,
+        claudiu.manoil@nxp.com, alexandre.belloni@bootlin.com,
+        davem@davemloft.net, kuba@kernel.org, andrew@lunn.ch,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-References: <X9NGZWnZl5/Mt99R@mwanda>
-From:   Mike Kravetz <mike.kravetz@oracle.com>
-Message-ID: <dff4211a-687c-a3e1-fdf6-1562581e0da4@oracle.com>
-Date:   Mon, 14 Dec 2020 11:27:50 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+Newsgroups: gmane.linux.kernel,gmane.linux.network,gmane.linux.kernel.janitors
+References: <20201213114838.126922-1-christophe.jaillet@wanadoo.fr>
+ <20201214114831.GE2809@kadam>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <ecca5770-7cb3-c0a0-0a33-fcc3854d0b74@wanadoo.fr>
+Date:   Mon, 14 Dec 2020 21:00:53 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
-In-Reply-To: <X9NGZWnZl5/Mt99R@mwanda>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20201214114831.GE2809@kadam>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9834 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 bulkscore=0
- malwarescore=0 adultscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012140128
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9834 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
- impostorscore=0 lowpriorityscore=0 clxscore=1011 spamscore=0
- malwarescore=0 priorityscore=1501 phishscore=0 mlxscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012140128
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 12/11/20 2:13 AM, Dan Carpenter wrote:
-> Preserve the error code from region_add() instead of returning success.
+Le 14/12/2020 à 12:48, Dan Carpenter a écrit :
+> On Sun, Dec 13, 2020 at 12:48:38PM +0100, Christophe JAILLET wrote:
+>> In case of error after calling 'ocelot_init()', it must be undone by a
+>> corresponding 'ocelot_deinit()' call, as already done in the remove
+>> function.
+>>
 > 
-> Fixes: 0db9d74ed884 ("hugetlb: disable region_add file_region coalescing")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> From static analysis.  Untested.
-
-Thanks Dan.
-
+> This changes the behavior slightly in another way as well, but it's
+> probably a bug fix.
 > 
->  mm/hugetlb.c | 1 +
->  1 file changed, 1 insertion(+)
+> drivers/net/ethernet/mscc/ocelot_vsc7514.c
+>    1250          ports = of_get_child_by_name(np, "ethernet-ports");
+>    1251          if (!ports) {
+>    1252                  dev_err(ocelot->dev, "no ethernet-ports child node found\n");
+>    1253                  return -ENODEV;
+>    1254          }
+>    1255
+>    1256          ocelot->num_phys_ports = of_get_child_count(ports);
+>    1257          ocelot->num_flooding_pgids = 1;
+>    1258
+>    1259          ocelot->vcap = vsc7514_vcap_props;
+>    1260          ocelot->inj_prefix = OCELOT_TAG_PREFIX_NONE;
+>    1261          ocelot->xtr_prefix = OCELOT_TAG_PREFIX_NONE;
+>    1262          ocelot->npi = -1;
+>    1263
+>    1264          err = ocelot_init(ocelot);
+>    1265          if (err)
+>    1266                  goto out_put_ports;
+>    1267
+>    1268          err = mscc_ocelot_init_ports(pdev, ports);
+>    1269          if (err)
+>    1270                  goto out_put_ports;
+>    1271
+>    1272          if (ocelot->ptp) {
+>    1273                  err = ocelot_init_timestamp(ocelot, &ocelot_ptp_clock_info);
+>    1274                  if (err) {
+>    1275                          dev_err(ocelot->dev,
+>    1276                                  "Timestamp initialization failed\n");
+>    1277                          ocelot->ptp = 0;
+>    1278                  }
 > 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 1f3bf1710b66..ac2e48b9f1d7 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -5113,6 +5113,7 @@ int hugetlb_reserve_pages(struct inode *inode,
->  
->  		if (unlikely(add < 0)) {
->  			hugetlb_acct_memory(h, -gbl_reserve);
-> +			ret = add;
->  			goto out_put_pages;
->  		} else if (unlikely(chg > add)) {
->  			/*
+> In the original code, if ocelot_init_timestamp() failed we returned
+> a negative error code but now we return success.  This probably is what
+> the original authors intended, though.
 > 
 
+Thanks for the detailed review Dan.
 
-That error path is VERY unlikely to be taken, but is indeed incorrect.
+I agree with you. However this "fix" was not intentional. :(
 
-When looking at this, I noticed that callers of hugetlb_reserve_pages only
-check for 0 or !0.  This changed as the code evolved to add reservation
-cgroup support.  The routine type can be changed to a bool and simplified
-some.  I'll send that as a follow up patch not for stable.
+This may worth stating it in the commit message.
+Can it be done when/if the patch is applied?
 
-Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
--- 
-Mike Kravetz
+CJ

@@ -2,99 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 087D32DA100
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 21:05:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C42A2DA172
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 21:26:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502894AbgLNUCz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Dec 2020 15:02:55 -0500
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:51479 "EHLO
+        id S2503226AbgLNUXT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Dec 2020 15:23:19 -0500
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:32302 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2502902AbgLNUCq (ORCPT
+        with ESMTP id S2503218AbgLNUXG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Dec 2020 15:02:46 -0500
-Received: from [192.168.42.210] ([93.22.36.105])
+        Mon, 14 Dec 2020 15:23:06 -0500
+Received: from localhost.localdomain ([93.22.36.105])
         by mwinf5d56 with ME
-        id 4L0t2400Q2G6YR103L0uuQ; Mon, 14 Dec 2020 21:01:01 +0100
-X-ME-Helo: [192.168.42.210]
+        id 4LMJ240012G6YR103LMJPn; Mon, 14 Dec 2020 21:21:22 +0100
+X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 14 Dec 2020 21:01:01 +0100
+X-ME-Date: Mon, 14 Dec 2020 21:21:22 +0100
 X-ME-IP: 93.22.36.105
-Subject: Re: [PATCH] net: mscc: ocelot: Fix a resource leak in the error
- handling path of the probe function
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     UNGLinuxDriver@microchip.com, vladimir.oltean@nxp.com,
-        claudiu.manoil@nxp.com, alexandre.belloni@bootlin.com,
-        davem@davemloft.net, kuba@kernel.org, andrew@lunn.ch,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Newsgroups: gmane.linux.kernel,gmane.linux.network,gmane.linux.kernel.janitors
-References: <20201213114838.126922-1-christophe.jaillet@wanadoo.fr>
- <20201214114831.GE2809@kadam>
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <ecca5770-7cb3-c0a0-0a33-fcc3854d0b74@wanadoo.fr>
-Date:   Mon, 14 Dec 2020 21:00:53 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+To:     davem@davemloft.net, kuba@kernel.org, mripard@kernel.org,
+        wens@csie.org, jernej.skrabec@siol.net, timur@kernel.org,
+        song.bao.hua@hisilicon.com, f.fainelli@gmail.com, leon@kernel.org,
+        hkallweit1@gmail.com, wangyunjian@huawei.com, sr@denx.de
+Cc:     linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] net: allwinner: Fix some resources leak in the error handling path of the probe and in the remove function
+Date:   Mon, 14 Dec 2020 21:21:17 +0100
+Message-Id: <20201214202117.146293-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <20201214114831.GE2809@kadam>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 14/12/2020 à 12:48, Dan Carpenter a écrit :
-> On Sun, Dec 13, 2020 at 12:48:38PM +0100, Christophe JAILLET wrote:
->> In case of error after calling 'ocelot_init()', it must be undone by a
->> corresponding 'ocelot_deinit()' call, as already done in the remove
->> function.
->>
-> 
-> This changes the behavior slightly in another way as well, but it's
-> probably a bug fix.
-> 
-> drivers/net/ethernet/mscc/ocelot_vsc7514.c
->    1250          ports = of_get_child_by_name(np, "ethernet-ports");
->    1251          if (!ports) {
->    1252                  dev_err(ocelot->dev, "no ethernet-ports child node found\n");
->    1253                  return -ENODEV;
->    1254          }
->    1255
->    1256          ocelot->num_phys_ports = of_get_child_count(ports);
->    1257          ocelot->num_flooding_pgids = 1;
->    1258
->    1259          ocelot->vcap = vsc7514_vcap_props;
->    1260          ocelot->inj_prefix = OCELOT_TAG_PREFIX_NONE;
->    1261          ocelot->xtr_prefix = OCELOT_TAG_PREFIX_NONE;
->    1262          ocelot->npi = -1;
->    1263
->    1264          err = ocelot_init(ocelot);
->    1265          if (err)
->    1266                  goto out_put_ports;
->    1267
->    1268          err = mscc_ocelot_init_ports(pdev, ports);
->    1269          if (err)
->    1270                  goto out_put_ports;
->    1271
->    1272          if (ocelot->ptp) {
->    1273                  err = ocelot_init_timestamp(ocelot, &ocelot_ptp_clock_info);
->    1274                  if (err) {
->    1275                          dev_err(ocelot->dev,
->    1276                                  "Timestamp initialization failed\n");
->    1277                          ocelot->ptp = 0;
->    1278                  }
-> 
-> In the original code, if ocelot_init_timestamp() failed we returned
-> a negative error code but now we return success.  This probably is what
-> the original authors intended, though.
-> 
+'irq_of_parse_and_map()' should be balanced by a corresponding
+'irq_dispose_mapping()' call. Otherwise, there is some resources leaks.
 
-Thanks for the detailed review Dan.
+Add such a call in the error handling path of the probe function and in the
+remove function.
 
-I agree with you. However this "fix" was not intentional. :(
+Fixes: 492205050d77 ("net: Add EMAC ethernet driver found on Allwinner A10 SoC's")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Please, carefully check the remove function, I'm not always confident by
+the correct order when releasing resources. This is sometimes tricky.
+---
+ drivers/net/ethernet/allwinner/sun4i-emac.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-This may worth stating it in the commit message.
-Can it be done when/if the patch is applied?
+diff --git a/drivers/net/ethernet/allwinner/sun4i-emac.c b/drivers/net/ethernet/allwinner/sun4i-emac.c
+index 862ea44beea7..5ed80d9a6b9f 100644
+--- a/drivers/net/ethernet/allwinner/sun4i-emac.c
++++ b/drivers/net/ethernet/allwinner/sun4i-emac.c
+@@ -828,13 +828,13 @@ static int emac_probe(struct platform_device *pdev)
+ 	db->clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(db->clk)) {
+ 		ret = PTR_ERR(db->clk);
+-		goto out_iounmap;
++		goto out_dispose_mapping;
+ 	}
+ 
+ 	ret = clk_prepare_enable(db->clk);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Error couldn't enable clock (%d)\n", ret);
+-		goto out_iounmap;
++		goto out_dispose_mapping;
+ 	}
+ 
+ 	ret = sunxi_sram_claim(&pdev->dev);
+@@ -893,6 +893,8 @@ static int emac_probe(struct platform_device *pdev)
+ 	sunxi_sram_release(&pdev->dev);
+ out_clk_disable_unprepare:
+ 	clk_disable_unprepare(db->clk);
++out_dispose_mapping:
++	irq_dispose_mapping(ndev->irq);
+ out_iounmap:
+ 	iounmap(db->membase);
+ out:
+@@ -911,6 +913,7 @@ static int emac_remove(struct platform_device *pdev)
+ 	unregister_netdev(ndev);
+ 	sunxi_sram_release(&pdev->dev);
+ 	clk_disable_unprepare(db->clk);
++	irq_dispose_mapping(ndev->irq);
+ 	iounmap(db->membase);
+ 	free_netdev(ndev);
+ 
+-- 
+2.27.0
 
-CJ

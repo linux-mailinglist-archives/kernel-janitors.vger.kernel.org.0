@@ -2,97 +2,114 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46D322D955E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 10:39:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52E902D9592
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Dec 2020 10:56:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393601AbgLNJi4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Dec 2020 04:38:56 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:23313 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728667AbgLNJiq (ORCPT
+        id S2387979AbgLNJzS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Dec 2020 04:55:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59316 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729399AbgLNJzN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Dec 2020 04:38:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1607938639;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=jJITYNcYZy9bWpFBf8qUIxMVsU06tfqMpCOlk/PORM0=;
-        b=Cz+LXu7YheqcwpFZE8HMRlUAqPec1Sfi4xos+zzPRl4erjO+0pAeYLCExnQ0VMXo6hsZYR
-        TbeZNSuwxHyE8TpFGmdum4iJtPyXdqiYYz6Rze1E+4AN2JScIvZif1VGviFhp980CzOy2M
-        ysQ/qxc93jRZ3/Od4FyXbk2m2Ko82SE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-103-k6keiBBsOGicQk8iwCCIgA-1; Mon, 14 Dec 2020 04:37:17 -0500
-X-MC-Unique: k6keiBBsOGicQk8iwCCIgA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C5AC5107ACE4;
-        Mon, 14 Dec 2020 09:37:15 +0000 (UTC)
-Received: from [10.36.114.184] (ovpn-114-184.ams2.redhat.com [10.36.114.184])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 70A1062467;
-        Mon, 14 Dec 2020 09:37:13 +0000 (UTC)
-Subject: Re: [PATCH] hugetlb: Fix an error code in hugetlb_reserve_pages()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Mina Almasry <almasrymina@google.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        David Rientjes <rientjes@google.com>, linux-mm@kvack.org,
-        kernel-janitors@vger.kernel.org
-References: <X9NGZWnZl5/Mt99R@mwanda>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <2a7ac28f-3623-a1ad-951f-58cf143a75b8@redhat.com>
-Date:   Mon, 14 Dec 2020 10:37:12 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
-MIME-Version: 1.0
-In-Reply-To: <X9NGZWnZl5/Mt99R@mwanda>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+        Mon, 14 Dec 2020 04:55:13 -0500
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7838C0613D3;
+        Mon, 14 Dec 2020 01:54:32 -0800 (PST)
+Received: by mail-ej1-x641.google.com with SMTP id q22so3943992eja.2;
+        Mon, 14 Dec 2020 01:54:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=+TLqkNu+h8gO95ZaplkB/B/fxqrw+QmRfatUThxlnac=;
+        b=pA2b4V26JigMdUJ9g3xzRZKQqhWaOOWSKkyTku3KsiSyBxRN8c3oCSOr/XnVZR0JM9
+         /sMVjJxQp/4KvDXARAwx+xTDXe4tMmM8EB5Nblp5gSSb3+xbtw2wOephhVWbptsYZ9xl
+         4mKsE86ExOV90EV/GLsaIu/d6zxKXZzrMWSwXDLz+Z2hNmtqiqD35bgCbKq9XV9dAml2
+         /vzh8kGui8ZkL8NJ7fHq37+zUa88BsiRbCJn74V5KKYX2/DBvG2Jek0ol1+PjEcuKNTf
+         YXbJACqjP230Y05RBCwxUtRjzbbeGSTlGz2YqkzspKiCz5oYKzfhWH1AFbvzLv3d9hi3
+         pFKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=+TLqkNu+h8gO95ZaplkB/B/fxqrw+QmRfatUThxlnac=;
+        b=i1brFsqzqRy3VZH4mnOC5DNf9YMzoat/kTx2BvcC3O40hSK2kygCT7l+BeI3nEUywp
+         wCn8c/a2OGWuVFjhV1+KLEQEOxIOXWQQ9CDo+bo11ms0cnnEjcey02lPVwb5gR4hfmgg
+         ys4+L8eKptKeBXgepECGQGWHWEPFXd6c3XCyRWp1WfcaFmjypLKB4tvyTJ3tZpi1HtJF
+         iW774Q03Mzw0GQMp1sUNCtAF+grlYUSo75dqWQiavejXsCoVTZtUMpR1m7H/INCbPOcD
+         c0tZpa/FzACqqlPx19+hN2BVB7EUD8Xi1YNqQrxzU0L0zWte1p3WCZkMiZZzD5N9yToC
+         Gg3A==
+X-Gm-Message-State: AOAM5314W4NmcZVUUlD9zNy+k3sE1UM/if8WO8Z/mSBDv0n7a3CkEeG6
+        3d+hotztDeGI6tyN7uF3taU=
+X-Google-Smtp-Source: ABdhPJx2BLvNpvotfHBPfnyEpidTSKq9CyRpYFMgbp28a/tT4rvBmhwGk1WP3mEUKpiXqgxkXWlu1Q==
+X-Received: by 2002:a17:906:7687:: with SMTP id o7mr22009036ejm.209.1607939671569;
+        Mon, 14 Dec 2020 01:54:31 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2dd4:5300:de8:a057:1d20:a710])
+        by smtp.gmail.com with ESMTPSA id d14sm16140932edn.31.2020.12.14.01.54.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Dec 2020 01:54:30 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org
+Cc:     Christoph Hellwig <hch@lst.de>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH v2] scsi: sd: remove obsolete variable in sd_remove()
+Date:   Mon, 14 Dec 2020 10:54:24 +0100
+Message-Id: <20201214095424.12479-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 11.12.20 11:13, Dan Carpenter wrote:
-> Preserve the error code from region_add() instead of returning success.
-> 
-> Fixes: 0db9d74ed884 ("hugetlb: disable region_add file_region coalescing")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> From static analysis.  Untested.
-> 
->  mm/hugetlb.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 1f3bf1710b66..ac2e48b9f1d7 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -5113,6 +5113,7 @@ int hugetlb_reserve_pages(struct inode *inode,
->  
->  		if (unlikely(add < 0)) {
->  			hugetlb_acct_memory(h, -gbl_reserve);
-> +			ret = add;
->  			goto out_put_pages;
->  		} else if (unlikely(chg > add)) {
->  			/*
-> 
+Commit 140ea3bbf39a ("sd: use __register_blkdev to avoid a modprobe for an
+unregistered dev_t") removed blk_register_region(devt, ...) in sd_remove()
+and since then, devt is unused in sd_remove().
 
-Was wioing if something like
+Hence, make W=1 warns:
 
-return ret ? ret : add;
+  drivers/scsi/sd.c:3516:8:
+      warning: variable 'devt' set but not used [-Wunused-but-set-variable]
 
-would be cleaner, but then I spotted "chg" ...
+Simply remove this obsolete variable.
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+Acked-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on current master and next-20201113, next-20201211
 
+The patch was submitted for inclusion in scsi:
+
+  https://lore.kernel.org/lkml/20201116070035.11870-1-lukas.bulwahn@gmail.com/
+
+v1 -> v2:
+
+Christoph and Nathan reviewed, and I added the tags here.
+Martin asked the patch to go through block.
+
+Jens, can you please pick this minor non-urgent clean-up patch?
+
+ drivers/scsi/sd.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index 679c2c025047..21675a98620d 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -3510,10 +3510,8 @@ static int sd_probe(struct device *dev)
+ static int sd_remove(struct device *dev)
+ {
+ 	struct scsi_disk *sdkp;
+-	dev_t devt;
+ 
+ 	sdkp = dev_get_drvdata(dev);
+-	devt = disk_devt(sdkp->disk);
+ 	scsi_autopm_get_device(sdkp->device);
+ 
+ 	async_synchronize_full_domain(&scsi_sd_pm_domain);
 -- 
-Thanks,
-
-David / dhildenb
+2.17.1
 

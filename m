@@ -2,63 +2,50 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F7B52DA989
-	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Dec 2020 09:58:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A0752DA9E6
+	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Dec 2020 10:16:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727145AbgLOI6Q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 15 Dec 2020 03:58:16 -0500
-Received: from new2-smtp.messagingengine.com ([66.111.4.224]:49203 "EHLO
-        new2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727106AbgLOI6F (ORCPT
+        id S1728186AbgLOJPh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 15 Dec 2020 04:15:37 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:51932 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726901AbgLOJPg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 15 Dec 2020 03:58:05 -0500
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 286FA580301;
-        Tue, 15 Dec 2020 03:56:59 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Tue, 15 Dec 2020 03:56:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm1; bh=4IEW1Wm+UUJ4RUAHXZ0yABLHMwu
-        w1h/1bT4PPJUy10Q=; b=J5byJ/N8ttMdHuZIzWOG6M3lRBMBsp4N0DmBw06Ogsu
-        ua27VBNqoRWXszW2hx3mVNL2fVlaq18p7f51JsxnqdtLFtvjMXnVUYB9oWpH7Hhl
-        pP+6DZEOHddMkFW2tTdwI/obvn2+bqmRcAh23zR4sP4jvZZ4c8LEaWbJr55qdaNb
-        anmHWFLLQmC1T+QaRuMUniwOKIKvS2owtEsQgbLt0xE9KR5uqdxai2xVIXYwAN3G
-        2fmA02rrNZEpEpVDnKtO3Z+L/93yli24G3di9RHRKx1aoHwtSzgN+YCTP9UmQpXK
-        dA06qan/rzSfEUkysJCZVIatd9xa8Ki4ML2m8FSO55w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=4IEW1W
-        m+UUJ4RUAHXZ0yABLHMwuw1h/1bT4PPJUy10Q=; b=kEmCNgqRJeQfQRu7qHLgam
-        LnSXxa40avoemlhtCxqiyRMQ3BJcESuc33igVakzk73FyYh1OyUzkg8goYxkoQ4m
-        hpUE7tq0rP/elIk0eB3GObLzfDezBa4dmnvqEij4W2LrD5kbwntP/lzAoCHeJ/A8
-        K099Vtj/gvlaxamZKZFeZ4K23GPSYtkw8a2O4td2zrJoKwclGlpqPX2QrFkfvaaw
-        /oMN2ZUxHKJGAH2+BruCWZBt/5KCbXUTztbtpDJPZqLAjTN7oM5AmMjCRYhYykp6
-        S0oK1kkXOXZkBebV7pj1mUITUenJSYjPvPUUx5xnsFqNF3kriOXWXIsma7TvBssw
-        ==
-X-ME-Sender: <xms:WXrYX8fd21Vzrk6dN1zg4K3gVTSDIJKTkeeq8fQDdD9ymNg-jGQxgg>
-    <xme:WXrYX-NTSGXzH_gubB3bfANxZ6qDP74kj66zMRfsFUKcAAGqgil1R8yRaphlIFC35
-    veqv9qLrVDCnXqWPd4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrudekledguddvkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvuffkfhggtggujgesghdtreertddtvdenucfhrhhomhepofgrgihi
-    mhgvucftihhprghrugcuoehmrgigihhmvgestggvrhhnohdrthgvtghhqeenucggtffrrg
-    htthgvrhhnpeelkeeghefhuddtleejgfeljeffheffgfeijefhgfeufefhtdevteegheei
-    heegudenucfkphepledtrdekledrieekrdejieenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpehmrgigihhmvgestggvrhhnohdrthgvtghh
-X-ME-Proxy: <xmx:WXrYX9gBzkGd1bGA8cnscy0dg8qAKQmock80FRvLY8t3eCXaL3s1MQ>
-    <xmx:WXrYXx9FYmJ1XRLgYDgLYRQdrqOPEsHPGCsn_-NSV7FpVaXeVxqUDQ>
-    <xmx:WXrYX4sMyQR2vWcBMnZEncWCJ1Ep4KuSNPKxNFUn5XJaDL44rF5mUQ>
-    <xmx:W3rYX1N5rF7I4eLriJsA9qNz1DjViX4zxDBUpkPA4yN7h6a7AzAFCw>
-Received: from localhost (lfbn-tou-1-1502-76.w90-89.abo.wanadoo.fr [90.89.68.76])
-        by mail.messagingengine.com (Postfix) with ESMTPA id D976824005A;
-        Tue, 15 Dec 2020 03:56:56 -0500 (EST)
-Date:   Tue, 15 Dec 2020 09:56:55 +0100
-From:   Maxime Ripard <maxime@cerno.tech>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     davem@davemloft.net, kuba@kernel.org, wens@csie.org,
+        Tue, 15 Dec 2020 04:15:36 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BF9E5Hc149147;
+        Tue, 15 Dec 2020 09:14:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=QTr9uNr7ii2CFktvUpD4C/m814MZe6sSbFaDTHiN46s=;
+ b=Fkyi3/n9DUBQFJo65Z7mZWx3xDrAOIPfYAsbGHyltczTEU1cBlFx1+Zpmbbih3webVhr
+ DYAhx++YpuFWYFzuiqrI2ISY2mOQazsntUegr2Q2iXbIk4I+eKERsDjcmjNISbSs5P7g
+ //AXwGiVpC+HsBiASWI4swzFuzBLsfHZRzyGFaCsFRUczlb68QRgfWeg2Cu+l3vu77iS
+ IfLdZUijOr6ejWOaieB7/sWFc1ZWZRI+Wru0uEDE/ypx/ylvvAvfuD3YpJtuaH2FRAwU
+ VQtQsF3WilLy8Ysb5XiWkWOJAmgIhZoxB7RyeUnH9Fhu9lc6E7Qi9eg1AIdcqSm7XXyr MA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2130.oracle.com with ESMTP id 35ckcb9jyv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 15 Dec 2020 09:14:11 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BF94wZH034720;
+        Tue, 15 Dec 2020 09:12:10 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 35e6eq5chg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 15 Dec 2020 09:12:10 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0BF9C50e031675;
+        Tue, 15 Dec 2020 09:12:07 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 15 Dec 2020 01:12:04 -0800
+Date:   Tue, 15 Dec 2020 12:11:53 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Maxime Ripard <maxime@cerno.tech>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        davem@davemloft.net, kuba@kernel.org, wens@csie.org,
         jernej.skrabec@siol.net, timur@kernel.org,
         song.bao.hua@hisilicon.com, f.fainelli@gmail.com, leon@kernel.org,
         hkallweit1@gmail.com, wangyunjian@huawei.com, sr@denx.de,
@@ -66,44 +53,43 @@ Cc:     davem@davemloft.net, kuba@kernel.org, wens@csie.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 Subject: Re: [PATCH] net: allwinner: Fix some resources leak in the error
  handling path of the probe and in the remove function
-Message-ID: <20201215085655.ddacjfvogc3e33vz@gilmour>
+Message-ID: <20201215091153.GH2809@kadam>
 References: <20201214202117.146293-1-christophe.jaillet@wanadoo.fr>
+ <20201215085655.ddacjfvogc3e33vz@gilmour>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="tgnffsnu3i7wc524"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201214202117.146293-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20201215085655.ddacjfvogc3e33vz@gilmour>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9835 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 phishscore=0
+ bulkscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012150063
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9835 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999
+ priorityscore=1501 mlxscore=0 suspectscore=0 adultscore=0 phishscore=0
+ malwarescore=0 impostorscore=0 lowpriorityscore=0 clxscore=1011
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012150064
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Tue, Dec 15, 2020 at 09:56:55AM +0100, Maxime Ripard wrote:
+> Hi,
+> 
+> On Mon, Dec 14, 2020 at 09:21:17PM +0100, Christophe JAILLET wrote:
+> > 'irq_of_parse_and_map()' should be balanced by a corresponding
+> > 'irq_dispose_mapping()' call. Otherwise, there is some resources leaks.
+> 
+> Do you have a source to back that? It's not clear at all from the
+> documentation for those functions, and couldn't find any user calling it
+> from the ten-or-so random picks I took.
 
---tgnffsnu3i7wc524
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It looks like irq_create_of_mapping() needs to be freed with
+irq_dispose_mapping() so this is correct.
 
-Hi,
+regards,
+dan carpenter
 
-On Mon, Dec 14, 2020 at 09:21:17PM +0100, Christophe JAILLET wrote:
-> 'irq_of_parse_and_map()' should be balanced by a corresponding
-> 'irq_dispose_mapping()' call. Otherwise, there is some resources leaks.
-
-Do you have a source to back that? It's not clear at all from the
-documentation for those functions, and couldn't find any user calling it
-=66rom the ten-or-so random picks I took.
-
-Maxime
-
---tgnffsnu3i7wc524
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCX9h6VwAKCRDj7w1vZxhR
-xQ9UAQC+Z7aCLxnq7/YwPgDoj5mZh+XwHfGuD6zuXikKqa8zEQEAyScyReA2IHvf
-/sJz8uc1BMRoj6wBip9nfzA/vv1QFA4=
-=+jO3
------END PGP SIGNATURE-----
-
---tgnffsnu3i7wc524--

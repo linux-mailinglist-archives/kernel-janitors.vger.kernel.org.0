@@ -2,89 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F7CD2DB131
-	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Dec 2020 17:22:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 817EA2DB397
+	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Dec 2020 19:23:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730902AbgLOQU6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 15 Dec 2020 11:20:58 -0500
-Received: from correo.us.es ([193.147.175.20]:43656 "EHLO mail.us.es"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730279AbgLOQUi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 15 Dec 2020 11:20:38 -0500
-Received: from antivirus1-rhel7.int (unknown [192.168.2.11])
-        by mail.us.es (Postfix) with ESMTP id D305C103297
-        for <kernel-janitors@vger.kernel.org>; Tue, 15 Dec 2020 17:19:37 +0100 (CET)
-Received: from antivirus1-rhel7.int (localhost [127.0.0.1])
-        by antivirus1-rhel7.int (Postfix) with ESMTP id BE63CDA801
-        for <kernel-janitors@vger.kernel.org>; Tue, 15 Dec 2020 17:19:37 +0100 (CET)
-Received: by antivirus1-rhel7.int (Postfix, from userid 99)
-        id BCA4CDA798; Tue, 15 Dec 2020 17:19:37 +0100 (CET)
-X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on antivirus1-rhel7.int
-X-Spam-Level: 
-X-Spam-Status: No, score=-108.2 required=7.5 tests=ALL_TRUSTED,BAYES_50,
-        SMTPAUTH_US2,URIBL_BLOCKED,USER_IN_WELCOMELIST,USER_IN_WHITELIST
-        autolearn=disabled version=3.4.1
-Received: from antivirus1-rhel7.int (localhost [127.0.0.1])
-        by antivirus1-rhel7.int (Postfix) with ESMTP id 93206DA78F;
-        Tue, 15 Dec 2020 17:19:35 +0100 (CET)
-Received: from 192.168.1.97 (192.168.1.97)
- by antivirus1-rhel7.int (F-Secure/fsigk_smtp/550/antivirus1-rhel7.int);
- Tue, 15 Dec 2020 17:19:35 +0100 (CET)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/antivirus1-rhel7.int)
-Received: from us.es (unknown [90.77.255.23])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: 1984lsi)
-        by entrada.int (Postfix) with ESMTPSA id 6A32142EFB80;
-        Tue, 15 Dec 2020 17:19:35 +0100 (CET)
-Date:   Tue, 15 Dec 2020 17:19:50 +0100
-X-SMTPAUTHUS: auth mail.us.es
-From:   Pablo Neira Ayuso <pablo@netfilter.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] netfilter: nftables: fix incorrect increment of
- loop counter
-Message-ID: <20201215161950.GA10902@salvia>
-References: <20201214234015.85072-1-colin.king@canonical.com>
- <20201215143830.GA10086@salvia>
+        id S1730620AbgLOSUs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 15 Dec 2020 13:20:48 -0500
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:42201 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728004AbgLOSUo (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 15 Dec 2020 13:20:44 -0500
+Received: from [192.168.42.210] ([93.22.37.143])
+        by mwinf5d64 with ME
+        id 4iJo2400435JPTR03iJo1g; Tue, 15 Dec 2020 19:18:56 +0100
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 15 Dec 2020 19:18:56 +0100
+X-ME-IP: 93.22.37.143
+Subject: Re: [PATCH] net: allwinner: Fix some resources leak in the error
+ handling path of the probe and in the remove function
+To:     Maxime Ripard <maxime@cerno.tech>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     davem@davemloft.net, kuba@kernel.org, wens@csie.org,
+        jernej.skrabec@siol.net, timur@kernel.org,
+        song.bao.hua@hisilicon.com, f.fainelli@gmail.com, leon@kernel.org,
+        hkallweit1@gmail.com, wangyunjian@huawei.com, sr@denx.de,
+        linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20201214202117.146293-1-christophe.jaillet@wanadoo.fr>
+ <20201215085655.ddacjfvogc3e33vz@gilmour> <20201215091153.GH2809@kadam>
+ <20201215113710.wh4ezrvmqbpxd5yi@gilmour>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <54194e3e-5eb1-d10c-4294-bac8f3933f47@wanadoo.fr>
+Date:   Tue, 15 Dec 2020 19:18:48 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201215143830.GA10086@salvia>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Virus-Scanned: ClamAV using ClamSMTP
+In-Reply-To: <20201215113710.wh4ezrvmqbpxd5yi@gilmour>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Dec 15, 2020 at 03:38:30PM +0100, Pablo Neira Ayuso wrote:
-> Hi,
+Le 15/12/2020 à 12:37, Maxime Ripard a écrit :
+> On Tue, Dec 15, 2020 at 12:11:53PM +0300, Dan Carpenter wrote:
+>> On Tue, Dec 15, 2020 at 09:56:55AM +0100, Maxime Ripard wrote:
+>>> Hi,
+>>>
+>>> On Mon, Dec 14, 2020 at 09:21:17PM +0100, Christophe JAILLET wrote:
+>>>> 'irq_of_parse_and_map()' should be balanced by a corresponding
+>>>> 'irq_dispose_mapping()' call. Otherwise, there is some resources leaks.
+>>>
+>>> Do you have a source to back that? It's not clear at all from the
+>>> documentation for those functions, and couldn't find any user calling it
+>>> from the ten-or-so random picks I took.
+>>
+>> It looks like irq_create_of_mapping() needs to be freed with
+>> irq_dispose_mapping() so this is correct.
 > 
-> On Mon, Dec 14, 2020 at 11:40:15PM +0000, Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> > 
-> > The intention of the err_expr cleanup path is to iterate over the
-> > allocated expr_array objects and free them, starting from i - 1 and
-> > working down to the start of the array. Currently the loop counter
-> > is being incremented instead of decremented and also the index i is
-> > being used instead of k, repeatedly destroying the same expr_array
-> > element.  Fix this by decrementing k and using k as the index into
-> > expr_array.
-> > 
-> > Addresses-Coverity: ("Infinite loop")
-> > Fixes: 8cfd9b0f8515 ("netfilter: nftables: generalize set expressions support")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> The doc should be updated first to make that clear then, otherwise we're
+> going to fix one user while multiples will have poped up
 > 
-> Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+> Maxime
 > 
-> @Jakub: Would you please take this one into net-next? Thanks!
 
-You marked as "Awaiting Upstream", I'll take care of it.
+Hi,
 
-Thanks.
+as Dan explained, I think that 'irq_dispose_mapping()' is needed because 
+of the 'irq_create_of_mapping()" within 'irq_of_parse_and_map()'.
+
+As you suggest, I'll propose a doc update to make it clear and more 
+future proof.
+
+CJ

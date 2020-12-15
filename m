@@ -2,29 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C479D2DAB7A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Dec 2020 11:56:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2074D2DAB88
+	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Dec 2020 11:59:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728433AbgLOKyM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 15 Dec 2020 05:54:12 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:58500 "EHLO
+        id S1728201AbgLOK5f (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 15 Dec 2020 05:57:35 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:58580 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727761AbgLOKyM (ORCPT
+        with ESMTP id S1727283AbgLOK5f (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 15 Dec 2020 05:54:12 -0500
+        Tue, 15 Dec 2020 05:57:35 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kp7xR-0006d9-MH; Tue, 15 Dec 2020 10:53:29 +0000
+        id 1kp80h-0006oD-ME; Tue, 15 Dec 2020 10:56:51 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        linux-gpio@vger.kernel.org
+To:     Felix Kuehling <Felix.Kuehling@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] gpio: fix spelling mistake in Kconfig "supprot" -> "support"
-Date:   Tue, 15 Dec 2020 10:53:29 +0000
-Message-Id: <20201215105329.138193-1-colin.king@canonical.com>
+Subject: [PATCH] drm/amdgpu: Fix spelling mistake "Heterogenous" -> "Heterogeneous"
+Date:   Tue, 15 Dec 2020 10:56:51 +0000
+Message-Id: <20201215105651.138391-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,26 +38,25 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in the Kconfig help text. Fix it.
+There is a spelling mistake in a comment in the Kconfig. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpio/Kconfig | 2 +-
+ drivers/gpu/drm/amd/amdkfd/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index c70f46e80a3b..f58e46ec1c96 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -666,7 +666,7 @@ config GPIO_WCD934X
- 	tristate "Qualcomm Technologies Inc WCD9340/WCD9341 gpio controller driver"
- 	depends on MFD_WCD934X && OF_GPIO
- 	help
--         This driver is to supprot GPIO block found on the Qualcomm Technologies
-+         This driver is to support GPIO block found on the Qualcomm Technologies
- 	 Inc WCD9340/WCD9341 Audio Codec.
+diff --git a/drivers/gpu/drm/amd/amdkfd/Kconfig b/drivers/gpu/drm/amd/amdkfd/Kconfig
+index b3672d10ea54..e8fb10c41f16 100644
+--- a/drivers/gpu/drm/amd/amdkfd/Kconfig
++++ b/drivers/gpu/drm/amd/amdkfd/Kconfig
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: MIT
+ #
+-# Heterogenous system architecture configuration
++# Heterogeneous system architecture configuration
+ #
  
- config GPIO_XGENE
+ config HSA_AMD
 -- 
 2.29.2
 

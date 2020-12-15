@@ -2,29 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C25252DAD85
-	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Dec 2020 13:54:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15D892DAD9C
+	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Dec 2020 14:01:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729314AbgLOMxo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 15 Dec 2020 07:53:44 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:33434 "EHLO
+        id S1729049AbgLONBI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 15 Dec 2020 08:01:08 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:33524 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728737AbgLOMxi (ORCPT
+        with ESMTP id S1728385AbgLONA6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 15 Dec 2020 07:53:38 -0500
+        Tue, 15 Dec 2020 08:00:58 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kp9p0-00061Q-QI; Tue, 15 Dec 2020 12:52:54 +0000
+        id 1kp9w8-0006Nq-Qr; Tue, 15 Dec 2020 13:00:16 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-usb@vger.kernel.org, linux-input@vger.kernel.org
+To:     Jassi Brar <jassisinghbrar@gmail.com>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] HID: fix spelling mistake in Kconfig "Uninterruptable" -> "Uninterruptible"
-Date:   Tue, 15 Dec 2020 12:52:54 +0000
-Message-Id: <20201215125254.200436-1-colin.king@canonical.com>
+Subject: [PATCH] mailbox: fix spelling mistake in Kconfig "Intergrated" -> "Integrated"
+Date:   Tue, 15 Dec 2020 13:00:16 +0000
+Message-Id: <20201215130016.200851-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,26 +33,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in the Kconfig help text. Fix it.
+There is a spelling mistake in the Kconfig, fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/hid/usbhid/Kconfig | 2 +-
+ drivers/mailbox/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/usbhid/Kconfig b/drivers/hid/usbhid/Kconfig
-index dcf3a235870f..7c2032f7f44d 100644
---- a/drivers/hid/usbhid/Kconfig
-+++ b/drivers/hid/usbhid/Kconfig
-@@ -38,7 +38,7 @@ config USB_HIDDEV
- 	help
- 	  Say Y here if you want to support HID devices (from the USB
- 	  specification standpoint) that aren't strictly user interface
--	  devices, like monitor controls and Uninterruptable Power Supplies.
-+	  devices, like monitor controls and Uninterruptible Power Supplies.
+diff --git a/drivers/mailbox/Kconfig b/drivers/mailbox/Kconfig
+index f4abe3529acd..68de2c6af727 100644
+--- a/drivers/mailbox/Kconfig
++++ b/drivers/mailbox/Kconfig
+@@ -78,7 +78,7 @@ config OMAP_MBOX_KFIFO_SIZE
+ 	  module parameter).
  
- 	  This module supports these devices separately using a separate
- 	  event interface on /dev/usb/hiddevX (char 180:96 to 180:111).
+ config ROCKCHIP_MBOX
+-	bool "Rockchip Soc Intergrated Mailbox Support"
++	bool "Rockchip Soc Integrated Mailbox Support"
+ 	depends on ARCH_ROCKCHIP || COMPILE_TEST
+ 	help
+ 	  This driver provides support for inter-processor communication
 -- 
 2.29.2
 

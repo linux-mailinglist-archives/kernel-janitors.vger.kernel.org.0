@@ -2,87 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C1BB2DB548
-	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Dec 2020 21:40:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B546F2DB55F
+	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Dec 2020 21:49:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728367AbgLOUjv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 15 Dec 2020 15:39:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43308 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728534AbgLOUjs (ORCPT
+        id S1726771AbgLOUsv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 15 Dec 2020 15:48:51 -0500
+Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:18208 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727354AbgLOUss (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 15 Dec 2020 15:39:48 -0500
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31844C06179C;
-        Tue, 15 Dec 2020 12:39:08 -0800 (PST)
-Received: by mail-lf1-x143.google.com with SMTP id w13so42838139lfd.5;
-        Tue, 15 Dec 2020 12:39:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=AS0Zs8YSOhhb3ZWY+G0dWzbQ3vHgc5+yY4J4G8oSi4I=;
-        b=sEro0g+ZjHeQTgcln2MpCwYbPn9CPqt+HwqRjaFsZt9FLPMHGGeY9ovzYAyQV/1UgK
-         f5M7W5Ixk3dLta4uoRi5LkpvFl++2+uWBNYbJMcoHnQRBqqSq/mlsHBEOUM6Juq66FR2
-         E4dTaZdbMFbh49g3wcFYeiNzyh+k3b9zz+gWiDn1DhwAvDCN2SBe4WbxUIR/ITYsM0U5
-         4htpxwvlLRHXptxdtXOuojXbhqftLDGdyfGc6fmTiIhUl93v9pWOqqUNtAS9N6siYish
-         HpmjGPXZtfxJid14T35KATGAvH2XFSMxCGTUf1GfAgfrohF7dov6nUyIBq69PTiqyw1F
-         dElg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=AS0Zs8YSOhhb3ZWY+G0dWzbQ3vHgc5+yY4J4G8oSi4I=;
-        b=mgEDhJ4jldEurngPNgPIixTZJ78ZBPTnT6oqz3iM1pNMmBaw+cx3pGyCPstEMiseBM
-         vySlzd8u2+cHpGixAUezAx1fiUfXAWBG8LFvYiIdwLXYUlJBH4MdPpm9BkdD7v3YZ3x4
-         riGgf9QV04WdGNjorpKUmr6h26DVjEV5zyCORANLNyvYvnPqYvMrxCS54z73jqHeRJVo
-         TxDCkIiwEU8w9p3nIg0f4uzfxkakeeg4PjN3PxdssRdZD+FdxG8Msw3vfLn9UZoabWKy
-         CEShnAfy53vij/89PJqgLDZwoPpjFV/wivAoduCqLox7irDvDCGjc5ywNuigs0PFa98V
-         klag==
-X-Gm-Message-State: AOAM533MzAJMzDUPfymoCPROhgTKFw0Q39nOi8hKlfvSTVtNM+RGaGVJ
-        vNkGHDK4NClLriw1pD7mIq8=
-X-Google-Smtp-Source: ABdhPJwU83roEVlSTaHc2CtiDi+wpHJMujGF8Eywic/ICM2TQNtHSuk3u4zocCEzgpwyI4YD/8eYmA==
-X-Received: by 2002:a19:430f:: with SMTP id q15mr11627507lfa.6.1608064746751;
-        Tue, 15 Dec 2020 12:39:06 -0800 (PST)
-Received: from kari-VirtualBox (ip212-226-140-26.adsl.kpnqwest.fi. [212.226.140.26])
-        by smtp.gmail.com with ESMTPSA id y20sm1600346lji.86.2020.12.15.12.39.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Dec 2020 12:39:06 -0800 (PST)
-Date:   Tue, 15 Dec 2020 22:39:04 +0200
-From:   Kari Argillander <kari.argillander@gmail.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     maz@kernel.org, tglx@linutronix.de, mripard@kernel.org,
-        dan.carpenter@oracle.com, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] irqdomain: Add documentation for irq_create_of_mapping()
-Message-ID: <20201215203904.iilkgwyqsyatryln@kari-VirtualBox>
-References: <20201215200747.148439-1-christophe.jaillet@wanadoo.fr>
+        Tue, 15 Dec 2020 15:48:48 -0500
+Received: from localhost.localdomain ([93.22.37.143])
+        by mwinf5d65 with ME
+        id 4kn32400N35JPTR03kn3FK; Tue, 15 Dec 2020 21:47:04 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 15 Dec 2020 21:47:04 +0100
+X-ME-IP: 93.22.37.143
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     maz@kernel.org, tglx@linutronix.de, mripard@kernel.org,
+        dan.carpenter@oracle.com
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH V2] irqdomain: Add documentation for irq_create_of_mapping()
+Date:   Tue, 15 Dec 2020 21:46:59 +0100
+Message-Id: <20201215204659.148709-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201215200747.148439-1-christophe.jaillet@wanadoo.fr>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Dec 15, 2020 at 09:07:47PM +0100, Christophe JAILLET wrote:
-> +++ b/kernel/irq/irqdomain.c
-> @@ -858,6 +858,15 @@ unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec)
->  }
->  EXPORT_SYMBOL_GPL(irq_create_fwspec_mapping) 
-> +/**
-> + * irq_create_of_mapping() - Map an interrupt
-> + * @irq_data: structure of_phandle_args returned by a previous
-> + * of_irq_parse_xxx() call
+Add a description for 'irq_create_of_mapping()' and make explicit the fact
+that the resources allocated by this function can be freed by calling
+'irq_dispose_mapping()' when needed (i.e. error handling path, remove
+function, ...)
 
-Start with upper case and use periods. Also next line should align.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+The wording can certainly be improved.
 
-> + * 
-> + * The resources allocated by this function should be freed by
-> + * calling irq_dispose_mapping() when the mapping if not useful
-> + * anymore.
-> + */
+My goal is only to make clear if patches such as:
+   https://lore.kernel.org/lkml/20201214202117.146293-1-christophe.jaillet@wanadoo.fr/
+are needed or not.
 
-Maybe "mapping is not" or "if the mappign is not". There could be lot 
-better wording formatting also but everyone would still understand. So
-it is ok. 
+v2: Fix typo and improve style
+---
+ kernel/irq/irqdomain.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index 6aacd342cd14..d761ece8d43e 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -858,6 +858,15 @@ unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec)
+ }
+ EXPORT_SYMBOL_GPL(irq_create_fwspec_mapping);
+ 
++/**
++ * irq_create_of_mapping() - Map an interrupt
++ * @irq_data: Structure of_phandle_args returned by a previous
++ *            of_irq_parse_xxx() call.
++ *
++ * The resources allocated by this function should be freed by
++ * calling irq_dispose_mapping() when the mapping is not useful
++ * anymore.
++ */
+ unsigned int irq_create_of_mapping(struct of_phandle_args *irq_data)
+ {
+ 	struct irq_fwspec fwspec;
+-- 
+2.27.0
+

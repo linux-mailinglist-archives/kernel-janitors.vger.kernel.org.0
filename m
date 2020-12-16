@@ -2,97 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2BD22DBD46
-	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 10:07:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C52A2DBDE3
+	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 10:47:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726155AbgLPJG7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Dec 2020 04:06:59 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:30840 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725889AbgLPJG7 (ORCPT
+        id S1726185AbgLPJpr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Dec 2020 04:45:47 -0500
+Received: from lb2-smtp-cloud9.xs4all.net ([194.109.24.26]:54871 "EHLO
+        lb2-smtp-cloud9.xs4all.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725835AbgLPJpr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Dec 2020 04:06:59 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1608109593; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=QIAiSIfGteTfftpeFpmU8XTLiCAnt6Lfk6Zo648dcP8=; b=LX4JdKkPJw15qIZloNz2jcKUQ9MdcUFrUqD3u0CUVKJ1X0/QKJ/L0WkiRkvFzsOWJgkGQbO4
- vDjgeDi5BljG6SGmpEoVQj//W6vMywGm8HGxUuh0gDx1wcTEOkX9QbFQQTdu/X8qnUT75vDW
- JtK1qme/K/VR7ageGaeDmDAJg3c=
-X-Mailgun-Sending-Ip: 69.72.43.15
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5fd9ce000564dfefcd1901e4 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 16 Dec 2020 09:06:08
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4A3ACC433C6; Wed, 16 Dec 2020 09:06:07 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4E3F4C433C6;
-        Wed, 16 Dec 2020 09:06:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4E3F4C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Carl Huang <cjhuang@codeaurora.org>,
-        kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org
-Subject: Re: [PATCH 1/2] ath11k: Fix error code in ath11k_core_suspend()
-References: <X9nF17L2/EKOSbn/@mwanda>
-Date:   Wed, 16 Dec 2020 11:06:03 +0200
-In-Reply-To: <X9nF17L2/EKOSbn/@mwanda> (Dan Carpenter's message of "Wed, 16
-        Dec 2020 11:31:19 +0300")
-Message-ID: <87h7omxgqs.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Wed, 16 Dec 2020 04:45:47 -0500
+X-Greylist: delayed 383 seconds by postgrey-1.27 at vger.kernel.org; Wed, 16 Dec 2020 04:45:46 EST
+Received: from cust-b5b5937f ([IPv6:fc0c:c16d:66b8:757f:c639:739b:9d66:799d])
+        by smtp-cloud9.xs4all.net with ESMTPA
+        id pTGXkOjPbynrEpTGakpafo; Wed, 16 Dec 2020 10:38:41 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xs4all.nl; s=s2;
+        t=1608111521; bh=KXHBueOjDbo6cNmvea+XKTXDVux7va/DaIm14CAlSxY=;
+        h=Subject:To:From:Message-ID:Date:MIME-Version:Content-Type:From:
+         Subject;
+        b=wSuoBl2w39m+LtyBlld1XHvXDuU0AklIGh1K38If9ePpHhC5DrOVDown4dTHFefC8
+         X2h+XueHJwdXbB31tNG6QtCpqfDevF6OL0ui0m4fJ+TXfpW7fjD5TZ3ywL/cGIBVZ7
+         YxCSnJPN8sOo6Z2cybHKifij5BIzFrl1/aVQ2mzyOUpMJga85v1JqzF/quxBWkImbo
+         rNyNEnV1CH2bS26eBdXbmqkCdyVKI8MuNmz0kc2lw8HYeddkMMDv+6uBlsHZKVCDRs
+         ISo7dEnSkqcG9OdUuiZc9RbjQgXEpqEiVOA5CFhWZLwZ/ktLe6GDpOuttwLzHnXGce
+         wUwLo9F9z+3Sg==
+Subject: Re: [PATCH] media: allegro: Fix use after free on error
+To:     Michael Tretter <m.tretter@pengutronix.de>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Chuhong Yuan <hslester96@gmail.com>,
+        linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
+        kernel-janitors@vger.kernel.org
+References: <X9dShwq8PrThDpn9@mwanda> <20201214171627.GE1861@pengutronix.de>
+From:   Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Message-ID: <7f7011dd-ceb2-67de-1f9b-9edd0777c04d@xs4all.nl>
+Date:   Wed, 16 Dec 2020 10:38:36 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20201214171627.GE1861@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4xfEXhxv8wK2HMnRg9PJqD/Jk1kJWKXA/KSh5IEuI0F6AoeYMO6Oy0+VhEWfIoog/2cPqTMEEGM6HjxUce041XaPcFfNijzRdIvn+HeQBQNwSbRQTSQl0w
+ LL5pEyQ/+ljdZ2UuUKYu8W1w2fwVWZtkb+A9G+IiwHN5qmG8LrAe3l64XNUIj4ldgjT+UJ4Hh0m7s3egkPyqu64osW+Bo45poR30eAr+LczDF+6M0JWL6Ol2
+ lIqBjqFOlG2MaNzx+9qms+NimmRHs+r/SiKfSWEbKtc7bNLDyiBPNtBYtzJuNrrFTCD/xJt5gzswbWORp5JRqZ4EIwfCC5qQO0XfbvUI/cADS1WK3lkoEiv/
+ 9ZzKoaN1dzBRw1xaeRfdGiKL9TjXRAZBS/887l5asljdfzkYdFggYhqMsmB0vHr7rYLz23Y/N0UbfASTGNNe1hxk+keY9IO5mxqwKzsuyWjqpBT1ZpQzgdYQ
+ nHm38PJbjScvFz2CNivbk5pMJf7R8HE7r+dbyQ==
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> writes:
+On 14/12/2020 18:16, Michael Tretter wrote:
+> On Mon, 14 Dec 2020 14:54:47 +0300, Dan Carpenter wrote:
+>> The "channel" is added to the "dev->channels" but then if
+>> v4l2_m2m_ctx_init() fails then we free "channel" but it's still on the
+>> list so it could lead to a use after free.  Let's not add it to the
+>> list until after v4l2_m2m_ctx_init() succeeds.
+> 
+> Thanks.
+> 
+> The patch conflicts with the series that moves the driver from staging to
+> mainline [0]. I'm not sure, which patch should go in first.
 
-> The "if (!ret)" condition is inverted and it should be "if (ret)".  It
-> means that we return success when we had intended to return an error
-> code.
->
-> Fixes: d1b0c33850d2 ("ath11k: implement suspend for QCA6390 PCI devices")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/net/wireless/ath/ath11k/core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-> index b97c38b9a270..350b7913622c 100644
-> --- a/drivers/net/wireless/ath/ath11k/core.c
-> +++ b/drivers/net/wireless/ath/ath11k/core.c
-> @@ -185,7 +185,7 @@ int ath11k_core_suspend(struct ath11k_base *ab)
->  	ath11k_hif_ce_irq_disable(ab);
->  
->  	ret = ath11k_hif_suspend(ab);
-> -	if (!ret) {
-> +	if (ret) {
->  		ath11k_warn(ab, "failed to suspend hif: %d\n", ret);
->  		return ret;
->  	}
+I'll take care of the conflict.
 
-I suspect I created these bugs while cleaning up the patches. But I
-don't get how I missed them in testing, that's a mystery to me.
+Regards,
 
-Anyway, I'll queue these two to v5.11.
+	Hans
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+> 
+> It is also correct to not change the order of list_del and
+> v4l2_m2m_ctx_release in allegro_release. The list is used to relate messages
+> from the VCU to their destination channel and this should be possible until
+> the context has been released and no further messages are expected for that
+> channel.
+> 
+> [0] https://lore.kernel.org/linux-media/20201202133040.1954837-1-m.tretter@pengutronix.de/
+> 
+>>
+>> Fixes: cc62c74749a3 ("media: allegro: add missed checks in allegro_open()")
+>> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> 
+> Reviewed-by: Michael Tretter <m.tretter@pengutronix.de>
+> 
+>> ---
+>> From static analysis.  Not tested.
+>>
+>>  drivers/staging/media/allegro-dvt/allegro-core.c | 3 +--
+>>  1 file changed, 1 insertion(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/staging/media/allegro-dvt/allegro-core.c b/drivers/staging/media/allegro-dvt/allegro-core.c
+>> index 9f718f43282b..640451134072 100644
+>> --- a/drivers/staging/media/allegro-dvt/allegro-core.c
+>> +++ b/drivers/staging/media/allegro-dvt/allegro-core.c
+>> @@ -2483,8 +2483,6 @@ static int allegro_open(struct file *file)
+>>  	INIT_LIST_HEAD(&channel->buffers_reference);
+>>  	INIT_LIST_HEAD(&channel->buffers_intermediate);
+>>  
+>> -	list_add(&channel->list, &dev->channels);
+>> -
+>>  	channel->fh.m2m_ctx = v4l2_m2m_ctx_init(dev->m2m_dev, channel,
+>>  						allegro_queue_init);
+>>  
+>> @@ -2493,6 +2491,7 @@ static int allegro_open(struct file *file)
+>>  		goto error;
+>>  	}
+>>  
+>> +	list_add(&channel->list, &dev->channels);
+>>  	file->private_data = &channel->fh;
+>>  	v4l2_fh_add(&channel->fh);
+>>  
+>> -- 
+>> 2.29.2
+>>
+>>
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

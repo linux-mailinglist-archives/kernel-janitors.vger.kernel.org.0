@@ -2,30 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B5DD2DBFB3
-	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 12:48:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD9952DBFE3
+	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 12:55:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725835AbgLPLsn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Dec 2020 06:48:43 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:43412 "EHLO
+        id S1725891AbgLPLzN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Dec 2020 06:55:13 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:43561 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725283AbgLPLsn (ORCPT
+        with ESMTP id S1725789AbgLPLzN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Dec 2020 06:48:43 -0500
+        Wed, 16 Dec 2020 06:55:13 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kpVHg-0004jh-0T; Wed, 16 Dec 2020 11:47:56 +0000
+        id 1kpVNx-00054E-QA; Wed, 16 Dec 2020 11:54:26 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jeff Dike <jdike@addtoit.com>, Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Brendan Higgins <brendanhiggins@google.com>,
-        linux-um@lists.infradead.org
+To:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Kalle Valo <kvalo@codeaurora.org>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] um: fix spelling mistake in Kconfig "privleges" -> "privileges"
-Date:   Wed, 16 Dec 2020 11:47:55 +0000
-Message-Id: <20201216114755.12461-1-colin.king@canonical.com>
+Subject: [PATCH] wilc1000: fix spelling mistake in Kconfig "devision" -> "division"
+Date:   Wed, 16 Dec 2020 11:54:25 +0000
+Message-Id: <20201216115425.12745-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -40,22 +42,32 @@ There is a spelling mistake in the Kconfig help text. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- arch/um/drivers/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/ni/Kconfig                 | 2 +-
+ drivers/net/wireless/microchip/wilc1000/Kconfig | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/um/drivers/Kconfig b/arch/um/drivers/Kconfig
-index 2e7b8e0e7194..58e3ffc17b7d 100644
---- a/arch/um/drivers/Kconfig
-+++ b/arch/um/drivers/Kconfig
-@@ -323,7 +323,7 @@ config UML_NET_SLIRP
- 	  frames.  In general, slirp allows the UML the same IP connectivity
- 	  to the outside world that the host user is permitted, and unlike
- 	  other transports, SLiRP works without the need of root level
--	  privleges, setuid binaries, or SLIP devices on the host.  This
-+	  privileges, setuid binaries, or SLIP devices on the host.  This
- 	  also means not every type of connection is possible, but most
- 	  situations can be accommodated with carefully crafted slirp
- 	  commands that can be passed along as part of the network device's
+diff --git a/drivers/net/ethernet/ni/Kconfig b/drivers/net/ethernet/ni/Kconfig
+index 01229190132d..dcfbfa516e67 100644
+--- a/drivers/net/ethernet/ni/Kconfig
++++ b/drivers/net/ethernet/ni/Kconfig
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ #
+-# National Instuments network device configuration
++# National Instruments network device configuration
+ #
+ 
+ config NET_VENDOR_NI
+diff --git a/drivers/net/wireless/microchip/wilc1000/Kconfig b/drivers/net/wireless/microchip/wilc1000/Kconfig
+index 80c92e8bf8a5..7f15e42602dd 100644
+--- a/drivers/net/wireless/microchip/wilc1000/Kconfig
++++ b/drivers/net/wireless/microchip/wilc1000/Kconfig
+@@ -44,4 +44,4 @@ config WILC1000_HW_OOB_INTR
+ 	  chipset. This OOB interrupt is intended to provide a faster interrupt
+ 	  mechanism for SDIO host controllers that don't support SDIO interrupt.
+ 	  Select this option If the SDIO host controller in your platform
+-	  doesn't support SDIO time devision interrupt.
++	  doesn't support SDIO time division interrupt.
 -- 
 2.29.2
 

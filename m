@@ -2,26 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D8452DC387
-	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 16:55:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B9752DC37F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 16:54:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726628AbgLPPya (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Dec 2020 10:54:30 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46304 "EHLO mail.kernel.org"
+        id S1726617AbgLPPyH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Dec 2020 10:54:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46184 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726591AbgLPPya (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Dec 2020 10:54:30 -0500
+        id S1725812AbgLPPyH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 16 Dec 2020 10:54:07 -0500
 From:   Mark Brown <broonie@kernel.org>
 Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
 To:     Jaroslav Kysela <perex@perex.cz>,
         Liam Girdwood <lgirdwood@gmail.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Colin King <colin.king@canonical.com>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org
+        Takashi Iwai <tiwai@suse.com>,
+        Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        alsa-devel@alsa-project.org, linux-arm-kernel@lists.infradead.org
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-In-Reply-To: <20201216112859.11564-1-colin.king@canonical.com>
-References: <20201216112859.11564-1-colin.king@canonical.com>
-Subject: Re: [PATCH] ASoC: codecs: fix spelling mistake in Kconfig "comunicate" -> "communicate"
-Message-Id: <160813397775.31838.15795647597993212991.b4-ty@kernel.org>
+In-Reply-To: <20201216112608.11385-1-colin.king@canonical.com>
+References: <20201216112608.11385-1-colin.king@canonical.com>
+Subject: Re: [PATCH] ASoC: atmel: fix spelling mistake in Kconfig "programable" -> "programmable"
+Message-Id: <160813397775.31838.18327524076299334868.b4-ty@kernel.org>
 Date:   Wed, 16 Dec 2020 15:52:57 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -30,8 +35,8 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 16 Dec 2020 11:28:59 +0000, Colin King wrote:
-> There is a spelling mistake in the Kconfig help text. Fix it.
+On Wed, 16 Dec 2020 11:26:08 +0000, Colin King wrote:
+> There are a couple of spelling mistakes in the Kconfig help text. Fix them.
 
 Applied to
 
@@ -39,8 +44,8 @@ Applied to
 
 Thanks!
 
-[1/1] ASoC: codecs: fix spelling mistake in Kconfig "comunicate" -> "communicate"
-      commit: 4ad2d3cf2a299645bdc6d72e5b8ee11b2ed147ac
+[1/1] ASoC: atmel: fix spelling mistake in Kconfig "programable" -> "programmable"
+      commit: 13733775326ea9eb81c6148ad60c43b8d231a343
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

@@ -2,80 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EED12DBF26
-	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 12:02:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07FD62DBF41
+	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 12:17:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725808AbgLPLCW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Dec 2020 06:02:22 -0500
-Received: from so254-31.mailgun.net ([198.61.254.31]:32831 "EHLO
-        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725283AbgLPLCW (ORCPT
+        id S1726104AbgLPLQs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Dec 2020 06:16:48 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:42628 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725283AbgLPLQs (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Dec 2020 06:02:22 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1608116517; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=q6OEzWCfu959SIV59gx6IfRsmBl6yMGT0IZ5fqSXHaI=; b=N7bod/fleHGCgwSoMPd7tgp0FFp+wWsmxWf+6R58IYz7Xbu91Vlr1F3AUNYi6o6LtIn9vJ4C
- t40G1HNKEUFfAAAF6wvtJRKLRtyH00hVq77bPxlAAzh0wxGFXeRKNHbxN5pJMkB6wcV6UkuM
- RxaB4LeAZMZYZCIRoptGPt9te9c=
-X-Mailgun-Sending-Ip: 198.61.254.31
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 5fd9e8f90564dfefcd51e41a (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 16 Dec 2020 11:01:13
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id DEA3BC43463; Wed, 16 Dec 2020 11:01:12 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 02EBDC433ED;
-        Wed, 16 Dec 2020 11:01:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 02EBDC433ED
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Carl Huang <cjhuang@codeaurora.org>,
-        kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org
-Subject: Re: [PATCH 2/2] ath11k: Fix ath11k_pci_fix_l1ss()
-References: <X9nGDHiTh+Z+asDy@mwanda>
-Date:   Wed, 16 Dec 2020 13:01:08 +0200
-In-Reply-To: <X9nGDHiTh+Z+asDy@mwanda> (Dan Carpenter's message of "Wed, 16
-        Dec 2020 11:32:12 +0300")
-Message-ID: <878s9yxbez.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Wed, 16 Dec 2020 06:16:48 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kpUms-0002ac-3g; Wed, 16 Dec 2020 11:16:06 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] freevxfs: fix spelling mistake in Kconfig "endianess" -> "endianness"
+Date:   Wed, 16 Dec 2020 11:16:05 +0000
+Message-Id: <20201216111605.10787-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> writes:
+From: Colin Ian King <colin.king@canonical.com>
 
-> All these conditions are reversed so presumably most of the function is
-> dead code.
->
-> Fixes: 0699940755e9 ("ath11k: pci: fix L1ss clock unstable problem")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+There is a spelling mistake in the Kconfig help text. Fix it.
 
-And this caused a spurious warning:
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ fs/freevxfs/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[   95.734922] ath11k_pci 0000:06:00.0: failed to set sysclk: 0
-
-I'll update the commit log.
-
+diff --git a/fs/freevxfs/Kconfig b/fs/freevxfs/Kconfig
+index c05c71d57291..0e2fc08f7de4 100644
+--- a/fs/freevxfs/Kconfig
++++ b/fs/freevxfs/Kconfig
+@@ -8,7 +8,7 @@ config VXFS_FS
+ 	  of SCO UnixWare (and possibly others) and optionally available
+ 	  for Sunsoft Solaris, HP-UX and many other operating systems. However
+ 	  these particular OS implementations of vxfs may differ in on-disk
+-	  data endianess and/or superblock offset. The vxfs module has been
++	  data endianness and/or superblock offset. The vxfs module has been
+ 	  tested with SCO UnixWare and HP-UX B.10.20 (pa-risc 1.1 arch.)
+ 	  Currently only readonly access is supported and VxFX versions
+ 	  2, 3 and 4. Tests were performed with HP-UX VxFS version 3.
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.29.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

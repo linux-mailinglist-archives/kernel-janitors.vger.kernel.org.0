@@ -2,34 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72BA12DC063
-	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 13:38:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B30D42DC0A1
+	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 14:01:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725996AbgLPMgt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Dec 2020 07:36:49 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:44723 "EHLO
+        id S1726092AbgLPNAF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Dec 2020 08:00:05 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:45243 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725385AbgLPMgt (ORCPT
+        with ESMTP id S1725960AbgLPNAF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Dec 2020 07:36:49 -0500
+        Wed, 16 Dec 2020 08:00:05 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kpW2G-0007cd-IZ; Wed, 16 Dec 2020 12:36:04 +0000
+        id 1kpWOf-0000at-T4; Wed, 16 Dec 2020 12:59:14 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Sunil Goutham <sgoutham@marvell.com>,
-        Linu Cherian <lcherian@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Jerin Jacob <jerinj@marvell.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        George Cherian <george.cherian@marvell.com>,
-        netdev@vger.kernel.org
+To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        sound-open-firmware@alsa-project.org, alsa-devel@alsa-project.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] octeontx2-af: Fix undetected unmap PF error check
-Date:   Wed, 16 Dec 2020 12:36:04 +0000
-Message-Id: <20201216123604.15369-1-colin.king@canonical.com>
+Subject: [PATCH] ASoC: SOF: Fix spelling mistake in Kconfig "ond" -> "and"
+Date:   Wed, 16 Dec 2020 12:59:13 +0000
+Message-Id: <20201216125913.16041-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -40,32 +41,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently the check for an unmap PF error is always going to be false
-because intr_val is a 32 bit int and is being bit-mask checked against
-1ULL << 32.  Fix this by making intr_val a u64 to match the type at it
-is copied from, namely npa_event_context->npa_af_rvu_ge.
+There is a spelling mistake in the Kconfig help text. Fix it.
 
-Addresses-Coverity: ("Operands don't affect result")
-Fixes: f1168d1e207c ("octeontx2-af: Add devlink health reporters for NPA")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/sof/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-index 3f9d0ab6d5ae..bc0e4113370e 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-@@ -275,7 +275,8 @@ static int rvu_npa_report_show(struct devlink_fmsg *fmsg, void *ctx,
- 			       enum npa_af_rvu_health health_reporter)
- {
- 	struct rvu_npa_event_ctx *npa_event_context;
--	unsigned int intr_val, alloc_dis, free_dis;
-+	unsigned int alloc_dis, free_dis;
-+	u64 intr_val;
- 	int err;
+diff --git a/sound/soc/sof/Kconfig b/sound/soc/sof/Kconfig
+index 031dad5fc4c7..3e8b6c035ce3 100644
+--- a/sound/soc/sof/Kconfig
++++ b/sound/soc/sof/Kconfig
+@@ -122,7 +122,7 @@ config SND_SOC_SOF_DEBUG_XRUN_STOP
+ 	bool "SOF stop on XRUN"
+ 	help
+ 	  This option forces PCMs to stop on any XRUN event. This is useful to
+-	  preserve any trace data ond pipeline status prior to the XRUN.
++	  preserve any trace data and pipeline status prior to the XRUN.
+ 	  Say Y if you are debugging SOF FW pipeline XRUNs.
+ 	  If unsure select "N".
  
- 	npa_event_context = ctx;
 -- 
 2.29.2
 

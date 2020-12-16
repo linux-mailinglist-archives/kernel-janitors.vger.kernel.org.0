@@ -2,67 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E1FB2DC107
-	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 14:18:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D8452DC387
+	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 16:55:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726310AbgLPNRx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Dec 2020 08:17:53 -0500
-Received: from mga04.intel.com ([192.55.52.120]:50567 "EHLO mga04.intel.com"
+        id S1726628AbgLPPya (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Dec 2020 10:54:30 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46304 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726307AbgLPNRx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Dec 2020 08:17:53 -0500
-IronPort-SDR: 38jaG96W7bGFzt1OuUFNRVzhivjnJkxG4iuad/QJQ/34vdATx0Q9y3bLT6F1bSnxjEId9TBI1V
- o0SSzHdXohGQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9836"; a="172489077"
-X-IronPort-AV: E=Sophos;i="5.78,424,1599548400"; 
-   d="scan'208";a="172489077"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2020 05:16:07 -0800
-IronPort-SDR: 4sUBNzqBieO5bVce0WBSsq0cZlNgga0YyZxV4aP8k0toaa7y4WrOnChucWcCpgjsv9Sg4b/7ae
- liVW68dtqsJg==
-X-IronPort-AV: E=Sophos;i="5.78,424,1599548400"; 
-   d="scan'208";a="338473869"
-Received: from eliteleevi.tm.intel.com ([10.237.54.20])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2020 05:16:04 -0800
-Date:   Wed, 16 Dec 2020 15:13:19 +0200 (EET)
-From:   Kai Vehmanen <kai.vehmanen@linux.intel.com>
-X-X-Sender: kvehmane@eliteleevi.tm.intel.com
-To:     Colin King <colin.king@canonical.com>
-cc:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        id S1726591AbgLPPya (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 16 Dec 2020 10:54:30 -0500
+From:   Mark Brown <broonie@kernel.org>
+Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
+To:     Jaroslav Kysela <perex@perex.cz>,
         Liam Girdwood <lgirdwood@gmail.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        sound-open-firmware@alsa-project.org, alsa-devel@alsa-project.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ASoC: SOF: Fix spelling mistake in Kconfig "ond" ->
- "and"
-In-Reply-To: <20201216125913.16041-1-colin.king@canonical.com>
-Message-ID: <alpine.DEB.2.22.394.2012161511510.864696@eliteleevi.tm.intel.com>
-References: <20201216125913.16041-1-colin.king@canonical.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7 02160 Espoo
+        Colin King <colin.king@canonical.com>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <20201216112859.11564-1-colin.king@canonical.com>
+References: <20201216112859.11564-1-colin.king@canonical.com>
+Subject: Re: [PATCH] ASoC: codecs: fix spelling mistake in Kconfig "comunicate" -> "communicate"
+Message-Id: <160813397775.31838.15795647597993212991.b4-ty@kernel.org>
+Date:   Wed, 16 Dec 2020 15:52:57 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
-
-thanks Colin.
-
-On Wed, 16 Dec 2020, Colin King wrote:
-
-> From: Colin Ian King <colin.king@canonical.com>
-> 
+On Wed, 16 Dec 2020 11:28:59 +0000, Colin King wrote:
 > There is a spelling mistake in the Kconfig help text. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Acked-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Applied to
 
-Br, kai
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: codecs: fix spelling mistake in Kconfig "comunicate" -> "communicate"
+      commit: 4ad2d3cf2a299645bdc6d72e5b8ee11b2ed147ac
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

@@ -2,89 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71D592DBCC1
-	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 09:36:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E221D2DBCC9
+	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 09:39:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726052AbgLPIfo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Dec 2020 03:35:44 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:56290 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725837AbgLPIfo (ORCPT
+        id S1726026AbgLPIjG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Dec 2020 03:39:06 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:49780 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726010AbgLPIjG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Dec 2020 03:35:44 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BG8YLvm114524;
-        Wed, 16 Dec 2020 08:35:00 GMT
+        Wed, 16 Dec 2020 03:39:06 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BG8Xs8d049930;
+        Wed, 16 Dec 2020 08:38:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=D2jIV72U5ybE8KfG73AK4HVjUzxW4HQrX7XFCBxm8LI=;
- b=H6sFpfHzVBYs8GGKcPmnjGvK4UflUWKyaogSE8R/qOFpPDM6F1ItF67h8VEPCkEzy3js
- Gy+dz0uEasa7xQFo6Ik2Vnj1XitSkPf/vzLKcidcCdrFdsOYfgLpCQTO9xQOip64+qC6
- Bn17B0mIqgG+CKjJ8EZ/ejcoETL/ESZyBUcF4jScny+VIZnjqZAdY3lyYLU+9kgochFN
- dhDUDK5b7MdJ15y/cjpqQjCtTMzR5fy0hUc9iGLdL+OwJnlnQ9OillW8qox4hb0ZY7+B
- nfMfQWEp3AMEyK8O6wVZkToqaf+KJ+dPl7pLOZXGzUkPXEj79JsE/k2eVoAIb4koj++R jA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 35cn9reuxm-1
+ bh=9EzIrzu8yR2bEg9Yuuyun20shVVA58aiXhqv0Ix0rwQ=;
+ b=vBIu8Lr3lYEY0A+mmLenwj7QJvc2oPyu/ObmzIRh/EKVRzCjCfoPxfuWHCW3baX+Jmh1
+ jJRZk0LdrdCSK4daYT5VZOOY/qsIuM8xtqtxWM5EHtI//TnZn+dJPSQCtCHAB8HSH2J5
+ yKmJFPc/2pXPsAeKnYMCxKCjIeyVxixRYd2BvZ5vp0sRR4pGNrihdeTWm/ZXGCep3mS7
+ 4Y5kHbhSLwJWjfeL+za0k0BJLDclV/gsIf/TzwLt2BPMCKEaLKUkWODRm3LoA2b6EuBB
+ sJ6lnXfnYFjiRwWpOBsm3O3+w+/PviTOjOcnO7AxOjFUwsjr09mOYl60ENhWeU/mHE+C +A== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 35cntm6tvh-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 16 Dec 2020 08:35:00 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BG8VEmb067957;
-        Wed, 16 Dec 2020 08:32:59 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 35d7ep847m-1
+        Wed, 16 Dec 2020 08:38:19 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BG8ZBEj114133;
+        Wed, 16 Dec 2020 08:38:18 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 35e6jse0yd-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 16 Dec 2020 08:32:59 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0BG8Wwgk015228;
-        Wed, 16 Dec 2020 08:32:58 GMT
-Received: from mwanda (/10.175.200.55)
+        Wed, 16 Dec 2020 08:38:18 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0BG8cDdW016655;
+        Wed, 16 Dec 2020 08:38:13 GMT
+Received: from mwanda (/102.36.221.92)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 16 Dec 2020 00:32:58 -0800
-Date:   Wed, 16 Dec 2020 11:32:52 +0300
+        with ESMTP ; Wed, 16 Dec 2020 00:38:12 -0800
+Date:   Wed, 16 Dec 2020 11:38:04 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Support Opensource <support.opensource@diasemi.com>,
-        Roy Im <roy.im.opensource@diasemi.com>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-input@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] Input: da7280 - delete a stray tab
-Message-ID: <X9nGNJjFi9AaBBwX@mwanda>
+To:     Shahed Shaikh <shshaikh@marvell.com>,
+        Sony Chacko <sony.chacko@qlogic.com>
+Cc:     Manish Chopra <manishc@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sucheta Chakraborty <sucheta.chakraborty@qlogic.com>,
+        Sritej Velaga <sritej.velaga@qlogic.com>,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH net] qlcnic: Fix error code in probe
+Message-ID: <X9nHbMqEyI/xPfGd@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9836 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 bulkscore=0
- suspectscore=0 adultscore=0 mlxscore=0 mlxlogscore=999 malwarescore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 bulkscore=0
+ malwarescore=0 adultscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012160054
+ definitions=main-2012160055
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9836 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
- impostorscore=0 lowpriorityscore=0 clxscore=1011 spamscore=0
- malwarescore=0 priorityscore=1501 phishscore=0 mlxscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012160055
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 mlxscore=0
+ lowpriorityscore=0 spamscore=0 adultscore=0 malwarescore=0 suspectscore=0
+ mlxlogscore=999 impostorscore=0 priorityscore=1501 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012160055
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This line is indented one tab too far.
+Return -EINVAL if we can't find the correct device.  Currently it
+returns success.
 
+Fixes: 13159183ec7a ("qlcnic: 83xx base driver")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/input/misc/da7280.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/input/misc/da7280.c b/drivers/input/misc/da7280.c
-index 37568b00873d..fe06693579ca 100644
---- a/drivers/input/misc/da7280.c
-+++ b/drivers/input/misc/da7280.c
-@@ -863,7 +863,7 @@ static void da7280_parse_properties(struct device *dev,
- 		gpi_str3[7] = '0' + i;
- 		haptics->gpi_ctl[i].polarity = 0;
- 		error = device_property_read_string(dev, gpi_str3, &str);
--			haptics->gpi_ctl[i].polarity =
-+		haptics->gpi_ctl[i].polarity =
- 				da7280_haptic_of_gpi_pol_str(dev, str);
+diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
+index 5a7e240fd469..c2faf96fcade 100644
+--- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
++++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
+@@ -2492,6 +2492,7 @@ qlcnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		qlcnic_sriov_vf_register_map(ahw);
+ 		break;
+ 	default:
++		err = -EINVAL;
+ 		goto err_out_free_hw_res;
  	}
  
 -- 

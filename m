@@ -2,28 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 966662DBF97
-	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 12:41:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B5DD2DBFB3
+	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 12:48:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725811AbgLPLlg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Dec 2020 06:41:36 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:43186 "EHLO
+        id S1725835AbgLPLsn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Dec 2020 06:48:43 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:43412 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725550AbgLPLlf (ORCPT
+        with ESMTP id S1725283AbgLPLsn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Dec 2020 06:41:35 -0500
+        Wed, 16 Dec 2020 06:48:43 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1kpVAp-0004DA-Rc; Wed, 16 Dec 2020 11:40:51 +0000
+        id 1kpVHg-0004jh-0T; Wed, 16 Dec 2020 11:47:56 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>
+To:     Jeff Dike <jdike@addtoit.com>, Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Brendan Higgins <brendanhiggins@google.com>,
+        linux-um@lists.infradead.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] tracing: fix spelling mistake in Kconfig "infinit" -> "infinite"
-Date:   Wed, 16 Dec 2020 11:40:51 +0000
-Message-Id: <20201216114051.12056-1-colin.king@canonical.com>
+Subject: [PATCH] um: fix spelling mistake in Kconfig "privleges" -> "privileges"
+Date:   Wed, 16 Dec 2020 11:47:55 +0000
+Message-Id: <20201216114755.12461-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -38,22 +40,22 @@ There is a spelling mistake in the Kconfig help text. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- kernel/trace/Kconfig | 2 +-
+ arch/um/drivers/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/Kconfig b/kernel/trace/Kconfig
-index d5a19413d4f8..2c22444d5b9b 100644
---- a/kernel/trace/Kconfig
-+++ b/kernel/trace/Kconfig
-@@ -545,7 +545,7 @@ config KPROBE_EVENTS_ON_NOTRACE
- 	  using kprobe events.
- 
- 	  If kprobes can use ftrace instead of breakpoint, ftrace related
--	  functions are protected from kprobe-events to prevent an infinit
-+	  functions are protected from kprobe-events to prevent an infinite
- 	  recursion or any unexpected execution path which leads to a kernel
- 	  crash.
- 
+diff --git a/arch/um/drivers/Kconfig b/arch/um/drivers/Kconfig
+index 2e7b8e0e7194..58e3ffc17b7d 100644
+--- a/arch/um/drivers/Kconfig
++++ b/arch/um/drivers/Kconfig
+@@ -323,7 +323,7 @@ config UML_NET_SLIRP
+ 	  frames.  In general, slirp allows the UML the same IP connectivity
+ 	  to the outside world that the host user is permitted, and unlike
+ 	  other transports, SLiRP works without the need of root level
+-	  privleges, setuid binaries, or SLIP devices on the host.  This
++	  privileges, setuid binaries, or SLIP devices on the host.  This
+ 	  also means not every type of connection is possible, but most
+ 	  situations can be accommodated with carefully crafted slirp
+ 	  commands that can be passed along as part of the network device's
 -- 
 2.29.2
 

@@ -2,66 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3DEB2DC378
-	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 16:54:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A3142DC3F5
+	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 17:23:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726603AbgLPPx4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Dec 2020 10:53:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46052 "EHLO mail.kernel.org"
+        id S1725968AbgLPQW7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Dec 2020 11:22:59 -0500
+Received: from mga01.intel.com ([192.55.52.88]:64599 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725812AbgLPPx4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Dec 2020 10:53:56 -0500
-From:   Mark Brown <broonie@kernel.org>
-Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
-To:     Jaroslav Kysela <perex@perex.cz>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Colin King <colin.king@canonical.com>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        sound-open-firmware@alsa-project.org,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-In-Reply-To: <20201216125913.16041-1-colin.king@canonical.com>
-References: <20201216125913.16041-1-colin.king@canonical.com>
-Subject: Re: [PATCH] ASoC: SOF: Fix spelling mistake in Kconfig "ond" -> "and"
-Message-Id: <160813397775.31838.1527299026383832413.b4-ty@kernel.org>
-Date:   Wed, 16 Dec 2020 15:52:57 +0000
+        id S1725889AbgLPQW7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 16 Dec 2020 11:22:59 -0500
+IronPort-SDR: hfGiN8SALici98Wzdyrn6EzL+xR34Px54mozyu8VUuUlrabEh5iyRVnCDiqRiyqw2hP/J+xLMj
+ Hk6Rs5iqF+ow==
+X-IronPort-AV: E=McAfee;i="6000,8403,9837"; a="193475554"
+X-IronPort-AV: E=Sophos;i="5.78,424,1599548400"; 
+   d="scan'208";a="193475554"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2020 08:22:18 -0800
+IronPort-SDR: VETua8fxWHr/CeIooreX6c+iVQLzE+ovXAJm6vDZGzLbFLieJpIkeqXraEvdRe3zWV6SO9kF+9
+ gTt+BpkHUVNA==
+X-IronPort-AV: E=Sophos;i="5.78,424,1599548400"; 
+   d="scan'208";a="369160262"
+Received: from anagallo-mobl.amr.corp.intel.com (HELO localhost) ([10.209.99.164])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2020 08:22:17 -0800
+Date:   Wed, 16 Dec 2020 09:22:15 -0700
+From:   Dave Jiang <dave.jiang@intel.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Vinod Koul <vkoul@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        dmaengine@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] dmaengine: idxd: off by one in cleanup code
+Message-ID: <20201216092215.000061b6@intel.com>
+In-Reply-To: <X9nFeojulsNqUSnG@mwanda>
+References: <X9nFeojulsNqUSnG@mwanda>
+Organization: Intel Corp
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 16 Dec 2020 12:59:13 +0000, Colin King wrote:
-> There is a spelling mistake in the Kconfig help text. Fix it.
+On Wed, 16 Dec 2020 11:29:46 +0300
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-Applied to
+> The clean up is off by one so this will start at "i" and it should
+> start with "i - 1" and then it doesn't unregister the zeroeth
+> elements in the array.
+> 
+> Fixes: c52ca478233c ("dmaengine: idxd: add configuration component of
+> driver") Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Acked-by: Dave Jiang <dave.jiang@intel.com>
 
-Thanks!
+Thanks Dan!
 
-[1/1] ASoC: SOF: Fix spelling mistake in Kconfig "ond" -> "and"
-      commit: e49037ad12e47cd34239b99b010c5438844923af
+> ---
+>  drivers/dma/idxd/sysfs.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/dma/idxd/sysfs.c b/drivers/dma/idxd/sysfs.c
+> index 266423a2cabc..4dbb03c545e4 100644
+> --- a/drivers/dma/idxd/sysfs.c
+> +++ b/drivers/dma/idxd/sysfs.c
+> @@ -434,7 +434,7 @@ int idxd_register_driver(void)
+>  	return 0;
+>  
+>  drv_fail:
+> -	for (; i > 0; i--)
+> +	while (--i >= 0)
+>  		driver_unregister(&idxd_drvs[i]->drv);
+>  	return rc;
+>  }
+> @@ -1840,7 +1840,7 @@ int idxd_register_bus_type(void)
+>  	return 0;
+>  
+>  bus_err:
+> -	for (; i > 0; i--)
+> +	while (--i >= 0)
+>  		bus_unregister(idxd_bus_types[i]);
+>  	return rc;
+>  }
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

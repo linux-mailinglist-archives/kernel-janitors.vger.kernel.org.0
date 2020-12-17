@@ -2,93 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C57C62DCCDB
-	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Dec 2020 08:16:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B93902DD000
+	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Dec 2020 12:03:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726841AbgLQHP4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 17 Dec 2020 02:15:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54240 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726533AbgLQHPy (ORCPT
+        id S1727331AbgLQLD2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 17 Dec 2020 06:03:28 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:40676 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727160AbgLQLDY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 17 Dec 2020 02:15:54 -0500
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E909AC061794;
-        Wed, 16 Dec 2020 23:15:12 -0800 (PST)
-Received: by mail-ej1-x629.google.com with SMTP id 6so21714399ejz.5;
-        Wed, 16 Dec 2020 23:15:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=bGy7gLBy2hFyYL8nSs16yQL0Na8VVi6rxjiUYpw2umY=;
-        b=hYJDilWH5PI0sM/ctM4XmnHMmy/VC9X9ze3GqvZytzsEnHTTT7JfJPcRe0wc+Oro2O
-         UamTbMbmnYThx+VozwRfDpwHQv80X+SUNy+FUvJq/kDc0PfMhxlvc/XykW+jxX/oX5x4
-         JdmtEAOqaV+dV64JeZyEX9AaQbAACElDz0SYbXsmsDQYnG977McOlzeSG1FNY3eUu1vd
-         0tQQkZyrBLDXRKR81yY0dPHkJKAsFYssk3Un1qjxZoTM+Mnt3rS6rq3lh51KYkaPAhDA
-         imCfA3ObkPTwWN9ln0DVugoDXF0b39MdTWFTj9r2uFy5L1krm+H91Ij/B9pBOpdICMtH
-         0cIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=bGy7gLBy2hFyYL8nSs16yQL0Na8VVi6rxjiUYpw2umY=;
-        b=L4teNoQNRq0eHZiFQgfq51esAe8Dbj1ZbiYklV0pc8X5WH9o8u1rJSGwMU0a9VSTS9
-         5WyRxzaVjT3pXNOTqMKgTm0rWR2qjaBzlJbsdfehamj1oCsJ6yjzCCeZ8oTcHxjbZx3c
-         hquucjLgXE6tamE96kBIXHj9TASGEadfbKJ1J0B8YlTYCYIoWvyBho5vGXn7vNC0Dcii
-         kwbhrp2BeXegMPpx0pVTriEx2s4hKlVgHzfkr2AX2onoOBzSNb5ZFKX91UH6lC6KpiOq
-         DeV3/5diDbwMMYvQ+yYGIHhE2yxTR4GLR1+VHwY2bk8NhPUWcIBZtpibs0HEaQOd9SpE
-         5/jg==
-X-Gm-Message-State: AOAM531k5zyXZ8n3TRkR2RGa4Dx8aJHJhWYE3fYikPf03crruJ0BlDD5
-        Y+hHBPIHqpl39fw5DQspy4jN25gQALQnyA==
-X-Google-Smtp-Source: ABdhPJy1nSlTGWTs/AOPSz2icN7kkMpTQo4NU2ITDs0u8lTrYvpAd6c6H96zc8hAOhvnq6hRAJqxKw==
-X-Received: by 2002:a17:907:20dc:: with SMTP id qq28mr33410118ejb.403.1608189311050;
-        Wed, 16 Dec 2020 23:15:11 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2dfe:900:8cfe:59ae:f146:5d09])
-        by smtp.gmail.com with ESMTPSA id mc25sm2961331ejb.58.2020.12.16.23.15.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Dec 2020 23:15:10 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        linux-pm@vger.kernel.org
-Cc:     Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: include governors into CPU IDLE TIME MANAGEMENT FRAMEWORK
-Date:   Thu, 17 Dec 2020 08:15:01 +0100
-Message-Id: <20201217071501.31267-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Thu, 17 Dec 2020 06:03:24 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BHAxrmr142184;
+        Thu, 17 Dec 2020 11:02:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=L3aGYrlGeo3eT6PpjNqyTbmWD+46i7QX5RYLQI6tFXo=;
+ b=Mffd3LLUfyTaTJfrCowPMeqSxUXq0stihiQJYoclk7ZqpIFTVNwf4/UYAl+5wpbnyC7u
+ TV/+FeZ4X8gbGM/sXiFKuz5eNvexQNDcBXFY8xpOviKS3JwyEvXI6hsUXIkB/mabhA4E
+ 9v5a+Owowjo+8Q98j8SFzlcvQo4flWerwMoYZFewLA/bSBDJ4k4NW/nvrRpKOQfMxMtA
+ t+c/o4bucfGl9xCTjechnOjuiBYZJu1o8XFE7GuzGAUHe7iIwCgTbqmC19i71LCiRIE1
+ DgyiuGZMaQmj56PtP1h1lGr0xAudqP8ftgmpwxgImx4XSHRXvRTIZkwTSXJkli1UeEKy Fg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 35cntmcsw0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 17 Dec 2020 11:02:00 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BHB1D4i128891;
+        Thu, 17 Dec 2020 11:02:00 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 35e6et4ynk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 17 Dec 2020 11:02:00 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0BHB1u7I011570;
+        Thu, 17 Dec 2020 11:01:56 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 17 Dec 2020 03:01:55 -0800
+Date:   Thu, 17 Dec 2020 14:01:48 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Steve French <sfrench@samba.org>
+Cc:     Aurelien Aptel <aaptel@suse.com>,
+        Samuel Cabrero <scabrero@suse.de>, linux-cifs@vger.kernel.org,
+        samba-technical@lists.samba.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH 1/3] cifs: Delete a stray unlock in cifs_swn_reconnect()
+Message-ID: <X9s6nGDLt4xreaYN@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9837 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 phishscore=0
+ bulkscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012170080
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9837 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 mlxscore=0
+ lowpriorityscore=0 spamscore=0 adultscore=0 malwarescore=0 suspectscore=0
+ mlxlogscore=999 impostorscore=0 priorityscore=1501 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012170080
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The current pattern in the file entry does not make the files in the
-governors subdirectory to be a part of the CPU IDLE TIME MANAGEMENT
-FRAMEWORK.
+The unlock is done in the caller, this is a stray which leads to a
+double unlock bug.
 
-Adjust the file pattern to include files in governors.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Fixes: bf80e5d4259a ("cifs: Send witness register and unregister commands to userspace daemon")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-applies cleanly on current master and next-20201215
+ fs/cifs/cifs_swn.c | 2 --
+ 1 file changed, 2 deletions(-)
 
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 952731d1e43c..ac679aa00e0d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4596,7 +4596,7 @@ B:	https://bugzilla.kernel.org
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
- F:	Documentation/admin-guide/pm/cpuidle.rst
- F:	Documentation/driver-api/pm/cpuidle.rst
--F:	drivers/cpuidle/*
-+F:	drivers/cpuidle/
- F:	include/linux/cpuidle.h
+diff --git a/fs/cifs/cifs_swn.c b/fs/cifs/cifs_swn.c
+index c594e588a8b5..b2ef082d6438 100644
+--- a/fs/cifs/cifs_swn.c
++++ b/fs/cifs/cifs_swn.c
+@@ -285,8 +285,6 @@ static struct cifs_swn_reg *cifs_find_swn_reg(struct cifs_tcon *tcon)
+ 			continue;
+ 		}
  
- CPU POWER MONITORING SUBSYSTEM
+-		mutex_unlock(&cifs_swnreg_idr_mutex);
+-
+ 		cifs_dbg(FYI, "Existing swn registration for %s:%s found\n", swnreg->net_name,
+ 				swnreg->share_name);
+ 
 -- 
-2.17.1
+2.29.2
 

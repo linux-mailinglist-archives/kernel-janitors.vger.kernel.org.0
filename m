@@ -2,85 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C5FA2DCCB4
-	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Dec 2020 07:49:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C57C62DCCDB
+	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Dec 2020 08:16:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726548AbgLQGta (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 17 Dec 2020 01:49:30 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:59852 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726529AbgLQGta (ORCPT
+        id S1726841AbgLQHP4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 17 Dec 2020 02:15:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54240 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726533AbgLQHPy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 17 Dec 2020 01:49:30 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1608187749; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=IZ5gIE7BXGUIj9BGo/lIosGYRz5aQPB7biVl5MRFOW4=;
- b=KQT6lS7/PdvmJlDc5hzQV9D8g+FgEK53TSJ4VQqHIjnZzv6M3ZTvElGb9OQMMIaW/wEkB5Bq
- Zy7okXRMFpghKn4t2TKSaL3YGwH7FBK8Wb+luotxUVZLK1jmhfukMyMmHfM/OCo0T1quSBI7
- wnQPa7Hfm4dRiBc0wQIBfwynclc=
-X-Mailgun-Sending-Ip: 69.72.43.15
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 5fdaff49944e4d24476df3a9 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 17 Dec 2020 06:48:41
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 3188EC43462; Thu, 17 Dec 2020 06:48:41 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 561EAC433CA;
-        Thu, 17 Dec 2020 06:48:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 561EAC433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] ath11k: Fix error code in ath11k_core_suspend()
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <X9nF17L2/EKOSbn/@mwanda>
-References: <X9nF17L2/EKOSbn/@mwanda>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Carl Huang <cjhuang@codeaurora.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201217064841.3188EC43462@smtp.codeaurora.org>
-Date:   Thu, 17 Dec 2020 06:48:41 +0000 (UTC)
+        Thu, 17 Dec 2020 02:15:54 -0500
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E909AC061794;
+        Wed, 16 Dec 2020 23:15:12 -0800 (PST)
+Received: by mail-ej1-x629.google.com with SMTP id 6so21714399ejz.5;
+        Wed, 16 Dec 2020 23:15:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=bGy7gLBy2hFyYL8nSs16yQL0Na8VVi6rxjiUYpw2umY=;
+        b=hYJDilWH5PI0sM/ctM4XmnHMmy/VC9X9ze3GqvZytzsEnHTTT7JfJPcRe0wc+Oro2O
+         UamTbMbmnYThx+VozwRfDpwHQv80X+SUNy+FUvJq/kDc0PfMhxlvc/XykW+jxX/oX5x4
+         JdmtEAOqaV+dV64JeZyEX9AaQbAACElDz0SYbXsmsDQYnG977McOlzeSG1FNY3eUu1vd
+         0tQQkZyrBLDXRKR81yY0dPHkJKAsFYssk3Un1qjxZoTM+Mnt3rS6rq3lh51KYkaPAhDA
+         imCfA3ObkPTwWN9ln0DVugoDXF0b39MdTWFTj9r2uFy5L1krm+H91Ij/B9pBOpdICMtH
+         0cIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=bGy7gLBy2hFyYL8nSs16yQL0Na8VVi6rxjiUYpw2umY=;
+        b=L4teNoQNRq0eHZiFQgfq51esAe8Dbj1ZbiYklV0pc8X5WH9o8u1rJSGwMU0a9VSTS9
+         5WyRxzaVjT3pXNOTqMKgTm0rWR2qjaBzlJbsdfehamj1oCsJ6yjzCCeZ8oTcHxjbZx3c
+         hquucjLgXE6tamE96kBIXHj9TASGEadfbKJ1J0B8YlTYCYIoWvyBho5vGXn7vNC0Dcii
+         kwbhrp2BeXegMPpx0pVTriEx2s4hKlVgHzfkr2AX2onoOBzSNb5ZFKX91UH6lC6KpiOq
+         DeV3/5diDbwMMYvQ+yYGIHhE2yxTR4GLR1+VHwY2bk8NhPUWcIBZtpibs0HEaQOd9SpE
+         5/jg==
+X-Gm-Message-State: AOAM531k5zyXZ8n3TRkR2RGa4Dx8aJHJhWYE3fYikPf03crruJ0BlDD5
+        Y+hHBPIHqpl39fw5DQspy4jN25gQALQnyA==
+X-Google-Smtp-Source: ABdhPJy1nSlTGWTs/AOPSz2icN7kkMpTQo4NU2ITDs0u8lTrYvpAd6c6H96zc8hAOhvnq6hRAJqxKw==
+X-Received: by 2002:a17:907:20dc:: with SMTP id qq28mr33410118ejb.403.1608189311050;
+        Wed, 16 Dec 2020 23:15:11 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2dfe:900:8cfe:59ae:f146:5d09])
+        by smtp.gmail.com with ESMTPSA id mc25sm2961331ejb.58.2020.12.16.23.15.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Dec 2020 23:15:10 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-pm@vger.kernel.org
+Cc:     Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: include governors into CPU IDLE TIME MANAGEMENT FRAMEWORK
+Date:   Thu, 17 Dec 2020 08:15:01 +0100
+Message-Id: <20201217071501.31267-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+The current pattern in the file entry does not make the files in the
+governors subdirectory to be a part of the CPU IDLE TIME MANAGEMENT
+FRAMEWORK.
 
-> The "if (!ret)" condition is inverted and it should be "if (ret)".  It means
-> that we return success when we had intended to return an error code. This also
-> caused a spurious warning even when the suspend was successful:
-> 
-> [  297.186612] ath11k_pci 0000:06:00.0: failed to suspend hif: 0
-> 
-> Fixes: d1b0c33850d2 ("ath11k: implement suspend for QCA6390 PCI devices")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Adjust the file pattern to include files in governors.
 
-2 patches applied to ath-current branch of ath.git, thanks.
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on current master and next-20201215
 
-9b09456258ea ath11k: Fix error code in ath11k_core_suspend()
-30d085039314 ath11k: Fix ath11k_pci_fix_l1ss()
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 952731d1e43c..ac679aa00e0d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4596,7 +4596,7 @@ B:	https://bugzilla.kernel.org
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
+ F:	Documentation/admin-guide/pm/cpuidle.rst
+ F:	Documentation/driver-api/pm/cpuidle.rst
+-F:	drivers/cpuidle/*
++F:	drivers/cpuidle/
+ F:	include/linux/cpuidle.h
+ 
+ CPU POWER MONITORING SUBSYSTEM
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/X9nF17L2/EKOSbn/@mwanda/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.17.1
 

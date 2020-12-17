@@ -2,69 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B05882DC765
-	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Dec 2020 20:52:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06A6A2DCB84
+	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Dec 2020 04:57:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728677AbgLPTv2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Dec 2020 14:51:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60128 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727852AbgLPTv2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Dec 2020 14:51:28 -0500
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608148247;
-        bh=xwp1vMWzBkKnuO+OphQCQ/8A6FTErJ0wiTEqtpUJUH0=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=c7BhqCzEzzyU4P0q+Fvkrm8uGlaJQyDlN7+kL3dc0I2pL6EoScekqBuRVBdl/qaPV
-         il0mPMg51t8z5OOXXmY3A0swW/o2RPzwwYsUlOXS9Yqgm7fiLAlJ7dSzWkTXJBHyIn
-         WDQiPFWkCf4bs5SWfSz5l3cQojgORVPmOkAWLzMXvwrjyklSqEg9hLqMBwMSJQR0qO
-         YNonf7fqUGAbQ0eafco+IeDtqGN52cPhIsLAonvCto4+1U6jv7rmlRXk3B8WaS1+Sm
-         HmjO4Gt1W7NlxaH2ySW02k64rfYJJhzlacJnhu7OL1RfUu7SQRxcE+IS80Rec8hiTn
-         2nHoE6cTVtTfA==
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: allwinner: Fix some resources leak in the error handling
- path of the probe and in the remove function
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <160814824770.18857.16417410441229264372.git-patchwork-notify@kernel.org>
-Date:   Wed, 16 Dec 2020 19:50:47 +0000
-References: <20201214202117.146293-1-christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20201214202117.146293-1-christophe.jaillet@wanadoo.fr>
+        id S1727646AbgLQD5u (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Dec 2020 22:57:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52128 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727233AbgLQD5u (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 16 Dec 2020 22:57:50 -0500
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E807DC0617A7;
+        Wed, 16 Dec 2020 19:57:09 -0800 (PST)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 8AEFA2C2;
+        Thu, 17 Dec 2020 04:57:06 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1608177426;
+        bh=CeiKeoDJuFXUx0AHENcynkDr6bZJyQ4HAeC/obSpibU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RJZX2LfELR0TstaN5POWm7Al4x8ORmkoALPckEai0xH+I6J1Xnw7V+hZOlrRoN5qg
+         pFQ7Sxkv++3blKSkKWGM33OpaeQsXpLDa0NDBfp+p4HRHXtrH+1oy43Hqs/hHnEYR2
+         DDqkNi8C8oy0VqhuHIwzyVpWcuE4c40+HipxLVww=
+Date:   Thu, 17 Dec 2020 05:56:59 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     davem@davemloft.net, kuba@kernel.org, mripard@kernel.org,
-        wens@csie.org, jernej.skrabec@siol.net, timur@kernel.org,
-        song.bao.hua@hisilicon.com, f.fainelli@gmail.com, leon@kernel.org,
-        hkallweit1@gmail.com, wangyunjian@huawei.com, sr@denx.de,
-        linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+Cc:     kieran.bingham+renesas@ideasonboard.com, mchehab@kernel.org,
+        linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] media: vsp1: Fix an error handling path in the probe
+ function
+Message-ID: <X9rXC3rKWfEJNP6z@pendragon.ideasonboard.com>
+References: <20201212174119.120027-1-christophe.jaillet@wanadoo.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20201212174119.120027-1-christophe.jaillet@wanadoo.fr>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
+Hi Christophe,
 
-This patch was applied to netdev/net.git (refs/heads/master):
+Thank you for the patch.
 
-On Mon, 14 Dec 2020 21:21:17 +0100 you wrote:
-> 'irq_of_parse_and_map()' should be balanced by a corresponding
-> 'irq_dispose_mapping()' call. Otherwise, there is some resources leaks.
+On Sat, Dec 12, 2020 at 06:41:19PM +0100, Christophe JAILLET wrote:
+> A previous 'rcar_fcp_get()' call must be undone in the error handling path,
+> as already done in the remove function.
 > 
-> Add such a call in the error handling path of the probe function and in the
-> remove function.
-> 
-> Fixes: 492205050d77 ("net: Add EMAC ethernet driver found on Allwinner A10 SoC's")
+> Fixes: 94fcdf829793 ("[media] v4l: vsp1: Add FCP support")
 > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+and queued in my tree for v5.12.
+
+> ---
+>  drivers/media/platform/vsp1/vsp1_drv.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> [...]
+> diff --git a/drivers/media/platform/vsp1/vsp1_drv.c b/drivers/media/platform/vsp1/vsp1_drv.c
+> index dc62533cf32c..aa66e4f5f3f3 100644
+> --- a/drivers/media/platform/vsp1/vsp1_drv.c
+> +++ b/drivers/media/platform/vsp1/vsp1_drv.c
+> @@ -882,8 +882,10 @@ static int vsp1_probe(struct platform_device *pdev)
+>  	}
+>  
+>  done:
+> -	if (ret)
+> +	if (ret) {
+>  		pm_runtime_disable(&pdev->dev);
+> +		rcar_fcp_put(vsp1->fcp);
+> +	}
+>  
+>  	return ret;
+>  }
 
-Here is the summary with links:
-  - net: allwinner: Fix some resources leak in the error handling path of the probe and in the remove function
-    https://git.kernel.org/netdev/net/c/322e53d1e252
+-- 
+Regards,
 
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Laurent Pinchart

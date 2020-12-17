@@ -2,76 +2,118 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C4302DDB24
-	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Dec 2020 23:02:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13FA02DDBAC
+	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Dec 2020 23:59:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732054AbgLQWBs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 17 Dec 2020 17:01:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49738 "EHLO
+        id S1732265AbgLQW4E (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 17 Dec 2020 17:56:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731957AbgLQWBs (ORCPT
+        with ESMTP id S1732168AbgLQW4E (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 17 Dec 2020 17:01:48 -0500
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D05E4C0617A7
-        for <kernel-janitors@vger.kernel.org>; Thu, 17 Dec 2020 14:01:07 -0800 (PST)
-Received: by mail-lf1-x12a.google.com with SMTP id 23so233967lfg.10
-        for <kernel-janitors@vger.kernel.org>; Thu, 17 Dec 2020 14:01:07 -0800 (PST)
+        Thu, 17 Dec 2020 17:56:04 -0500
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E37A9C0617B0;
+        Thu, 17 Dec 2020 14:55:23 -0800 (PST)
+Received: by mail-pg1-x535.google.com with SMTP id n10so95258pgl.10;
+        Thu, 17 Dec 2020 14:55:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=yTzuY0vYsl+M9p737cbiYnLCLw63QNnFUnI65JZ2FAQ=;
-        b=GCGGBlKNKgdCbIPzCYDCSIUiiKyL+6rZawyb/TB9LJCX5qO9tVM5No9LBxQo0FaJDJ
-         ZPtI38QwUAWrXybrEoCp51WIa3sMflCb4L2yYNpPlX9yfP2JbD1ecaJq7X0Djp1pFKeo
-         LmC+Fhj6mnaRhYmkbyMdeIxNYhh2y4b0yaYauRn/t1l2ehUNHLRRZC9azkicUqp6/CCB
-         z2YGqi3E53gRDizf+Ql1yAz0ZV5OdDp1SU3UeAQaGJycOBez3MalWC++J5EaV2OyXa+3
-         wCy3Yp+pZMmf7bWTUt6iTJHiPafDbTJ0lQIYIy6TA/naiWaznrAUTr7s2JHm8F6MjPcY
-         hRiQ==
+        bh=Cb7FwoEM95bPdPXQJmHT4TufQ9QvBdIpL47kT7jRkDk=;
+        b=g5UXcBDDuNrzI7H4Ezzci/0lZaIxdyUG6zYZBGiAtm382qqTwa3RECIG+/oNwblzN6
+         k4A7IWdGlxY0EozpbSDtMU1Hwh2vZZk/1C1tg/S3FTkmlvb3SaX7k2vZPIAHN9xYTcfv
+         nuLCQQZ6uJOxI/1Px998F3V5Rc/f+s64ZOkK6LW1txpPkDw6SOynFgSDYulJ78Jdg3yk
+         7uOH44UFLqedsBer1o0b8+LPt0wmWLY5kLBAd8wzYl62NsTB7qBKZ4nybXWiwUCT5u5A
+         oZWDQNK6gfnrtuwEY1e80MYRJSNBgKxSw538Vx3HUjxDdP6pO6vs9bZ8/6/jCoqbmZiF
+         fBzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=yTzuY0vYsl+M9p737cbiYnLCLw63QNnFUnI65JZ2FAQ=;
-        b=Haoqj6ndBJfhqIgnpCWsSUHPf0Ru7Qk+wDVQnhGghvZIYZY8gZ+6oe9Tf8ULK3mSqQ
-         pctNE+kNK2gq9GLBpf6E0hcyxxhHZWtJV9njSUdyfEMo/sn2K4G3YAD66+CXB/53+cJE
-         J+UXfz4of7yiMGdfqW1F4ALNYoszybaYPTtq7j204Fu0L82cuD0fY/LowRfqsSkC6Zda
-         CUxHoRxatHyZqyin/CTO/RqVR32i/JuiN0luhS04HFBixAhPOB5tfsgFxHme/BpAcV4D
-         hOk/09ZSt7pFJRlLVrb7FZYoXVT45YgEaSrcZiZTl2P7gL4m96BVlFLzEvp0nJZDOM1g
-         jZgQ==
-X-Gm-Message-State: AOAM532Fp1PTPh9JUJFX10umkpCmt4n/NIJMBIsP/LxjwuSOCYPR6PbN
-        z20hq7lsJLytYKMWDs97FVgkL/o/vsMjykmsXa1uSA==
-X-Google-Smtp-Source: ABdhPJxX/B3jrVdbWp3O9ARi/kZEt1Z+Y1Vm3/EXQQ175+OpBCQHyEJ0gbWUHINNKnoxv03NcRgwDS4xO7lCUIRzrhI=
-X-Received: by 2002:a19:8bc6:: with SMTP id n189mr299901lfd.291.1608242466353;
- Thu, 17 Dec 2020 14:01:06 -0800 (PST)
+        bh=Cb7FwoEM95bPdPXQJmHT4TufQ9QvBdIpL47kT7jRkDk=;
+        b=k5rUuEr/TENELJ1tXsqbHZ/oDmSYOqwIQ7OVwNKYTUK4Kn9bZYL+0LckVpqBvMqgMw
+         OckLdx1mrNbAW7sYYxkAqdfLK8nZUYjlAs7Lc8hAMiPggUTuHj13sCrZUE4BpIIwTQlp
+         lxZ37gpyrbZJZzSi1Yqvq6mOu06vkVj6wI6u6RZpmvNLS1O+Plx4YRNwBWoby3BSP1MX
+         0CRx8Dr0Nmwui5fpim0/AiUm7LcbLQCDmksKo9oig0+c3gNuwUM4ETw9kItfIUkxtJBH
+         HdK/vVlZNe6wGWqTBZHleqV/ELIRHO9YLO1Kif552y5h9VrDdaJpLujwK8N83fHndTUS
+         +Lrw==
+X-Gm-Message-State: AOAM531Z+YJluJ5V1xAOV/5jopCh0RMIJIyh8BzPFBjCa6jAhaL1tJMF
+        mKHbYKXZb0QL5f6ARlp+tCWu0WoHJzGocfoMhZ8=
+X-Google-Smtp-Source: ABdhPJx1varRneHVaJ0OMknGe2XRNuPZxuk4qSiltwbAcAguT0qIxPH58+a0G8tP/f5d6z58TXzggT7rqgJYG6YuSLg=
+X-Received: by 2002:a63:2882:: with SMTP id o124mr1398512pgo.11.1608245723518;
+ Thu, 17 Dec 2020 14:55:23 -0800 (PST)
 MIME-Version: 1.0
-References: <20201217171705.57586-1-colin.king@canonical.com>
-In-Reply-To: <20201217171705.57586-1-colin.king@canonical.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 17 Dec 2020 23:00:55 +0100
-Message-ID: <CACRpkdZeQyPyvHqrQy_W3pbn-9-rn8YNYiDmR72xqxVhdpeTBg@mail.gmail.com>
-Subject: Re: [PATCH] timekeeping: Fix spelling mistake in Kconfig "fullfill"
- -> "fulfill"
-To:     Colin King <colin.king@canonical.com>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kernel-janitors@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20201217204236.163446-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20201217204236.163446-1-christophe.jaillet@wanadoo.fr>
+From:   Orson Zhai <orsonzhai@gmail.com>
+Date:   Fri, 18 Dec 2020 06:55:12 +0800
+Message-ID: <CA+H2tpGkv0sPQ2e6OfUVuW2xFx-KSpZy_vYY3TG_9JBWvFZxAA@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci-sprd: Fix some resource leaks in the remove function
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     adrian.hunter@intel.com, Ulf Hansson <ulf.hansson@linaro.org>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Lyra Zhang <zhang.lyra@gmail.com>, linux-mmc@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, billows.wu@unisoc.com,
+        Wu Hongtao <wuht06@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Dec 17, 2020 at 6:17 PM Colin King <colin.king@canonical.com> wrote:
++ cc: Billows
 
-> From: Colin Ian King <colin.king@canonical.com>
+Hi Christophe,
+On Fri, Dec 18, 2020 at 4:50 AM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
 >
-> There is a spelling mistake in the Kconfig help text. Fix it.
+> 'sdhci_remove_host()' and 'sdhci_pltfm_free()' should be used in place of
+> 'mmc_remove_host()' and 'mmc_free_host()'.
 >
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> This avoids some resource leaks, is more in line with the error handling
+> path of the probe function, and is more consistent with other drivers.
+>
+> Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host controller")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> Other adjustment may be needed.
+> I'm not sure at all of the 0 passed to 'sdhci_remove_host()'. Some drivers
+> pass 0, some have some more complicated computation.
+> ---
+>  drivers/mmc/host/sdhci-sprd.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
+> index f85171edabeb..5dc36efff47f 100644
+> --- a/drivers/mmc/host/sdhci-sprd.c
+> +++ b/drivers/mmc/host/sdhci-sprd.c
+> @@ -708,14 +708,14 @@ static int sdhci_sprd_remove(struct platform_device *pdev)
+>  {
+>         struct sdhci_host *host = platform_get_drvdata(pdev);
+>         struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
+> -       struct mmc_host *mmc = host->mmc;
+>
+> -       mmc_remove_host(mmc);
+> +       sdhci_remove_host(host, 0);
+> +
+>         clk_disable_unprepare(sprd_host->clk_sdio);
+>         clk_disable_unprepare(sprd_host->clk_enable);
+>         clk_disable_unprepare(sprd_host->clk_2x_enable);
+>
+> -       mmc_free_host(mmc);
+> +       sdhci_pltfm_free(pdev);
 
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+I saw a lot of drivers also use mmc_free_host().
+Do you have patches elsewhere to clean them?
 
-Yours,
-Linus Walleij
+Thanks,
+-Orson
+
+>
+>         return 0;
+>  }
+> --
+> 2.27.0
+>

@@ -2,63 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C08222DD8F8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Dec 2020 20:01:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 883132DD906
+	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Dec 2020 20:03:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730325AbgLQTAs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 17 Dec 2020 14:00:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44718 "EHLO mail.kernel.org"
+        id S1729113AbgLQTDP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 17 Dec 2020 14:03:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45016 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729976AbgLQTAs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 17 Dec 2020 14:00:48 -0500
-Content-Type: text/plain; charset="utf-8"
+        id S1726548AbgLQTDP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 17 Dec 2020 14:03:15 -0500
+Date:   Thu, 17 Dec 2020 11:02:31 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608231607;
-        bh=tkbRZI4MahMfFZzBoVWuTbgeL+mUCSMZVYmPay2x5cI=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=fPnNWevK9yN4+8S4PKfP9zF4cfVfY5PVjBdYNyfmU723uAuaM/5uYDIZCBDrbkEpq
-         6/uAzkLLqKk82kMWxAr+DfncAR0th27Y0+E+2yeEPMQVyqCjhlB1OzcoQsJM1IZrId
-         Ud3H/n2q/BSyz/FBshJNd4GYij8dGPrfKblxOxrgcZflOMWv1a5NoJXewACWl0ft9n
-         4kWMOnZE7deErD/V68pWAsC/64c2pVqMYa7FvWiPSGeE8iNLpgQTJZHl+6QuorC/px
-         UhC/7/IXaw2+gkdbmCAGNadswBvMgPs+FIJecKQ218AWWSVxruU3syp6SWzDtAYmlo
-         c/izGYz4mZ0Ag==
+        s=k20201202; t=1608231754;
+        bh=TGBdk2PPbv7ruxBpQK/ogPoRxBzDFo1DxKjhtgORch4=;
+        h=From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Pa35194tTiGwkAR+QAa2/igi1kHQFSZXjfWyOXjv8YdmiYbRjiyalfegzDRdPRIZR
+         6n16WN6/Eqs8ZEWaAVquLfJGLYb9cveL223dcFF/wzZClS46yzdR5PSJZAVMQlclik
+         jPG+dMWvNQMYklKddK28Ae88Dp03gO14lRJ7SpMo94XMLMx/h38rzIzwJManxBt9lF
+         lIyIbLkLvKeyAfB9oTY8raNwbySPHxAOefqSgHoCvF+/K6rYR8D8SypzaO4N0NXDbK
+         Q6BV8P/b4z2w+zk8PU0WMWWjBgLk6gNeGRzo+7Xw5yFy6X8syqt8B76r3P9+1MV3nr
+         Do5sjXLAWIm+A==
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     George Cherian <gcherian@marvell.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+        Linu Cherian <lcherian@marvell.com>,
+        "Geethasowjanya Akula" <gakula@marvell.com>,
+        Jerin Jacob Kollanukkaran <jerinj@marvell.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][next] octeontx2-af: Fix undetected unmap PF error check
+Message-ID: <20201217110231.4b798ecb@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <BYAPR18MB2679726F785B910EA9325ADCC5C40@BYAPR18MB2679.namprd18.prod.outlook.com>
+References: <BYAPR18MB2679726F785B910EA9325ADCC5C40@BYAPR18MB2679.namprd18.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: nixge: fix spelling mistake in Kconfig: "Instuments" ->
- "Instruments"
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <160823160785.4885.7822597887930335390.git-patchwork-notify@kernel.org>
-Date:   Thu, 17 Dec 2020 19:00:07 +0000
-References: <20201216120020.13149-1-colin.king@canonical.com>
-In-Reply-To: <20201216120020.13149-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
+On Thu, 17 Dec 2020 05:24:34 +0000 George Cherian wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > Currently the check for an unmap PF error is always going to be false because
+> > intr_val is a 32 bit int and is being bit-mask checked against 1ULL << 32.  Fix
+> > this by making intr_val a u64 to match the type at it is copied from, namely
+> > npa_event_context->npa_af_rvu_ge.
+> > 
+> > Addresses-Coverity: ("Operands don't affect result")
+> > Fixes: f1168d1e207c ("octeontx2-af: Add devlink health reporters for NPA")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>  
+> Acked-by: George Cherian <george.cherian@marvell.com>
 
-This patch was applied to netdev/net.git (refs/heads/master):
+For some reason patchwork did not register your ack automatically. 
+I wonder what happened. I added it manually.
 
-On Wed, 16 Dec 2020 12:00:20 +0000 you wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in the Kconfig. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/net/ethernet/ni/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Here is the summary with links:
-  - net: nixge: fix spelling mistake in Kconfig: "Instuments" -> "Instruments"
-    https://git.kernel.org/netdev/net/c/38ba95a4ed24
-
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Applied, thanks!

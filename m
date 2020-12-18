@@ -2,118 +2,165 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13FA02DDBAC
-	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Dec 2020 23:59:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 255C92DDCFA
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Dec 2020 03:40:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732265AbgLQW4E (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 17 Dec 2020 17:56:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58076 "EHLO
+        id S1731130AbgLRCjw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 17 Dec 2020 21:39:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732168AbgLQW4E (ORCPT
+        with ESMTP id S1726789AbgLRCjw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 17 Dec 2020 17:56:04 -0500
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E37A9C0617B0;
-        Thu, 17 Dec 2020 14:55:23 -0800 (PST)
-Received: by mail-pg1-x535.google.com with SMTP id n10so95258pgl.10;
-        Thu, 17 Dec 2020 14:55:23 -0800 (PST)
+        Thu, 17 Dec 2020 21:39:52 -0500
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A358C0617A7;
+        Thu, 17 Dec 2020 18:39:11 -0800 (PST)
+Received: by mail-lf1-x12a.google.com with SMTP id 23so1585006lfg.10;
+        Thu, 17 Dec 2020 18:39:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Cb7FwoEM95bPdPXQJmHT4TufQ9QvBdIpL47kT7jRkDk=;
-        b=g5UXcBDDuNrzI7H4Ezzci/0lZaIxdyUG6zYZBGiAtm382qqTwa3RECIG+/oNwblzN6
-         k4A7IWdGlxY0EozpbSDtMU1Hwh2vZZk/1C1tg/S3FTkmlvb3SaX7k2vZPIAHN9xYTcfv
-         nuLCQQZ6uJOxI/1Px998F3V5Rc/f+s64ZOkK6LW1txpPkDw6SOynFgSDYulJ78Jdg3yk
-         7uOH44UFLqedsBer1o0b8+LPt0wmWLY5kLBAd8wzYl62NsTB7qBKZ4nybXWiwUCT5u5A
-         oZWDQNK6gfnrtuwEY1e80MYRJSNBgKxSw538Vx3HUjxDdP6pO6vs9bZ8/6/jCoqbmZiF
-         fBzg==
+        bh=ZE86BXyvArdHmgN9djhka1IqmUM9a7VE+3q/p0XrV0c=;
+        b=i+/2IQ8vPOj6GMP0ej97DYBocXFLt7tnedy+7IAvrbynfHqKfJVfcIywuakRFNe2Dx
+         9ScfMXSgYR70aVNx+Pr8KTLUhxx2xwiXl8gmSK8pQjgKAhxDga4Hlvy0aoGzSFc47jJ7
+         XteetgFJJjdmy7PWDWzYd8wso4JuFP2AlvX43P8tnua6cN+9GzBlbyNXzUxMd34abuf7
+         iEySw1vfa67O0moks5LwWH032/rtijtxY6aXd44zr4XsXO3NexKbwbk9G13j64uvaQbg
+         Zv8yQCWGRNMwZ21lLVs3hJrgyq7SUdCjysSDxBgP7J+95r2wHFzzwcW7kBu6DCHfmKOp
+         6s3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Cb7FwoEM95bPdPXQJmHT4TufQ9QvBdIpL47kT7jRkDk=;
-        b=k5rUuEr/TENELJ1tXsqbHZ/oDmSYOqwIQ7OVwNKYTUK4Kn9bZYL+0LckVpqBvMqgMw
-         OckLdx1mrNbAW7sYYxkAqdfLK8nZUYjlAs7Lc8hAMiPggUTuHj13sCrZUE4BpIIwTQlp
-         lxZ37gpyrbZJZzSi1Yqvq6mOu06vkVj6wI6u6RZpmvNLS1O+Plx4YRNwBWoby3BSP1MX
-         0CRx8Dr0Nmwui5fpim0/AiUm7LcbLQCDmksKo9oig0+c3gNuwUM4ETw9kItfIUkxtJBH
-         HdK/vVlZNe6wGWqTBZHleqV/ELIRHO9YLO1Kif552y5h9VrDdaJpLujwK8N83fHndTUS
-         +Lrw==
-X-Gm-Message-State: AOAM531Z+YJluJ5V1xAOV/5jopCh0RMIJIyh8BzPFBjCa6jAhaL1tJMF
-        mKHbYKXZb0QL5f6ARlp+tCWu0WoHJzGocfoMhZ8=
-X-Google-Smtp-Source: ABdhPJx1varRneHVaJ0OMknGe2XRNuPZxuk4qSiltwbAcAguT0qIxPH58+a0G8tP/f5d6z58TXzggT7rqgJYG6YuSLg=
-X-Received: by 2002:a63:2882:: with SMTP id o124mr1398512pgo.11.1608245723518;
- Thu, 17 Dec 2020 14:55:23 -0800 (PST)
+        bh=ZE86BXyvArdHmgN9djhka1IqmUM9a7VE+3q/p0XrV0c=;
+        b=FshBHJi/9gj6j+UQ6BA8ewWr9U0tgEe1Tx2wu+E/oGToz5WBDFXF5n+AKGsChv9/cy
+         3RSrTcBiptqnTHCOalwsi/zD6byU9OgDcAJIijb9JQo//m5bAnPz12bYLp1waTXfxCQT
+         6T2zE3A5W4+nz2PoOoIH+QBGQE9ymsO4x6HrjtH6+hJzUArldVcOuUqBhQL1HtD1Rhuj
+         70f8XgVN0PPKnnCIeQJ2Xfm8J7LnRQ5yn8CQuHp03MB5/sH0f8mvEHGbBxsslF1UqhB8
+         Voc8CxeqBnUfEzkrLRKxmDspdzTz+jWN2S76iCoHNgch3Wg/UKFnshzd7L75KGEg1IW/
+         BfBg==
+X-Gm-Message-State: AOAM53112FuNRieiwsVgoWiwxIJk5L0/zxkfuq/z/UbKlU4xX14giEaF
+        hR2TeWFWzNpLCa810xs25I/ocyoHwt6UyX5dF3Q=
+X-Google-Smtp-Source: ABdhPJywNGOuoIbh6tqnO0fPuTXa+f/Ysukt3QGAm1SZ+S0rVRjf8wz0e+ZS6U16CCOBr3wXkMgUnH1cJgslyrSbA7E=
+X-Received: by 2002:a2e:8eda:: with SMTP id e26mr863678ljl.272.1608259150084;
+ Thu, 17 Dec 2020 18:39:10 -0800 (PST)
 MIME-Version: 1.0
-References: <20201217204236.163446-1-christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20201217204236.163446-1-christophe.jaillet@wanadoo.fr>
-From:   Orson Zhai <orsonzhai@gmail.com>
-Date:   Fri, 18 Dec 2020 06:55:12 +0800
-Message-ID: <CA+H2tpGkv0sPQ2e6OfUVuW2xFx-KSpZy_vYY3TG_9JBWvFZxAA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-sprd: Fix some resource leaks in the remove function
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     adrian.hunter@intel.com, Ulf Hansson <ulf.hansson@linaro.org>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Lyra Zhang <zhang.lyra@gmail.com>, linux-mmc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, billows.wu@unisoc.com,
-        Wu Hongtao <wuht06@gmail.com>
+References: <X9s6nGDLt4xreaYN@mwanda> <X9s7By4IDIcG4D+w@mwanda>
+In-Reply-To: <X9s7By4IDIcG4D+w@mwanda>
+From:   Steve French <smfrench@gmail.com>
+Date:   Thu, 17 Dec 2020 20:38:58 -0600
+Message-ID: <CAH2r5mvvevajfzFrj0Q2GGDYV1en8aupf8RM_23hA1qa23RLbg@mail.gmail.com>
+Subject: Re: [PATCH 3/3] cifs: Re-indent cifs_swn_reconnect()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Steve French <sfrench@samba.org>,
+        Samuel Cabrero <scabrero@suse.de>,
+        CIFS <linux-cifs@vger.kernel.org>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        samba-technical <samba-technical@lists.samba.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-+ cc: Billows
+tentatively merged these three into cifs-2.6.git for-next pending testing
 
-Hi Christophe,
-On Fri, Dec 18, 2020 at 4:50 AM Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
+On Thu, Dec 17, 2020 at 5:04 AM Dan Carpenter via samba-technical
+<samba-technical@lists.samba.org> wrote:
 >
-> 'sdhci_remove_host()' and 'sdhci_pltfm_free()' should be used in place of
-> 'mmc_remove_host()' and 'mmc_free_host()'.
+> This code is slightly nicer if we flip the cifs_sockaddr_equal()
+> around and pull all the code in one tab.
 >
-> This avoids some resource leaks, is more in line with the error handling
-> path of the probe function, and is more consistent with other drivers.
->
-> Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host controller")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
-> Other adjustment may be needed.
-> I'm not sure at all of the 0 passed to 'sdhci_remove_host()'. Some drivers
-> pass 0, some have some more complicated computation.
-> ---
->  drivers/mmc/host/sdhci-sprd.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  fs/cifs/cifs_swn.c | 64 ++++++++++++++++++++++++----------------------
+>  1 file changed, 33 insertions(+), 31 deletions(-)
 >
-> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-> index f85171edabeb..5dc36efff47f 100644
-> --- a/drivers/mmc/host/sdhci-sprd.c
-> +++ b/drivers/mmc/host/sdhci-sprd.c
-> @@ -708,14 +708,14 @@ static int sdhci_sprd_remove(struct platform_device *pdev)
->  {
->         struct sdhci_host *host = platform_get_drvdata(pdev);
->         struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
-> -       struct mmc_host *mmc = host->mmc;
+> diff --git a/fs/cifs/cifs_swn.c b/fs/cifs/cifs_swn.c
+> index 91163d3cf8b7..d35f599aa00e 100644
+> --- a/fs/cifs/cifs_swn.c
+> +++ b/fs/cifs/cifs_swn.c
+> @@ -484,41 +484,43 @@ static int cifs_swn_reconnect(struct cifs_tcon *tcon, struct sockaddr_storage *a
 >
-> -       mmc_remove_host(mmc);
-> +       sdhci_remove_host(host, 0);
+>         /* Store the reconnect address */
+>         mutex_lock(&tcon->ses->server->srv_mutex);
+> -       if (!cifs_sockaddr_equal(&tcon->ses->server->dstaddr, addr)) {
+> -               ret = cifs_swn_store_swn_addr(addr, &tcon->ses->server->dstaddr,
+> -                               &tcon->ses->server->swn_dstaddr);
+> -               if (ret < 0) {
+> -                       cifs_dbg(VFS, "%s: failed to store address: %d\n", __func__, ret);
+> -                       goto unlock;
+> -               }
+> -               tcon->ses->server->use_swn_dstaddr = true;
+> +       if (cifs_sockaddr_equal(&tcon->ses->server->dstaddr, addr))
+> +               goto unlock;
+>
+> -               /*
+> -                * Unregister to stop receiving notifications for the old IP address.
+> -                */
+> -               ret = cifs_swn_unregister(tcon);
+> -               if (ret < 0) {
+> -                       cifs_dbg(VFS, "%s: Failed to unregister for witness notifications: %d\n",
+> -                                       __func__, ret);
+> -                       goto unlock;
+> -               }
+> +       ret = cifs_swn_store_swn_addr(addr, &tcon->ses->server->dstaddr,
+> +                                     &tcon->ses->server->swn_dstaddr);
+> +       if (ret < 0) {
+> +               cifs_dbg(VFS, "%s: failed to store address: %d\n", __func__, ret);
+> +               goto unlock;
+> +       }
+> +       tcon->ses->server->use_swn_dstaddr = true;
+>
+> -               /*
+> -                * And register to receive notifications for the new IP address now that we have
+> -                * stored the new address.
+> -                */
+> -               ret = cifs_swn_register(tcon);
+> -               if (ret < 0) {
+> -                       cifs_dbg(VFS, "%s: Failed to register for witness notifications: %d\n",
+> -                                       __func__, ret);
+> -                       goto unlock;
+> -               }
+> +       /*
+> +        * Unregister to stop receiving notifications for the old IP address.
+> +        */
+> +       ret = cifs_swn_unregister(tcon);
+> +       if (ret < 0) {
+> +               cifs_dbg(VFS, "%s: Failed to unregister for witness notifications: %d\n",
+> +                        __func__, ret);
+> +               goto unlock;
+> +       }
+>
+> -               spin_lock(&GlobalMid_Lock);
+> -               if (tcon->ses->server->tcpStatus != CifsExiting)
+> -                       tcon->ses->server->tcpStatus = CifsNeedReconnect;
+> -               spin_unlock(&GlobalMid_Lock);
+> +       /*
+> +        * And register to receive notifications for the new IP address now that we have
+> +        * stored the new address.
+> +        */
+> +       ret = cifs_swn_register(tcon);
+> +       if (ret < 0) {
+> +               cifs_dbg(VFS, "%s: Failed to register for witness notifications: %d\n",
+> +                        __func__, ret);
+> +               goto unlock;
+>         }
 > +
->         clk_disable_unprepare(sprd_host->clk_sdio);
->         clk_disable_unprepare(sprd_host->clk_enable);
->         clk_disable_unprepare(sprd_host->clk_2x_enable);
+> +       spin_lock(&GlobalMid_Lock);
+> +       if (tcon->ses->server->tcpStatus != CifsExiting)
+> +               tcon->ses->server->tcpStatus = CifsNeedReconnect;
+> +       spin_unlock(&GlobalMid_Lock);
+> +
+>  unlock:
+>         mutex_unlock(&tcon->ses->server->srv_mutex);
 >
-> -       mmc_free_host(mmc);
-> +       sdhci_pltfm_free(pdev);
-
-I saw a lot of drivers also use mmc_free_host().
-Do you have patches elsewhere to clean them?
-
-Thanks,
--Orson
-
->
->         return 0;
->  }
 > --
-> 2.27.0
+> 2.29.2
 >
+>
+
+
+-- 
+Thanks,
+
+Steve

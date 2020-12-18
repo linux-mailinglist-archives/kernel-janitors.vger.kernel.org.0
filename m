@@ -2,121 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E9BE2DE376
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Dec 2020 14:49:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88A472DE671
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Dec 2020 16:22:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727079AbgLRNsF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 18 Dec 2020 08:48:05 -0500
-Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:49459 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726417AbgLRNsF (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 18 Dec 2020 08:48:05 -0500
-Received: from [192.168.42.210] ([93.22.133.192])
-        by mwinf5d71 with ME
-        id 5pmF2400849DTe503pmFRW; Fri, 18 Dec 2020 14:46:20 +0100
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 18 Dec 2020 14:46:20 +0100
-X-ME-IP: 93.22.133.192
-Subject: Re: [PATCH] mmc: sdhci-sprd: Fix some resource leaks in the remove
- function
-To:     Orson Zhai <orsonzhai@gmail.com>
-Cc:     adrian.hunter@intel.com, Ulf Hansson <ulf.hansson@linaro.org>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Lyra Zhang <zhang.lyra@gmail.com>, linux-mmc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, billows.wu@unisoc.com,
-        Wu Hongtao <wuht06@gmail.com>
-References: <20201217204236.163446-1-christophe.jaillet@wanadoo.fr>
- <CA+H2tpGkv0sPQ2e6OfUVuW2xFx-KSpZy_vYY3TG_9JBWvFZxAA@mail.gmail.com>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <83712f89-deb7-b266-8e8a-99f0df4c6782@wanadoo.fr>
-Date:   Fri, 18 Dec 2020 14:46:17 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S1727384AbgLRPUs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 18 Dec 2020 10:20:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58038 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726139AbgLRPUr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 18 Dec 2020 10:20:47 -0500
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1608304806;
+        bh=rGkngiNUJl4ptxqLyCL2cs5g7Qv/3qw/qDysKjxw46c=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=jd1aQAQ7/+lmrht4lQKkCQ7rwST5Dt87JyKs6mZnrUeYU3DsBgj3I1n7N05LaqOKw
+         RrNz8WLfBqGXBkjJeSLjR3yrTAu62wlja8OwfFwaqHs8pod/4fTqTiuhxfuaLE2MSY
+         iGLuTsdYKEyBTs/ILP7UdgvAzg68KCre1SjUXpr5X/99RRxSTOL6eBDsRN0rwb1AaL
+         sXB92+jYanWtSN8HH+KHb5BCvbXxUDUpKbcJ8DMKLovKQg2JJ72u8RnQ5cckRFR0Z6
+         o7IRHaUQk0wCdJnG39Vx/oV692YWSDTDXsjtCjt2GNYsfQWHAvPR6iDB74d6sqVDO6
+         mGIGaxbIQHHig==
 MIME-Version: 1.0
-In-Reply-To: <CA+H2tpGkv0sPQ2e6OfUVuW2xFx-KSpZy_vYY3TG_9JBWvFZxAA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH][next] selftests/bpf: fix spelling mistake "tranmission" ->
+ "transmission"
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <160830480683.29956.13434774651778716031.git-patchwork-notify@kernel.org>
+Date:   Fri, 18 Dec 2020 15:20:06 +0000
+References: <20201214223539.83168-1-colin.king@canonical.com>
+In-Reply-To: <20201214223539.83168-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
+        kuba@kernel.org, hawk@kernel.org, john.fastabend@gmail.com,
+        shuah@kernel.org, andrii@kernel.org, netdev@vger.kernel.org,
+        bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 17/12/2020 à 23:55, Orson Zhai a écrit :
-> + cc: Billows
+Hello:
+
+This patch was applied to bpf/bpf.git (refs/heads/master):
+
+On Mon, 14 Dec 2020 22:35:39 +0000 you wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Hi Christophe,
-> On Fri, Dec 18, 2020 at 4:50 AM Christophe JAILLET
-> <christophe.jaillet@wanadoo.fr> wrote:
->>
->> 'sdhci_remove_host()' and 'sdhci_pltfm_free()' should be used in place of
->> 'mmc_remove_host()' and 'mmc_free_host()'.
->>
->> This avoids some resource leaks, is more in line with the error handling
->> path of the probe function, and is more consistent with other drivers.
->>
->> Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host controller")
->> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->> ---
->> Other adjustment may be needed.
->> I'm not sure at all of the 0 passed to 'sdhci_remove_host()'. Some drivers
->> pass 0, some have some more complicated computation.
->> ---
->>   drivers/mmc/host/sdhci-sprd.c | 6 +++---
->>   1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
->> index f85171edabeb..5dc36efff47f 100644
->> --- a/drivers/mmc/host/sdhci-sprd.c
->> +++ b/drivers/mmc/host/sdhci-sprd.c
->> @@ -708,14 +708,14 @@ static int sdhci_sprd_remove(struct platform_device *pdev)
->>   {
->>          struct sdhci_host *host = platform_get_drvdata(pdev);
->>          struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
->> -       struct mmc_host *mmc = host->mmc;
->>
->> -       mmc_remove_host(mmc);
->> +       sdhci_remove_host(host, 0);
->> +
->>          clk_disable_unprepare(sprd_host->clk_sdio);
->>          clk_disable_unprepare(sprd_host->clk_enable);
->>          clk_disable_unprepare(sprd_host->clk_2x_enable);
->>
->> -       mmc_free_host(mmc);
->> +       sdhci_pltfm_free(pdev);
+> There are two spelling mistakes in output messages. Fix these.
 > 
-> I saw a lot of drivers also use mmc_free_host().
-> Do you have patches elsewhere to clean them?
-> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  tools/testing/selftests/bpf/xdpxceiver.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-As far as I can see, all drivers that use 'mmc_free_host' also use 
-'mmc_alloc_host'. (based on 5.10.1 and unless error)
+Here is the summary with links:
+  - [next] selftests/bpf: fix spelling mistake "tranmission" -> "transmission"
+    https://git.kernel.org/bpf/bpf/c/e79bb299ccad
 
-The only exception is 'sdhci-sprd.c'.
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-So no, I don't plan any other clean-up.
-
-
-
-To spot it, I run one of my own cocci script which compare functions 
-called in the remove function and in the error handling path of the probe.
-
-So I caught this one because 'mmc_free_host' is used in the porbe and 
-'sdhci_pltfm_free' in the remove function.
-
-
-CJ
-
-> Thanks,
-> -Orson
-> 
->>
->>          return 0;
->>   }
->> --
->> 2.27.0
->>
-> 
 

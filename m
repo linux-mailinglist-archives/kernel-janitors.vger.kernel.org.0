@@ -2,96 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6530B2DE35D
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Dec 2020 14:38:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E9BE2DE376
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Dec 2020 14:49:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726000AbgLRNh2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 18 Dec 2020 08:37:28 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:33758 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725877AbgLRNh1 (ORCPT
+        id S1727079AbgLRNsF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 18 Dec 2020 08:48:05 -0500
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:49459 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726417AbgLRNsF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 18 Dec 2020 08:37:27 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BIDUP4Y142631;
-        Fri, 18 Dec 2020 13:36:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=jYM54C+ZwMKMcDc7U7l8Ps9NHc+uVDYjr2Hoi5PdWg4=;
- b=l8quYFXMiMEtjG9HL4hSI+QIPFXwMnCV4LDWh6Hmz1iiXJGOh+VOeYbI7WJE90+Nt+5W
- C8Wp6033E+4Cq2ACIiNN5zk7bE9m+W97geSswBdy0pFep4yeZjIk7L5WC37jyovnsR8b
- S6/f3E9WZpEF1fKug4mZtamEeNFEQC9TNhM4NvnzOcytda9K92RyrUUpo1vcNvtvV3c1
- WDaXelDAW4l054xUbNsZHHK5v0ExfDBR1jQrIAAI2moa0ZMX96kwOJFtpZGmczp4xOol
- cCEslAnnfxh8j2gflK5FIDvPRO2cNbaPUUnLCQlCvClp1WqwpwgN6GwDTbwN+mqur1x4 kA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 35cn9rtb8q-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 18 Dec 2020 13:36:43 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BIDVMT5041337;
-        Fri, 18 Dec 2020 13:36:42 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 35d7esbqau-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 18 Dec 2020 13:36:42 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0BIDaeGj009724;
-        Fri, 18 Dec 2020 13:36:40 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 18 Dec 2020 05:36:39 -0800
-Date:   Fri, 18 Dec 2020 16:36:31 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Nigel Christian <nigel.l.christian@gmail.com>
-Cc:     hverkuil-cisco@xs4all.nl, mchehab@kernel.org,
-        sakari.ailus@linux.intel.com, gustavoars@kernel.org,
-        linux-media@vger.kernel.org, trivial@kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] media: cec: fix trivial style warnings
-Message-ID: <20201218133631.GL2809@kadam>
-References: <20201218063117.GA80700@fedora>
- <20201218101630.GM2831@kadam>
- <20201218123558.GA4088@fedora>
+        Fri, 18 Dec 2020 08:48:05 -0500
+Received: from [192.168.42.210] ([93.22.133.192])
+        by mwinf5d71 with ME
+        id 5pmF2400849DTe503pmFRW; Fri, 18 Dec 2020 14:46:20 +0100
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 18 Dec 2020 14:46:20 +0100
+X-ME-IP: 93.22.133.192
+Subject: Re: [PATCH] mmc: sdhci-sprd: Fix some resource leaks in the remove
+ function
+To:     Orson Zhai <orsonzhai@gmail.com>
+Cc:     adrian.hunter@intel.com, Ulf Hansson <ulf.hansson@linaro.org>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Lyra Zhang <zhang.lyra@gmail.com>, linux-mmc@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, billows.wu@unisoc.com,
+        Wu Hongtao <wuht06@gmail.com>
+References: <20201217204236.163446-1-christophe.jaillet@wanadoo.fr>
+ <CA+H2tpGkv0sPQ2e6OfUVuW2xFx-KSpZy_vYY3TG_9JBWvFZxAA@mail.gmail.com>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <83712f89-deb7-b266-8e8a-99f0df4c6782@wanadoo.fr>
+Date:   Fri, 18 Dec 2020 14:46:17 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201218123558.GA4088@fedora>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9838 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 bulkscore=0
- suspectscore=0 adultscore=0 mlxscore=0 mlxlogscore=999 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012180095
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9838 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
- impostorscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0
- malwarescore=0 priorityscore=1501 phishscore=0 mlxscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012180095
+In-Reply-To: <CA+H2tpGkv0sPQ2e6OfUVuW2xFx-KSpZy_vYY3TG_9JBWvFZxAA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Dec 18, 2020 at 07:35:58AM -0500, Nigel Christian wrote:
-> On Fri, Dec 18, 2020 at 01:16:30PM +0300, Dan Carpenter wrote:
-> > On Fri, Dec 18, 2020 at 01:31:17AM -0500, Nigel Christian wrote:
-> > > Comment has 'then' repeated twice. Let's clean it up.
-> > > Use unsigned int to maintain naming consistency.
-> > > 
-> > 
-> > Do you use a tool to find the double "then then"?
-> > 
-> > regards,
-> > dan carpenter
-> > 
+Le 17/12/2020 à 23:55, Orson Zhai a écrit :
+> + cc: Billows
 > 
-> Started working on nodejs script to run the 'checkpatch.pl -f'
-> on directories and filter the output by command line arg.
+> Hi Christophe,
+> On Fri, Dec 18, 2020 at 4:50 AM Christophe JAILLET
+> <christophe.jaillet@wanadoo.fr> wrote:
+>>
+>> 'sdhci_remove_host()' and 'sdhci_pltfm_free()' should be used in place of
+>> 'mmc_remove_host()' and 'mmc_free_host()'.
+>>
+>> This avoids some resource leaks, is more in line with the error handling
+>> path of the probe function, and is more consistent with other drivers.
+>>
+>> Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host controller")
+>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>> ---
+>> Other adjustment may be needed.
+>> I'm not sure at all of the 0 passed to 'sdhci_remove_host()'. Some drivers
+>> pass 0, some have some more complicated computation.
+>> ---
+>>   drivers/mmc/host/sdhci-sprd.c | 6 +++---
+>>   1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
+>> index f85171edabeb..5dc36efff47f 100644
+>> --- a/drivers/mmc/host/sdhci-sprd.c
+>> +++ b/drivers/mmc/host/sdhci-sprd.c
+>> @@ -708,14 +708,14 @@ static int sdhci_sprd_remove(struct platform_device *pdev)
+>>   {
+>>          struct sdhci_host *host = platform_get_drvdata(pdev);
+>>          struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
+>> -       struct mmc_host *mmc = host->mmc;
+>>
+>> -       mmc_remove_host(mmc);
+>> +       sdhci_remove_host(host, 0);
+>> +
+>>          clk_disable_unprepare(sprd_host->clk_sdio);
+>>          clk_disable_unprepare(sprd_host->clk_enable);
+>>          clk_disable_unprepare(sprd_host->clk_2x_enable);
+>>
+>> -       mmc_free_host(mmc);
+>> +       sdhci_pltfm_free(pdev);
+> 
+> I saw a lot of drivers also use mmc_free_host().
+> Do you have patches elsewhere to clean them?
+> 
 
-Ah...  I didn't realize that checkpatch could find this sort of thing.
-Thanks!
+As far as I can see, all drivers that use 'mmc_free_host' also use 
+'mmc_alloc_host'. (based on 5.10.1 and unless error)
 
-regards,
-dan carpenter
+The only exception is 'sdhci-sprd.c'.
+
+So no, I don't plan any other clean-up.
+
+
+
+To spot it, I run one of my own cocci script which compare functions 
+called in the remove function and in the error handling path of the probe.
+
+So I caught this one because 'mmc_free_host' is used in the porbe and 
+'sdhci_pltfm_free' in the remove function.
+
+
+CJ
+
+> Thanks,
+> -Orson
+> 
+>>
+>>          return 0;
+>>   }
+>> --
+>> 2.27.0
+>>
+> 
 

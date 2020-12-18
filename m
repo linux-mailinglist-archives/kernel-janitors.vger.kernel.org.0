@@ -2,66 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 88A472DE671
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Dec 2020 16:22:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 464822DE885
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Dec 2020 18:49:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727384AbgLRPUs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 18 Dec 2020 10:20:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58038 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726139AbgLRPUr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 18 Dec 2020 10:20:47 -0500
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608304806;
-        bh=rGkngiNUJl4ptxqLyCL2cs5g7Qv/3qw/qDysKjxw46c=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=jd1aQAQ7/+lmrht4lQKkCQ7rwST5Dt87JyKs6mZnrUeYU3DsBgj3I1n7N05LaqOKw
-         RrNz8WLfBqGXBkjJeSLjR3yrTAu62wlja8OwfFwaqHs8pod/4fTqTiuhxfuaLE2MSY
-         iGLuTsdYKEyBTs/ILP7UdgvAzg68KCre1SjUXpr5X/99RRxSTOL6eBDsRN0rwb1AaL
-         sXB92+jYanWtSN8HH+KHb5BCvbXxUDUpKbcJ8DMKLovKQg2JJ72u8RnQ5cckRFR0Z6
-         o7IRHaUQk0wCdJnG39Vx/oV692YWSDTDXsjtCjt2GNYsfQWHAvPR6iDB74d6sqVDO6
-         mGIGaxbIQHHig==
+        id S1728159AbgLRRs2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 18 Dec 2020 12:48:28 -0500
+Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:37163 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726152AbgLRRs2 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 18 Dec 2020 12:48:28 -0500
+Received: from localhost.localdomain ([93.23.14.185])
+        by mwinf5d07 with ME
+        id 5tmb240023zZf0l03tmbXR; Fri, 18 Dec 2020 18:46:43 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 18 Dec 2020 18:46:43 +0100
+X-ME-IP: 93.23.14.185
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     ssantosh@kernel.org, tony@atomide.com
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] soc: ti: pm33xx: Fix some resource leak in the error handling paths of the probe function
+Date:   Fri, 18 Dec 2020 18:46:36 +0100
+Message-Id: <20201218174636.172239-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH][next] selftests/bpf: fix spelling mistake "tranmission" ->
- "transmission"
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <160830480683.29956.13434774651778716031.git-patchwork-notify@kernel.org>
-Date:   Fri, 18 Dec 2020 15:20:06 +0000
-References: <20201214223539.83168-1-colin.king@canonical.com>
-In-Reply-To: <20201214223539.83168-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
-        kuba@kernel.org, hawk@kernel.org, john.fastabend@gmail.com,
-        shuah@kernel.org, andrii@kernel.org, netdev@vger.kernel.org,
-        bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
+'am33xx_pm_rtc_setup()' allocates some resources that must be freed on the
+error. Commit 2152fbbd47c0 ("soc: ti: pm33xx: Simplify RTC usage to prepare
+to drop platform data") has introduced the use of these resources but has
+only updated the remove function.
 
-This patch was applied to bpf/bpf.git (refs/heads/master):
+Fix the error handling path of the probe function now.
 
-On Mon, 14 Dec 2020 22:35:39 +0000 you wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There are two spelling mistakes in output messages. Fix these.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  tools/testing/selftests/bpf/xdpxceiver.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+Fixes: 2152fbbd47c0 ("soc: ti: pm33xx: Simplify RTC usage to prepare to drop platform data")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/soc/ti/pm33xx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Here is the summary with links:
-  - [next] selftests/bpf: fix spelling mistake "tranmission" -> "transmission"
-    https://git.kernel.org/bpf/bpf/c/e79bb299ccad
-
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+diff --git a/drivers/soc/ti/pm33xx.c b/drivers/soc/ti/pm33xx.c
+index 64f3e3105540..7bab4bbaf02d 100644
+--- a/drivers/soc/ti/pm33xx.c
++++ b/drivers/soc/ti/pm33xx.c
+@@ -535,7 +535,7 @@ static int am33xx_pm_probe(struct platform_device *pdev)
+ 
+ 	ret = am33xx_push_sram_idle();
+ 	if (ret)
+-		goto err_free_sram;
++		goto err_unsetup_rtc;
+ 
+ 	am33xx_pm_set_ipc_ops();
+ 
+@@ -575,6 +575,9 @@ static int am33xx_pm_probe(struct platform_device *pdev)
+ err_pm_runtime_disable:
+ 	pm_runtime_disable(dev);
+ 	wkup_m3_ipc_put(m3_ipc);
++err_unsetup_rtc:
++	iounmap(rtc_base_virt);
++	clk_put(rtc_fck);
+ err_free_sram:
+ 	am33xx_pm_free_sram();
+ 	pm33xx_dev = NULL;
+-- 
+2.27.0
 

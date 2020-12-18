@@ -2,82 +2,136 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF6B52DE0DC
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Dec 2020 11:21:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30D912DE2DC
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Dec 2020 13:37:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388772AbgLRKT1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 18 Dec 2020 05:19:27 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:40444 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388755AbgLRKT1 (ORCPT
+        id S1726417AbgLRMgq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 18 Dec 2020 07:36:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42598 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725947AbgLRMgp (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 18 Dec 2020 05:19:27 -0500
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BIA9mt9017895;
-        Fri, 18 Dec 2020 10:18:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=kKbiZHacAsLci0AQxcwE6GVgwg7HLb2l0eiJcFvmhcA=;
- b=Iaw7mvIW8nvXU57mW4jUzor+VqI1PUxORrgFqPLyy/CJGbSi+rhyb92D2RctjmlKMy47
- 9ovXsNr6Yeh7bXJeT3ryuete9UzrZHNJSXIM/3mL/zvd/PDXONblWOzXu4VRAcFwqYkL
- MHF89qJ4dWWgGfKS+Ot/WxtoQjBCCcfEr3nglTIWYVAu+fnWlAu/2xHJnAU7HDY8wvk5
- 99yCg8ggXwz26qjRGLe1wBLn7FMviSF2LA/nZmd2BY3sC+p3ns10Aa4L8aSZ9/xbbLIQ
- JQeLo6erXRcOPcz/TCxFPKWOaJGWbNBFcbVKtpBYfBQMTNzUoen3cF+H5/0WukMoYCBe YQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2130.oracle.com with ESMTP id 35ckcbsuwc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 18 Dec 2020 10:18:41 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BIAFKQ8183075;
-        Fri, 18 Dec 2020 10:16:40 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 35g3rfytn2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 18 Dec 2020 10:16:40 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0BIAGdS7009208;
-        Fri, 18 Dec 2020 10:16:39 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 18 Dec 2020 02:16:38 -0800
-Date:   Fri, 18 Dec 2020 13:16:30 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Nigel Christian <nigel.l.christian@gmail.com>
+        Fri, 18 Dec 2020 07:36:45 -0500
+Received: from mail-vs1-xe29.google.com (mail-vs1-xe29.google.com [IPv6:2607:f8b0:4864:20::e29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6319BC0617A7;
+        Fri, 18 Dec 2020 04:36:05 -0800 (PST)
+Received: by mail-vs1-xe29.google.com with SMTP id x4so1249694vsp.7;
+        Fri, 18 Dec 2020 04:36:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=V4eym8D9Kwm4oGYUbRmg3T1ChX8N/yXmIctNbMLW76M=;
+        b=R+I09ZWT066II5lFmGplIEI+ez16dU6L0S95ZPZWV2oHo+mFtaeKnUWd64CFzeiayT
+         GyA7UvGQUuLhmHBRtdMLtgYb6XhmPFCTWtC5OWQTHAdriyJmPcuu3uNuY0D9dflGsfhO
+         ydXeCdmrpx9KJVVUFhLEbidlLyfn6qAMMKe50Ab5HJ2eAwpaNFISjEZW6oEBIHSIwKm1
+         C0JAkUS4bxCjdQywy8OQS81G6j6ZHOAnHQhE2zMmMT+rw0HaWkaY4ZzdwiWWXzsm4c3e
+         t/nx07ascP/AAwIirhbLuldNVydsDRRb2vU9Vhgztlqf+LF9v3309ATLtQb54A6EwyZD
+         jQTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=V4eym8D9Kwm4oGYUbRmg3T1ChX8N/yXmIctNbMLW76M=;
+        b=QLA6y6EDn1bJjDG+9rrcB0yWg9MAr7ppnlCoJ5Ag9cDc1Z1jvFnMnF6eO4A1qwPa9N
+         EANdpS3w4UHShTGGM6pL/tgcBNuEzXsu23csBnz0bWXleehKtnI5ZcrKQW4dhDp/qvKU
+         fqp86ngJizAKL/jB1xUIW/JB3jvvfi5QBk67M85bf0W+hFjh2MPUnYcFVdchUm/pOxPk
+         1i43xgl8g/rkd19DdsNaTn2ieHp+ShdKJpkYCDMVxX1pMne/TJEZwnxUo6jp7bnFz2v7
+         GEzd5p0U5UTbakDWlBVPjkhArPEk6nxN/jw/9QTHovDNYvLr2jFcE9mYiDH3ZiA6QXfP
+         hgLw==
+X-Gm-Message-State: AOAM532BW2W7+vMQwamj6B4t/cXq2tOwe0ndpU2v2A9BVFOf+09Jbo9o
+        BLSdXE5CiqU/g/AwHir46lY=
+X-Google-Smtp-Source: ABdhPJw9bqUkVZhYNUA8fk6gl5JHMRAZFTuPkjWNS9ICh5V7A+Ja7NvXLdzPbcW/cfW1TtS8NwYS1A==
+X-Received: by 2002:a67:a85:: with SMTP id 127mr3181968vsk.16.1608294964477;
+        Fri, 18 Dec 2020 04:36:04 -0800 (PST)
+Received: from fedora ([179.48.249.132])
+        by smtp.gmail.com with ESMTPSA id b16sm1276899vkp.2.2020.12.18.04.36.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Dec 2020 04:36:03 -0800 (PST)
+Date:   Fri, 18 Dec 2020 07:35:58 -0500
+From:   Nigel Christian <nigel.l.christian@gmail.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
 Cc:     hverkuil-cisco@xs4all.nl, mchehab@kernel.org,
         sakari.ailus@linux.intel.com, gustavoars@kernel.org,
         linux-media@vger.kernel.org, trivial@kernel.org,
         kernel-janitors@vger.kernel.org
 Subject: Re: [PATCH] media: cec: fix trivial style warnings
-Message-ID: <20201218101630.GM2831@kadam>
+Message-ID: <20201218123558.GA4088@fedora>
 References: <20201218063117.GA80700@fedora>
+ <20201218101630.GM2831@kadam>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201218063117.GA80700@fedora>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9838 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 malwarescore=0
- spamscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012180075
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9838 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999
- priorityscore=1501 mlxscore=0 suspectscore=0 adultscore=0 phishscore=0
- malwarescore=0 impostorscore=0 lowpriorityscore=0 clxscore=1011
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012180074
+In-Reply-To: <20201218101630.GM2831@kadam>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Dec 18, 2020 at 01:31:17AM -0500, Nigel Christian wrote:
-> Comment has 'then' repeated twice. Let's clean it up.
-> Use unsigned int to maintain naming consistency.
+On Fri, Dec 18, 2020 at 01:16:30PM +0300, Dan Carpenter wrote:
+> On Fri, Dec 18, 2020 at 01:31:17AM -0500, Nigel Christian wrote:
+> > Comment has 'then' repeated twice. Let's clean it up.
+> > Use unsigned int to maintain naming consistency.
+> > 
+> 
+> Do you use a tool to find the double "then then"?
+> 
+> regards,
+> dan carpenter
 > 
 
-Do you use a tool to find the double "then then"?
+Started working on nodejs script to run the 'checkpatch.pl -f'
+on directories and filter the output by command line arg.
+It goes in scripts/ and is run from the root of the kernel.
+Let me know if there is any modification that can make it
+more effective or specific filters.
+------------------
+'use strict'
+// place this file in kernel 'scripts' directory
+const pfs = require('fs').promises
+const { spawn } = require('child_process')
+const dir = process.argv[2]
+const lvl = process.argv[3]
+const path = `./${dir}`
+const checkPatch = './scripts/checkpatch.pl -f'
+const badInput = dir === undefined || dir === null || dir === ''
+                || lvl === undefined || lvl === null || lvl === ''
 
-regards,
-dan carpenter
+/**
+ * Check for valid command line arguments
+ */
+if(badInput) {
+    console.log('Run checkpatch.pl on directories')
+    console.log('Usage: node ./scripts/checkdirpatch <path/to/check>'
+    + ' <LEVEL> (e.g. WARNING or ERROR)')
+    process.exit(1)
+} else {
+    console.log(`Reading path ${path}...`)
+}
 
+/**
+ * Async function for running checkpatch.pl on entire directory
+ * We won't drill down any further from here and only check for
+ * files at the current directory. Output is controlled via the 
+ * log level which is passed as command line argument
+ */
+async function check() {
+    const files = await pfs.readdir(path).then(v => v)
+    files.forEach(async f => {
+        const stat = await pfs.lstat(`${path}${f}`)
+        if(stat.isFile()) {
+            const child = spawn(`${checkPatch} ${path}${f} | grep -A1 ${lvl}`, {
+                shell: true,
+                stdio: ['pipe', 'inherit', 'ignore']
+            })
+        }
+    })
+}
+check().catch(e => console.error(e))
+--------------------------------------------
+
+https://github.com/callmekurisu/kernel-dev/blob/main/checkdirpatch.js
+
+
+Thanks, 
+
+Nigel

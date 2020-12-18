@@ -2,97 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E9892DDEA5
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Dec 2020 07:32:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A06F2DE039
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Dec 2020 10:06:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732843AbgLRGcF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 18 Dec 2020 01:32:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43176 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732830AbgLRGcF (ORCPT
+        id S2388445AbgLRJGF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 18 Dec 2020 04:06:05 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:21390 "EHLO
+        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728210AbgLRJGE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 18 Dec 2020 01:32:05 -0500
-Received: from mail-vk1-xa2c.google.com (mail-vk1-xa2c.google.com [IPv6:2607:f8b0:4864:20::a2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE315C0617A7;
-        Thu, 17 Dec 2020 22:31:24 -0800 (PST)
-Received: by mail-vk1-xa2c.google.com with SMTP id o195so277218vka.9;
-        Thu, 17 Dec 2020 22:31:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
-        bh=ObGsyMvKVeZhdZNtJYABaU0OlJzGDwB1XTw5HknW98w=;
-        b=VFY3JDneellkJcK8fYUVTCjVjLvTQGFBTOpQ+FcvioJZaW8NGsgNGTsbcW3XB6Tt+S
-         vdcJ1my23f1CCFk+cZORa89okkBo6WV6G37/jzi0Y/f+REpDi83m2yGN9LlovKCugbkk
-         jXUbWgamW6lh8w5sozE2Ro+o9gpyTIMFHYIXGtwP2LRiv29gEQVUzhw/tAXZsdjEWFt4
-         JpZ2TUWUFxq050CXhu4+q3MXtFRUI0/94n665+rB+oJjwnGyjzMq5DmtHcXPsbjRiSKr
-         vljtCtT6CM9GPs5riUa1+6abH1pEV46km5sKVxchSSiBERkJ8O9gCSaEOPvHy4gKdlLB
-         LUkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition;
-        bh=ObGsyMvKVeZhdZNtJYABaU0OlJzGDwB1XTw5HknW98w=;
-        b=TwjGW/Qd5UwiJ92vvFkM0dKTA3dgfwoMrj+nWsNqvZRnS+tTj19x/poejTiVgLjPiU
-         DCiKY3Cv5BcXu0i/2bEdjL0rRX/hZAhbBBGgZVgH4PFK75SF5bQso+BUmcsdecZVNNgu
-         kYojMArUjN20udHxZtMErO45bfmh70fq4irAtgbp4C/ol3NylXnioIFVqTb9dsCIWXus
-         /0jqU2IR0XCSDeDFuf6ooVaOILnZAagtFruTLe517dkw0UrMjL6ICsgxefTDfY3axx6B
-         xTso3GXvFGzxGBjf5IolIlhLj27D/YptIviUx4C6cJhcFl9rs3nuiwKfa4cGemOmM7Fx
-         GTlA==
-X-Gm-Message-State: AOAM5306tgLp/ia1sYrZIp2uJ6b0Q93gSCLoSgG3Zo0XO4nTi1nuXYR6
-        XdU3p4Mhwqz9QSuwcLmROic=
-X-Google-Smtp-Source: ABdhPJwusp5qfzxGF3xU1e4T41++sftUUha7hkzsv1ZJgAf6AII7ZhzXQxkfSjBbxWwnO+5U46Veig==
-X-Received: by 2002:a1f:9ed4:: with SMTP id h203mr2102352vke.1.1608273083917;
-        Thu, 17 Dec 2020 22:31:23 -0800 (PST)
-Received: from fedora ([179.48.251.236])
-        by smtp.gmail.com with ESMTPSA id b19sm949757vsq.18.2020.12.17.22.31.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Dec 2020 22:31:23 -0800 (PST)
-Date:   Fri, 18 Dec 2020 01:31:17 -0500
-From:   Nigel Christian <nigel.l.christian@gmail.com>
-To:     hverkuil-cisco@xs4all.nl, mchehab@kernel.org,
-        sakari.ailus@linux.intel.com, dan.carpenter@oracle.com,
-        gustavoars@kernel.org
-Cc:     linux-media@vger.kernel.org, trivial@kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] media: cec: fix trivial style warnings
-Message-ID: <20201218063117.GA80700@fedora>
+        Fri, 18 Dec 2020 04:06:04 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1608282341; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=304oeBEk5IMygH+RNgPG4a2gkewr5DJojRDmwpcCV+M=;
+ b=AGj/2eRk05I2hWF/9mY9K971+PzUaNUaiYCRfH5e/eATGUon6mYrKDZ+gC7gKBZHOBRC1gjv
+ tqledmO6wy8FydhWNF5pWS1DZWIlYJ5jm+55/E/qjYUxd4wCziUNivdlhozGHumwT1HJ/rQl
+ HPIjT4w2kecoaj1Em9LRcv3OF8o=
+X-Mailgun-Sending-Ip: 69.72.43.15
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5fdc70d8253011a4b89c1d12 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 18 Dec 2020 09:05:28
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A859DC43461; Fri, 18 Dec 2020 09:05:27 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 343AAC433C6;
+        Fri, 18 Dec 2020 09:05:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 343AAC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath11k: dp: clean up a variable name
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <X9s7QAHDM2OTIo3a@mwanda>
+References: <X9s7QAHDM2OTIo3a@mwanda>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20201218090527.A859DC43461@smtp.codeaurora.org>
+Date:   Fri, 18 Dec 2020 09:05:27 +0000 (UTC)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Comment has 'then' repeated twice. Let's clean it up.
-Use unsigned int to maintain naming consistency.
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-Signed-off-by: Nigel Christian <nigel.l.christian@gmail.com>
----
- drivers/media/cec/core/cec-adap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> The "&ar->ab->base_lock" and "&ab->base_lock" locks are the same lock
+> but it's nicer to use the same name consistently everywhere.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
-index d5d5d28d0b36..79fa36de8a04 100644
---- a/drivers/media/cec/core/cec-adap.c
-+++ b/drivers/media/cec/core/cec-adap.c
-@@ -1296,7 +1296,7 @@ static int cec_config_log_addr(struct cec_adapter *adap,
- 	/*
- 	 * If we are unable to get an OK or a NACK after max_retries attempts
- 	 * (and note that each attempt already consists of four polls), then
--	 * then we assume that something is really weird and that it is not a
-+	 * we assume that something is really weird and that it is not a
- 	 * good idea to try and claim this logical address.
- 	 */
- 	if (i == max_retries)
-@@ -1735,7 +1735,7 @@ int __cec_s_log_addrs(struct cec_adapter *adap,
- 		const u8 feature_sz = ARRAY_SIZE(log_addrs->features[0]);
- 		u8 *features = log_addrs->features[i];
- 		bool op_is_dev_features = false;
--		unsigned j;
-+		unsigned int j;
- 
- 		log_addrs->log_addr[i] = CEC_LOG_ADDR_INVALID;
- 		if (log_addrs->log_addr_type[i] > CEC_LOG_ADDR_TYPE_UNREGISTERED) {
+Patch applied to ath-next branch of ath.git, thanks.
+
+abdcd4cbec42 ath11k: dp: clean up a variable name
+
 -- 
-2.29.2
+https://patchwork.kernel.org/project/linux-wireless/patch/X9s7QAHDM2OTIo3a@mwanda/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

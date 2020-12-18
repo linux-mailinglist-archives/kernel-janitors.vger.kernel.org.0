@@ -2,80 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A06F2DE039
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Dec 2020 10:06:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF6B52DE0DC
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Dec 2020 11:21:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388445AbgLRJGF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 18 Dec 2020 04:06:05 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:21390 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728210AbgLRJGE (ORCPT
+        id S2388772AbgLRKT1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 18 Dec 2020 05:19:27 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:40444 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388755AbgLRKT1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 18 Dec 2020 04:06:04 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1608282341; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=304oeBEk5IMygH+RNgPG4a2gkewr5DJojRDmwpcCV+M=;
- b=AGj/2eRk05I2hWF/9mY9K971+PzUaNUaiYCRfH5e/eATGUon6mYrKDZ+gC7gKBZHOBRC1gjv
- tqledmO6wy8FydhWNF5pWS1DZWIlYJ5jm+55/E/qjYUxd4wCziUNivdlhozGHumwT1HJ/rQl
- HPIjT4w2kecoaj1Em9LRcv3OF8o=
-X-Mailgun-Sending-Ip: 69.72.43.15
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5fdc70d8253011a4b89c1d12 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 18 Dec 2020 09:05:28
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A859DC43461; Fri, 18 Dec 2020 09:05:27 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 343AAC433C6;
-        Fri, 18 Dec 2020 09:05:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 343AAC433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: dp: clean up a variable name
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <X9s7QAHDM2OTIo3a@mwanda>
-References: <X9s7QAHDM2OTIo3a@mwanda>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Fri, 18 Dec 2020 05:19:27 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BIA9mt9017895;
+        Fri, 18 Dec 2020 10:18:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=kKbiZHacAsLci0AQxcwE6GVgwg7HLb2l0eiJcFvmhcA=;
+ b=Iaw7mvIW8nvXU57mW4jUzor+VqI1PUxORrgFqPLyy/CJGbSi+rhyb92D2RctjmlKMy47
+ 9ovXsNr6Yeh7bXJeT3ryuete9UzrZHNJSXIM/3mL/zvd/PDXONblWOzXu4VRAcFwqYkL
+ MHF89qJ4dWWgGfKS+Ot/WxtoQjBCCcfEr3nglTIWYVAu+fnWlAu/2xHJnAU7HDY8wvk5
+ 99yCg8ggXwz26qjRGLe1wBLn7FMviSF2LA/nZmd2BY3sC+p3ns10Aa4L8aSZ9/xbbLIQ
+ JQeLo6erXRcOPcz/TCxFPKWOaJGWbNBFcbVKtpBYfBQMTNzUoen3cF+H5/0WukMoYCBe YQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2130.oracle.com with ESMTP id 35ckcbsuwc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 18 Dec 2020 10:18:41 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BIAFKQ8183075;
+        Fri, 18 Dec 2020 10:16:40 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 35g3rfytn2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 18 Dec 2020 10:16:40 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0BIAGdS7009208;
+        Fri, 18 Dec 2020 10:16:39 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 18 Dec 2020 02:16:38 -0800
+Date:   Fri, 18 Dec 2020 13:16:30 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Nigel Christian <nigel.l.christian@gmail.com>
+Cc:     hverkuil-cisco@xs4all.nl, mchehab@kernel.org,
+        sakari.ailus@linux.intel.com, gustavoars@kernel.org,
+        linux-media@vger.kernel.org, trivial@kernel.org,
         kernel-janitors@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201218090527.A859DC43461@smtp.codeaurora.org>
-Date:   Fri, 18 Dec 2020 09:05:27 +0000 (UTC)
+Subject: Re: [PATCH] media: cec: fix trivial style warnings
+Message-ID: <20201218101630.GM2831@kadam>
+References: <20201218063117.GA80700@fedora>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201218063117.GA80700@fedora>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9838 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 malwarescore=0
+ spamscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012180075
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9838 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999
+ priorityscore=1501 mlxscore=0 suspectscore=0 adultscore=0 phishscore=0
+ malwarescore=0 impostorscore=0 lowpriorityscore=0 clxscore=1011
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012180074
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
-
-> The "&ar->ab->base_lock" and "&ab->base_lock" locks are the same lock
-> but it's nicer to use the same name consistently everywhere.
+On Fri, Dec 18, 2020 at 01:31:17AM -0500, Nigel Christian wrote:
+> Comment has 'then' repeated twice. Let's clean it up.
+> Use unsigned int to maintain naming consistency.
 > 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Patch applied to ath-next branch of ath.git, thanks.
+Do you use a tool to find the double "then then"?
 
-abdcd4cbec42 ath11k: dp: clean up a variable name
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/X9s7QAHDM2OTIo3a@mwanda/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+regards,
+dan carpenter
 

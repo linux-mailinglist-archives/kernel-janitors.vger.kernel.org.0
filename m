@@ -2,108 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 144572DEE22
-	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Dec 2020 11:19:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BB5C2DEE4B
+	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Dec 2020 11:59:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726483AbgLSKTh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 19 Dec 2020 05:19:37 -0500
-Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:35601 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726479AbgLSKTg (ORCPT
+        id S1726557AbgLSK6x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 19 Dec 2020 05:58:53 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:50600 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726456AbgLSK6x (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 19 Dec 2020 05:19:36 -0500
-Received: from localhost.localdomain ([93.23.13.5])
-        by mwinf5d05 with ME
-        id 6AHr2400406YL0V03AHrCG; Sat, 19 Dec 2020 11:17:53 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 19 Dec 2020 11:17:53 +0100
-X-ME-IP: 93.23.13.5
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     mmayer@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
-        rjw@rjwysocki.net, viresh.kumar@linaro.org, f.fainelli@gmail.com
-Cc:     linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] cpufreq: brcmstb-avs-cpufreq: Fix some resource leaks in the error handling path of the probe function
-Date:   Sat, 19 Dec 2020 11:17:51 +0100
-Message-Id: <20201219101751.181783-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.27.0
+        Sat, 19 Dec 2020 05:58:53 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BJAtTtY003630;
+        Sat, 19 Dec 2020 10:58:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=eJ8NhlhCDae83l+6g6h/GoQhGOAuDALhJENu/2Eo1FA=;
+ b=JLibvFbUEYWv4r7inrcs6UQmX90GgncWCKuiZZ8xoLR/31R57WASIjwM7/mRh4lfSLJ6
+ hFfNMHsgyFhglRZVIYhVFEsbBgf58GWqj7XceqOJbBOvIEuIYstMdTy/dOVWwkAWMMFZ
+ 6xxeqxzGI8NwZSoOYLDyKzb9wcrbyK1YuqJECNA6VoD/gaYGh4f+45F9gTT96vZfxcbB
+ vExaWpvrgVcOfknRaTHuaQHPKmVdMMQA6IerQRTW1Lxdu+/Wryzv36g8taBxlDf9h9Pd
+ 4B1Z440u7bHuoXXrOdaBZa4+5rgEhtGhQSxQohHVCtqc/CBjUE06PvtQ4ZoOuTo8pCZ9 Xw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 35h8xqrpkk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 19 Dec 2020 10:58:03 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BJAoLKo195664;
+        Sat, 19 Dec 2020 10:56:03 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 35h6mrug9m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 19 Dec 2020 10:56:03 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0BJAu1mi031577;
+        Sat, 19 Dec 2020 10:56:01 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 19 Dec 2020 02:56:01 -0800
+Date:   Sat, 19 Dec 2020 13:55:54 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] nvmem: core: Fix a resource leak on error in
+ nvmem_add_cells_from_of()
+Message-ID: <X93cOvjVvzfig1Pu@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9839 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
+ bulkscore=0 phishscore=0 malwarescore=0 spamscore=0 suspectscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012190079
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9839 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 adultscore=0
+ lowpriorityscore=0 mlxlogscore=999 suspectscore=0 phishscore=0 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012190079
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If 'cpufreq_register_driver()' fails, we must release the resources
-allocated in 'brcm_avs_prepare_init()' as already done in the remove
-function.
+This doesn't call of_node_put() on the error path so it leads to a
+memory leak.
 
-To do that, introduce a new function 'brcm_avs_prepare_uninit()' in order
-to avoid code duplication. This also makes the code more readable (IMHO).
-
-Fixes: de322e085995 ("cpufreq: brcmstb-avs-cpufreq: AVS CPUfreq driver for Broadcom STB SoCs")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Fixes: 0749aa25af82 ("nvmem: core: fix regression in of_nvmem_cell_get()")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-I'm not sure that the existing error handling in the remove function is
-correct and/or needed.
----
- drivers/cpufreq/brcmstb-avs-cpufreq.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+The kfree_const() could just be replaced with kfree().  Someone got over
+excited converting things from kfree() to kfree_const().
 
-diff --git a/drivers/cpufreq/brcmstb-avs-cpufreq.c b/drivers/cpufreq/brcmstb-avs-cpufreq.c
-index 3e31e5d28b79..750ca7cfccb0 100644
---- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
-+++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
-@@ -597,6 +597,16 @@ static int brcm_avs_prepare_init(struct platform_device *pdev)
- 	return ret;
- }
- 
-+static void brcm_avs_prepare_uninit(struct platform_device *pdev)
-+{
-+	struct private_data *priv;
-+
-+	priv = platform_get_drvdata(pdev);
-+
-+	iounmap(priv->avs_intr_base);
-+	iounmap(priv->base);
-+}
-+
- static int brcm_avs_cpufreq_init(struct cpufreq_policy *policy)
- {
- 	struct cpufreq_frequency_table *freq_table;
-@@ -732,21 +742,26 @@ static int brcm_avs_cpufreq_probe(struct platform_device *pdev)
- 
- 	brcm_avs_driver.driver_data = pdev;
- 
--	return cpufreq_register_driver(&brcm_avs_driver);
-+	ret = cpufreq_register_driver(&brcm_avs_driver);
-+	if (ret)
-+		goto err_uninit;
-+
-+	return 0;
-+
-+err_uninit:
-+	brcm_avs_prepare_uninit(pdev);
-+	return ret;
- }
- 
- static int brcm_avs_cpufreq_remove(struct platform_device *pdev)
- {
--	struct private_data *priv;
- 	int ret;
- 
- 	ret = cpufreq_unregister_driver(&brcm_avs_driver);
- 	if (ret)
- 		return ret;
- 
--	priv = platform_get_drvdata(pdev);
--	iounmap(priv->base);
--	iounmap(priv->avs_intr_base);
-+	brcm_avs_prepare_uninit(pdev);
- 
- 	return 0;
- }
+ drivers/nvmem/core.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index 177f5bf27c6d..68ae6f24b57f 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -713,6 +713,7 @@ static int nvmem_add_cells_from_of(struct nvmem_device *nvmem)
+ 				cell->name, nvmem->stride);
+ 			/* Cells already added will be freed later. */
+ 			kfree_const(cell->name);
++			of_node_put(cell->np);
+ 			kfree(cell);
+ 			return -EINVAL;
+ 		}
 -- 
-2.27.0
+2.29.2
 

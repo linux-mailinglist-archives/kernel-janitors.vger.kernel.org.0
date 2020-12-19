@@ -2,106 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6BF42DF1D4
-	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Dec 2020 22:36:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F13D72DF25D
+	for <lists+kernel-janitors@lfdr.de>; Sun, 20 Dec 2020 00:54:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727880AbgLSVfw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 19 Dec 2020 16:35:52 -0500
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:37557 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727872AbgLSVfv (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 19 Dec 2020 16:35:51 -0500
-Received: from [192.168.42.210] ([93.23.15.221])
-        by mwinf5d37 with ME
-        id 6Ma4240034mA9Nd03Ma4rr; Sat, 19 Dec 2020 22:34:06 +0100
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 19 Dec 2020 22:34:06 +0100
-X-ME-IP: 93.23.15.221
-Subject: Re: [PATCH] irqdomain: Add documentation for irq_create_of_mapping()
-To:     Marc Zyngier <maz@kernel.org>
-Cc:     tglx@linutronix.de, mripard@kernel.org, dan.carpenter@oracle.com,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20201215200747.148439-1-christophe.jaillet@wanadoo.fr>
- <87sg83q6t4.wl-maz@kernel.org>
-From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <5bddaaae-d7d2-7ede-ab3f-db1ff9353c2d@wanadoo.fr>
-Date:   Sat, 19 Dec 2020 22:34:07 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S1726945AbgLSXyU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 19 Dec 2020 18:54:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36648 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726559AbgLSXyT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 19 Dec 2020 18:54:19 -0500
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1608422019;
+        bh=Am3QqUpQVchnO6nwVTRw7tOsrDh64innkiZKcjW5amA=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=G4QrLNsZytnAzTXZISjU58ZEGsmr/WqX0YK4zC67xtuGNvJApOFJ6brv4h5eCqgxk
+         2I+YWdyHHbp72ajOUwd902icsVAr0x1b3T3O4qJJjOCBLsyrnSaq8NNXEu9kdBqth2
+         p/lARqw9TMwMXz56wOLsmZUuYhZwQTfZDhwuH5N0MNLJgDe7OsdV8zh+3o++EUT9EC
+         1HvV+4s8KO2VjIxgaud+WFdYVNy2n18DSA5MZqd9gVigcfFigAo7jvaKbnRgqutemM
+         Ulv7dJhuFnuV3fghMB3B3SDDdl4E+ags20wTbsbuEqq4YhtTZCz9oMk6bGQh5MXJRu
+         aFWXiGUFS1xPg==
 MIME-Version: 1.0
-In-Reply-To: <87sg83q6t4.wl-maz@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20201212122818.86195-1-christophe.jaillet@wanadoo.fr>
+References: <20201212122818.86195-1-christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH] clk: s2mps11: Fix a resource leak in error handling paths in the probe function
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        b.zolnierkie@samsung.com, krzk@kernel.org, mturquette@baylibre.com,
+        mturquette@linaro.org, yadi.brar@samsung.com
+Date:   Sat, 19 Dec 2020 15:53:37 -0800
+Message-ID: <160842201799.1580929.7725454573395361171@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Quoting Christophe JAILLET (2020-12-12 04:28:18)
+> Some resource should be released in the error handling path of the probe
+> function, as already done in the remove function.
+>=20
+> The remove function was fixed in commit bf416bd45738 ("clk: s2mps11: Add
+> missing of_node_put and of_clk_del_provider")
+>=20
+> Fixes: 7cc560dea415 ("clk: s2mps11: Add support for s2mps11")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
 
-Le 18/12/2020 à 19:59, Marc Zyngier a écrit :
-> Hi Christophe,
->
-> On Tue, 15 Dec 2020 20:07:47 +0000,
-> Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
->> Add a description for 'irq_create_of_mapping()' and make explicit the fact
->> that the resources allocated by this function can be freed by calling
->> 'irq_dispose_mapping()' when needed (i.e. error handling path, remove
->> function, ...)
->>
->> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->> ---
->> The wording can certainly be improved.
->>
->> My goal is only to make clear if patches such as:
->>     https://lore.kernel.org/lkml/20201214202117.146293-1-christophe.jaillet@wanadoo.fr/
->> are needed or not.
->> ---
->>   kernel/irq/irqdomain.c | 9 +++++++++
->>   1 file changed, 9 insertions(+)
->>
->> diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
->> index 6aacd342cd14..d761ece8d43e 100644
->> --- a/kernel/irq/irqdomain.c
->> +++ b/kernel/irq/irqdomain.c
->> @@ -858,6 +858,15 @@ unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec)
->>   }
->>   EXPORT_SYMBOL_GPL(irq_create_fwspec_mapping);
->>   
->> +/**
->> + * irq_create_of_mapping() - Map an interrupt
-> I think this deserves a bit more work. My immediate questions when
-> reading this are "map where? and to what?".
-
-I won't be of great help here.
-I don't know this code enough to be able to provide an accurate description.
-
->> + * @irq_data: structure of_phandle_args returned by a previous
->> + * of_irq_parse_xxx() call
-> That's not strictly true. A of_phandle_args structure can be created
-> from scratch (and numerous drivers do that).
->
->> + *
->> + * The resources allocated by this function should be freed by
->> + * calling irq_dispose_mapping() when the mapping if not useful
->> + * anymore.
-> This really is a bit of documentation for irq_dispose_mapping(), isn't it?
-
-Well, I don't agree.
-
-I think it is easier to see that some resources need to be freed with a 
-dedicated function if it is explained in the description of the function 
-which allocates the resource.
-
-CJ
-
->
->> + */
->>   unsigned int irq_create_of_mapping(struct of_phandle_args *irq_data)
->>   {
->>   	struct irq_fwspec fwspec;
-> Thanks,
->
-> 	M.
->
+Applied to clk-next

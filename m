@@ -2,73 +2,45 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AAF0C2DEFD7
-	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Dec 2020 14:29:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2621A2DF29F
+	for <lists+kernel-janitors@lfdr.de>; Sun, 20 Dec 2020 02:36:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726545AbgLSN3o (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 19 Dec 2020 08:29:44 -0500
-Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:37313 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726504AbgLSN3o (ORCPT
+        id S1726788AbgLTBgb convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 19 Dec 2020 20:36:31 -0500
+Received: from mail.univ-alger.dz ([193.194.83.97]:52182 "EHLO
+        mail.univ-alger.dz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726570AbgLTBga (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 19 Dec 2020 08:29:44 -0500
-Received: from localhost.localdomain ([93.23.13.5])
-        by mwinf5d70 with ME
-        id 6DTz2400706YL0V03DTzF8; Sat, 19 Dec 2020 14:28:00 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 19 Dec 2020 14:28:00 +0100
-X-ME-IP: 93.23.13.5
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     vkoul@kernel.org, dan.j.williams@intel.com,
-        jaswinder.singh@linaro.org
-Cc:     dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] dmaengine: milbeaut-xdmac: Fix a resource leak in the error handling path of the probe function
-Date:   Sat, 19 Dec 2020 14:28:00 +0100
-Message-Id: <20201219132800.183254-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.27.0
+        Sat, 19 Dec 2020 20:36:30 -0500
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.univ-alger.dz (Postfix) with ESMTP id 6A2EE4D67D35;
+        Sat, 19 Dec 2020 20:56:19 +0100 (CET)
+Received: from mail.univ-alger.dz ([127.0.0.1])
+        by localhost (mail.univ-alger.dz [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id SbiYuRocq3FQ; Sat, 19 Dec 2020 20:56:19 +0100 (CET)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.univ-alger.dz (Postfix) with ESMTP id 3C78A4E27663;
+        Sat, 19 Dec 2020 16:51:54 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mail.univ-alger.dz
+Received: from mail.univ-alger.dz ([127.0.0.1])
+        by localhost (mail.univ-alger.dz [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id CsJLMErJuGcC; Sat, 19 Dec 2020 16:51:54 +0100 (CET)
+Received: from MACBOOK341C.localdomain (unknown [45.132.227.75])
+        by mail.univ-alger.dz (Postfix) with ESMTPSA id 51FCA4DC4B78;
+        Sat, 19 Dec 2020 16:15:29 +0100 (CET)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: =?utf-8?q?Sie_haben_eine_Spende_von_=E2=82=AC_5=2E800=2E000=2C00=2E?=
+To:     Recipients <z.benamor@univ-alger.dz>
+From:   "Mrs. Mavis" <z.benamor@univ-alger.dz>
+Date:   Sat, 19 Dec 2020 07:15:17 -0800
+Reply-To: wanczykm61@gmail.com
+Message-Id: <20201219151530.51FCA4DC4B78@mail.univ-alger.dz>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'disable_xdmac()' should be called in the error handling path of the
-probe function to undo a previous 'enable_xdmac()' call, as already
-done in the remove function.
-
-Fixes: a6e9be055d47 ("dmaengine: milbeaut-xdmac: Add XDMAC driver for Milbeaut platforms")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Purely speculative
----
- drivers/dma/milbeaut-xdmac.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/dma/milbeaut-xdmac.c b/drivers/dma/milbeaut-xdmac.c
-index 584c931e807a..d29d01e730aa 100644
---- a/drivers/dma/milbeaut-xdmac.c
-+++ b/drivers/dma/milbeaut-xdmac.c
-@@ -350,7 +350,7 @@ static int milbeaut_xdmac_probe(struct platform_device *pdev)
- 
- 	ret = dma_async_device_register(ddev);
- 	if (ret)
--		return ret;
-+		goto disable_xdmac;
- 
- 	ret = of_dma_controller_register(dev->of_node,
- 					 of_dma_simple_xlate, mdev);
-@@ -363,6 +363,8 @@ static int milbeaut_xdmac_probe(struct platform_device *pdev)
- 
- unregister_dmac:
- 	dma_async_device_unregister(ddev);
-+disable_xdmac:
-+	disable_xdmac(mdev);
- 	return ret;
- }
- 
--- 
-2.27.0
-
+Sie haben eine Spende von € 5.800.000,00. von Mavis Wanczyk antworten Sie mit diesem Code [MW530342019], um die Spende zu erhalten

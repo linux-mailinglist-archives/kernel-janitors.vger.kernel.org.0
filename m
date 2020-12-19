@@ -2,96 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B905F2DF072
-	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Dec 2020 17:27:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6BF42DF1D4
+	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Dec 2020 22:36:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727018AbgLSQZq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 19 Dec 2020 11:25:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43704 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726752AbgLSQZp (ORCPT
+        id S1727880AbgLSVfw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 19 Dec 2020 16:35:52 -0500
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:37557 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727872AbgLSVfv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 19 Dec 2020 11:25:45 -0500
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98329C0613CF;
-        Sat, 19 Dec 2020 08:25:05 -0800 (PST)
-Received: by mail-wr1-x431.google.com with SMTP id w5so6289337wrm.11;
-        Sat, 19 Dec 2020 08:25:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=BqrM7vBnZgy1neZwerAnSu/Di9ko8MwnICVCM0MML0s=;
-        b=SF3r1Dqgf2Xq2f7jZP5sxFnYN1VU97vC3Azay9O0/xdoRRXSBer7I9hjnXzJbr0Bk3
-         ZLCcrvUMAQhwqs46kIseJymIxgRSktEheMIufz8e8zStaQrBEUaBOvzazQsXzzlddrAD
-         J7R6wzghJ2v5KzNDtlmhEocPsie+RY5fPpqwkzHqDuATIVppupzEPuhh79NGWJ3gveWb
-         yphXdyYAOnzkuIk7ySlWKUZ/yrT39eeNSbeakW3pcCjyHseddHTkFedSL6Z7mJAr9mTL
-         ojG/TIaTWQuCtxtvR4uGusnVgbDyNKfxW0H0AJrL6F7+5WHCy1/Vi9t2xtt8V4kII5Uo
-         n9gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=BqrM7vBnZgy1neZwerAnSu/Di9ko8MwnICVCM0MML0s=;
-        b=hwCVGBI/ZvDGNRG8fchBZvOpeQLXMNAqoVNCmuxvTN5C8E3fWIgKzcFKdresDmm+tD
-         WAllEnBx3/QizH93fP46+uxKbG09yo/NSzT8TDkAlyQnRfCQls8G73iVxpO9FLzEy5v8
-         /rxKcPHggrhS1b6nPuot/Ejfuw6awYeQE50oBUvgjiHkS3uZvWK++WoIUf8eDtqOVRud
-         ZEb/e7s0e80Uiw73tJCJeLMFIbxcQ+3RUuGyEee6m0+9j5ILF6Wzm38bylTApJxn0rYb
-         xDSZ/1n8kj72I2TudIlLZ7Cbq2DdTVzNbrIL6/f9jMdGcKTuEs2o52oSucX3i3mRnVZD
-         /zWg==
-X-Gm-Message-State: AOAM530az3ExIi0AAuQYPEmKvtdrXbassKb9Ee+rbLcMIQjWON9agSSL
-        WhaZbDZgNyy+xZD6t/o1JMU=
-X-Google-Smtp-Source: ABdhPJygGQH8MdpcWrRp1zig5Kc7RNOQjILOjktzEY97h51iIwNQGLPslebtEGU3AfT3nrwMDdOA6g==
-X-Received: by 2002:a5d:6749:: with SMTP id l9mr10127199wrw.395.1608395104306;
-        Sat, 19 Dec 2020 08:25:04 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2dee:f900:595c:74f6:9319:8cea])
-        by smtp.gmail.com with ESMTPSA id z21sm15339063wmk.20.2020.12.19.08.25.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Dec 2020 08:25:03 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Masahiro Yamada <masahiroy@kernel.org>,
-        linux-kbuild@vger.kernel.org
-Cc:     Kees Cook <keescook@chromium.org>, linux-hardening@vger.kernel.org,
-        Joe Perches <joe@perches.com>,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: adjust GCC PLUGINS after gcc-plugin.sh removal
-Date:   Sat, 19 Dec 2020 17:24:56 +0100
-Message-Id: <20201219162456.19790-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Sat, 19 Dec 2020 16:35:51 -0500
+Received: from [192.168.42.210] ([93.23.15.221])
+        by mwinf5d37 with ME
+        id 6Ma4240034mA9Nd03Ma4rr; Sat, 19 Dec 2020 22:34:06 +0100
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 19 Dec 2020 22:34:06 +0100
+X-ME-IP: 93.23.15.221
+Subject: Re: [PATCH] irqdomain: Add documentation for irq_create_of_mapping()
+To:     Marc Zyngier <maz@kernel.org>
+Cc:     tglx@linutronix.de, mripard@kernel.org, dan.carpenter@oracle.com,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20201215200747.148439-1-christophe.jaillet@wanadoo.fr>
+ <87sg83q6t4.wl-maz@kernel.org>
+From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <5bddaaae-d7d2-7ede-ab3f-db1ff9353c2d@wanadoo.fr>
+Date:   Sat, 19 Dec 2020 22:34:07 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
+MIME-Version: 1.0
+In-Reply-To: <87sg83q6t4.wl-maz@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 1e860048c53e ("gcc-plugins: simplify GCC plugin-dev capability test")
-removed ./scripts/gcc-plugin.sh, but missed to adjust MAINTAINERS.
 
-Hence, ./scripts/get_maintainers.pl --self-test=patterns warns:
+Le 18/12/2020 à 19:59, Marc Zyngier a écrit :
+> Hi Christophe,
+>
+> On Tue, 15 Dec 2020 20:07:47 +0000,
+> Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+>> Add a description for 'irq_create_of_mapping()' and make explicit the fact
+>> that the resources allocated by this function can be freed by calling
+>> 'irq_dispose_mapping()' when needed (i.e. error handling path, remove
+>> function, ...)
+>>
+>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>> ---
+>> The wording can certainly be improved.
+>>
+>> My goal is only to make clear if patches such as:
+>>     https://lore.kernel.org/lkml/20201214202117.146293-1-christophe.jaillet@wanadoo.fr/
+>> are needed or not.
+>> ---
+>>   kernel/irq/irqdomain.c | 9 +++++++++
+>>   1 file changed, 9 insertions(+)
+>>
+>> diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+>> index 6aacd342cd14..d761ece8d43e 100644
+>> --- a/kernel/irq/irqdomain.c
+>> +++ b/kernel/irq/irqdomain.c
+>> @@ -858,6 +858,15 @@ unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec)
+>>   }
+>>   EXPORT_SYMBOL_GPL(irq_create_fwspec_mapping);
+>>   
+>> +/**
+>> + * irq_create_of_mapping() - Map an interrupt
+> I think this deserves a bit more work. My immediate questions when
+> reading this are "map where? and to what?".
 
-  warning: no file matches    F:    scripts/gcc-plugin.sh
+I won't be of great help here.
+I don't know this code enough to be able to provide an accurate description.
 
-Adjust entries in GGC PLUGINS section after this file removal.
+>> + * @irq_data: structure of_phandle_args returned by a previous
+>> + * of_irq_parse_xxx() call
+> That's not strictly true. A of_phandle_args structure can be created
+> from scratch (and numerous drivers do that).
+>
+>> + *
+>> + * The resources allocated by this function should be freed by
+>> + * calling irq_dispose_mapping() when the mapping if not useful
+>> + * anymore.
+> This really is a bit of documentation for irq_dispose_mapping(), isn't it?
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-applies cleanly on next-20201218
+Well, I don't agree.
 
-Masahiro-san, please pick this minor cleanup patch on your -next tree.
+I think it is easier to see that some resources need to be freed with a 
+dedicated function if it is explained in the description of the function 
+which allocates the resource.
 
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
+CJ
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f5eafee83bc6..fd3b06636c5b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7371,7 +7371,6 @@ L:	linux-hardening@vger.kernel.org
- S:	Maintained
- F:	Documentation/kbuild/gcc-plugins.rst
- F:	scripts/Makefile.gcc-plugins
--F:	scripts/gcc-plugin.sh
- F:	scripts/gcc-plugins/
- 
- GCOV BASED KERNEL PROFILING
--- 
-2.17.1
-
+>
+>> + */
+>>   unsigned int irq_create_of_mapping(struct of_phandle_args *irq_data)
+>>   {
+>>   	struct irq_fwspec fwspec;
+> Thanks,
+>
+> 	M.
+>

@@ -2,32 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 895242DEDC4
-	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Dec 2020 08:54:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 144572DEE22
+	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Dec 2020 11:19:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726438AbgLSHyC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 19 Dec 2020 02:54:02 -0500
-Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:58910 "EHLO
+        id S1726483AbgLSKTh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 19 Dec 2020 05:19:37 -0500
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:35601 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726367AbgLSHyC (ORCPT
+        with ESMTP id S1726479AbgLSKTg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 19 Dec 2020 02:54:02 -0500
+        Sat, 19 Dec 2020 05:19:36 -0500
 Received: from localhost.localdomain ([93.23.13.5])
-        by mwinf5d69 with ME
-        id 67s52400A06YL0V037s6Eo; Sat, 19 Dec 2020 08:52:17 +0100
+        by mwinf5d05 with ME
+        id 6AHr2400406YL0V03AHrCG; Sat, 19 Dec 2020 11:17:53 +0100
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 19 Dec 2020 08:52:17 +0100
+X-ME-Date: Sat, 19 Dec 2020 11:17:53 +0100
 X-ME-IP: 93.23.13.5
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     mpm@selenic.com, herbert@gondor.apana.org.au,
-        zhouyanjie@wanyeetech.com, aric.pzqi@ingenic.com
-Cc:     linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
+To:     mmayer@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+        rjw@rjwysocki.net, viresh.kumar@linaro.org, f.fainelli@gmail.com
+Cc:     linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] hwrng: ingenic - Fix a resource leak in an error handling path
-Date:   Sat, 19 Dec 2020 08:52:07 +0100
-Message-Id: <20201219075207.176279-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] cpufreq: brcmstb-avs-cpufreq: Fix some resource leaks in the error handling path of the probe function
+Date:   Sat, 19 Dec 2020 11:17:51 +0100
+Message-Id: <20201219101751.181783-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -35,39 +35,75 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, we should call 'clk_disable_unprepare()' to undo a
-previous 'clk_prepare_enable()' call, as already done in the remove
+If 'cpufreq_register_driver()' fails, we must release the resources
+allocated in 'brcm_avs_prepare_init()' as already done in the remove
 function.
 
-Fixes: 406346d22278 ("hwrng: ingenic - Add hardware TRNG for Ingenic X1830")
+To do that, introduce a new function 'brcm_avs_prepare_uninit()' in order
+to avoid code duplication. This also makes the code more readable (IMHO).
+
+Fixes: de322e085995 ("cpufreq: brcmstb-avs-cpufreq: AVS CPUfreq driver for Broadcom STB SoCs")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/char/hw_random/ingenic-trng.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+I'm not sure that the existing error handling in the remove function is
+correct and/or needed.
+---
+ drivers/cpufreq/brcmstb-avs-cpufreq.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/char/hw_random/ingenic-trng.c b/drivers/char/hw_random/ingenic-trng.c
-index 954a8411d67d..0eb80f786f4d 100644
---- a/drivers/char/hw_random/ingenic-trng.c
-+++ b/drivers/char/hw_random/ingenic-trng.c
-@@ -113,13 +113,17 @@ static int ingenic_trng_probe(struct platform_device *pdev)
- 	ret = hwrng_register(&trng->rng);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Failed to register hwrng\n");
--		return ret;
-+		goto err_unprepare_clk;
- 	}
+diff --git a/drivers/cpufreq/brcmstb-avs-cpufreq.c b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+index 3e31e5d28b79..750ca7cfccb0 100644
+--- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
++++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+@@ -597,6 +597,16 @@ static int brcm_avs_prepare_init(struct platform_device *pdev)
+ 	return ret;
+ }
  
- 	platform_set_drvdata(pdev, trng);
- 
- 	dev_info(&pdev->dev, "Ingenic DTRNG driver registered\n");
- 	return 0;
++static void brcm_avs_prepare_uninit(struct platform_device *pdev)
++{
++	struct private_data *priv;
 +
-+err_unprepare_clk:
-+	clk_disable_unprepare(trng->clk);
++	priv = platform_get_drvdata(pdev);
++
++	iounmap(priv->avs_intr_base);
++	iounmap(priv->base);
++}
++
+ static int brcm_avs_cpufreq_init(struct cpufreq_policy *policy)
+ {
+ 	struct cpufreq_frequency_table *freq_table;
+@@ -732,21 +742,26 @@ static int brcm_avs_cpufreq_probe(struct platform_device *pdev)
+ 
+ 	brcm_avs_driver.driver_data = pdev;
+ 
+-	return cpufreq_register_driver(&brcm_avs_driver);
++	ret = cpufreq_register_driver(&brcm_avs_driver);
++	if (ret)
++		goto err_uninit;
++
++	return 0;
++
++err_uninit:
++	brcm_avs_prepare_uninit(pdev);
 +	return ret;
  }
  
- static int ingenic_trng_remove(struct platform_device *pdev)
+ static int brcm_avs_cpufreq_remove(struct platform_device *pdev)
+ {
+-	struct private_data *priv;
+ 	int ret;
+ 
+ 	ret = cpufreq_unregister_driver(&brcm_avs_driver);
+ 	if (ret)
+ 		return ret;
+ 
+-	priv = platform_get_drvdata(pdev);
+-	iounmap(priv->base);
+-	iounmap(priv->avs_intr_base);
++	brcm_avs_prepare_uninit(pdev);
+ 
+ 	return 0;
+ }
 -- 
 2.27.0
 

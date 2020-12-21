@@ -2,105 +2,48 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5EEA2DF8D8
-	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Dec 2020 06:32:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EE6F2DFC80
+	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Dec 2020 15:00:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726711AbgLUFcV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 21 Dec 2020 00:32:21 -0500
-Received: from condef-10.nifty.com ([202.248.20.75]:24428 "EHLO
-        condef-10.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725308AbgLUFcV (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 21 Dec 2020 00:32:21 -0500
-X-Greylist: delayed 766 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Dec 2020 00:32:20 EST
-Received: from conssluserg-04.nifty.com ([10.126.8.83])by condef-10.nifty.com with ESMTP id 0BL5FuKD014811
-        for <kernel-janitors@vger.kernel.org>; Mon, 21 Dec 2020 14:15:57 +0900
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175]) (authenticated)
-        by conssluserg-04.nifty.com with ESMTP id 0BL5EeSX023952;
-        Mon, 21 Dec 2020 14:14:41 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 0BL5EeSX023952
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1608527681;
-        bh=ec7zDCE2Dssaie5MJIXt/edY86azQA8fYkqB1mvUQRU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=nDVovfx5qMpZt3zefhtaPGUOjQnfOm/YNvgykE0XFWP7RRIV+Cx4efNJKyN54UAvi
-         t1u2VR8CwGBMz3x5kZC5oit5ID+vDaKtohduI82tGn9DfqKhiYdBCVhwr7Gut1Q2Rk
-         ZGYSvENnV3w936KeVwaJy3jl/5hZgkQ/IneWqn0Wcx1URKBDx0O6mRKf5oPBKUtfqx
-         ZnWhy2e0qeGu6tRrscrMkoKduyvLMtehrzx5tUXViOVyMqKzN1TfFQOVyHnDVjNywI
-         zmz9titAC5EWmNR+XbwAe7kpnTC25ldhXKts7bWG0nWMvhOoisIhIeKy62BHnjOc40
-         An9rtoj0xRBUQ==
-X-Nifty-SrcIP: [209.85.210.175]
-Received: by mail-pf1-f175.google.com with SMTP id t22so5821109pfl.3;
-        Sun, 20 Dec 2020 21:14:41 -0800 (PST)
-X-Gm-Message-State: AOAM533z5/ZQadyleJKKaVF/AelF7Q7ucNF+jZZhINOWT72/XUpWKVY8
-        yg/ljoi4+H0L8cNmZ+3mGH2/ETMykDEq6/Z+ewE=
-X-Google-Smtp-Source: ABdhPJwMPKvV6Pfj0mrBv31yEQ/gpjj5UdGwLmSKck4pffiVQMK5iIh27Qu0P+H9ae/P9zjIHaDlnZvrJFHjxgaA2P0=
-X-Received: by 2002:aa7:9501:0:b029:155:3b11:d5c4 with SMTP id
- b1-20020aa795010000b02901553b11d5c4mr13893878pfp.76.1608527680375; Sun, 20
- Dec 2020 21:14:40 -0800 (PST)
+        id S1726302AbgLUN7w (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 21 Dec 2020 08:59:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44868 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726127AbgLUN7v (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 21 Dec 2020 08:59:51 -0500
+Date:   Mon, 21 Dec 2020 19:29:05 +0530
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1608559151;
+        bh=3ZAmEitTCsexx/51HtE9t/c0rky6LhobvkdB5sVl5sM=;
+        h=From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZjONlJTHHCY2wgcC5QY1lJ/xQ6TrR4vG6z/pBhsTGSONkemgNGHUfBiBVY0cCuiHW
+         EvCPC/KZ7MAo6brN/1afejx8nFHPmWzpzOh9s4Nkp7oxbbdodq5rLgZB/DwediBmvq
+         YmrsLX2qo7x4BrhJZFoQ0QdRYiGex02Imsxx5ws4Xt70kTyMp0Oa6sDbuu9SgQLAcS
+         5ivrj5rJ9eMhKJL3+io/zQDe9U0vf54wPeIdlrO5SlG58x15bI4HJc/YBIWmyXzzTo
+         LVhbEtAfb19UY7cwsFEZ+sdAD8wi8gLeDU/miXge9pHM3lBjaJNzaN3ORM2G3AlqTY
+         Gi3/k/Fnk1Bwg==
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Dave Jiang <dave.jiang@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        dmaengine@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] dmaengine: idxd: off by one in cleanup code
+Message-ID: <20201221135905.GB3323@vkoul-mobl>
+References: <X9nFeojulsNqUSnG@mwanda>
 MIME-Version: 1.0
-References: <20201219162456.19790-1-lukas.bulwahn@gmail.com>
-In-Reply-To: <20201219162456.19790-1-lukas.bulwahn@gmail.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Mon, 21 Dec 2020 14:14:03 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAStP=W5fjO6RMck3+07VKqopBgYgACjryjEwin9kiABWA@mail.gmail.com>
-Message-ID: <CAK7LNAStP=W5fjO6RMck3+07VKqopBgYgACjryjEwin9kiABWA@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: adjust GCC PLUGINS after gcc-plugin.sh removal
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        linux-hardening@vger.kernel.org, Joe Perches <joe@perches.com>,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <X9nFeojulsNqUSnG@mwanda>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Dec 20, 2020 at 1:25 AM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
->
-> Commit 1e860048c53e ("gcc-plugins: simplify GCC plugin-dev capability test")
-> removed ./scripts/gcc-plugin.sh, but missed to adjust MAINTAINERS.
->
-> Hence, ./scripts/get_maintainers.pl --self-test=patterns warns:
->
->   warning: no file matches    F:    scripts/gcc-plugin.sh
->
-> Adjust entries in GGC PLUGINS section after this file removal.
->
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+On 16-12-20, 11:29, Dan Carpenter wrote:
+> The clean up is off by one so this will start at "i" and it should start
+> with "i - 1" and then it doesn't unregister the zeroeth elements in the
+> array.
 
-
-Applied to linux-kbuild. Thanks.
-
-
-
-> ---
-> applies cleanly on next-20201218
->
-> Masahiro-san, please pick this minor cleanup patch on your -next tree.
->
->  MAINTAINERS | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index f5eafee83bc6..fd3b06636c5b 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -7371,7 +7371,6 @@ L:        linux-hardening@vger.kernel.org
->  S:     Maintained
->  F:     Documentation/kbuild/gcc-plugins.rst
->  F:     scripts/Makefile.gcc-plugins
-> -F:     scripts/gcc-plugin.sh
->  F:     scripts/gcc-plugins/
->
->  GCOV BASED KERNEL PROFILING
-> --
-> 2.17.1
->
-
+Applied, thanks
 
 -- 
-Best Regards
-Masahiro Yamada
+~Vinod

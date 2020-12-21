@@ -2,47 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB30E2DFCCF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Dec 2020 15:27:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FA3C2DFDFC
+	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Dec 2020 17:24:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726837AbgLUO1d (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 21 Dec 2020 09:27:33 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53104 "EHLO mail.kernel.org"
+        id S1725844AbgLUQXi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 21 Dec 2020 11:23:38 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49546 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726595AbgLUO1d (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 21 Dec 2020 09:27:33 -0500
-Date:   Mon, 21 Dec 2020 19:56:47 +0530
+        id S1725777AbgLUQXh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 21 Dec 2020 11:23:37 -0500
+Date:   Mon, 21 Dec 2020 21:52:52 +0530
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608560812;
-        bh=ousc0HB5M2LANA+2D9XmiqfeA4Fv5wXAoLSnmLycVyQ=;
+        s=k20201202; t=1608567777;
+        bh=FxafiOgAtDvnr793G7zzB+02/B2yMfXQsmB8jWeRr4o=;
         h=From:To:Cc:Subject:References:In-Reply-To:From;
-        b=L8EFpzwfmX6LCNBlJI6IJyinGNsLJ8J1aJiyvwCN4peTJmSe5xP/n4uxHR+AD341T
-         mUB+6h963039Oyb/j2X+wseaKRso/5Z0qhiN8CNV7JboUjlBdhlEJ6mwd5I2rV0mwn
-         SN2Uk0X3ay9vFo1RJkLVJv6hjKh+Ag+8TJ/7JTjLN/EYtUbIj1T0mNbfcgkmJHotwT
-         LiLyygZdYXtKZX8uWBvfvIstfbEBCDShn7wMWZJjIRHPpu2nNQji7odTL1vPAQ2pag
-         +J5zp+gdaRaGznBDCaXunUWlOjUBFqmQ3mj2S2DGdET5Jy/6hgjRMauBDBbrtbrNOx
-         7wDyGfvPXv7ig==
+        b=XbIihV1P1tYyeoP5ARa54K+gR7vt4W3B0VWCt62Dlh6E4fsad7OOER84/VifX3mrv
+         3DtDKAIT5DcuYWsPkSGdrMtyMRgylt1DkntxmjhrcUOHm9C+A/q/5j/QhoKGrrmBFS
+         Rdxj+DsQev7pzclTibOBFxWbv38SUSXmZllblvX0DtJZcpANxXi3mg4mOfy6zriaOm
+         vcSTYugkYJSVgFnk51KUlHAAGo4SjILPqweo46d3C92WY6t8Ne7y85vANfwxTbP5x0
+         En8r+EIE5fozX0mob+9SB0qGpKGY8Bx+T+f2yQ+i1Ip1Tx97LNhhqgHBsAvXrNdui8
+         oqdo/oqCU4VPQ==
 From:   Vinod Koul <vkoul@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     dan.j.williams@intel.com, jaswinder.singh@linaro.org,
-        dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] dmaengine: milbeaut-xdmac: Fix a resource leak in the
- error handling path of the probe function
-Message-ID: <20201221142647.GE3323@vkoul-mobl>
-References: <20201219132800.183254-1-christophe.jaillet@wanadoo.fr>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        dmaengine@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] dmaengine: dw-edma: Fix use after free in
+ dw_edma_alloc_chunk()
+Message-ID: <20201221162252.GH3323@vkoul-mobl>
+References: <X9dTBFrUPEvvW7qc@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201219132800.183254-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <X9dTBFrUPEvvW7qc@mwanda>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 19-12-20, 14:28, Christophe JAILLET wrote:
-> 'disable_xdmac()' should be called in the error handling path of the
-> probe function to undo a previous 'enable_xdmac()' call, as already
-> done in the remove function.
+On 14-12-20, 14:56, Dan Carpenter wrote:
+> If the dw_edma_alloc_burst() function fails then we free "chunk" but
+> it's still on the "desc->chunk->list" list so it will lead to a use
+> after free.  Also the "->chunks_alloc" count is incremented when it
+> shouldn't be.
+> 
+> In current kernels small allocations are guaranteed to succeed and
+> dw_edma_alloc_burst() can't fail so this will not actually affect
+> runtime.
 
 Applied, thanks
 

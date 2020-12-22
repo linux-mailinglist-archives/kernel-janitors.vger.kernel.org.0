@@ -2,104 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F18722E0C77
-	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Dec 2020 16:11:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 127F52E0E90
+	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Dec 2020 20:12:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728061AbgLVPJO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 22 Dec 2020 10:09:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45834 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727827AbgLVPJO (ORCPT
+        id S1725913AbgLVTKz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 22 Dec 2020 14:10:55 -0500
+Received: from mail-oi1-f169.google.com ([209.85.167.169]:37768 "EHLO
+        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725782AbgLVTKz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 22 Dec 2020 10:09:14 -0500
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3E31C0613D6;
-        Tue, 22 Dec 2020 07:08:33 -0800 (PST)
-Received: by mail-oi1-x233.google.com with SMTP id s75so15057007oih.1;
-        Tue, 22 Dec 2020 07:08:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9iX58YMx8qY2LSjohdfZ3DU1IKC59lgYW43Efd3MkEI=;
-        b=p1CZSIKxfXhHNUVOHLNAuoSWLjD2CRJNrxIzcW7j2SJxYk2YNkLEyF/IRbHKlfhLix
-         Oj3dFbJACsvuBfeeSKwn6i3sgHpLoGJIlD9x1UN6wtBOKF3fPB8/ADH5clxzQu0GcoJb
-         vPXZqhWWjYjEYvOD8UDoqremOPyKwbNAV6Y4uhf4H6tsppnZDPgUuUk3mIcIMWdcao3+
-         7cGE7KAq9SN0xt3YGu6OQHqjWVNUKywvCkOOc+pBxXcYsuOZtkwBL0TFpsYW6LuL86qi
-         CsRhb7Plhinl8Aqs07yyMz0sA323oS+Ik7DppPVpYgU6c/4+rO4chkYrQu5VVujqwACw
-         d+hw==
+        Tue, 22 Dec 2020 14:10:55 -0500
+Received: by mail-oi1-f169.google.com with SMTP id l207so15841564oib.4;
+        Tue, 22 Dec 2020 11:10:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=9iX58YMx8qY2LSjohdfZ3DU1IKC59lgYW43Efd3MkEI=;
-        b=PoQW2D5Zy+GoVpDIfGqCWGpz69NKEwMZmCE8vyhudBAjBhBTZEIAeQZaL43MxAvHJT
-         lC5wiJy62uCxUsURC80x7pTcSm63IENoTWpNep8VJ2H/p9kRVFeKoYnxzDpZtaH77ylK
-         8Bl7RPTTydYEJNBKuaFOP1oo1AllsoIAXvpL1xZ6TPfbjxj/8q3dVoqexeKZ1Eio/krs
-         buqNHIPHdbNo45VyXCGJ83by8OM7i6roNtW1zcsz6KH133FnOt4PISe3gGrBLWIvWxCe
-         00uNd58TGBT5/k1cSzqPfU/sBdMhp9/se0kkMyC2VsuMJmyd6crYyHj8mnAIiLln7kPt
-         +rmg==
-X-Gm-Message-State: AOAM532+NGokgfiLRAVdB6fSO0I20CtIfYwUv+jQ7rff7E2wWCIrnI0Q
-        4uUZ9sX7SXGARpD0gDPQOk3ukRP/g7LV+ZaFYNE=
-X-Google-Smtp-Source: ABdhPJy19Ods0aRD/JDrJl5ZdgsTjfLu8fnSZO6MPFsqsu0ylwodKntXg6ma9XB4AnxVPc0aNvmdHonLoCQxKzOK2E8=
-X-Received: by 2002:a54:4083:: with SMTP id i3mr14464839oii.120.1608649713481;
- Tue, 22 Dec 2020 07:08:33 -0800 (PST)
+        bh=qJcLuqhGyTdulZyHvFUwRf4VUU/U5lmTCF6MQyRDs2g=;
+        b=GZfajE4JXKnGt7PAHeNTLu+v2lfvCBncLCp5BlV/iJdsSjGGRxJx8eKsYQOP1LFme+
+         ICeS3fvnTtMqohUyG9fmySxElPVFx82ok/CiqXDK5ST5f2HpzbAH2d/cDtMdt0iw2+Zn
+         VQtnYPAS917OvxxH4Ztr0R22mNi9uED9W9pUBEBqhLSMzgGYErsyfI0y4WSXOnYQAxfF
+         RYGIUnpzYx+zkCRWYMASU+P1Cxl476YSpEIwS2z+yx30ntCc6OEndiikM6LfxxMSnhuE
+         JLXTQsuv2idx4MummYrMU+mFPoK3iyEeDLaPyk9w3xxqRwaxy7CInfbkU3u6VKatOfSY
+         nv+A==
+X-Gm-Message-State: AOAM531wVmdkrAhhT9aa3I0c2Uf4y/retFYu4aKwWdPgVhNC1M00kwag
+        fuHoKot7/jSPsOLlirkLgy2mJ6Y4S2RCGIfX1NI=
+X-Google-Smtp-Source: ABdhPJxIYc4zK08MtEYs62IqavskxUUN8yV3pd/5j8oRAIkj9unjY1mocXJ73PQVKyOWwTXy+PWdKomrjkOYp/vtwRw=
+X-Received: by 2002:aca:4892:: with SMTP id v140mr15360311oia.71.1608664213995;
+ Tue, 22 Dec 2020 11:10:13 -0800 (PST)
 MIME-Version: 1.0
-References: <98e71ee7-1eb9-ada8-a438-703be03e96d1@web.de>
-In-Reply-To: <98e71ee7-1eb9-ada8-a438-703be03e96d1@web.de>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Tue, 22 Dec 2020 10:08:22 -0500
-Message-ID: <CADnq5_PVm+04LqPJoQ6mPHf0YM6jEeR_Xh_Bkap7Nuw+Fo6sgw@mail.gmail.com>
-Subject: Re: [PATCH 0/2] drm/amd/display: Adjustments for dc_create()
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Alvin Lee <alvin.lee2@amd.com>,
-        Anthony Koo <Anthony.Koo@amd.com>, Aric Cyr <aric.cyr@amd.com>,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
-        Chiawen Huang <chiawen.huang@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-        Yongqiang Sun <yongqiang.sun@amd.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
+References: <20201217071501.31267-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <20201217071501.31267-1-lukas.bulwahn@gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 22 Dec 2020 20:10:03 +0100
+Message-ID: <CAJZ5v0gC_SLBvSsGC=1OJ-uNEVPC=JLwELEZKj=LKoQkoOuEkQ@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: include governors into CPU IDLE TIME
+ MANAGEMENT FRAMEWORK
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Dec 20, 2020 at 6:10 AM Markus Elfring <Markus.Elfring@web.de> wrote:
+On Thu, Dec 17, 2020 at 8:16 AM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
 >
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Sat, 19 Dec 2020 18:30:56 +0100
+> The current pattern in the file entry does not make the files in the
+> governors subdirectory to be a part of the CPU IDLE TIME MANAGEMENT
+> FRAMEWORK.
 >
-> Two update suggestions were taken into account
-> from static source code analysis.
+> Adjust the file pattern to include files in governors.
 >
-
-Applied.  Thanks!
-
-Alex
-
-
-> Markus Elfring (2):
->   Return directly after a failed kzalloc()
->   Use common error handling code
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+> applies cleanly on current master and next-20201215
 >
->  drivers/gpu/drm/amd/display/dc/core/dc.c | 21 ++++++++-------------
->  1 file changed, 8 insertions(+), 13 deletions(-)
+>  MAINTAINERS | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 952731d1e43c..ac679aa00e0d 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -4596,7 +4596,7 @@ B:        https://bugzilla.kernel.org
+>  T:     git git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
+>  F:     Documentation/admin-guide/pm/cpuidle.rst
+>  F:     Documentation/driver-api/pm/cpuidle.rst
+> -F:     drivers/cpuidle/*
+> +F:     drivers/cpuidle/
+>  F:     include/linux/cpuidle.h
+>
+>  CPU POWER MONITORING SUBSYSTEM
 > --
-> 2.29.2
+
+Applied as 5.11-rc material, thanks!
+
 >
-> _______________________________________________
-> amd-gfx mailing list
-> amd-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/amd-gfx

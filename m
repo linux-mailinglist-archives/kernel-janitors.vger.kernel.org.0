@@ -2,155 +2,163 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40AAC2E339A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Dec 2020 03:27:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE5912E345B
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Dec 2020 06:38:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726313AbgL1C1X (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 27 Dec 2020 21:27:23 -0500
-Received: from mail-bn7nam10on2040.outbound.protection.outlook.com ([40.107.92.40]:21536
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726286AbgL1C1W (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 27 Dec 2020 21:27:22 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Oa5rkMMofV+jBdEY1avxOu8yQs1BLJeoRYoVrpPPAbo/XYCh3pPEISoIkUhQhurZvLBXZ0P/AYboxZDYHNCJmB4jy/s4T66unXEtEfig0FjjOFx4BQsPIOX9Xus3kGAMqVoxcfnM0tw2VkQqcppe6I4wDEkrsXVRsWblyPAKUECKPaYyLRhG/ED9yzC5H/fI4NacQ62n3wB79bc42kOCwYypfps/tahLu8m7j1C7YWGvz5W4vh5V/ypFrNeJIY6TbU9iQ9oKvWjwJ0/ZDsj65OTH+2IaJNfasg5YW3adKoINutf2pK26B+3nK5sOPY46aB6JeFUJd9oS8REV+e92Uw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UmTw8oRXUbAxtF9pb6Wd+PZPTItr25m1I3ov3ITtD4o=;
- b=lox8W2DzAgHB9MB3x0JPQWmBYsu5CWAKM3QjtXzkN1a7QVjag91fX+lMxSD8oBN+jNPxSkRJywaBvA8lSWw12QNSQLteRzjoHJxwj/tybCoHH01fT5V9QkTbvmjk/notZT6dKtU0fmL+Ho7g6BOk/70GlunYmMZb9PG7MJSRIEyzum5H7Pf0OBTDVLu7xQPU/XycDpSb/ryibkXI/kHO0afT77qZLLN+9YOjwSdLXf3/U2Iywaa8VKSVCIdJ8STo+bWufNtC1FqTYxThDdY1ZGZLSNRgHp3KFl128KcX/gc+n70St50Mxr+8MB6YxJA1hF00NS3mTITK1xPTbz7GwQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+        id S1727785AbgL1FiW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Dec 2020 00:38:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36246 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726511AbgL1FiW (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 28 Dec 2020 00:38:22 -0500
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 079B0C061794
+        for <kernel-janitors@vger.kernel.org>; Sun, 27 Dec 2020 21:37:41 -0800 (PST)
+Received: by mail-pj1-x102b.google.com with SMTP id b5so5926903pjk.2
+        for <kernel-janitors@vger.kernel.org>; Sun, 27 Dec 2020 21:37:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=windriversystems.onmicrosoft.com;
- s=selector2-windriversystems-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UmTw8oRXUbAxtF9pb6Wd+PZPTItr25m1I3ov3ITtD4o=;
- b=Ndoj/HvIUE71ha+JzHi6anEzk38i1AuembX/pg685sfvypbS5JC+TTculaffaS4mXWCQAG1dcwLrVMTQ99y0Mk/bfgcokeSbjN7aGK6GuyuoX1CRiF9d4NFank0xFD1mSHqGPeyxwW2gma7KXEUcHLMSxmoHBQS+obBJhn9JrxE=
-Received: from PH0PR11MB5077.namprd11.prod.outlook.com (2603:10b6:510:3b::17)
- by PH0PR11MB4997.namprd11.prod.outlook.com (2603:10b6:510:31::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3700.28; Mon, 28 Dec
- 2020 02:26:33 +0000
-Received: from PH0PR11MB5077.namprd11.prod.outlook.com
- ([fe80::564:ae38:9aae:7896]) by PH0PR11MB5077.namprd11.prod.outlook.com
- ([fe80::564:ae38:9aae:7896%5]) with mapi id 15.20.3700.031; Mon, 28 Dec 2020
- 02:26:33 +0000
-From:   "Wang, Xiaolei" <Xiaolei.Wang@windriver.com>
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Brown <broonie@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: RE: regmap: debugfs: fix a memory leak when calling regmap_attach_dev
-Thread-Topic: regmap: debugfs: fix a memory leak when calling
- regmap_attach_dev
-Thread-Index: AQHW3FXcaMlV7254xkKXhXYYZYHhsqoLuDnQ
-Date:   Mon, 28 Dec 2020 02:26:33 +0000
-Message-ID: <PH0PR11MB50770B63B8BFB8B7DAD615C195D90@PH0PR11MB5077.namprd11.prod.outlook.com>
-References: <20201225122613.3810458-1-xiaolei.wang@windriver.com>
- <737e8b89-5748-2ef5-5294-8e65421931b9@web.de>
- <PH0PR11MB507734E4DF73DF015AD601EB95DA0@PH0PR11MB5077.namprd11.prod.outlook.com>
- <46e289a6-49ab-a627-dab1-56a8b0587c08@web.de>
-In-Reply-To: <46e289a6-49ab-a627-dab1-56a8b0587c08@web.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: web.de; dkim=none (message not signed)
- header.d=none;web.de; dmarc=none action=none header.from=windriver.com;
-x-originating-ip: [192.103.52.1]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 4e310323-793f-4f90-b2c4-08d8aad7fe7e
-x-ms-traffictypediagnostic: PH0PR11MB4997:
-x-microsoft-antispam-prvs: <PH0PR11MB49975EAEFAD31A7FF7B6A39195D90@PH0PR11MB4997.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:2150;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Jgb0NTL3jG1T7KmDtNdOqZgPiVMKQnrRkr7AbElDuVjxSsqc/XiM2x+g0dVhpqqEoHUWTn+Za53jZpjLSDmE6IW9xQnqx8Fyy6BOoFEtmDSvI74bCyBqzBFkB4VaxwGbSQkZ7IVuUacPS/WzRDaCU+NyXsf0jn2Uncf6TJk9fywPwjCJQ0Jc/a8VQ3eHvL9ucMbHgct0f2FsYyCcCKO34V4oViSMk7QrtloVGPxRKrYgkbB7HIxOs+Tn5boqNOdpe2hTM5DnOOD0CiWbLKPXV5L0beG6sqL95qPiyrC7sbIsub6lLc3e4njdCf49LUA/3ZcK+xI5ibumzGwPzXjaJTCDlyQHfenXt4NOLo8pAwNbbVkXiA7hgAxVhtNUG595qeftPfdNILEprE2Mwxw66MHwwLqekBKfLfAYiqZIyZtu3hvA3JHXq7nTOCoiUrvAB3Cs6wCyiPFgiUx13dqFYw==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5077.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(376002)(396003)(39840400004)(366004)(346002)(9686003)(478600001)(2906002)(66556008)(71200400001)(53546011)(66946007)(6506007)(76116006)(66476007)(8676002)(66446008)(26005)(86362001)(64756008)(55016002)(54906003)(8936002)(4326008)(5660300002)(7696005)(186003)(33656002)(83380400001)(110136005)(52536014)(966005)(316002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: =?utf-8?B?V1NIUHptQ3M2cTZGVkZBVS9nUmVXSjJFQllzSkFFT2lwNSsxbXVwRjJYYVFE?=
- =?utf-8?B?Y3RSTm43dG12Zk1ocVRCOEF5RnROQUtHT2ZBRWh3Sll0TWpDb0cvM1R1Nm4y?=
- =?utf-8?B?UHZzcUR5OHZGMGlvM3ZYSUNxYXRYVkZEZEtCd0NEYTFvVjVaTGpuYkdFYjdi?=
- =?utf-8?B?d3RZbCtxbUwxanpXanE4eFNZREhhdGJSM2EvTWtWWUR4OE9HVDlrQVVMQ0lW?=
- =?utf-8?B?YmxGU2lrMzZlc1pPcmcxSyttUDNXQnZkcHA3VUJaTXE2LzI2RytYWXJOY3ho?=
- =?utf-8?B?Z3kvS01ta1BnZXdZNm55alRiRVJXVElnT2FkM1dwaHBaNG9wSjdLQTg4eUhT?=
- =?utf-8?B?OS83UXJZOGtsYXViVjZsc2tkekpNOUVhUTRETTUyV0NzdUl5Ymt5T05WaGRn?=
- =?utf-8?B?NmxMVGlNUmJ6UDFBN2lnOHVUZUx6RGd6aFQ0OUdPM0tpNEl2NGJ3VGR1NGpz?=
- =?utf-8?B?dkJEcUlSeUNyTEtjaTBhWGFZZW1YSWt6T3BXWkZnWmU1eTlZeDJ2aUtqUkpt?=
- =?utf-8?B?Znp2L3phMnMxeVV4OTV1M1lTZzVRNzJEamlNdGI3b1VBZkFadktOeG9OeHpE?=
- =?utf-8?B?ZGNhc1ZJSjlKcktkQXYwbC9YSDN5amNReDQ2UkxUcWgvdmhncUxBZ1hLNWU4?=
- =?utf-8?B?Qk51MUpNZ2FSeG9rcHFyMTJvMEdaMWxOUnphdlQyVVJnZE5jVEI2ZUdYb0NE?=
- =?utf-8?B?UW5LOXdjYnJmSjRTL3EyLzdHMENsZ0IyZWtSNDNjZlVrL05rUDU3ajBDM2Jm?=
- =?utf-8?B?N0xTZGhsR0REcERmV014VFFSeWNZK2F5RlUrNzNQQ3BiOU5oTWtqaVJ4MGNp?=
- =?utf-8?B?b25UNExsMGFUWktDaFFFYXJaWXN2SGxRZUo4clZyaCtnWXJGT1hNeHBGaU1E?=
- =?utf-8?B?N01iNm9PRERKVHZDb2s4UnRmZnVGYjNVRGljZmp3QTk1Snc4Tkp2M0xrekJm?=
- =?utf-8?B?ZjhwTERUaG5NNFhMSGhyZUNDVGloaTB6Z2tmR0lyV21STXN5aXNpZDM1alFw?=
- =?utf-8?B?dW45K0NhOXBqY2k3bGZheVUyaGFwVTBRbTJWd1ZBejlMQmM0UVBwQ0NtVlJ2?=
- =?utf-8?B?ejVYN29iVGU2ejJtaGFTNXFiN2RjakxDbzhyYjVhNENEbzJ3TGFHdXNRYjhq?=
- =?utf-8?B?Q0Vibm1sRmdGVjBIaTJDdnl0aElDbnQ3OWJRNVFZaGlhbUpYZ3NPVmxqd1Uy?=
- =?utf-8?B?cnBkZ1cvakhhQUw0RnFQTEhOelpVdVMyTmxaRTM5cGZwRVplS1BkRlRUVzY5?=
- =?utf-8?B?bXUxQy9naUFoZjhMaWFaYzR6WE0zS09GV0t6eFEvOWlSeXlHemFnZTVjNmlO?=
- =?utf-8?Q?3LSMozf43fSUA=3D?=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=zegu0X9sZDxNvLaLEb6B1P2y6YF1mpAuGwZH8pLcUFA=;
+        b=kGu4z+nkVQp+gc3xdhla18BclFTp67yzoxD+9RMY/GNIXQuJexMdOsKGqMSyUf1E/l
+         5CB7kIpM6JGNNbciDg+zesEBaWdz1pBhFlY7EJdHT1T+liJT84FxCNu+mMoBZeWEkzJ6
+         Q52JQkCXPH4rhP8Y3QYUtl/ZOCyEeePFYh74dpzixQjAYGJzhX0cD3gFD3E4Eid1d7Cx
+         dbWFydxsZnVIzQxYWP6sy6nbUdVlaeyP3LjdaasrPTmMxEQNIXRasuR6qjl9MS/p7E33
+         gSVdelpIQSxrGGuumL9cdg5LYxRoRR5Z2A6zoM3Tu5mCXTZu/cfiGCDdoolQJxZB1rfa
+         axIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=zegu0X9sZDxNvLaLEb6B1P2y6YF1mpAuGwZH8pLcUFA=;
+        b=EKA6J4o8Q5dWDJTRZQdsr4N9s3JMX033iljJxFZrgFHh2F6fp1FnreX67vzVTqcqHc
+         p64rDDLEZCnZhzL4EqH0A6jDil5M3+vSM3EsT+5vPs9xYTUN41ljU7WssdbUJNMol+yQ
+         tYZUHVNsKcaW1BfWX31mbjB2eGcrenMWdzScJR1lX/N8z8NL9grAus64VTrph5LxlB7+
+         XYp8HqSdMhx/q7qW8y/Ae0bkWyVuVtGvTRThrkGiP7SCvo3RzpSDF8QOfj+JqbFHXiqz
+         xk0xOs26VmpgTAnSxf+g4RDHhUfNWnavRHRF45tCsC5hKTtMOs3T+/pZj1d+ffvwXq0n
+         UoVA==
+X-Gm-Message-State: AOAM533SJI+rZevkJZnkhv4Q3v4busZiwUNPlU0ZOf7FO1qD/Ywm/hro
+        vc2sFo3TfrInL8HJ6Z0+gi2kDi+D8qE6EQ==
+X-Google-Smtp-Source: ABdhPJxZONjSIasQCRp/1pDOfNWPBn0hTvHIEA8MIs0tOmtvQDHZvqlafaqvzNUcqKO4wHrWxx/3HA==
+X-Received: by 2002:a17:90a:ee8e:: with SMTP id i14mr19562217pjz.190.1609133861327;
+        Sun, 27 Dec 2020 21:37:41 -0800 (PST)
+Received: from localhost ([122.172.20.109])
+        by smtp.gmail.com with ESMTPSA id d124sm36711730pgc.68.2020.12.27.21.37.40
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 27 Dec 2020 21:37:40 -0800 (PST)
+Date:   Mon, 28 Dec 2020 11:07:38 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     mmayer@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+        rjw@rjwysocki.net, f.fainelli@gmail.com, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: brcmstb-avs-cpufreq: Fix some resource leaks in
+ the error handling path of the probe function
+Message-ID: <20201228053738.6b6uaz2ipzjpwzet@vireshk-i7>
+References: <20201219101751.181783-1-christophe.jaillet@wanadoo.fr>
+ <20201222043505.rq3cmajc3mxv3p2z@vireshk-i7>
+ <a7e1f78c-b4c9-4ef5-7ca4-94a65fefd299@wanadoo.fr>
 MIME-Version: 1.0
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5077.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e310323-793f-4f90-b2c4-08d8aad7fe7e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Dec 2020 02:26:33.5878
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 7C4XWPJ2YbrYnDbUWE8WHIeX1eOmxvqxqznVqgz887i8i3sp8rW6V4Gh41i40bSgsKJSI+6hk5F9lmitHnGsJ1t9kiCN0pyBlzllTI4l6j8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4997
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a7e1f78c-b4c9-4ef5-7ca4-94a65fefd299@wanadoo.fr>
+User-Agent: NeoMutt/20180716-391-311a52
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-PiBEbyB5b3UgbWVhbiBzbz8NCj4NCj4gY29tbWl0Og0KPiAgICAgICAgICA5Yjk0N2ExM2U3ZjYg
-KCJyZWdtYXA6IHVzZSBkZWJ1Z2ZzIGV2ZW4gd2hlbiBubyBkZXZpY2UiKQ0KDQo+IFBsZWFzZSB0
-YWtlIGFub3RoZXIgbG9vayBhdCBrbm93biBpbmZvcm1hdGlvbiBzb3VyY2VzLg0KDQo+IGh0dHBz
-Oi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3RvcnZhbGRzL2xpbnV4
-LmdpdC90cmVlL0RvY3VtZW50YXRpb24vcHJvY2Vzcy9zdWJtaXR0aW5nLXBhdGNoZXMucnN0P2lk
-PWY4MzhmOGQyYjY5NGNmOWQ1MjRkYzQ0MjNlOWRkMmRiMTM4OTJmM2Yjbjg5DQo+IGh0dHBzOi8v
-Z2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3RvcnZhbGRzL2xpbnV4Lmdp
-dC90cmVlL0RvY3VtZW50YXRpb24vcHJvY2Vzcy9zdWJtaXR0aW5nLXBhdGNoZXMucnN0P2lkPWY4
-MzhmOGQyYjY5NGNmOWQ1MjRkYzQ0MjNlOWRkMmRiMTM4OTJmM2YjbjEyMQ0KDQoNCg0KPiBXaGlj
-aCBvbmUgZG8geW91IG1lYW4gYnkgImFub3RoZXIgbnVsbCBwb2ludCI/DQoNCkhvdyBkbyB5b3Ug
-dGhpbmsgYWJvdXQgdG8gY2hlY2sgaWYgY2FsbHMgb2YgdGhlIGZ1bmN0aW9uIOKAnGthc3ByaW50
-ZuKAnSBzdWNjZWVkZWQgaGVyZT8NCmh0dHBzOi8vZWxpeGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y1
-LjEwLjMvc291cmNlL2xpYi9rYXNwcmludGYuYyNMNTMNCg0KV2lsbCBhbnkgbW9yZSBleGNlcHRp
-b24gaGFuZGxpbmcgYmVjb21lIHJlbGV2YW50IGFsc28gZm9yIHRoZSBpbXBsZW1lbnRhdGlvbiBv
-ZiB0aGUgZnVuY3Rpb24g4oCccmVnbWFwX2RlYnVnZnNfaW5pdOKAnT8NCg0KDQotLS0tLU9yaWdp
-bmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogTWFya3VzIEVsZnJpbmcgPE1hcmt1cy5FbGZyaW5nQHdl
-Yi5kZT4gDQpTZW50OiBTdW5kYXksIERlY2VtYmVyIDI3LCAyMDIwIDk6NDAgUE0NClRvOiBXYW5n
-LCBYaWFvbGVpIDxYaWFvbGVpLldhbmdAd2luZHJpdmVyLmNvbT47IGtlcm5lbC1qYW5pdG9yc0B2
-Z2VyLmtlcm5lbC5vcmcNCkNjOiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBHcmVnIEty
-b2FoLUhhcnRtYW4gPGdyZWdraEBsaW51eGZvdW5kYXRpb24ub3JnPjsgTWFyayBCcm93biA8YnJv
-b25pZUBrZXJuZWwub3JnPjsgUmFmYWVsIEouIFd5c29ja2kgPHJhZmFlbEBrZXJuZWwub3JnPg0K
-U3ViamVjdDogUmU6IHJlZ21hcDogZGVidWdmczogZml4IGEgbWVtb3J5IGxlYWsgd2hlbiBjYWxs
-aW5nIHJlZ21hcF9hdHRhY2hfZGV2DQoNCj4gRG8geW91IG1lYW4gc28/DQo+DQo+IGNvbW1pdDoN
-Cj4gICAgICAgICAgOWI5NDdhMTNlN2Y2ICgicmVnbWFwOiB1c2UgZGVidWdmcyBldmVuIHdoZW4g
-bm8gZGV2aWNlIikNCg0KPiBQbGVhc2UgdGFrZSBhbm90aGVyIGxvb2sgYXQga25vd24gaW5mb3Jt
-YXRpb24gc291cmNlcy4NCg0KPiBodHRwczovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgv
-a2VybmVsL2dpdC90b3J2YWxkcy9saW51eC5naXQvdHJlZS9Eb2N1bWVudGF0aW9uL3Byb2Nlc3Mv
-c3VibWl0dGluZy1wYXRjaGVzLnJzdD9pZD1mODM4ZjhkMmI2OTRjZjlkNTI0ZGM0NDIzZTlkZDJk
-YjEzODkyZjNmI244OQ0KPiBodHRwczovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgva2Vy
-bmVsL2dpdC90b3J2YWxkcy9saW51eC5naXQvdHJlZS9Eb2N1bWVudGF0aW9uL3Byb2Nlc3Mvc3Vi
-bWl0dGluZy1wYXRjaGVzLnJzdD9pZD1mODM4ZjhkMmI2OTRjZjlkNTI0ZGM0NDIzZTlkZDJkYjEz
-ODkyZjNmI24xMjENCg0KPiBXaGljaCBvbmUgZG8geW91IG1lYW4gYnkgImFub3RoZXIgbnVsbCBw
-b2ludCI/DQoNCj4gSG93IGRvIHlvdSB0aGluayBhYm91dCB0byBjaGVjayBpZiBjYWxscyBvZiB0
-aGUgZnVuY3Rpb24g4oCca2FzcHJpbnRm4oCdIHN1Y2NlZWRlZCBoZXJlPw0KPiBodHRwczovL2Vs
-aXhpci5ib290bGluLmNvbS9saW51eC92NS4xMC4zL3NvdXJjZS9saWIva2FzcHJpbnRmLmMjTDUz
-DQoNCj4gV2lsbCBhbnkgbW9yZSBleGNlcHRpb24gaGFuZGxpbmcgYmVjb21lIHJlbGV2YW50IGFs
-c28gZm9yIHRoZSBpbXBsZW1lbnRhdGlvbiBvZiB0aGUgZnVuY3Rpb24g4oCccmVnbWFwX2RlYnVn
-ZnNfaW5pdOKAnT8NCg0KVGhhbmtzIGZvciB5b3VyIHN1Z2dlc3Rpb24sIEkgd2lsbCBtb2RpZnkg
-dGhlIGNvbW1pdCBsb2cgYW5kIGFkZCBhbm90aGVyIG51bGwgcG9pbnQgY2hlY2sgdG9nZXRoZXIg
-d2l0aCBjb3JyZXNwb25kaW5nIGV4Y2VwdGlvbiBoYW5kbGluZw0KDQoNClJlZ2FyZHMsDQpYaWFv
-bGVpIA0K
+On 27-12-20, 18:22, Christophe JAILLET wrote:
+> Le 22/12/2020 à 05:35, Viresh Kumar a écrit :
+> > On 19-12-20, 11:17, Christophe JAILLET wrote:
+> > > If 'cpufreq_register_driver()' fails, we must release the resources
+> > > allocated in 'brcm_avs_prepare_init()' as already done in the remove
+> > > function.
+> > > 
+> > > To do that, introduce a new function 'brcm_avs_prepare_uninit()' in order
+> > > to avoid code duplication. This also makes the code more readable (IMHO).
+> > > 
+> > > Fixes: de322e085995 ("cpufreq: brcmstb-avs-cpufreq: AVS CPUfreq driver for Broadcom STB SoCs")
+> > > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> > > ---
+> > > I'm not sure that the existing error handling in the remove function is
+> > > correct and/or needed.
+> > > ---
+> > >   drivers/cpufreq/brcmstb-avs-cpufreq.c | 25 ++++++++++++++++++++-----
+> > >   1 file changed, 20 insertions(+), 5 deletions(-)
+> > > 
+> > > diff --git a/drivers/cpufreq/brcmstb-avs-cpufreq.c b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+> > > index 3e31e5d28b79..750ca7cfccb0 100644
+> > > --- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
+> > > +++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+> > > @@ -597,6 +597,16 @@ static int brcm_avs_prepare_init(struct platform_device *pdev)
+> > >   	return ret;
+> > >   }
+> > > +static void brcm_avs_prepare_uninit(struct platform_device *pdev)
+> > > +{
+> > > +	struct private_data *priv;
+> > > +
+> > > +	priv = platform_get_drvdata(pdev);
+> > > +
+> > > +	iounmap(priv->avs_intr_base);
+> > > +	iounmap(priv->base);
+> > > +}
+> > > +
+> > >   static int brcm_avs_cpufreq_init(struct cpufreq_policy *policy)
+> > >   {
+> > >   	struct cpufreq_frequency_table *freq_table;
+> > > @@ -732,21 +742,26 @@ static int brcm_avs_cpufreq_probe(struct platform_device *pdev)
+> > >   	brcm_avs_driver.driver_data = pdev;
+> > > -	return cpufreq_register_driver(&brcm_avs_driver);
+> > > +	ret = cpufreq_register_driver(&brcm_avs_driver);
+> > > +	if (ret)
+> > > +		goto err_uninit;
+> > > +
+> > > +	return 0;
+> > > +
+> > > +err_uninit:
+> > > +	brcm_avs_prepare_uninit(pdev);
+> > > +	return ret;
+> > 
+> > Maybe rewrite as:
+> > 
+> > 	ret = cpufreq_register_driver(&brcm_avs_driver);
+> > 	if (ret)
+> >                  brcm_avs_prepare_uninit(pdev);
+> > 	return ret;
+> > 
+> 
+> Personlaly, I prefer what I have proposed. Having a clear and dedicated
+> error handling path is more future proff, IMHO.
+
+I would have agreed to that if there were other things we were handling in the
+error path, but right now we are adding an extra label, goto, etc without any
+need. If in future this needs a change, we can always come back to it and update
+with a label. But right now I would suggest to keep it simple.
+
+> > >   }
+> > >   static int brcm_avs_cpufreq_remove(struct platform_device *pdev)
+> > >   {
+> > > -	struct private_data *priv;
+> > >   	int ret;
+> > >   	ret = cpufreq_unregister_driver(&brcm_avs_driver);
+> > >   	if (ret)
+> > >   		return ret;
+> > 
+> > Instead of returning here, it can be just WARN_ON(ret); and then go on and free
+> > the resources and this needs to be done in a separate patch.
+> 
+> Ok, I agree (see my comment below the --- in my patch).
+> I'll send a patch for it when the first patch will be applied, unless you
+> prefer if I resend as a serie.
+
+Based on the above comment from me, I am expecting another version from you for
+this patch. So you can fix both the issues in the same patchset.
+
+-- 
+viresh

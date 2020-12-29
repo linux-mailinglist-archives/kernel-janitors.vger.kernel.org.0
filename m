@@ -2,33 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E29F2E6F1D
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Dec 2020 09:53:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 199AE2E6FDC
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Dec 2020 12:14:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726168AbgL2Iwv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Dec 2020 03:52:51 -0500
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:59284 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726026AbgL2Iwv (ORCPT
+        id S1726278AbgL2LOl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Dec 2020 06:14:41 -0500
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:59279 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726002AbgL2LOk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Dec 2020 03:52:51 -0500
-Received: from localhost.localdomain ([93.22.37.45])
-        by mwinf5d25 with ME
-        id A8r32400F0ySWMH038r4gt; Tue, 29 Dec 2020 09:51:06 +0100
+        Tue, 29 Dec 2020 06:14:40 -0500
+Received: from localhost.localdomain ([92.148.252.236])
+        by mwinf5d70 with ME
+        id ABCu2400L56nHn803BCvln; Tue, 29 Dec 2020 12:12:56 +0100
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 29 Dec 2020 09:51:06 +0100
-X-ME-IP: 93.22.37.45
+X-ME-Date: Tue, 29 Dec 2020 12:12:56 +0100
+X-ME-IP: 92.148.252.236
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     cezary.rojewski@intel.com, pierre-louis.bossart@linux.intel.com,
-        liam.r.girdwood@linux.intel.com, broonie@kernel.org,
-        perex@perex.cz, tiwai@suse.com
-Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
+To:     ogabbay@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
+        obitton@habana.ai, lee.jones@linaro.org, ttayar@habana.ai,
+        fkassabri@habana.ai
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] ASoC: Intel: common: Fix some typos
-Date:   Tue, 29 Dec 2020 09:51:03 +0100
-Message-Id: <20201229085103.192715-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] habanalabs: Use 'dma_set_mask_and_coherent()' instead of hand-writing it
+Date:   Tue, 29 Dec 2020 12:12:19 +0100
+Message-Id: <20201229111219.200668-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -36,40 +35,80 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-s/apci/acpi/
+Axe 'hl_pci_set_dma_mask()' and replace it with an equivalent
+'dma_set_mask_and_coherent()' call.
 
-Turn an ICL into a TGL because it is likely a cut'n'paste error
+This makes the code a bit less verbose.
+
+It also removes an erroneous comment, because 'hl_pci_set_dma_mask()' does
+not try to use a fall-back value.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- sound/soc/intel/common/soc-acpi-intel-ehl-match.c | 2 +-
- sound/soc/intel/common/soc-acpi-intel-tgl-match.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/habanalabs/common/pci.c | 42 ++++------------------------
+ 1 file changed, 6 insertions(+), 36 deletions(-)
 
-diff --git a/sound/soc/intel/common/soc-acpi-intel-ehl-match.c b/sound/soc/intel/common/soc-acpi-intel-ehl-match.c
-index badafc1d54d2..5c7a1214403d 100644
---- a/sound/soc/intel/common/soc-acpi-intel-ehl-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-ehl-match.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * soc-apci-intel-ehl-match.c - tables and support for EHL ACPI enumeration.
-+ * soc-acpi-intel-ehl-match.c - tables and support for EHL ACPI enumeration.
-  *
-  * Copyright (c) 2019, Intel Corporation.
-  *
-diff --git a/sound/soc/intel/common/soc-acpi-intel-tgl-match.c b/sound/soc/intel/common/soc-acpi-intel-tgl-match.c
-index 98196e9fad62..4933184df5f5 100644
---- a/sound/soc/intel/common/soc-acpi-intel-tgl-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-tgl-match.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * soc-apci-intel-tgl-match.c - tables and support for ICL ACPI enumeration.
-+ * soc-acpi-intel-tgl-match.c - tables and support for TGL ACPI enumeration.
-  *
-  * Copyright (c) 2019, Intel Corporation.
-  *
+diff --git a/drivers/misc/habanalabs/common/pci.c b/drivers/misc/habanalabs/common/pci.c
+index 923b2606e29f..eb8a784ba863 100644
+--- a/drivers/misc/habanalabs/common/pci.c
++++ b/drivers/misc/habanalabs/common/pci.c
+@@ -301,40 +301,6 @@ int hl_pci_set_outbound_region(struct hl_device *hdev,
+ 	return rc;
+ }
+ 
+-/**
+- * hl_pci_set_dma_mask() - Set DMA masks for the device.
+- * @hdev: Pointer to hl_device structure.
+- *
+- * This function sets the DMA masks (regular and consistent) for a specified
+- * value. If it doesn't succeed, it tries to set it to a fall-back value
+- *
+- * Return: 0 on success, non-zero for failure.
+- */
+-static int hl_pci_set_dma_mask(struct hl_device *hdev)
+-{
+-	struct pci_dev *pdev = hdev->pdev;
+-	int rc;
+-
+-	/* set DMA mask */
+-	rc = pci_set_dma_mask(pdev, DMA_BIT_MASK(hdev->dma_mask));
+-	if (rc) {
+-		dev_err(hdev->dev,
+-			"Failed to set pci dma mask to %d bits, error %d\n",
+-			hdev->dma_mask, rc);
+-		return rc;
+-	}
+-
+-	rc = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(hdev->dma_mask));
+-	if (rc) {
+-		dev_err(hdev->dev,
+-			"Failed to set pci consistent dma mask to %d bits, error %d\n",
+-			hdev->dma_mask, rc);
+-		return rc;
+-	}
+-
+-	return 0;
+-}
+-
+ /**
+  * hl_pci_init() - PCI initialization code.
+  * @hdev: Pointer to hl_device structure.
+@@ -371,9 +337,13 @@ int hl_pci_init(struct hl_device *hdev)
+ 		goto unmap_pci_bars;
+ 	}
+ 
+-	rc = hl_pci_set_dma_mask(hdev);
+-	if (rc)
++	rc = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(hdev->dma_mask));
++	if (rc) {
++		dev_err(hdev->dev,
++			"Failed to set dma mask to %d bits, error %d\n",
++			hdev->dma_mask, rc);
+ 		goto unmap_pci_bars;
++	}
+ 
+ 	return 0;
+ 
 -- 
 2.27.0
 

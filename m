@@ -2,113 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 199AE2E6FDC
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Dec 2020 12:14:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C46F22E7167
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Dec 2020 15:35:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726278AbgL2LOl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Dec 2020 06:14:41 -0500
-Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:59279 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726002AbgL2LOk (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Dec 2020 06:14:40 -0500
-Received: from localhost.localdomain ([92.148.252.236])
-        by mwinf5d70 with ME
-        id ABCu2400L56nHn803BCvln; Tue, 29 Dec 2020 12:12:56 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 29 Dec 2020 12:12:56 +0100
-X-ME-IP: 92.148.252.236
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     ogabbay@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
-        obitton@habana.ai, lee.jones@linaro.org, ttayar@habana.ai,
-        fkassabri@habana.ai
+        id S1726196AbgL2Ocx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Dec 2020 09:32:53 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57282 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726138AbgL2Ocx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 29 Dec 2020 09:32:53 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6F69120825;
+        Tue, 29 Dec 2020 14:32:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1609252333;
+        bh=+wEc4SDjjvQxCYzjg82D60rVExvdnzCs5DHAhhlUhZQ=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=LSlJmzceAFcWqgCqZZmKdw2E21UJ/HfgWyKRsrR+mR7Bp8EVYIkEtOvsKpex72ITn
+         a0Ae0g7rrl5iuXX+nbqi0nW6bqdU4/9MSUyRLL43V7/cb9JfYwzC4e7sbiXMCAD9GN
+         FUR/i6DFO2bJwm7FrV9QiciBGF4zAXIZcI9GQJBAMAgeLncKqRi67f8KdDssNqrwOK
+         pH788++c5Ik93Ag95VjwgorvQSGEueqKVjyTw3DhW1Ia1FAnyLh/oAXnDLRVJYRrMb
+         K3cZwcqWvldhjLNCXZAvHhrowF10jiBFTHcZD+iFkgAXsnIgHZXKmHni+ztZAbMkt4
+         JyLZSjy7+VAAQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     perex@perex.cz, Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        liam.r.girdwood@linux.intel.com, tiwai@suse.com,
+        pierre-louis.bossart@linux.intel.com, cezary.rojewski@intel.com
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] habanalabs: Use 'dma_set_mask_and_coherent()' instead of hand-writing it
-Date:   Tue, 29 Dec 2020 12:12:19 +0100
-Message-Id: <20201229111219.200668-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.27.0
+        alsa-devel@alsa-project.org
+In-Reply-To: <20201229085103.192715-1-christophe.jaillet@wanadoo.fr>
+References: <20201229085103.192715-1-christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH] ASoC: Intel: common: Fix some typos
+Message-Id: <160925231113.47851.16711392922590085956.b4-ty@kernel.org>
+Date:   Tue, 29 Dec 2020 14:31:51 +0000
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Axe 'hl_pci_set_dma_mask()' and replace it with an equivalent
-'dma_set_mask_and_coherent()' call.
+On Tue, 29 Dec 2020 09:51:03 +0100, Christophe JAILLET wrote:
+> s/apci/acpi/
+> 
+> Turn an ICL into a TGL because it is likely a cut'n'paste error
 
-This makes the code a bit less verbose.
+Applied to
 
-It also removes an erroneous comment, because 'hl_pci_set_dma_mask()' does
-not try to use a fall-back value.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/misc/habanalabs/common/pci.c | 42 ++++------------------------
- 1 file changed, 6 insertions(+), 36 deletions(-)
+Thanks!
 
-diff --git a/drivers/misc/habanalabs/common/pci.c b/drivers/misc/habanalabs/common/pci.c
-index 923b2606e29f..eb8a784ba863 100644
---- a/drivers/misc/habanalabs/common/pci.c
-+++ b/drivers/misc/habanalabs/common/pci.c
-@@ -301,40 +301,6 @@ int hl_pci_set_outbound_region(struct hl_device *hdev,
- 	return rc;
- }
- 
--/**
-- * hl_pci_set_dma_mask() - Set DMA masks for the device.
-- * @hdev: Pointer to hl_device structure.
-- *
-- * This function sets the DMA masks (regular and consistent) for a specified
-- * value. If it doesn't succeed, it tries to set it to a fall-back value
-- *
-- * Return: 0 on success, non-zero for failure.
-- */
--static int hl_pci_set_dma_mask(struct hl_device *hdev)
--{
--	struct pci_dev *pdev = hdev->pdev;
--	int rc;
--
--	/* set DMA mask */
--	rc = pci_set_dma_mask(pdev, DMA_BIT_MASK(hdev->dma_mask));
--	if (rc) {
--		dev_err(hdev->dev,
--			"Failed to set pci dma mask to %d bits, error %d\n",
--			hdev->dma_mask, rc);
--		return rc;
--	}
--
--	rc = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(hdev->dma_mask));
--	if (rc) {
--		dev_err(hdev->dev,
--			"Failed to set pci consistent dma mask to %d bits, error %d\n",
--			hdev->dma_mask, rc);
--		return rc;
--	}
--
--	return 0;
--}
--
- /**
-  * hl_pci_init() - PCI initialization code.
-  * @hdev: Pointer to hl_device structure.
-@@ -371,9 +337,13 @@ int hl_pci_init(struct hl_device *hdev)
- 		goto unmap_pci_bars;
- 	}
- 
--	rc = hl_pci_set_dma_mask(hdev);
--	if (rc)
-+	rc = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(hdev->dma_mask));
-+	if (rc) {
-+		dev_err(hdev->dev,
-+			"Failed to set dma mask to %d bits, error %d\n",
-+			hdev->dma_mask, rc);
- 		goto unmap_pci_bars;
-+	}
- 
- 	return 0;
- 
--- 
-2.27.0
+[1/1] ASoC: Intel: common: Fix some typos
+      commit: 49d411f2c93aae48dd379c77db887aa282e9fb51
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

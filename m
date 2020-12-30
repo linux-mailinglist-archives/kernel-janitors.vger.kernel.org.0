@@ -2,84 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 749D32E78AD
-	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Dec 2020 13:50:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39BBF2E79BD
+	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Dec 2020 14:41:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726678AbgL3Mt6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 30 Dec 2020 07:49:58 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50800 "EHLO mail.kernel.org"
+        id S1726798AbgL3Nka (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 30 Dec 2020 08:40:30 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33418 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726605AbgL3Mt6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 30 Dec 2020 07:49:58 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 102EA221FA;
-        Wed, 30 Dec 2020 12:49:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1609332557;
-        bh=N5O6ImIkhpBZXKVxzeXm2qESd/kJs56wLovgR0WzzvA=;
+        id S1726547AbgL3Nka (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 30 Dec 2020 08:40:30 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 311C3206A5;
+        Wed, 30 Dec 2020 13:39:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1609335589;
+        bh=3nvYtVZTXnIM2M4Es4IA8NhqT2hrT6e/e/fHzUmGonk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WfBzYsy1U4kWCSu15T6F6GHLAulAxHU6NStTDDann3jT9gNRpDyoXovshTBVH5Zie
-         BYx60T/7tNBZg0OrERa8shK1Nyh9dOtc1Qx9vSJGdpVZMQYU53fvjmm8+uHixYnQ1S
-         NnPH1SydXvkM4FY8O0bytIAsLNKaAaB7Xfx8px8k=
-Date:   Wed, 30 Dec 2020 13:50:44 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Xiaolei Wang <Xiaolei.Wang@windriver.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        b=RCM7SoqnDQbtmAYiVjD8IQagRSlir2xY2QvKCgEulnDLwY9gFC8vWqzD8lUrllYFV
+         qOMpDYnH69n8qKziXYApw7Z5xI4YpmKdNR5duUMBRc3a7H63cuCl9l2EBzB449wMHG
+         Jt9MfhPyB9hK3Go2I3piHOpBUF+u08o+5P7kf++Cvs44Z5caKlvC2e96krJbcCLPVn
+         uX6EyoMFdYvSFdXlwqgts8G4kX73/32I1KJYukH+0kuFdlKdvRCepUvKG26Si8HZRP
+         FOW8exn4DhSpbMl9b5neKgfEFrJvx92R695EjQx5AuGNAjEQHFdnLAY04calno0aaV
+         bEfJ6VSAqDH4Q==
+Date:   Wed, 30 Dec 2020 13:39:27 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     "Wang, Xiaolei" <Xiaolei.Wang@windriver.com>
+Cc:     Markus Elfring <Markus.Elfring@web.de>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         David Lechner <david@lechnology.com>,
-        Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Julia Lawall <julia.lawall@lip6.fr>
 Subject: Re: [PATCH v3] regmap: debugfs: Fix a memory leak when calling
  regmap_attach_dev
-Message-ID: <X+x3pIanr18Ep4ga@kroah.com>
+Message-ID: <20201230133927.GD4428@sirena.org.uk>
 References: <20201229105046.41984-1-xiaolei.wang@windriver.com>
  <d516efdd-7e66-13fe-3798-cdea5ff012dc@web.de>
  <PH0PR11MB5077EC74C0A81ABF8F082BC795D70@PH0PR11MB5077.namprd11.prod.outlook.com>
- <1503f5fa-1ad6-7675-6e02-6dc1eb04c1de@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="2Z2K0IlrPCVsbNpk"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1503f5fa-1ad6-7675-6e02-6dc1eb04c1de@web.de>
+In-Reply-To: <PH0PR11MB5077EC74C0A81ABF8F082BC795D70@PH0PR11MB5077.namprd11.prod.outlook.com>
+X-Cookie: Above all things, reverence yourself.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Dec 30, 2020 at 01:01:42PM +0100, Markus Elfring wrote:
-> > Thank you very much, very good suggestion,
-> 
-> Thanks for another positive feedback.
-> 
-> 
-> > do I need to re-send a patch to fix this problem, or modify the previous patch and send it again?
-> 
-> Please convince the involved contributors to integrate a corrected patch version.
-> 
-> * Better indentation.
-> 
-> * …
-> >> +		if (!map->debugfs_name)
-> >> +			kfree(map->debugfs_name);
-> 
->   Would this questionable null pointer check result in a memory leak?
 
-Hi,
+--2Z2K0IlrPCVsbNpk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This is the semi-friendly patch-bot of Greg Kroah-Hartman.
+On Wed, Dec 30, 2020 at 10:14:22AM +0000, Wang, Xiaolei wrote:
+> Hi Markus
+>=20
+> Thank you very much, very good suggestion, do I need to re-send a patch t=
+o fix this problem, or modify the previous patch and send it again?
 
-Markus, you seem to have sent a nonsensical or otherwise pointless
-review comment to a patch submission on a Linux kernel developer mailing
-list.  I strongly suggest that you not do this anymore.  Please do not
-bother developers who are actively working to produce patches and
-features with comments that, in the end, are a waste of time.
+Please feel free to ignore Markus.
 
-Patch submitter, please ignore Markus's suggestion; you do not need to
-follow it at all.  The person/bot/AI that sent it is being ignored by
-almost all Linux kernel maintainers for having a persistent pattern of
-behavior of producing distracting and pointless commentary, and
-inability to adapt to feedback.  Please feel free to also ignore emails
-from them.
+--2Z2K0IlrPCVsbNpk
+Content-Type: application/pgp-signature; name="signature.asc"
 
-thanks,
+-----BEGIN PGP SIGNATURE-----
 
-greg k-h's patch email bot
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/sgw4ACgkQJNaLcl1U
+h9CyNwf9EDK99jUBj3cRoPF87/iQOCwAunHmFz4I5n9mpCIYg264KCgOLSqUCDM7
+U0sY5o0G3vxQqqoZsAMtTDgyTimscRCjXch3wrTrB7J8KJA1j8twUCYWtIpFECn3
+nQ2g2QtlMky581G8/SM7LieziVp+cY83eJS4f3R//dZBINmyQWLe1JYcB3MABkTd
+6Dov+4dn0msCL7xs65PYBz9HSVJX8z75uemS3bbJIYLUKiAuC0K1auOK6PxTOaBT
+P4K+quQ8zj/8UHDdBWIiIM+lF6lgaNrqr5V+v0EzV8TrCKBGBqaiyCx/lBDrpEKs
+NwT2skl91yKqscQpcc+EABdcC+OzFg==
+=Goo3
+-----END PGP SIGNATURE-----
+
+--2Z2K0IlrPCVsbNpk--

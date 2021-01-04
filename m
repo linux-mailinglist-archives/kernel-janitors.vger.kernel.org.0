@@ -2,112 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D1522E972C
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Jan 2021 15:25:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39B792E9B86
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Jan 2021 18:01:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727100AbhADOY2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 Jan 2021 09:24:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58892 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726779AbhADOY1 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 Jan 2021 09:24:27 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32C65C061793
-        for <kernel-janitors@vger.kernel.org>; Mon,  4 Jan 2021 06:23:47 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id b73so27487431edf.13
-        for <kernel-janitors@vger.kernel.org>; Mon, 04 Jan 2021 06:23:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=vLA6j12Zecwv0meb8C+1VRWv81U64i9hKX8vIp754Io=;
-        b=I3oPAGkPZ5KcEb7llc/oZZCMHkHPeUB+icOycLamMdd2G8dd4nLxLhnjTeiL+t7Q4G
-         QpEeF4OlXNjwdkPkZ7ZRj4zNcJ6wUo/2pjkf8fq1kCrLG88iL1OY25cb4qLP18XOMtBS
-         k9M9QvB9FBL3oRtkEriJvzEBSCQcdcpUVtFC1O2fRQBcx4x6ArmmmqQYL7sX5WAmHdEY
-         NQa544nc8DTB8G1w7XelrRKUhUs0GWbvVrTD+8iuqFEHpKLYR8qk/RnifSuqEZbgP+8Z
-         mmpagbh5IT/n932FSvFndUH9pIs0wVPmZ0KlbMPXdYDEoYQYG0KAUGZ+aNLKgPUeNrz2
-         JXrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=vLA6j12Zecwv0meb8C+1VRWv81U64i9hKX8vIp754Io=;
-        b=EheErF1tn8DTf/DyQ0S0NQhpX/hXsDVvejXbpl1yyd65vCi/2L6PAN5D24n26e0JZ/
-         zb9hAm+8EUjWRpe/ISthMOJkqiv5olw7WkufQFK57cn7VOXfmboSUlRvknnaa/ZhiKDg
-         L9cHym0465H5o7RnxMsTIySqTkyhL75brwbZZ6W0ieqVhwcE03I8/RiyKp+y2iLNWVf3
-         NAFWNQkDJCocvXkI2aR/qXXibkWFaLp5MJV2yHN2R6y0WB6f/WxL6JMaTX6wbKmGTs8Y
-         li1s0qGTnXHvPQFhZulKEfTI1fJyK8U+UxSOYmcIUaFuDLbPUhbrvsQ9sge9uiCF+wAf
-         r2Kg==
-X-Gm-Message-State: AOAM531oN56NEM63InU5R3/JXTJLWRFpAPZaZKqwsgc8YlkV1jaiclMh
-        b0wdl8QyMT+1M0trGiXVSKUzFrKHaHt/rQ==
-X-Google-Smtp-Source: ABdhPJx5MKb7q0HzgWj5X1q78yPmxO1J2m4USNRI49SKOCllbZGISqYkVKgszSxpyRSppYRO0Qagog==
-X-Received: by 2002:aa7:c558:: with SMTP id s24mr72138716edr.257.1609770225795;
-        Mon, 04 Jan 2021 06:23:45 -0800 (PST)
-Received: from [192.168.0.41] (lns-bzn-59-82-252-129-8.adsl.proxad.net. [82.252.129.8])
-        by smtp.googlemail.com with ESMTPSA id ho34sm23260073ejc.13.2021.01.04.06.23.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Jan 2021 06:23:45 -0800 (PST)
-Subject: Re: [PATCH][next] powercap/drivers/dtpm: Fix size of object being
- allocated
-To:     Colin King <colin.king@canonical.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Lukasz Luba <lukasz.luba@arm.com>, linux-pm@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210104121053.33210-1-colin.king@canonical.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <ea95f420-2a2e-d0f9-9b34-e329d80bbd9d@linaro.org>
-Date:   Mon, 4 Jan 2021 15:23:44 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <20210104121053.33210-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        id S1727997AbhADRAf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 Jan 2021 12:00:35 -0500
+Received: from mx2.suse.de ([195.135.220.15]:44046 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727792AbhADRAf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 4 Jan 2021 12:00:35 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 62BAEAA35;
+        Mon,  4 Jan 2021 16:59:53 +0000 (UTC)
+Date:   Mon, 04 Jan 2021 17:59:53 +0100
+Message-ID: <s5hturw7i46.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Joe Perches <joe@perches.com>
+Cc:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        Julia Lawall <Julia.Lawall@inria.fr>
+Subject: Re: [PATCH] sound: Convert strlcpy to strscpy when return value is unused
+In-Reply-To: <58a84d03b714f71d231f9cac04af09a6b97c6f04.camel@perches.com>
+References: <58a84d03b714f71d231f9cac04af09a6b97c6f04.camel@perches.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
+ FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
+ (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 04/01/2021 13:10, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Thu, 31 Dec 2020 20:04:50 +0100,
+Joe Perches wrote:
 > 
-> The kzalloc allocation for dtpm_cpu is currently allocating the size
-> of the pointer and not the size of the structure. Fix this by using
-> the correct sizeof argument.
+> strlcpy is deprecated.  see: Documentation/process/deprecated.rst
 > 
-> Addresses-Coverity: ("Wrong sizeof argument")
-> Fixes: 0e8f68d7f048 ("powercap/drivers/dtpm: Add CPU energy model based support")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Good catch, thanks for fixing this
-
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-
-> ---
->  drivers/powercap/dtpm_cpu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Change the calls that do not use the strlcpy return value to the
+> preferred strscpy.
 > 
-> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
-> index 6933c783c6b4..51c366938acd 100644
-> --- a/drivers/powercap/dtpm_cpu.c
-> +++ b/drivers/powercap/dtpm_cpu.c
-> @@ -200,7 +200,7 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
->  	if (!dtpm)
->  		return -EINVAL;
->  
-> -	dtpm_cpu = kzalloc(sizeof(dtpm_cpu), GFP_KERNEL);
-> +	dtpm_cpu = kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
->  	if (!dtpm_cpu)
->  		goto out_kfree_dtpm;
->  
+> Done with cocci script:
 > 
+> @@
+> expression e1, e2, e3;
+> @@
+> 
+> -	strlcpy(
+> +	strscpy(
+> 	e1, e2, e3);
+> 
+> This cocci script leaves the instances where the return value is
+> used unchanged.
+> 
+> After this patch, sound/ has 3 uses of strlcpy() that need to be
+> manually inspected for conversion and changed one day.
+> 
+> $ git grep -w strlcpy sound/
+> sound/usb/card.c:               len = strlcpy(card->longname, s, sizeof(card->longname));
+> sound/usb/mixer.c:      return strlcpy(buf, p->name, buflen);
+> sound/usb/mixer.c:                      return strlcpy(buf, p->names[index], buflen);
+> 
+> Miscellenea:
+> 
+> o Remove trailing whitespace in conversion of sound/core/hwdep.c
+> 
+> Link: https://lore.kernel.org/lkml/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
+> 
+> Signed-off-by: Joe Perches <joe@perches.com>
+
+Could you resubmit to alsa-devel ML?
 
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+thanks,
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Takashi

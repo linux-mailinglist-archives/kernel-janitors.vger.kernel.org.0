@@ -2,57 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E85ED2E96FC
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Jan 2021 15:18:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D1522E972C
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Jan 2021 15:25:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727012AbhADORK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 Jan 2021 09:17:10 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44798 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726955AbhADORK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 Jan 2021 09:17:10 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7700E20770;
-        Mon,  4 Jan 2021 14:16:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1609769789;
-        bh=y/LXBcq9VDQBuYwzWme/oeAub9WB92dP95zKP549HqM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gv7fwHQQ9629vI7b3Z2OGlYwtPBQDfrUqpysno2N1M44QmI0C1v1R5iVbv9idBKSE
-         tqk3pCzaBMon74AIr6MiV83iSutbQwzlyr8k63r60t97dJTjxI7yt+Q6qe/cHRUiZy
-         2jpNtLMZ/c09CdjfxnQyErfWIZGXp8MTWL9Kuomo=
-Date:   Mon, 4 Jan 2021 15:17:56 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Xiaolei Wang <xiaolei.wang@windriver.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        David Lechner <david@lechnology.com>,
-        Julia Lawall <julia.lawall@lip6.fr>,
-        Zheng Yongjun <zhengyongjun3@huawei.com>
-Subject: Re: [PATCH 1/2] regmap: debugfs: Delete a misplaced pointer check in
- regmap_debugfs_init()
-Message-ID: <X/MjlO6jwJWFfQmU@kroah.com>
-References: <20201229105046.41984-1-xiaolei.wang@windriver.com>
- <d516efdd-7e66-13fe-3798-cdea5ff012dc@web.de>
- <PH0PR11MB5077EC74C0A81ABF8F082BC795D70@PH0PR11MB5077.namprd11.prod.outlook.com>
- <d463ff8b-306d-6f40-9115-1595d69edc95@web.de>
- <PH0PR11MB507731B129639CED3B8C753595D70@PH0PR11MB5077.namprd11.prod.outlook.com>
- <932c5921-9ad3-e37b-5f31-4de69fa0ca8b@web.de>
- <81f33869-32f6-650f-0f06-e2a5dce57236@web.de>
+        id S1727100AbhADOY2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 Jan 2021 09:24:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58892 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726779AbhADOY1 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 4 Jan 2021 09:24:27 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32C65C061793
+        for <kernel-janitors@vger.kernel.org>; Mon,  4 Jan 2021 06:23:47 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id b73so27487431edf.13
+        for <kernel-janitors@vger.kernel.org>; Mon, 04 Jan 2021 06:23:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=vLA6j12Zecwv0meb8C+1VRWv81U64i9hKX8vIp754Io=;
+        b=I3oPAGkPZ5KcEb7llc/oZZCMHkHPeUB+icOycLamMdd2G8dd4nLxLhnjTeiL+t7Q4G
+         QpEeF4OlXNjwdkPkZ7ZRj4zNcJ6wUo/2pjkf8fq1kCrLG88iL1OY25cb4qLP18XOMtBS
+         k9M9QvB9FBL3oRtkEriJvzEBSCQcdcpUVtFC1O2fRQBcx4x6ArmmmqQYL7sX5WAmHdEY
+         NQa544nc8DTB8G1w7XelrRKUhUs0GWbvVrTD+8iuqFEHpKLYR8qk/RnifSuqEZbgP+8Z
+         mmpagbh5IT/n932FSvFndUH9pIs0wVPmZ0KlbMPXdYDEoYQYG0KAUGZ+aNLKgPUeNrz2
+         JXrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=vLA6j12Zecwv0meb8C+1VRWv81U64i9hKX8vIp754Io=;
+        b=EheErF1tn8DTf/DyQ0S0NQhpX/hXsDVvejXbpl1yyd65vCi/2L6PAN5D24n26e0JZ/
+         zb9hAm+8EUjWRpe/ISthMOJkqiv5olw7WkufQFK57cn7VOXfmboSUlRvknnaa/ZhiKDg
+         L9cHym0465H5o7RnxMsTIySqTkyhL75brwbZZ6W0ieqVhwcE03I8/RiyKp+y2iLNWVf3
+         NAFWNQkDJCocvXkI2aR/qXXibkWFaLp5MJV2yHN2R6y0WB6f/WxL6JMaTX6wbKmGTs8Y
+         li1s0qGTnXHvPQFhZulKEfTI1fJyK8U+UxSOYmcIUaFuDLbPUhbrvsQ9sge9uiCF+wAf
+         r2Kg==
+X-Gm-Message-State: AOAM531oN56NEM63InU5R3/JXTJLWRFpAPZaZKqwsgc8YlkV1jaiclMh
+        b0wdl8QyMT+1M0trGiXVSKUzFrKHaHt/rQ==
+X-Google-Smtp-Source: ABdhPJx5MKb7q0HzgWj5X1q78yPmxO1J2m4USNRI49SKOCllbZGISqYkVKgszSxpyRSppYRO0Qagog==
+X-Received: by 2002:aa7:c558:: with SMTP id s24mr72138716edr.257.1609770225795;
+        Mon, 04 Jan 2021 06:23:45 -0800 (PST)
+Received: from [192.168.0.41] (lns-bzn-59-82-252-129-8.adsl.proxad.net. [82.252.129.8])
+        by smtp.googlemail.com with ESMTPSA id ho34sm23260073ejc.13.2021.01.04.06.23.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Jan 2021 06:23:45 -0800 (PST)
+Subject: Re: [PATCH][next] powercap/drivers/dtpm: Fix size of object being
+ allocated
+To:     Colin King <colin.king@canonical.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Lukasz Luba <lukasz.luba@arm.com>, linux-pm@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210104121053.33210-1-colin.king@canonical.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <ea95f420-2a2e-d0f9-9b34-e329d80bbd9d@linaro.org>
+Date:   Mon, 4 Jan 2021 15:23:44 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <81f33869-32f6-650f-0f06-e2a5dce57236@web.de>
+In-Reply-To: <20210104121053.33210-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jan 04, 2021 at 03:12:33PM +0100, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Mon, 4 Jan 2021 13:43:01 +0100
+On 04/01/2021 13:10, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The kzalloc allocation for dtpm_cpu is currently allocating the size
+> of the pointer and not the size of the structure. Fix this by using
+> the correct sizeof argument.
+> 
+> Addresses-Coverity: ("Wrong sizeof argument")
+> Fixes: 0e8f68d7f048 ("powercap/drivers/dtpm: Add CPU energy model based support")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-This does not belong in a changelog body of a patch :(
+Good catch, thanks for fixing this
 
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+
+> ---
+>  drivers/powercap/dtpm_cpu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
+> index 6933c783c6b4..51c366938acd 100644
+> --- a/drivers/powercap/dtpm_cpu.c
+> +++ b/drivers/powercap/dtpm_cpu.c
+> @@ -200,7 +200,7 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
+>  	if (!dtpm)
+>  		return -EINVAL;
+>  
+> -	dtpm_cpu = kzalloc(sizeof(dtpm_cpu), GFP_KERNEL);
+> +	dtpm_cpu = kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
+>  	if (!dtpm_cpu)
+>  		goto out_kfree_dtpm;
+>  
+> 
+
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog

@@ -2,50 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3771C2E932D
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Jan 2021 11:19:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F8032E9495
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Jan 2021 13:12:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726536AbhADKTG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 Jan 2021 05:19:06 -0500
-Received: from relay10.mail.gandi.net ([217.70.178.230]:51467 "EHLO
-        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726278AbhADKTG (ORCPT
+        id S1726234AbhADMLi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 Jan 2021 07:11:38 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:44726 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726098AbhADMLh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 Jan 2021 05:19:06 -0500
-Received: from localhost.localdomain (lfbn-tou-1-1535-bdcst.w90-89.abo.wanadoo.fr [90.89.98.255])
-        (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 7F051240003;
-        Mon,  4 Jan 2021 10:18:22 +0000 (UTC)
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Colin King <colin.king@canonical.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-mtd@lists.infradead.org
+        Mon, 4 Jan 2021 07:11:37 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kwOhK-0004Ts-63; Mon, 04 Jan 2021 12:10:54 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Lukasz Luba <lukasz.luba@arm.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-pm@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mtd: remove redundant assignment to pointer eb
-Date:   Mon,  4 Jan 2021 11:18:20 +0100
-Message-Id: <20210104101821.2969-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200911102321.22515-1-colin.king@canonical.com>
-References: 
+Subject: [PATCH][next] powercap/drivers/dtpm: Fix size of object being allocated
+Date:   Mon,  4 Jan 2021 12:10:53 +0000
+Message-Id: <20210104121053.33210-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: 341e4faf9cad1a3299cf06417fd4ed6b31ba35ec
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 2020-09-11 at 10:23:21 UTC, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Pointer eb is being assigned a value that is never read, the assignment
-> is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git mtd/next, thanks.
+The kzalloc allocation for dtpm_cpu is currently allocating the size
+of the pointer and not the size of the structure. Fix this by using
+the correct sizeof argument.
 
-Miquel
+Addresses-Coverity: ("Wrong sizeof argument")
+Fixes: 0e8f68d7f048 ("powercap/drivers/dtpm: Add CPU energy model based support")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/powercap/dtpm_cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
+index 6933c783c6b4..51c366938acd 100644
+--- a/drivers/powercap/dtpm_cpu.c
++++ b/drivers/powercap/dtpm_cpu.c
+@@ -200,7 +200,7 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
+ 	if (!dtpm)
+ 		return -EINVAL;
+ 
+-	dtpm_cpu = kzalloc(sizeof(dtpm_cpu), GFP_KERNEL);
++	dtpm_cpu = kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
+ 	if (!dtpm_cpu)
+ 		goto out_kfree_dtpm;
+ 
+-- 
+2.29.2
+

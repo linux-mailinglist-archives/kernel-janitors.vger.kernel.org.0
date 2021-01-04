@@ -2,57 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA2E32E958E
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Jan 2021 14:07:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E85ED2E96FC
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Jan 2021 15:18:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726328AbhADNF4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 Jan 2021 08:05:56 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:46422 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725830AbhADNF4 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 Jan 2021 08:05:56 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kwPXu-0001Z7-1B; Mon, 04 Jan 2021 13:05:14 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Sebastian Reichel <sre@kernel.org>, linux-pm@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] power: supply: max8997_charger: fix spelling mistake "diconnected" -> "disconnected"
-Date:   Mon,  4 Jan 2021 13:05:13 +0000
-Message-Id: <20210104130513.35563-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.29.2
+        id S1727012AbhADORK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 Jan 2021 09:17:10 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44798 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726955AbhADORK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 4 Jan 2021 09:17:10 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7700E20770;
+        Mon,  4 Jan 2021 14:16:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1609769789;
+        bh=y/LXBcq9VDQBuYwzWme/oeAub9WB92dP95zKP549HqM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=gv7fwHQQ9629vI7b3Z2OGlYwtPBQDfrUqpysno2N1M44QmI0C1v1R5iVbv9idBKSE
+         tqk3pCzaBMon74AIr6MiV83iSutbQwzlyr8k63r60t97dJTjxI7yt+Q6qe/cHRUiZy
+         2jpNtLMZ/c09CdjfxnQyErfWIZGXp8MTWL9Kuomo=
+Date:   Mon, 4 Jan 2021 15:17:56 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Xiaolei Wang <xiaolei.wang@windriver.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        David Lechner <david@lechnology.com>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        Zheng Yongjun <zhengyongjun3@huawei.com>
+Subject: Re: [PATCH 1/2] regmap: debugfs: Delete a misplaced pointer check in
+ regmap_debugfs_init()
+Message-ID: <X/MjlO6jwJWFfQmU@kroah.com>
+References: <20201229105046.41984-1-xiaolei.wang@windriver.com>
+ <d516efdd-7e66-13fe-3798-cdea5ff012dc@web.de>
+ <PH0PR11MB5077EC74C0A81ABF8F082BC795D70@PH0PR11MB5077.namprd11.prod.outlook.com>
+ <d463ff8b-306d-6f40-9115-1595d69edc95@web.de>
+ <PH0PR11MB507731B129639CED3B8C753595D70@PH0PR11MB5077.namprd11.prod.outlook.com>
+ <932c5921-9ad3-e37b-5f31-4de69fa0ca8b@web.de>
+ <81f33869-32f6-650f-0f06-e2a5dce57236@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <81f33869-32f6-650f-0f06-e2a5dce57236@web.de>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Mon, Jan 04, 2021 at 03:12:33PM +0100, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Mon, 4 Jan 2021 13:43:01 +0100
 
-There is a spelling mistake in a dev_dbg message. Fix it.
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/power/supply/max8997_charger.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/power/supply/max8997_charger.c b/drivers/power/supply/max8997_charger.c
-index 23df91ed2c72..321bd6b8ee41 100644
---- a/drivers/power/supply/max8997_charger.c
-+++ b/drivers/power/supply/max8997_charger.c
-@@ -124,7 +124,7 @@ static void max8997_battery_extcon_evt_worker(struct work_struct *work)
- 		dev_dbg(charger->dev, "USB CDP charger is connected\n");
- 		current_limit = 650000;
- 	} else {
--		dev_dbg(charger->dev, "USB charger is diconnected\n");
-+		dev_dbg(charger->dev, "USB charger is disconnected\n");
- 		current_limit = -1;
- 	}
- 
--- 
-2.29.2
+This does not belong in a changelog body of a patch :(
 

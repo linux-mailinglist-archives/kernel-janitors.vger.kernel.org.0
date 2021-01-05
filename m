@@ -2,101 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 110C22EAB01
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Jan 2021 13:41:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 848072EABC1
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Jan 2021 14:20:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728734AbhAEMkv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Jan 2021 07:40:51 -0500
-Received: from mga04.intel.com ([192.55.52.120]:62363 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726189AbhAEMku (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Jan 2021 07:40:50 -0500
-IronPort-SDR: tBEJiEVrWBLAWAxamEYe4L7ef4o0elxzm6H3DvSjQvmfOIjsHAVZyXShi+UeIojvuGYECuX+di
- wut3vzxX0vkg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9854"; a="174522447"
-X-IronPort-AV: E=Sophos;i="5.78,476,1599548400"; 
-   d="scan'208";a="174522447"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2021 04:40:09 -0800
-IronPort-SDR: 6IkOAP8MjGH/55q5jhZv/PwNqde/HhlTyXkBbEhuLnYqyG5Fv6u6PZ1FXQAKnJF+IXsFmgeDuX
- lxq3BIYT4zZg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,476,1599548400"; 
-   d="scan'208";a="421760825"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.94]) ([10.237.72.94])
-  by orsmga001.jf.intel.com with ESMTP; 05 Jan 2021 04:40:06 -0800
-Subject: Re: [PATCH] mmc: sdhci-sprd: Fix some resource leaks in the remove
- function
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        ulf.hansson@linaro.org, orsonzhai@gmail.com,
-        baolin.wang7@gmail.com, zhang.lyra@gmail.com
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20201217204236.163446-1-christophe.jaillet@wanadoo.fr>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <1cfeeb62-8211-4a2a-0cf5-c3799d7ef42e@intel.com>
-Date:   Tue, 5 Jan 2021 14:39:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        id S1730069AbhAENUr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Jan 2021 08:20:47 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:46314 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727794AbhAENUq (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 5 Jan 2021 08:20:46 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 105DFwrg187489;
+        Tue, 5 Jan 2021 13:19:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=VaQQH4yQYOVXFT1zmyl9uIWZ8nz/GQH8XQPhbggN880=;
+ b=ObIGHWtSVE0fCop0Cm/mRSdSMZ7qNgCKrEIuE94uaKp1FWMdModqH87mdytnLv+iBGlr
+ DI5vpbSbOoPxLPmI+s8USM1nHCjFRuPkOlUyUejt/QavuSt//yZSwCZxpE09w+UyaSLM
+ y7USldwm0rI3oGYQN3YQ0yXjMNsiTher5Y/Jd7wvw5QdxJjIDBeWgUxcX2DUbsZNNsLw
+ K75Ss+FZoBEYFC8edcqFQw9HcMMmgq4Zg0w9rophYwlFvhUJ+baOV255cJ+pyjXWNcQe
+ bh2vmQ+bXSphvgVaBrsNWjEVm2vq7xZcsIOk3bvDvZPwA03XDU5CFARjr+FCA2bxNlx5 vg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 35tgskrpyr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 05 Jan 2021 13:19:47 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 105DGWXP039521;
+        Tue, 5 Jan 2021 13:19:46 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 35v4rbcdew-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 05 Jan 2021 13:19:46 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 105DJeLr009133;
+        Tue, 5 Jan 2021 13:19:40 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 05 Jan 2021 05:19:39 -0800
+Date:   Tue, 5 Jan 2021 16:19:14 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Arnd Bergmann <arnd@arndb.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Marcelo Diop-Gonzalez <marcgonzalez@google.com>,
+        Amarjargal Gundjalam <amarjargal16@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-rpi-kernel@lists.infradead.org, devel@driverdev.osuosl.org,
+        kernel-janitors@vger.kernel.org, Phil Elwell <phil@raspberrypi.com>
+Subject: [PATCH] staging: vchiq: delete obselete comment
+Message-ID: <X/RnUjY3XkZohk7w@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20201217204236.163446-1-christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9854 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 mlxscore=0 bulkscore=0
+ suspectscore=0 spamscore=0 adultscore=0 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101050083
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9854 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 malwarescore=0
+ phishscore=0 impostorscore=0 bulkscore=0 clxscore=1011 priorityscore=1501
+ lowpriorityscore=0 adultscore=0 suspectscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101050083
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 17/12/20 10:42 pm, Christophe JAILLET wrote:
-> 'sdhci_remove_host()' and 'sdhci_pltfm_free()' should be used in place of
-> 'mmc_remove_host()' and 'mmc_free_host()'.
-> 
-> This avoids some resource leaks, is more in line with the error handling
-> path of the probe function, and is more consistent with other drivers.
-> 
-> Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host controller")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+This comment describes a security problem which was fixed in commit
+1c954540c0eb ("staging: vchiq: avoid mixing kernel and user pointers").
+The bug is fixed now so the FIXME can be removed.
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ .../staging/vc04_services/interface/vchiq_arm/vchiq_arm.c  | 7 -------
+ 1 file changed, 7 deletions(-)
 
-> ---
-> Other adjustment may be needed.
-> I'm not sure at all of the 0 passed to 'sdhci_remove_host()'. Some drivers
-> pass 0, some have some more complicated computation.
-
-'0' means cleanup nicely. '1' (dead) means nothing works anymore, including
-interrupts, so give up on requests immediately.
-
-Either should work.  '0' is better unless your host controller really is
-dead, which is mostly not possible except for some legacy PCI devices.
-
-> ---
->  drivers/mmc/host/sdhci-sprd.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-> index f85171edabeb..5dc36efff47f 100644
-> --- a/drivers/mmc/host/sdhci-sprd.c
-> +++ b/drivers/mmc/host/sdhci-sprd.c
-> @@ -708,14 +708,14 @@ static int sdhci_sprd_remove(struct platform_device *pdev)
->  {
->  	struct sdhci_host *host = platform_get_drvdata(pdev);
->  	struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
-> -	struct mmc_host *mmc = host->mmc;
->  
-> -	mmc_remove_host(mmc);
-> +	sdhci_remove_host(host, 0);
-> +
->  	clk_disable_unprepare(sprd_host->clk_sdio);
->  	clk_disable_unprepare(sprd_host->clk_enable);
->  	clk_disable_unprepare(sprd_host->clk_2x_enable);
->  
-> -	mmc_free_host(mmc);
-> +	sdhci_pltfm_free(pdev);
->  
->  	return 0;
->  }
-> 
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+index f500a7043805..54770a9b4735 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+@@ -999,13 +999,6 @@ static int vchiq_irq_queue_bulk_tx_rx(struct vchiq_instance *instance,
+ 		userdata = &waiter->bulk_waiter;
+ 	}
+ 
+-	/*
+-	 * FIXME address space mismatch:
+-	 * args->data may be interpreted as a kernel pointer
+-	 * in create_pagelist() called from vchiq_bulk_transfer(),
+-	 * accessing kernel data instead of user space, based on the
+-	 * address.
+-	 */
+ 	status = vchiq_bulk_transfer(args->handle, NULL, args->data, args->size,
+ 				     userdata, args->mode, dir);
+ 
+-- 
+2.29.2
 

@@ -2,94 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 108032EA881
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Jan 2021 11:24:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D2412EAA20
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Jan 2021 12:45:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728973AbhAEKVp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Jan 2021 05:21:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46334 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728968AbhAEKVp (ORCPT
+        id S1729807AbhAELnw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Jan 2021 06:43:52 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:42534 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728822AbhAELnw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Jan 2021 05:21:45 -0500
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6B59C061793
-        for <kernel-janitors@vger.kernel.org>; Tue,  5 Jan 2021 02:21:04 -0800 (PST)
-Received: by mail-pj1-x102c.google.com with SMTP id m5so1427947pjv.5
-        for <kernel-janitors@vger.kernel.org>; Tue, 05 Jan 2021 02:21:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Xe2DWR863p/ehJmvzbGKL4NyY9ITEBhglpLpCkOqvTI=;
-        b=dAnoDGk67+jXOymkiM/3lzfn+vIj19sRrKZQgJtB070QMCs6aHQnMkIBc2SlSK4yRn
-         eoqV+5b4tj2MZ51CVT9bJT+HI3vHhPKD5/480tfJLjEJnWhIy/QWLK3ynrAFmTlE+Jw2
-         glBj7/6hSwgo1adAfKlgtalBN0qwVckG4YecrCA+Dyg3AfpEkDsPtgIiaMAlA0BW2BcA
-         thmAGHTyO4JdgCbOjqz97CuheLwg6JPKp9VOcgduN7i2UUldlg/EQq9Tb+fIKLywsiq/
-         sHUk/cNI5k0R71zpG85NAs/83ceesQHqRusBqoaZx4UAuQE49aAT0jKZv2Aqj25H8GvF
-         hbKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Xe2DWR863p/ehJmvzbGKL4NyY9ITEBhglpLpCkOqvTI=;
-        b=Zx5zSi3nIxACWMbugArHlzWYQOyZTWElUWcbGXPjSmcipDAKbZpQ8T4a2QXfohhM+U
-         fJ88SIzNzi6/37+sagtyr0VcXnX84T9yZVRJfeuvGGN0xTW9NwsQp1EwqTyE1E9Qb0Y0
-         IyN0mCuGq21Y9wv5e0GGZ9nwtAkp/fButUCEzm5w9hNli4thmLyLauKZhdmhhkOsuPiB
-         b1eiWfLWjU+sNKjgKzntQCSgd8wkRKfaX25546H/2lkfrmoGVTSSorC38iutfNuqfVII
-         bcO8CKEYoi2Zo2uAy8WdX1XvWpiN/YJvDDfaTd6mMDDDIn87U1Me+nVLMFCniNg92ckj
-         KucA==
-X-Gm-Message-State: AOAM5306M/S5a10BpStXXD2oZm+m2cAkt4ITJLpPVGAPiLy1JKVQCd5Y
-        z75kHAEE63B1El+SHp4U9bVyfg==
-X-Google-Smtp-Source: ABdhPJyN+NE7fCLLM5l+9h0UEK4pikwYezv4FSBlWI57xzwoQk/6jMmP21onPESPO5+AWGZXovKpuw==
-X-Received: by 2002:a17:90a:fa8e:: with SMTP id cu14mr3458820pjb.140.1609842064423;
-        Tue, 05 Jan 2021 02:21:04 -0800 (PST)
-Received: from localhost ([122.172.20.109])
-        by smtp.gmail.com with ESMTPSA id x28sm57891988pff.182.2021.01.05.02.21.03
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 05 Jan 2021 02:21:03 -0800 (PST)
-Date:   Tue, 5 Jan 2021 15:51:01 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Stephen Warren <swarren@nvidia.com>, linux-pm@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][V3] cpufreq: powernow-k8: pass policy rather than use
- cpufreq_cpu_get
-Message-ID: <20210105102101.y4jdqdmcru5ouec4@vireshk-i7>
-References: <20210105101957.59072-1-colin.king@canonical.com>
+        Tue, 5 Jan 2021 06:43:52 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 105BZcc7032610;
+        Tue, 5 Jan 2021 11:43:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=zKOUk2wPIoowVZgO6OUhoYKIvVuPqMlNx5ZFBmqNXLI=;
+ b=hcjsf/faB7pCmQtgOnJXSaPZL0kD+kFpj5eh4S6EY9RsiVc8VSVCkB1YYZSuhWA5Fkn6
+ gSCgGN/A3L8wyAJdshpGos0FVwgmL2GbLiH0dZJQ6qKfhqnNAfwX5HDI96h2GRcDoA8h
+ JJYH9TVIQwYaD+4lZXj9Pu0FXCfzcJp9E1E1v7aTz0Ov5HHXpA9lqKfIS97BLOiLH0ZB
+ xS2cdOr3iYSa8Giu1NPJii7yrVgmAEvofjAfWCSoukVu2xv06CromB2K8LtU/Z7Xe+9E
+ zHnCyZNKbg6ZvcMVpYt8IUYDrbvUF67JGQza0UZOWOA4NpcUniiOm3CTCXNyQlDglxjh XQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 35tg8r0ec2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 05 Jan 2021 11:43:08 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 105BaKhj024144;
+        Tue, 5 Jan 2021 11:43:07 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 35uxnshxv1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 05 Jan 2021 11:43:07 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 105Bh6WS025417;
+        Tue, 5 Jan 2021 11:43:06 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 05 Jan 2021 11:43:05 +0000
+Date:   Tue, 5 Jan 2021 14:42:29 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Mark Brown <broonie@kernel.org>,
+        Xiaolei Wang <xiaolei.wang@windriver.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] regmap: debugfs: Fix a reversed if statement in
+ regmap_debugfs_init()
+Message-ID: <X/RQpfAwRdLg0GqQ@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210105101957.59072-1-colin.king@canonical.com>
-User-Agent: NeoMutt/20180716-391-311a52
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9854 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
+ malwarescore=0 mlxscore=0 mlxlogscore=999 suspectscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101050073
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9854 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 phishscore=0 bulkscore=0
+ spamscore=0 impostorscore=0 suspectscore=0 adultscore=0 mlxlogscore=999
+ mlxscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101050073
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 05-01-21, 10:19, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently there is an unlikely case where cpufreq_cpu_get returns a
-> null policy and this will cause a null pointer dereference later on.
-> Fix this by passing the policy to transition_frequency_fidvid from the
-> caller and hence eliminating the need for the cpufreq_cpu_get and
-> cpufreq_cpu_put.  Thanks to Viresh Kumar for suggesting the fix.
-> 
-> Addresses-Coverity: ("Dereference null return")
-> Fixes: b43a7ffbf33b ("cpufreq: Notify all policy->cpus in cpufreq_notify_transition()")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
-> 
-> V2: pass the policy to transition_frequency_fidvid rather than add
->     a null pointer check on the return from a cpufreq_cpu_get call.
-> V3: update subject line to match the fix
-> 
-> ---
->  drivers/cpufreq/powernow-k8.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
+This code will leak "map->debugfs_name" because the if statement is
+reversed so it only frees NULL pointers instead of non-NULL.  In
+fact the if statement is not required and should just be removed
+because kfree() accepts NULL pointers.
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: cffa4b2122f5 ("regmap: debugfs: Fix a memory leak when calling regmap_attach_dev")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/base/regmap/regmap-debugfs.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
+diff --git a/drivers/base/regmap/regmap-debugfs.c b/drivers/base/regmap/regmap-debugfs.c
+index bf03cd343be2..ff2ee87987c7 100644
+--- a/drivers/base/regmap/regmap-debugfs.c
++++ b/drivers/base/regmap/regmap-debugfs.c
+@@ -594,9 +594,7 @@ void regmap_debugfs_init(struct regmap *map)
+ 	}
+ 
+ 	if (!strcmp(name, "dummy")) {
+-		if (!map->debugfs_name)
+-			kfree(map->debugfs_name);
+-
++		kfree(map->debugfs_name);
+ 		map->debugfs_name = kasprintf(GFP_KERNEL, "dummy%d",
+ 						dummy_index);
+ 		if (!map->debugfs_name)
 -- 
-viresh
+2.29.2
+

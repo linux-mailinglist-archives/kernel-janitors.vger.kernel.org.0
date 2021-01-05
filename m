@@ -2,99 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D2412EAA20
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Jan 2021 12:45:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 110C22EAB01
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Jan 2021 13:41:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729807AbhAELnw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Jan 2021 06:43:52 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:42534 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728822AbhAELnw (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Jan 2021 06:43:52 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 105BZcc7032610;
-        Tue, 5 Jan 2021 11:43:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=zKOUk2wPIoowVZgO6OUhoYKIvVuPqMlNx5ZFBmqNXLI=;
- b=hcjsf/faB7pCmQtgOnJXSaPZL0kD+kFpj5eh4S6EY9RsiVc8VSVCkB1YYZSuhWA5Fkn6
- gSCgGN/A3L8wyAJdshpGos0FVwgmL2GbLiH0dZJQ6qKfhqnNAfwX5HDI96h2GRcDoA8h
- JJYH9TVIQwYaD+4lZXj9Pu0FXCfzcJp9E1E1v7aTz0Ov5HHXpA9lqKfIS97BLOiLH0ZB
- xS2cdOr3iYSa8Giu1NPJii7yrVgmAEvofjAfWCSoukVu2xv06CromB2K8LtU/Z7Xe+9E
- zHnCyZNKbg6ZvcMVpYt8IUYDrbvUF67JGQza0UZOWOA4NpcUniiOm3CTCXNyQlDglxjh XQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 35tg8r0ec2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 05 Jan 2021 11:43:08 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 105BaKhj024144;
-        Tue, 5 Jan 2021 11:43:07 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 35uxnshxv1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 05 Jan 2021 11:43:07 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 105Bh6WS025417;
-        Tue, 5 Jan 2021 11:43:06 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 05 Jan 2021 11:43:05 +0000
-Date:   Tue, 5 Jan 2021 14:42:29 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Mark Brown <broonie@kernel.org>,
-        Xiaolei Wang <xiaolei.wang@windriver.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] regmap: debugfs: Fix a reversed if statement in
- regmap_debugfs_init()
-Message-ID: <X/RQpfAwRdLg0GqQ@mwanda>
+        id S1728734AbhAEMkv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Jan 2021 07:40:51 -0500
+Received: from mga04.intel.com ([192.55.52.120]:62363 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726189AbhAEMku (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 5 Jan 2021 07:40:50 -0500
+IronPort-SDR: tBEJiEVrWBLAWAxamEYe4L7ef4o0elxzm6H3DvSjQvmfOIjsHAVZyXShi+UeIojvuGYECuX+di
+ wut3vzxX0vkg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9854"; a="174522447"
+X-IronPort-AV: E=Sophos;i="5.78,476,1599548400"; 
+   d="scan'208";a="174522447"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2021 04:40:09 -0800
+IronPort-SDR: 6IkOAP8MjGH/55q5jhZv/PwNqde/HhlTyXkBbEhuLnYqyG5Fv6u6PZ1FXQAKnJF+IXsFmgeDuX
+ lxq3BIYT4zZg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,476,1599548400"; 
+   d="scan'208";a="421760825"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.94]) ([10.237.72.94])
+  by orsmga001.jf.intel.com with ESMTP; 05 Jan 2021 04:40:06 -0800
+Subject: Re: [PATCH] mmc: sdhci-sprd: Fix some resource leaks in the remove
+ function
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        ulf.hansson@linaro.org, orsonzhai@gmail.com,
+        baolin.wang7@gmail.com, zhang.lyra@gmail.com
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20201217204236.163446-1-christophe.jaillet@wanadoo.fr>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <1cfeeb62-8211-4a2a-0cf5-c3799d7ef42e@intel.com>
+Date:   Tue, 5 Jan 2021 14:39:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9854 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
- malwarescore=0 mlxscore=0 mlxlogscore=999 suspectscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101050073
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9854 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 phishscore=0 bulkscore=0
- spamscore=0 impostorscore=0 suspectscore=0 adultscore=0 mlxlogscore=999
- mlxscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101050073
+In-Reply-To: <20201217204236.163446-1-christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This code will leak "map->debugfs_name" because the if statement is
-reversed so it only frees NULL pointers instead of non-NULL.  In
-fact the if statement is not required and should just be removed
-because kfree() accepts NULL pointers.
+On 17/12/20 10:42 pm, Christophe JAILLET wrote:
+> 'sdhci_remove_host()' and 'sdhci_pltfm_free()' should be used in place of
+> 'mmc_remove_host()' and 'mmc_free_host()'.
+> 
+> This avoids some resource leaks, is more in line with the error handling
+> path of the probe function, and is more consistent with other drivers.
+> 
+> Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host controller")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Fixes: cffa4b2122f5 ("regmap: debugfs: Fix a memory leak when calling regmap_attach_dev")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/base/regmap/regmap-debugfs.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-diff --git a/drivers/base/regmap/regmap-debugfs.c b/drivers/base/regmap/regmap-debugfs.c
-index bf03cd343be2..ff2ee87987c7 100644
---- a/drivers/base/regmap/regmap-debugfs.c
-+++ b/drivers/base/regmap/regmap-debugfs.c
-@@ -594,9 +594,7 @@ void regmap_debugfs_init(struct regmap *map)
- 	}
- 
- 	if (!strcmp(name, "dummy")) {
--		if (!map->debugfs_name)
--			kfree(map->debugfs_name);
--
-+		kfree(map->debugfs_name);
- 		map->debugfs_name = kasprintf(GFP_KERNEL, "dummy%d",
- 						dummy_index);
- 		if (!map->debugfs_name)
--- 
-2.29.2
+> ---
+> Other adjustment may be needed.
+> I'm not sure at all of the 0 passed to 'sdhci_remove_host()'. Some drivers
+> pass 0, some have some more complicated computation.
+
+'0' means cleanup nicely. '1' (dead) means nothing works anymore, including
+interrupts, so give up on requests immediately.
+
+Either should work.  '0' is better unless your host controller really is
+dead, which is mostly not possible except for some legacy PCI devices.
+
+> ---
+>  drivers/mmc/host/sdhci-sprd.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
+> index f85171edabeb..5dc36efff47f 100644
+> --- a/drivers/mmc/host/sdhci-sprd.c
+> +++ b/drivers/mmc/host/sdhci-sprd.c
+> @@ -708,14 +708,14 @@ static int sdhci_sprd_remove(struct platform_device *pdev)
+>  {
+>  	struct sdhci_host *host = platform_get_drvdata(pdev);
+>  	struct sdhci_sprd_host *sprd_host = TO_SPRD_HOST(host);
+> -	struct mmc_host *mmc = host->mmc;
+>  
+> -	mmc_remove_host(mmc);
+> +	sdhci_remove_host(host, 0);
+> +
+>  	clk_disable_unprepare(sprd_host->clk_sdio);
+>  	clk_disable_unprepare(sprd_host->clk_enable);
+>  	clk_disable_unprepare(sprd_host->clk_2x_enable);
+>  
+> -	mmc_free_host(mmc);
+> +	sdhci_pltfm_free(pdev);
+>  
+>  	return 0;
+>  }
+> 
 

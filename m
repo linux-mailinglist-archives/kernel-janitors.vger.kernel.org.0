@@ -2,118 +2,151 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F17EE2EBD3A
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Jan 2021 12:40:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 959CB2EBD83
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Jan 2021 13:11:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726063AbhAFLjC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Jan 2021 06:39:02 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:58884 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725788AbhAFLjC (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Jan 2021 06:39:02 -0500
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 106BSlhE075887;
-        Wed, 6 Jan 2021 11:38:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=Lwz5KjHL/lzDDL+gepiJSdF1gvmm6AZCK+JE+g9inn4=;
- b=DE9fzP71wvNMgpO0WnNKN2iMpvOf/LUz/7Oin00Ev0vmHCaYChoAnvpjaTHGZJmtyd+W
- u62ETOm8yH98ADBpCG+S+Zj57HQmq7glAZy8sVgA1z9hm5g7jhvjSaCjo04dvpHlDeG9
- fsIgd1lx3EBraTd5/vbILhoKXcVrqX2hicr1G0hZyaJjxAyWoKpmxBXQsAfh+HhqqFcC
- 9+vtntf4oEUaMUDLQUh14nyhDbsa7uZ0fsrGyYWRbJS82dOmxT0YO0Vlic3DcdW0X1BV
- LhciR97ecd4tBOdyaApIKlH5DyKNLRuFhxXhap7221IHLCMybFHEt3ffMO0JCSXNIugU 7Q== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2130.oracle.com with ESMTP id 35wc96r1b7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 06 Jan 2021 11:38:08 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 106BZn3b156963;
-        Wed, 6 Jan 2021 11:36:08 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 35v1f9sype-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 06 Jan 2021 11:36:07 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 106BZX9V017595;
-        Wed, 6 Jan 2021 11:35:33 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 06 Jan 2021 03:35:32 -0800
-Date:   Wed, 6 Jan 2021 14:35:24 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Qinglang Miao <miaoqinglang@huawei.com>
-Cc:     Markus Elfring <Markus.Elfring@web.de>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        hulkci@huawei.com, "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [v2] net: qrtr: fix null pointer dereference in qrtr_ns_remove
-Message-ID: <20210106113524.GI2809@kadam>
-References: <20210105055754.16486-1-miaoqinglang@huawei.com>
- <4596fb37-5e74-5bf6-60e5-ded6fbb83969@web.de>
- <fdea7394-3e4a-0afe-6b22-7e3a258f5607@huawei.com>
- <b70726b8-0965-1fb9-2af1-2e05609905ea@web.de>
- <1a736322-42ce-e803-f91c-dc7595acffdd@huawei.com>
+        id S1726223AbhAFMKz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 Jan 2021 07:10:55 -0500
+Received: from mga14.intel.com ([192.55.52.115]:18230 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725800AbhAFMKy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 Jan 2021 07:10:54 -0500
+IronPort-SDR: kswwFistTsemil2XjrMOOJ4NVprKZrErcPFspqyrlRIWao/770Ktbo+RZx3rot6kzH6dJUvuLU
+ 7soSlSNPVpTQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9855"; a="176487059"
+X-IronPort-AV: E=Sophos;i="5.78,480,1599548400"; 
+   d="scan'208";a="176487059"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2021 04:10:14 -0800
+IronPort-SDR: Buc7fevCdhi7XB1wKHOx2sTITvb2ELp08xGwXB67LMuhWGo2fWpJK9zWj44ofdLqiQfggwf9ps
+ CQQ+tg4tYiWw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,480,1599548400"; 
+   d="scan'208";a="350823763"
+Received: from orsmsx604.amr.corp.intel.com ([10.22.229.17])
+  by fmsmga008.fm.intel.com with ESMTP; 06 Jan 2021 04:10:14 -0800
+Received: from orsmsx608.amr.corp.intel.com (10.22.229.21) by
+ ORSMSX604.amr.corp.intel.com (10.22.229.17) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Wed, 6 Jan 2021 04:10:13 -0800
+Received: from orsmsx602.amr.corp.intel.com (10.22.229.15) by
+ ORSMSX608.amr.corp.intel.com (10.22.229.21) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Wed, 6 Jan 2021 04:10:12 -0800
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
+ via Frontend Transport; Wed, 6 Jan 2021 04:10:12 -0800
+Received: from NAM04-SN1-obe.outbound.protection.outlook.com (104.47.44.54) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.1713.5; Wed, 6 Jan 2021 04:10:12 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Vm1aE14F1/f98GMwmVJXNLQFdHjGg9V20GpXYWTlGd34FdI7uU9/BiCDJxGwNpVuUruYPZ3hZNsGm73pqJBRNAyfGgJ1XscMSbjJlBHAGu5CmexUPmFiHETK75Cu6AUDl2gSHEZ79UWiCZbulq8NJ4kC5R0NQ94ua8FKVtV6F2NFRPy4UyOsnVFCk/xlW+MA1WUfcvbR7yGPS9sUAxsnP743VkgY+jctGxt2LwsiYxGKZDoXKMQ9nseb/V1DX688elFQRku0nQdpmevC97Vavlngxk6DAJZPOsnpOBtERr9aGRUF2gTEK+WDQ+1oKC+W5E8Vm1i4cMxsPT5CBkHrXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2YJyYqIVl4Kg+2zCk6+KuemzJbx4A7ReiKgme7HpX0M=;
+ b=T24hgzA/TNfHbbHtNVpzuY4Z4+ZFzkgy9y0ho8xR8GWZfZx+dATthRZFEbKcoH0M0RUum6qePcfZ2Gt7PFuSLykQWhr2OiqweV248RSXtZnOKC+otIS4Bqk5bdhQVzO9Zms3A8AjvraeNOaXazqiO4vS93vKUz7Ug06Td3LfgLerIK8ww2rNhP3sz5X2ooajLs2MTQ7LzbLBNaCPu62XPvKI9ct+1m3UvmwTqtU+4f3ZEunbTXpZTf3Q47afha/WUJANkaMAjWlMsI0NuYrJ4DLcbYb3y7pZ50VgqT//Ulj7wD8XoLWFtlFRCGzJjRbrqAbI3iFhFwKyRrtKGps/GA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2YJyYqIVl4Kg+2zCk6+KuemzJbx4A7ReiKgme7HpX0M=;
+ b=VcJ/aKJLHmyoBw1agaujZiv4SjgktMEi1TXO9TbT2xh7YpbMBnvZQBON27V84s5GtGlCmlEpkvP1QOJB+FtVAsskTJbnfCDz8qR2C8oR48gl8nvu/c+cJ25ZznM5V8WoZNseUSvOKlGOrh5Pk0eYqcfOig8c1y7TFhGUeHp016o=
+Received: from SN6PR11MB3055.namprd11.prod.outlook.com (2603:10b6:805:dc::18)
+ by SN6PR11MB3485.namprd11.prod.outlook.com (2603:10b6:805:b7::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3721.19; Wed, 6 Jan
+ 2021 12:10:11 +0000
+Received: from SN6PR11MB3055.namprd11.prod.outlook.com
+ ([fe80::6d5b:2bcf:f145:d0cb]) by SN6PR11MB3055.namprd11.prod.outlook.com
+ ([fe80::6d5b:2bcf:f145:d0cb%3]) with mapi id 15.20.3721.024; Wed, 6 Jan 2021
+ 12:10:11 +0000
+From:   "Alessandrelli, Daniele" <daniele.alessandrelli@intel.com>
+To:     "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>
+CC:     "Murphy, Declan" <declan.murphy@intel.com>,
+        "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] crypto: keembay-ocs-hcu - Fix a WARN() message
+Thread-Topic: [PATCH] crypto: keembay-ocs-hcu - Fix a WARN() message
+Thread-Index: AQHW5A5USu4meHJ2xUWraoJJH4U/b6oagaMA
+Date:   Wed, 6 Jan 2021 12:10:11 +0000
+Message-ID: <c9fb1462004f6cdca99538889faa3f96436fca1c.camel@intel.com>
+References: <X/WB9IlpyIi+5p5s@mwanda>
+In-Reply-To: <X/WB9IlpyIi+5p5s@mwanda>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+authentication-results: oracle.com; dkim=none (message not signed)
+ header.d=none;oracle.com; dmarc=none action=none header.from=intel.com;
+x-originating-ip: [192.198.151.43]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: b5ab3b82-484f-469b-a2b1-08d8b23c045f
+x-ms-traffictypediagnostic: SN6PR11MB3485:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <SN6PR11MB34855D49FAEBE62652CE081CF2D00@SN6PR11MB3485.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6790;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: eUXEqVMWgJwCUBeH81zqJDDWCekbZXOYn7IwoMrTSlO1KmEK4CsUy7XX59v+NWUIvFpgirRpzsq+Gjxw37qGcwe+9xoPMquK5lxnGmOcrhMx9x6Vu44CtTcnDcpWoMz3d/lSEETRljIbrni/sK7ePISiOV5XRbcTLeoT3BWrk9UkEHPLD7OME2F1QJxtiG7SRwKbG2GmiU31652/hOWozedJjV2AAgaHR8u+3Bdo4odFDvqJthe/J2IqZ8DpKkb8QRwi2J/6IQQVG3cF7TTiqLw2V6xOh+fKvMUTafvDU8tM4AcFLtnJrEAN+BxB/JWPUS754OGgcRndaHnPjgP/4GueUVabTC02cn9hVdX4OsRGaRZ7BxGtnEf7czUUpnL+T2iGKi2otsnTBP7wywYFCw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR11MB3055.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(376002)(136003)(366004)(346002)(39860400002)(83380400001)(36756003)(6512007)(54906003)(316002)(6506007)(4326008)(4744005)(76116006)(66556008)(8936002)(66946007)(26005)(64756008)(91956017)(15650500001)(66446008)(2906002)(66476007)(186003)(2616005)(86362001)(478600001)(71200400001)(5660300002)(6916009)(8676002)(6486002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: =?utf-8?B?UG1sM1hNWjRJbVZYRy90dFVHWU1lR3o1Skk2TkFwWXRROUNYNFFNVkRSc05Z?=
+ =?utf-8?B?YVh6a2oySDBUbmwvRU8vNjFPeGdsdjE1RjhTa2t5Z3oxWnlLYTBmcDd2VDBF?=
+ =?utf-8?B?T3B3ZlZrRUFRSU03cXFjYkRFWXZyQUc5clM3RGEwK3E2ZVQ1c1dtemN0VUZW?=
+ =?utf-8?B?aFVoeUVseXRtNXJncFVuQUwzRVJsM0toUmNzSjdIQWs3SWZLTmNtTTZiWE53?=
+ =?utf-8?B?MGx2RitrWFNic0VmMVA3ZDJDRDUySVRXVTZCKzVaUUF0VC9qNzFENnc0R3Bu?=
+ =?utf-8?B?RWxxMjRqVVp1UEdZajBqYmtQeG9pQmV2a3l1eC9zTFpQazJUclQyM0pvQ3k2?=
+ =?utf-8?B?bWpQdWgvV1NiaWhzdU9ENGZ5cTlxY2I5VDZTWElTSGpLOVFoVm5oM05aRXk5?=
+ =?utf-8?B?RXhzb3ZTUWlzQTZVNFI2a3FLM2czd3NJeFpkTFkrcWtlRHpaTUFCcmE0Q2Zh?=
+ =?utf-8?B?UGNOR3QxdDd2VkM0a0pHaDQwWnBNbHRBQ0krdlFUTldxR2p2bDNHWDJTdGJJ?=
+ =?utf-8?B?cGY1TzFzTHdzTTY5MVYrNWU0QnpScmFMK1krVlM3SnkvdWtjN1FTUGowOWpq?=
+ =?utf-8?B?d0tCdWI3RDNab3N3bW5mNHlXaTVDQUVNeHYwSWY4aXlXRjdROENMMTFqUmVV?=
+ =?utf-8?B?dTdrVXJkcythT0hCcFA2cVNlNWlhMHVGMDF6aG9Ja3hET0tjNHhjbTlNQ0lr?=
+ =?utf-8?B?S1h6Y2JaaFVSY0xkbjNvcjFCei94RldPZ1ZqMmY3ZEc2eUZsYWFqaG1TR1Jq?=
+ =?utf-8?B?RkFRWXdLSFluSXkwVWdFT1huQ2tSY0pSZWIxZW0zM1VOK2JUYzNtVGprZ0Jh?=
+ =?utf-8?B?YnI2M0JyNW5TUTNldkZUcGVsQ1VHY0JLRXN6SW9xazg1MkdzeDBZeUFRay9Z?=
+ =?utf-8?B?VTV0K0dOUlh4M0I3a1NZRU42REkrZVd5S1dSWXNRV1dUYVhvUnpiSVd6Qmtt?=
+ =?utf-8?B?N0ljTkI3SkNpZVI2TWROVGVOQ280eDZNTjhTK2ZNRFlLdTYycFlPUW5zUTh6?=
+ =?utf-8?B?eUV1ZHE5UnVFY0NLb0duS0RhbU1sYUxPQ3hUcWI3RWpPa0s5c3hleVhObW00?=
+ =?utf-8?B?a0U0QmhsVFpXckdtVHp2bSs1SWltdEVyWlJEa1RaWE5HMjdjZnpscVMwaUFx?=
+ =?utf-8?B?RzVRR3NRRGxYWlJ5SXV2cTFFWDdldG5oYkJIaG40c1o1UFpsQXZIa25JU3RO?=
+ =?utf-8?B?eDd2ci9aOG0vLzlFN0JMNUtDbStkMGFqSXBicGdPblZvaVFwSlBNY3hJUXFM?=
+ =?utf-8?B?Q0tFaGpzcWNyUXBEbnNTa3ZCZnhJVFpkeTQyWmM1VWtxbEp4K0sraHVpTE1R?=
+ =?utf-8?Q?lfCED6cqaHX92dykX+GpQVyDrhoPBzilTl?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <73F28795998CBC4AAA91A5459B2D68C6@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1a736322-42ce-e803-f91c-dc7595acffdd@huawei.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9855 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
- suspectscore=0 spamscore=0 bulkscore=0 adultscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101060071
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9855 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=999
- priorityscore=1501 clxscore=1011 mlxscore=0 malwarescore=0 suspectscore=0
- spamscore=0 bulkscore=0 impostorscore=0 adultscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101060071
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB3055.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b5ab3b82-484f-469b-a2b1-08d8b23c045f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jan 2021 12:10:11.2834
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: XtchrHZIsD8WEqk9DOssnWNFGR6eCS9PzzRdjGlycTji6cGnYVHl5PX5/cNG17asJZPHulqdm6TMEgXJ+Mkh4Dkam5hSt+mTAX8K3LnJm7s=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR11MB3485
+X-OriginatorOrg: intel.com
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jan 06, 2021 at 05:46:22PM +0800, Qinglang Miao wrote:
-> 
-> 
-> 在 2021/1/6 16:09, Markus Elfring 写道:
-> > > > > A null-ptr-deref bug is reported by Hulk Robot like this:
-> > > > 
-> > > > Can it be clearer to use the term “null pointer dereference” for the final commit message?
-> > > This advice is too detailed for 'null-ptr-deref' is known as a general phrase
-> > 
-> > This key word was provided already by the referenced KASAN report.
-> > 
-> Yep, you're right. 'null-ptr-deref' is not really proper here.
-> > 
-> > > like 'use-after-free' for kernel developer, I think.
-> > I suggest to reconsider the use of abbreviations at some places.
-> >  >
-> > > > > Fix it by making …
-> > > > 
-> > > > Would you like to replace this wording by the tag “Fixes”?
-> > > Sorry, I didn't get your words.
-> > > 
-> > > 'Fix it by' follows the solution
-> > 
-> > I propose to specify the desired adjustments without such a prefix
-> > in the change description.
-> Sorry, I can understand what you means, but I still disagree with this one,
-> for:
-> 
-> 1. 'Fix it by' is everywhere in kernel commit message.
-> 2. I think adding it or not makes no change for understanding.
-> 3. I'm not sure this is an official proposal.
-> 
-
-Feel free to ignore Markus...  :/  We have asked him over and over to
-stop sending these sort of advice but he refused and eventually he was
-banned from the mailing lists.  The rest of us can't see his messages to
-you unless we're included personally in the CC list.
-
-regards,
-dan carpenter
-
+SGkgRGFuLA0KDQpUaGFua3MgZm9yIGZpbmRpbmcgYW5kIGZpeGluZyB0aGlzLg0KDQpPbiBXZWQs
+IDIwMjEtMDEtMDYgYXQgMTI6MjUgKzAzMDAsIERhbiBDYXJwZW50ZXIgd3JvdGU6DQo+IFRoZSBm
+aXJzdCBhcmd1bWVudCB0byBXQVJOKCkgaXMgYSBjb25kaXRpb24gYW5kIHRoZSBtZXNzYWdlcyBp
+cyB0aGUNCj4gc2Vjb25kIGFyZ3VtZW50IGlzIHRoZSBzdHJpbmcsIHNvIHRoaXMgV0FSTigpIHdp
+bGwgb25seSBkaXNwbGF5IHRoZQ0KPiBfX2Z1bmNfXyBwYXJ0IG9mIHRoZSBtZXNzYWdlLg0KPiAN
+Cj4gRml4ZXM6IGFlODMyZTMyOWE4ZCAoImNyeXB0bzoga2VlbWJheS1vY3MtaGN1IC0gQWRkIEhN
+QUMgc3VwcG9ydCIpDQo+IFNpZ25lZC1vZmYtYnk6IERhbiBDYXJwZW50ZXIgPGRhbi5jYXJwZW50
+ZXJAb3JhY2xlLmNvbT4NCj4gLS0tDQo+ICBkcml2ZXJzL2NyeXB0by9rZWVtYmF5L2tlZW1iYXkt
+b2NzLWhjdS1jb3JlLmMgfCAyICstDQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyks
+IDEgZGVsZXRpb24oLSkNCj4gDQo+IA0KDQpBY2tlZC1ieTogRGFuaWVsZSBBbGVzc2FuZHJlbGxp
+IDxkYW5pZWxlLmFsZXNzYW5kcmVsbGlAaW50ZWwuY29tPg0K

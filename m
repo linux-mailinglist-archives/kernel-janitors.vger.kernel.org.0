@@ -2,97 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 161D92EBB80
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Jan 2021 10:04:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDBE12EBBAA
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Jan 2021 10:28:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726063AbhAFJEO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Jan 2021 04:04:14 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:47750 "EHLO
+        id S1726406AbhAFJ2I (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 Jan 2021 04:28:08 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:40104 "EHLO
         aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725836AbhAFJEK (ORCPT
+        with ESMTP id S1726133AbhAFJ2H (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Jan 2021 04:04:10 -0500
+        Wed, 6 Jan 2021 04:28:07 -0500
 Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1068svIb124489;
-        Wed, 6 Jan 2021 09:03:23 GMT
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10698lHC006845;
+        Wed, 6 Jan 2021 09:27:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=Arf8NPz03B6bGi6vbZIcGitheyWLUU4PlpI/Raiv2jk=;
- b=ACcL2M/RvrcFiuxiQV6Dey5+WfKGOT5vGLNVSYhElN2ojhyo3oBOZ4NDcVMbZXrGHd8d
- I+LA8LECSVqy5h1FPCpWEYB4Jo/xt+G4bzMNuR0kfT/eYi9CGuxeRCMxFGhCRHjfh2dU
- C8wHyAbAZ70ryB0bghuF/VOmthshFhBTztamOzH9V3nyjJYwByOKJLYf/9b+DnLxRGpV
- JMa92+r7f3o6fvMwEQJyITy+2dJ74Y8u8aUDWYV34vZFAIsAy7vUs1QmBv3kezLyIFsT
- jYSetIAQAhPaMhZJmEog4fLAnHOqr13+VzyuaHyjm0ATVzSSo8AoajDrF7pGv+Ts9CUl Iw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2130.oracle.com with ESMTP id 35w7p0gfds-1
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=tasVWPVUrp4SJFLddlqIVMFe6AQVqT3bFOPJTpvyKoI=;
+ b=u8PD1avKZt4IvaRlfoDiB20/wemTPzzMruBzg6JVvatd9y6MBk3hFu1b+mNge+QsLJT8
+ V+qoyH6Fb4bwMf7Z/IpdgQumMqHiD6OgMkX2C9PvoQbyTN0szMruXjJfUyQXKQCIL2yS
+ gO3y5dlgsTZxJIzdCad01jRa4N5NC2KWYU/Ma34F5r9UCIDYz0jgTIVXbVeUpn6slTtp
+ //mELuGg9TJ0cLuT3mQf0/trJOQoYt+pR6uIWWF7jIZ5Whubu/acHY6GZDj5MjzQqwVX
+ mLXto42tRQ2sJFmZhO1vZMwHml3aJVQ/KuHPQ90la7MA2K+SkZXPg/hPdWTuUF7oCMCc UA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2130.oracle.com with ESMTP id 35w7p0gj88-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 06 Jan 2021 09:03:23 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10691O71121138;
-        Wed, 6 Jan 2021 09:03:23 GMT
+        Wed, 06 Jan 2021 09:27:19 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1069Fpk3107740;
+        Wed, 6 Jan 2021 09:25:18 GMT
 Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 35w3g0qfac-1
+        by userp3020.oracle.com with ESMTP id 35w3qrqjd7-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 06 Jan 2021 09:03:22 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 10693LjE021577;
-        Wed, 6 Jan 2021 09:03:21 GMT
+        Wed, 06 Jan 2021 09:25:18 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 1069PHu7002390;
+        Wed, 6 Jan 2021 09:25:17 GMT
 Received: from mwanda (/102.36.221.92)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 06 Jan 2021 09:03:21 +0000
-Date:   Wed, 6 Jan 2021 12:03:08 +0300
+        with ESMTP ; Wed, 06 Jan 2021 01:25:16 -0800
+Date:   Wed, 6 Jan 2021 12:25:08 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     Lukasz Luba <lukasz.luba@arm.com>, linux-pm@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH 3/3] powercap/drivers/dtpm: Fix an IS_ERR() vs NULL check
-Message-ID: <X/V8zHPwlGiSxq1M@mwanda>
+To:     Daniele Alessandrelli <daniele.alessandrelli@intel.com>
+Cc:     Declan Murphy <declan.murphy@intel.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] crypto: keembay-ocs-hcu - Fix a WARN() message
+Message-ID: <X/WB9IlpyIi+5p5s@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <X/V2k8dwaXJH6VFh@mwanda>
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9855 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 adultscore=0
- phishscore=0 spamscore=0 mlxlogscore=999 suspectscore=0 bulkscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 mlxscore=0
+ spamscore=0 mlxlogscore=999 phishscore=0 bulkscore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101060055
+ definitions=main-2101060056
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9855 signatures=668683
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 adultscore=0
  lowpriorityscore=0 spamscore=0 suspectscore=0 impostorscore=0 mlxscore=0
- priorityscore=1501 malwarescore=0 clxscore=1015 mlxlogscore=999
+ priorityscore=1501 malwarescore=0 clxscore=1011 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101060054
+ definitions=main-2101060056
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The powercap_register_control_type() function never returns NULL, it
-returns error pointers on error so update this check.
+The first argument to WARN() is a condition and the messages is the
+second argument is the string, so this WARN() will only display the
+__func__ part of the message.
 
-Fixes: a20d0ef97abf ("powercap/drivers/dtpm: Add API for dynamic thermal power management")
+Fixes: ae832e329a8d ("crypto: keembay-ocs-hcu - Add HMAC support")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/powercap/dtpm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/keembay/keembay-ocs-hcu-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/powercap/dtpm.c b/drivers/powercap/dtpm.c
-index 470a1182b868..5a51cd34a7e8 100644
---- a/drivers/powercap/dtpm.c
-+++ b/drivers/powercap/dtpm.c
-@@ -467,9 +467,9 @@ static int __init dtpm_init(void)
- 	struct dtpm_descr **dtpm_descr;
- 
- 	pct = powercap_register_control_type(NULL, "dtpm", NULL);
--	if (!pct) {
-+	if (IS_ERR(pct)) {
- 		pr_err("Failed to register control type\n");
--		return -EINVAL;
-+		return PTR_ERR(pct);
+diff --git a/drivers/crypto/keembay/keembay-ocs-hcu-core.c b/drivers/crypto/keembay/keembay-ocs-hcu-core.c
+index d547af047131..c4b97b4160e9 100644
+--- a/drivers/crypto/keembay/keembay-ocs-hcu-core.c
++++ b/drivers/crypto/keembay/keembay-ocs-hcu-core.c
+@@ -388,7 +388,7 @@ static int prepare_ipad(struct ahash_request *req)
+ 	 * longer keys are hashed by kmb_ocs_hcu_setkey()).
+ 	 */
+ 	if (ctx->key_len > rctx->blk_sz) {
+-		WARN("%s: Invalid key length in tfm context\n", __func__);
++		WARN(1, "%s: Invalid key length in tfm context\n", __func__);
+ 		return -EINVAL;
  	}
- 
- 	for_each_dtpm_table(dtpm_descr)
+ 	memzero_explicit(&ctx->key[ctx->key_len],
 -- 
 2.29.2
 

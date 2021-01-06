@@ -2,95 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDBE12EBBAA
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Jan 2021 10:28:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F4552EBBA6
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Jan 2021 10:28:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726406AbhAFJ2I (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Jan 2021 04:28:08 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:40104 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726133AbhAFJ2H (ORCPT
+        id S1726366AbhAFJ1c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 Jan 2021 04:27:32 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:35188 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725922AbhAFJ1b (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Jan 2021 04:28:07 -0500
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10698lHC006845;
-        Wed, 6 Jan 2021 09:27:19 GMT
+        Wed, 6 Jan 2021 04:27:31 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10698xps155607;
+        Wed, 6 Jan 2021 09:26:49 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=tasVWPVUrp4SJFLddlqIVMFe6AQVqT3bFOPJTpvyKoI=;
- b=u8PD1avKZt4IvaRlfoDiB20/wemTPzzMruBzg6JVvatd9y6MBk3hFu1b+mNge+QsLJT8
- V+qoyH6Fb4bwMf7Z/IpdgQumMqHiD6OgMkX2C9PvoQbyTN0szMruXjJfUyQXKQCIL2yS
- gO3y5dlgsTZxJIzdCad01jRa4N5NC2KWYU/Ma34F5r9UCIDYz0jgTIVXbVeUpn6slTtp
- //mELuGg9TJ0cLuT3mQf0/trJOQoYt+pR6uIWWF7jIZ5Whubu/acHY6GZDj5MjzQqwVX
- mLXto42tRQ2sJFmZhO1vZMwHml3aJVQ/KuHPQ90la7MA2K+SkZXPg/hPdWTuUF7oCMCc UA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2130.oracle.com with ESMTP id 35w7p0gj88-1
+ bh=C5Kq07wiNBQ4rVv897deaByc527PdhtjKPiJX1mh5ls=;
+ b=vCeORKPMxyQlqDy2r58qBwj35pk6WypqsSVUyHm8EHVn6gJCLp8lGHwP6I+UR51JY1j0
+ HOCpo8somKXRb/Ah6APFT/AEjg8xKo/xlR/cVraUefOvAGGgHTzZQ5dGbArczKmVPz3j
+ HhyB952AgBNntfWJJmF4NeqrPZMYS3JgTY2UOPnY5M6Iqv/G7Sk8nl5DpkdI8jMAQ2FG
+ MUYA7eISE1oY+2q+ydAaXlluBz5TUdmH1clfnCbFfZdMnBgCBVV1vZMvl0UiTH4ufHG+
+ ttIApAVbaVsqM4CdbQ/PqH4hmILnTU/aPp1b4N5sROxDs88MCGMDA25f7LI0Tsk2pgTu 6Q== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 35w5420wb6-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 06 Jan 2021 09:27:19 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1069Fpk3107740;
-        Wed, 6 Jan 2021 09:25:18 GMT
+        Wed, 06 Jan 2021 09:26:48 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1069BOLP147152;
+        Wed, 6 Jan 2021 09:26:48 GMT
 Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 35w3qrqjd7-1
+        by userp3030.oracle.com with ESMTP id 35w3g0rh1c-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 06 Jan 2021 09:25:18 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 1069PHu7002390;
-        Wed, 6 Jan 2021 09:25:17 GMT
+        Wed, 06 Jan 2021 09:26:48 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 1069QkNa003217;
+        Wed, 6 Jan 2021 09:26:46 GMT
 Received: from mwanda (/102.36.221.92)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 06 Jan 2021 01:25:16 -0800
-Date:   Wed, 6 Jan 2021 12:25:08 +0300
+        with ESMTP ; Wed, 06 Jan 2021 01:26:46 -0800
+Date:   Wed, 6 Jan 2021 12:26:39 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Daniele Alessandrelli <daniele.alessandrelli@intel.com>
-Cc:     Declan Murphy <declan.murphy@intel.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] crypto: keembay-ocs-hcu - Fix a WARN() message
-Message-ID: <X/WB9IlpyIi+5p5s@mwanda>
+To:     Pavel Begunkov <asml.silence@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>
+Cc:     Alexander Viro <viro@zeniv.linux.org.uk>, io-uring@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] io_uring: fix an IS_ERR() vs NULL check
+Message-ID: <X/WCTxIRT4SHLemV@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9855 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 mlxscore=0
- spamscore=0 mlxlogscore=999 phishscore=0 bulkscore=0 suspectscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 adultscore=0
+ phishscore=0 spamscore=0 mlxlogscore=999 suspectscore=0 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2101060056
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9855 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 adultscore=0
- lowpriorityscore=0 spamscore=0 suspectscore=0 impostorscore=0 mlxscore=0
- priorityscore=1501 malwarescore=0 clxscore=1011 mlxlogscore=999
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 adultscore=0
+ malwarescore=0 suspectscore=0 bulkscore=0 clxscore=1011 impostorscore=0
+ spamscore=0 mlxlogscore=999 lowpriorityscore=0 priorityscore=1501
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2101060056
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The first argument to WARN() is a condition and the messages is the
-second argument is the string, so this WARN() will only display the
-__func__ part of the message.
+The alloc_fixed_file_ref_node() function never returns NULL, it returns
+error pointers on error.
 
-Fixes: ae832e329a8d ("crypto: keembay-ocs-hcu - Add HMAC support")
+Fixes: 1ffc54220c44 ("io_uring: fix io_sqe_files_unregister() hangs")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/crypto/keembay/keembay-ocs-hcu-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/io_uring.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/keembay/keembay-ocs-hcu-core.c b/drivers/crypto/keembay/keembay-ocs-hcu-core.c
-index d547af047131..c4b97b4160e9 100644
---- a/drivers/crypto/keembay/keembay-ocs-hcu-core.c
-+++ b/drivers/crypto/keembay/keembay-ocs-hcu-core.c
-@@ -388,7 +388,7 @@ static int prepare_ipad(struct ahash_request *req)
- 	 * longer keys are hashed by kmb_ocs_hcu_setkey()).
- 	 */
- 	if (ctx->key_len > rctx->blk_sz) {
--		WARN("%s: Invalid key length in tfm context\n", __func__);
-+		WARN(1, "%s: Invalid key length in tfm context\n", __func__);
- 		return -EINVAL;
- 	}
- 	memzero_explicit(&ctx->key[ctx->key_len],
+diff --git a/fs/io_uring.c b/fs/io_uring.c
+index ca46f314640b..2234ce03034a 100644
+--- a/fs/io_uring.c
++++ b/fs/io_uring.c
+@@ -7255,8 +7255,8 @@ static int io_sqe_files_unregister(struct io_ring_ctx *ctx)
+ 	if (!data)
+ 		return -ENXIO;
+ 	backup_node = alloc_fixed_file_ref_node(ctx);
+-	if (!backup_node)
+-		return -ENOMEM;
++	if (IS_ERR(backup_node))
++		return PTR_ERR(backup_node);
+ 
+ 	spin_lock_bh(&data->lock);
+ 	ref_node = data->node;
 -- 
 2.29.2
 

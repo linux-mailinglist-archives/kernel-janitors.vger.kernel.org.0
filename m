@@ -2,95 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A7352EC156
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Jan 2021 17:42:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D97DF2ECFFD
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Jan 2021 13:42:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727176AbhAFQmN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Jan 2021 11:42:13 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:58308 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726661AbhAFQmN (ORCPT
+        id S1728314AbhAGMkC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 Jan 2021 07:40:02 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:39838 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726436AbhAGMkB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Jan 2021 11:42:13 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: sre)
-        with ESMTPSA id 01BB61F441BB
-Received: by earth.universe (Postfix, from userid 1000)
-        id 8A49C3C0C94; Wed,  6 Jan 2021 17:41:28 +0100 (CET)
-Date:   Wed, 6 Jan 2021 17:41:28 +0100
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     linux-pm@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] power: supply: max8997_charger: fix spelling
- mistake "diconnected" -> "disconnected"
-Message-ID: <20210106164128.bzgjjmwindeif5uj@earth.universe>
-References: <20210104130513.35563-1-colin.king@canonical.com>
+        Thu, 7 Jan 2021 07:40:01 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kxUZQ-0003On-Fm; Thu, 07 Jan 2021 12:39:16 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Sunil Goutham <sgoutham@marvell.com>,
+        Linu Cherian <lcherian@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Jerin Jacob <jerinj@marvell.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Nithya Mani <nmani@marvell.com>, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] octeontx2-af: fix memory leak of lmac and lmac->name
+Date:   Thu,  7 Jan 2021 12:39:16 +0000
+Message-Id: <20210107123916.189748-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="e7yiclziilajll5w"
-Content-Disposition: inline
-In-Reply-To: <20210104130513.35563-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
---e7yiclziilajll5w
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Currently the error return paths don't kfree lmac and lmac->name
+leading to some memory leaks.  Fix this by adding two error return
+paths that kfree these objects
 
-Hi,
+Addresses-Coverity: ("Resource leak")
+Fixes: 1463f382f58d ("octeontx2-af: Add support for CGX link management")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-On Mon, Jan 04, 2021 at 01:05:13PM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> There is a spelling mistake in a dev_dbg message. Fix it.
->=20
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/power/supply/max8997_charger.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/power/supply/max8997_charger.c b/drivers/power/suppl=
-y/max8997_charger.c
-> index 23df91ed2c72..321bd6b8ee41 100644
-> --- a/drivers/power/supply/max8997_charger.c
-> +++ b/drivers/power/supply/max8997_charger.c
-> @@ -124,7 +124,7 @@ static void max8997_battery_extcon_evt_worker(struct =
-work_struct *work)
->  		dev_dbg(charger->dev, "USB CDP charger is connected\n");
->  		current_limit =3D 650000;
->  	} else {
-> -		dev_dbg(charger->dev, "USB charger is diconnected\n");
-> +		dev_dbg(charger->dev, "USB charger is disconnected\n");
->  		current_limit =3D -1;
->  	}
-> =20
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+index 1156c61f2e02..aa5da9691a1c 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -871,8 +871,10 @@ static int cgx_lmac_init(struct cgx *cgx)
+ 		if (!lmac)
+ 			return -ENOMEM;
+ 		lmac->name = kcalloc(1, sizeof("cgx_fwi_xxx_yyy"), GFP_KERNEL);
+-		if (!lmac->name)
+-			return -ENOMEM;
++		if (!lmac->name) {
++			err = -ENOMEM;
++			goto err_lmac_free;
++		}
+ 		sprintf(lmac->name, "cgx_fwi_%d_%d", cgx->cgx_id, i);
+ 		lmac->lmac_id = i;
+ 		lmac->cgx = cgx;
+@@ -883,7 +885,7 @@ static int cgx_lmac_init(struct cgx *cgx)
+ 						 CGX_LMAC_FWI + i * 9),
+ 				   cgx_fwi_event_handler, 0, lmac->name, lmac);
+ 		if (err)
+-			return err;
++			goto err_irq;
+ 
+ 		/* Enable interrupt */
+ 		cgx_write(cgx, lmac->lmac_id, CGXX_CMRX_INT_ENA_W1S,
+@@ -895,6 +897,12 @@ static int cgx_lmac_init(struct cgx *cgx)
+ 	}
+ 
+ 	return cgx_lmac_verify_fwi_version(cgx);
++
++err_irq:
++	kfree(lmac->name);
++err_lmac_free:
++	kfree(lmac);
++	return err;
+ }
+ 
+ static int cgx_lmac_exit(struct cgx *cgx)
+-- 
+2.29.2
 
-Thanks, queued.
-
--- Sebastian
-
---e7yiclziilajll5w
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl/16C0ACgkQ2O7X88g7
-+pqs4g//cJYftTes0OMiYJr8wVHkQ9Phzi6b+PRUKi6xs/EPB2IR0jO/XnW+E+rT
-xHTCIklbLQ/VDThj7uw2/SYsFSb/eT0KDAgZ8PJX8pz8aQ+SVSV+LPAvmVbpI46y
-+75FNaNrQM25PiJT1zC72cxZwCx2X4ZdpzEoXL9/ctoyFL2fubfK+QxrTuWiVSEY
-Vu5/RJ4Hw86hX6sXLzb0wDuBzHaEly3g/yMISByvfoJ7hO1bhvCKD1/iY9sqqWsL
-n2Pg96WYHeyAbUCtwygO715zVBtMgH/pZJUhS+di9yujI1x3oFuSXAV3zZl/Hwae
-hER5dn0vUYbCI8VVohjD8iQb548L5emdzx6FgONgltSQGGTl+CJXhtlqZfl7URAv
-QG/EJ3918exK5x5uu4BeZgQa+84IqukOC9LQUgrCHqCAX/6kIVho3ly3IdS8VJys
-e48J9+3/pppCBm3mO074cN6XAM8MIcOU4M5/Sn1sfqsg0eFzqbfwPzODqqYwbYCg
-FzMLDKeqBxLFcnOPHEMDodCQ+j/E2HZwWJhj/i+54Dj6v+zJp2fjZ5aEwqqR/LZ1
-fgX3h9bkOVsDLVBW7eV7inbNJR5LEfd03pXR3VxYi9kNFPn58AQ+tKUFeriNoeQb
-xCY2w0WEnBS+ITf6E4Uht55MGmfvzuaKbHHKVjkOeBFPNMNwQWg=
-=t64x
------END PGP SIGNATURE-----
-
---e7yiclziilajll5w--

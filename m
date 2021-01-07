@@ -2,84 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7750C2ED4F2
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Jan 2021 18:03:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 613302ED4FA
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Jan 2021 18:04:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728240AbhAGRCZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 Jan 2021 12:02:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51932 "EHLO
+        id S1728246AbhAGRDz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 Jan 2021 12:03:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726436AbhAGRCY (ORCPT
+        with ESMTP id S1728110AbhAGRDy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 Jan 2021 12:02:24 -0500
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21706C0612F8;
-        Thu,  7 Jan 2021 09:01:44 -0800 (PST)
-Received: by mail-ed1-x530.google.com with SMTP id b2so8460264edm.3;
-        Thu, 07 Jan 2021 09:01:44 -0800 (PST)
+        Thu, 7 Jan 2021 12:03:54 -0500
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2DAEC0612F5
+        for <kernel-janitors@vger.kernel.org>; Thu,  7 Jan 2021 09:03:12 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id m5so6329481wrx.9
+        for <kernel-janitors@vger.kernel.org>; Thu, 07 Jan 2021 09:03:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=e6QzQXBlWfecJhgtXdVXCWBkESw5K/fN23w2JVJbfkQ=;
-        b=I/I8LHm/F9D2H9UNGPQ/ArnEaifDJkI5QyPBuyZo9G1t2BdinCsFbQBvRYaamRRMii
-         ayz7yIPZzgUgp0fOdcWtBC73Si8E4ky3c1dytTvzziyxJnIG0Vw2DRK0XRgN3mf9tVqf
-         6wc8L/QiQeHBeOeEB+wsQdIXGLrOkTHu6lFwXqpnol3WLckROsFaMc9jMDYFW32T1qiU
-         LD2OS0vs7HYIQCszVqhbnOHW35HR3fdAqcUoXXNU+X3pP0yfH4atVGje2cU++PSsQWY4
-         CdOA9+DzAJlN+j8rs/oEVQ4wezZjrNYsXTOpPVExhyqcMJLMlxd9wDZF10S4dUxf+KcB
-         FA5Q==
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=V7bXUt4+mzGD7Vvoy2qGLuZX1B7w0czTK0+1WPwVnkI=;
+        b=ItsnHhde2tn573UhUTtPB6PetVTNFlZOPf0OC+lumEhCTn7sEpHmprOHnflgtcpXLW
+         dl0x51wPClUDc5m/MfNJOeTiVSPNacvTT1XRX5bAiB7zYcOw/wujg4bUU0zVyHXarjAg
+         5RvsqC/GmD8MkI9UTKSMnTItJgL0QU6j8m+sECRKbjARVawILCmuybUTE81Seugvjm2O
+         30yT2nQ8CV7BLivHimBBGstofV08AdQqcpSJHSd/GNTZSq/b1t2JbyRMWNT9hGYrbAoD
+         CR3J+ZkKRGeIwrmJTL1xQWHtzIYcSc7Hc1lQvOzd5pAdn2fNQ6rwKWLRLp10fhJsDuvs
+         7JtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=e6QzQXBlWfecJhgtXdVXCWBkESw5K/fN23w2JVJbfkQ=;
-        b=aiC5EVv4hoSxLeX/sBtHeBajySio0IojIFcr3cOEuBOiLuDC5Lmpq8hrUydOwzPQe2
-         NY9T43i1wOcyc2i2CylkTj20sRSUcBFtTeEqkjBrBh+661KHpLvpCxEmvCr3s2L0xjZu
-         PHWtnOkDZxDQDZ49dc+a1bLUWjihgDDrjH+0lPb/26+L7SDd+mbJqjSC0PsrmyNzly8+
-         NUGmDNzcJjdq1HYu/LcEpGTAmEGNJPgOsRMlDHeUujnKbXdodgj3vMwfYEEKNXiBOQMU
-         4osijlgA46dkfQjYolMotMSeIjrlpZp5CAYxMzKIQZpjKYzzgYZBLDIaQ4Knktjs167k
-         KjWg==
-X-Gm-Message-State: AOAM533AkLgZifPk+J/0B5oOCVRWihe9T7Cf42Rnm7TM/iWWW4m5Ea2B
-        HZc9iWoFqu8u1d3x/WNIMvyM66Kw5lMFZrNRqAI=
-X-Google-Smtp-Source: ABdhPJwuAC5wMYKkyhGUW9GlV/rS6710r8LDpwxU8ycrOTK0Jkk98gHnOuZ2G3Tvv7ARvij9uNvc+yrTjpu5j3VfbH8=
-X-Received: by 2002:aa7:ce94:: with SMTP id y20mr2305433edv.361.1610038902892;
- Thu, 07 Jan 2021 09:01:42 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=V7bXUt4+mzGD7Vvoy2qGLuZX1B7w0czTK0+1WPwVnkI=;
+        b=Xh3BddiitvAwxvGy3s+IG4qKB8QZWvacEyotZrgZ8Fmho1RwAo1OFWCm4bhppvVzdv
+         O3El5RCbHTbpl0RnP+yA+B1HCwWMJ3M3T2ufohEbY0l9aYzVEnN7xe/eLEyyqwICb2fR
+         TswImi17xmCh/v9FstxsQtj0s5plCwEIIgjqhyjicK6Lzk7ICpajpiZxTfYvTrU3XuaR
+         w9jfibbZy6SebnYLymv0maB0racgfk0L8o3ITkwd1JSFB9Bu/uL/QCaDFBWRz2J/s8jf
+         RUB/4HegGG46Znt0VQJtk8dNWUBJQ7VX6IUTAqk1gn+F0mxLqk+HCu/0wcpHEYNX9wnU
+         5O8g==
+X-Gm-Message-State: AOAM533OQyr2T5jzkC6iiDwTvh+DlXW2tKzQSL5rmndCA+1GytUSfs7E
+        WNd2fDtYdcaBTTs8nT/OQAjoM7FU4O9RaQ==
+X-Google-Smtp-Source: ABdhPJwj6jHgyRRkB72+LRwQXmY5lDHBk3reZ4TJQ/NGffRsK8Pcsd7SOg/8mtRjuwMNp8+HwI+tqw==
+X-Received: by 2002:adf:d4cb:: with SMTP id w11mr9644476wrk.276.1610038990870;
+        Thu, 07 Jan 2021 09:03:10 -0800 (PST)
+Received: from [192.168.0.41] (lns-bzn-59-82-252-152-224.adsl.proxad.net. [82.252.152.224])
+        by smtp.googlemail.com with ESMTPSA id o83sm8467999wme.21.2021.01.07.09.03.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Jan 2021 09:03:10 -0800 (PST)
+Subject: Re: [PATCH 3/3] powercap/drivers/dtpm: Fix an IS_ERR() vs NULL check
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Lukasz Luba <lukasz.luba@arm.com>, linux-pm@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <X/V8zHPwlGiSxq1M@mwanda>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <5cd25798-5dc1-4e8b-61a6-5a5f425f9473@linaro.org>
+Date:   Thu, 7 Jan 2021 18:03:09 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20210107123916.189748-1-colin.king@canonical.com>
-In-Reply-To: <20210107123916.189748-1-colin.king@canonical.com>
-From:   Sunil Kovvuri <sunil.kovvuri@gmail.com>
-Date:   Thu, 7 Jan 2021 22:31:30 +0530
-Message-ID: <CA+sq2CcPRuQijfOFA74KrNF9E5tj-QqH_0nNC21fT=rqkuuCcw@mail.gmail.com>
-Subject: Re: [PATCH] octeontx2-af: fix memory leak of lmac and lmac->name
-To:     Colin King <colin.king@canonical.com>
-Cc:     Sunil Goutham <sgoutham@marvell.com>,
-        Linu Cherian <lcherian@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Jerin Jacob <jerinj@marvell.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Nithya Mani <nmani@marvell.com>,
-        Linux Netdev List <netdev@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <X/V8zHPwlGiSxq1M@mwanda>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jan 7, 2021 at 6:11 PM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Currently the error return paths don't kfree lmac and lmac->name
-> leading to some memory leaks.  Fix this by adding two error return
-> paths that kfree these objects
->
-> Addresses-Coverity: ("Resource leak")
-> Fixes: 1463f382f58d ("octeontx2-af: Add support for CGX link management")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On 06/01/2021 10:03, Dan Carpenter wrote:
+> The powercap_register_control_type() function never returns NULL, it
+> returns error pointers on error so update this check.
+> 
+> Fixes: a20d0ef97abf ("powercap/drivers/dtpm: Add API for dynamic thermal power management")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+
+Thanks for these fixes.
+
+  --Daniel
+
 > ---
+>  drivers/powercap/dtpm.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/powercap/dtpm.c b/drivers/powercap/dtpm.c
+> index 470a1182b868..5a51cd34a7e8 100644
+> --- a/drivers/powercap/dtpm.c
+> +++ b/drivers/powercap/dtpm.c
+> @@ -467,9 +467,9 @@ static int __init dtpm_init(void)
+>  	struct dtpm_descr **dtpm_descr;
+>  
+>  	pct = powercap_register_control_type(NULL, "dtpm", NULL);
+> -	if (!pct) {
+> +	if (IS_ERR(pct)) {
+>  		pr_err("Failed to register control type\n");
+> -		return -EINVAL;
+> +		return PTR_ERR(pct);
+>  	}
+>  
+>  	for_each_dtpm_table(dtpm_descr)
+> 
 
-Thanks for the fix, looks good to me.
 
-Sunil.
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog

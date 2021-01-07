@@ -2,77 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6E2C2ED471
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Jan 2021 17:40:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E0422ED49C
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Jan 2021 17:45:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726669AbhAGQkR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 Jan 2021 11:40:17 -0500
-Received: from mail-ot1-f44.google.com ([209.85.210.44]:40679 "EHLO
-        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726467AbhAGQkQ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 Jan 2021 11:40:16 -0500
-Received: by mail-ot1-f44.google.com with SMTP id j12so6821138ota.7;
-        Thu, 07 Jan 2021 08:40:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6f15dDz/sBid4bA08/uLFiWT+A9f5KxxTm6Kjvrbx5o=;
-        b=r97fbXAkSfFvW7v31pbLgEytAiwCyhDS51c0lp4rEVvQUZmnzoWbBrDC5F4Umnx1pd
-         Yw0e+sCE5ru9K/hnzm2q/p8hfjpyJgAFJnwTspvYGIX6U42g2F8fv8wkt6gUylhWT9qh
-         aThDZkFWK3tJ1C+/ImC/eFLromXhkGX6Vl13GEe0aVsr5QIPHk++u8lo1pYj37Z9E5VX
-         +TUsYlZEKazRlECUoeaIoo02r7DJIZ1VmjbI9Z3JqXSSGS3p7Ls0CCB8rDuh0Rc20Px1
-         Kp1kcXGnL5f58OwCd11NOYxumUxsZLOM6rPYr4U9S6CFs1U75OVclPxhLLwI9qfipcLA
-         8Dyw==
-X-Gm-Message-State: AOAM533opNkbbghwf4Hkieq3xnsl3vyZ2OkXDESLd3qxBBH92/1rhS6V
-        +L/DlrP5TsUIYY8+5gHaGuz0h+zpGDwUo/ecRCo=
-X-Google-Smtp-Source: ABdhPJyRCd+XcKa12I5Zg+gyy1RnqAUd0zOrCx8YgJzzFAyySoyWiJ2m+CdecnCaGOeHVUXx+emZxEUWfFIS7uirqiw=
-X-Received: by 2002:a9d:67da:: with SMTP id c26mr7245123otn.321.1610037575690;
- Thu, 07 Jan 2021 08:39:35 -0800 (PST)
+        id S1728131AbhAGQod (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 Jan 2021 11:44:33 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47584 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725835AbhAGQod (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 7 Jan 2021 11:44:33 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 06DA923403;
+        Thu,  7 Jan 2021 16:43:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1610037832;
+        bh=vuM9vAjQJkgCU4xBUoFmKddeaCN97wvKiCrb9wFq5Rs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=D3c+nbeK0+kwJq39ghmw5I0A2Sw54HCgrv/tFM+DIHWYNS3ROj+9a3hGG/ymGzI+U
+         Pu/rXvAE/ZQSwa0q//9N/EPrkdjLh0vVY7DxaJ2Dl397bBnVDmJKFh9D/VwUypQUdp
+         Koza40wb43KKwHbactJTZwJb6+Lfd4gI28RLFuDEu4ytqWPOykodoaP3uyYKRp6H49
+         IqdKD5U5ReSi/UR6ny56E3jUPVg35RtPdVfWOd7PdDhiZ5cDQsI/at36xOfyfq17CN
+         A9Y2/u0XWCDapFMk+HKm9WPeJuUFo5n6Ahsnik1mLa3Q2JgipctO2/gyBqRrmfOu5f
+         yF6y3JnRGKLFA==
+Date:   Thu, 7 Jan 2021 16:43:22 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Takashi Iwai <tiwai@suse.de>
+Cc:     Joe Perches <joe@perches.com>, Jaroslav Kysela <perex@perex.cz>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        Julia Lawall <Julia.Lawall@inria.fr>,
+        alsa-devel <alsa-devel@alsa-project.org>
+Subject: Re: [PATCH resend] sound: Convert strlcpy to strscpy when return
+ value is unused
+Message-ID: <20210107164322.GF4726@sirena.org.uk>
+References: <22b393d1790bb268769d0bab7bacf0866dcb0c14.camel@perches.com>
+ <s5hpn2j2rr3.wl-tiwai@suse.de>
 MIME-Version: 1.0
-References: <20210105101957.59072-1-colin.king@canonical.com> <20210105102101.y4jdqdmcru5ouec4@vireshk-i7>
-In-Reply-To: <20210105102101.y4jdqdmcru5ouec4@vireshk-i7>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 7 Jan 2021 17:39:24 +0100
-Message-ID: <CAJZ5v0gF9XRNnn+O+kCRFtas9sgrQgk8piF1OoHqmGhi66qZwg@mail.gmail.com>
-Subject: Re: [PATCH][V3] cpufreq: powernow-k8: pass policy rather than use cpufreq_cpu_get
-To:     Viresh Kumar <viresh.kumar@linaro.org>,
-        Colin King <colin.king@canonical.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Stephen Warren <swarren@nvidia.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="uTRFFR9qmiCqR05s"
+Content-Disposition: inline
+In-Reply-To: <s5hpn2j2rr3.wl-tiwai@suse.de>
+X-Cookie: See store for details.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jan 5, 2021 at 11:22 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
->
-> On 05-01-21, 10:19, Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> >
-> > Currently there is an unlikely case where cpufreq_cpu_get returns a
-> > null policy and this will cause a null pointer dereference later on.
-> > Fix this by passing the policy to transition_frequency_fidvid from the
-> > caller and hence eliminating the need for the cpufreq_cpu_get and
-> > cpufreq_cpu_put.  Thanks to Viresh Kumar for suggesting the fix.
-> >
-> > Addresses-Coverity: ("Dereference null return")
-> > Fixes: b43a7ffbf33b ("cpufreq: Notify all policy->cpus in cpufreq_notify_transition()")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > ---
-> >
-> > V2: pass the policy to transition_frequency_fidvid rather than add
-> >     a null pointer check on the return from a cpufreq_cpu_get call.
-> > V3: update subject line to match the fix
-> >
-> > ---
-> >  drivers/cpufreq/powernow-k8.c | 9 +++------
-> >  1 file changed, 3 insertions(+), 6 deletions(-)
->
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-Applied as 5.11-rc material, thanks!
+--uTRFFR9qmiCqR05s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Jan 05, 2021 at 06:55:12PM +0100, Takashi Iwai wrote:
+> Mark, could you check the ASoC part?
+
+Acked-by: Mark Brown <broonie@kernel.org>
+
+--uTRFFR9qmiCqR05s
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/3OikACgkQJNaLcl1U
+h9CliQf/fWBovJb9ILFKC38hv8wOmoZfK1W6JdCZ51RizmOwpB+ucVe7GG03haN1
+hrh54Tj0NzpYo3cuAEWPMRIXiWisE77mm2MOGuf005H8oB58ETQ1B6GM/odbNEuA
+MiHC0MdNL87krLHKIKQLKfx0FZ8K1T3VjvmJminiHTKtP90SPWWh+m260M7rFaMN
+IreAoGI0QSZd2QYlX4/rcLgcAWhQdGBBSmn5L0bzHD41sobO5Cy74nJfIUovvtMQ
+HZsgPZH/VmGJm931ztYmln9NuI9vhi76GYVeWlXvo8NNa+1zzGqpyQMjp9I8vUob
+Nc1ec/s5nRsTNcrfpEiiUwOd5EMVCg==
+=u4EK
+-----END PGP SIGNATURE-----
+
+--uTRFFR9qmiCqR05s--

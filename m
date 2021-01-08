@@ -2,87 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 573D72EEC75
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Jan 2021 05:22:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35A5A2EEC63
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Jan 2021 05:22:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727474AbhAHEWd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 Jan 2021 23:22:33 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:53990 "EHLO
+        id S1727560AbhAHEUl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 Jan 2021 23:20:41 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:52452 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727100AbhAHEWd (ORCPT
+        with ESMTP id S1727471AbhAHEUk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 Jan 2021 23:22:33 -0500
+        Thu, 7 Jan 2021 23:20:40 -0500
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10849FLc096297;
-        Fri, 8 Jan 2021 04:21:48 GMT
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10849f67096788;
+        Fri, 8 Jan 2021 04:19:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=HA3Ef4RxyJIJZNuPpePPf93kvwCJ0wOlTKbsrC0cFi0=;
- b=HMvuJkq78VXFGq1Olu2Ejtjn2FR9XOYDfbQ0Ie23qA5ijGu/xg3HEy4znBWJZhVFUJTm
- khwImkuhIn0J/NK1R3Zxk1MJLWHDWSbyrsbecA+3UJ9+z5fvWEgEOZjMPvURZEhAJ/ir
- niVjZCD3oK2AcgsMURUrZHncPKfrCRXao3nZzr025feqm4JEGEreabsb38Iu7mXEO/AM
- FKbh6Y6n6LRVnbXu5JO+vRDHRFgvHs5p9zrDNNM5VKV2cPZim+mMjP6d2Pj2JarZCmiz
- 7aFREBl9d6VIBV/vpWRxXxv6mWZMxwlEwsBq4/klR3+2ylG7O7AtqSHpZWJFz0Lp1Txf DA== 
+ bh=fJtX/x/q0BSrKpHUkhYtCo9igyPNRl3G/Q1ztLnzj0Q=;
+ b=U9tseGlUFLP/vvV2g5YoM4hATBWrA6QsJ1ETiKTLhDA4ZDRWzTfoS69owYthMgcXdgH2
+ RpaeGs2Hq18+aCNwITJFr2Ka8cr/nEOICBZoAPFo5F8Tg1wmWlq4HnmaFBUi0oxKVl6y
+ olA0JAzLykgohFEwBgQh88jAExNkJ46u6u5rbpBy66qlfaKlhWDD6iLhq0uz/G7DHJzh
+ xYS3whqhDP+oKgxRk1ARZ2NIlVLJJretuFKO/BYqUQNhbPGhRjnc4y/43W/ufoZh69J/
+ MxKvk0r+Gee3Ofhax2NC1u7QDWwVPmEyfmKPGyoxJ43pLNR9WongIDvlZRM1Gt5UBJ/G tg== 
 Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 35wepmfddj-1
+        by aserp2120.oracle.com with ESMTP id 35wepmfd97-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 08 Jan 2021 04:21:48 +0000
+        Fri, 08 Jan 2021 04:19:54 +0000
 Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1084Au5q079236;
-        Fri, 8 Jan 2021 04:19:48 GMT
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1084AuAi079282;
+        Fri, 8 Jan 2021 04:19:54 GMT
 Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 35v1fc2x78-1
+        by aserp3020.oracle.com with ESMTP id 35v1fc2x8h-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 08 Jan 2021 04:19:47 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 1084JlJP017939;
-        Fri, 8 Jan 2021 04:19:47 GMT
+        Fri, 08 Jan 2021 04:19:54 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 1084Jqmp018065;
+        Fri, 8 Jan 2021 04:19:52 GMT
 Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 07 Jan 2021 20:19:47 -0800
+        with ESMTP ; Fri, 08 Jan 2021 04:19:52 +0000
 From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     linux-scsi@vger.kernel.org, Colin King <colin.king@canonical.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>,
-        MPT-FusionLinux.pdl@broadcom.com,
-        Sathya Prakash <sathya.prakash@broadcom.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        linux-block@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
 Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mpt3sas: fix spelling mistake in Kconfig: "compatiblity" -> "compatibility"
-Date:   Thu,  7 Jan 2021 23:19:32 -0500
-Message-Id: <161007949338.9892.3713651202939171104.b4-ty@oracle.com>
+        Christoph Hellwig <hch@lst.de>, linux-kernel@vger.kernel.org,
+        linux-scsi@vger.kernel.org,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        clang-built-linux@googlegroups.com, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2] scsi: sd: remove obsolete variable in sd_remove()
+Date:   Thu,  7 Jan 2021 23:19:37 -0500
+Message-Id: <161007949339.9892.18140869017043061616.b4-ty@oracle.com>
 X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20201217172019.57768-1-colin.king@canonical.com>
-References: <20201217172019.57768-1-colin.king@canonical.com>
+In-Reply-To: <20201214095424.12479-1-lukas.bulwahn@gmail.com>
+References: <20201214095424.12479-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9857 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=998 phishscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=850 phishscore=0
  suspectscore=0 spamscore=0 bulkscore=0 adultscore=0 mlxscore=0
  malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2009150000 definitions=main-2101080021
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9857 signatures=668683
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 spamscore=0
  impostorscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0
- priorityscore=1501 mlxscore=0 malwarescore=0 clxscore=1015 mlxlogscore=999
+ priorityscore=1501 mlxscore=0 malwarescore=0 clxscore=1011 mlxlogscore=859
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2101080021
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 17 Dec 2020 17:20:19 +0000, Colin King wrote:
+On Mon, 14 Dec 2020 10:54:24 +0100, Lukas Bulwahn wrote:
 
-> There is a spelling mistake in the Kconfig help text. Fix it.
+> Commit 140ea3bbf39a ("sd: use __register_blkdev to avoid a modprobe for an
+> unregistered dev_t") removed blk_register_region(devt, ...) in sd_remove()
+> and since then, devt is unused in sd_remove().
+> 
+> Hence, make W=1 warns:
+> 
+>   drivers/scsi/sd.c:3516:8:
+>       warning: variable 'devt' set but not used [-Wunused-but-set-variable]
+> 
+> [...]
 
 Applied to 5.11/scsi-fixes, thanks!
 
-[1/1] mpt3sas: fix spelling mistake in Kconfig: "compatiblity" -> "compatibility"
-      https://git.kernel.org/mkp/scsi/c/39718fe7adb1
+[1/1] scsi: sd: remove obsolete variable in sd_remove()
+      https://git.kernel.org/mkp/scsi/c/be2553358cd4
 
 -- 
 Martin K. Petersen	Oracle Linux Engineering

@@ -2,94 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35A5A2EEC63
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Jan 2021 05:22:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE9E62EEDEF
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Jan 2021 08:40:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727560AbhAHEUl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 Jan 2021 23:20:41 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:52452 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727471AbhAHEUk (ORCPT
+        id S1726241AbhAHHkY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 Jan 2021 02:40:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47808 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725308AbhAHHkY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 Jan 2021 23:20:40 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10849f67096788;
-        Fri, 8 Jan 2021 04:19:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=fJtX/x/q0BSrKpHUkhYtCo9igyPNRl3G/Q1ztLnzj0Q=;
- b=U9tseGlUFLP/vvV2g5YoM4hATBWrA6QsJ1ETiKTLhDA4ZDRWzTfoS69owYthMgcXdgH2
- RpaeGs2Hq18+aCNwITJFr2Ka8cr/nEOICBZoAPFo5F8Tg1wmWlq4HnmaFBUi0oxKVl6y
- olA0JAzLykgohFEwBgQh88jAExNkJ46u6u5rbpBy66qlfaKlhWDD6iLhq0uz/G7DHJzh
- xYS3whqhDP+oKgxRk1ARZ2NIlVLJJretuFKO/BYqUQNhbPGhRjnc4y/43W/ufoZh69J/
- MxKvk0r+Gee3Ofhax2NC1u7QDWwVPmEyfmKPGyoxJ43pLNR9WongIDvlZRM1Gt5UBJ/G tg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 35wepmfd97-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 08 Jan 2021 04:19:54 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1084AuAi079282;
-        Fri, 8 Jan 2021 04:19:54 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 35v1fc2x8h-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 08 Jan 2021 04:19:54 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 1084Jqmp018065;
-        Fri, 8 Jan 2021 04:19:52 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 08 Jan 2021 04:19:52 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        linux-block@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Christoph Hellwig <hch@lst.de>, linux-kernel@vger.kernel.org,
-        linux-scsi@vger.kernel.org,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        clang-built-linux@googlegroups.com, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2] scsi: sd: remove obsolete variable in sd_remove()
-Date:   Thu,  7 Jan 2021 23:19:37 -0500
-Message-Id: <161007949339.9892.18140869017043061616.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20201214095424.12479-1-lukas.bulwahn@gmail.com>
-References: <20201214095424.12479-1-lukas.bulwahn@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9857 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=850 phishscore=0
- suspectscore=0 spamscore=0 bulkscore=0 adultscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101080021
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9857 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 spamscore=0
- impostorscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0
- priorityscore=1501 mlxscore=0 malwarescore=0 clxscore=1011 mlxlogscore=859
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101080021
+        Fri, 8 Jan 2021 02:40:24 -0500
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01924C0612F4;
+        Thu,  7 Jan 2021 23:39:44 -0800 (PST)
+Received: by mail-wr1-x433.google.com with SMTP id i9so8025755wrc.4;
+        Thu, 07 Jan 2021 23:39:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=c5P+vvdX7z4Mp5Q7UAxuVpXv4FhDjOB40VptQJQFkP8=;
+        b=ULcPG7pG3hfb4RaCCdNWz8cGe/83A/1O4EhCZZuR85Zw/37aUPVEbsyX2NP4o7pV7Y
+         YgaN7jW7IfTxRYJIi6gS1L/KZ2BHYUBVAxFMXXL2BScQ6d3Iinjpp6JlfYbMPZQHuTCR
+         dAhxYci+RBDU9jMf+d4pFm0FIzmrHwYoXdPBqaTs+PbSiEMUWGcssQ5woavK7Hgx76ia
+         6sn1VWGWM5yQuRw5aCL7yC6tsoitzHI5pJhALfIpf0ULe4zoC5HG1Q5GgybKrj5OMOXp
+         FsoIZYNwQ0P8xgazLZZZKRp9CgfFqvFSu2XtFRTNM7JzUIErBffGvCd8BSt4rPmyjAk6
+         lEVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=c5P+vvdX7z4Mp5Q7UAxuVpXv4FhDjOB40VptQJQFkP8=;
+        b=Bbmsn28yom6WZnFosoW95WpVFhsCK+HQXcl78QJ4l2LvjcXWrK1UsY59GXiZ8dspne
+         Pm8POAuW+910dA9bbwFf3fmfOQ7J9elrz8mzBEffj80Hz6Qe2eM6iR+IcZRoMQKTwiMD
+         pnXh0OrU6OL56PiJpVPf9aC//4sO0G0ZiTnCWZMoIof8C9lSEbHLjodSngDSNE6c3XLi
+         OqICcCQ8G91j02fRQD2vRXkKH0CY9fBUJTyVsb3H5gjA7sXcxAB1sxkvJrTLJMcgWod2
+         ZeE52F4pKLW+JI+MoRQsUAikyHhKj8ibh9vfo2qpPOP0nKooQEdluqWtnA+iCdkeVIws
+         EJgQ==
+X-Gm-Message-State: AOAM530cgDdTYjh2SNGfZJ8vOzRyMVif0FVAW4hKTxWhoMF9c/svU/Lg
+        1nqH9MBowY92JVPAH2lefis=
+X-Google-Smtp-Source: ABdhPJyPwtYCwKwbl9aqmXccDodCIGu87EsclY/46H4yL3ExGm0bY2bMvlfX5nOmTTnNZkwgkK0Mbg==
+X-Received: by 2002:adf:e511:: with SMTP id j17mr2258610wrm.416.1610091582663;
+        Thu, 07 Jan 2021 23:39:42 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2dc3:3e00:c96a:15b:2758:58ec])
+        by smtp.gmail.com with ESMTPSA id x18sm13895152wrg.55.2021.01.07.23.39.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Jan 2021 23:39:41 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Marc Kleine-Budde <mkl@pengutronix.de>, linux-can@vger.kernel.org
+Cc:     Dan Murphy <dmurphy@ti.com>, Sean Nyekjaer <sean@geanix.com>,
+        Sriram Dash <sriram.dash@samsung.com>,
+        Joe Perches <joe@perches.com>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH for can-next] MAINTAINERS: adjust entry to tcan4x5x file split
+Date:   Fri,  8 Jan 2021 08:39:32 +0100
+Message-Id: <20210108073932.20804-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 14 Dec 2020 10:54:24 +0100, Lukas Bulwahn wrote:
+Commit 7813887ea972 ("can: tcan4x5x: rename tcan4x5x.c -> tcan4x5x-core.c")
+and commit 67def4ef8bb9 ("can: tcan4x5x: move regmap code into seperate
+file") split the file tcan4x5x.c into two files, but missed to adjust the
+TI TCAN4X5X DEVICE DRIVER section in MAINTAINERS.
 
-> Commit 140ea3bbf39a ("sd: use __register_blkdev to avoid a modprobe for an
-> unregistered dev_t") removed blk_register_region(devt, ...) in sd_remove()
-> and since then, devt is unused in sd_remove().
-> 
-> Hence, make W=1 warns:
-> 
->   drivers/scsi/sd.c:3516:8:
->       warning: variable 'devt' set but not used [-Wunused-but-set-variable]
-> 
-> [...]
+Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
 
-Applied to 5.11/scsi-fixes, thanks!
+  warning: no file matches    F:    drivers/net/can/m_can/tcan4x5x.c
 
-[1/1] scsi: sd: remove obsolete variable in sd_remove()
-      https://git.kernel.org/mkp/scsi/c/be2553358cd4
+Adjust the file entry in MAINTAINERS to the tcan4x5x file splitting.
 
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on next-20210107, not for current master
+
+Marc, please pick this for your -next tree on top of the tcan4x5x cleanup.
+
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8170b40d6236..0d75f07fc951 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17887,7 +17887,7 @@ M:	Dan Murphy <dmurphy@ti.com>
+ L:	linux-can@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/net/can/tcan4x5x.txt
+-F:	drivers/net/can/m_can/tcan4x5x.c
++F:	drivers/net/can/m_can/tcan4x5x*
+ 
+ TI TRF7970A NFC DRIVER
+ M:	Mark Greer <mgreer@animalcreek.com>
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.17.1
+

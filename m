@@ -2,51 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 500912EF11B
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Jan 2021 12:13:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF9A32EF298
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Jan 2021 13:37:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725901AbhAHLMy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 Jan 2021 06:12:54 -0500
-Received: from smtprelay0214.hostedemail.com ([216.40.44.214]:37538 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725806AbhAHLMy (ORCPT
+        id S1726267AbhAHMgj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 Jan 2021 07:36:39 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:44625 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725816AbhAHMgj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 Jan 2021 06:12:54 -0500
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 4C7E91803F7BC
-        for <kernel-janitors@vger.kernel.org>; Fri,  8 Jan 2021 11:12:13 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:967:973:988:989:1260:1261:1277:1311:1313:1314:1345:1381:1437:1515:1516:1518:1537:1560:1593:1594:1711:1714:1730:1747:1777:1792:2393:2525:2561:2564:2682:2685:2828:2829:2859:2933:2937:2939:2942:2945:2947:2951:2954:3000:3022:3138:3139:3140:3141:3142:3866:3867:3871:3872:3873:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4362:5007:6117:6248:7652:9010:9025:10004:10400:10848:11658:11914:12043:12297:12555:12679:12698:12737:12760:13069:13161:13229:13311:13357:13439:13845:14181:14659:14721:14777:21080:21433:21451:21627:30054:30060:30062,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: wheel54_4b06aa2274f2
-X-Filterd-Recvd-Size: 919
-Received: from [192.168.1.159] (unknown [47.151.137.21])
-        (Authenticated sender: joe@perches.com)
-        by omf02.hostedemail.com (Postfix) with ESMTPA
-        for <kernel-janitors@vger.kernel.org>; Fri,  8 Jan 2021 11:12:12 +0000 (UTC)
-Message-ID: <8f6ff1b65ca33284904005a4fdc7af2fbf151daa.camel@perches.com>
-Subject: Looking for an archive of kernel-janitors
-From:   Joe Perches <joe@perches.com>
-To:     kernel-janitors <kernel-janitors@vger.kernel.org>
-Date:   Fri, 08 Jan 2021 03:12:11 -0800
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+        Fri, 8 Jan 2021 07:36:39 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kxqza-0005Ut-MN; Fri, 08 Jan 2021 12:35:46 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        =?UTF-8?q?=E6=9C=B1=E7=81=BF=E7=81=BF?= <zhucancan@vivo.com>,
+        alsa-devel@alsa-project.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] ASoC: soc-pcm: Fix uninitialised return value in variable ret
+Date:   Fri,  8 Jan 2021 12:35:46 +0000
+Message-Id: <20210108123546.19601-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-So it can be added to lore.kernel.org.
+From: Colin Ian King <colin.king@canonical.com>
 
-Anyone have one?
+Currently when attempting to start the BE fails because the
+FE is not started the error return variable ret is not initialized
+and garbage is returned.  Fix this by setting it to 0 so the
+caller does not report the error "ASoC: failed to shutdown some BEs"
+and because this failure path has already reported the reason for
+the early return.
 
-There is a specific archive format desired.
-see: https://korg.docs.kernel.org/lore.html
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: 2c1382840c19 ("ASoC: soc-pcm: disconnect BEs if the FE is not ready")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ sound/soc/soc-pcm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-If you have an archive of this mailing list,
-please reply to this bugzilla:
-
-https://bugzilla.kernel.org/show_bug.cgi?id=211087
-
-thanks.
+diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
+index 481a4a25acb0..b787ce4ceb5a 100644
+--- a/sound/soc/soc-pcm.c
++++ b/sound/soc/soc-pcm.c
+@@ -2443,6 +2443,7 @@ static int dpcm_run_update_startup(struct snd_soc_pcm_runtime *fe, int stream)
+ 		fe->dpcm[stream].state == SND_SOC_DPCM_STATE_CLOSE) {
+ 		dev_err(fe->dev, "ASoC: FE %s is not ready %d\n",
+ 			fe->dai_link->name, fe->dpcm[stream].state);
++		ret = 0;
+ 		goto disconnect;
+ 	}
+ 
+-- 
+2.29.2
 

@@ -2,111 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E183A2F113E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jan 2021 12:23:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7D122F11CC
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jan 2021 12:49:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729806AbhAKLWJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Jan 2021 06:22:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53736 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729564AbhAKLWI (ORCPT
+        id S1730156AbhAKLrV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Jan 2021 06:47:21 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:40511 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729779AbhAKLrV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Jan 2021 06:22:08 -0500
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32313C061786;
-        Mon, 11 Jan 2021 03:21:28 -0800 (PST)
-Received: by mail-ed1-x535.google.com with SMTP id p22so18299578edu.11;
-        Mon, 11 Jan 2021 03:21:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=jCkNG6d1sS57slG3YOXz4r4g6qRq6UBa2FdiKKF/U8M=;
-        b=AvBkVaufXzXIsVdn1YJ4xAeqSkLx8xzFgWYsG4YCOou8z0VtlmhpGf/yqOoxgmzzDW
-         /ZeObeuvfUAw8q3QK9OjBUTask/TCMO0f06FPAFjOqw+t31cDrKJYk6CHovnhxbpUPU9
-         Bdp1heIK+nQGqlgql8xA0hvzCmSg+2zEsnOYFnX/+lcF2F6LzUsxtt/g8M+12rBrZzsv
-         9WG1+hteAwOJLpywSJb5/zx2iVbRaqgq314Uqizfux4YbQH5D38JupGDpdCXhNlTudYI
-         JcpHNDz82r3eWTYnpxQnQm46qei5QkPCJkuds5g+23rJWmI9ptte7TuwmB86qf2VD+mQ
-         S6kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=jCkNG6d1sS57slG3YOXz4r4g6qRq6UBa2FdiKKF/U8M=;
-        b=bigaoHN8I7Rjzzv13lfEBKQ/gO2lB6vIFsV0AzZO/di+UzIvfoWzdbLQAWZI6we4pq
-         P/jI5R0cteh2vbW+WD8mH0LSE9O6sL+aqS8VO97Ofmv/tHAHM28ZvH7Sfo9CJiyrkgTd
-         X4LKZW96NjIHPOAlT9mx3iimrAJMhwJqN5lVGroHzkEvEx3M+gOsr6qQdsJObTCg2Kzp
-         /XzhdQiKMG+XA/VD/rBxeoppS+BT1wZk8UnmVq7SbZnNW2v/Zpv5TknlPT/fGwd3ttqh
-         IW6MTEBKOgU7gIPnptsg9Ns7244tzbbbJMP2NrpxQix09GtXr2PracOhOnIQCwh6Q0Zv
-         6bmQ==
-X-Gm-Message-State: AOAM530YWAfCTRM3dHB2JnGksUJjKA4nuavGFesbBNv5+1CXHDq29mYF
-        iaXtQPOmt98SsLnke2AFu/w=
-X-Google-Smtp-Source: ABdhPJyAns38qBDE1Lc13bKVIkxB+w9SwLysPYTkgMIasHzSmg6AQ4IEYqKemx29sgueBY5wPJaOew==
-X-Received: by 2002:a05:6402:610:: with SMTP id n16mr13422354edv.172.1610364086747;
-        Mon, 11 Jan 2021 03:21:26 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d2f:cf00:597a:a5a4:31de:992e])
-        by smtp.gmail.com with ESMTPSA id z25sm6833936ejd.23.2021.01.11.03.21.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Jan 2021 03:21:26 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Wu Hao <hao.wu@intel.com>, Moritz Fischer <mdf@kernel.org>,
-        Matthew Gerlach <matthew.gerlach@linux.intel.com>,
-        linux-fpga@vger.kernel.org
-Cc:     Tom Rix <trix@redhat.com>, linux-doc@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH -next] fpga: dfl-pci: rectify ReST formatting
-Date:   Mon, 11 Jan 2021 12:21:13 +0100
-Message-Id: <20210111112113.27242-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 11 Jan 2021 06:47:21 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kyveg-0005Md-6w; Mon, 11 Jan 2021 11:46:38 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Xiaojian Du <Xiaojian.Du@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/amdgpu: Add missing BOOTUP_DEFAULT to profile_name[]
+Date:   Mon, 11 Jan 2021 11:46:38 +0000
+Message-Id: <20210111114638.16530-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit fa41d10589be ("fpga: dfl-pci: locate DFLs by PCIe vendor specific
-capability") provides documentation to the FPGA Device Feature List (DFL)
-Framework Overview, but introduced new documentation warnings:
+From: Colin Ian King <colin.king@canonical.com>
 
-  ./Documentation/fpga/dfl.rst:
-    505: WARNING: Title underline too short.
-    523: WARNING: Unexpected indentation.
-    523: WARNING: Blank line required after table.
-    524: WARNING: Block quote ends without a blank line; unexpected unindent.
+A recent change added a new BOOTUP_DEFAULT power profile mode
+to the PP_SMC_POWER_PROFILE enum but omitted updating the
+corresponding profile_name array.  Fix this by adding in the
+missing BOOTUP_DEFAULT to profile_name[].
 
-Rectify ReST formatting in ./Documentation/fpga/dfl.rst.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Addresses-Coverity: ("Out-of-bounds read")
+Fixes: c27c9778a19e ("drm/amd/powerplay: support BOOTUP_DEFAULT power profile mode")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
-applies cleanly on next-20210111
+ drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Moritz, Matthew, please ack.
-
-Greg, please pick this doc fixup to your fpga -next tree on top of
-the commit above.
-
- Documentation/fpga/dfl.rst | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/fpga/dfl.rst b/Documentation/fpga/dfl.rst
-index ea8cefc18bdb..c41ac76ffaae 100644
---- a/Documentation/fpga/dfl.rst
-+++ b/Documentation/fpga/dfl.rst
-@@ -502,7 +502,7 @@ FME Partial Reconfiguration Sub Feature driver (see drivers/fpga/dfl-fme-pr.c)
- could be a reference.
- 
- Location of DFLs on a PCI Device
--===========================
-+================================
- The original method for finding a DFL on a PCI device assumed the start of the
- first DFL to offset 0 of bar 0.  If the first node of the DFL is an FME,
- then further DFLs in the port(s) are specified in FME header registers.
-@@ -514,6 +514,7 @@ data begins with a 4 byte vendor specific register for the number of DFLs follow
- Offset/BIR vendor specific registers for each DFL. Bits 2:0 of Offset/BIR register
- indicates the BAR, and bits 31:3 form the 8 byte aligned offset where bits 2:0 are
- zero.
-+::
- 
-         +----------------------------+
-         |31     Number of DFLS      0|
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+index 75ddcadf3802..4763cb095820 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+@@ -774,6 +774,7 @@ static int vangogh_get_power_profile_mode(struct smu_context *smu,
+ 					   char *buf)
+ {
+ 	static const char *profile_name[] = {
++					"BOOTUP_DEFAULT",
+ 					"FULL_SCREEN_3D",
+ 					"VIDEO",
+ 					"VR",
 -- 
-2.17.1
+2.29.2
 

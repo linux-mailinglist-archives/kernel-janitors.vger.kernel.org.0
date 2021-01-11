@@ -2,106 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE31F2F1017
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jan 2021 11:30:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E183A2F113E
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jan 2021 12:23:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729211AbhAKK3R (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Jan 2021 05:29:17 -0500
-Received: from mga05.intel.com ([192.55.52.43]:14253 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728762AbhAKK3R (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Jan 2021 05:29:17 -0500
-IronPort-SDR: n5t3IywvKyNuJS/HVl21Q1ULdCGulutDN2twgTc+O0NASA/3MDiZry365MC1Vsg4H2o28RERI0
- 0wT1UD5/axJw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9860"; a="262618129"
-X-IronPort-AV: E=Sophos;i="5.79,338,1602572400"; 
-   d="scan'208";a="262618129"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 02:28:32 -0800
-IronPort-SDR: 5MzC5HhH255GOVkG6N4933OfzmRqUt6c+42gYGNb3SJikDLDRzhfQ2OWfsTarTtSk3m7l2hTrx
- jqlyJ1kpTimw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,338,1602572400"; 
-   d="scan'208";a="464119262"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.149]) ([10.237.72.149])
-  by fmsmga001.fm.intel.com with ESMTP; 11 Jan 2021 02:28:29 -0800
-Subject: Re: [PATCH -next] scsi: docs: ABI: sysfs-driver-ufs: rectify table
- formatting
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org
-Cc:     linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210111102212.19377-1-lukas.bulwahn@gmail.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <25616ec5-3c90-2548-8516-599a73cc986b@intel.com>
-Date:   Mon, 11 Jan 2021 12:28:29 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
-MIME-Version: 1.0
-In-Reply-To: <20210111102212.19377-1-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S1729806AbhAKLWJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Jan 2021 06:22:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53736 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729564AbhAKLWI (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 11 Jan 2021 06:22:08 -0500
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32313C061786;
+        Mon, 11 Jan 2021 03:21:28 -0800 (PST)
+Received: by mail-ed1-x535.google.com with SMTP id p22so18299578edu.11;
+        Mon, 11 Jan 2021 03:21:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=jCkNG6d1sS57slG3YOXz4r4g6qRq6UBa2FdiKKF/U8M=;
+        b=AvBkVaufXzXIsVdn1YJ4xAeqSkLx8xzFgWYsG4YCOou8z0VtlmhpGf/yqOoxgmzzDW
+         /ZeObeuvfUAw8q3QK9OjBUTask/TCMO0f06FPAFjOqw+t31cDrKJYk6CHovnhxbpUPU9
+         Bdp1heIK+nQGqlgql8xA0hvzCmSg+2zEsnOYFnX/+lcF2F6LzUsxtt/g8M+12rBrZzsv
+         9WG1+hteAwOJLpywSJb5/zx2iVbRaqgq314Uqizfux4YbQH5D38JupGDpdCXhNlTudYI
+         JcpHNDz82r3eWTYnpxQnQm46qei5QkPCJkuds5g+23rJWmI9ptte7TuwmB86qf2VD+mQ
+         S6kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=jCkNG6d1sS57slG3YOXz4r4g6qRq6UBa2FdiKKF/U8M=;
+        b=bigaoHN8I7Rjzzv13lfEBKQ/gO2lB6vIFsV0AzZO/di+UzIvfoWzdbLQAWZI6we4pq
+         P/jI5R0cteh2vbW+WD8mH0LSE9O6sL+aqS8VO97Ofmv/tHAHM28ZvH7Sfo9CJiyrkgTd
+         X4LKZW96NjIHPOAlT9mx3iimrAJMhwJqN5lVGroHzkEvEx3M+gOsr6qQdsJObTCg2Kzp
+         /XzhdQiKMG+XA/VD/rBxeoppS+BT1wZk8UnmVq7SbZnNW2v/Zpv5TknlPT/fGwd3ttqh
+         IW6MTEBKOgU7gIPnptsg9Ns7244tzbbbJMP2NrpxQix09GtXr2PracOhOnIQCwh6Q0Zv
+         6bmQ==
+X-Gm-Message-State: AOAM530YWAfCTRM3dHB2JnGksUJjKA4nuavGFesbBNv5+1CXHDq29mYF
+        iaXtQPOmt98SsLnke2AFu/w=
+X-Google-Smtp-Source: ABdhPJyAns38qBDE1Lc13bKVIkxB+w9SwLysPYTkgMIasHzSmg6AQ4IEYqKemx29sgueBY5wPJaOew==
+X-Received: by 2002:a05:6402:610:: with SMTP id n16mr13422354edv.172.1610364086747;
+        Mon, 11 Jan 2021 03:21:26 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d2f:cf00:597a:a5a4:31de:992e])
+        by smtp.gmail.com with ESMTPSA id z25sm6833936ejd.23.2021.01.11.03.21.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Jan 2021 03:21:26 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Wu Hao <hao.wu@intel.com>, Moritz Fischer <mdf@kernel.org>,
+        Matthew Gerlach <matthew.gerlach@linux.intel.com>,
+        linux-fpga@vger.kernel.org
+Cc:     Tom Rix <trix@redhat.com>, linux-doc@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH -next] fpga: dfl-pci: rectify ReST formatting
+Date:   Mon, 11 Jan 2021 12:21:13 +0100
+Message-Id: <20210111112113.27242-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 11/01/21 12:22 pm, Lukas Bulwahn wrote:
-> Commit 0b2894cd0fdf ("scsi: docs: ABI: sysfs-driver-ufs: Add DeepSleep
-> power mode") adds new entries in tables of sysfs-driver-ufs ABI
-> documentation, but formatted the table incorrectly.
-> 
-> Hence, make htmldocs warns:
-> 
->   ./Documentation/ABI/testing/sysfs-driver-ufs:{915,956}:
->   WARNING: Malformed table. Text in column margin in table line 15.
-> 
-> Rectify table formatting for DeepSleep power mode.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Commit fa41d10589be ("fpga: dfl-pci: locate DFLs by PCIe vendor specific
+capability") provides documentation to the FPGA Device Feature List (DFL)
+Framework Overview, but introduced new documentation warnings:
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+  ./Documentation/fpga/dfl.rst:
+    505: WARNING: Title underline too short.
+    523: WARNING: Unexpected indentation.
+    523: WARNING: Blank line required after table.
+    524: WARNING: Block quote ends without a blank line; unexpected unindent.
 
-Thank you!
+Rectify ReST formatting in ./Documentation/fpga/dfl.rst.
 
-> ---
-> Adrian, please ack.
-> 
-> Martin, please pick on your scsi-next tree.
-> 
->  Documentation/ABI/testing/sysfs-driver-ufs | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-driver-ufs b/Documentation/ABI/testing/sysfs-driver-ufs
-> index e77fa784d6d8..75ccc5c62b3c 100644
-> --- a/Documentation/ABI/testing/sysfs-driver-ufs
-> +++ b/Documentation/ABI/testing/sysfs-driver-ufs
-> @@ -932,8 +932,9 @@ Description:	This entry could be used to set or show the UFS device
->  		5   UFS device will be powered off, UIC link will
->  		    be powered off
->  		6   UFS device will be moved to deep sleep, UIC link
-> -		will be powered off. Note, deep sleep might not be
-> -		supported in which case this value will not be accepted
-> +		    will be powered off. Note, deep sleep might not be
-> +		    supported in which case this value will not be
-> +		    accepted
->  		==  ====================================================
->  
->  What:		/sys/bus/platform/drivers/ufshcd/*/rpm_target_dev_state
-> @@ -973,8 +974,9 @@ Description:	This entry could be used to set or show the UFS device
->  		5   UFS device will be powered off, UIC link will
->  		    be powered off
->  		6   UFS device will be moved to deep sleep, UIC link
-> -		will be powered off. Note, deep sleep might not be
-> -		supported in which case this value will not be accepted
-> +		    will be powered off. Note, deep sleep might not be
-> +		    supported in which case this value will not be
-> +		    accepted
->  		==  ====================================================
->  
->  What:		/sys/bus/platform/drivers/ufshcd/*/spm_target_dev_state
-> 
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on next-20210111
+
+Moritz, Matthew, please ack.
+
+Greg, please pick this doc fixup to your fpga -next tree on top of
+the commit above.
+
+ Documentation/fpga/dfl.rst | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/fpga/dfl.rst b/Documentation/fpga/dfl.rst
+index ea8cefc18bdb..c41ac76ffaae 100644
+--- a/Documentation/fpga/dfl.rst
++++ b/Documentation/fpga/dfl.rst
+@@ -502,7 +502,7 @@ FME Partial Reconfiguration Sub Feature driver (see drivers/fpga/dfl-fme-pr.c)
+ could be a reference.
+ 
+ Location of DFLs on a PCI Device
+-===========================
++================================
+ The original method for finding a DFL on a PCI device assumed the start of the
+ first DFL to offset 0 of bar 0.  If the first node of the DFL is an FME,
+ then further DFLs in the port(s) are specified in FME header registers.
+@@ -514,6 +514,7 @@ data begins with a 4 byte vendor specific register for the number of DFLs follow
+ Offset/BIR vendor specific registers for each DFL. Bits 2:0 of Offset/BIR register
+ indicates the BAR, and bits 31:3 form the 8 byte aligned offset where bits 2:0 are
+ zero.
++::
+ 
+         +----------------------------+
+         |31     Number of DFLS      0|
+-- 
+2.17.1
 

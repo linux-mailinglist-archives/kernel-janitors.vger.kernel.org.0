@@ -2,108 +2,129 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 847CE2F191A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jan 2021 16:04:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CABED2F1941
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jan 2021 16:13:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728633AbhAKPEk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Jan 2021 10:04:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45104 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726459AbhAKPEk (ORCPT
+        id S1731300AbhAKPNa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Jan 2021 10:13:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:58299 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1731070AbhAKPNa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Jan 2021 10:04:40 -0500
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC04CC061786;
-        Mon, 11 Jan 2021 07:03:59 -0800 (PST)
-Received: by mail-ej1-x62a.google.com with SMTP id d17so679ejy.9;
-        Mon, 11 Jan 2021 07:03:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=aAeE0TTHdKHoJkBYQsPdM4kqaplDlSaeVpHaFu0f2pw=;
-        b=vSp5iHmtr+/75uywTjkXTBnxCX3gZU/hlkgu7K8AMQUHLiqpyG8enC7XVQ71V/QaGK
-         biRC0kvKBRu+mlWp9xCbs5+9VAGnzcGv0kFFpymvUsR6P3ykiEL6rM55ahyO9ieG8JjZ
-         q990kKVHlOLSXu750+i0m1dMMoZ7IlfYK9jngg5aBqUgT7+Nba8ndXLe5swygJedvWwP
-         QsQ5DUWSXyO5MThoWwrbyis9PYgNfuYafMKCI4JTHaYiLAoLsLcgUHNCTfRJ3YJSYg0p
-         CBVWfve1OnVo0ArrGx1rUiv4/7mfag5UeqPvvmH6e5Ll9XjfOhatl8EnrRzb9gTgK58k
-         H8gA==
+        Mon, 11 Jan 2021 10:13:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1610377923;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zH2sY2KFOZF7TSs2Cj/3HvzX9baKiIPNLIu6OGwY2+M=;
+        b=iTZ9Dt3UGCVQ2+XRFE/ePihDxClp91i2MsAPxbXquzHCVVMUJTQKrRybR13eezKOgDMoAv
+        HYCgf1Hu3Rj18s27IdG3TsgeNJSVyPN9y+/i4BT3zI23MSiGE5XDyZgUhn1azcL3xZKaRP
+        +CZV7xKAH6oAlHazgq2rqa4n3DdDDDU=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-232-1Ci3YOaWPnidZuEhnlLMhA-1; Mon, 11 Jan 2021 10:12:02 -0500
+X-MC-Unique: 1Ci3YOaWPnidZuEhnlLMhA-1
+Received: by mail-qt1-f199.google.com with SMTP id e14so13286016qtr.8
+        for <kernel-janitors@vger.kernel.org>; Mon, 11 Jan 2021 07:12:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=aAeE0TTHdKHoJkBYQsPdM4kqaplDlSaeVpHaFu0f2pw=;
-        b=FDN0APK7O1mUMUqUXIpEW8HSLltxBdk0HjrHGUjDhoR8YeZX1VXS7JbA0QIjcv952z
-         9iDF+zEuRXenOY0NLsu7r7ux5GjTF10pESwFNBOmNj8HcRQjvPbzDFCluI5EO75zayhw
-         CMc5kgzRnT4F/smjzTjYZkM4KGuJ3H842AhsFfahccZ3iXNO2ofbknXk2QecD5aBC0lY
-         hnWCY46jTiz3BH5jHfu0BJeyATs3ybHHiQf+of3TMrORBXv3iSJoj+Ur8a3iVNan+iC9
-         ET3dg7mVHKUrDOERiQbg3oa4Cnl0Vr6ixHxehyfcH17cs9gW61cKz7ttVGXb383f4Vhk
-         iEig==
-X-Gm-Message-State: AOAM532PK43YmJRLp9UpqKTglYmSn4E8c3JFxNhD5KAYJsRmZRSBh1gA
-        JGQfDxBnHOh9AgTIIXVKDA2922smjv4=
-X-Google-Smtp-Source: ABdhPJxIyaLozHRUSkxGCf9e46os4PII+e+rFlcGTGASsZ5G6GpsA7YmSEqFQ0qbBTusFlQlcioPdw==
-X-Received: by 2002:a17:906:7a46:: with SMTP id i6mr10589160ejo.257.1610377438272;
-        Mon, 11 Jan 2021 07:03:58 -0800 (PST)
-Received: from [192.168.2.202] (pd9ea3126.dip0.t-ipconnect.de. [217.234.49.38])
-        by smtp.gmail.com with ESMTPSA id j23sm58529edv.45.2021.01.11.07.03.56
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=zH2sY2KFOZF7TSs2Cj/3HvzX9baKiIPNLIu6OGwY2+M=;
+        b=nE7MWIJOFw7EufR4Tp00zM8M5oz0vtmsfNtH0tkIcw3KrrQMKD+dkj/QCzlEiUE4t/
+         aup7gEclPcllXteOcvn3H1eMV0xgriMaw5lePdcTaqnAsnp2yYNwJYteRRP4OHYK+V1r
+         7pfgp3PVYfXQ8xRXCopk/+T0vM7N0lvbxh64YLKsAUxGqyFtiNTn5uAZR5HiSXYaQDdu
+         1iONnnij6+cohnlK99UldHssBC5+kXWDtwzqakys/EZAkcjkZiCaoRxgBp+JZNzm240N
+         Bev71QT7pjpm6r0I2wSIEkQftwwYecDyDhJkLcpZBbyGKZoymhikpZE7v6bQA23pe4ti
+         HlQQ==
+X-Gm-Message-State: AOAM531fLggXknlsepB9P/lg9u4OJJ/jEY9VKgx7tD1/DG6f7arxqjbu
+        VRBVNw0NofZF8TbxkQ2YZv1hF/t7NW9EcnYN68VcIPA7HVdtrk7fTuJkiRVI4kUEMXeBVjhnJQW
+        Hn/8CfY0LGgK/waCBU6OO+hvp7Vsr
+X-Received: by 2002:a0c:a789:: with SMTP id v9mr64915qva.41.1610377921839;
+        Mon, 11 Jan 2021 07:12:01 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxcAqysHBNs93WJfvR2O2qKdvrvzOgfLz+paIVyIwplHKXl+Trm6gELqe7+VJOEgIEjl7lfig==
+X-Received: by 2002:a0c:a789:: with SMTP id v9mr64894qva.41.1610377921612;
+        Mon, 11 Jan 2021 07:12:01 -0800 (PST)
+Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id n31sm2516266qtn.66.2021.01.11.07.11.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Jan 2021 07:03:57 -0800 (PST)
-Subject: Re: [PATCH][next] platform/surface: fix potential integer overflow on
- shift of a int
-To:     Colin King <colin.king@canonical.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        platform-driver-x86@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210111144648.20498-1-colin.king@canonical.com>
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-Message-ID: <94d4044a-d50f-0108-9312-53338c388f39@gmail.com>
-Date:   Mon, 11 Jan 2021 16:03:56 +0100
+        Mon, 11 Jan 2021 07:12:01 -0800 (PST)
+Subject: Re: [PATCH -next] fpga: dfl-pci: rectify ReST formatting
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Wu Hao <hao.wu@intel.com>, Moritz Fischer <mdf@kernel.org>,
+        Matthew Gerlach <matthew.gerlach@linux.intel.com>,
+        linux-fpga@vger.kernel.org
+Cc:     linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20210111112113.27242-1-lukas.bulwahn@gmail.com>
+From:   Tom Rix <trix@redhat.com>
+Message-ID: <d22ccfa1-19a1-d48c-d822-76ea289965ab@redhat.com>
+Date:   Mon, 11 Jan 2021 07:11:59 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <20210111144648.20498-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+In-Reply-To: <20210111112113.27242-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 1/11/21 3:46 PM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The left shift of int 32 bit integer constant 1 is evaluated using 32 bit
-> arithmetic and then passed as a 64 bit function argument. In the case where
-> func is 32 or more this can lead to an oveflow.  Avoid this by shifting
-> using the BIT_ULL macro instead.
-> 
-> Addresses-Coverity: ("Unintentional integer overflow")
-> Fixes: fc00bc8ac1da ("platform/surface: Add Surface ACPI Notify driver")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
+On 1/11/21 3:21 AM, Lukas Bulwahn wrote:
+> Commit fa41d10589be ("fpga: dfl-pci: locate DFLs by PCIe vendor specific
+> capability") provides documentation to the FPGA Device Feature List (DFL)
+> Framework Overview, but introduced new documentation warnings:
+>
+>   ./Documentation/fpga/dfl.rst:
+>     505: WARNING: Title underline too short.
+>     523: WARNING: Unexpected indentation.
+>     523: WARNING: Blank line required after table.
+>     524: WARNING: Block quote ends without a blank line; unexpected unindent.
+>
+> Rectify ReST formatting in ./Documentation/fpga/dfl.rst.
+
+Can you explain how to reproduce this problem ?
+
+Tom
+
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 > ---
->   drivers/platform/surface/surface_acpi_notify.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/platform/surface/surface_acpi_notify.c b/drivers/platform/surface/surface_acpi_notify.c
-> index 8cd67a669c86..ef9c1f8e8336 100644
-> --- a/drivers/platform/surface/surface_acpi_notify.c
-> +++ b/drivers/platform/surface/surface_acpi_notify.c
-> @@ -188,7 +188,7 @@ static int san_acpi_notify_event(struct device *dev, u64 func,
->   	union acpi_object *obj;
->   	int status = 0;
->   
-> -	if (!acpi_check_dsm(san, &SAN_DSM_UUID, SAN_DSM_REVISION, 1 << func))
-> +	if (!acpi_check_dsm(san, &SAN_DSM_UUID, SAN_DSM_REVISION, BIT_ULL(func)))
->   		return 0;
->   
->   	dev_dbg(dev, "notify event %#04llx\n", func);
-> 
+> applies cleanly on next-20210111
+>
+> Moritz, Matthew, please ack.
+>
+> Greg, please pick this doc fixup to your fpga -next tree on top of
+> the commit above.
+>
+>  Documentation/fpga/dfl.rst | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/Documentation/fpga/dfl.rst b/Documentation/fpga/dfl.rst
+> index ea8cefc18bdb..c41ac76ffaae 100644
+> --- a/Documentation/fpga/dfl.rst
+> +++ b/Documentation/fpga/dfl.rst
+> @@ -502,7 +502,7 @@ FME Partial Reconfiguration Sub Feature driver (see drivers/fpga/dfl-fme-pr.c)
+>  could be a reference.
+>  
+>  Location of DFLs on a PCI Device
+> -===========================
+> +================================
+>  The original method for finding a DFL on a PCI device assumed the start of the
+>  first DFL to offset 0 of bar 0.  If the first node of the DFL is an FME,
+>  then further DFLs in the port(s) are specified in FME header registers.
+> @@ -514,6 +514,7 @@ data begins with a 4 byte vendor specific register for the number of DFLs follow
+>  Offset/BIR vendor specific registers for each DFL. Bits 2:0 of Offset/BIR register
+>  indicates the BAR, and bits 31:3 form the 8 byte aligned offset where bits 2:0 are
+>  zero.
+> +::
+>  
+>          +----------------------------+
+>          |31     Number of DFLS      0|
 
-Thanks, looks good to me.
-
-Reviewed-by: Maximilian Luz <luzmaximilian@gmail.com>
-
-Regards,
-Max

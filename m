@@ -2,93 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FD202F0F75
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jan 2021 10:52:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A1ED2F1000
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jan 2021 11:24:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728656AbhAKJwJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Jan 2021 04:52:09 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:40770 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728651AbhAKJwJ (ORCPT
+        id S1729048AbhAKKXC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Jan 2021 05:23:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41000 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726018AbhAKKXB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Jan 2021 04:52:09 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10B9XeZm004675;
-        Mon, 11 Jan 2021 09:50:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=7K6Zvs24CRKjmmrhF/60GttLkPQzZ34yQ6mBKLZh2d4=;
- b=Y7FehxrSJzZ7q7iQLz1FuQEr7QBa/9ATL/QBHgxDO58dZIx2rPaS7m7SbrjdnIMDFapK
- HOAZiLuRgT/3tYjudSc6IBGg1CnSd/UCO9QXvclrv/gez03itJLd/Ucln1RiYcOe2eP3
- /NDN1OLft0t95JZw2wU8dVBrVZsRabmjHjwG2bNVYhifb2hXcUS4B+C6sfIoojTbhH+4
- Xh3nvqV8juZ9BNMwiWihBtkZxYHk8EAarApTpcJILQudS2429RVdWGChj5z4thda0aC/
- E4jccK8H85szuYkcAgxPHQROvJ/cPx7dhh5/biQsOMrcoZ3NqtanY+Hja5LFZunCX6Vo tQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 360kcygbn3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 11 Jan 2021 09:50:39 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10B9Tpta053690;
-        Mon, 11 Jan 2021 09:50:38 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 360kew1xfu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 11 Jan 2021 09:50:38 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 10B9oXW7003504;
-        Mon, 11 Jan 2021 09:50:33 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 11 Jan 2021 01:50:33 -0800
-Date:   Mon, 11 Jan 2021 12:50:21 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        =?utf-8?B?5pyx54G/54G/?= <zhucancan@vivo.com>
-Cc:     Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] ASoC: soc-pcm: Fix an uninitialized error code
-Message-ID: <X/wfXQFxeMLvpO+1@mwanda>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9860 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 malwarescore=0
- suspectscore=0 adultscore=0 spamscore=0 mlxlogscore=999 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101110057
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9860 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0
- impostorscore=0 bulkscore=0 adultscore=0 suspectscore=0 malwarescore=0
- lowpriorityscore=0 clxscore=1011 mlxlogscore=999 mlxscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101110057
+        Mon, 11 Jan 2021 05:23:01 -0500
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EDC5C061786;
+        Mon, 11 Jan 2021 02:22:21 -0800 (PST)
+Received: by mail-wr1-x435.google.com with SMTP id a12so15766515wrv.8;
+        Mon, 11 Jan 2021 02:22:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=q7Ut8wyd+vcrdq5TTR35m8gBt8Gz8AEpFHytc1d7o3o=;
+        b=X6z5Ie2/PoLrjneF7/9zRg9FK3zHBOoBKJj44ntLsUEn4+kX0kiAWOrumhDW70sUJP
+         PZpk5Zg3goIRX6HMnWCc8w6+33kxfrTv3SMRIzcaU/ukXvSTb08GXdMg+6X6l3X3EZja
+         2uc/52BDjYSHW/p53bQ1r8UIrwovpF0VfLW7U6GqaptZ+rVo2XvVbWXgPNRc0T9HifRG
+         cCogC5Jn/kf4RBKQBK3KPW4EtOOCbluZFeNv6A3Kk9PQ1ZM8wjIfhkj7mk3LTs7+eRzX
+         tbmx3wfU+nUX2IBLV9JHMNVBvs9XNzcdmOGKDuz+5ggVehsTfN6lNZ0r2sWTs1udwoa9
+         eSkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=q7Ut8wyd+vcrdq5TTR35m8gBt8Gz8AEpFHytc1d7o3o=;
+        b=SDDifoXphnmK8mlDbkWPZNfqlkZZJeuJ1Jirtvv9d6Bz2fAts0KG7gNMdQfffP/4zR
+         Ovis2om9O3ajMeQzfY9aHEaWq2+J8/FZ4RZlp4J8lP7eTIlNoXiBTJCS8sVpJFhB/e24
+         urVB18BOJ9Qbs3IoIg1jbK/BxMb5dm5UZv/pySJ3WW8hbcClIY20H++zk521ZBEYBDh2
+         V1BXsvp9stGILS/w+6BghKxHF8NnpdVJbCmAG/tmb2oVZs/1rDdASbgNoO6VXSGVF8m4
+         jEUFtjaXzmsKQkpwli92GjNANYGw5+8LwjGl56devFlb1N70f/9lQQlhJomg8VhMVYMp
+         FGag==
+X-Gm-Message-State: AOAM533Wwl+En0zTDugpjO6DwbZpTvw+FSfm6ReTVFDNxL/2BgDJgGCL
+        u1dcJ5tSkLMGkgB/asZqzgw=
+X-Google-Smtp-Source: ABdhPJyV/RPT9lqtiYfVdLtTlc/+U9FXDn+2X4J5n0EhwjjTPRKrolDp81kRQ00Jy04M5oAWJy/gpw==
+X-Received: by 2002:adf:e452:: with SMTP id t18mr14927572wrm.177.1610360539822;
+        Mon, 11 Jan 2021 02:22:19 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d2f:cf00:597a:a5a4:31de:992e])
+        by smtp.gmail.com with ESMTPSA id m11sm20879996wmi.16.2021.01.11.02.22.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Jan 2021 02:22:19 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org
+Cc:     linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH -next] scsi: docs: ABI: sysfs-driver-ufs: rectify table formatting
+Date:   Mon, 11 Jan 2021 11:22:12 +0100
+Message-Id: <20210111102212.19377-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The error path here doesn't set "ret" so it returns uninitialized data
-instead of a negative error code.
+Commit 0b2894cd0fdf ("scsi: docs: ABI: sysfs-driver-ufs: Add DeepSleep
+power mode") adds new entries in tables of sysfs-driver-ufs ABI
+documentation, but formatted the table incorrectly.
 
-Fixes: 2c1382840c19 ("ASoC: soc-pcm: disconnect BEs if the FE is not ready")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Hence, make htmldocs warns:
+
+  ./Documentation/ABI/testing/sysfs-driver-ufs:{915,956}:
+  WARNING: Malformed table. Text in column margin in table line 15.
+
+Rectify table formatting for DeepSleep power mode.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
- sound/soc/soc-pcm.c | 1 +
- 1 file changed, 1 insertion(+)
+Adrian, please ack.
 
-diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
-index 481a4a25acb0..489697963dd3 100644
---- a/sound/soc/soc-pcm.c
-+++ b/sound/soc/soc-pcm.c
-@@ -2443,6 +2443,7 @@ static int dpcm_run_update_startup(struct snd_soc_pcm_runtime *fe, int stream)
- 		fe->dpcm[stream].state == SND_SOC_DPCM_STATE_CLOSE) {
- 		dev_err(fe->dev, "ASoC: FE %s is not ready %d\n",
- 			fe->dai_link->name, fe->dpcm[stream].state);
-+		ret = -EINVAL;
- 		goto disconnect;
- 	}
+Martin, please pick on your scsi-next tree.
+
+ Documentation/ABI/testing/sysfs-driver-ufs | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/Documentation/ABI/testing/sysfs-driver-ufs b/Documentation/ABI/testing/sysfs-driver-ufs
+index e77fa784d6d8..75ccc5c62b3c 100644
+--- a/Documentation/ABI/testing/sysfs-driver-ufs
++++ b/Documentation/ABI/testing/sysfs-driver-ufs
+@@ -932,8 +932,9 @@ Description:	This entry could be used to set or show the UFS device
+ 		5   UFS device will be powered off, UIC link will
+ 		    be powered off
+ 		6   UFS device will be moved to deep sleep, UIC link
+-		will be powered off. Note, deep sleep might not be
+-		supported in which case this value will not be accepted
++		    will be powered off. Note, deep sleep might not be
++		    supported in which case this value will not be
++		    accepted
+ 		==  ====================================================
  
+ What:		/sys/bus/platform/drivers/ufshcd/*/rpm_target_dev_state
+@@ -973,8 +974,9 @@ Description:	This entry could be used to set or show the UFS device
+ 		5   UFS device will be powered off, UIC link will
+ 		    be powered off
+ 		6   UFS device will be moved to deep sleep, UIC link
+-		will be powered off. Note, deep sleep might not be
+-		supported in which case this value will not be accepted
++		    will be powered off. Note, deep sleep might not be
++		    supported in which case this value will not be
++		    accepted
+ 		==  ====================================================
+ 
+ What:		/sys/bus/platform/drivers/ufshcd/*/spm_target_dev_state
 -- 
-2.29.2
+2.17.1
 

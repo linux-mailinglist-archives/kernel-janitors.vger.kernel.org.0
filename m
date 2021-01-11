@@ -2,65 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E5592EF5A0
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Jan 2021 17:18:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07B1D2F0E78
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jan 2021 09:49:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727486AbhAHQRc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 Jan 2021 11:17:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43460 "EHLO
+        id S1728187AbhAKIrb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Jan 2021 03:47:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726386AbhAHQRc (ORCPT
+        with ESMTP id S1728100AbhAKIra (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 Jan 2021 11:17:32 -0500
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBB1AC061380
-        for <kernel-janitors@vger.kernel.org>; Fri,  8 Jan 2021 08:16:51 -0800 (PST)
-Received: by mail-qk1-x72c.google.com with SMTP id z11so8854842qkj.7
-        for <kernel-janitors@vger.kernel.org>; Fri, 08 Jan 2021 08:16:51 -0800 (PST)
+        Mon, 11 Jan 2021 03:47:30 -0500
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DC44C061786;
+        Mon, 11 Jan 2021 00:46:49 -0800 (PST)
+Received: by mail-ej1-x636.google.com with SMTP id w1so23446517ejf.11;
+        Mon, 11 Jan 2021 00:46:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=ik6B+6lkNc+iFrIPLOlH6nyfA0JsJ4cRGzVhof+Ll8w=;
-        b=QI+UMpDk1q6lkqlYTPvjwHMFas4jk2bj+zkOo6jpO7zyzVqDFS8juIsp/NdwriJbJh
-         B6KT9p4VKr//PcDizrl9v5NtvpIiZ6ZkixqurvaWXEzSy69kULV6lJiw0B8ansWrU5T4
-         Yhs5GzvEkvch5oCTfwaHQ5zK3ZCjvxPPpd/jX9UicO/7TieCFobiw+gDPw3QfpKUpByx
-         38NWGhRSAnrKvBUC/ubArFJ9gIeuQ8tcIUYio5ptHJA9a7fmgotNm8GNFr8YSyOJO5Zh
-         cUz+TKenKwIN/si5RmsMRGxrf34V1q4BW4j0MlZ1kdXuB84yxBD18Y3lP4Tr2RJQ/D6o
-         otEw==
+        h=from:to:cc:subject:date:message-id;
+        bh=YlWsX4vIpjnJ+C3Yar4M2WF0HiBoobe/CVqoUsW6rVo=;
+        b=COw2rqB77zW6ZIOfu7OjUku4N7nfgax8oJ9zq1ttqjWKsRXGjatsHvgc6ObraJj3v6
+         Z+JDkxvucKWw1riQrOqDrq1qyGO8Jj/73spV6l1EgiO1BB54dNqyeFIAC6EY6GRg1/3X
+         77C+7c1DTWy2+5FwfzUB+PCZIv2JhiYxVLrfuTdHhwJ6+c2FNgy0hlzw1fj/Gnf5fiBG
+         QJsNi5alVtS8/6D06g0QFg8P/IvtuxBUhy2FqFS8DSAoyctBr44V8MDp6WFcHVabHeo/
+         RY1AvfGCBzjfJ9ZYX1f7tnOIWUfN0tpnjepI7koTzaoA7D4zIGVObe6zEydk13m8blH4
+         IyqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:in-reply-to:references
-         :from:date:message-id:subject:to:content-transfer-encoding;
-        bh=ik6B+6lkNc+iFrIPLOlH6nyfA0JsJ4cRGzVhof+Ll8w=;
-        b=FW/rc9gvlBgjyeg7NvWZw7WNrH5Kbw2gN1DdWNapQg1Nq4FP9lW31gArwMHiaWfXbe
-         IJXQI9dBwpkAXXLElmQPRwfbthqJmWPqOerzw3hb3iFRUsEhvt4CerZD/oUgTrTf2qd3
-         EhgiMtU1tST5HCXWq0ulNWVnpveJScQZLADZzUhA1vk1sDrKWv/NnJ8BNaI6eyRXplYx
-         pPQhd9rP2nR0G42ru0SNYVYUjzjuAW3BaDzkiClW+dEegkZptN7Ow8kNbtVgW5futzeI
-         KK++gquJA49mUBnc3UW0L+C03hR7rzzd8dod6fpriNzI51le5QdUr/sBpKMPCxnJXJgI
-         vXPQ==
-X-Gm-Message-State: AOAM530TysMrY7YNq3qrgKVtrVOAKcWUnDCBIdYbiLj5UZYleTGRj1/H
-        SwO7kBAqxQGsxlc92BmKz1KaBeXodtcUK2QlulE=
-X-Google-Smtp-Source: ABdhPJy4hyNFH/SYGcLnTu3ncVwfhOJKF3AiKZoRB2F9zw2RMY8nFzyNdWj1skdGEfJNlsOfZTxd1w8tiueOQQwZ0O4=
-X-Received: by 2002:a37:a8a:: with SMTP id 132mr4531751qkk.327.1610122611232;
- Fri, 08 Jan 2021 08:16:51 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a05:6214:148d:0:0:0:0 with HTTP; Fri, 8 Jan 2021 08:16:50
- -0800 (PST)
-Reply-To: camillejackson021@gmail.com
-In-Reply-To: <CAGCmbMQupVT-1ZX2--N7Bjf2eW4VuUQ4dE_hzd1qAGQuE_JBEQ@mail.gmail.com>
-References: <CAGCmbMQupVT-1ZX2--N7Bjf2eW4VuUQ4dE_hzd1qAGQuE_JBEQ@mail.gmail.com>
-From:   camille jackson <adamraouf78@gmail.com>
-Date:   Fri, 8 Jan 2021 16:16:50 +0000
-Message-ID: <CAGCmbMRyqpxC22FGuUwP6b3qrZb0FeXUiZo0kc9qNHvzw1UkYg@mail.gmail.com>
-Subject: =?UTF-8?B?0JfQtNGA0LDQstGB0YLQstGD0LnRgtC1LA==?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=YlWsX4vIpjnJ+C3Yar4M2WF0HiBoobe/CVqoUsW6rVo=;
+        b=mOyYx6W7wQz+6L8tPOATDfv6ZA540lONNcasxXKj0fWW7Y1hTn7vA11xRAvawBp+GD
+         EZVbZ8vCaqqqdwDh6sO1XETvOf5K7zP/rcp4R9lL3+T5sgwzgtxBJmxf6/5mw048Aa4w
+         Qw8OcsQma7ToMHm88bb5Xvkx8XZZgMZ5sG4tLoPWjEl4vaMJMuBCUKoWIFI+bm27k8ep
+         5RHDcm9kaWQkcpH3ZKOm5mpZQRy8GUL17TTLEy9bUX/upHRFVBs+z98kkBf3ObUy3g13
+         7T6+YoimEcdoDBfMsbRF9E5Auwn2Z7+sg5gMPZnDNpchKZVpjB89RQneuAK3ulNPcPPF
+         i4Pw==
+X-Gm-Message-State: AOAM532IuJ7if252H7frEomt+hThDuq6N3DhtObiQtv4AfxltKrFjKk3
+        VgO+K4igHCMk4aqkIlycq2LhU17KR/aMWw==
+X-Google-Smtp-Source: ABdhPJwACYUF7sGeZamayddBFCwllD7sJkbrh/rFulbE6JzAxqy1K0DMg/EsOWVzFKaoobUwwyrblg==
+X-Received: by 2002:a17:907:6e9:: with SMTP id yh9mr9959389ejb.131.1610354808059;
+        Mon, 11 Jan 2021 00:46:48 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d2f:cf00:597a:a5a4:31de:992e])
+        by smtp.gmail.com with ESMTPSA id j7sm6775313ejj.27.2021.01.11.00.46.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Jan 2021 00:46:47 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
+        Nick Kazlauskas <Nicholas.Kazlauskas@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        amd-gfx@lists.freedesktop.org
+Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH -next] drm/amd/display: tweak the kerneldoc for active_vblank_irq_count
+Date:   Mon, 11 Jan 2021 09:46:40 +0100
+Message-Id: <20210111084640.28500-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-0J/RgNC40LLQtdGC0YHRgtCy0YPRjiDRgtC10LHRjywg0LzQvtC5INC00YDRg9CzLCDQvdCw0LTQ
-tdGO0YHRjCwg0YLRiyDQsiDQv9C+0YDRj9C00LrQtSwg0L/QvtC20LDQu9GD0LnRgdGC0LAsINC+
-0YLQstC10YLRjCDQvNC90LUNCtCx0LvQsNCz0L7QtNCw0YDRjywNCg==
+Commit 71338cb4a7c2 ("drm/amd/display: enable idle optimizations for linux
+(MALL stutter)") adds active_vblank_irq_count to amdgpu_display_manager
+in ./drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h.
+
+The kerneldoc is incorrectly formatted, and make htmldocs warns:
+
+  ./drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h:
+    340: warning: Incorrect use of kernel-doc format:          * @active_vblank_irq_count
+    379: warning: Function parameter or member 'active_vblank_irq_count' not described in 'amdgpu_display_manager'
+
+Tweak the kerneldoc for active_vblank_irq_count.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies on amdgpu's -next and next-20210111
+
+Bhawanpreet, Nick, please review and ack.
+
+Alex, Christian, please pick on top of the commit above.
+
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+index f084e2fc9569..5ee1b766884e 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+@@ -337,7 +337,7 @@ struct amdgpu_display_manager {
+ 	const struct gpu_info_soc_bounding_box_v1_0 *soc_bounding_box;
+ 
+ 	/**
+-	 * @active_vblank_irq_count
++	 * @active_vblank_irq_count:
+ 	 *
+ 	 * number of currently active vblank irqs
+ 	 */
+-- 
+2.17.1
+

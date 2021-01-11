@@ -2,109 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17D082F1D81
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jan 2021 19:07:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3A5E2F1DBA
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jan 2021 19:15:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390120AbhAKSHc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Jan 2021 13:07:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56366 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389777AbhAKSHb (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Jan 2021 13:07:31 -0500
-Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2591AC0617AA
-        for <kernel-janitors@vger.kernel.org>; Mon, 11 Jan 2021 10:06:21 -0800 (PST)
-Received: by mail-vs1-xe2e.google.com with SMTP id s2so18653vsk.2
-        for <kernel-janitors@vger.kernel.org>; Mon, 11 Jan 2021 10:06:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Hg1atIMlfVq1CP0ks7g47kbF5lVAshm+wDf+UA9H608=;
-        b=ZnxO3hgYHJMFo1HJ+QXvvTvE9r0omRXacK/rY3GV4B9tu290Yt76oktPalxYMs9L7l
-         yemXzNuqvelGbKVk6uyOeKYaYbki7C4cMrdzZVXZFVe+wZ5cgBlIhKP4tBPM5FcEjPD6
-         5zEWM+CPY80IUO0oQYDWFksPCbOUEHJbw+CXw170EO+AazxbEuagx0RKkYu+LaeS32wd
-         5YF4QPm4pDkWqAzPsYb/hDBC4q1haWES8x7PdJqAUSfr1rEloM5LKAg09bhvEj6DYbsY
-         kjw0fT4M3HfmU63quHpRKpV5VDEEw49AAYVNXvzlgRrTu7UAoIw6MAyeYnlUGoLrNmKl
-         N+Uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Hg1atIMlfVq1CP0ks7g47kbF5lVAshm+wDf+UA9H608=;
-        b=nwQynlbZD80tKBtJXjKel4ohuyG1oznpRswY+/pPP4MRH6NCVWZRDVlUZN8M45s4k9
-         29C0DuN+ftjE0UA0purR6Z2oSOiFKtG1u6PxPTMcoggaiYrkrtDKsQW8jobMLkMzFFIj
-         HqCaFM3GKiUQf5ucNmxKxRkwJmXlwoKXu+PZFP24NFSgwwzdsjC70XAdmYCrVjil6Wmr
-         8vUJ5CjjzvqYhok79bHWFg851q8Hnxjs3a+emmVM+dLKqZiOHtzEXUo1ToFBPHsj+Qof
-         4ibN2DQqmxGlrjCX83oZUlIn+gJhcKGguYnzC9xgErtL2H32WOAW0Ubuw/GsDovlGi6v
-         8JqQ==
-X-Gm-Message-State: AOAM533Xoj9N/sWVfIMDt1jizIjyIOR3B5YAG0y7vx8Y5rS8pEhPs2Uf
-        SUjGxNGYdko3WepvH4yIQPeRBKaAcLn4NjU0UGk+Eg==
-X-Google-Smtp-Source: ABdhPJytzIhVay23HpNWh/83mbi09JAvKFNGkwcFjs0CFwDbUYxfHWcfLIRVQyGOz6/yc0oV7LXjcbdS+YWrgv5pp3I=
-X-Received: by 2002:a05:6102:2127:: with SMTP id f7mr861047vsg.48.1610388380405;
- Mon, 11 Jan 2021 10:06:20 -0800 (PST)
+        id S2389967AbhAKSPH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Jan 2021 13:15:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37738 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726668AbhAKSPH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 11 Jan 2021 13:15:07 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9666B207B1;
+        Mon, 11 Jan 2021 18:14:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1610388866;
+        bh=B62HC3paLLckrwQ1xkjNWaCPCuRiDK6rJQAJHbpRzW0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=CPEP7PyqdyWqlypm0V+py211dLaXp0PKJ548GXRHUjlxBI1C1pA0riBCH8NE/YmK8
+         zeCPeAzynkkTQ3bs128bQMKaOQKUst9hFNCInoXxc+XOVTuQ4dwH1jNzzccRZf7S3i
+         KaHQOkQ6DajfJ9898JY4pNhDgLsb9talwxc6gnwU=
+Date:   Mon, 11 Jan 2021 19:14:22 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Wu Hao <hao.wu@intel.com>, Moritz Fischer <mdf@kernel.org>,
+        Matthew Gerlach <matthew.gerlach@linux.intel.com>,
+        linux-fpga@vger.kernel.org, Tom Rix <trix@redhat.com>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH -next] fpga: dfl-pci: rectify ReST formatting
+Message-ID: <X/yVflU6ccIlAtgO@kroah.com>
+References: <20210111112113.27242-1-lukas.bulwahn@gmail.com>
+ <X/x0j+hWRdJ6U/MG@kroah.com>
+ <CAKXUXMzR2J895_+ZsRqcJ___Pu0HnRfiiFFrGfehQe8J4kQrgg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20201217210922.165340-1-christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20201217210922.165340-1-christophe.jaillet@wanadoo.fr>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 11 Jan 2021 19:05:41 +0100
-Message-ID: <CAPDyKFo_dxAkUVZ0kj60OQeKoV8OeqWWQejh_NL0OcNjDLfA9Q@mail.gmail.com>
-Subject: Re: [PATCH] mmc: usdhi6rol0: Fix a resource leak in the error
- handling path of the probe
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Jesper Nilsson <jesper.nilsson@axis.com>,
-        Lars Persson <lars.persson@axis.com>,
-        Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
-        Chris Ball <chris@printf.net>, linux-arm-kernel@axis.com,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKXUXMzR2J895_+ZsRqcJ___Pu0HnRfiiFFrGfehQe8J4kQrgg@mail.gmail.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 17 Dec 2020 at 22:09, Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
->
-> A call to 'ausdhi6_dma_release()' to undo a previous call to
-> 'usdhi6_dma_request()' is missing in the error handling path of the probe
-> function.
->
-> It is already present in the remove function.
->
-> Fixes: 75fa9ea6e3c0 ("mmc: add a driver for the Renesas usdhi6rol0 SD/SDIO host controller")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+On Mon, Jan 11, 2021 at 05:34:57PM +0100, Lukas Bulwahn wrote:
+> On Mon, Jan 11, 2021 at 4:52 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Mon, Jan 11, 2021 at 12:21:13PM +0100, Lukas Bulwahn wrote:
+> > > Commit fa41d10589be ("fpga: dfl-pci: locate DFLs by PCIe vendor specific
+> > > capability") provides documentation to the FPGA Device Feature List (DFL)
+> > > Framework Overview, but introduced new documentation warnings:
+> > >
+> > >   ./Documentation/fpga/dfl.rst:
+> > >     505: WARNING: Title underline too short.
+> > >     523: WARNING: Unexpected indentation.
+> > >     523: WARNING: Blank line required after table.
+> > >     524: WARNING: Block quote ends without a blank line; unexpected unindent.
+> > >
+> > > Rectify ReST formatting in ./Documentation/fpga/dfl.rst.
+> > >
+> > > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> >
+> 
+> > You forgot a Reported-by: tag for the person who notified you of this :(
+> 
+> Greg, would you believe that I run 'make htmldocs' on linux-next myself?
 
-Applied for next, thanks!
+Sure, just seemed to match up with when Stephen reported this a few
+hours earlier...
 
-Kind regards
-Uffe
+thanks,
 
-
-> ---
->  drivers/mmc/host/usdhi6rol0.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/mmc/host/usdhi6rol0.c b/drivers/mmc/host/usdhi6rol0.c
-> index e2d5112d809d..615f3d008af1 100644
-> --- a/drivers/mmc/host/usdhi6rol0.c
-> +++ b/drivers/mmc/host/usdhi6rol0.c
-> @@ -1858,10 +1858,12 @@ static int usdhi6_probe(struct platform_device *pdev)
->
->         ret = mmc_add_host(mmc);
->         if (ret < 0)
-> -               goto e_clk_off;
-> +               goto e_release_dma;
->
->         return 0;
->
-> +e_release_dma:
-> +       usdhi6_dma_release(host);
->  e_clk_off:
->         clk_disable_unprepare(host->clk);
->  e_free_mmc:
-> --
-> 2.27.0
->
+greg k-h

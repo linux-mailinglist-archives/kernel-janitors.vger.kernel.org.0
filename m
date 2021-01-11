@@ -2,91 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B8242F1B08
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jan 2021 17:36:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B91272F1B21
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jan 2021 17:37:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730445AbhAKQfo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Jan 2021 11:35:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36424 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726997AbhAKQfo (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Jan 2021 11:35:44 -0500
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01291C061786;
-        Mon, 11 Jan 2021 08:35:04 -0800 (PST)
-Received: by mail-io1-xd33.google.com with SMTP id r9so185272ioo.7;
-        Mon, 11 Jan 2021 08:35:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KSxKKoTB7p9I30pNhP00kFn1ACWIHU12YNUj/6khzSI=;
-        b=scFMssqAHrdOsn8AL32eTozLU4jibIHnvedDqRIuMQLinPICMZ0/7DPcjLuAZW963I
-         lRgJDUOUZF7jDsov0iVjq7SMyPWh1grgMh+b8Bak8q5j5mx8wWWszAInFoh6/yvEGUSj
-         9aPFCShhzh+CGS9e/4939fv4YB3xs/7IJ8NV2o12iQnzvMIBQN4mVu/soZ34nLG6Ulc/
-         eRUhmoO1/gkRsswdocbhUljNIiIkTHMR4Zh7Xzy1kv0olKWiS0hl82N1HtmRvJIEq9VO
-         BgDCb6vevATFp5uK/IaCuwSSw+VfVRIY63g6hib/pR9/JSj0s/f7fazOv/E/21q0L8q2
-         QhTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KSxKKoTB7p9I30pNhP00kFn1ACWIHU12YNUj/6khzSI=;
-        b=KfdN2me013Zi6GSf8SQWtLVgUTpMxZ22LnfyGr8KVC2z3ISiYF3K9esaJaeKMlcq7L
-         2+Ww5KTZzaTDubYeAGKUneCd0cC3smBNK90LE2UT+2+cjYpsIw4oRYLySjL7wtEpYiMv
-         8rqNoznumMhj9Rf+JEBQ6fbWFv7qXvjZvw44BFGbyFF7Ii9DtrRb0aylaOsOuhoaQxIJ
-         383s0MGO6O6uRQoJj7Jm0cGr02i9FJnso7J+4h0x4Khxe8Y1kLRC8x2lflGNfKtO2OgR
-         TcmilUSNxp+sQNhH39GvcNuLQ5YEdMNtvA7oIm5s4/zvaQSlT1LVNDWLMW8+RHLEr8+n
-         D4Vg==
-X-Gm-Message-State: AOAM532uBFrXx9dt1DRSTBabiDJfkBxJ7NV3NgAqM6kjhJ+Ahyh8TJCD
-        kBp311xO3SPG/Y4VNWWDHs2etf2OECtngFWXzVQ=
-X-Google-Smtp-Source: ABdhPJxTLbsfah3xMGMJDkpJzkOgAe3Jvi3T1bv0QSf54plIZlaHifmkIPgoLiewHWXKQnJ0Kq8KksY8DXm+ffUH0Ik=
-X-Received: by 2002:a6b:6d1a:: with SMTP id a26mr86945iod.158.1610382903261;
- Mon, 11 Jan 2021 08:35:03 -0800 (PST)
+        id S1729275AbhAKQhE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Jan 2021 11:37:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43140 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726997AbhAKQhE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 11 Jan 2021 11:37:04 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6A9F420B1F;
+        Mon, 11 Jan 2021 16:36:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1610382984;
+        bh=FJ6UYmcp9qZ1+F9nDoqN3eSCeXg5LWZGhO2qmO2UrgU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=erEHoJgEokRZJPDaOfAepJ6+VEHuyp7HvfoJ+KEJ2EyWGzv0KVvCFc2J2gTDQM58v
+         rTjbHSoJHqMp9+g27xZk2GKBbGxnUHJ9eANnJjyKCoTFFccA/EA3LSyV5eCwcC3BqP
+         f8WW2UlhOhalPXGu0Iq/WpCI+nfy4NG28cFzJXv1GPA9RyWKpymG2G9rABQYCg8/G5
+         j+2IonqWPZXA5QpQMZKBOUMv9KSLxdRQKvXQHbyOjx4ZbTTvh4no/eT4oFQ4kSSz7c
+         f0zEwxhCMeSeszOrS2mlPq058PPIywzyL0oz4K/DXteje68hDf1F1JbjqAtyGRSkfu
+         1VuLM+o1Sigdg==
+Date:   Mon, 11 Jan 2021 16:35:51 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        =?utf-8?B?5pyx54G/54G/?= <zhucancan@vivo.com>,
+        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] ASoC: soc-pcm: Fix uninitialised return value in
+ variable ret
+Message-ID: <20210111163551.GA33269@sirena.org.uk>
+References: <20210108123546.19601-1-colin.king@canonical.com>
 MIME-Version: 1.0
-References: <20210111112113.27242-1-lukas.bulwahn@gmail.com> <X/x0j+hWRdJ6U/MG@kroah.com>
-In-Reply-To: <X/x0j+hWRdJ6U/MG@kroah.com>
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Date:   Mon, 11 Jan 2021 17:34:57 +0100
-Message-ID: <CAKXUXMzR2J895_+ZsRqcJ___Pu0HnRfiiFFrGfehQe8J4kQrgg@mail.gmail.com>
-Subject: Re: [PATCH -next] fpga: dfl-pci: rectify ReST formatting
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Wu Hao <hao.wu@intel.com>, Moritz Fischer <mdf@kernel.org>,
-        Matthew Gerlach <matthew.gerlach@linux.intel.com>,
-        linux-fpga@vger.kernel.org, Tom Rix <trix@redhat.com>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="gBBFr7Ir9EOA20Yy"
+Content-Disposition: inline
+In-Reply-To: <20210108123546.19601-1-colin.king@canonical.com>
+X-Cookie: Made with real ingredients.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jan 11, 2021 at 4:52 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Mon, Jan 11, 2021 at 12:21:13PM +0100, Lukas Bulwahn wrote:
-> > Commit fa41d10589be ("fpga: dfl-pci: locate DFLs by PCIe vendor specific
-> > capability") provides documentation to the FPGA Device Feature List (DFL)
-> > Framework Overview, but introduced new documentation warnings:
-> >
-> >   ./Documentation/fpga/dfl.rst:
-> >     505: WARNING: Title underline too short.
-> >     523: WARNING: Unexpected indentation.
-> >     523: WARNING: Blank line required after table.
-> >     524: WARNING: Block quote ends without a blank line; unexpected unindent.
-> >
-> > Rectify ReST formatting in ./Documentation/fpga/dfl.rst.
-> >
-> > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
->
 
-> You forgot a Reported-by: tag for the person who notified you of this :(
+--gBBFr7Ir9EOA20Yy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Greg, would you believe that I run 'make htmldocs' on linux-next myself?
+On Fri, Jan 08, 2021 at 12:35:46PM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> Currently when attempting to start the BE fails because the
+> FE is not started the error return variable ret is not initialized
+> and garbage is returned.  Fix this by setting it to 0 so the
 
-Of course, Stephen Rothwell reports such documentation warnings as
-well, but I take care independent of Stephen's reporting.
+This doesn't apply against current code, please check and resend.
 
-Lukas
+--gBBFr7Ir9EOA20Yy
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/8fmYACgkQJNaLcl1U
+h9Buowf/Z7C140455AraBh0sDuBCFIG9HvDvb3RUm0/Xt5lR91JwaVxdYRlBbjJ0
+dLSaYFh0GepPSHSAAn+AjVG5dN+26Lck2t/19LRscETOIZlqNwJ+YNY5f/FLJlau
+Fe7Z6qDaPUL/WgeDGaY1gqAsJpdVdfGP1ojKEXeqsKjyZnB35D7Ftt9Ouw/v5MPV
+V4z2ody8iK6SwNe/kIRIZndr8c2DOz3nodv0nBBuEn+18jdL1twh3CqqiL0eirCa
+nC9dqQWuy12SdRHWWv6w1M/lfWqVdZKhVO5/d/2jS2nGOr2bphnJ5/3Hy9ecbF5o
+TKGZIfArkmvxX+IAXxXeyPP85xKDBg==
+=RuRu
+-----END PGP SIGNATURE-----
+
+--gBBFr7Ir9EOA20Yy--

@@ -2,65 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB68E2F19BD
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jan 2021 16:33:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED6102F1A28
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jan 2021 16:53:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732438AbhAKPc1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Jan 2021 10:32:27 -0500
-Received: from mga03.intel.com ([134.134.136.65]:15535 "EHLO mga03.intel.com"
+        id S2388395AbhAKPwv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Jan 2021 10:52:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60792 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732413AbhAKPc1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Jan 2021 10:32:27 -0500
-IronPort-SDR: bk4Jx4luoo/j1Qc1zNlIl1I3eyl+bB+tf4Y67JMraLijxjgV5Ir/9I9/OAZVrksR8FpiVaM0KO
- /lge4Hji9CUw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9860"; a="177974761"
-X-IronPort-AV: E=Sophos;i="5.79,338,1602572400"; 
-   d="scan'208";a="177974761"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 07:31:44 -0800
-IronPort-SDR: mzhR87LQ/ofphbp4CytRntqvT2/ORg/3SCPgdZppthAsqr8l7swXb2WdW0MgZ1MpH4YXmUsj1l
- gbkMEGv2jzXQ==
-X-IronPort-AV: E=Sophos;i="5.79,338,1602572400"; 
-   d="scan'208";a="352639387"
-Received: from mgabor-mobl1.ger.corp.intel.com (HELO intel.com) ([10.214.242.11])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 07:31:39 -0800
-Date:   Mon, 11 Jan 2021 17:31:35 +0200
-From:   Andi Shyti <andi.shyti@intel.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-        Matthew Auld <matthew.auld@intel.com>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2] drm/i915: selftest_lrc: Fix error code in
- live_preempt_user()
-Message-ID: <X/xvV6IqusOkKGdD@intel.intel>
-References: <161037060292.28181.5373987654669273170@build.alporthouse.com>
- <X/xeIMP16sDekYrh@mwanda>
+        id S2387665AbhAKPwu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 11 Jan 2021 10:52:50 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 88A1022C7E;
+        Mon, 11 Jan 2021 15:52:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1610380330;
+        bh=+BfbvxWW3gaAnOWiAUuWrCcK/xBY9scMJ4oiG/fv7kE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=uozSjlnKXGkEb5YPduZdcgBKmGfFObfYPWxbFzmk63Hp+J7wibSPiSjUtg8KCG01l
+         42ttH+GU+7TLvS6e9GMYv4Va35NqOaM4H70o7qZPYxGPovbdT0+L8ot+DirhnWm6sf
+         4QXOKG3NE4lAtJRCEhlq0O15hfkeEWHkTto5FlFE=
+Date:   Mon, 11 Jan 2021 16:53:20 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Tom Rix <trix@redhat.com>
+Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>, Wu Hao <hao.wu@intel.com>,
+        Moritz Fischer <mdf@kernel.org>,
+        Matthew Gerlach <matthew.gerlach@linux.intel.com>,
+        linux-fpga@vger.kernel.org, linux-doc@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next] fpga: dfl-pci: rectify ReST formatting
+Message-ID: <X/x0cJ2N0/VA81FK@kroah.com>
+References: <20210111112113.27242-1-lukas.bulwahn@gmail.com>
+ <d22ccfa1-19a1-d48c-d822-76ea289965ab@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <X/xeIMP16sDekYrh@mwanda>
+In-Reply-To: <d22ccfa1-19a1-d48c-d822-76ea289965ab@redhat.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
-
-On Mon, Jan 11, 2021 at 05:18:08PM +0300, Dan Carpenter wrote:
-> This error path should return a negative error code instead of success.
+On Mon, Jan 11, 2021 at 07:11:59AM -0800, Tom Rix wrote:
 > 
-> Fixes: c92724de6db1 ("drm/i915/selftests: Try to detect rollback during batchbuffer preemption")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+> On 1/11/21 3:21 AM, Lukas Bulwahn wrote:
+> > Commit fa41d10589be ("fpga: dfl-pci: locate DFLs by PCIe vendor specific
+> > capability") provides documentation to the FPGA Device Feature List (DFL)
+> > Framework Overview, but introduced new documentation warnings:
+> >
+> >   ./Documentation/fpga/dfl.rst:
+> >     505: WARNING: Title underline too short.
+> >     523: WARNING: Unexpected indentation.
+> >     523: WARNING: Blank line required after table.
+> >     524: WARNING: Block quote ends without a blank line; unexpected unindent.
+> >
+> > Rectify ReST formatting in ./Documentation/fpga/dfl.rst.
+> 
+> Can you explain how to reproduce this problem ?
 
-Reviewed-by: Andi Shyti <andi.shyti@intel.com>
-
-Thanks,
-Andi
+'make htmldocs'

@@ -2,93 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF10B2F441E
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Jan 2021 06:51:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E838C2F44C7
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Jan 2021 08:05:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726278AbhAMFtn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 Jan 2021 00:49:43 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:36916 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726017AbhAMFtn (ORCPT
+        id S1725895AbhAMHBT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 13 Jan 2021 02:01:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53518 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725775AbhAMHBS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 Jan 2021 00:49:43 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10D5hrpM096106;
-        Wed, 13 Jan 2021 05:48:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=ZkHrcYYV5Akk6uzT+EdKBUBcNo8KiHkTc+tKaCmAVFk=;
- b=Wyp7IYKwOIvT64CBbNSyB65TGDFvs0W78C4DuwGnJ5YYC6P/lmGf1ZZ4f6qf35Cl5gRc
- 8Cf9HlSD6IbEfEkU0WFH2WKXN785UvvvVOkti7TgWNZtjMWFTEdFJd4MfONyOrSTnr4N
- HYZd/ncw7KQc/6MSOR2AgOuJOQWHn1/FbwaGNIVKNHvegBBkKuAl1OW9HhSNDarnmNvN
- 2IpWl6JrSFWXiGqX4DZajqtC2xNY8NwG/SB+cQllbecDj2W8lMR9i0jezWjOpm+tHVrH
- 7HsYr/iQWpzDI4B7gaCqqgTwM2a25/Qv9v83i/HCe0/WqQHr+4lUR5BZH/79o2f3DFDu Ng== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 360kcysp29-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 13 Jan 2021 05:48:59 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10D5eVSw058726;
-        Wed, 13 Jan 2021 05:48:58 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 360kf6w0j0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 13 Jan 2021 05:48:58 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 10D5mvRS023930;
-        Wed, 13 Jan 2021 05:48:58 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 12 Jan 2021 21:48:57 -0800
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     linux-scsi@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        kernel-janitors@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH -next] scsi: docs: ABI: sysfs-driver-ufs: rectify table formatting
-Date:   Wed, 13 Jan 2021 00:48:53 -0500
-Message-Id: <161051681546.32710.5582070513683033836.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210111102212.19377-1-lukas.bulwahn@gmail.com>
-References: <20210111102212.19377-1-lukas.bulwahn@gmail.com>
+        Wed, 13 Jan 2021 02:01:18 -0500
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD3B5C061575;
+        Tue, 12 Jan 2021 23:00:37 -0800 (PST)
+Received: by mail-wm1-x330.google.com with SMTP id n16so3048878wmc.0;
+        Tue, 12 Jan 2021 23:00:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cnbwALSILRtg0eF1OI+3vhojF1BxoTr6PT0p0tQxqiA=;
+        b=P45pb8uNoHZpyPmaYHpqZ6hAWBx+88nzcuz95v+M1E/N89iUQ9tOujzhoLafVdNbyk
+         7VJkBdTOJ+eVyA6o72XGZRWJ3N+Hk/0p8VHSe373+C+s7I5gcK4SNeC8wmkFLgZkQ367
+         d/sb+xPRKwp7pRDx1eOt/zqpLB77lY3j8fyFtoH+Bhs67AH2H3w0wBrmkIWga7iezMG9
+         u/MRdo0HwIFIyZLADOqyE9fSCBeFHUgMVNT5N9YtV8sOBViIKMMw1m9ZZj9xD6FOqYT4
+         qtGG9wbN0bD49ZEi1tK2qn6cDJ90aaJas9hgnbtw8RC1nZVpXjbLPw0e3IYKqO0StMAZ
+         Ursw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cnbwALSILRtg0eF1OI+3vhojF1BxoTr6PT0p0tQxqiA=;
+        b=ePDYPLGzB1SERNNUdblaq5EvtGG9WXPfyg3/qas/P1t3GgF9H0MspPUoBr5nbFHhu/
+         E0Ozrz+E86sYsJD+XH538b08jmSxN+TNH/1jhi2BeBFaWlCWs/xHhPBVKO3zcIDWEpjY
+         3VjSNGh7yl3wNWvFNAptu4sE1xvq3pACT1LVzS46LFkO+Q4+fW8AFaJtElwUnusOjhoB
+         dE67h4s3fsLorrDh201QyGKiljPlDndgh9nydD0HRomUMQSWfo1aMFISRG5hlStzYV2K
+         J4K8MOlRtftmkUK64WYhpfL/J+QNsVcesdNOWKfkGo5/DSnpObPWM6j4nf614PPdQsQ+
+         pqyQ==
+X-Gm-Message-State: AOAM5317PD5HbLWE5VZvM7/eu+RDMx1v/DbSKCG5s7rC7ITKPVKVTs1D
+        Ck2Coro9bYdGlKMAgTYSc/sly2tUxzEdDw==
+X-Google-Smtp-Source: ABdhPJxAMBLccw8apCe53op225/20bd1u8Q4ruDZQiOqP6LgX8TDM8D8RqKXkcqe362eQ/Y7XhXHHQ==
+X-Received: by 2002:a1c:5644:: with SMTP id k65mr695379wmb.62.1610521236450;
+        Tue, 12 Jan 2021 23:00:36 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2dc9:b100:30ef:8b8a:711:895d])
+        by smtp.gmail.com with ESMTPSA id v4sm1598126wrw.42.2021.01.12.23.00.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Jan 2021 23:00:35 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Jonathan Corbet <corbet@lwn.net>,
+        Yanteng Si <siyanteng@loongson.cn>,
+        Harry Wei <harryxiyou@gmail.com>,
+        Alex Shi <alex.shi@linux.alibaba.com>,
+        linux-doc@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH for doc-next] doc/zh_CN: adjust table markup in mips/ingenic-tcu.rst
+Date:   Wed, 13 Jan 2021 08:00:23 +0100
+Message-Id: <20210113070023.25064-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9862 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- mlxlogscore=999 phishscore=0 bulkscore=0 spamscore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101130034
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9862 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0
- impostorscore=0 bulkscore=0 adultscore=0 suspectscore=0 malwarescore=0
- lowpriorityscore=0 clxscore=1011 mlxlogscore=999 mlxscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101130034
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 11 Jan 2021 11:22:12 +0100, Lukas Bulwahn wrote:
+Commit 419b1d4ed1cb ("doc/zh_CN: add mips ingenic-tcu.rst translation")
+introduces a warning with make htmldocs:
 
-> Commit 0b2894cd0fdf ("scsi: docs: ABI: sysfs-driver-ufs: Add DeepSleep
-> power mode") adds new entries in tables of sysfs-driver-ufs ABI
-> documentation, but formatted the table incorrectly.
-> 
-> Hence, make htmldocs warns:
-> 
->   ./Documentation/ABI/testing/sysfs-driver-ufs:{915,956}:
->   WARNING: Malformed table. Text in column margin in table line 15.
-> 
-> [...]
+  ./Documentation/translations/zh_CN/mips/ingenic-tcu.rst:
+    61: WARNING: Malformed table. Text in column margin in table line 6.
 
-Applied to 5.11/scsi-fixes, thanks!
+Adjust the table markup to address this warning.
 
-[1/1] scsi: docs: ABI: sysfs-driver-ufs: rectify table formatting
-      https://git.kernel.org/mkp/scsi/c/f2cb4b2397ca
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on next-20210113
 
+Yanteng, please ack.
+
+Jonathan, please pick this doc warning fixup on your -next tree. 
+
+ Documentation/translations/zh_CN/mips/ingenic-tcu.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/translations/zh_CN/mips/ingenic-tcu.rst b/Documentation/translations/zh_CN/mips/ingenic-tcu.rst
+index 72b5d409ed89..9324a0a26430 100644
+--- a/Documentation/translations/zh_CN/mips/ingenic-tcu.rst
++++ b/Documentation/translations/zh_CN/mips/ingenic-tcu.rst
+@@ -53,14 +53,14 @@
+ 
+ TCU硬件的功能分布在多个驱动程序：
+ 
+-===========         =====
++==============      ===================================
+ 时钟                drivers/clk/ingenic/tcu.c
+ 中断                drivers/irqchip/irq-ingenic-tcu.c
+ 定时器              drivers/clocksource/ingenic-timer.c
+ OST                 drivers/clocksource/ingenic-ost.c
+ 脉冲宽度调制器      drivers/pwm/pwm-jz4740.c
+ 看门狗              drivers/watchdog/jz4740_wdt.c
+-===========         =====
++==============      ===================================
+ 
+ 因为可以从相同的寄存器控制属于不同驱动程序和框架的TCU的各种功能，所以
+ 所有这些驱动程序都通过相同的控制总线通用接口访问它们的寄存器。
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.17.1
+

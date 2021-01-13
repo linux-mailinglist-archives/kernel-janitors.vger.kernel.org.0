@@ -2,75 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F5F82F4849
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Jan 2021 11:09:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BECD2F4AE2
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Jan 2021 13:02:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727289AbhAMKGE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 Jan 2021 05:06:04 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:36176 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726565AbhAMKGC (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 Jan 2021 05:06:02 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kzd1h-0002s7-Ed; Wed, 13 Jan 2021 10:05:17 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        =?UTF-8?q?K=C3=A9vin=20L=27h=C3=B4pital?= 
-        <kevin.lhopital@bootlin.com>, linux-media@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] media: i2c: fix spelling mistakes: "enpoint" -> "endpoint"
-Date:   Wed, 13 Jan 2021 10:05:17 +0000
-Message-Id: <20210113100517.10959-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.29.2
+        id S1726645AbhAMMBz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 13 Jan 2021 07:01:55 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53016 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725912AbhAMMBy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 13 Jan 2021 07:01:54 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 007E023120;
+        Wed, 13 Jan 2021 12:01:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1610539274;
+        bh=0kcsXKcvhtdNBkgEawvGeAle7LC/iJ2XfAp40mhHTn8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=p9qIWsuTi9rlA9+GN4Fh2S7HojcR/WP6yeXoqPKmcKxR+YFs12wiHNniQx4mv8HzR
+         KLSvR45DxIY3zNJxjZEamHBZw3MfKIfrq4f35xs34/x1veoaccY//Rv0yRhYKp+AQA
+         lv/s7E87Ir4Uy267BnrvSolox1Kdn8Kl7mzWwwZ+8bpqFVzZqir5o6y+hBi1Lpz9WN
+         FdT5uBuG40OLO+SfYQsO45fNdOAMxooXdj9LjfWerURRwwNhXRCjHQb5TQ/wAk4XaU
+         MNGoHWGntO1IN4pm2yC0j0sPr+Ce41X8Qw1zfkdA2oz2mDdExn1rx8ugAEuxmTuHQQ
+         CMN4XWr/Cs0pw==
+Date:   Wed, 13 Jan 2021 17:31:09 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Swapnil Jakhade <sjakhade@cadence.com>,
+        Yuti Amonkar <yamonkar@cadence.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] phy: cadence-torrent: Fix error code in
+ cdns_torrent_phy_probe()
+Message-ID: <20210113120109.GG2771@vkoul-mobl>
+References: <X9s7Wxq+b6ls0q7o@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <X9s7Wxq+b6ls0q7o@mwanda>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 17-12-20, 14:04, Dan Carpenter wrote:
+> This error path should return -EINVAL, but currently it returns
+> success.
 
-There are two spelling mistakes in dev_err messages. Fix these.
+Applied, thanks
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/media/i2c/ov5648.c | 2 +-
- drivers/media/i2c/ov8865.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/media/i2c/ov5648.c b/drivers/media/i2c/ov5648.c
-index 609aa67b54ce..46ad0a539853 100644
---- a/drivers/media/i2c/ov5648.c
-+++ b/drivers/media/i2c/ov5648.c
-@@ -2453,7 +2453,7 @@ static int ov5648_probe(struct i2c_client *client)
- 
- 	handle = fwnode_graph_get_next_endpoint(dev_fwnode(dev), NULL);
- 	if (!handle) {
--		dev_err(dev, "unable to find enpoint node\n");
-+		dev_err(dev, "unable to find endpoint node\n");
- 		return -EINVAL;
- 	}
- 
-diff --git a/drivers/media/i2c/ov8865.c b/drivers/media/i2c/ov8865.c
-index fda5a55979aa..fd5be8ef079c 100644
---- a/drivers/media/i2c/ov8865.c
-+++ b/drivers/media/i2c/ov8865.c
-@@ -2799,7 +2799,7 @@ static int ov8865_probe(struct i2c_client *client)
- 
- 	handle = fwnode_graph_get_next_endpoint(dev_fwnode(dev), NULL);
- 	if (!handle) {
--		dev_err(dev, "unable to find enpoint node\n");
-+		dev_err(dev, "unable to find endpoint node\n");
- 		return -EINVAL;
- 	}
- 
 -- 
-2.29.2
-
+~Vinod

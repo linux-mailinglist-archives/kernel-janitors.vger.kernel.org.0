@@ -2,138 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AF092F44D4
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Jan 2021 08:09:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 968FF2F453C
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Jan 2021 08:35:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726411AbhAMHGr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 Jan 2021 02:06:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54684 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725811AbhAMHGr (ORCPT
+        id S1725949AbhAMHeF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 13 Jan 2021 02:34:05 -0500
+Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133]:60875 "EHLO
+        out30-133.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725681AbhAMHeE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 Jan 2021 02:06:47 -0500
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D60CC061575;
-        Tue, 12 Jan 2021 23:06:06 -0800 (PST)
-Received: by mail-wm1-x336.google.com with SMTP id 190so560388wmz.0;
-        Tue, 12 Jan 2021 23:06:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=K6LXLHuWbF+xM2SfRipuVJYLEQmCNog+ujbAtjwHjzo=;
-        b=Zhax2sWm7ZDLEzkyANWjjwnitRdN1lFpLCw+4XU5kgh/hfhd3jy6HrKhWjX+FEp0x+
-         i4/XSoiX4BrLXsK7xjdIb10XHx2M7/MznrSCzwFolANU13h/8cpTUAse2U9xVjTrkvnQ
-         fuC984HCYfcYwGym67/aV4BPrmPjbDq2HNLXxM6CrPal7qJS0Jbid5F5Lt1KufN5OGT6
-         EyQyqtkOCBGfKjh0jyEhGZnBBhRHKKW4+xjI/EvSqaYjAsFp+lGVfGyVgurvV7gbFXgR
-         9l7KqGAjOZmADAjbZcJHDys0w5w65YtzwmKgCP9y70Fini+uvTFV71GJycIJmOR3QOkd
-         M60g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=K6LXLHuWbF+xM2SfRipuVJYLEQmCNog+ujbAtjwHjzo=;
-        b=EXvkVI3R7jvBa3JZiQ4k1WXGowmIpK0rmEXysn2egFoZeTbOn4uVDWjVAjvpC3OjvA
-         GAmosjvwahwUqymxAauDyq1+zowBp8q0Oy05vHjGfp2DOe7ohLPW7NgGEou7ZRbGZZss
-         XnUVSdlIfGlxqeROKAQU/BixtAupPqjJdMj1l67XYsTlqc2goR/DfMnEFQzrqDVsUET7
-         B1RgU4Yr/m//IjnVDAaLVb7wZ8kzQHdd8ABuUDD7ylmJtOEsJYwqmmt3aZHJXY8sQCrc
-         /XseakhQ0YkusOKQqUwSNmEW3TNq6vDt5YE52EnfXR2G9IZsioRPbqdeOWCRuBYxGI6r
-         cz2g==
-X-Gm-Message-State: AOAM532b4rGyoxrdNkZfzuKgwTUYCdiJFDroZ7NJvEfD2Mn+nlRjSMft
-        myMm77jiqxS6KQcPOsEJGY4=
-X-Google-Smtp-Source: ABdhPJyvPrftwrv0Z/YTop6vlMbiZwyo5t/0RulUbrFKB3GycoWYphh7SmtQwr9xAxDdNRQTcj5vKA==
-X-Received: by 2002:a1c:2e43:: with SMTP id u64mr707547wmu.105.1610521565262;
-        Tue, 12 Jan 2021 23:06:05 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2dc9:b100:30ef:8b8a:711:895d])
-        by smtp.gmail.com with ESMTPSA id t1sm1584623wro.27.2021.01.12.23.06.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Jan 2021 23:06:04 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Jonathan Corbet <corbet@lwn.net>,
+        Wed, 13 Jan 2021 02:34:04 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04420;MF=alex.shi@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0ULbG-a5_1610523195;
+Received: from IT-FVFX43SYHV2H.local(mailfrom:alex.shi@linux.alibaba.com fp:SMTPD_---0ULbG-a5_1610523195)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Wed, 13 Jan 2021 15:33:16 +0800
+Subject: Re: [PATCH for doc-next] doc/zh_CN: adjust table markup in
+ mips/ingenic-tcu.rst
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
         Yanteng Si <siyanteng@loongson.cn>,
-        Harry Wei <harryxiyou@gmail.com>,
-        Alex Shi <alex.shi@linux.alibaba.com>,
-        linux-doc@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH for doc-next] doc/zh_CN: mips: use doc references instead
-Date:   Wed, 13 Jan 2021 08:05:57 +0100
-Message-Id: <20210113070557.28792-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Harry Wei <harryxiyou@gmail.com>, linux-doc@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210113070023.25064-1-lukas.bulwahn@gmail.com>
+From:   Alex Shi <alex.shi@linux.alibaba.com>
+Message-ID: <6040230e-5710-6580-aeb3-70d3f1859197@linux.alibaba.com>
+Date:   Wed, 13 Jan 2021 15:33:15 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.0; rv:68.0)
+ Gecko/20100101 Thunderbird/68.12.0
+MIME-Version: 1.0
+In-Reply-To: <20210113070023.25064-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The Chinese mips translations refer to non-existing labels in the original
-documentation. Hence, make htmldocs warns about those undefined labels on
-all files in ./Documentation/translations/zh_CN/mips/.
+Reviewed-by: Alex Shi <alex.shi@linux.alibaba.com>
 
-Replace the references to non-existing labels with suitable doc references.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-applies cleanly on next-20210113
-
-Yanteng, please ack.
-
-Jonathan, please pick this doc warning fixup on your -next tree. 
-
- Documentation/translations/zh_CN/mips/booting.rst     | 2 +-
- Documentation/translations/zh_CN/mips/features.rst    | 2 +-
- Documentation/translations/zh_CN/mips/index.rst       | 2 +-
- Documentation/translations/zh_CN/mips/ingenic-tcu.rst | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/Documentation/translations/zh_CN/mips/booting.rst b/Documentation/translations/zh_CN/mips/booting.rst
-index 3099d0fff7a6..96453e1b962e 100644
---- a/Documentation/translations/zh_CN/mips/booting.rst
-+++ b/Documentation/translations/zh_CN/mips/booting.rst
-@@ -2,7 +2,7 @@
- 
- .. include:: ../disclaimer-zh_CN.rst
- 
--:Original: :ref:`Documentation/mips/booting.rst <booting>`
-+:Original: :doc:`../../../mips/booting`
- :Translator: Yanteng Si <siyanteng@loongson.cn>
- 
- .. _cn_booting:
-diff --git a/Documentation/translations/zh_CN/mips/features.rst b/Documentation/translations/zh_CN/mips/features.rst
-index 7e67f81a0982..93d93d06b1b3 100644
---- a/Documentation/translations/zh_CN/mips/features.rst
-+++ b/Documentation/translations/zh_CN/mips/features.rst
-@@ -2,7 +2,7 @@
- 
- .. include:: ../disclaimer-zh_CN.rst
- 
--:Original: :ref:`Documentation/mips/features.rst <features>`
-+:Original: :doc:`../../../mips/features`
- :Translator: Yanteng Si <siyanteng@loongson.cn>
- 
- .. _cn_features:
-diff --git a/Documentation/translations/zh_CN/mips/index.rst b/Documentation/translations/zh_CN/mips/index.rst
-index 2c7b836a3da5..27a2eae8484a 100644
---- a/Documentation/translations/zh_CN/mips/index.rst
-+++ b/Documentation/translations/zh_CN/mips/index.rst
-@@ -2,7 +2,7 @@
- 
- .. include:: ../disclaimer-zh_CN.rst
- 
--:Original: :ref:`Documentation/mips/index.rst <index>`
-+:Original: :doc:`../../../mips/index`
- :Translator: Yanteng Si <siyanteng@loongson.cn>
- 
- .. _cn_index:
-diff --git a/Documentation/translations/zh_CN/mips/ingenic-tcu.rst b/Documentation/translations/zh_CN/mips/ingenic-tcu.rst
-index 9324a0a26430..f04ba407384a 100644
---- a/Documentation/translations/zh_CN/mips/ingenic-tcu.rst
-+++ b/Documentation/translations/zh_CN/mips/ingenic-tcu.rst
-@@ -2,7 +2,7 @@
- 
- .. include:: ../disclaimer-zh_CN.rst
- 
--:Original: :ref:`Documentation/mips/ingenic-tcu.rst <ingenic-tcu>`
-+:Original: :doc:`../../../mips/ingenic-tcu`
- :Translator: Yanteng Si <siyanteng@loongson.cn>
- 
- .. _cn_ingenic-tcu:
--- 
-2.17.1
-
+在 2021/1/13 下午3:00, Lukas Bulwahn 写道:
+> Commit 419b1d4ed1cb ("doc/zh_CN: add mips ingenic-tcu.rst translation")
+> introduces a warning with make htmldocs:
+> 
+>   ./Documentation/translations/zh_CN/mips/ingenic-tcu.rst:
+>     61: WARNING: Malformed table. Text in column margin in table line 6.
+> 
+> Adjust the table markup to address this warning.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+> applies cleanly on next-20210113
+> 
+> Yanteng, please ack.
+> 
+> Jonathan, please pick this doc warning fixup on your -next tree. 
+> 
+>  Documentation/translations/zh_CN/mips/ingenic-tcu.rst | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/translations/zh_CN/mips/ingenic-tcu.rst b/Documentation/translations/zh_CN/mips/ingenic-tcu.rst
+> index 72b5d409ed89..9324a0a26430 100644
+> --- a/Documentation/translations/zh_CN/mips/ingenic-tcu.rst
+> +++ b/Documentation/translations/zh_CN/mips/ingenic-tcu.rst
+> @@ -53,14 +53,14 @@
+>  
+>  TCU硬件的功能分布在多个驱动程序：
+>  
+> -===========         =====
+> +==============      ===================================
+>  时钟                drivers/clk/ingenic/tcu.c
+>  中断                drivers/irqchip/irq-ingenic-tcu.c
+>  定时器              drivers/clocksource/ingenic-timer.c
+>  OST                 drivers/clocksource/ingenic-ost.c
+>  脉冲宽度调制器      drivers/pwm/pwm-jz4740.c
+>  看门狗              drivers/watchdog/jz4740_wdt.c
+> -===========         =====
+> +==============      ===================================
+>  
+>  因为可以从相同的寄存器控制属于不同驱动程序和框架的TCU的各种功能，所以
+>  所有这些驱动程序都通过相同的控制总线通用接口访问它们的寄存器。
+> 

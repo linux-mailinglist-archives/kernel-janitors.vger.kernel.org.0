@@ -2,35 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B4722F56E1
-	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Jan 2021 02:59:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B5EA2F5793
+	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Jan 2021 04:00:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728393AbhANByf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 Jan 2021 20:54:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46362 "EHLO
+        id S1729786AbhANCCG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 13 Jan 2021 21:02:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729648AbhAMXy4 (ORCPT
+        with ESMTP id S1729448AbhAMXWd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 Jan 2021 18:54:56 -0500
+        Wed, 13 Jan 2021 18:22:33 -0500
 Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 332C8C0617A2;
-        Wed, 13 Jan 2021 15:24:25 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAE4DC0617BE;
+        Wed, 13 Jan 2021 15:21:28 -0800 (PST)
 Received: from lwn.net (unknown [IPv6:2601:281:8300:104d::5f6])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id 9A8646132;
-        Wed, 13 Jan 2021 23:24:24 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 9A8646132
+        by ms.lwn.net (Postfix) with ESMTPSA id B6685612C;
+        Wed, 13 Jan 2021 23:21:27 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net B6685612C
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-        t=1610580265; bh=Q7+Y7LKXkVAGeN134Mxv0g5tuHJqDerkJg9QZMMJMlg=;
+        t=1610580088; bh=HtK7neyREhRZnKo1DhkVntwSDPRKPQbMPmFOCpss7rc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=EAOrejo3tVWr3rPpO8hgQAeLiN8gOTu02A2DHlM1DsBhay2XXvj1CD7O9m7a3oWS8
-         9bgiywwl82dzrrcpcjkKLZnVas/Q3pKM98tsanVzYF0TpxZg+SZH80hsvSvdtOKdNA
-         ECfJWYVzLgzm2VDtH7shgckzztimqDnnj9c6jTW5iDeRYIePV4f/2rBfl8BVwqXS4e
-         F9J9eqOmw4C+1kf0K7T+zulEUQNaGBEg+bysOh9fqu1C3w/JVXEpPlFQPS7Ceu9LG4
-         vUW3/0FBfK5f4JS4u0oei7OmbHaCL6qSuQy2ig+Q03HcPyVgYQ96/qo9Q8O8I3Igxg
-         P3X0Od1Mt0Izg==
-Date:   Wed, 13 Jan 2021 16:24:23 -0700
+        b=obh38bPaqzYcTE+AkjRqELraIkpT6q8jJP8Ed0Rzmn2DICtaA5SScy+nTH/9RvK5c
+         /KVQNcyT51sn3d5GWhSWq7joqCMWdcpQoGpe5ucwEo517GYIU2H7DdIahUZRNRGDDo
+         mwMjp3DzRPMpP1MWppbm2PYx2+rZrGiDUpdeS0Ue8q6nmnWc6vjeIUw/7hyZ7k+RYb
+         CR3gijmMBdf2fT68IEEsRvH2WWHSSIPXy10qx0wbKHfdxqm/nP4xrvftHMUo7ZICpB
+         Wx8byEXRenXDz2p1YQGjtefrICL39vcRtYBlslI6Ot8Z/3M3vY5+DGjh5d0GcVe1iE
+         JK2CajB9pXkaQ==
+Date:   Wed, 13 Jan 2021 16:21:26 -0700
 From:   Jonathan Corbet <corbet@lwn.net>
 To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
 Cc:     Yanteng Si <siyanteng@loongson.cn>,
@@ -38,11 +38,11 @@ Cc:     Yanteng Si <siyanteng@loongson.cn>,
         Alex Shi <alex.shi@linux.alibaba.com>,
         linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH for doc-next] doc/zh_CN: mips: use doc references
- instead
-Message-ID: <20210113162423.5255f7b8@lwn.net>
-In-Reply-To: <20210113070557.28792-1-lukas.bulwahn@gmail.com>
-References: <20210113070557.28792-1-lukas.bulwahn@gmail.com>
+Subject: Re: [PATCH for doc-next] doc/zh_CN: adjust table markup in
+ mips/ingenic-tcu.rst
+Message-ID: <20210113162126.62e36bd3@lwn.net>
+In-Reply-To: <20210113070023.25064-1-lukas.bulwahn@gmail.com>
+References: <20210113070023.25064-1-lukas.bulwahn@gmail.com>
 Organization: LWN.net
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -51,17 +51,26 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 13 Jan 2021 08:05:57 +0100
+On Wed, 13 Jan 2021 08:00:23 +0100
 Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
 
-> The Chinese mips translations refer to non-existing labels in the original
-> documentation. Hence, make htmldocs warns about those undefined labels on
-> all files in ./Documentation/translations/zh_CN/mips/.
+> Commit 419b1d4ed1cb ("doc/zh_CN: add mips ingenic-tcu.rst translation")
+> introduces a warning with make htmldocs:
 > 
-> Replace the references to non-existing labels with suitable doc references.
+>   ./Documentation/translations/zh_CN/mips/ingenic-tcu.rst:
+>     61: WARNING: Malformed table. Text in column margin in table line 6.
+> 
+> Adjust the table markup to address this warning.
 > 
 > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+> applies cleanly on next-20210113
+> 
+> Yanteng, please ack.
+> 
+> Jonathan, please pick this doc warning fixup on your -next tree. 
 
-Applied, thanks.
+Not waiting for the ack, I've applied this (with an added Fixes tag),
+thanks.
 
 jon

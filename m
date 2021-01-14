@@ -2,89 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C5022F66C3
-	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Jan 2021 18:08:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 969112F67AD
+	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Jan 2021 18:30:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727505AbhANRGO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 14 Jan 2021 12:06:14 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54126 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726212AbhANRGO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 14 Jan 2021 12:06:14 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1C14C23B1C;
-        Thu, 14 Jan 2021 17:05:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1610643933;
-        bh=hwf3Sj/6g5H0FgDr5lRz9hWS4NsLDeGdj2FQI3Njcdw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kCHIxu1Ium/Rgyz9SefxLajRjTZIbQFN2FuB/rX1oEHn0mJkVmz7ZTNvVOHIKd6jG
-         MYb9a/yLBsC+WqGiW5yEWMm8/U1Di9efvc0l2YwFC6JC2xZSfONs0c4vdtuj31cSgB
-         +pJkSIM0retppMmDDkFcqgMIgoK4Qimua9I+m9zw=
-Date:   Thu, 14 Jan 2021 18:05:30 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Moritz Fischer <mdf@kernel.org>
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>, Wu Hao <hao.wu@intel.com>,
-        Matthew Gerlach <matthew.gerlach@linux.intel.com>,
-        linux-fpga@vger.kernel.org, Tom Rix <trix@redhat.com>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH -next] fpga: dfl-pci: rectify ReST formatting
-Message-ID: <YAB52nrYo2MTdlzA@kroah.com>
-References: <20210111112113.27242-1-lukas.bulwahn@gmail.com>
- <X/x0j+hWRdJ6U/MG@kroah.com>
- <CAKXUXMzR2J895_+ZsRqcJ___Pu0HnRfiiFFrGfehQe8J4kQrgg@mail.gmail.com>
- <X/yVflU6ccIlAtgO@kroah.com>
- <YAB1G9e4lCaKq0sq@epycbox.lan>
+        id S1728373AbhANR3x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 14 Jan 2021 12:29:53 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:55826 "EHLO
+        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728202AbhANR3x (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 14 Jan 2021 12:29:53 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1610645374; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=J7fXt9Pzjy4xDZMwYIou3GmDhIbn8nANhLmm5feFgtU=;
+ b=eW/v0wqKExG5ymFcaQPuBjryFptI/vvuIJ59JlLxK4WaKayyC2IavTBQE0oJCEO2gvG/ruWf
+ vfEIaBz39x6iQd6d1emoFOiQMldvXu8sIzGxcaJmz8Jjpe27krPGCk9tsMLRdd34WeA1MLaY
+ TMG3b2IqZzyXj7iUbLSr+FlE2IA=
+X-Mailgun-Sending-Ip: 69.72.43.15
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 60007f61af68fb3b061148c4 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 14 Jan 2021 17:29:05
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 38C71C433C6; Thu, 14 Jan 2021 17:29:05 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A1234C433CA;
+        Thu, 14 Jan 2021 17:29:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A1234C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YAB1G9e4lCaKq0sq@epycbox.lan>
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH][V2] wilc1000: fix spelling mistake in Kconfig "devision"
+ ->
+ "division"
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20201216115808.12987-1-colin.king@canonical.com>
+References: <20201216115808.12987-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210114172905.38C71C433C6@smtp.codeaurora.org>
+Date:   Thu, 14 Jan 2021 17:29:05 +0000 (UTC)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jan 14, 2021 at 08:45:15AM -0800, Moritz Fischer wrote:
-> Hi Greg,
-> 
-> On Mon, Jan 11, 2021 at 07:14:22PM +0100, Greg Kroah-Hartman wrote:
-> > On Mon, Jan 11, 2021 at 05:34:57PM +0100, Lukas Bulwahn wrote:
-> > > On Mon, Jan 11, 2021 at 4:52 PM Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > On Mon, Jan 11, 2021 at 12:21:13PM +0100, Lukas Bulwahn wrote:
-> > > > > Commit fa41d10589be ("fpga: dfl-pci: locate DFLs by PCIe vendor specific
-> > > > > capability") provides documentation to the FPGA Device Feature List (DFL)
-> > > > > Framework Overview, but introduced new documentation warnings:
-> > > > >
-> > > > >   ./Documentation/fpga/dfl.rst:
-> > > > >     505: WARNING: Title underline too short.
-> > > > >     523: WARNING: Unexpected indentation.
-> > > > >     523: WARNING: Blank line required after table.
-> > > > >     524: WARNING: Block quote ends without a blank line; unexpected unindent.
-> > > > >
-> > > > > Rectify ReST formatting in ./Documentation/fpga/dfl.rst.
-> > > > >
-> > > > > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> > > >
-> > > 
-> > > > You forgot a Reported-by: tag for the person who notified you of this :(
-> > > 
-> > > Greg, would you believe that I run 'make htmldocs' on linux-next myself?
-> > 
-> > Sure, just seemed to match up with when Stephen reported this a few
-> > hours earlier...
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> Are you waiting for a resend on this? Just asking because we got three
-> versions of this patch by now :)
-> 
-> I haven't re-sent this since you were already on the thread.
+Colin King <colin.king@canonical.com> wrote:
 
-I'll just take this one, for some reason I thought Lukas was going to
-resend, my fault...
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a spelling mistake in the Kconfig help text. Fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-greg k-h
+Patch applied to wireless-drivers-next.git, thanks.
+
+e4c748ee4af1 wilc1000: fix spelling mistake in Kconfig "devision" -> "division"
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20201216115808.12987-1-colin.king@canonical.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+

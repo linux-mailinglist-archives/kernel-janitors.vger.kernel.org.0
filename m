@@ -2,119 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C0922F5D31
-	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Jan 2021 10:23:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 55AEC2F5E07
+	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Jan 2021 10:48:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727543AbhANJWg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 14 Jan 2021 04:22:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:26521 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727349AbhANJWg (ORCPT
+        id S1727910AbhANJsW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 14 Jan 2021 04:48:22 -0500
+Received: from out4-smtp.messagingengine.com ([66.111.4.28]:53395 "EHLO
+        out4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725989AbhANJsV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 14 Jan 2021 04:22:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1610616069;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=v+P+ymbxz56cW25ly8svSOtyorypFtEzsoTghRSRpI0=;
-        b=G38lD5Na6cWyhhzEwkKiCuY53iWNwMehrJWPrlJ+rbphb7UeG2pWkfw6ZKLnYl+V8nSwWh
-        2Uuapc8GGOVSRrVpEr9ruv6IU50gY1AWtv5NS3AtqHgF3MKSHMP8AFbytUGcZbz7ApmqRc
-        vxJRcC2BdjTT6PAeOxm3javZp8x8E+o=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-227-lYMpLajHM1uB9BTga1zBXQ-1; Thu, 14 Jan 2021 04:21:08 -0500
-X-MC-Unique: lYMpLajHM1uB9BTga1zBXQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8BC0F1015C80;
-        Thu, 14 Jan 2021 09:21:06 +0000 (UTC)
-Received: from [10.36.115.75] (ovpn-115-75.ams2.redhat.com [10.36.115.75])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 1067860C47;
-        Thu, 14 Jan 2021 09:21:04 +0000 (UTC)
-Subject: Re: [PATCH] mm: memblock: remove return value of memblock_free_all()
-To:     Daeseok Youn <daeseok.youn@gmail.com>, rppt@kernel.org,
-        akpm@linux-foundation.org, linux-mm@kvack.org,
+        Thu, 14 Jan 2021 04:48:21 -0500
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.nyi.internal (Postfix) with ESMTP id 05FE85C0207;
+        Thu, 14 Jan 2021 04:47:24 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Thu, 14 Jan 2021 04:47:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=Ve0K+4
+        mFsy8VhopXYROFi++Wpwnj6ByqFKDcnhRH7JI=; b=eU7fYhf8YFmshjN2b62qia
+        Kv+MWc5xWdxVT64bsCDd5lMOM9mtGMNz0LSyhLwRPTp1+eIebYn4ODXKHIBK4Hog
+        GEh1osXaD0aRJfh3JeXanasSen0Lv9UVO0OrWdNh8OBABlfXZ5PCg60SLpZTICJ1
+        fspk6fWWJFw+Rqo4MLGB2nTiqdEpHJ/MFQuIXBB2dmhPW8+2v6Ar9IFG40Yc0/y1
+        cGKm16oTf4mQxIZ8VIPBCshOHr0ViSBB7VFbtC2JXSTFJDKfb7G+PpdUdKeVFP7P
+        UsJfZf/ZAOUfph/DPkIK2j1yfCeJTgB+X7YQe7OI8xe6IRvSbfOAvyFlSJxUbsOA
+        ==
+X-ME-Sender: <xms:KxMAYICFiEOw5AGUauB5U5qMEVZjV7qIFJm_Vah-kUwl2_6be2O04w>
+    <xme:KxMAYKjzB8O3q4ywCq9jKEAGgEcytFT8S6-YFNMVMbXwLykAmshQZ1BVyZVmMCZ0q
+    fittZuTcgBpAbU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedukedrtdehgddthecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepkfguohcuufgt
+    hhhimhhmvghluceoihguohhstghhsehiughoshgthhdrohhrgheqnecuggftrfgrthhtvg
+    hrnheptdffkeekfeduffevgeeujeffjefhtefgueeugfevtdeiheduueeukefhudehleet
+    necukfhppeekgedrvddvledrudehfedrgeegnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepihguohhstghhsehiughoshgthhdrohhrgh
+X-ME-Proxy: <xmx:KxMAYLkGjHXhFDnKfKYnbxEz2zSCzE2GrwzNJ8Q5Z6RH8CQbOxiCsQ>
+    <xmx:KxMAYOx-GMCzeo4I6qUgqCrVKCheu721yLrbkPTC8-cjSnMY7PSQug>
+    <xmx:KxMAYNTWSbLdDH65Pq8E97Hebsbx5lkvQZH52yt_F9Cm0lrVvyNvpw>
+    <xmx:LBMAYLMIvg11riV1WWzBllwU9ZuRXmp86cZLLbwlX6JRiqIHAq0fLw>
+Received: from localhost (igld-84-229-153-44.inter.net.il [84.229.153.44])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 198181080068;
+        Thu, 14 Jan 2021 04:47:21 -0500 (EST)
+Date:   Thu, 14 Jan 2021 11:47:07 +0200
+From:   Ido Schimmel <idosch@idosch.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     jiri@nvidia.com, idosch@nvidia.com, davem@davemloft.net,
+        kuba@kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20210114070817.GA2868715@AD01715016>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <726525ab-d30d-e58c-21ea-db9d6ad4ae6b@redhat.com>
-Date:   Thu, 14 Jan 2021 10:21:04 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+Subject: Re: [PATCH] mlxsw: pci: switch from 'pci_' to 'dma_' API
+Message-ID: <20210114094707.GA1979201@shredder.lan>
+References: <20210114084757.490540-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-In-Reply-To: <20210114070817.GA2868715@AD01715016>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210114084757.490540-1-christophe.jaillet@wanadoo.fr>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 14.01.21 08:08, Daeseok Youn wrote:
-> No one checks the return value of memblock_free_all().
-> Make the return value void.
+On Thu, Jan 14, 2021 at 09:47:57AM +0100, Christophe JAILLET wrote:
+> The wrappers in include/linux/pci-dma-compat.h should go away.
 > 
-> memblock_free_all() is used on mem_init() for each
-> architecture, and the total count of freed pages will be added
-> to _totalram_pages variable by calling totalram_pages_add().
+> The patch has been generated with the coccinelle script below and has been
+> hand modified to replace GFP_ with a correct flag.
+> It has been compile tested.
 > 
-> so do not need to return total count of freed pages.
+> When memory is allocated in 'mlxsw_pci_queue_init()' and
+> 'mlxsw_pci_fw_area_init()' GFP_KERNEL can be used because both functions
+> are already using this flag and no lock is acquired.
 > 
-> Signed-off-by: Daeseok Youn <daeseok.youn@gmail.com>
-> ---
->  include/linux/memblock.h | 2 +-
->  mm/memblock.c            | 6 +-----
->  2 files changed, 2 insertions(+), 6 deletions(-)
+> When memory is allocated in 'mlxsw_pci_mbox_alloc()' GFP_KERNEL can be used
+> because it is only called from the probe function and no lock is acquired
+> in the between.
+> The call chain is:
+>   --> mlxsw_pci_probe()
+>     --> mlxsw_pci_cmd_init()
+>       --> mlxsw_pci_mbox_alloc()
 > 
-> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> index 9c5cc95c7cee..076fda398dff 100644
-> --- a/include/linux/memblock.h
-> +++ b/include/linux/memblock.h
-> @@ -117,7 +117,7 @@ int memblock_mark_mirror(phys_addr_t base, phys_addr_t size);
->  int memblock_mark_nomap(phys_addr_t base, phys_addr_t size);
->  int memblock_clear_nomap(phys_addr_t base, phys_addr_t size);
->  
-> -unsigned long memblock_free_all(void);
-> +void memblock_free_all(void);
->  void reset_node_managed_pages(pg_data_t *pgdat);
->  void reset_all_zones_managed_pages(void);
->  void memblock_enforce_memory_reserved_overlap(void);
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index 40ca30bfa387..2a2b1fe4b659 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -2074,10 +2074,8 @@ void __init reset_all_zones_managed_pages(void)
->  
->  /**
->   * memblock_free_all - release free pages to the buddy allocator
-> - *
-> - * Return: the number of pages actually released.
->   */
-> -unsigned long __init memblock_free_all(void)
-> +void __init memblock_free_all(void)
->  {
->  	unsigned long pages;
->  
-> @@ -2086,8 +2084,6 @@ unsigned long __init memblock_free_all(void)
->  
->  	pages = free_low_memory_core_early();
->  	totalram_pages_add(pages);
-> -
-> -	return pages;
->  }
->  
->  #if defined(CONFIG_DEBUG_FS) && defined(CONFIG_ARCH_KEEP_MEMBLOCK)
-> 
+> While at it, also replace the 'dma_set_mask/dma_set_coherent_mask' sequence
+> by a less verbose 'dma_set_mask_and_coherent() call.
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+[...]
 
--- 
-Thanks,
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-David / dhildenb
+For net-next:
 
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+
+Thanks

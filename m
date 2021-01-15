@@ -2,119 +2,231 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6082C2F8700
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Jan 2021 22:00:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D02042F87A6
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Jan 2021 22:28:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728838AbhAOU7a (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 15 Jan 2021 15:59:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35584 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726286AbhAOU70 (ORCPT
+        id S1727052AbhAOV0E (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 15 Jan 2021 16:26:04 -0500
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:29373 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726969AbhAOV0D (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 15 Jan 2021 15:59:26 -0500
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B87EC061757;
-        Fri, 15 Jan 2021 12:58:46 -0800 (PST)
-Received: by mail-wr1-x42c.google.com with SMTP id y17so10583560wrr.10;
-        Fri, 15 Jan 2021 12:58:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=JNPQQq0esyAUv0SaJP9M+5H+0D0Ooff203N1KcpXtkI=;
-        b=bjN1pCMQoob0hn1vxVNxALaWBggxOr0JAwGKdyH4dFjGsCcgrrK67crS2mMfYlL4R4
-         Z3uHdnlcFVoiBpQom4yFMSCP7L+UPAsy2QS+pyl/BUjm+PT89w8JRFtGjNC127fwC/1F
-         Pl9hGF3H/dzAsSAn+BSplb2+LKZ+JjIUCTYi7KrhnjElKScVeSOnpzX9xSn8TEw4eZRE
-         n6EObZ+TIPvIr8aYbNRZuj3J01f47zRfn2wGL0uU8d/7VenVI7xG1GAQ8XVAg/a98aZj
-         DXprMuplm5mNOn/u3HhgeuNA9YNUBGxWfS3cCllex8x+0w7uGhz6vh/XKSPOdHLkerX5
-         7Qqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=JNPQQq0esyAUv0SaJP9M+5H+0D0Ooff203N1KcpXtkI=;
-        b=EOBhh8EJtUMug1EcP3ke2uGgwRuiQ3EcXEa9Or0U1l11O9gGGKacMBlCXUJ0uEGC2f
-         pBmEs4Cw/fKclBM6946eYUEgHUGr0NXCzZ2wmjgmj6LxKVHF2Ftr1Gq9wu831Uan2feU
-         2kUlhi5fof1r5UpWxJKZU0dDsEyp0NkftTFG2wVaXB7bxt250/MlyAe1DxHBw3LJeEbA
-         fqrvNwHEBO9EJpU/xxcKnhYM+QzvEHSl3jarQHe6uCIIigl+yznzTZCAJ78/vJe+ouq4
-         7bHW7Q+FiGzQMEPcuBGjzMpKL2ZZ6FWGkMYlo4QlI/HCgPSe7Qt25XlUO8RuCtnShjjs
-         5GuA==
-X-Gm-Message-State: AOAM530/Vqjx+5Zb+SL4seNEfKrIuvygnWaT+SN3cc6EB+QGPB8khZzW
-        ov/2+NYFnbT7fFHzMSFCMdiYUyyHaLyheQ==
-X-Google-Smtp-Source: ABdhPJxBjBNQ3eVsS6Me/YyVKPaoeFY86umXQH74NxE82tUEBDOT0B3bzYaEh4RJgUVktwEZLs4QyQ==
-X-Received: by 2002:a5d:4e51:: with SMTP id r17mr15130734wrt.94.1610744325301;
-        Fri, 15 Jan 2021 12:58:45 -0800 (PST)
-Received: from smtp.gmail.com (a95-92-181-29.cpe.netcabo.pt. [95.92.181.29])
-        by smtp.gmail.com with ESMTPSA id h14sm16016927wrx.37.2021.01.15.12.58.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Jan 2021 12:58:44 -0800 (PST)
-Date:   Fri, 15 Jan 2021 17:58:38 -0300
-From:   Melissa Wen <melissa.srw@gmail.com>
-To:     Sumera Priyadarsini <sylphrenadin@gmail.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>,
-        Haneen Mohammed <hamohammed.sa@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] drm/vkms: Fix missing kmalloc allocation failure
- check
-Message-ID: <20210115205838.7hff6mmyyl55pgek@smtp.gmail.com>
-References: <20210115130911.71073-1-colin.king@canonical.com>
- <CACAkLuqG+4cq9w9=JEjB-5KPcxu==2+Sen6GMknM495vELgEFA@mail.gmail.com>
+        Fri, 15 Jan 2021 16:26:03 -0500
+Received: from localhost.localdomain ([92.131.99.25])
+        by mwinf5d04 with ME
+        id H9QF2400C0Ys01Y039QHn8; Fri, 15 Jan 2021 22:24:18 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 15 Jan 2021 22:24:18 +0100
+X-ME-IP: 92.131.99.25
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     mchehab@kernel.org, dwlsalmeida@gmail.com,
+        hverkuil-cisco@xs4all.nl, vaibhavgupta40@gmail.com,
+        liushixin2@huawei.com
+Cc:     linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] media: saa7164: switch from 'pci_' to 'dma_' API
+Date:   Fri, 15 Jan 2021 22:24:15 +0100
+Message-Id: <20210115212415.497079-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACAkLuqG+4cq9w9=JEjB-5KPcxu==2+Sen6GMknM495vELgEFA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 01/15, Sumera Priyadarsini wrote:
-> On Fri, Jan 15, 2021 at 6:39 PM Colin King <colin.king@canonical.com> wrote:
-> >
-> > From: Colin Ian King <colin.king@canonical.com>
-> >
-> > Currently the kmalloc allocation for config is not being null
-> > checked and could potentially lead to a null pointer dereference.
-> > Fix this by adding the missing null check.
-> >
-> > Addresses-Coverity: ("Dereference null return value")
-> > Fixes: 2df7af93fdad ("drm/vkms: Add vkms_config type")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> 
-> Good catch, thank you!
-> 
-> Reviewed-by: Sumera Priyadarsini <sylphrenadin@gmail.com>
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-Applied to drm-misc-next.
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GFP_ with a correct flag.
+It has been compile tested.
 
-Thanks,
-Melissa Wen
-> > ---
-> >  drivers/gpu/drm/vkms/vkms_drv.c | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/gpu/drm/vkms/vkms_drv.c b/drivers/gpu/drm/vkms/vkms_drv.c
-> > index 708f7f54001d..2173b82606f6 100644
-> > --- a/drivers/gpu/drm/vkms/vkms_drv.c
-> > +++ b/drivers/gpu/drm/vkms/vkms_drv.c
-> > @@ -188,7 +188,11 @@ static int vkms_create(struct vkms_config *config)
-> >
-> >  static int __init vkms_init(void)
-> >  {
-> > -       struct vkms_config *config = kmalloc(sizeof(*config), GFP_KERNEL);
-> > +       struct vkms_config *config;
-> > +
-> > +       config = kmalloc(sizeof(*config), GFP_KERNEL);
-> > +       if (!config)
-> > +               return -ENOMEM;
-> >
-> >         default_config = config;
-> >
-> > --
-> > 2.29.2
-> >
-> regards,
-> Sumera
+When memory is allocated in 'saa7164_buffer_alloc()' GFP_KERNEL can be used
+because this function is already using this flag just a few lines above.
+
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
+
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+---
+ drivers/media/pci/saa7164/saa7164-buffer.c | 16 +++++++++-------
+ drivers/media/pci/saa7164/saa7164-core.c   |  2 +-
+ 2 files changed, 10 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/media/pci/saa7164/saa7164-buffer.c b/drivers/media/pci/saa7164/saa7164-buffer.c
+index 245d9db280aa..89c5b79a5b24 100644
+--- a/drivers/media/pci/saa7164/saa7164-buffer.c
++++ b/drivers/media/pci/saa7164/saa7164-buffer.c
+@@ -103,13 +103,13 @@ struct saa7164_buffer *saa7164_buffer_alloc(struct saa7164_port *port,
+ 	buf->pt_size = (SAA7164_PT_ENTRIES * sizeof(u64)) + 0x1000;
+ 
+ 	/* Allocate contiguous memory */
+-	buf->cpu = pci_alloc_consistent(port->dev->pci, buf->pci_size,
+-		&buf->dma);
++	buf->cpu = dma_alloc_coherent(&port->dev->pci->dev, buf->pci_size,
++				      &buf->dma, GFP_KERNEL);
+ 	if (!buf->cpu)
+ 		goto fail1;
+ 
+-	buf->pt_cpu = pci_alloc_consistent(port->dev->pci, buf->pt_size,
+-		&buf->pt_dma);
++	buf->pt_cpu = dma_alloc_coherent(&port->dev->pci->dev, buf->pt_size,
++					 &buf->pt_dma, GFP_KERNEL);
+ 	if (!buf->pt_cpu)
+ 		goto fail2;
+ 
+@@ -137,7 +137,8 @@ struct saa7164_buffer *saa7164_buffer_alloc(struct saa7164_port *port,
+ 	goto ret;
+ 
+ fail2:
+-	pci_free_consistent(port->dev->pci, buf->pci_size, buf->cpu, buf->dma);
++	dma_free_coherent(&port->dev->pci->dev, buf->pci_size, buf->cpu,
++			  buf->dma);
+ fail1:
+ 	kfree(buf);
+ 
+@@ -160,8 +161,9 @@ int saa7164_buffer_dealloc(struct saa7164_buffer *buf)
+ 	if (buf->flags != SAA7164_BUFFER_FREE)
+ 		log_warn(" freeing a non-free buffer\n");
+ 
+-	pci_free_consistent(dev->pci, buf->pci_size, buf->cpu, buf->dma);
+-	pci_free_consistent(dev->pci, buf->pt_size, buf->pt_cpu, buf->pt_dma);
++	dma_free_coherent(&dev->pci->dev, buf->pci_size, buf->cpu, buf->dma);
++	dma_free_coherent(&dev->pci->dev, buf->pt_size, buf->pt_cpu,
++			  buf->pt_dma);
+ 
+ 	kfree(buf);
+ 
+diff --git a/drivers/media/pci/saa7164/saa7164-core.c b/drivers/media/pci/saa7164/saa7164-core.c
+index f3a4e575a782..7973ae42873a 100644
+--- a/drivers/media/pci/saa7164/saa7164-core.c
++++ b/drivers/media/pci/saa7164/saa7164-core.c
+@@ -1273,7 +1273,7 @@ static int saa7164_initdev(struct pci_dev *pci_dev,
+ 
+ 	pci_set_master(pci_dev);
+ 	/* TODO */
+-	err = pci_set_dma_mask(pci_dev, 0xffffffff);
++	err = dma_set_mask(&pci_dev->dev, 0xffffffff);
+ 	if (err) {
+ 		printk("%s/0: Oops: no 32bit PCI DMA ???\n", dev->name);
+ 		goto fail_irq;
+-- 
+2.27.0
+

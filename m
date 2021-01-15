@@ -2,140 +2,126 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DC2D2F767A
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Jan 2021 11:19:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD7AC2F76C1
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Jan 2021 11:35:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726484AbhAOKSc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 15 Jan 2021 05:18:32 -0500
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:52154 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726091AbhAOKSb (ORCPT
+        id S1726210AbhAOKe2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 15 Jan 2021 05:34:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41666 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725831AbhAOKe1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 15 Jan 2021 05:18:31 -0500
-Received: from [192.168.1.41] ([92.131.99.25])
-        by mwinf5d49 with ME
-        id GyGn240180Ys01Y03yGoD2; Fri, 15 Jan 2021 11:16:49 +0100
-X-ME-Helo: [192.168.1.41]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 15 Jan 2021 11:16:49 +0100
-X-ME-IP: 92.131.99.25
-Subject: Re: [PATCH][next] drm/amdgpu: Add missing BOOTUP_DEFAULT to
- profile_name[]
-To:     Colin Ian King <colin.king@canonical.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Xiaojian Du <Xiaojian.Du@amd.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210111114638.16530-1-colin.king@canonical.com>
- <20210112100706.GF5083@kadam>
- <51efd2a7-f2cf-dc28-4b86-5e89d13564ca@canonical.com>
- <f57062ac-499d-95bb-cf4f-bb7b5b1dea5b@wanadoo.fr>
- <01121c1c-5e7c-9d47-2400-c7644f6b8254@canonical.com>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <2e688654-cbac-ea86-b248-c863a2dc6747@wanadoo.fr>
-Date:   Fri, 15 Jan 2021 11:16:49 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+        Fri, 15 Jan 2021 05:34:27 -0500
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1B49C061757
+        for <kernel-janitors@vger.kernel.org>; Fri, 15 Jan 2021 02:33:47 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id u19so8996429edx.2
+        for <kernel-janitors@vger.kernel.org>; Fri, 15 Jan 2021 02:33:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloud.ionos.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7LLY4cPoj6ptHG8TMYZijdPTmBW8T6G4b89+HyQKpxw=;
+        b=GE0cXLy/kuL2fZZ4/IVlnZ4FCfpmQzodiSicwAJ2UPtRyR+BZKUSvETds02GbcRAka
+         D2WgvVnDzqUE+Xn+V4UXj+yTN2YiwA/gPMzM6Rk0NZQ5oWGu+wJDKvia1gufFft673sm
+         A5xTHv86/iXYeRbn2cA/AdWq8wKWhyE6U0PAASysIRur2uXiSJ29dxtoM7UtUC3LdlsU
+         W9hBCrC5kYFiuqv67DvWW/R/CfoYZIiGm6g4/7NwjxLE+q3h07YsyE586wQpqovV6PHS
+         +hS+ZU9Lu3QzBw8S8Mwn9jFhXVgL3yJqPKiRCQILXIK8oUi+jdmcSRaiTtQL3cMkpyFV
+         +LLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7LLY4cPoj6ptHG8TMYZijdPTmBW8T6G4b89+HyQKpxw=;
+        b=UEdcrbwFPn9gZNhIr6/8AbMTnr8eCsYD8Pp4/x+YTpmyAJ+5OFL8iQOqIZoddAdekB
+         SbGaJ639xlwC0GR8wKd18ILEZSHMWsvTaJMkI6kf/tPSHxHLwNu3e/2mHJN1s+X+3YCt
+         DzZIuTlt7TrvuQ86x8dlxsXASJSt+CrCjF2O18ptXlZX282OMdTcPsy2Wq13Wsb9FJfI
+         fUszV9CaYJXdBnc+g54xWKoGsBRHLAgoyqCW+JUICyH+G/MmSYj6w3kjTXyhsP3q7EVw
+         oeiBBBPlwHiKGJwySX/+W7C22QeJWXWjaS4iQLcTeBnIOlan9NYclBSYBStgx5xTOKQ/
+         agaA==
+X-Gm-Message-State: AOAM532qR/M23jZYJHwbhDtP7SsQOmjv1vN6YiSv56MAoR0m1gr5OeOr
+        K1/EXRGzbOJTEW+RFI1fbECW8sDPhALBZknIekScvw==
+X-Google-Smtp-Source: ABdhPJx/EV3I7aklh2GfUFN/kPHVBFAEjZgJJRD4iG4LA1RbEIWCLSURQbBMV94N4R34LBDU7RFHq4FkOSXKkeciUP8=
+X-Received: by 2002:a05:6402:a53:: with SMTP id bt19mr9206928edb.104.1610706826562;
+ Fri, 15 Jan 2021 02:33:46 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <01121c1c-5e7c-9d47-2400-c7644f6b8254@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20210115095824.9170-1-colin.king@canonical.com>
+In-Reply-To: <20210115095824.9170-1-colin.king@canonical.com>
+From:   Jinpu Wang <jinpu.wang@cloud.ionos.com>
+Date:   Fri, 15 Jan 2021 11:33:35 +0100
+Message-ID: <CAMGffEnkfgwSQKSwr_91a8wakhEvGy3fU5m_DM9O5mpp3foNSA@mail.gmail.com>
+Subject: Re: [PATCH][next] scsi: pm80xx: clean up indentation of a code block
+To:     Colin King <colin.king@canonical.com>
+Cc:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Linux SCSI Mailinglist <linux-scsi@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 15/01/2021 à 11:10, Colin Ian King a écrit :
-> On 15/01/2021 10:07, Christophe JAILLET wrote:
->> Le 15/01/2021 à 10:37, Colin Ian King a écrit :
->>> On 12/01/2021 10:07, Dan Carpenter wrote:
->>>> On Mon, Jan 11, 2021 at 11:46:38AM +0000, Colin King wrote:
->>>>> From: Colin Ian King <colin.king@canonical.com>
->>>>>
->>>>> A recent change added a new BOOTUP_DEFAULT power profile mode
->>>>> to the PP_SMC_POWER_PROFILE enum but omitted updating the
->>>>> corresponding profile_name array.  Fix this by adding in the
->>>>> missing BOOTUP_DEFAULT to profile_name[].
->>>>>
->>>>
->>>> Still not enough to prevent the array overflow.  It needs POWERSAVE as
->>>> well.
->>>
->>> Thanks for checking, but there is a 1-to-1 relation ship now:
->>>
->>> enum PP_SMC_POWER_PROFILE {
->>>           PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT = 0x0,
->>>           PP_SMC_POWER_PROFILE_FULLSCREEN3D = 0x1,
->>>           PP_SMC_POWER_PROFILE_POWERSAVING  = 0x2,
->>>           PP_SMC_POWER_PROFILE_VIDEO        = 0x3,
->>>           PP_SMC_POWER_PROFILE_VR           = 0x4,
->>>           PP_SMC_POWER_PROFILE_COMPUTE      = 0x5,
->>>           PP_SMC_POWER_PROFILE_CUSTOM       = 0x6,
->>>           PP_SMC_POWER_PROFILE_COUNT,
->>> };
->>>
->>> vs
->>>
->>>           static const char *profile_name[] = {
->>>                                           "BOOTUP_DEFAULT",
->>>                                           "3D_FULL_SCREEN",
->>>                                           "POWER_SAVING",
->>
->> This line has been added yesterday in commit f727ebeb589d.
->> So Dan was right when he sent his patch, but some else fixed it.
-> 
-> Ah, my bad for not seeing that. :-/
-
-However, I wonder if this commit is complete.
-The description of the commit is about 5 modes, but 6 are listed in 
-PP_SMC_POWER_PROFILE.
-
-In the hunk:
-+static struct cmn2asic_mapping 
-vangogh_workload_map[PP_SMC_POWER_PROFILE_COUNT] = {
-+	WORKLOAD_MAP(PP_SMC_POWER_PROFILE_FULLSCREEN3D,	 
-WORKLOAD_PPLIB_FULL_SCREEN_3D_BIT),
-+	WORKLOAD_MAP(PP_SMC_POWER_PROFILE_VIDEO,		WORKLOAD_PPLIB_VIDEO_BIT),
-+	WORKLOAD_MAP(PP_SMC_POWER_PROFILE_VR,			WORKLOAD_PPLIB_VR_BIT),
-+	WORKLOAD_MAP(PP_SMC_POWER_PROFILE_COMPUTE,		WORKLOAD_PPLIB_COMPUTE_BIT),
-+	WORKLOAD_MAP(PP_SMC_POWER_PROFILE_CUSTOM,		WORKLOAD_PPLIB_CUSTOM_BIT),
-+};
-
-It would look logical to have something like:
-+	WORKLOAD_MAP(PP_SMC_POWER_PROFILE_POWERSAVING,	 
-WORKLOAD_PPLIB_POWER_SAVING_BIT),
-
-Not sure at all if correct.
-
-Just my 2c,
-
-CJ
-
-> 
->>
->> CJ
->>
->>>                                           "VIDEO",
->>>                                           "VR",
->>>                                           "COMPUTE",
->>>                                           "CUSTOM"};
->>>
->>>
->>> unless I'm missing something because I've not had enough coffee.
->>>
->>> Colin
->>>
->>>>
->>>> regards,
->>>> dan carpenter
->>>>
->>>
->>>
->>
-> 
-> 
-
+On Fri, Jan 15, 2021 at 10:58 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> A block of code is indented one level too deeply, clean this
+> up.
+>
+> Addresses-Coverity: ("Indentation does not match nesting level")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Acked-by: Jack Wang <jinpu.wang@cloud.ionos.com>
+> ---
+>  drivers/scsi/pm8001/pm80xx_hwi.c | 34 ++++++++++++++------------------
+>  1 file changed, 15 insertions(+), 19 deletions(-)
+>
+> diff --git a/drivers/scsi/pm8001/pm80xx_hwi.c b/drivers/scsi/pm8001/pm80xx_hwi.c
+> index e7fef42b4f6c..6fd206abc9fc 100644
+> --- a/drivers/scsi/pm8001/pm80xx_hwi.c
+> +++ b/drivers/scsi/pm8001/pm80xx_hwi.c
+> @@ -358,26 +358,22 @@ ssize_t pm80xx_get_fatal_dump(struct device *cdev,
+>                                         MEMBASE_II_SHIFT_REGISTER,
+>                                         pm8001_ha->fatal_forensic_shift_offset);
+>                 }
+> -                       /* Read the next block of the debug data.*/
+> -                       length_to_read = pm8001_mr32(fatal_table_address,
+> -                       MPI_FATAL_EDUMP_TABLE_ACCUM_LEN) -
+> -                       pm8001_ha->forensic_preserved_accumulated_transfer;
+> -                       if (length_to_read != 0x0) {
+> -                               pm8001_ha->forensic_fatal_step = 0;
+> -                               goto moreData;
+> -                       } else {
+> -                               pm8001_ha->forensic_info.data_buf.direct_data +=
+> -                               sprintf(
+> -                               pm8001_ha->forensic_info.data_buf.direct_data,
+> +               /* Read the next block of the debug data.*/
+> +               length_to_read = pm8001_mr32(fatal_table_address,
+> +               MPI_FATAL_EDUMP_TABLE_ACCUM_LEN) -
+> +               pm8001_ha->forensic_preserved_accumulated_transfer;
+> +               if (length_to_read != 0x0) {
+> +                       pm8001_ha->forensic_fatal_step = 0;
+> +                       goto moreData;
+> +               } else {
+> +                       pm8001_ha->forensic_info.data_buf.direct_data +=
+> +                       sprintf(pm8001_ha->forensic_info.data_buf.direct_data,
+>                                 "%08x ", 4);
+> -                               pm8001_ha->forensic_info.data_buf.read_len
+> -                                                               = 0xFFFFFFFF;
+> -                               pm8001_ha->forensic_info.data_buf.direct_len
+> -                                                               =  0;
+> -                               pm8001_ha->forensic_info.data_buf.direct_offset
+> -                                                               = 0;
+> -                               pm8001_ha->forensic_info.data_buf.read_len = 0;
+> -                       }
+> +                       pm8001_ha->forensic_info.data_buf.read_len = 0xFFFFFFFF;
+> +                       pm8001_ha->forensic_info.data_buf.direct_len =  0;
+> +                       pm8001_ha->forensic_info.data_buf.direct_offset = 0;
+> +                       pm8001_ha->forensic_info.data_buf.read_len = 0;
+> +               }
+>         }
+>         offset = (int)((char *)pm8001_ha->forensic_info.data_buf.direct_data
+>                         - (char *)buf);
+> --
+> 2.29.2
+>

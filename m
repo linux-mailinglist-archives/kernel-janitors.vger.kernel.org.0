@@ -2,34 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DECAB2F75B4
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Jan 2021 10:44:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4E792F761E
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Jan 2021 11:00:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728906AbhAOJna (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 15 Jan 2021 04:43:30 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:35626 "EHLO
+        id S1730479AbhAOJ7H (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 15 Jan 2021 04:59:07 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:36059 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727111AbhAOJn3 (ORCPT
+        with ESMTP id S1728746AbhAOJ7G (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 15 Jan 2021 04:43:29 -0500
+        Fri, 15 Jan 2021 04:59:06 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1l0Ld7-0007pK-9g; Fri, 15 Jan 2021 09:42:53 +0000
+        id 1l0Ls8-0000g2-KJ; Fri, 15 Jan 2021 09:58:24 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>, intel-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
+To:     Jack Wang <jinpu.wang@cloud.ionos.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/i915/dp: fix spelling contraction "couldnt" -> "couldn't"
-Date:   Fri, 15 Jan 2021 09:42:53 +0000
-Message-Id: <20210115094253.8299-1-colin.king@canonical.com>
+Subject: [PATCH][next] scsi: pm80xx: clean up indentation of a code block
+Date:   Fri, 15 Jan 2021 09:58:24 +0000
+Message-Id: <20210115095824.9170-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -40,26 +36,61 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling contraction mistake in a drm_dbg message. Fix it.
+A block of code is indented one level too deeply, clean this
+up.
 
+Addresses-Coverity: ("Indentation does not match nesting level")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/pm8001/pm80xx_hwi.c | 34 ++++++++++++++------------------
+ 1 file changed, 15 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index 8a00e609085f..2887c4975be0 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -4189,7 +4189,7 @@ void intel_dp_check_frl_training(struct intel_dp *intel_dp)
- 	if (intel_dp_pcon_start_frl_training(intel_dp) < 0) {
- 		int ret, mode;
- 
--		drm_dbg(&dev_priv->drm, "Couldnt set FRL mode, continuing with TMDS mode\n");
-+		drm_dbg(&dev_priv->drm, "Couldn't set FRL mode, continuing with TMDS mode\n");
- 		ret = drm_dp_pcon_reset_frl_config(&intel_dp->aux);
- 		mode = drm_dp_pcon_hdmi_link_mode(&intel_dp->aux, NULL);
- 
+diff --git a/drivers/scsi/pm8001/pm80xx_hwi.c b/drivers/scsi/pm8001/pm80xx_hwi.c
+index e7fef42b4f6c..6fd206abc9fc 100644
+--- a/drivers/scsi/pm8001/pm80xx_hwi.c
++++ b/drivers/scsi/pm8001/pm80xx_hwi.c
+@@ -358,26 +358,22 @@ ssize_t pm80xx_get_fatal_dump(struct device *cdev,
+ 					MEMBASE_II_SHIFT_REGISTER,
+ 					pm8001_ha->fatal_forensic_shift_offset);
+ 		}
+-			/* Read the next block of the debug data.*/
+-			length_to_read = pm8001_mr32(fatal_table_address,
+-			MPI_FATAL_EDUMP_TABLE_ACCUM_LEN) -
+-			pm8001_ha->forensic_preserved_accumulated_transfer;
+-			if (length_to_read != 0x0) {
+-				pm8001_ha->forensic_fatal_step = 0;
+-				goto moreData;
+-			} else {
+-				pm8001_ha->forensic_info.data_buf.direct_data +=
+-				sprintf(
+-				pm8001_ha->forensic_info.data_buf.direct_data,
++		/* Read the next block of the debug data.*/
++		length_to_read = pm8001_mr32(fatal_table_address,
++		MPI_FATAL_EDUMP_TABLE_ACCUM_LEN) -
++		pm8001_ha->forensic_preserved_accumulated_transfer;
++		if (length_to_read != 0x0) {
++			pm8001_ha->forensic_fatal_step = 0;
++			goto moreData;
++		} else {
++			pm8001_ha->forensic_info.data_buf.direct_data +=
++			sprintf(pm8001_ha->forensic_info.data_buf.direct_data,
+ 				"%08x ", 4);
+-				pm8001_ha->forensic_info.data_buf.read_len
+-								= 0xFFFFFFFF;
+-				pm8001_ha->forensic_info.data_buf.direct_len
+-								=  0;
+-				pm8001_ha->forensic_info.data_buf.direct_offset
+-								= 0;
+-				pm8001_ha->forensic_info.data_buf.read_len = 0;
+-			}
++			pm8001_ha->forensic_info.data_buf.read_len = 0xFFFFFFFF;
++			pm8001_ha->forensic_info.data_buf.direct_len =  0;
++			pm8001_ha->forensic_info.data_buf.direct_offset = 0;
++			pm8001_ha->forensic_info.data_buf.read_len = 0;
++		}
+ 	}
+ 	offset = (int)((char *)pm8001_ha->forensic_info.data_buf.direct_data
+ 			- (char *)buf);
 -- 
 2.29.2
 

@@ -2,86 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 969112F67AD
-	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Jan 2021 18:30:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89CCF2F7001
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Jan 2021 02:31:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728373AbhANR3x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 14 Jan 2021 12:29:53 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:55826 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728202AbhANR3x (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 14 Jan 2021 12:29:53 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1610645374; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=J7fXt9Pzjy4xDZMwYIou3GmDhIbn8nANhLmm5feFgtU=;
- b=eW/v0wqKExG5ymFcaQPuBjryFptI/vvuIJ59JlLxK4WaKayyC2IavTBQE0oJCEO2gvG/ruWf
- vfEIaBz39x6iQd6d1emoFOiQMldvXu8sIzGxcaJmz8Jjpe27krPGCk9tsMLRdd34WeA1MLaY
- TMG3b2IqZzyXj7iUbLSr+FlE2IA=
-X-Mailgun-Sending-Ip: 69.72.43.15
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 60007f61af68fb3b061148c4 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 14 Jan 2021 17:29:05
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 38C71C433C6; Thu, 14 Jan 2021 17:29:05 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A1234C433CA;
-        Thu, 14 Jan 2021 17:29:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A1234C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+        id S1731518AbhAOBax (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 14 Jan 2021 20:30:53 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58676 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731513AbhAOBaw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 14 Jan 2021 20:30:52 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id CBD8923A5A;
+        Fri, 15 Jan 2021 01:30:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1610674211;
+        bh=VyN83IN9vcsyIOsgjz3YnIdzFOkl9n28RVkiyZkBqlA=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=n8AKpnbv6l98PLU/BFqsK6kkJeCIwOqcXdYw8QzGgZcEqCld/uA14Iy/YAMCBtdra
+         G9H2eywRvEbfPspZvePyp4nr7yQccv/XLzW0VqH9qGiBaWxwZzesXEQzi80wxCbsQf
+         pLIOnPDy4THZLVBgKOFN+cnk5lvulLPR/CnwlLIgwamt33f/lD/s6sNzZ/T5jSoONh
+         N2BEZeneOoLGE/6PvttdP8os9G3HKJCf8oDPr8awEhVX6mDXu9HUswNebO1ry86r5H
+         c6NDlsM8z8W4CsxKDRZlduahIf2ABY4HrtSihGKP9OP/odmB8DVU/Q5+quQPGTZG2y
+         GpKCXjFXr/GRg==
+Received: from pdx-korg-docbuild-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-1.ci.codeaurora.org (Postfix) with ESMTP id BE84F6017C;
+        Fri, 15 Jan 2021 01:30:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][V2] wilc1000: fix spelling mistake in Kconfig "devision"
- ->
- "division"
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201216115808.12987-1-colin.king@canonical.com>
-References: <20201216115808.12987-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Ajay Singh <ajay.kathat@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210114172905.38C71C433C6@smtp.codeaurora.org>
-Date:   Thu, 14 Jan 2021 17:29:05 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] mlxsw: pci: switch from 'pci_' to 'dma_' API
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <161067421177.20666.5506474617106384086.git-patchwork-notify@kernel.org>
+Date:   Fri, 15 Jan 2021 01:30:11 +0000
+References: <20210114084757.490540-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20210114084757.490540-1-christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     jiri@nvidia.com, idosch@nvidia.com, davem@davemloft.net,
+        kuba@kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+Hello:
 
-> From: Colin Ian King <colin.king@canonical.com>
+This patch was applied to netdev/net-next.git (refs/heads/master):
+
+On Thu, 14 Jan 2021 09:47:57 +0100 you wrote:
+> The wrappers in include/linux/pci-dma-compat.h should go away.
 > 
-> There is a spelling mistake in the Kconfig help text. Fix it.
+> The patch has been generated with the coccinelle script below and has been
+> hand modified to replace GFP_ with a correct flag.
+> It has been compile tested.
 > 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> When memory is allocated in 'mlxsw_pci_queue_init()' and
+> 'mlxsw_pci_fw_area_init()' GFP_KERNEL can be used because both functions
+> are already using this flag and no lock is acquired.
+> 
+> [...]
 
-Patch applied to wireless-drivers-next.git, thanks.
+Here is the summary with links:
+  - mlxsw: pci: switch from 'pci_' to 'dma_' API
+    https://git.kernel.org/netdev/net-next/c/bb5c64c879e5
 
-e4c748ee4af1 wilc1000: fix spelling mistake in Kconfig "devision" -> "division"
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20201216115808.12987-1-colin.king@canonical.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

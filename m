@@ -2,91 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA6322F759B
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Jan 2021 10:38:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DECAB2F75B4
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Jan 2021 10:44:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726030AbhAOJi2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 15 Jan 2021 04:38:28 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:35492 "EHLO
+        id S1728906AbhAOJna (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 15 Jan 2021 04:43:30 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:35626 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725910AbhAOJi1 (ORCPT
+        with ESMTP id S1727111AbhAOJn3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 15 Jan 2021 04:38:27 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
+        Fri, 15 Jan 2021 04:43:29 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1l0LYH-0007Sv-Je; Fri, 15 Jan 2021 09:37:53 +0000
-Subject: Re: [PATCH][next] drm/amdgpu: Add missing BOOTUP_DEFAULT to
- profile_name[]
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        id 1l0Ld7-0007pK-9g; Fri, 15 Jan 2021 09:42:53 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
-        Xiaojian Du <Xiaojian.Du@amd.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210111114638.16530-1-colin.king@canonical.com>
- <20210112100706.GF5083@kadam>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <51efd2a7-f2cf-dc28-4b86-5e89d13564ca@canonical.com>
-Date:   Fri, 15 Jan 2021 09:37:53 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>, intel-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/i915/dp: fix spelling contraction "couldnt" -> "couldn't"
+Date:   Fri, 15 Jan 2021 09:42:53 +0000
+Message-Id: <20210115094253.8299-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <20210112100706.GF5083@kadam>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 12/01/2021 10:07, Dan Carpenter wrote:
-> On Mon, Jan 11, 2021 at 11:46:38AM +0000, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> A recent change added a new BOOTUP_DEFAULT power profile mode
->> to the PP_SMC_POWER_PROFILE enum but omitted updating the
->> corresponding profile_name array.  Fix this by adding in the
->> missing BOOTUP_DEFAULT to profile_name[].
->>
-> 
-> Still not enough to prevent the array overflow.  It needs POWERSAVE as
-> well.
+From: Colin Ian King <colin.king@canonical.com>
 
-Thanks for checking, but there is a 1-to-1 relation ship now:
+There is a spelling contraction mistake in a drm_dbg message. Fix it.
 
-enum PP_SMC_POWER_PROFILE {
-        PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT = 0x0,
-        PP_SMC_POWER_PROFILE_FULLSCREEN3D = 0x1,
-        PP_SMC_POWER_PROFILE_POWERSAVING  = 0x2,
-        PP_SMC_POWER_PROFILE_VIDEO        = 0x3,
-        PP_SMC_POWER_PROFILE_VR           = 0x4,
-        PP_SMC_POWER_PROFILE_COMPUTE      = 0x5,
-        PP_SMC_POWER_PROFILE_CUSTOM       = 0x6,
-        PP_SMC_POWER_PROFILE_COUNT,
-};
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/i915/display/intel_dp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-vs
-
-        static const char *profile_name[] = {
-                                        "BOOTUP_DEFAULT",
-                                        "3D_FULL_SCREEN",
-                                        "POWER_SAVING",
-                                        "VIDEO",
-                                        "VR",
-                                        "COMPUTE",
-                                        "CUSTOM"};
-
-
-unless I'm missing something because I've not had enough coffee.
-
-Colin
-
-> 
-> regards,
-> dan carpenter
-> 
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index 8a00e609085f..2887c4975be0 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -4189,7 +4189,7 @@ void intel_dp_check_frl_training(struct intel_dp *intel_dp)
+ 	if (intel_dp_pcon_start_frl_training(intel_dp) < 0) {
+ 		int ret, mode;
+ 
+-		drm_dbg(&dev_priv->drm, "Couldnt set FRL mode, continuing with TMDS mode\n");
++		drm_dbg(&dev_priv->drm, "Couldn't set FRL mode, continuing with TMDS mode\n");
+ 		ret = drm_dp_pcon_reset_frl_config(&intel_dp->aux);
+ 		mode = drm_dp_pcon_hdmi_link_mode(&intel_dp->aux, NULL);
+ 
+-- 
+2.29.2
 

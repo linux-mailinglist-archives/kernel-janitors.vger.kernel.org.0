@@ -2,85 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB25C2F822E
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Jan 2021 18:25:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6082C2F8700
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Jan 2021 22:00:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733286AbhAORYZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 15 Jan 2021 12:24:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45634 "EHLO
+        id S1728838AbhAOU7a (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 15 Jan 2021 15:59:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733221AbhAORYX (ORCPT
+        with ESMTP id S1726286AbhAOU70 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 15 Jan 2021 12:24:23 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 318FEC0613D3
-        for <kernel-janitors@vger.kernel.org>; Fri, 15 Jan 2021 09:23:43 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id dk8so10397975edb.1
-        for <kernel-janitors@vger.kernel.org>; Fri, 15 Jan 2021 09:23:43 -0800 (PST)
+        Fri, 15 Jan 2021 15:59:26 -0500
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B87EC061757;
+        Fri, 15 Jan 2021 12:58:46 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id y17so10583560wrr.10;
+        Fri, 15 Jan 2021 12:58:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mJrsR9g+dyqkkVVvYtEu6xfD1Zo92dOcpjjoxvFadQo=;
-        b=ge+GnUbEBLY+2evuY9Uj+uaN2jIYKWBKeP45kxv0m+2jXjz3M/6ABWkT/cxfrrGRq1
-         4WNTMkLNR2uAeZ2AccElDyg/YHkMrBs/gGDoGct8UXXHPgz8PXATa6eEOBiANAdkuam1
-         rp+M7bSxWpd33oqT8kvS3U/BVZaLAyBg8GWwIsNdEKl63eBd3Rn+7qjvCaDpG6I6LmIz
-         ppYSC9rjrXDv9oNatkHLla47fsh0+pBergQGzDv+J33+ulldNGXUtGEltU+CgjYMpawp
-         IWlLnc68w4znX2PD84B4cD1COJHGuLzY3SuktMfTPpHDLoXv9Lwn5inJdv8LgtDK3SN3
-         jr3A==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=JNPQQq0esyAUv0SaJP9M+5H+0D0Ooff203N1KcpXtkI=;
+        b=bjN1pCMQoob0hn1vxVNxALaWBggxOr0JAwGKdyH4dFjGsCcgrrK67crS2mMfYlL4R4
+         Z3uHdnlcFVoiBpQom4yFMSCP7L+UPAsy2QS+pyl/BUjm+PT89w8JRFtGjNC127fwC/1F
+         Pl9hGF3H/dzAsSAn+BSplb2+LKZ+JjIUCTYi7KrhnjElKScVeSOnpzX9xSn8TEw4eZRE
+         n6EObZ+TIPvIr8aYbNRZuj3J01f47zRfn2wGL0uU8d/7VenVI7xG1GAQ8XVAg/a98aZj
+         DXprMuplm5mNOn/u3HhgeuNA9YNUBGxWfS3cCllex8x+0w7uGhz6vh/XKSPOdHLkerX5
+         7Qqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mJrsR9g+dyqkkVVvYtEu6xfD1Zo92dOcpjjoxvFadQo=;
-        b=cTBs3ksTjgyZq5yOS6AWOLH3nsLkjIuiiiLI9yM12NyGM9VLmcSWvT5yFK2TxAqWPx
-         r3VnhM59k3TXrEpcvV8g4z6aSbQgmwpgLM4WZB8XDIYBp31KeJtsJ/EnADPQgr+9Qsyj
-         NqMH4S9Z72+51ul9TRD/XMa93XKODr4HdT4QwtmDcACL74LV6QiqzaYyWeJa4q4ejBui
-         nxg9V0PtunTFPfgWmYl7Yx5Vl0uoE8eIqeoPqCF93vqsiDts2TGRYimu/tA+SMgHHT70
-         NnR5WEG03O16tVJTtQMmYxOECs3XZ4sfH0c1/AQUvJUGcFQ2QkPcFFgyp2NCoyODRxzT
-         68fw==
-X-Gm-Message-State: AOAM532pjnH40zs297hXwtWBqS6K0Aonr1nao5asbH8Zr+nHDTA/k5vF
-        4RUSTRX2TwcuA5PjdHQY1YpqGmDuUvI88DIf3ZSv47DUw+Kj
-X-Google-Smtp-Source: ABdhPJxNJ1+S8LITVO12epfE1LpA0SxxE+7Im+Q6DiX6C3VsYyEebNuKAcm5/5AsziFCv15wGpFl9G0psW/zml1Wnk0=
-X-Received: by 2002:a05:6402:ca1:: with SMTP id cn1mr10426635edb.128.1610731421674;
- Fri, 15 Jan 2021 09:23:41 -0800 (PST)
-MIME-Version: 1.0
-References: <20210115120342.8849-1-lukas.bulwahn@gmail.com>
-In-Reply-To: <20210115120342.8849-1-lukas.bulwahn@gmail.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Fri, 15 Jan 2021 12:23:28 -0500
-Message-ID: <CAHC9VhSfn9Ux_KcDysAH_vOWhiS3TvPYcXYZLg_5pr9Vee0f2g@mail.gmail.com>
-Subject: Re: [PATCH] fs: anon_inodes: rephrase to appropriate kernel-doc
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Daniel Colascione <dancol@google.com>,
-        Lokesh Gidra <lokeshgidra@google.com>,
-        Eric Biggers <ebiggers@google.com>,
-        linux-fsdevel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=JNPQQq0esyAUv0SaJP9M+5H+0D0Ooff203N1KcpXtkI=;
+        b=EOBhh8EJtUMug1EcP3ke2uGgwRuiQ3EcXEa9Or0U1l11O9gGGKacMBlCXUJ0uEGC2f
+         pBmEs4Cw/fKclBM6946eYUEgHUGr0NXCzZ2wmjgmj6LxKVHF2Ftr1Gq9wu831Uan2feU
+         2kUlhi5fof1r5UpWxJKZU0dDsEyp0NkftTFG2wVaXB7bxt250/MlyAe1DxHBw3LJeEbA
+         fqrvNwHEBO9EJpU/xxcKnhYM+QzvEHSl3jarQHe6uCIIigl+yznzTZCAJ78/vJe+ouq4
+         7bHW7Q+FiGzQMEPcuBGjzMpKL2ZZ6FWGkMYlo4QlI/HCgPSe7Qt25XlUO8RuCtnShjjs
+         5GuA==
+X-Gm-Message-State: AOAM530/Vqjx+5Zb+SL4seNEfKrIuvygnWaT+SN3cc6EB+QGPB8khZzW
+        ov/2+NYFnbT7fFHzMSFCMdiYUyyHaLyheQ==
+X-Google-Smtp-Source: ABdhPJxBjBNQ3eVsS6Me/YyVKPaoeFY86umXQH74NxE82tUEBDOT0B3bzYaEh4RJgUVktwEZLs4QyQ==
+X-Received: by 2002:a5d:4e51:: with SMTP id r17mr15130734wrt.94.1610744325301;
+        Fri, 15 Jan 2021 12:58:45 -0800 (PST)
+Received: from smtp.gmail.com (a95-92-181-29.cpe.netcabo.pt. [95.92.181.29])
+        by smtp.gmail.com with ESMTPSA id h14sm16016927wrx.37.2021.01.15.12.58.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Jan 2021 12:58:44 -0800 (PST)
+Date:   Fri, 15 Jan 2021 17:58:38 -0300
+From:   Melissa Wen <melissa.srw@gmail.com>
+To:     Sumera Priyadarsini <sylphrenadin@gmail.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>,
+        Haneen Mohammed <hamohammed.sa@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH][next] drm/vkms: Fix missing kmalloc allocation failure
+ check
+Message-ID: <20210115205838.7hff6mmyyl55pgek@smtp.gmail.com>
+References: <20210115130911.71073-1-colin.king@canonical.com>
+ <CACAkLuqG+4cq9w9=JEjB-5KPcxu==2+Sen6GMknM495vELgEFA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACAkLuqG+4cq9w9=JEjB-5KPcxu==2+Sen6GMknM495vELgEFA@mail.gmail.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jan 15, 2021 at 7:03 AM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
->
-> Commit e7e832ce6fa7 ("fs: add LSM-supporting anon-inode interface") adds
-> more kerneldoc description, but also a few new warnings on
-> anon_inode_getfd_secure() due to missing parameter descriptions.
->
-> Rephrase to appropriate kernel-doc for anon_inode_getfd_secure().
->
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
->  fs/anon_inodes.c | 21 ++++++++++++++-------
->  1 file changed, 14 insertions(+), 7 deletions(-)
+On 01/15, Sumera Priyadarsini wrote:
+> On Fri, Jan 15, 2021 at 6:39 PM Colin King <colin.king@canonical.com> wrote:
+> >
+> > From: Colin Ian King <colin.king@canonical.com>
+> >
+> > Currently the kmalloc allocation for config is not being null
+> > checked and could potentially lead to a null pointer dereference.
+> > Fix this by adding the missing null check.
+> >
+> > Addresses-Coverity: ("Dereference null return value")
+> > Fixes: 2df7af93fdad ("drm/vkms: Add vkms_config type")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> 
+> Good catch, thank you!
+> 
+> Reviewed-by: Sumera Priyadarsini <sylphrenadin@gmail.com>
 
-Merged into selinux/next with the other related LSM/SELinux anon-inode
-patches, thank you!
+Applied to drm-misc-next.
 
--- 
-paul moore
-www.paul-moore.com
+Thanks,
+Melissa Wen
+> > ---
+> >  drivers/gpu/drm/vkms/vkms_drv.c | 6 +++++-
+> >  1 file changed, 5 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/gpu/drm/vkms/vkms_drv.c b/drivers/gpu/drm/vkms/vkms_drv.c
+> > index 708f7f54001d..2173b82606f6 100644
+> > --- a/drivers/gpu/drm/vkms/vkms_drv.c
+> > +++ b/drivers/gpu/drm/vkms/vkms_drv.c
+> > @@ -188,7 +188,11 @@ static int vkms_create(struct vkms_config *config)
+> >
+> >  static int __init vkms_init(void)
+> >  {
+> > -       struct vkms_config *config = kmalloc(sizeof(*config), GFP_KERNEL);
+> > +       struct vkms_config *config;
+> > +
+> > +       config = kmalloc(sizeof(*config), GFP_KERNEL);
+> > +       if (!config)
+> > +               return -ENOMEM;
+> >
+> >         default_config = config;
+> >
+> > --
+> > 2.29.2
+> >
+> regards,
+> Sumera

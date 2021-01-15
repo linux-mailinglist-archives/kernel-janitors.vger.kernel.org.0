@@ -2,110 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D8DA2F77E2
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Jan 2021 12:44:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 785912F7843
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Jan 2021 13:04:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727330AbhAOLoV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 15 Jan 2021 06:44:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56586 "EHLO
+        id S1728754AbhAOMEJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 15 Jan 2021 07:04:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726983AbhAOLoU (ORCPT
+        with ESMTP id S1726085AbhAOMEI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 15 Jan 2021 06:44:20 -0500
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3055AC061757;
-        Fri, 15 Jan 2021 03:43:40 -0800 (PST)
-Received: by mail-ej1-x634.google.com with SMTP id r12so1494148ejb.9;
-        Fri, 15 Jan 2021 03:43:40 -0800 (PST)
+        Fri, 15 Jan 2021 07:04:08 -0500
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C068FC061757;
+        Fri, 15 Jan 2021 04:03:52 -0800 (PST)
+Received: by mail-ej1-x62f.google.com with SMTP id jx16so12894923ejb.10;
+        Fri, 15 Jan 2021 04:03:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
-        bh=/9sksIUuZatO+aX8p4iLJ2mKZetuSFmDz0PF+YiOHOI=;
-        b=YEJANZ1/9r+EPbKaQQTb3YhWamtM4DH9to+g8PWbIoYfCC2B9io/PF88pVRzv8fh61
-         Wapvntn5ABjZ4BADq3kEhzYrfLziVhaprSzQD1mSf1hjsxKCDAxUsCWMtzTpTyJwZ/Ql
-         2OKtFYFS//RkJM5MTRb5VHYlKtLi9PAgP2o50L/4C4rwV7bn6D8U0duHKDpPSdNh6r8E
-         fybYpMd8V3cr0MKirGnUYPOuP/QV5wYCu0q7b9Pr2IZ35zwJ6tnVquuJfw/sbV7u9O9h
-         oxFe7U6FfWf/79W+zxcUMZshS+fHCd56UJ7c8Y63FqlccwNeRBJ3ePAYCGUunR7p5scq
-         zUsg==
+        bh=DZKL8N3bCOLd5d6DHEQ8H/r2ag/CUrBRkfKsXkDdZC4=;
+        b=PH5nw1CRQzbcVNiXb/+ZTZ+co58w9pO7JBjqbwHzJc2SkQkCi2t9JsJUuJYDuNDHok
+         lgWIHNrXKQjb3BddFMR3ZuR0wZ5Vel68eSGj63YsXPTi51wjTUCeUCc0uCgmSkGa/xtA
+         KOx07y75aC8sgiQX9jVBC6bV6I3xmv7xGZv9NP8pv2WyfhraP5M1aeh6Vallki1P9GCd
+         f9PcE4SIFZxqGJdd3jEpq+6GgW3hrmGhWe7lCIfYqguVyIQbsQkTFO6N7bRe/1619X0f
+         0ZH/2mn9ABBlrxu2GAwaPLEKCOIjCW9TfOP7lHbfTMgZbPjNZinDRyhWHKJdOnDdq14Y
+         29Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=/9sksIUuZatO+aX8p4iLJ2mKZetuSFmDz0PF+YiOHOI=;
-        b=gglOrfA+8I24DrHzvEuG6tbrJE/4edqiRfnuKV92TRYxAVfDCJwn8cTirP1TFn82y6
-         xmRuQByCZw5VmlbxcI18DK2Xip3ONmUUoh7xGPA/FU8a3E84lGZ9nwA5QeySGv8YTQtr
-         3uRKeEu9le1gJ3e2vPqMvEAS1CeEdFvLO+VWCD4VDo5a3dsgf3AwXeZllGfdE+JRgqtw
-         1t56gfFmSJrVfIcXkaRHSPfGIAm/OJEKVBVfyY+tOtkDeKGiuUsp4ricc3DgUF7UiMNn
-         +PWh3LlNTtdNIejxTE64Mf8G50NJzEIG1mFvMAj/WO5PA9jhkhB/v8jDdnzHl/zUmz5W
-         cy/g==
-X-Gm-Message-State: AOAM533Oyl9Qcbs11KD2TLq1soIUl5OwbRm346SE8adn64O0cIAiC52j
-        DfudEo7spc8lxxBee0Zn/k8=
-X-Google-Smtp-Source: ABdhPJwET0Z8ZFGqMNHwdHfY36RdnFX6xRQgu56Fz+Cxj0NantVxngAd4EdKk1sELCE/DGiWkoU/OQ==
-X-Received: by 2002:a17:906:48c:: with SMTP id f12mr3397945eja.431.1610711018663;
-        Fri, 15 Jan 2021 03:43:38 -0800 (PST)
+        bh=DZKL8N3bCOLd5d6DHEQ8H/r2ag/CUrBRkfKsXkDdZC4=;
+        b=EdBQWaIW1ERHiqFGCJsol/pVu697m/k6fNsiXvRAyTE2y9sRvRyIzXY+clrHYSEtiQ
+         qtCy37rjKIwlWO1+MegQfYnKkj3LDgMDK4gExzIe0a9orr5p3Zb2cNfsJM23RyEzpjxQ
+         64tHlYJabaKfq4xO8omO47vJ2lBbh2I7Om1PXRJta6rVyWjIwhpan9Xzh+5kO/eKJYNh
+         vOmihyDpQp+vfOtW+7Hbd6OPLz4q8Kn4MMiS26Y6LNekzkLRuMsztfDCiSS2AYmmInnx
+         gfdMJYu5cHXIIA7OT6JqiOO+y3URliXIgaZhG+WozSzG6ZX1dPw+C5vpusePA1DLAVUq
+         jLlA==
+X-Gm-Message-State: AOAM53112KkVgmqnBxE1E3c/Pf3udEIZLMrcl4n3Lwpo3bPD6ZSNQ5An
+        GsTtStg5eFcwi/JcmLlAdhw=
+X-Google-Smtp-Source: ABdhPJyPPqMVbBEXYP+7LoChiNf3GY+blJP0XXqz/DGs5XIuWOLFIH8d3yAEmudH9WjagMJorCBlyA==
+X-Received: by 2002:a17:906:d87:: with SMTP id m7mr8452658eji.108.1610712231381;
+        Fri, 15 Jan 2021 04:03:51 -0800 (PST)
 Received: from felia.fritz.box ([2001:16b8:2d39:a000:7c85:8e80:b862:a8bf])
-        by smtp.gmail.com with ESMTPSA id a2sm3184105ejt.46.2021.01.15.03.43.37
+        by smtp.gmail.com with ESMTPSA id m5sm3228350eja.11.2021.01.15.04.03.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Jan 2021 03:43:37 -0800 (PST)
+        Fri, 15 Jan 2021 04:03:50 -0800 (PST)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-        Uma Shankar <uma.shankar@intel.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        intel-gfx@lists.freedesktop.org
-Cc:     David Airlie <airlied@linux.ie>, dri-devel@lists.freedesktop.org,
+To:     Daniel Colascione <dancol@google.com>,
+        Lokesh Gidra <lokeshgidra@google.com>,
+        Eric Biggers <ebiggers@google.com>,
+        Paul Moore <paul@paul-moore.com>, linux-fsdevel@vger.kernel.org
+Cc:     linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] drm/dp_helper: tweak kerneldoc to address warning
-Date:   Fri, 15 Jan 2021 12:43:29 +0100
-Message-Id: <20210115114329.27152-1-lukas.bulwahn@gmail.com>
+Subject: [PATCH] fs: anon_inodes: rephrase to appropriate kernel-doc
+Date:   Fri, 15 Jan 2021 13:03:42 +0100
+Message-Id: <20210115120342.8849-1-lukas.bulwahn@gmail.com>
 X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 07c9b8634fb6 ("drm/dp_helper: Add helpers to configure PCONs
-RGB-YCbCr Conversion") introduces a warning with make htmldocs in
-./drivers/gpu/drm/drm_dp_helper.c:965 for
-drm_dp_downstream_rgb_to_ycbcr_conversion():
+Commit e7e832ce6fa7 ("fs: add LSM-supporting anon-inode interface") adds
+more kerneldoc description, but also a few new warnings on
+anon_inode_getfd_secure() due to missing parameter descriptions.
 
-  warning: Excess function parameter 'colorspc' description
-  warning: Function parameter or member 'color_spc' not described
+Rephrase to appropriate kernel-doc for anon_inode_getfd_secure().
 
-Tweak the kerneldoc for drm_dp_downstream_rgb_to_ycbcr_conversion().
-
-Fixes: 07c9b8634fb6 ("drm/dp_helper: Add helpers to configure PCONs RGB-YCbCr Conversion")
 Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
-applies cleanly on next-20210115
+ fs/anon_inodes.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-Jani, please pick this minor doc warning fixup.
-
- drivers/gpu/drm/drm_dp_helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/drm_dp_helper.c b/drivers/gpu/drm/drm_dp_helper.c
-index 3ecde451f523..d60e94ac6fdd 100644
---- a/drivers/gpu/drm/drm_dp_helper.c
-+++ b/drivers/gpu/drm/drm_dp_helper.c
-@@ -954,7 +954,7 @@ EXPORT_SYMBOL(drm_dp_downstream_444_to_420_conversion);
-  *                                               RGB->YCbCr conversion capability
-  * @dpcd: DisplayPort configuration data
-  * @port_cap: downstream facing port capabilities
-- * @colorspc: Colorspace for which conversion cap is sought
-+ * @color_spc: Colorspace for which conversion cap is sought
-  *
-  * Returns: whether the downstream facing port can convert RGB->YCbCr for a given
-  * colorspace.
-@@ -3134,7 +3134,7 @@ int drm_dp_pcon_pps_override_param(struct drm_dp_aux *aux, u8 pps_param[6])
- }
- EXPORT_SYMBOL(drm_dp_pcon_pps_override_param);
+diff --git a/fs/anon_inodes.c b/fs/anon_inodes.c
+index 023337d65a03..a280156138ed 100644
+--- a/fs/anon_inodes.c
++++ b/fs/anon_inodes.c
+@@ -202,13 +202,20 @@ int anon_inode_getfd(const char *name, const struct file_operations *fops,
+ EXPORT_SYMBOL_GPL(anon_inode_getfd);
  
--/*
-+/**
-  * drm_dp_pcon_convert_rgb_to_ycbcr() - Configure the PCon to convert RGB to Ycbcr
-  * @aux: displayPort AUX channel
-  * @color_spc: Color-space/s for which conversion is to be enabled, 0 for disable.
+ /**
+- * Like anon_inode_getfd(), but creates a new !S_PRIVATE anon inode rather than
+- * reuse the singleton anon inode, and calls the inode_init_security_anon() LSM
+- * hook. This allows the inode to have its own security context and for a LSM
+- * to reject creation of the inode.  An optional @context_inode argument is
+- * also added to provide the logical relationship with the new inode.  The LSM
+- * may use @context_inode in inode_init_security_anon(), but a reference to it
+- * is not held.
++ * anon_inode_getfd_secure - Like anon_inode_getfd(), but creates a new
++ * !S_PRIVATE anon inode rather than reuse the singleton anon inode, and calls
++ * the inode_init_security_anon() LSM hook. This allows the inode to have its
++ * own security context and for a LSM to reject creation of the inode.
++ *
++ * @name:    [in]    name of the "class" of the new file
++ * @fops:    [in]    file operations for the new file
++ * @priv:    [in]    private data for the new file (will be file's private_data)
++ * @flags:   [in]    flags
++ * @context_inode:
++ *           [in]    the logical relationship with the new inode (optional)
++ *
++ * The LSM may use @context_inode in inode_init_security_anon(), but a
++ * reference to it is not held.
+  */
+ int anon_inode_getfd_secure(const char *name, const struct file_operations *fops,
+ 			    void *priv, int flags,
 -- 
 2.17.1
 

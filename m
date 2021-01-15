@@ -2,111 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 785912F7843
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Jan 2021 13:04:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DC6E2F7C34
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Jan 2021 14:12:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728754AbhAOMEJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 15 Jan 2021 07:04:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60760 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726085AbhAOMEI (ORCPT
+        id S1730880AbhAONLy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 15 Jan 2021 08:11:54 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:41806 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732537AbhAONJz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 15 Jan 2021 07:04:08 -0500
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C068FC061757;
-        Fri, 15 Jan 2021 04:03:52 -0800 (PST)
-Received: by mail-ej1-x62f.google.com with SMTP id jx16so12894923ejb.10;
-        Fri, 15 Jan 2021 04:03:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=DZKL8N3bCOLd5d6DHEQ8H/r2ag/CUrBRkfKsXkDdZC4=;
-        b=PH5nw1CRQzbcVNiXb/+ZTZ+co58w9pO7JBjqbwHzJc2SkQkCi2t9JsJUuJYDuNDHok
-         lgWIHNrXKQjb3BddFMR3ZuR0wZ5Vel68eSGj63YsXPTi51wjTUCeUCc0uCgmSkGa/xtA
-         KOx07y75aC8sgiQX9jVBC6bV6I3xmv7xGZv9NP8pv2WyfhraP5M1aeh6Vallki1P9GCd
-         f9PcE4SIFZxqGJdd3jEpq+6GgW3hrmGhWe7lCIfYqguVyIQbsQkTFO6N7bRe/1619X0f
-         0ZH/2mn9ABBlrxu2GAwaPLEKCOIjCW9TfOP7lHbfTMgZbPjNZinDRyhWHKJdOnDdq14Y
-         29Zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=DZKL8N3bCOLd5d6DHEQ8H/r2ag/CUrBRkfKsXkDdZC4=;
-        b=EdBQWaIW1ERHiqFGCJsol/pVu697m/k6fNsiXvRAyTE2y9sRvRyIzXY+clrHYSEtiQ
-         qtCy37rjKIwlWO1+MegQfYnKkj3LDgMDK4gExzIe0a9orr5p3Zb2cNfsJM23RyEzpjxQ
-         64tHlYJabaKfq4xO8omO47vJ2lBbh2I7Om1PXRJta6rVyWjIwhpan9Xzh+5kO/eKJYNh
-         vOmihyDpQp+vfOtW+7Hbd6OPLz4q8Kn4MMiS26Y6LNekzkLRuMsztfDCiSS2AYmmInnx
-         gfdMJYu5cHXIIA7OT6JqiOO+y3URliXIgaZhG+WozSzG6ZX1dPw+C5vpusePA1DLAVUq
-         jLlA==
-X-Gm-Message-State: AOAM53112KkVgmqnBxE1E3c/Pf3udEIZLMrcl4n3Lwpo3bPD6ZSNQ5An
-        GsTtStg5eFcwi/JcmLlAdhw=
-X-Google-Smtp-Source: ABdhPJyPPqMVbBEXYP+7LoChiNf3GY+blJP0XXqz/DGs5XIuWOLFIH8d3yAEmudH9WjagMJorCBlyA==
-X-Received: by 2002:a17:906:d87:: with SMTP id m7mr8452658eji.108.1610712231381;
-        Fri, 15 Jan 2021 04:03:51 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d39:a000:7c85:8e80:b862:a8bf])
-        by smtp.gmail.com with ESMTPSA id m5sm3228350eja.11.2021.01.15.04.03.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Jan 2021 04:03:50 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Daniel Colascione <dancol@google.com>,
-        Lokesh Gidra <lokeshgidra@google.com>,
-        Eric Biggers <ebiggers@google.com>,
-        Paul Moore <paul@paul-moore.com>, linux-fsdevel@vger.kernel.org
-Cc:     linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] fs: anon_inodes: rephrase to appropriate kernel-doc
-Date:   Fri, 15 Jan 2021 13:03:42 +0100
-Message-Id: <20210115120342.8849-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Fri, 15 Jan 2021 08:09:55 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1l0Oqm-0001DP-5Q; Fri, 15 Jan 2021 13:09:12 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>,
+        Melissa Wen <melissa.srw@gmail.com>,
+        Haneen Mohammed <hamohammed.sa@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/vkms: Fix missing kmalloc allocation failure check
+Date:   Fri, 15 Jan 2021 13:09:11 +0000
+Message-Id: <20210115130911.71073-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit e7e832ce6fa7 ("fs: add LSM-supporting anon-inode interface") adds
-more kerneldoc description, but also a few new warnings on
-anon_inode_getfd_secure() due to missing parameter descriptions.
+From: Colin Ian King <colin.king@canonical.com>
 
-Rephrase to appropriate kernel-doc for anon_inode_getfd_secure().
+Currently the kmalloc allocation for config is not being null
+checked and could potentially lead to a null pointer dereference.
+Fix this by adding the missing null check.
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Addresses-Coverity: ("Dereference null return value")
+Fixes: 2df7af93fdad ("drm/vkms: Add vkms_config type")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- fs/anon_inodes.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/vkms/vkms_drv.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/anon_inodes.c b/fs/anon_inodes.c
-index 023337d65a03..a280156138ed 100644
---- a/fs/anon_inodes.c
-+++ b/fs/anon_inodes.c
-@@ -202,13 +202,20 @@ int anon_inode_getfd(const char *name, const struct file_operations *fops,
- EXPORT_SYMBOL_GPL(anon_inode_getfd);
+diff --git a/drivers/gpu/drm/vkms/vkms_drv.c b/drivers/gpu/drm/vkms/vkms_drv.c
+index 708f7f54001d..2173b82606f6 100644
+--- a/drivers/gpu/drm/vkms/vkms_drv.c
++++ b/drivers/gpu/drm/vkms/vkms_drv.c
+@@ -188,7 +188,11 @@ static int vkms_create(struct vkms_config *config)
  
- /**
-- * Like anon_inode_getfd(), but creates a new !S_PRIVATE anon inode rather than
-- * reuse the singleton anon inode, and calls the inode_init_security_anon() LSM
-- * hook. This allows the inode to have its own security context and for a LSM
-- * to reject creation of the inode.  An optional @context_inode argument is
-- * also added to provide the logical relationship with the new inode.  The LSM
-- * may use @context_inode in inode_init_security_anon(), but a reference to it
-- * is not held.
-+ * anon_inode_getfd_secure - Like anon_inode_getfd(), but creates a new
-+ * !S_PRIVATE anon inode rather than reuse the singleton anon inode, and calls
-+ * the inode_init_security_anon() LSM hook. This allows the inode to have its
-+ * own security context and for a LSM to reject creation of the inode.
-+ *
-+ * @name:    [in]    name of the "class" of the new file
-+ * @fops:    [in]    file operations for the new file
-+ * @priv:    [in]    private data for the new file (will be file's private_data)
-+ * @flags:   [in]    flags
-+ * @context_inode:
-+ *           [in]    the logical relationship with the new inode (optional)
-+ *
-+ * The LSM may use @context_inode in inode_init_security_anon(), but a
-+ * reference to it is not held.
-  */
- int anon_inode_getfd_secure(const char *name, const struct file_operations *fops,
- 			    void *priv, int flags,
+ static int __init vkms_init(void)
+ {
+-	struct vkms_config *config = kmalloc(sizeof(*config), GFP_KERNEL);
++	struct vkms_config *config;
++
++	config = kmalloc(sizeof(*config), GFP_KERNEL);
++	if (!config)
++		return -ENOMEM;
+ 
+ 	default_config = config;
+ 
 -- 
-2.17.1
+2.29.2
 

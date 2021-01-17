@@ -2,32 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48CAC2F9288
-	for <lists+kernel-janitors@lfdr.de>; Sun, 17 Jan 2021 14:27:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25F732F92AA
+	for <lists+kernel-janitors@lfdr.de>; Sun, 17 Jan 2021 14:44:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728181AbhAQN0g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 17 Jan 2021 08:26:36 -0500
-Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:16919 "EHLO
+        id S1729238AbhAQNn4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 17 Jan 2021 08:43:56 -0500
+Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:57875 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728452AbhAQN0a (ORCPT
+        with ESMTP id S1729140AbhAQNlR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 17 Jan 2021 08:26:30 -0500
+        Sun, 17 Jan 2021 08:41:17 -0500
 Received: from localhost.localdomain ([92.131.99.25])
         by mwinf5d43 with ME
-        id HpQk2400C0Ys01Y03pQkUw; Sun, 17 Jan 2021 14:24:46 +0100
+        id HpfU240070Ys01Y03pfUiX; Sun, 17 Jan 2021 14:39:31 +0100
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 17 Jan 2021 14:24:46 +0100
+X-ME-Date: Sun, 17 Jan 2021 14:39:31 +0100
 X-ME-IP: 92.131.99.25
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     jinpu.wang@cloud.ionos.com, jejb@linux.ibm.com,
-        martin.petersen@oracle.com
-Cc:     linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
+To:     mporter@kernel.crashing.org, alex.bou9@gmail.com
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] scsi: pm80xx: switch from 'pci_' to 'dma_' API
-Date:   Sun, 17 Jan 2021 14:24:45 +0100
-Message-Id: <20210117132445.562552-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] rapidio/tsi721: Use dma_set_mask_and_coherent to simplify code
+Date:   Sun, 17 Jan 2021 14:39:29 +0100
+Message-Id: <20210117133929.563645-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -35,173 +33,40 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The wrappers in include/linux/pci-dma-compat.h should go away.
-
-The patch has been generated with the coccinelle script below and has been
-hand modified to replace GFP_ with a correct flag.
-It has been compile tested.
-
-When memory is allocated in 'pm8001_init_ccb_tag()' GFP_KERNEL can be used
-because this function already uses this flag a few lines above.
-
-While at it, remove "pm80xx: " in a debug message. 'pm8001_dbg()' already
-add the driver name in the message.
-
-
-@@
-@@
--    PCI_DMA_BIDIRECTIONAL
-+    DMA_BIDIRECTIONAL
-
-@@
-@@
--    PCI_DMA_TODEVICE
-+    DMA_TO_DEVICE
-
-@@
-@@
--    PCI_DMA_FROMDEVICE
-+    DMA_FROM_DEVICE
-
-@@
-@@
--    PCI_DMA_NONE
-+    DMA_NONE
-
-@@
-expression e1, e2, e3;
-@@
--    pci_alloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3;
-@@
--    pci_zalloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_free_consistent(e1, e2, e3, e4)
-+    dma_free_coherent(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_single(e1, e2, e3, e4)
-+    dma_map_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_single(e1, e2, e3, e4)
-+    dma_unmap_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4, e5;
-@@
--    pci_map_page(e1, e2, e3, e4, e5)
-+    dma_map_page(&e1->dev, e2, e3, e4, e5)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_page(e1, e2, e3, e4)
-+    dma_unmap_page(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_sg(e1, e2, e3, e4)
-+    dma_map_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_sg(e1, e2, e3, e4)
-+    dma_unmap_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-+    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-+    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-+    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-+    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2;
-@@
--    pci_dma_mapping_error(e1, e2)
-+    dma_mapping_error(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_dma_mask(e1, e2)
-+    dma_set_mask(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_consistent_dma_mask(e1, e2)
-+    dma_set_coherent_mask(&e1->dev, e2)
+'pci_set_dma_mask()' + 'pci_set_consistent_dma_mask()' can be replaced by
+an equivalent 'dma_set_mask_and_coherent()' which is much less verbose.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
-If needed, see post from Christoph Hellwig on the kernel-janitors ML:
-   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
----
- drivers/scsi/pm8001/pm8001_init.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/rapidio/devices/tsi721.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/scsi/pm8001/pm8001_init.c b/drivers/scsi/pm8001/pm8001_init.c
-index d21078ca7fb3..bd626ef876da 100644
---- a/drivers/scsi/pm8001/pm8001_init.c
-+++ b/drivers/scsi/pm8001/pm8001_init.c
-@@ -423,7 +423,7 @@ static int pm8001_alloc(struct pm8001_hba_info *pm8001_ha,
- err_out_nodev:
- 	for (i = 0; i < pm8001_ha->max_memcnt; i++) {
- 		if (pm8001_ha->memoryMap.region[i].virt_ptr != NULL) {
--			pci_free_consistent(pm8001_ha->pdev,
-+			dma_free_coherent(&pm8001_ha->pdev->dev,
- 				(pm8001_ha->memoryMap.region[i].total_len +
- 				pm8001_ha->memoryMap.region[i].alignment),
- 				pm8001_ha->memoryMap.region[i].virt_ptr,
-@@ -1197,12 +1197,13 @@ pm8001_init_ccb_tag(struct pm8001_hba_info *pm8001_ha, struct Scsi_Host *shost,
- 		goto err_out_noccb;
+diff --git a/drivers/rapidio/devices/tsi721.c b/drivers/rapidio/devices/tsi721.c
+index 4dd31dd9feea..1e296b4d7bf2 100644
+--- a/drivers/rapidio/devices/tsi721.c
++++ b/drivers/rapidio/devices/tsi721.c
+@@ -2836,19 +2836,12 @@ static int tsi721_probe(struct pci_dev *pdev,
  	}
- 	for (i = 0; i < ccb_count; i++) {
--		pm8001_ha->ccb_info[i].buf_prd = pci_alloc_consistent(pdev,
-+		pm8001_ha->ccb_info[i].buf_prd = dma_alloc_coherent(&pdev->dev,
- 				sizeof(struct pm8001_prd) * PM8001_MAX_DMA_SG,
--				&pm8001_ha->ccb_info[i].ccb_dma_handle);
-+				&pm8001_ha->ccb_info[i].ccb_dma_handle,
-+				GFP_KERNEL);
- 		if (!pm8001_ha->ccb_info[i].buf_prd) {
- 			pm8001_dbg(pm8001_ha, FAIL,
--				   "pm80xx: ccb prd memory allocation error\n");
-+				   "ccb prd memory allocation error\n");
- 			goto err_out;
+ 
+ 	/* Configure DMA attributes. */
+-	if (pci_set_dma_mask(pdev, DMA_BIT_MASK(64))) {
+-		err = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
++	if (dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64))) {
++		err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
+ 		if (err) {
+ 			tsi_err(&pdev->dev, "Unable to set DMA mask");
+ 			goto err_unmap_bars;
  		}
- 		pm8001_ha->ccb_info[i].task = NULL;
+-
+-		if (pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32)))
+-			tsi_info(&pdev->dev, "Unable to set consistent DMA mask");
+-	} else {
+-		err = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(64));
+-		if (err)
+-			tsi_info(&pdev->dev, "Unable to set consistent DMA mask");
+ 	}
+ 
+ 	BUG_ON(!pci_is_pcie(pdev));
 -- 
 2.27.0
 

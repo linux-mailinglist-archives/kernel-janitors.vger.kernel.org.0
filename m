@@ -2,237 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0ABD2F99DF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Jan 2021 07:29:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79B362F9A38
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Jan 2021 07:56:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731076AbhARG1i (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 Jan 2021 01:27:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35110 "EHLO
+        id S1731729AbhARGzI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 Jan 2021 01:55:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729880AbhARG1e (ORCPT
+        with ESMTP id S1731429AbhARGzF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 Jan 2021 01:27:34 -0500
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7415FC061574
-        for <kernel-janitors@vger.kernel.org>; Sun, 17 Jan 2021 22:26:54 -0800 (PST)
-Received: by mail-ed1-x535.google.com with SMTP id f1so2130988edr.12
-        for <kernel-janitors@vger.kernel.org>; Sun, 17 Jan 2021 22:26:54 -0800 (PST)
+        Mon, 18 Jan 2021 01:55:05 -0500
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B944AC0613C1
+        for <kernel-janitors@vger.kernel.org>; Sun, 17 Jan 2021 22:54:24 -0800 (PST)
+Received: by mail-pj1-x1033.google.com with SMTP id v1so8863681pjr.2
+        for <kernel-janitors@vger.kernel.org>; Sun, 17 Jan 2021 22:54:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloud.ionos.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=To9xHF+bvRND4e71EX/eoQPj9g3Y0QQk/55jMKeNBsU=;
-        b=H9ke33h73Dz/hXk+091/y2aCEuAF4HAK5fzpBEcvGvOV9MBBsbGHuWO7IM74zsCiM+
-         5reA5U6qiCKCjJNhu6fdXrxOA/nHOlQwV/MNpsEe4VaiEg04jh7m56uE+r5BHvy+OL8g
-         GQ+WqWVI8oP5Y6qm/sno30mopz4bFufqSVmu6ExGYwintYzFhJxeUod+oXiJjvFoYBg0
-         QcAk0OngibTFQ+LowDmVIie8su5iQ6AI4RHgn4jfTqtgoYQX6whlbfe5ho22qX18dTb2
-         1JHUaM6CLVcxzD8vrxfaeKy7ws7NIULzZzVgtOE4P+p2J2PRK7jTiJLjHqZMoOE3IG3x
-         q7Bw==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=a61NDNRzrCDZjz9aAYnQH4fNU8BSU7I4o70F6b9RjWQ=;
+        b=ZBp40ApONg5hlyM8Nk7lAci6DW4m+WmlSRC9QlC6GDBguXEjpMxSGY8CcXyGnRNU8m
+         HgC08/FNRTgxB2Z/WVwSmVjPLsT1dWeGNvj6lM7qWlGj862MZrj9U0A04sNvjVO+Jbzx
+         DVuY2fgRsHt63/AWb8q0p2YL0PkeDK6ZYgH4aHf5h89FHxGI+6e9feRBanMik5hnZTOz
+         CGK/kYsOx8L8HpwdII9250VeS7/TqOKv3l5zcHVtP7ldcnFLs5o2xJQEjQne0NzKsMra
+         Hve3vixCiO3CZ0mm1qr7PMXgSVBX+TLgX0OkflxfdhgbQ3UAesJS3C4VQQVJxN4r27o6
+         MMgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=To9xHF+bvRND4e71EX/eoQPj9g3Y0QQk/55jMKeNBsU=;
-        b=H1N02r5JxKWlez7DgVxF89Y6S4bWzSNAHs2xE3BLsbp137IPKZqoTPjnBN/kKsJUfC
-         4idsvloXkmyCaXmS9z7LuPkezUEZhB3MSBME46jvkQDQiH8Bny6KT8MfwksW9wXVr7pp
-         h3Q5D8fAKTQLFSSwjtPl2KBb028IYyhp55O2+RiRGruAvCLNE7+k4RqyaJra/qERUbh3
-         Zdj+qxmZIUiPdubNnHDL8QZD+b25vriPxHQm/hr0MD4zIFjJvFMXHjNnup8iCZvSqgEF
-         vtSYXxUNl//5xI0p3gVv0Ufcxml0seuPDcoyWecfzMnaZidQj0hDMqyzIa4+GyAuzKTm
-         reVg==
-X-Gm-Message-State: AOAM530DUCW7WuwvuSYWhsgYl/uhV/Q8fEcglEJpqSQJEo9Dnh4pHTK2
-        zljkDEyfITwEIspmtmxV2APymMhOFjbvnqzSJVMatnbZt0c=
-X-Google-Smtp-Source: ABdhPJwEYA4GhPJYVZbHMYbOYdZ8nrU3dK1YvRgwQiN7LijA78JUWQJcYCEZ8hVKZjXizOt+jkyTAEAt5QD9KpjjYj0=
-X-Received: by 2002:a05:6402:1c0b:: with SMTP id ck11mr8573153edb.35.1610951213080;
- Sun, 17 Jan 2021 22:26:53 -0800 (PST)
-MIME-Version: 1.0
-References: <20210117132445.562552-1-christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20210117132445.562552-1-christophe.jaillet@wanadoo.fr>
-From:   Jinpu Wang <jinpu.wang@cloud.ionos.com>
-Date:   Mon, 18 Jan 2021 07:26:42 +0100
-Message-ID: <CAMGffEndZKZL26w0kV55Q_-++UnJT_U3ef0us4NiUhn61wJ0Yw@mail.gmail.com>
-Subject: Re: [PATCH] scsi: pm80xx: switch from 'pci_' to 'dma_' API
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=a61NDNRzrCDZjz9aAYnQH4fNU8BSU7I4o70F6b9RjWQ=;
+        b=YV/DByPR1SFNnLZdy1a6YJBgjt6D/NExKfRB0ZHzzJe6vp7ClsUhDauAj0bYH8VzIw
+         D5URoytFKwmi8ffKvckOJkufldlyi3jqA53YEuChBp0CFVAivJoUzcfErTmOQF0/kBsW
+         l0S8Aqzfa/a58pEFFb6S88vAH61p4kVRvPO7eqnX+gHtxUNLaXxkN4rEjPqUwcvDc+pC
+         s84ATECemDnK/lf/MN6Ju/2CklbHUPOgh3pbLLNbjZMS9S2B+BFqIHIlX9Oe1I+rGiLE
+         6VcR5GVZOv7bxAQELw/rNv/inI79VR8GJHTdULitkANVJOFaAbL13WrGEVGf1kJyELfm
+         lfbQ==
+X-Gm-Message-State: AOAM533tobXxTOBel4prsqK/CdxKV6R2MLFDhhON4pp5MpiZT5NKN78T
+        yg1Hqup+MF8B1T7PsOi5ACANhQ==
+X-Google-Smtp-Source: ABdhPJwYtAGso1N2TmtCrggR0shnn3HjmPjH73YcgokUM5OA+NDMCJ0zZVt6nNgCaedNZkTsPsumBQ==
+X-Received: by 2002:a17:902:c106:b029:de:af88:80ed with SMTP id 6-20020a170902c106b02900deaf8880edmr3614590pli.35.1610952864312;
+        Sun, 17 Jan 2021 22:54:24 -0800 (PST)
+Received: from localhost ([122.172.59.240])
+        by smtp.gmail.com with ESMTPSA id p13sm14049072pju.20.2021.01.17.22.54.22
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 17 Jan 2021 22:54:23 -0800 (PST)
+Date:   Mon, 18 Jan 2021 12:24:21 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
 To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Linux SCSI Mailinglist <linux-scsi@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
+Cc:     mmayer@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+        rjw@rjwysocki.net, f.fainelli@gmail.com, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v2 1/2] cpufreq: brcmstb-avs-cpufreq: Fix some resource
+ leaks in the error handling path of the probe function
+Message-ID: <20210118065421.x5s54evpafq73ouk@vireshk-i7>
+References: <20210117142635.568686-1-christophe.jaillet@wanadoo.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210117142635.568686-1-christophe.jaillet@wanadoo.fr>
+User-Agent: NeoMutt/20180716-391-311a52
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Jan 17, 2021 at 2:24 PM Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
->
-> The wrappers in include/linux/pci-dma-compat.h should go away.
->
-> The patch has been generated with the coccinelle script below and has been
-> hand modified to replace GFP_ with a correct flag.
-> It has been compile tested.
->
-> When memory is allocated in 'pm8001_init_ccb_tag()' GFP_KERNEL can be used
-> because this function already uses this flag a few lines above.
->
-> While at it, remove "pm80xx: " in a debug message. 'pm8001_dbg()' already
-> add the driver name in the message.
->
->
-> @@
-> @@
-> -    PCI_DMA_BIDIRECTIONAL
-> +    DMA_BIDIRECTIONAL
->
-> @@
-> @@
-> -    PCI_DMA_TODEVICE
-> +    DMA_TO_DEVICE
->
-> @@
-> @@
-> -    PCI_DMA_FROMDEVICE
-> +    DMA_FROM_DEVICE
->
-> @@
-> @@
-> -    PCI_DMA_NONE
-> +    DMA_NONE
->
-> @@
-> expression e1, e2, e3;
-> @@
-> -    pci_alloc_consistent(e1, e2, e3)
-> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
->
-> @@
-> expression e1, e2, e3;
-> @@
-> -    pci_zalloc_consistent(e1, e2, e3)
-> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_free_consistent(e1, e2, e3, e4)
-> +    dma_free_coherent(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_map_single(e1, e2, e3, e4)
-> +    dma_map_single(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_single(e1, e2, e3, e4)
-> +    dma_unmap_single(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4, e5;
-> @@
-> -    pci_map_page(e1, e2, e3, e4, e5)
-> +    dma_map_page(&e1->dev, e2, e3, e4, e5)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_page(e1, e2, e3, e4)
-> +    dma_unmap_page(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_map_sg(e1, e2, e3, e4)
-> +    dma_map_sg(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_sg(e1, e2, e3, e4)
-> +    dma_unmap_sg(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-> +    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-> +    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-> +    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-> +    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
->
-> @@
-> expression e1, e2;
-> @@
-> -    pci_dma_mapping_error(e1, e2)
-> +    dma_mapping_error(&e1->dev, e2)
->
-> @@
-> expression e1, e2;
-> @@
-> -    pci_set_dma_mask(e1, e2)
-> +    dma_set_mask(&e1->dev, e2)
->
-> @@
-> expression e1, e2;
-> @@
-> -    pci_set_consistent_dma_mask(e1, e2)
-> +    dma_set_coherent_mask(&e1->dev, e2)
->
+On 17-01-21, 15:26, Christophe JAILLET wrote:
+> If 'cpufreq_register_driver()' fails, we must release the resources
+> allocated in 'brcm_avs_prepare_init()' as already done in the remove
+> function.
+> 
+> To do that, introduce a new function 'brcm_avs_prepare_uninit()' in order
+> to avoid code duplication. This also makes the code more readable (IMHO).
+> 
+> Fixes: de322e085995 ("cpufreq: brcmstb-avs-cpufreq: AVS CPUfreq driver for Broadcom STB SoCs")
 > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Jack Wang <jinpu.wang@cloud.ionos.com>
 > ---
-> If needed, see post from Christoph Hellwig on the kernel-janitors ML:
->    https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+> v1->v2: be less verbose when writing the error handling path of the probe
 > ---
->  drivers/scsi/pm8001/pm8001_init.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/scsi/pm8001/pm8001_init.c b/drivers/scsi/pm8001/pm8001_init.c
-> index d21078ca7fb3..bd626ef876da 100644
-> --- a/drivers/scsi/pm8001/pm8001_init.c
-> +++ b/drivers/scsi/pm8001/pm8001_init.c
-> @@ -423,7 +423,7 @@ static int pm8001_alloc(struct pm8001_hba_info *pm8001_ha,
->  err_out_nodev:
->         for (i = 0; i < pm8001_ha->max_memcnt; i++) {
->                 if (pm8001_ha->memoryMap.region[i].virt_ptr != NULL) {
-> -                       pci_free_consistent(pm8001_ha->pdev,
-> +                       dma_free_coherent(&pm8001_ha->pdev->dev,
->                                 (pm8001_ha->memoryMap.region[i].total_len +
->                                 pm8001_ha->memoryMap.region[i].alignment),
->                                 pm8001_ha->memoryMap.region[i].virt_ptr,
-> @@ -1197,12 +1197,13 @@ pm8001_init_ccb_tag(struct pm8001_hba_info *pm8001_ha, struct Scsi_Host *shost,
->                 goto err_out_noccb;
->         }
->         for (i = 0; i < ccb_count; i++) {
-> -               pm8001_ha->ccb_info[i].buf_prd = pci_alloc_consistent(pdev,
-> +               pm8001_ha->ccb_info[i].buf_prd = dma_alloc_coherent(&pdev->dev,
->                                 sizeof(struct pm8001_prd) * PM8001_MAX_DMA_SG,
-> -                               &pm8001_ha->ccb_info[i].ccb_dma_handle);
-> +                               &pm8001_ha->ccb_info[i].ccb_dma_handle,
-> +                               GFP_KERNEL);
->                 if (!pm8001_ha->ccb_info[i].buf_prd) {
->                         pm8001_dbg(pm8001_ha, FAIL,
-> -                                  "pm80xx: ccb prd memory allocation error\n");
-> +                                  "ccb prd memory allocation error\n");
->                         goto err_out;
->                 }
->                 pm8001_ha->ccb_info[i].task = NULL;
-> --
-> 2.27.0
->
+>  drivers/cpufreq/brcmstb-avs-cpufreq.c | 21 ++++++++++++++++-----
+>  1 file changed, 16 insertions(+), 5 deletions(-)
+
+Applied both patches. Thanks.
+
+-- 
+viresh

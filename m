@@ -2,89 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79B362F9A38
-	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Jan 2021 07:56:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CF842F9AEA
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Jan 2021 09:03:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731729AbhARGzI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 Jan 2021 01:55:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41064 "EHLO
+        id S2387447AbhARIBP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 Jan 2021 03:01:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731429AbhARGzF (ORCPT
+        with ESMTP id S1733306AbhARIAy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 Jan 2021 01:55:05 -0500
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B944AC0613C1
-        for <kernel-janitors@vger.kernel.org>; Sun, 17 Jan 2021 22:54:24 -0800 (PST)
-Received: by mail-pj1-x1033.google.com with SMTP id v1so8863681pjr.2
-        for <kernel-janitors@vger.kernel.org>; Sun, 17 Jan 2021 22:54:24 -0800 (PST)
+        Mon, 18 Jan 2021 03:00:54 -0500
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA944C061573;
+        Mon, 18 Jan 2021 00:00:13 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id 6so8170194wri.3;
+        Mon, 18 Jan 2021 00:00:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=a61NDNRzrCDZjz9aAYnQH4fNU8BSU7I4o70F6b9RjWQ=;
-        b=ZBp40ApONg5hlyM8Nk7lAci6DW4m+WmlSRC9QlC6GDBguXEjpMxSGY8CcXyGnRNU8m
-         HgC08/FNRTgxB2Z/WVwSmVjPLsT1dWeGNvj6lM7qWlGj862MZrj9U0A04sNvjVO+Jbzx
-         DVuY2fgRsHt63/AWb8q0p2YL0PkeDK6ZYgH4aHf5h89FHxGI+6e9feRBanMik5hnZTOz
-         CGK/kYsOx8L8HpwdII9250VeS7/TqOKv3l5zcHVtP7ldcnFLs5o2xJQEjQne0NzKsMra
-         Hve3vixCiO3CZ0mm1qr7PMXgSVBX+TLgX0OkflxfdhgbQ3UAesJS3C4VQQVJxN4r27o6
-         MMgQ==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=QrqziBluAm2S7jXEhlyaBX23uYOu5nIn+17iqFzqPgc=;
+        b=PoKTj57akzrAzBOa8fvLRnZicOvuIP3BcIDUm6snh/3aqOytbhsto0hj+3DpxwZuWd
+         demfto64a5AT8fDUlK0KIIUq6VDCKBryqDLDW/I45kUexbFy+eyH7Dob5BrcgQAaPuA8
+         avdA0wzGnqgHFIJhdnaqQlGGf6NJ8SEsjTjLOIjg3mYfFK0N2sKxOuNyM/RBkFW1vIt0
+         niCgRTGRFSSlcSFARrgjI8cWKlGHlVZc3IuXAh6+vTp5jbruNdbTiRF0NxPK/zTER3cq
+         o0WrL30jI+l+1kWLRSmsE5Zf4IbVAalV7oW+GAHSONCPNu4LpL57WHJioU6Z22TimKmE
+         ayOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=a61NDNRzrCDZjz9aAYnQH4fNU8BSU7I4o70F6b9RjWQ=;
-        b=YV/DByPR1SFNnLZdy1a6YJBgjt6D/NExKfRB0ZHzzJe6vp7ClsUhDauAj0bYH8VzIw
-         D5URoytFKwmi8ffKvckOJkufldlyi3jqA53YEuChBp0CFVAivJoUzcfErTmOQF0/kBsW
-         l0S8Aqzfa/a58pEFFb6S88vAH61p4kVRvPO7eqnX+gHtxUNLaXxkN4rEjPqUwcvDc+pC
-         s84ATECemDnK/lf/MN6Ju/2CklbHUPOgh3pbLLNbjZMS9S2B+BFqIHIlX9Oe1I+rGiLE
-         6VcR5GVZOv7bxAQELw/rNv/inI79VR8GJHTdULitkANVJOFaAbL13WrGEVGf1kJyELfm
-         lfbQ==
-X-Gm-Message-State: AOAM533tobXxTOBel4prsqK/CdxKV6R2MLFDhhON4pp5MpiZT5NKN78T
-        yg1Hqup+MF8B1T7PsOi5ACANhQ==
-X-Google-Smtp-Source: ABdhPJwYtAGso1N2TmtCrggR0shnn3HjmPjH73YcgokUM5OA+NDMCJ0zZVt6nNgCaedNZkTsPsumBQ==
-X-Received: by 2002:a17:902:c106:b029:de:af88:80ed with SMTP id 6-20020a170902c106b02900deaf8880edmr3614590pli.35.1610952864312;
-        Sun, 17 Jan 2021 22:54:24 -0800 (PST)
-Received: from localhost ([122.172.59.240])
-        by smtp.gmail.com with ESMTPSA id p13sm14049072pju.20.2021.01.17.22.54.22
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 17 Jan 2021 22:54:23 -0800 (PST)
-Date:   Mon, 18 Jan 2021 12:24:21 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     mmayer@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
-        rjw@rjwysocki.net, f.fainelli@gmail.com, linux-pm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] cpufreq: brcmstb-avs-cpufreq: Fix some resource
- leaks in the error handling path of the probe function
-Message-ID: <20210118065421.x5s54evpafq73ouk@vireshk-i7>
-References: <20210117142635.568686-1-christophe.jaillet@wanadoo.fr>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210117142635.568686-1-christophe.jaillet@wanadoo.fr>
-User-Agent: NeoMutt/20180716-391-311a52
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=QrqziBluAm2S7jXEhlyaBX23uYOu5nIn+17iqFzqPgc=;
+        b=VoaRpxXEvhVZaOhedZghmx+Q8PcfoET/cBnNqZeWFa6ZxcUKHBdj2RNmycyO1Gd6nz
+         YWzb0K9jtYQBSeyS3V9rCgpaePBGRw+TernZKBUVVDtfk8wnd3vaqmLJMAqUQDQNOc8k
+         ccs9TF6GKcN8mWi12KkrfaU3kou8RZjyQlu9hk2f2cb3hVM+Cbs0zNqBI8+gExSpBRfT
+         DgM51qyUfrqIOWADvVC8VTtF5/CiW3hpV+8j5pp9kX4y650wvFawYeU5L8MhGsGYlL3K
+         DzO8pgb2bK+G15asBwb233bMPlMwgdbpLmdtRlIJyYSrv+K0qr8k0FO90teDzunUqPnR
+         Q52g==
+X-Gm-Message-State: AOAM533I8/tWyt9bDIONao0jxyhn+s1n9ZvY4LNFo6PeP+pVKs63+MZa
+        2BZUQJlUnlk/zqgbton4av8=
+X-Google-Smtp-Source: ABdhPJxPXOD2LCsasbBNvZyD+MIQMWFrvrBqRcYhmt58KixPQUATj7Mv6o5OThbKodVhcZs9avJ0/A==
+X-Received: by 2002:adf:b359:: with SMTP id k25mr25033448wrd.98.1610956812441;
+        Mon, 18 Jan 2021 00:00:12 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d3e:6800:ad77:727f:e0e1:17c4])
+        by smtp.gmail.com with ESMTPSA id i11sm23187419wmq.10.2021.01.18.00.00.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Jan 2021 00:00:11 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Brendan Jackman <jackmanb@google.com>,
+        Alexei Starovoitov <ast@kernel.org>, bpf@vger.kernel.org
+Cc:     Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn.topel@gmail.com>,
+        netdev@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH for bpf-next] docs: bpf: add minimal markup to address doc warning
+Date:   Mon, 18 Jan 2021 09:00:04 +0100
+Message-Id: <20210118080004.6367-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 17-01-21, 15:26, Christophe JAILLET wrote:
-> If 'cpufreq_register_driver()' fails, we must release the resources
-> allocated in 'brcm_avs_prepare_init()' as already done in the remove
-> function.
-> 
-> To do that, introduce a new function 'brcm_avs_prepare_uninit()' in order
-> to avoid code duplication. This also makes the code more readable (IMHO).
-> 
-> Fixes: de322e085995 ("cpufreq: brcmstb-avs-cpufreq: AVS CPUfreq driver for Broadcom STB SoCs")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> v1->v2: be less verbose when writing the error handling path of the probe
-> ---
->  drivers/cpufreq/brcmstb-avs-cpufreq.c | 21 ++++++++++++++++-----
->  1 file changed, 16 insertions(+), 5 deletions(-)
+Commit 91c960b00566 ("bpf: Rename BPF_XADD and prepare to encode other
+atomics in .imm") modified the BPF documentation, but missed some ReST
+markup.
 
-Applied both patches. Thanks.
+Hence, make htmldocs warns on Documentation/networking/filter.rst:1053:
 
+  WARNING: Inline emphasis start-string without end-string.
+
+Add some minimal markup to address this warning.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on next-20210118
+
+Brendan, please ack.
+
+Alexei, please pick this minor cleanup patch on your bpf-next.
+
+ Documentation/networking/filter.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/networking/filter.rst b/Documentation/networking/filter.rst
+index f6d8f90e9a56..45f6fde1776c 100644
+--- a/Documentation/networking/filter.rst
++++ b/Documentation/networking/filter.rst
+@@ -1048,12 +1048,12 @@ Unlike classic BPF instruction set, eBPF has generic load/store operations::
+ Where size is one of: BPF_B or BPF_H or BPF_W or BPF_DW.
+ 
+ It also includes atomic operations, which use the immediate field for extra
+-encoding.
++encoding::
+ 
+    .imm = BPF_ADD, .code = BPF_ATOMIC | BPF_W  | BPF_STX: lock xadd *(u32 *)(dst_reg + off16) += src_reg
+    .imm = BPF_ADD, .code = BPF_ATOMIC | BPF_DW | BPF_STX: lock xadd *(u64 *)(dst_reg + off16) += src_reg
+ 
+-The basic atomic operations supported are:
++The basic atomic operations supported are::
+ 
+     BPF_ADD
+     BPF_AND
 -- 
-viresh
+2.17.1
+

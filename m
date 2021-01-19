@@ -2,106 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74C832FBB19
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Jan 2021 16:27:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39B582FBD57
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Jan 2021 18:18:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391314AbhASPYj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 Jan 2021 10:24:39 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:41118 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389176AbhASPYe (ORCPT
+        id S2391209AbhASROw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 Jan 2021 12:14:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60008 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391042AbhASROr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 Jan 2021 10:24:34 -0500
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10JFEOhi132159;
-        Tue, 19 Jan 2021 15:23:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=BuOTiRYcdWRNuN55ywy8NIJkNTkiMNPEJVra2jqLaWs=;
- b=ATBdtJS6yCI+5bEpEr+oI+BuGThINlWW7FEEiwYy4mdiSFExfU6JBRxlZrVXytf/zYSO
- Kux++EKVbB+6KqM46la53mPQiB5uYp8CnVMS0PIibfD500+95Bioi4BMSN0iT7NJ8rYd
- aMmGl51HZMKgyAFgt5ee9REbzv8tjyxiiJS0/WEgdegCfNFZ3KxWSeroapInViUDrc9r
- JwNY3yyd/OQUZSQdsmop2MhsJ1yD0V8dLdIZXaMN5pz1as/F2s0tN7tD9UoNNVqkTy8V
- qS5tGU/of4LViZfmtmvNfQJpXsY9s0DuFt4APhV2k50lHCVhLfhGdcr48g+G4sl1Vwib UA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2130.oracle.com with ESMTP id 363nnahqv2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 19 Jan 2021 15:23:46 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10JFGZvj120612;
-        Tue, 19 Jan 2021 15:23:44 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 3649qpce47-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 19 Jan 2021 15:23:44 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 10JFNghG016525;
-        Tue, 19 Jan 2021 15:23:43 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 19 Jan 2021 06:53:42 -0800
-Date:   Tue, 19 Jan 2021 17:53:35 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     "; Andrew Lunn" <andrew@lunn.ch>,
+        Tue, 19 Jan 2021 12:14:47 -0500
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E50BCC061573;
+        Tue, 19 Jan 2021 09:14:06 -0800 (PST)
+Received: by mail-pg1-x531.google.com with SMTP id n7so13362665pgg.2;
+        Tue, 19 Jan 2021 09:14:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=cIi+68R0qSMBbGSJO7W8fkMua1ZXrc1HDXWlI1bhjx4=;
+        b=Wgi/das/CWwwvez9LmHVsy2c+ShJMuicfh9WKzifYXc6ZO94t9ZT5Sy6j0hhsJiEUm
+         1/7jYuEH9eYH8n90t4Ds6A8XtOC4ZPTE9W3p0YUhe4PzNWdY5sA8MFd5kV4OgQpgh8GI
+         gi1xFXYsaP1dBZn82xWAMo2p1QqgsVh8tOg32dwnxOpaiOpBmU73zRULGkLOwgBVAWYH
+         qt3QTArDN7neDJEoshj6sbwfe1KCM4WgfSQCN8i9LscAwqqE0E6Ej4Mjo7AVZJ+eylKz
+         5m1hmH4119adfLeh/gZ5aqU+ZfpReHCBKl+gLBTHaE1zlvttz7f0ay3yu5QeCn0Z61no
+         MXyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=cIi+68R0qSMBbGSJO7W8fkMua1ZXrc1HDXWlI1bhjx4=;
+        b=FL5MkJQ1NWhzxbtV2oLkdMH6yPKhvG5LVQn9Z3oC/qUfEEWdmzYPFGArpuiAIRfKkq
+         Ih7pjDFNzw1X+hyQP4YFYcNKOTNIws+9Pznuv1p7If58O37Gzv3ljfYd4/OZOtXT8Kiy
+         GA1LPtBmOdENletXF0YlMRb9wxqLj8zEVLvt0fO6xTIrqOCYSJuzsU8K3u6+T0v6Xjvd
+         dSe+ruaeOhgCs+vhYlSBoOxJ+PjlufHuXY8dqivH1oGSJC3i0/vs0shwMjjivOWPMAt4
+         Vizbu8sPZ/w6oA5RwvflR6jgyhDegx7nVWuxXlJiOStOS47/R9euW+mZsr1iQ3C75Yax
+         Zk4A==
+X-Gm-Message-State: AOAM530imMsr9XoMbaLffHdB2GmO4zDALXQU02FZ4I+cUZjuRiAJQFCB
+        JKCwWl/DJTzM0kZxTozICz2po2rB+xE=
+X-Google-Smtp-Source: ABdhPJy9vDcbdahg630YpK3RvD5hSKR7tkvlrck4HNE5YAyJpW1MlplLmsYMOcuhqpVCBtroX5UwjA==
+X-Received: by 2002:a62:17d0:0:b029:19e:5cf9:a7f6 with SMTP id 199-20020a6217d00000b029019e5cf9a7f6mr5047983pfx.0.1611076446055;
+        Tue, 19 Jan 2021 09:14:06 -0800 (PST)
+Received: from [10.230.29.29] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id a18sm19458295pfg.107.2021.01.19.09.14.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Jan 2021 09:14:04 -0800 (PST)
+Subject: Re: [PATCH net] net: dsa: b53: fix an off by one in checking
+ "vlan->vid"
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
         Vivien Didelot <vivien.didelot@gmail.com>,
         Vladimir Oltean <olteanv@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH net-next] net: dsa: Fix off by one in dsa_loop_port_vlan_add()
-Message-ID: <YAbyb5kBJQlpYCs2@mwanda>
+References: <YAbxI97Dl/pmBy5V@mwanda>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <44c35bd8-b7c3-49be-3a67-e9b1c8a02617@gmail.com>
+Date:   Tue, 19 Jan 2021 09:14:03 -0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Firefox/78.0 Thunderbird/78.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9868 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999 adultscore=0
- malwarescore=0 bulkscore=0 spamscore=0 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101190093
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9868 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 spamscore=0
- mlxlogscore=999 clxscore=1015 bulkscore=0 adultscore=0 lowpriorityscore=0
- suspectscore=0 phishscore=0 mlxscore=0 malwarescore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101190093
+In-Reply-To: <YAbxI97Dl/pmBy5V@mwanda>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The > comparison is intended to be >= to prevent reading beyond the
-end of the ps->vlans[] array.  It doesn't affect run time though because
-the ps->vlans[] array has VLAN_N_VID (4096) elements and the vlan->vid
-cannot be > 4094 because it is checked earlier.
 
-Fixes: 98cd1552ea27 ("net: dsa: Mock-up driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-I'm not 100% sure where this is checked but the other code has comments
-and assumptions that say that it is and Smatch says that it is.  If I
-had to guess, I would say that the check is in the nla policy.
 
-[NL80211_ATTR_VLAN_ID] = NLA_POLICY_RANGE(NLA_U16, 1, VLAN_N_VID - 2),
+On 1/19/2021 6:48 AM, Dan Carpenter wrote:
+> The > comparison should be >= to prevent accessing one element beyond
+> the end of the dev->vlans[] array in the caller function, b53_vlan_add().
+> The "dev->vlans" array is allocated in the b53_switch_init() function
+> and it has "dev->num_vlans" elements.
+> 
+> Fixes: a2482d2ce349 ("net: dsa: b53: Plug in VLAN support")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-This patch is against linux-next.  I could re-write it against net if
-you want.  Another option would be to just delete the sanity check.
-
- drivers/net/dsa/dsa_loop.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/dsa/dsa_loop.c b/drivers/net/dsa/dsa_loop.c
-index 5f69216376fe..8c283f59158b 100644
---- a/drivers/net/dsa/dsa_loop.c
-+++ b/drivers/net/dsa/dsa_loop.c
-@@ -207,7 +207,7 @@ static int dsa_loop_port_vlan_add(struct dsa_switch *ds, int port,
- 	struct mii_bus *bus = ps->bus;
- 	struct dsa_loop_vlan *vl;
- 
--	if (vlan->vid > ARRAY_SIZE(ps->vlans))
-+	if (vlan->vid >= ARRAY_SIZE(ps->vlans))
- 		return -ERANGE;
- 
- 	/* Just do a sleeping operation to make lockdep checks effective */
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 -- 
-2.29.2
-
+Florian

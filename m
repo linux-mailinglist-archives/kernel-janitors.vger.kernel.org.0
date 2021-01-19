@@ -2,81 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2C8F2FAF84
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Jan 2021 05:38:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A49AF2FBA25
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Jan 2021 15:55:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727004AbhASEgw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 Jan 2021 23:36:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39140 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731315AbhASEeY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 Jan 2021 23:34:24 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 58474224B1;
-        Tue, 19 Jan 2021 04:33:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611030817;
-        bh=mDDU4zp6bMqJF1sx8LcutXoJE7mN0gRYqr/JsJ87F78=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=QCw6yZjHJSD2XmYKYmAIwJzpk0W4u8gx7yEp9mYJZR5WDF1rMNmvn/2sLUG0fPi5f
-         i3YzboPblSLIidnw4S4jaCQHjbAdnyelFU1lenHwHBqpsyeGTtIzFmDLxMH0FWUyIk
-         UyUOGojcSjUE9tGQDe8IDj0f6bkKSySvGtgH6bDkA54ZJTsVHUZL+8isBp/JrHO2md
-         903bq0eMqbsrIVDUCEOCIlC5Rlc+ctOIk2KMWwxn989pahjFdafLQX2ds7f9eq5GTk
-         0cUF4HQ91vdmJprbQ7FFa2VEwdb+PMYHLKdJj6QjfkowNhrbuX6ryIVm/hYaA0TXfG
-         658DuUEtAIoeA==
-Date:   Mon, 18 Jan 2021 20:33:36 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     GR-Linux-NIC-Dev@marvell.com, davem@davemloft.net,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] net/qla3xxx: switch from 'pci_' to 'dma_' API
-Message-ID: <20210118203336.6e7170a1@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20210117081542.560021-1-christophe.jaillet@wanadoo.fr>
-References: <20210117081542.560021-1-christophe.jaillet@wanadoo.fr>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S2389682AbhASOoe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 Jan 2021 09:44:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50004 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389193AbhASJyU (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 19 Jan 2021 04:54:20 -0500
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E630C0613CF;
+        Tue, 19 Jan 2021 01:53:36 -0800 (PST)
+Received: by mail-ed1-x529.google.com with SMTP id f1so6624981edr.12;
+        Tue, 19 Jan 2021 01:53:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=/z2s2KReLWcfABIGgx+T2H5a0KcybizOYnqI2zx5L7g=;
+        b=JFAufC9TCuGfd1Drt91CAvfcPhG47NLebHKCfVKql2xRiKjEfFFGgHcAbmGjEr+VIF
+         7SmyfPNmpGoCDOGlEI/f7KrOQ871aaa/kE5N/JxmVXX3FZChwQViqa0DLCqbCZy24uey
+         FXNXql4fjl4DvEe/VJ47Y4UA3KJArzW5hs6WMNEavgYxX/HtpIDlgkdg9O77ycfLf0d5
+         PTqVCg1IplPzPCktfSjT71w2OFUACQGZaJ8ibLOk9xL9H/2+c6X5VyF6jvRNts4/UYmk
+         imXdCZu3uPEzTIPjYSW6cv8wwi6lxG5RbkMKgEgGX972RD4FqlyK1FbJdc9REzwogODq
+         jxsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=/z2s2KReLWcfABIGgx+T2H5a0KcybizOYnqI2zx5L7g=;
+        b=M+e8YC/FznoogW7WsU9TC8L2Wi3aTnnuME0GhWmIwcYPbRT+JIyPVwKRKCaPaNJWv6
+         Vmx2AVmJ5eOBq3CbzlOIiP9HygUZGroKYFGFviBoIKMuXpOCPPe9hFjbZxeN53V+dGtF
+         ERgfQh2fu2/eIgxqKNXGLsswvzpoBi3WrWydi06ZxWB3FUuHD7Q1RSDGsLszGR1AnWxI
+         2E1l7Y6nheUKp6Z/AWByRy9hxi//f/vs5BzUnUucH+gfUY+l+WQLBstZ1v1gaqUkta1s
+         NQhjkxd25sVxAy8VlttRNiCs0O49MuMU2fpceUAr7I224+Csfm9aS2mZoNlLBExUWAyX
+         u0WA==
+X-Gm-Message-State: AOAM533r6zbsvR9dEboyIyOdKn6NWCO//S5CJZUf7nzHktWAA9COCBuf
+        PnRPvqPyNIIw0yUbmsWJBvbQKeDFzGcBNw==
+X-Google-Smtp-Source: ABdhPJzTvs9qNX1hl10cmUhbLNpnvAeavuosxPgGvXWqx+5jlzBYNsL9oPc5zNREIvn6nAeMASpJxA==
+X-Received: by 2002:a05:6402:4d6:: with SMTP id n22mr2813409edw.27.1611050015274;
+        Tue, 19 Jan 2021 01:53:35 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2dee:e100:71f9:d08b:59b4:3a8f])
+        by smtp.gmail.com with ESMTPSA id cy13sm2834449edb.27.2021.01.19.01.53.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Jan 2021 01:53:34 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Steven Rostedt <rostedt@goodmis.org>,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] arch/Kconfig: update a broken file reference
+Date:   Tue, 19 Jan 2021 10:53:26 +0100
+Message-Id: <20210119095326.13896-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 17 Jan 2021 09:15:42 +0100 Christophe JAILLET wrote:
-> @@ -2525,9 +2519,8 @@ static int ql_alloc_net_req_rsp_queues(struct ql3_adapter *qdev)
->  	wmb();
->  
->  	qdev->req_q_virt_addr =
-> -	    pci_alloc_consistent(qdev->pdev,
-> -				 (size_t) qdev->req_q_size,
-> -				 &qdev->req_q_phy_addr);
-> +	    dma_alloc_coherent(&qdev->pdev->dev, (size_t)qdev->req_q_size,
-> +			       &qdev->req_q_phy_addr, GFP_KERNEL);
->  
->  	if ((qdev->req_q_virt_addr == NULL) ||
->  	    LS_64BITS(qdev->req_q_phy_addr) & (qdev->req_q_size - 1)) {
-> @@ -2536,16 +2529,14 @@ static int ql_alloc_net_req_rsp_queues(struct ql3_adapter *qdev)
->  	}
->  
->  	qdev->rsp_q_virt_addr =
-> -	    pci_alloc_consistent(qdev->pdev,
-> -				 (size_t) qdev->rsp_q_size,
-> -				 &qdev->rsp_q_phy_addr);
-> +	    dma_alloc_coherent(&qdev->pdev->dev, (size_t)qdev->rsp_q_size,
-> +			       &qdev->rsp_q_phy_addr, GFP_KERNEL);
->  
->  	if ((qdev->rsp_q_virt_addr == NULL) ||
->  	    LS_64BITS(qdev->rsp_q_phy_addr) & (qdev->rsp_q_size - 1)) {
->  		netdev_err(qdev->ndev, "rspQ allocation failed\n");
-> -		pci_free_consistent(qdev->pdev, (size_t) qdev->req_q_size,
-> -				    qdev->req_q_virt_addr,
-> -				    qdev->req_q_phy_addr);
-> +		dma_free_coherent(&qdev->pdev->dev, (size_t)qdev->req_q_size,
-> +				  qdev->req_q_virt_addr, qdev->req_q_phy_addr);
->  		return -ENOMEM;
->  	}
+Commit adab66b71abf ("Revert: "ring-buffer: Remove HAVE_64BIT_ALIGNED_ACCESS"")
+added the config HAVE_64BIT_ALIGNED_ACCESS back into arch/Kconfig with this
+revert. In the meantime, commit c9b54d6f362c ("docs: move other kAPI
+documents to core-api") changed ./Documentation/unaligned-memory-access.txt
+to ./Documentation/core-api/unaligned-memory-access.rst.
 
-Something to follow up on - the error handling in this function looks
-pretty sketchy. Looks like if the buffer was allocated but these
-alignment conditions trigger the buffer is not freed. Happens both for
-req and rsp buffer.
+Fortunately, ./scripts/documentation-file-ref-check detects this and warns
+about this broken reference.
 
-Applied, thanks!
+Update the file reference in arch/Kconfig.
+
+Fixes: adab66b71abf ("Revert: "ring-buffer: Remove HAVE_64BIT_ALIGNED_ACCESS"")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on current master and next-20210118
+
+Steven, could you pick this fix to your commit or, at least, ack it so that
+Jonathan can pick it?
+
+ arch/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 24862d15f3a3..dc104b8270c0 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -156,8 +156,8 @@ config HAVE_64BIT_ALIGNED_ACCESS
+ 	  accesses are required to be 64 bit aligned in this way even
+ 	  though it is not a 64 bit architecture.
+ 
+-	  See Documentation/unaligned-memory-access.txt for more
+-	  information on the topic of unaligned memory accesses.
++	  See Documentation/core-api/unaligned-memory-access.rst for
++	  more information on the topic of unaligned memory accesses.
+ 
+ config HAVE_EFFICIENT_UNALIGNED_ACCESS
+ 	bool
+-- 
+2.17.1
+

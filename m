@@ -2,59 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEED12FC928
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Jan 2021 04:38:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D0DC2FCE9D
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Jan 2021 12:01:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731141AbhATDhL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 Jan 2021 22:37:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42600 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730106AbhATDgc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 Jan 2021 22:36:32 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9982F22573;
-        Wed, 20 Jan 2021 03:35:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611113750;
-        bh=O+8Nr0YZFLEgcrC+VT54cPhLgV4UY7ImN7GJiaGjXrU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=God3T0G2YdRjE7ITtCqRswDu4UQVgh6+/7aR178mK2/JXqhRkm9kaPkFp48t3pup7
-         lKbMECpVMbxxSWn3NkgpVe2Jzdw4RgsD1PINqdhxgkp1JqVeK6A7IAPtjRmbT3J5FR
-         yyTWTX/h/3EENuUv8Z9wqV90HOvxiBEKqZSy3YWO+Jb8AH9zteNtfptB+XDKKn1Lpt
-         hm0nnxHEs8jq2zmEHtlDzoHw+2IFIwHLxeFyb9OidtOugz4CQYgL5YoBQ7IarqJqDi
-         hK759EZtzZreWKXu2qJyB5bq/wywY3+qnsf5U7PriRV2Es3JAHry65EakJ1RIrol82
-         gVnnyzaa09SJg==
-Date:   Tue, 19 Jan 2021 19:35:48 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Florian Fainelli <f.fainelli@gmail.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] net: dsa: b53: fix an off by one in checking
- "vlan->vid"
-Message-ID: <20210119193548.515ab674@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <44c35bd8-b7c3-49be-3a67-e9b1c8a02617@gmail.com>
-References: <YAbxI97Dl/pmBy5V@mwanda>
-        <44c35bd8-b7c3-49be-3a67-e9b1c8a02617@gmail.com>
+        id S1733206AbhATKtK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 Jan 2021 05:49:10 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:37084 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731255AbhATJ1O (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 20 Jan 2021 04:27:14 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1l29ku-0008OW-Ku; Wed, 20 Jan 2021 09:26:24 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/amd/display: Fix spelling mistake of function name
+Date:   Wed, 20 Jan 2021 09:26:24 +0000
+Message-Id: <20210120092624.13061-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 19 Jan 2021 09:14:03 -0800 Florian Fainelli wrote:
-> On 1/19/2021 6:48 AM, Dan Carpenter wrote:
-> > The > comparison should be >= to prevent accessing one element beyond
-> > the end of the dev->vlans[] array in the caller function, b53_vlan_add().
-> > The "dev->vlans" array is allocated in the b53_switch_init() function
-> > and it has "dev->num_vlans" elements.
-> > 
-> > Fixes: a2482d2ce349 ("net: dsa: b53: Plug in VLAN support")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>  
-> 
-> Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied, thanks!
+There are two spelling mistakes of the function name, fix this
+by using __func__ instead of a hard coded name string.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/amd/display/dc/core/dc_link.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_link.c b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
+index c16af3983fdb..91d4130cd2cb 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_link.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
+@@ -1602,7 +1602,7 @@ static bool dc_link_construct(struct dc_link *link,
+ 
+ 	link->psr_settings.psr_version = DC_PSR_VERSION_UNSUPPORTED;
+ 
+-	DC_LOG_DC("BIOS object table - dc_link_contruct finished successfully.\n");
++	DC_LOG_DC("BIOS object table - %s finished successfully.\n", __func__);
+ 	return true;
+ device_tag_fail:
+ 	link->link_enc->funcs->destroy(&link->link_enc);
+@@ -1619,7 +1619,7 @@ static bool dc_link_construct(struct dc_link *link,
+ 		link->hpd_gpio = NULL;
+ 	}
+ 
+-	DC_LOG_DC("BIOS object table - dc_link_contruct failed.\n");
++	DC_LOG_DC("BIOS object table - %s failed.\n", __func__);
+ 	kfree(info);
+ 
+ 	return false;
+-- 
+2.29.2
+

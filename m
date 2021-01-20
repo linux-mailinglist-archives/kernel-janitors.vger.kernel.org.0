@@ -2,69 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32FFF2FC756
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Jan 2021 03:02:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AEED12FC928
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Jan 2021 04:38:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731123AbhATBvJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 Jan 2021 20:51:09 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53144 "EHLO mail.kernel.org"
+        id S1731141AbhATDhL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 Jan 2021 22:37:11 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42600 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731104AbhATBuv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 Jan 2021 20:50:51 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPS id 7B2AD2251D;
-        Wed, 20 Jan 2021 01:50:10 +0000 (UTC)
+        id S1730106AbhATDgc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 19 Jan 2021 22:36:32 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9982F22573;
+        Wed, 20 Jan 2021 03:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611107410;
-        bh=GNj2MIJf8RtOcX7Wh6NXVAF3Lf0JF12Jnse9VPAkcDs=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=Rb2mol4m5NZ+U3dN4EUK7Go5NCK9xRzM18VU/O7lvnqeyRglvo+5AMTf3dF1VYRLM
-         oqVjiotUxbyoYR6XElxxHl5hqwFTOFUWcRfvsu6VO3A/3QQpipu4ebsuZEun6RYS0A
-         yyZC9wfHWYunKxx35lx8lZXGVHCzDiRuzWz1bbXt1FlUSYGt07zAzmDJElmOHm180C
-         ChsIcTvqK23IyNdvUvaolBBipNoaYr0jvJ6SamutLzpegUXt2ZTiDzwjnH5NVDLDGs
-         o2T9qtV0wfiXDG8RRsHEdUCmXBGMl35SwQpnoWes/+EM1A6HgVDaxKurHOL5GQDngw
-         QMV7WLaHiZaBw==
-Received: from pdx-korg-docbuild-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-1.ci.codeaurora.org (Postfix) with ESMTP id 74C9760584;
-        Wed, 20 Jan 2021 01:50:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1611113750;
+        bh=O+8Nr0YZFLEgcrC+VT54cPhLgV4UY7ImN7GJiaGjXrU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=God3T0G2YdRjE7ITtCqRswDu4UQVgh6+/7aR178mK2/JXqhRkm9kaPkFp48t3pup7
+         lKbMECpVMbxxSWn3NkgpVe2Jzdw4RgsD1PINqdhxgkp1JqVeK6A7IAPtjRmbT3J5FR
+         yyTWTX/h/3EENuUv8Z9wqV90HOvxiBEKqZSy3YWO+Jb8AH9zteNtfptB+XDKKn1Lpt
+         hm0nnxHEs8jq2zmEHtlDzoHw+2IFIwHLxeFyb9OidtOugz4CQYgL5YoBQ7IarqJqDi
+         hK759EZtzZreWKXu2qJyB5bq/wywY3+qnsf5U7PriRV2Es3JAHry65EakJ1RIrol82
+         gVnnyzaa09SJg==
+Date:   Tue, 19 Jan 2021 19:35:48 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Florian Fainelli <f.fainelli@gmail.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net] net: dsa: b53: fix an off by one in checking
+ "vlan->vid"
+Message-ID: <20210119193548.515ab674@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <44c35bd8-b7c3-49be-3a67-e9b1c8a02617@gmail.com>
+References: <YAbxI97Dl/pmBy5V@mwanda>
+        <44c35bd8-b7c3-49be-3a67-e9b1c8a02617@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH][next] selftests: forwarding: Fix spelling mistake "succeded"
- -> "succeeded"
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <161110741047.23772.11114014464496090991.git-patchwork-notify@kernel.org>
-Date:   Wed, 20 Jan 2021 01:50:10 +0000
-References: <20210118111902.71096-1-colin.king@canonical.com>
-In-Reply-To: <20210118111902.71096-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     davem@davemloft.net, kuba@kernel.org, shuah@kernel.org,
-        netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
-
-This patch was applied to netdev/net-next.git (refs/heads/master):
-
-On Mon, 18 Jan 2021 11:19:02 +0000 you wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Tue, 19 Jan 2021 09:14:03 -0800 Florian Fainelli wrote:
+> On 1/19/2021 6:48 AM, Dan Carpenter wrote:
+> > The > comparison should be >= to prevent accessing one element beyond
+> > the end of the dev->vlans[] array in the caller function, b53_vlan_add().
+> > The "dev->vlans" array is allocated in the b53_switch_init() function
+> > and it has "dev->num_vlans" elements.
+> > 
+> > Fixes: a2482d2ce349 ("net: dsa: b53: Plug in VLAN support")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>  
 > 
-> There are two spelling mistakes in check_fail messages. Fix them.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  tools/testing/selftests/net/forwarding/tc_chains.sh | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 
-Here is the summary with links:
-  - [next] selftests: forwarding: Fix spelling mistake "succeded" -> "succeeded"
-    https://git.kernel.org/netdev/net-next/c/eaaf61122865
-
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Applied, thanks!

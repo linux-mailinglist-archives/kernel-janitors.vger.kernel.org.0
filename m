@@ -2,78 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E6602FDA43
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Jan 2021 20:59:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1711C2FDCAA
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Jan 2021 23:36:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727957AbhATSnJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 Jan 2021 13:43:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49140 "EHLO
+        id S1728150AbhATWd4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 Jan 2021 17:33:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404523AbhATSdk (ORCPT
+        with ESMTP id S1731978AbhATV7W (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 Jan 2021 13:33:40 -0500
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2200C0613CF
-        for <kernel-janitors@vger.kernel.org>; Wed, 20 Jan 2021 10:32:44 -0800 (PST)
-Received: by mail-pj1-x1035.google.com with SMTP id md11so2703487pjb.0
-        for <kernel-janitors@vger.kernel.org>; Wed, 20 Jan 2021 10:32:44 -0800 (PST)
+        Wed, 20 Jan 2021 16:59:22 -0500
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75C10C0613C1;
+        Wed, 20 Jan 2021 13:58:41 -0800 (PST)
+Received: by mail-ot1-x332.google.com with SMTP id x13so24880067oto.8;
+        Wed, 20 Jan 2021 13:58:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:content-transfer-encoding:in-reply-to:references
-         :subject:from:cc:to:date:message-id:user-agent;
-        bh=8c+9ajqGNyuEOzCDkVwNBb94YS/VsoSEZ7DQMmpNsTA=;
-        b=I5tYk215vcOaTnqxqDl1qlp4RJxNPrjJycdTL6dIkpVjDgB9CMBLhlo0Pa7NaHGBaC
-         osjFLATyMFXIFH2IKRr0oYL5GtljuPhfXhGnatI2dRPSv7bcZYgWhJxGFx7BuesRwXB7
-         ocig8bvmAiBB9pvp171SeMfWxTVhAIiDFHjbY=
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VF5vWwpN0WTTAbK2Z2NttkJ6CJSQ2hghN1uL2Mgnxck=;
+        b=EzLEez6jtnf8JtqyqlIg8YpCBuANBTWBSoj8Ej/TC9V2tBYlFwyxmJZuqSPAlc6cbt
+         ogPDE2aMr5O+aq0yHHil4RauRfTBUTT6dbvO7YyyOOkZgTqwnOAECFNAMSvMpU98kiqW
+         mRm3ACDVn4552fT7haLovkFYrXkvGJxcu+RcdSG3c3jkc8J5awkN8Ic8HPorz4MX+nVz
+         A3yGeUy06y2ulZ1hAfHsJxWt0A+6CEmaB4zy6Ph0IrngaSC+wbqtuZzNsRQwPEupKIio
+         xo5Cdc7zpO0ZcprKPmITjwAl+qQRNAnCkzsahb1nIHVTOdfqOrTMFQt4VmwG9CtZmCmO
+         q6QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding
-         :in-reply-to:references:subject:from:cc:to:date:message-id
-         :user-agent;
-        bh=8c+9ajqGNyuEOzCDkVwNBb94YS/VsoSEZ7DQMmpNsTA=;
-        b=gMFghoyNzjyQYZWfhwK4w/0KdXCii23It5koKqOkVK8d+fKipkwrBIgVngKA8fFQ0M
-         bkkvwlqpSpXHHRMl/Fi2mccj8+pMoqIsHppi2C7mUfHdVoJJjG9k+BuuExBplNjaPvPw
-         SWybsfVhUKSEy2N8GM0t9L5xpAzBNy2h1mQhKpfHdjq/2L/NB8sU/b0UtZocJNNszw4j
-         kGQ8UpP8lepmn1f+dqATP0c+e1fkRv4ih9s8I79faq3nRehM2sclcX7kWunfMIyYsR/N
-         lP7gRcBdwkzuA9tkYpd7cAZh06/77WNbFDBTTHE4YRaNa8wt6bHXtHDm8DVvxFghuikf
-         UZDQ==
-X-Gm-Message-State: AOAM532Na3Pz8OqjbhsWlijDcdWPqMzoUOGHs4WGQin/E2nFe7yhHYdu
-        7Lo/yz2JB1S2o8rXEGQq/SFs+Q==
-X-Google-Smtp-Source: ABdhPJwnEgMjqq4KvvEbYOuovvQRQQlTWVHcpeH+sc6TWBydOg6QQQJk2igpk0oqKOx/EerP/YEXBg==
-X-Received: by 2002:a17:90a:b010:: with SMTP id x16mr7022862pjq.74.1611167564283;
-        Wed, 20 Jan 2021 10:32:44 -0800 (PST)
-Received: from chromium.org ([2620:15c:202:201:3e52:82ff:fe6c:83ab])
-        by smtp.gmail.com with ESMTPSA id 4sm3408494pjn.14.2021.01.20.10.32.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Jan 2021 10:32:43 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VF5vWwpN0WTTAbK2Z2NttkJ6CJSQ2hghN1uL2Mgnxck=;
+        b=GSH3uhXQVnBbuznbSK6W6ACppb47J2uJ1WiA4EFyPyRus7/JIOXCN9CLBbuj4dY3gr
+         5IE4jUbS6etisdRfzdClJXi+/7+dQx5m9WjFYYM4A2Fe7e5YXmhChZh+4i8hzd+JY+yg
+         jRehIq2NqbZopyFF7PTPbXrZYKDwtArz301pkaqCdrEaG0IUUzfMKEZPXAQXYfxk9Zrt
+         UJPHfpoFZGX6y57+1ZT+8EQFUuucT1yqt5ZMYIIhUyLQOaSg+gBRc93VjhPebOi5vfh+
+         P76EHlEHLsN0Tmz2rhX9XlacWLN9c7Mp29kVXtBxwzhlMWcN8Ke6euOV2jU3pAMexUt5
+         dPTA==
+X-Gm-Message-State: AOAM531lDJHPsT5ncb9M2/xcUjx28s5WSXiuQLiScDckLrwRI732xGVn
+        7GS11zQc8tzeg+GN+W7A6v718zVDxy9ixGN0/Bg=
+X-Google-Smtp-Source: ABdhPJyfupROq9yYCDbZ/3+AmWCN8HnkiGrbhZkCpEOXQTQW6PaR5MBQJrTLWRFVQEhrTRJG6c/wfMxfAJsLqhNe4k4=
+X-Received: by 2002:a9d:2ac2:: with SMTP id e60mr8448651otb.23.1611179920837;
+ Wed, 20 Jan 2021 13:58:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <YAf+o85Z9lgkq3Nw@mwanda>
-References: <YAf+o85Z9lgkq3Nw@mwanda>
-Subject: Re: [PATCH] soc: qcom: socinfo: Fix an off by one in qcom_show_pmic_model()
-From:   Stephen Boyd <swboyd@chromium.org>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-To:     Andy Gross <agross@kernel.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Wed, 20 Jan 2021 10:32:41 -0800
-Message-ID: <161116756167.3661239.9611045261884718600@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+References: <20210120092624.13061-1-colin.king@canonical.com> <a06aeb18-b02d-41cd-f717-6ff30ea48bb4@amd.com>
+In-Reply-To: <a06aeb18-b02d-41cd-f717-6ff30ea48bb4@amd.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Wed, 20 Jan 2021 16:58:29 -0500
+Message-ID: <CADnq5_Oypeyaq8YSHgPhouJcp7t8aSxT1Z0YxraWQV6aJm9uYQ@mail.gmail.com>
+Subject: Re: [PATCH][next] drm/amd/display: Fix spelling mistake of function name
+To:     Harry Wentland <harry.wentland@amd.com>
+Cc:     Colin King <colin.king@canonical.com>, Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Dan Carpenter (2021-01-20 01:57:55)
-> These need to be < ARRAY_SIZE() instead of <=3D ARRAY_SIZE() to prevent
-> accessing one element beyond the end of the array.
->=20
-> Fixes: e9247e2ce577 ("soc: qcom: socinfo: fix printing of pmic_model")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
+Applied.  Thanks!
 
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Alex
+
+On Wed, Jan 20, 2021 at 9:46 AM Harry Wentland <harry.wentland@amd.com> wrote:
+>
+> On 2021-01-20 4:26 a.m., Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> >
+>
+> Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+>
+> Harry
+>
+> > There are two spelling mistakes of the function name, fix this
+> > by using __func__ instead of a hard coded name string.
+> >
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > ---
+> >   drivers/gpu/drm/amd/display/dc/core/dc_link.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_link.c b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
+> > index c16af3983fdb..91d4130cd2cb 100644
+> > --- a/drivers/gpu/drm/amd/display/dc/core/dc_link.c
+> > +++ b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
+> > @@ -1602,7 +1602,7 @@ static bool dc_link_construct(struct dc_link *link,
+> >
+> >       link->psr_settings.psr_version = DC_PSR_VERSION_UNSUPPORTED;
+> >
+> > -     DC_LOG_DC("BIOS object table - dc_link_contruct finished successfully.\n");
+> > +     DC_LOG_DC("BIOS object table - %s finished successfully.\n", __func__);
+> >       return true;
+> >   device_tag_fail:
+> >       link->link_enc->funcs->destroy(&link->link_enc);
+> > @@ -1619,7 +1619,7 @@ static bool dc_link_construct(struct dc_link *link,
+> >               link->hpd_gpio = NULL;
+> >       }
+> >
+> > -     DC_LOG_DC("BIOS object table - dc_link_contruct failed.\n");
+> > +     DC_LOG_DC("BIOS object table - %s failed.\n", __func__);
+> >       kfree(info);
+> >
+> >       return false;
+> >
+> _______________________________________________
+> amd-gfx mailing list
+> amd-gfx@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/amd-gfx

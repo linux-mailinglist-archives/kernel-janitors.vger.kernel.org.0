@@ -2,117 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1711C2FDCAA
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Jan 2021 23:36:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AADC62FDE56
+	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Jan 2021 02:01:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728150AbhATWd4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 Jan 2021 17:33:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36990 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731978AbhATV7W (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 Jan 2021 16:59:22 -0500
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75C10C0613C1;
-        Wed, 20 Jan 2021 13:58:41 -0800 (PST)
-Received: by mail-ot1-x332.google.com with SMTP id x13so24880067oto.8;
-        Wed, 20 Jan 2021 13:58:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VF5vWwpN0WTTAbK2Z2NttkJ6CJSQ2hghN1uL2Mgnxck=;
-        b=EzLEez6jtnf8JtqyqlIg8YpCBuANBTWBSoj8Ej/TC9V2tBYlFwyxmJZuqSPAlc6cbt
-         ogPDE2aMr5O+aq0yHHil4RauRfTBUTT6dbvO7YyyOOkZgTqwnOAECFNAMSvMpU98kiqW
-         mRm3ACDVn4552fT7haLovkFYrXkvGJxcu+RcdSG3c3jkc8J5awkN8Ic8HPorz4MX+nVz
-         A3yGeUy06y2ulZ1hAfHsJxWt0A+6CEmaB4zy6Ph0IrngaSC+wbqtuZzNsRQwPEupKIio
-         xo5Cdc7zpO0ZcprKPmITjwAl+qQRNAnCkzsahb1nIHVTOdfqOrTMFQt4VmwG9CtZmCmO
-         q6QA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VF5vWwpN0WTTAbK2Z2NttkJ6CJSQ2hghN1uL2Mgnxck=;
-        b=GSH3uhXQVnBbuznbSK6W6ACppb47J2uJ1WiA4EFyPyRus7/JIOXCN9CLBbuj4dY3gr
-         5IE4jUbS6etisdRfzdClJXi+/7+dQx5m9WjFYYM4A2Fe7e5YXmhChZh+4i8hzd+JY+yg
-         jRehIq2NqbZopyFF7PTPbXrZYKDwtArz301pkaqCdrEaG0IUUzfMKEZPXAQXYfxk9Zrt
-         UJPHfpoFZGX6y57+1ZT+8EQFUuucT1yqt5ZMYIIhUyLQOaSg+gBRc93VjhPebOi5vfh+
-         P76EHlEHLsN0Tmz2rhX9XlacWLN9c7Mp29kVXtBxwzhlMWcN8Ke6euOV2jU3pAMexUt5
-         dPTA==
-X-Gm-Message-State: AOAM531lDJHPsT5ncb9M2/xcUjx28s5WSXiuQLiScDckLrwRI732xGVn
-        7GS11zQc8tzeg+GN+W7A6v718zVDxy9ixGN0/Bg=
-X-Google-Smtp-Source: ABdhPJyfupROq9yYCDbZ/3+AmWCN8HnkiGrbhZkCpEOXQTQW6PaR5MBQJrTLWRFVQEhrTRJG6c/wfMxfAJsLqhNe4k4=
-X-Received: by 2002:a9d:2ac2:: with SMTP id e60mr8448651otb.23.1611179920837;
- Wed, 20 Jan 2021 13:58:40 -0800 (PST)
+        id S1726634AbhAUBAF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 Jan 2021 20:00:05 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54086 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731820AbhAUAIT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 20 Jan 2021 19:08:19 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id AF17A2376E;
+        Thu, 21 Jan 2021 00:07:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611187659;
+        bh=CH+pY4Va0MCe0xn1lwnpTiAE17DBzHissyzpbhiBDas=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=B2H7uQ1hy70q5VBD1FFs9Kd2OcC9mMirzzcZXEIlbQF9KYC+LHcy3LDGcjxOsUqBh
+         2DbgEol8O/6Tmt/ovCq2L9u7Z2bHRsVP1LZablVtalkxtOIwO6odtUiPgBZTswIhaJ
+         mTSNs/gWJpqMmW6u1DPFSqr7Q43NpKmGbjXEHWze4dlFN1NpujNXTbJh1bf9sFyR8H
+         sx5U4JJIVmF9O2eFGjfiJs4TQ33u/eQXS/kjAJLQzApckDanGwAHFGyyZoQVZhCUjn
+         Ialwe8lJUKk/ZAsM62gNiKAmKoMkIplzMi2ZfZ4H0WNz7dbf5d+E6PIytYbQzwfJKs
+         Y+Z7oBgQ16pXA==
+From:   Mark Brown <broonie@kernel.org>
+To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Liam Girdwood <lgirdwood@gmail.com>
+Cc:     kernel-janitors@vger.kernel.org, alsa-devel@alsa-project.org,
+        Takashi Iwai <tiwai@suse.com>
+In-Reply-To: <YAf+8QZoOv+ct526@mwanda>
+References: <YAf+8QZoOv+ct526@mwanda>
+Subject: Re: [PATCH] ASoC: topology: Fix memory corruption in soc_tplg_denum_create_values()
+Message-Id: <161118753484.45718.1419483152294927470.b4-ty@kernel.org>
+Date:   Thu, 21 Jan 2021 00:05:34 +0000
 MIME-Version: 1.0
-References: <20210120092624.13061-1-colin.king@canonical.com> <a06aeb18-b02d-41cd-f717-6ff30ea48bb4@amd.com>
-In-Reply-To: <a06aeb18-b02d-41cd-f717-6ff30ea48bb4@amd.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Wed, 20 Jan 2021 16:58:29 -0500
-Message-ID: <CADnq5_Oypeyaq8YSHgPhouJcp7t8aSxT1Z0YxraWQV6aJm9uYQ@mail.gmail.com>
-Subject: Re: [PATCH][next] drm/amd/display: Fix spelling mistake of function name
-To:     Harry Wentland <harry.wentland@amd.com>
-Cc:     Colin King <colin.king@canonical.com>, Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Applied.  Thanks!
+On Wed, 20 Jan 2021 12:59:13 +0300, Dan Carpenter wrote:
+> The allocation uses sizeof(u32) when it should use sizeof(unsigned long)
+> so it leads to memory corruption later in the function when the data is
+> initialized.
 
-Alex
+Applied to
 
-On Wed, Jan 20, 2021 at 9:46 AM Harry Wentland <harry.wentland@amd.com> wrote:
->
-> On 2021-01-20 4:26 a.m., Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> >
->
-> Reviewed-by: Harry Wentland <harry.wentland@amd.com>
->
-> Harry
->
-> > There are two spelling mistakes of the function name, fix this
-> > by using __func__ instead of a hard coded name string.
-> >
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > ---
-> >   drivers/gpu/drm/amd/display/dc/core/dc_link.c | 4 ++--
-> >   1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_link.c b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
-> > index c16af3983fdb..91d4130cd2cb 100644
-> > --- a/drivers/gpu/drm/amd/display/dc/core/dc_link.c
-> > +++ b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
-> > @@ -1602,7 +1602,7 @@ static bool dc_link_construct(struct dc_link *link,
-> >
-> >       link->psr_settings.psr_version = DC_PSR_VERSION_UNSUPPORTED;
-> >
-> > -     DC_LOG_DC("BIOS object table - dc_link_contruct finished successfully.\n");
-> > +     DC_LOG_DC("BIOS object table - %s finished successfully.\n", __func__);
-> >       return true;
-> >   device_tag_fail:
-> >       link->link_enc->funcs->destroy(&link->link_enc);
-> > @@ -1619,7 +1619,7 @@ static bool dc_link_construct(struct dc_link *link,
-> >               link->hpd_gpio = NULL;
-> >       }
-> >
-> > -     DC_LOG_DC("BIOS object table - dc_link_contruct failed.\n");
-> > +     DC_LOG_DC("BIOS object table - %s failed.\n", __func__);
-> >       kfree(info);
-> >
-> >       return false;
-> >
-> _______________________________________________
-> amd-gfx mailing list
-> amd-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/amd-gfx
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: topology: Fix memory corruption in soc_tplg_denum_create_values()
+      commit: 543466ef3571069b8eb13a8ff7c7cfc8d8a75c43
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

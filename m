@@ -2,53 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 001FE2FE24B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Jan 2021 07:09:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED5502FE24E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Jan 2021 07:10:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726427AbhAUGJm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 21 Jan 2021 01:09:42 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:59054 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726587AbhAUGJD (ORCPT
+        id S1726404AbhAUGJ5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 21 Jan 2021 01:09:57 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:36064 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726110AbhAUGJk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 21 Jan 2021 01:09:03 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10L64GXs056705;
-        Thu, 21 Jan 2021 06:08:13 GMT
+        Thu, 21 Jan 2021 01:09:40 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10L63Y2J063401;
+        Thu, 21 Jan 2021 06:08:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=yUb8dA08txBpttZyvHXAdxpdWBOnjs7b8MvrY5NBn7Y=;
- b=B7PGJHeLaoR7fuikmOLuoK4/ZNJKfjoYvMCJu0V0BgVy/eeCW6dwnJnqvoyIoDp1ppVp
- hbY1RUXubRsJ18rAbtrSO9VKSjzD3Lg7Q+Vgda+UvTEuwLejjQBBffza1m2f0UP1fu86
- CFxUVookGL0wCkPIaTPfUaWuNBLMFokEI5f8iQ5D4M1wrsGwL0v+5t5n8T6TWheasMST
- /8u3qbed5VBj9yoKe9RJ1PlT0rNKf6WFKbjIDJNiEyilwxjG0IL0XZ9uUE/MIdsUIUC2
- ashjKdHVvtIgHkJsIE71MZDwfYCEeVhyoGRuwexwMzG3sWmw6t5ITwONw8+vX4bNoVwP QQ== 
+ bh=BKTmDn4+SGZjxL0GqTs40duq5z1Lf/bxap1CYtFK5mc=;
+ b=gVvgPRt0GS+8SQa49uBYs/4XONyXVSoXVEX7e9wbPiK6X49J+Z4apg0wh+X1xPaXl74v
+ eiA0JYygHZMEdS2gYL4mYlfl8oWMmU0llUo82BF5NHXreYFVcgrMTm4jqWDuqshMElf9
+ RJ3RGVHBB55RJj7CPJdt4ZVGmtO5BqaNcBuyPEj2FZJrcPZQi9RaAhnaGjkekYVrad3J
+ irOC5WpnSzMpdC+2YY2jofuG0bmGr5fIB9mgZXIz59cnZlxm1jeAHzaN+C0ACcjbCe3Z
+ TuLJEseN5bCdmZh0zm0K8qi5s7zL/4UvTiT+i0EHNbi+HKaAWqWxFa4fRj/9nmg33gp1 dQ== 
 Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 3668qmwpyw-1
+        by userp2130.oracle.com with ESMTP id 3668qadq75-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 21 Jan 2021 06:08:13 +0000
+        Thu, 21 Jan 2021 06:08:51 +0000
 Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10L64gZt012849;
-        Thu, 21 Jan 2021 06:08:11 GMT
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10L64g4O012929;
+        Thu, 21 Jan 2021 06:08:50 GMT
 Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 3668qwewh3-1
+        by aserp3030.oracle.com with ESMTP id 3668qwexfp-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 21 Jan 2021 06:08:11 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 10L68Ahc016916;
-        Thu, 21 Jan 2021 06:08:11 GMT
+        Thu, 21 Jan 2021 06:08:49 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 10L68mfS017364;
+        Thu, 21 Jan 2021 06:08:49 GMT
 Received: from mwanda (/102.36.221.92)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 20 Jan 2021 22:08:09 -0800
-Date:   Thu, 21 Jan 2021 09:08:05 +0300
+        with ESMTP ; Wed, 20 Jan 2021 22:08:48 -0800
+Date:   Thu, 21 Jan 2021 09:08:41 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Wolfgang Grandegger <wg@grandegger.com>
-Cc:     Marc Kleine-Budde <mkl@pengutronix.de>,
-        Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-        linux-can@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH can tree] can: dev: prevent potential information leak in
- can_fill_info()
-Message-ID: <YAkaRdRJncsJO8Ve@mwanda>
+To:     Nilesh Javali <njavali@marvell.com>
+Cc:     GR-QLogic-Storage-Upstream@marvell.com,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] scsi: qla2xxx: remove unnecessary NULL check
+Message-ID: <YAkaaSrhn1mFqyHy@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -59,38 +59,39 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phis
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2101210031
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9870 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 priorityscore=1501
- adultscore=0 impostorscore=0 mlxlogscore=999 spamscore=0 suspectscore=0
- phishscore=0 clxscore=1015 bulkscore=0 mlxscore=0 lowpriorityscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0
+ impostorscore=0 mlxscore=0 priorityscore=1501 phishscore=0 mlxlogscore=999
+ lowpriorityscore=0 malwarescore=0 adultscore=0 clxscore=1011 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2101210031
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "bec" struct isn't necessarily always initialized.  For example,
-the mcp251xfd_get_berr_counter() function doesn't initialize anything
-if the interface is down.
+The list iterator can't be NULL so this check is not required.  Removing
+the check silences a Smatch warning about inconsistent NULL checking.
 
-Fixes: 52c793f24054 ("can: netlink support for bus-error reporting and counters")
+    drivers/scsi/qla2xxx/qla_dfs.c:371 qla_dfs_tgt_counters_show()
+    error: we previously assumed 'fcport' could be null (see line 372)
+
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/can/dev/netlink.c | 2 +-
+ drivers/scsi/qla2xxx/qla_dfs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index 3ae884cdf677..7a1ff6fcbb8f 100644
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -263,7 +263,7 @@ static int can_fill_info(struct sk_buff *skb, const struct net_device *dev)
- {
- 	struct can_priv *priv = netdev_priv(dev);
- 	struct can_ctrlmode cm = {.flags = priv->ctrlmode};
--	struct can_berr_counter bec;
-+	struct can_berr_counter bec = {};
- 	enum can_state state = priv->state;
+diff --git a/drivers/scsi/qla2xxx/qla_dfs.c b/drivers/scsi/qla2xxx/qla_dfs.c
+index ccce0eab844e..85bd0e468d43 100644
+--- a/drivers/scsi/qla2xxx/qla_dfs.c
++++ b/drivers/scsi/qla2xxx/qla_dfs.c
+@@ -369,7 +369,7 @@ qla_dfs_tgt_counters_show(struct seq_file *s, void *unused)
+ 	seq_puts(s, "\n");
  
- 	if (priv->do_get_state)
+ 	list_for_each_entry(fcport, &vha->vp_fcports, list) {
+-		if (!fcport || !fcport->rport)
++		if (!fcport->rport)
+ 			continue;
+ 
+ 		seq_printf(s, "Target Num = %7d Link Down Count = %14lld\n",
 -- 
 2.29.2
 

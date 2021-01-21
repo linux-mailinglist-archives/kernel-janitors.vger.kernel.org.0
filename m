@@ -2,98 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DF142FE422
-	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Jan 2021 08:40:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92FCC2FE609
+	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Jan 2021 10:14:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726131AbhAUHiX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 21 Jan 2021 02:38:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48220 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726105AbhAUHiG (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 21 Jan 2021 02:38:06 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DC0BC061757
-        for <kernel-janitors@vger.kernel.org>; Wed, 20 Jan 2021 23:37:26 -0800 (PST)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=bjornoya.blackshift.org)
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1l2UWw-0001dr-SA; Thu, 21 Jan 2021 08:37:22 +0100
-Received: from hardanger.blackshift.org (unknown [IPv6:2a03:f580:87bc:d400:37fb:eadb:47a3:78d5])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        (Authenticated sender: mkl-all@blackshift.org)
-        by smtp.blackshift.org (Postfix) with ESMTPSA id 6A7FE5C97A8;
-        Thu, 21 Jan 2021 07:37:21 +0000 (UTC)
-Date:   Thu, 21 Jan 2021 08:37:20 +0100
-From:   Marc Kleine-Budde <mkl@pengutronix.de>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Wolfgang Grandegger <wg@grandegger.com>,
-        Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-        linux-can@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH can tree] can: dev: prevent potential information leak in
- can_fill_info()
-Message-ID: <20210121073720.zlskqgitnod3w6hf@hardanger.blackshift.org>
-References: <YAkaRdRJncsJO8Ve@mwanda>
+        id S1728418AbhAUJNx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 21 Jan 2021 04:13:53 -0500
+Received: from mga01.intel.com ([192.55.52.88]:28621 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728448AbhAUJNS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 21 Jan 2021 04:13:18 -0500
+IronPort-SDR: EZ18APNkK6iXEht959Av5r8eDOEpM8q8imJDw9MasvMdcVDHyc+v+aTj0hvKdqy69rjllDhC3D
+ ephOstVurwQQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9870"; a="197976659"
+X-IronPort-AV: E=Sophos;i="5.79,363,1602572400"; 
+   d="scan'208";a="197976659"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2021 01:12:37 -0800
+IronPort-SDR: OcxemuhgOh+7wtcay4TZjrZMPYMUAqh1uOwhNdq7sp1zWZadlIoy2QB8GivzzPNujIM7fWKtMw
+ 6F/J07n5BjRg==
+X-IronPort-AV: E=Sophos;i="5.79,363,1602572400"; 
+   d="scan'208";a="385226668"
+Received: from cohrs-mobl.ger.corp.intel.com (HELO localhost) ([10.252.51.23])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2021 01:12:30 -0800
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        Imre Deak <imre.deak@intel.com>,
+        Uma Shankar <uma.shankar@intel.com>,
+        Manasi Navare <manasi.d.navare@intel.com>,
+        Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+        Wambui Karuga <wambui.karugax@gmail.com>,
+        Sean Paul <seanpaul@chromium.org>,
+        Lucas De Marchi <lucas.demarchi@intel.com>,
+        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
+        Chris Wilson <chris@chris-wilson.co.uk>
+Subject: Re: [PATCH] drm/i915/dp: Fix a logical vs bitwise OR bug
+In-Reply-To: <YAkaBa22zvbXKd4E@mwanda>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <YAkaBa22zvbXKd4E@mwanda>
+Date:   Thu, 21 Jan 2021 11:12:27 +0200
+Message-ID: <87h7namz5w.fsf@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="sif3h2wey4pwemlu"
-Content-Disposition: inline
-In-Reply-To: <YAkaRdRJncsJO8Ve@mwanda>
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
---sif3h2wey4pwemlu
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hey Dan,
-
-On Thu, Jan 21, 2021 at 09:08:05AM +0300, Dan Carpenter wrote:
-> The "bec" struct isn't necessarily always initialized.  For example,
-> the mcp251xfd_get_berr_counter() function doesn't initialize anything
-> if the interface is down.
->=20
-> Fixes: 52c793f24054 ("can: netlink support for bus-error reporting and co=
-unters")
+On Thu, 21 Jan 2021, Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> This was supposed to be | instead of ||.
+>
+> Fixes: 522508b665df ("drm/i915/display: Let PCON convert from RGB to YCbCr if it can")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Thanks for the patch. As this is a fix, I've backported it to net/master, w=
-hich
-is before the split of the dev.c into separate files. Applied to
-linux-can/testing.
+Thanks, but we already have the fix [1] for this that I thought was
+pushed by now [2].
 
-regards,
-Marc
+Chris?
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde           |
-Embedded Linux                   | https://www.pengutronix.de  |
-Vertretung West/Dortmund         | Phone: +49-231-2826-924     |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-5555 |
 
---sif3h2wey4pwemlu
-Content-Type: application/pgp-signature; name="signature.asc"
+BR,
+Jani.
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEK3kIWJt9yTYMP3ehqclaivrt76kFAmAJLykACgkQqclaivrt
-76kByAf/dri0xzZQz/DzfMzagXjus6P5AAV6R3awzjWURGIXH1NwljIAeHn/Swt6
-+zHwRZInKI8d0c9puZ1KPOUjebA9tQXB9ghni2PfPSQL6RMrpBpG+MnXdF1nH+kc
-T5rIZ75ehwTkkmXx7iFMTEh41+jeTgqBFtwmMK64GKSmxv/0ex6crCsFBT7YXdW7
-DbXFoTVIGJI9qfw5aTb+j4U/fepo+iR3dmurG9Cvc9PmqYgEAFYrufqYitNR4bPb
-LGNsCxjJWJWnFrkE02Sq/ZIl8vATYDmAGKyJrcHStUDChmvF4v8CREROnXrl1zKD
-tJXn1a5Yb5bxoxsRoX0PBY3tbTxNKw==
-=e/IK
------END PGP SIGNATURE-----
+[1] http://lore.kernel.org/r/20201223103917.14687-1-chris@chris-wilson.co.uk
+[2] http://lore.kernel.org/r/161069893278.19482.3803444937046587332@build.alporthouse.com
 
---sif3h2wey4pwemlu--
+> ---
+>  drivers/gpu/drm/i915/display/intel_dp.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+> index 8a00e609085f..9c6f427b2703 100644
+> --- a/drivers/gpu/drm/i915/display/intel_dp.c
+> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
+> @@ -6955,8 +6955,8 @@ intel_dp_update_420(struct intel_dp *intel_dp)
+>  							intel_dp->downstream_ports);
+>  	rgb_to_ycbcr = drm_dp_downstream_rgb_to_ycbcr_conversion(intel_dp->dpcd,
+>  								 intel_dp->downstream_ports,
+> -								 DP_DS_HDMI_BT601_RGB_YCBCR_CONV ||
+> -								 DP_DS_HDMI_BT709_RGB_YCBCR_CONV ||
+> +								 DP_DS_HDMI_BT601_RGB_YCBCR_CONV |
+> +								 DP_DS_HDMI_BT709_RGB_YCBCR_CONV |
+>  								 DP_DS_HDMI_BT2020_RGB_YCBCR_CONV);
+>  
+>  	if (INTEL_GEN(i915) >= 11) {
+
+-- 
+Jani Nikula, Intel Open Source Graphics Center

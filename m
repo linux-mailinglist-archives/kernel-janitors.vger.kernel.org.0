@@ -2,77 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83EB72FFD66
-	for <lists+kernel-janitors@lfdr.de>; Fri, 22 Jan 2021 08:30:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3681F30014F
+	for <lists+kernel-janitors@lfdr.de>; Fri, 22 Jan 2021 12:19:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727139AbhAVH3j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 22 Jan 2021 02:29:39 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:37884 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727132AbhAVH33 (ORCPT
+        id S1727993AbhAVLRl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 22 Jan 2021 06:17:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38844 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727671AbhAVLRB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 22 Jan 2021 02:29:29 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10M7ONBH125200;
-        Fri, 22 Jan 2021 07:27:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=mime-version :
- message-id : date : from : to : cc : subject : references : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=/DuSqlApP2zefpKFC3EaTQx4AI/PPRLO+Bixlpu+ERg=;
- b=C6+HBCtd5EHZKWarsQ8UeCOhREyYxj0CY4hR4fq0T8E1fHPltoccvkaJzp3/BW0Gat83
- 2pog1phsBZEnGcEaQpAjvAAnlQmySnm9h6tHZlv63eiKalz25U1V2cLzvwSxFuRe1Bra
- cwyXUMs+nrV212rkw28STvQGSjc8qX0zJ7V+EVo/rREKGTGDXgiHgtLhPAlBnBmef565
- D7JUVpXkqAcwqDYvNAq7vCu8yCBPGbb6hZUh7VXUkBrsjSu0zubzfuXuiK5rs8mTV+Up
- np7xK5OtR/BJNwUdttoiUpKjz4Sx2sccFwEZJamJLbaNntHrKb/j5WT64gfNljxbM+eb Ug== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 3668qn2q7d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 22 Jan 2021 07:27:55 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10M7Q520059779;
-        Fri, 22 Jan 2021 07:27:54 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 3668rh3bdx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 22 Jan 2021 07:27:54 +0000
-Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 10M7Rofk022479;
-        Fri, 22 Jan 2021 07:27:52 GMT
-Received: from kadam (/102.36.221.92) by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Thu, 21 Jan 2021 23:27:33 -0800
-USER-AGENT: Mutt/1.9.4 (2018-02-28)
-MIME-Version: 1.0
-Message-ID: <20210122072725.GJ20820@kadam>
-Date:   Fri, 22 Jan 2021 07:27:25 +0000 (UTC)
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Clemens Ladisch <clemens@ladisch.de>
-Cc:     Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>,
-        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 1/2] ALSA: oxfw: fix info leak in hwdep_read()
-References: <YAkassrrWUtsW6aZ@mwanda>
-In-Reply-To: <YAkassrrWUtsW6aZ@mwanda>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9871 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 suspectscore=0
- adultscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101220037
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9871 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 priorityscore=1501
- adultscore=0 impostorscore=0 mlxlogscore=999 spamscore=0 suspectscore=0
- phishscore=0 clxscore=1015 bulkscore=0 mlxscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101220037
+        Fri, 22 Jan 2021 06:17:01 -0500
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C69FFC0613D6;
+        Fri, 22 Jan 2021 03:16:17 -0800 (PST)
+Received: by mail-wm1-x335.google.com with SMTP id c128so3992871wme.2;
+        Fri, 22 Jan 2021 03:16:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=VZLx/PblJd6MezWoeQ4GsUV4rI21p1au0Wz2+FJg3/Q=;
+        b=dTCXUoPDVQAxKr7QSSOZrhclx2dJ9Z4Kx+saJmKVCKm+BejIayWHEFuwdENdfw4TSi
+         gaIDxUuNrftFL71ss4xTKY7E6LqZegNfgu0NqdZCVQUJELOBLFnMJWx5LfWg+3+CUryi
+         30CAXQqGpWTQ6ChI6OuufZ9vrBb3SLyiwKqkLgB74TpT23U9nR6uDYh0EQxhQhb45O+b
+         6qTpiwXTxQBXnYTyV5KYXXXqvyo4hILLKFdZwt/UIjGz7IEqHc9V/pY8DSZql2CwFnfh
+         /sM7V4FZ/Nw5K/nGxAKpQW/owlL4lJg4wT88EGM8OtqDZowpO8qeTqMi+3di0jCtrX8D
+         O/hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=VZLx/PblJd6MezWoeQ4GsUV4rI21p1au0Wz2+FJg3/Q=;
+        b=piI6+pjH5QtRkjWk2wNSfKUXMJx1wkKqNoj5DpUBaNeJpOxXcgl0v6vIOWHxApik5E
+         XPuHTBGf25EzeFFzTHw7zzTmZ0i1nlkd/G/gMRESS5Q6EIdMmPewWysT0KqGYQBpHrFL
+         GMjn3Rjv1+WxJYgX7hWvu2j9vipgJY6Oe2aJVVWSXuiF3C61FJttvxxX5RevgzEVtsid
+         mCoutSaIIfGtkj2VF1czt7yQi3VBLCLs2KSMyUyjn1GbWyUlpGor8pb+YZ5fXHdoP1q2
+         JKXrivtUQiom3e6XynLYeK4oDlDrFypvZs6VZLJjUTKWAvCzdOtQi8+9bPhWADnReZHa
+         YRbg==
+X-Gm-Message-State: AOAM531uSwjnXELFoVbg6rt71BBOHSgHKtW2cijyHFymD6FpbsqyIq9p
+        PVu0y6G8HYTCkX8LwJxwCng=
+X-Google-Smtp-Source: ABdhPJz8/MaE6nni4CXTndtsyWaxV2OGHflQZJxSd+FMQer7kgkXcf9NtRaiKp+CYyEttSwZESC6aA==
+X-Received: by 2002:a7b:cbd5:: with SMTP id n21mr3600591wmi.5.1611314176509;
+        Fri, 22 Jan 2021 03:16:16 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d97:4900:808e:47fd:6ea4:7fa2])
+        by smtp.gmail.com with ESMTPSA id x128sm11556111wmb.29.2021.01.22.03.16.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Jan 2021 03:16:15 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Mikulas Patocka <mpatocka@redhat.com>,
+        Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com
+Cc:     Alasdair Kergon <agk@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH for device-mapper/for-next] dm integrity: follow ReST formatting
+Date:   Fri, 22 Jan 2021 12:16:06 +0100
+Message-Id: <20210122111606.24999-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Please ignore this one.  Christophe JAILLET pointed out that the info
-leak isn't possible.  I'll send a clean up patch instead.
+Commit 61b8b2a834bf ("dm integrity: introduce the "fix_hmac" argument")
+adds some new part to dm-integrity.rst, but this causes make htmldocs warn:
 
-regards,
-dan carpenter
+  dm-integrity.rst:192: WARNING: Unexpected indentation.
+  dm-integrity.rst:193: WARNING: Block quote ends without a blank line; \
+    unexpected unindent.
+
+Make dm-integrity.rst follow ReST formatting.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+Mike, please pick this quick documentation fix in your for-next branch.
+
+ Documentation/admin-guide/device-mapper/dm-integrity.rst | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/admin-guide/device-mapper/dm-integrity.rst b/Documentation/admin-guide/device-mapper/dm-integrity.rst
+index 39a9fdc9f6ab..ef762857da95 100644
+--- a/Documentation/admin-guide/device-mapper/dm-integrity.rst
++++ b/Documentation/admin-guide/device-mapper/dm-integrity.rst
+@@ -188,6 +188,7 @@ fix_padding
+ 
+ fix_hmac
+ 	Improve security of internal_hash and journal_mac:
++
+ 	- the section number is mixed to the mac, so that an attacker can't
+ 	  copy sectors from one journal section to another journal section
+ 	- the superblock is protected by journal_mac
+-- 
+2.17.1
 

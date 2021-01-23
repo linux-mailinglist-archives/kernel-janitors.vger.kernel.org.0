@@ -2,58 +2,128 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36BA1300F22
-	for <lists+kernel-janitors@lfdr.de>; Fri, 22 Jan 2021 22:47:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 605A9301257
+	for <lists+kernel-janitors@lfdr.de>; Sat, 23 Jan 2021 03:40:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729342AbhAVVqp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 22 Jan 2021 16:46:45 -0500
-Received: from mail.padangpariamankab.go.id ([103.94.3.123]:53496 "EHLO
-        mail.padangpariamankab.go.id" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730285AbhAVVnw (ORCPT
+        id S1726503AbhAWCjk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 22 Jan 2021 21:39:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40118 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726404AbhAWCjg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 22 Jan 2021 16:43:52 -0500
-X-Greylist: delayed 2700 seconds by postgrey-1.27 at vger.kernel.org; Fri, 22 Jan 2021 16:43:51 EST
-Received: from localhost (localhost [127.0.0.1])
-        by mail.padangpariamankab.go.id (Postfix) with ESMTP id C9BC26E6308;
-        Sat, 23 Jan 2021 03:45:47 +0700 (WIB)
-Received: from mail.padangpariamankab.go.id ([127.0.0.1])
-        by localhost (mail.padangpariamankab.go.id [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id eZNfZcDBoloz; Sat, 23 Jan 2021 03:45:47 +0700 (WIB)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.padangpariamankab.go.id (Postfix) with ESMTP id BF5B66E638F;
-        Sat, 23 Jan 2021 03:45:46 +0700 (WIB)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.padangpariamankab.go.id BF5B66E638F
+        Fri, 22 Jan 2021 21:39:36 -0500
+Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6E35C06174A;
+        Fri, 22 Jan 2021 18:38:52 -0800 (PST)
+Received: by mail-io1-xd2e.google.com with SMTP id e22so15310058iom.5;
+        Fri, 22 Jan 2021 18:38:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=padangpariamankab.go.id; s=D2C6CDEC-3607-11EA-BC8A-EEDE4AB8B776;
-        t=1611348347; bh=4AhSoXRU63EAbbOwseUY/pxjidGey07DskAQ7pZ9AvE=;
-        h=Date:From:Message-ID:MIME-Version;
-        b=biBl21/TiSGa3vBPdPQepzCdB03+gFHrDvagu/b1XzEgynDKtjDDR0P73lyeRy6TO
-         N3mcmhwfDNCuKH1/j6cohaMjDOPLuJEdpVnA1Kpb1O4AMSU/jypziFSm1A9mFVPqYS
-         +JunSrMx8eGdsw6KyFOQ1HHuME43koORB0rBi7xg=
-X-Virus-Scanned: amavisd-new at padangpariamankab.go.id
-Received: from mail.padangpariamankab.go.id ([127.0.0.1])
-        by localhost (mail.padangpariamankab.go.id [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id lST2EYGz-BCy; Sat, 23 Jan 2021 03:45:46 +0700 (WIB)
-Received: from mail.padangpariamankab.go.id (mail.padangpariamankab.go.id [103.94.3.123])
-        by mail.padangpariamankab.go.id (Postfix) with ESMTP id E754F6E600D;
-        Sat, 23 Jan 2021 03:45:43 +0700 (WIB)
-Date:   Sat, 23 Jan 2021 03:45:43 +0700 (WIB)
-From:   GREENLIGHT <rsud@padangpariamankab.go.id>
-Reply-To: "Greenlight Financial Services " <greenlightservices@usa.com>
-Message-ID: <242905053.19261.1611348343695.JavaMail.zimbra@padangpariamankab.go.id>
-Subject: Update
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc:content-transfer-encoding;
+        bh=z/8jFLG0+YUsszHNMJ3nH9uwKAB96HJoCzzgF45TSX8=;
+        b=AcAMzJqVyDVn181u89mxAUTMCzamfnzlFT4sngZA86xRQ1w0+PVHmC1kWn+4h3KIqc
+         bOwvIfapmlY5j/tM53/QBuDJkReQj2vex7TuNNi10nezRlRJf1WAWbQ7vuoTbThkaExc
+         tOdqVIhIEXbpYWUpHmKhxrnPlQxpHWsYfA8nPznh05EQu/SU3FZQUeh9bexb6e7SwoIE
+         pxG8h/aKmeO0pgAwHkonG2P2m/9B8GAk0R+n6NALeW2gMm8YOcX8G3vHm4F9WUA8kPNn
+         mAdqPkhx8G9J51a28+iMj9rAh9FFraloXq8LI7jKAFMzMRuIRPdmdPwXygp3bbcERl0l
+         wiPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc:content-transfer-encoding;
+        bh=z/8jFLG0+YUsszHNMJ3nH9uwKAB96HJoCzzgF45TSX8=;
+        b=p3IjmuEj8rFIWFXYnGmzKhDePE46F0+dHCY4JajJo0L7Cv+DHZMQu8XaqOp7nv6/Lw
+         hZOYsnRAHZlbSQIadW1W5kI+RkYDKQf3a/oyKpsIYgnST7eYX7PVvG2C/xKQQ8J+Fpse
+         NFgJ6UyMybSmKDRZScFrmKqI627MwdvUt1NmnWx2QZW85QK0RPPIshktCp5r1Rm42kbJ
+         TQqzbDlZGev8467BXYQWe1P62cxHZcJTodJmZ4tmG9mwRD6bd52k+fWw07FGiLZQrgyW
+         hzVO6f4s866Iw/9nmRCXk4QvBcaceN3bEL7mlxZUzFbbchZRu3vdm5PuBYlkkALYE+bx
+         SmVw==
+X-Gm-Message-State: AOAM530fIGTAis6lDVxeLI7AZH2Dq7BI+cOYd94pJZNh0N8KCXH4D9Vo
+        Sg0hAyX/8qmI242/cSQlcZqBLa3cMmzFs/NbBZ7s6k79CDk=
+X-Google-Smtp-Source: ABdhPJyLXj5hRYG3u7xc/prk1ULiVEyDmi5kjHtXm7cFcLf+H3Wj22/GLhEmnMtleMoNVpqKG3AZNooClk4vR96FKqY=
+X-Received: by 2002:a92:c80b:: with SMTP id v11mr3961148iln.215.1611369532214;
+ Fri, 22 Jan 2021 18:38:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [103.94.3.123]
-X-Mailer: Zimbra 8.8.15_GA_3895 (zclient/8.8.15_GA_3895)
-Thread-Index: DiPPgu1TdCRLAGA3RpAe+4ebkFl7Rw==
-Thread-Topic: Update
-To:     unlisted-recipients:; (no To-header on input)
+References: <20210121160115.4676-1-lukas.bulwahn@gmail.com>
+ <CA+icZUV3p+yQYXn=iVseNNQwUSvoMwztLxNDOFpdFb731kDOJg@mail.gmail.com> <20210122123354.GR2696@kadam>
+In-Reply-To: <20210122123354.GR2696@kadam>
+Reply-To: sedat.dilek@gmail.com
+From:   Sedat Dilek <sedat.dilek@gmail.com>
+Date:   Sat, 23 Jan 2021 03:38:41 +0100
+Message-ID: <CA+icZUXxJnhXwiFAJ+f23xWLq-t6ZmF6X_wJPNaEoCVqjP4N=A@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: adjust to clang-version.sh removal
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        linux-kbuild@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Clang-Built-Linux ML <clang-built-linux@googlegroups.com>,
+        Joe Perches <joe@perches.com>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Fri, Jan 22, 2021 at 1:34 PM Dan Carpenter <dan.carpenter@oracle.com> wr=
+ote:
+>
+> On Thu, Jan 21, 2021 at 05:15:56PM +0100, Sedat Dilek wrote:
+> > On Thu, Jan 21, 2021 at 5:01 PM Lukas Bulwahn <lukas.bulwahn@gmail.com>=
+ wrote:
+> > >
+> > > Commit 6c8ad4427f6e ("kbuild: check the minimum compiler version in
+> > > Kconfig") removed ./scripts/clang-version.sh and moved its content to
+> > > ./scripts/cc-version.sh.
+> > >
+> > > Since then, ./scripts/get_maintainer.pl --self-test=3Dpatterns compla=
+ins:
+> > >
+> > >   warning: no file matches    F:    scripts/clang-version.sh
+> > >
+> > > The CLANG/LLVM BUILD SUPPORT section in MAINTAINERS intends to track
+> > > changes in ./scripts/clang-version.sh; as the file is removed, track
+> > > changes in ./scripts/cc-version.sh instead now.
+> > >
+> > > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> >
+> > Good catch, Lukas.
+> >
+> > As a tipp:
+> > Next time you can pass '--subject-prefix=3D"PATCH next-YYYYMMDD"' when
+> > doing 'git format-patch ...' (or whatever you use to generate the
+> > patch).
+>
+> I've never seen anyone use this prefix before.
+>
+> What does the date really help?  In staging, we apply everything on top
+> of staging-next and if it doesn't apply then we don't investigate, we
+> just say "doesn't apply.  resend if needed".
+>
+> We may as well just say [PATCH linux-next].  No one is ever going to
+> look up the date if it doesn't apply to the latest linux-next.
+>
 
+Is there an official rule to label patches for Linux-next?
 
-We offer Reliable/Low Interest Rate Financial Services to Companies & Individuals including; Start-Up Business, Loans & Mortgage ETC. Apply Now
+Usually - when I was more active on Linux-next development - folks add
+a "PATCH -next" to the subject.
+Of course, this needs additionally a hint in the patch/commit message
+against which Linux-next release it is applicable.
+Linux-next releases are highly dynamic - a patch might be applicable
+to one single "-next" release.
+Git trees come and go - are resetted to an older version of a Git tree.
+
+As LKML is CCed - think of the hundreds and thousands of patches
+coming in daily.
+So a more meaningful subject can give a first orientation.
+That was my point.
+
+My =E2=82=AC0,02.
+
+- Sedat -

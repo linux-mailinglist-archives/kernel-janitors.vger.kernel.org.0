@@ -2,60 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12DFE301B6B
-	for <lists+kernel-janitors@lfdr.de>; Sun, 24 Jan 2021 12:35:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 011BA301EA7
+	for <lists+kernel-janitors@lfdr.de>; Sun, 24 Jan 2021 21:16:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726652AbhAXLer (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 24 Jan 2021 06:34:47 -0500
-Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:39255 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726641AbhAXLek (ORCPT
+        id S1726103AbhAXUPZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 24 Jan 2021 15:15:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36664 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725948AbhAXUPY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 24 Jan 2021 06:34:40 -0500
-Received: from localhost.localdomain ([92.131.99.25])
-        by mwinf5d43 with ME
-        id LbYv240060Ys01Y03bYvtp; Sun, 24 Jan 2021 12:32:57 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 24 Jan 2021 12:32:57 +0100
-X-ME-IP: 92.131.99.25
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     robert.moore@intel.com, erik.kaneda@intel.com,
-        rafael.j.wysocki@intel.com, lenb@kernel.org
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] ACPICA: Common: Fix a typo
-Date:   Sun, 24 Jan 2021 12:32:52 +0100
-Message-Id: <20210124113252.733716-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.27.0
+        Sun, 24 Jan 2021 15:15:24 -0500
+Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com [IPv6:2607:f8b0:4864:20::f36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B17CC061573;
+        Sun, 24 Jan 2021 12:14:44 -0800 (PST)
+Received: by mail-qv1-xf36.google.com with SMTP id l14so3243717qvp.2;
+        Sun, 24 Jan 2021 12:14:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=OSqM/+hDSvLrv13lOWN3p2jAOoGEE3+xx2u807DxGhI=;
+        b=b3lztcn5pSshC/3esauyTw+hxCipPz+MJyymarpFLFxQhyqJRiK0Q5Glo6b7KifBk8
+         f55+fm+KG4Hp913zv0oxXC3KyC8LgnsIjloAmXIq2wCyIablTcUrwIraJ0h7O9EXSpR0
+         Wr6V8hzjL1U+31FiHwpqqh9bYJltn8zh8jssuRfjJAJQt0YuMFT5W6AaXSuyjnn3hOmo
+         En0Au3qkMCJkc0EiQC+yEBuoFYSTDpZ/vyPsK+ggc778kKLn06Q3hahskXu2svqNBRqk
+         XJTWw7Y7JCmJ5tXoaphmclJk8oREYPAkefDB7jWG4XjJ/yDeVkTTonLaKvi8HS6QexBn
+         Y0OQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=OSqM/+hDSvLrv13lOWN3p2jAOoGEE3+xx2u807DxGhI=;
+        b=Mt9zkDhaQrqirTUg9JC0/AnZhBsS+/KNUJWcfVuIwKp4T6yNtnRAi/+GLLmhjEcaje
+         oPIGBFHdYpyJu1jG2zjE12BByEN7r6B0UWW2OjO5YUk0H943mXmo+IPBS/UOiuqnGsTK
+         aewJtarg85Y8ojIBxX/3RoUeeuKNO99Fv7hrN9j1lbRvC9xsU3pCpVrfeIyJT8c5z6Ir
+         8/2NHd58ndxxK1zCr0IgI50FpP8DbJFHOIcFBR0NhQV05LiDZETfvr+WaoWbjYb7kroG
+         1qcOzO2hJRm85SbqbGNo/3a4/qt/NUiZiojBcK0LrEV7mQEdJLx8FnDtA0tOqCz3MzF1
+         j2FQ==
+X-Gm-Message-State: AOAM533xXzKlw3BjQrm5Enx3urNvvLVmqrARytGVu5UNIqn8jt7kbv9a
+        qCVGFlTLLDre4rDSVS74PfBbkh+AhRqdPJdKvla8+WV/XWU=
+X-Google-Smtp-Source: ABdhPJxVOToYv0HkdS45AHJioCJ8pGX18Nrco3AhpQ3fAv/W1LW+yvun2Ke603zBouNanpWWNdyQ/PX8p+H6laXhHYQ=
+X-Received: by 2002:a0c:9e5e:: with SMTP id z30mr4524736qve.56.1611519283494;
+ Sun, 24 Jan 2021 12:14:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210124073955.728797-1-christophe.jaillet@wanadoo.fr> <fe72d1d2-8222-5cda-74ff-9327725f196a@web.de>
+In-Reply-To: <fe72d1d2-8222-5cda-74ff-9327725f196a@web.de>
+From:   Richard Weinberger <richard.weinberger@gmail.com>
+Date:   Sun, 24 Jan 2021 21:14:32 +0100
+Message-ID: <CAFLxGvzFDPBGY1uoB7vqJreOSfs9N2PGMDTbQ24PYBWBRVR4oQ@mail.gmail.com>
+Subject: Re: [PATCH] mtd: rawnand: Fix an error handling path in 'ebu_dma_start()'
+To:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>
+Cc:     linux-mtd@lists.infradead.org,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Richard Weinberger <richard@nod.at>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Ramuthevar Vadivel Murugan 
+        <vadivel.muruganx.ramuthevar@linux.intel.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This module is 'cmfsize', not 'cfsize'.
-Fix it.
+On Sun, Jan 24, 2021 at 9:13 PM Markus Elfring <Markus.Elfring@web.de> wrot=
+e:
+>
+> > If 'dmaengine_prep_slave_single()' fails, we must undo a previous
+> > 'dma_map_single()' call, as already done in all the other error handlin=
+g
+> > paths of this function.
+>
+> Would you ever like to use an imperative wording for the change descripti=
+on?
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/D=
+ocumentation/process/submitting-patches.rst?id=3Dfdbc80bdc4365078a0f7d65631=
+171cb80e3ffd6e#n89
+>
+>
+> =E2=80=A6
+> > +++ b/drivers/mtd/nand/raw/intel-nand-controller.c
+> > @@ -318,8 +318,10 @@ static int ebu_dma_start(struct ebu_nand_controlle=
+r *ebu_host, u32 dir,
+> >       }
+> >
+> >       tx =3D dmaengine_prep_slave_single(chan, buf_dma, len, dir, flags=
+);
+> > -     if (!tx)
+> > -             return -ENXIO;
+> > +     if (!tx) {
+> > +             ret =3D -ENXIO;
+> > +             goto err_unmap;
+> > +     }
+> >
+> >       tx->callback =3D callback;
+> =E2=80=A6
+>
+> By the way:
+> Can it be nicer to achieve the statement =E2=80=9Cret =3D -EIO;=E2=80=9D =
+by a jump for
+> a target like =E2=80=9Ce_io=E2=80=9D so that less exception handling code=
+ would be duplicated
+> for this function implementation?
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- tools/power/acpi/common/cmfsize.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Please feel free to ignore Markus.
 
-diff --git a/tools/power/acpi/common/cmfsize.c b/tools/power/acpi/common/cmfsize.c
-index 9ea2c0aeb86c..185b8c588e1d 100644
---- a/tools/power/acpi/common/cmfsize.c
-+++ b/tools/power/acpi/common/cmfsize.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0
- /******************************************************************************
-  *
-- * Module Name: cfsize - Common get file size function
-+ * Module Name: cmfsize - Common get file size function
-  *
-  * Copyright (C) 2000 - 2021, Intel Corp.
-  *
--- 
-2.27.0
+https://lore.kernel.org/lkml/X+x3pIanr18Ep4ga@kroah.com/
 
+--=20
+Thanks,
+//richard

@@ -2,33 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F59C301A53
-	for <lists+kernel-janitors@lfdr.de>; Sun, 24 Jan 2021 08:42:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 097A4301A62
+	for <lists+kernel-janitors@lfdr.de>; Sun, 24 Jan 2021 08:59:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726452AbhAXHln (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 24 Jan 2021 02:41:43 -0500
-Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:21192 "EHLO
+        id S1726502AbhAXH60 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 24 Jan 2021 02:58:26 -0500
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:60045 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726096AbhAXHlm (ORCPT
+        with ESMTP id S1726367AbhAXH6Z (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 24 Jan 2021 02:41:42 -0500
+        Sun, 24 Jan 2021 02:58:25 -0500
 Received: from localhost.localdomain ([92.131.99.25])
         by mwinf5d58 with ME
-        id LXfx2400C0Ys01Y03XfyzX; Sun, 24 Jan 2021 08:40:00 +0100
+        id LXwg2400H0Ys01Y03Xwg1N; Sun, 24 Jan 2021 08:56:42 +0100
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 24 Jan 2021 08:40:00 +0100
+X-ME-Date: Sun, 24 Jan 2021 08:56:42 +0100
 X-ME-IP: 92.131.99.25
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-        vadivel.muruganx.ramuthevar@linux.intel.com,
-        martin.blumenstingl@googlemail.com
-Cc:     linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+To:     luciano.coelho@intel.com, kvalo@codeaurora.org,
+        davem@davemloft.net, kuba@kernel.org,
+        mordechay.goodstein@intel.com, johannes.berg@intel.com,
+        sara.sharon@intel.com, nathan.errera@intel.com,
+        Dan1.Halperin@intel.com, emmanuel.grumbach@intel.com,
+        naftali.goldstein@intel.com, netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] mtd: rawnand: Fix an error handling path in 'ebu_dma_start()'
-Date:   Sun, 24 Jan 2021 08:39:55 +0100
-Message-Id: <20210124073955.728797-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] iwlwifi: mvm: Fix an error handling path in 'ebu_dma_start()'
+Date:   Sun, 24 Jan 2021 08:56:37 +0100
+Message-Id: <20210124075637.732126-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -36,33 +39,32 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If 'dmaengine_prep_slave_single()' fails, we must undo a previous
-'dma_map_single()' call, as already done in all the other error handling
-paths of this function.
+If the 'cmd_ver' check fails, we must release some memory as already done
+in all the other error handling paths of this function.
 
-Fixes: 0b1039f016e8 ("mtd: rawnand: Add NAND controller support on Intel LGM SoC")
+Fixes: 9e3c39361a30 ("iwlwifi: mvm: support new KEK KCK api")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/mtd/nand/raw/intel-nand-controller.c | 6 ++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 6 ++++--
  1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/intel-nand-controller.c b/drivers/mtd/nand/raw/intel-nand-controller.c
-index a304fda5d1fa..8b49fd56cf96 100644
---- a/drivers/mtd/nand/raw/intel-nand-controller.c
-+++ b/drivers/mtd/nand/raw/intel-nand-controller.c
-@@ -318,8 +318,10 @@ static int ebu_dma_start(struct ebu_nand_controller *ebu_host, u32 dir,
- 	}
- 
- 	tx = dmaengine_prep_slave_single(chan, buf_dma, len, dir, flags);
--	if (!tx)
--		return -ENXIO;
-+	if (!tx) {
-+		ret = -ENXIO;
-+		goto err_unmap;
-+	}
- 
- 	tx->callback = callback;
- 	tx->callback_param = ebu_host;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index c025188fa9bc..2fb897cbfca6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -810,8 +810,10 @@ static int iwl_mvm_wowlan_config_key_params(struct iwl_mvm *mvm,
+ 						WOWLAN_KEK_KCK_MATERIAL,
+ 						IWL_FW_CMD_VER_UNKNOWN);
+ 		if (WARN_ON(cmd_ver != 2 && cmd_ver != 3 &&
+-			    cmd_ver != IWL_FW_CMD_VER_UNKNOWN))
+-			return -EINVAL;
++			    cmd_ver != IWL_FW_CMD_VER_UNKNOWN)) {
++			ret = -EINVAL;
++			goto out;
++		}
+ 		if (cmd_ver == 3)
+ 			cmd_size = sizeof(struct iwl_wowlan_kek_kck_material_cmd_v3);
+ 		else
 -- 
 2.27.0
 

@@ -2,106 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 396DD302291
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Jan 2021 08:53:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD96F30232F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Jan 2021 10:20:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727304AbhAYHnN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 25 Jan 2021 02:43:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41548 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727287AbhAYHmj (ORCPT
+        id S1726197AbhAYJQv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 25 Jan 2021 04:16:51 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:41062 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725880AbhAYJQQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 Jan 2021 02:42:39 -0500
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9F83C061573;
-        Sun, 24 Jan 2021 23:41:16 -0800 (PST)
-Received: by mail-wm1-x331.google.com with SMTP id e15so9803748wme.0;
-        Sun, 24 Jan 2021 23:41:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=Vln43mgwMFNDI3htKB1T6Ag4DsdFzHSSzpUsFqeuEV8=;
-        b=YlaF8EV+p5Ys4CIcJ/awJ+DIh+YHGs0ojO7kNgf5NVTd1GUFrTzrKgcfJnF3YZdxbK
-         12HO+dRwrrUjsnrLVZe5XOeV8nMb/HHgZUaVi5JFUPsqA+znS+yEOpFcn0MBdIMb/fqd
-         cmnATcaeSsU33Rhvx0jKRxRI+gUxMzuYZwzZ+vwCmpYUu1zQ5XedTnPiQnGMLACIb+hH
-         0/YF2qcdsHiVdA/jc2gERu0N80amkCwowGYbXuAm79GdnjJ50oBCjmXG2M4JMju5KLDI
-         SlfkYlw/GMpcsZSS2ypShNs2pM3JSlsjTnk4QuGeag28F2bgzkKDNAKnX2PRKkbj6Isp
-         pHtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Vln43mgwMFNDI3htKB1T6Ag4DsdFzHSSzpUsFqeuEV8=;
-        b=tUHQVCaanErQLdsFg7toccq41KqCWrkQQ2dQ8vsNyskQZxbx0EIReXSbzzd0c7c02U
-         3Fw4mElDaR09TcElaC6vDRnBHY51Xx6zDB1AwSjCrTb2/Lfwzj2PMXGqy+MgaoJ6GvXc
-         VTXEP6XPaW7Tr64ZPAMbymx1aiNnObm21XdqPR+MnOGT6/aV9Sq3LO2rN3InfOVpZGEB
-         +2/AACDbDIQbijV8wubNTW+3aWV0CnxaoXsGdYzApHSO7bqgQBs98Dm4gWVcGezCBgb+
-         OMAiqx29gCFoHgDGBE4mAn/rq5yk7YSFFPyMScBziLZHU7Wg8NlZkw8F5Kw1rsncaI9T
-         O4jA==
-X-Gm-Message-State: AOAM532vbpeAWwywsyrXu6zlD9GFV9NT0+oZrx9FRjBomUV1RMh2b9fj
-        tc0hQWk9Vil5P9EGCZBNZW8=
-X-Google-Smtp-Source: ABdhPJwXDtvsM++m/Iu0HjPfin1IyRtsUt7YkR5bDCzhG+W+2LKjpn8dGLlWVJOVwl6RYJr/z94avA==
-X-Received: by 2002:a1c:1b44:: with SMTP id b65mr1202189wmb.188.1611560475444;
-        Sun, 24 Jan 2021 23:41:15 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d4b:4500:649e:f82b:bf2d:2571])
-        by smtp.gmail.com with ESMTPSA id s25sm23313994wrs.49.2021.01.24.23.41.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 Jan 2021 23:41:14 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     "Paul E . McKenney" <paulmck@kernel.org>,
-        Josh Triplett <josh@joshtriplett.org>, rcu@vger.kernel.org
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Jonathan Corbet <corbet@lwn.net>,
+        Mon, 25 Jan 2021 04:16:16 -0500
+From:   John Ogness <john.ogness@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1611566008;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=1SzT8fhkwfFKbfCPU3fuEttqP1gLZLOTt/FXQd2bkSA=;
+        b=BiBU5RXdSdRec9ID8ZHHdI+sdnr0B32b1USYrr1AlfjfDJeo61hZ7IZELjRpycTkk1Ed+K
+        Hproqo/2PP1z2wd4OCyAazDx58ET2NnbYHGMTLDKyihduvB6/yVR6TTCbUWZ3yJSVGvjla
+        WGNIaQ513fiu+J130oRhTaAqzF/q2+o8vULAMHpmzmKkdueq0hy0i4u4n8ZtIiEQwX/WbP
+        7kwpkG8bsrUVTlGhC6YsynjMU4y/WiE85vJbhq32iuKr8d5G3AvKccnLLPk+Jehtv95Vdz
+        AJr0xL14Po4yMVCuaUXYir6uXd0J9bauKNcBxE8PqSWIzDBQCz3aHVjpIgLjWQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1611566008;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=1SzT8fhkwfFKbfCPU3fuEttqP1gLZLOTt/FXQd2bkSA=;
+        b=cASJ6+XnJgaIbrx16wVIrE7BEnVmugMQbrKqSDPjRLshvDIvOQc/0Y6FxjHA+dqW62/+ed
+        dxID6TtNXhzHB3CA==
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        linux-kernel@vger.kernel.org
+Cc:     Jonathan Corbet <corbet@lwn.net>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] rcu-tasks: rectify kernel-doc for struct rcu_tasks
-Date:   Mon, 25 Jan 2021 08:41:05 +0100
-Message-Id: <20210125074105.29038-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+Subject: Re: [PATCH] printk: rectify kernel-doc for prb_rec_init_wr()
+In-Reply-To: <20210125081748.19903-1-lukas.bulwahn@gmail.com>
+References: <20210125081748.19903-1-lukas.bulwahn@gmail.com>
+Date:   Mon, 25 Jan 2021 10:19:26 +0106
+Message-ID: <871re94bwp.fsf@jogness.linutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The command 'find ./kernel/rcu/ | xargs ./scripts/kernel-doc -none'
-reported an issue with the kernel-doc of struct rcu_tasks.
+On 2021-01-25, Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+> The command 'find ./kernel/printk/ | xargs ./scripts/kernel-doc -none'
+> reported a mismatch with the kernel-doc of prb_rec_init_wr().
+>
+> Rectify the kernel-doc, such that no issues remain for ./kernel/printk/.
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-Rectify the kernel-doc, such that no issues remain for ./kernel/rcu/.
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-applies cleanly on v5.11-rc5 and next-20210122
-
-Paul, please pick this minor kerneldoc cleanup.
-
- kernel/rcu/tasks.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index af7c19439f4e..17c8ebe131af 100644
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -20,7 +20,7 @@ typedef void (*holdouts_func_t)(struct list_head *hop, bool ndrpt, bool *frptp);
- typedef void (*postgp_func_t)(struct rcu_tasks *rtp);
- 
- /**
-- * Definition for a Tasks-RCU-like mechanism.
-+ * struct rcu_tasks - Definition for a Tasks-RCU-like mechanism.
-  * @cbs_head: Head of callback list.
-  * @cbs_tail: Tail pointer for callback list.
-  * @cbs_wq: Wait queue allowning new callback to get kthread's attention.
-@@ -38,7 +38,7 @@ typedef void (*postgp_func_t)(struct rcu_tasks *rtp);
-  * @pregp_func: This flavor's pre-grace-period function (optional).
-  * @pertask_func: This flavor's per-task scan function (optional).
-  * @postscan_func: This flavor's post-task scan function (optional).
-- * @holdout_func: This flavor's holdout-list scan function (optional).
-+ * @holdouts_func: This flavor's holdout-list scan function (optional).
-  * @postgp_func: This flavor's post-grace-period function (optional).
-  * @call_func: This flavor's call_rcu()-equivalent function.
-  * @name: This flavor's textual name.
--- 
-2.17.1
-
+> ---
+> applies cleanly on v5.11-rc5 and next-20210122
+>
+> John, please ack.
+> Petr, please pick this minor typo fixup.
+>
+>  kernel/printk/printk_ringbuffer.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/kernel/printk/printk_ringbuffer.h b/kernel/printk/printk_ringbuffer.h
+> index 5dc9d022db07..73cc80e01cef 100644
+> --- a/kernel/printk/printk_ringbuffer.h
+> +++ b/kernel/printk/printk_ringbuffer.h
+> @@ -287,7 +287,7 @@ _DEFINE_PRINTKRB(name, descbits, avgtextbits, &_##name##_text[0])
+>  /* Writer Interface */
+>  
+>  /**
+> - * prb_rec_init_wd() - Initialize a buffer for writing records.
+> + * prb_rec_init_wr() - Initialize a buffer for writing records.
+>   *
+>   * @r:             The record to initialize.
+>   * @text_buf_size: The needed text buffer size.
+> -- 
+> 2.17.1

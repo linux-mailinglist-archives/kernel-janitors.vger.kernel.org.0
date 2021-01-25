@@ -2,120 +2,136 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0162B3025CD
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Jan 2021 15:00:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86D453025AC
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Jan 2021 14:48:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729186AbhAYN6Q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 25 Jan 2021 08:58:16 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:51366 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729180AbhAYN5Q (ORCPT
+        id S1729038AbhAYNq4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 25 Jan 2021 08:46:56 -0500
+Received: from wout1-smtp.messagingengine.com ([64.147.123.24]:38055 "EHLO
+        wout1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729059AbhAYNqt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 Jan 2021 08:57:16 -0500
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10P8Z3mL017485;
-        Mon, 25 Jan 2021 08:44:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=TawASkgzxobqNycAxeq1iSH/tMCNfK27y/lI3OlEpqw=;
- b=NSmJLY2ju6/YudQrJGQxyjpXAWhKkaEI+J3HgQHVbbEicRmtcJpQ/rrkuf5z4Dw0q5Vc
- Q3rQIOR0T3rn1B+6j/L3RiCoZpE8WI9BwvV0P1qhmiPL77QCkTY/E2SaLKPUURVrVOCt
- 07Ns4HGLYmsE9PvnVSHJxjh+eLNrdUsKFwnZkpqt+d8gP8o/9oMP5IdOZkYsEZ/qfVRX
- o6Ry35Sf9EXAb+U1/47REYGx+1VAGQ5y1LWUYMrjH0Go3WisKUF2gWfABi0hhAWz4ctz
- kLmsRJAFqTrihRfQO2xTAY5Ol6OlP3mqu4uoXUIVZkcl4KG48YcC0UFlXev87/URX0uF Aw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2130.oracle.com with ESMTP id 3689aacaw2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 25 Jan 2021 08:44:48 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10P8YwkF062347;
-        Mon, 25 Jan 2021 08:44:45 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 368wck9nu5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 25 Jan 2021 08:44:45 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 10P8ifZJ019858;
-        Mon, 25 Jan 2021 08:44:42 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 25 Jan 2021 00:44:41 -0800
-Date:   Mon, 25 Jan 2021 11:44:34 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     James Smart <james.smart@broadcom.com>
-Cc:     Dick Kennedy <dick.kennedy@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        James Bottomley <James.Bottomley@steeleye.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] scsi: lpfc: Fix ancient double free
-Message-ID: <YA6E8rO51hE56SVw@mwanda>
+        Mon, 25 Jan 2021 08:46:49 -0500
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.west.internal (Postfix) with ESMTP id 73F90E0E;
+        Mon, 25 Jan 2021 08:45:44 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Mon, 25 Jan 2021 08:45:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
+         h=date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm3; bh=jcnbIZnzrAyhZeu+iL5n+9DJk/q
+        4Dov63HrOKt1Hkzc=; b=XeBuGdCXGvqdzN20sTHzb18g7T6vxXBRAAzvFKmtrZ3
+        f3CKAj0ZsqHSGfEY6YpASd6SpqneUl0Nu7sGi07SjHax6sFBliG5ii90PVAopNRQ
+        nap604rcJ+1aWhyuzvauiIP6PhA5yxB4MFIzN616u/SLKUtg7wPHeygyPE3coM2w
+        PcB/O3jlWTiXqhW1zQUk0xeSdvNUTmkHqAfGsz3MymLLE/2q/wjwUa69as2JMxs3
+        c+SAly97lhDIExFSqwTS2+C0WLhIzOkMs9h/Gvi/6TI9/QjyyNT1GsMj0V3Bf0lh
+        tkq2becnDnQgz4w4DrsNjV/GjY4zgv3lGT0/VmLbjWA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=jcnbIZ
+        nzrAyhZeu+iL5n+9DJk/q4Dov63HrOKt1Hkzc=; b=U9ckwXdK3O1Z3pVS3gmpmN
+        hb2tb8S5HbXCck2219KdKgJJtpmwfkpsKFodA9ZPsQ/VA2ow5o/X3EL/7xWqgc/e
+        OoRGN85btZSxDjkFL8nMH7u492WWV/wFXCYo560NVotKWLOFfu6fG8jb4AhigJxh
+        8QSGcfzFpM6hGoHfm3ZdP2W7J1xXJMkSlToAyCr6kRpyhCejreK9Rfbi3H3XjArH
+        oQ1/FsZjXx0w48BeBVTU7AaObibFoMBT2378IudREUubVKdgikESfse/EhcOqVod
+        rl4HEQBfZUIDSxX/WbVkL1LhHq0CmdOoZfVBEz+mdRtF43Y+FhII941iXIdo8ZLg
+        ==
+X-ME-Sender: <xms:hssOYHaDl5NfKknW7yVDUfGdBDuSZ_jcky6JUR9N-0m9hFNjprMqxA>
+    <xme:hssOYGYZXcRKF2_TwmGAVcfSk2uTUsX_FGuzcDSJDCB3UlyCbOM_aSbGQS9d4tkl-
+    A0ltqAQyXNeBLJpLjg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvdefgdehfecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepvfgrkhgrshhh
+    ihcuufgrkhgrmhhothhouceoohdqthgrkhgrshhhihesshgrkhgrmhhotggthhhirdhjph
+    eqnecuggftrfgrthhtvghrnheplefhueegvdejgfejgfdukeefudetvddtuddtueeivedt
+    tdegteejkedvfeegfefhnecukfhppeduudekrddvgeefrdejkedrheeknecuvehluhhsth
+    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepohdqthgrkhgrshhhihes
+    shgrkhgrmhhotggthhhirdhjph
+X-ME-Proxy: <xmx:hssOYJ_M3RXgcOuAEszXQSGNW-aTzsmMLmQt90zTtPnjOKv6oJF0fA>
+    <xmx:hssOYNplvl5T9OWb8VHMtskmN5_7dP3kr4CfZMQca6yGGw0bvgQfRg>
+    <xmx:hssOYCr-zpPFJ_XZfyhKxzxXEup7hY-jV8L1kXhxvLbgrhEfIuifEg>
+    <xmx:iMsOYPAPesa0_9K0BsVsAq-a01WISHHfIBoSSBVWkuxj3f2Qn_yH0g>
+Received: from workstation (y078058.dynamic.ppp.asahi-net.or.jp [118.243.78.58])
+        by mail.messagingengine.com (Postfix) with ESMTPA id D4BFC1080063;
+        Mon, 25 Jan 2021 08:45:40 -0500 (EST)
+Date:   Mon, 25 Jan 2021 22:45:38 +0900
+From:   Takashi Sakamoto <o-takashi@sakamocchi.jp>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Clemens Ladisch <clemens@ladisch.de>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>,
+        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] ALSA: fireface: remove unnecessary condition in
+ hwdep_read()
+Message-ID: <20210125134538.GA24062@workstation>
+Mail-Followup-To: Dan Carpenter <dan.carpenter@oracle.com>,
+        Clemens Ladisch <clemens@ladisch.de>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        Mark Brown <broonie@kernel.org>, alsa-devel@alsa-project.org,
+        kernel-janitors@vger.kernel.org
+References: <20210122071354.GI20820@kadam>
+ <YA6n6I8EcNAO5ZFs@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9874 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 suspectscore=0
- phishscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101250051
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9874 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0
- lowpriorityscore=0 mlxlogscore=999 clxscore=1011 phishscore=0 bulkscore=0
- spamscore=0 priorityscore=1501 mlxscore=0 suspectscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101250051
+In-Reply-To: <YA6n6I8EcNAO5ZFs@mwanda>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "pmb" pointer is freed at the start of the function and then freed
-again in the error handling code.
+Hi,
 
-Fixes: 92d7f7b0cde3 ("[SCSI] lpfc: NPIV: add NPIV support on top of SLI-3")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/scsi/lpfc/lpfc_hbadisc.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+On Mon, Jan 25, 2021 at 02:13:44PM +0300, Dan Carpenter wrote:
+> Smatch complains that "count" is not clamped when "ff->dev_lock_changed"
+> and it leads to an information leak.  Fortunately, that's not actually
+> possible and the condition can be deleted.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> v2: just delet the condition
+> 
+>  sound/firewire/fireface/ff-hwdep.c | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index f890b5b7e6ca..48ca4a612f80 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -1155,13 +1155,14 @@ lpfc_mbx_cmpl_local_config_link(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
- 	struct lpfc_vport *vport = pmb->vport;
- 	LPFC_MBOXQ_t *sparam_mb;
- 	struct lpfc_dmabuf *sparam_mp;
-+	u16 status = pmb->u.mb.mbxStatus;
- 	int rc;
- 
--	if (pmb->u.mb.mbxStatus)
--		goto out;
--
- 	mempool_free(pmb, phba->mbox_mem_pool);
- 
-+	if (status)
-+		goto out;
-+
- 	/* don't perform discovery for SLI4 loopback diagnostic test */
- 	if ((phba->sli_rev == LPFC_SLI_REV4) &&
- 	    !(phba->hba_flag & HBA_FCOE_MODE) &&
-@@ -1224,12 +1225,10 @@ lpfc_mbx_cmpl_local_config_link(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
- 
- out:
- 	lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
--			 "0306 CONFIG_LINK mbxStatus error x%x "
--			 "HBA state x%x\n",
--			 pmb->u.mb.mbxStatus, vport->port_state);
--sparam_out:
--	mempool_free(pmb, phba->mbox_mem_pool);
-+			 "0306 CONFIG_LINK mbxStatus error x%x HBA state x%x\n",
-+			 status, vport->port_state);
- 
-+sparam_out:
- 	lpfc_linkdown(phba);
- 
- 	lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
--- 
-2.29.2
+Acked-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
+ALSA firewire stack includes some drivers. Although some of them implement
+unique event as well as the lock event, the others supports the lock
+event only. The condition statement comes from the former, I guess.
+ALSA BeBoB, OXFW, and Fireface drivers are the latter. Later I'll post
+the similar patch for ALSA BeBoB driver.
+
+Anyway, thank you to find the issue ;)
+
+> diff --git a/sound/firewire/fireface/ff-hwdep.c b/sound/firewire/fireface/ff-hwdep.c
+> index 4b2e0dff5ddb..ea64a2a41eea 100644
+> --- a/sound/firewire/fireface/ff-hwdep.c
+> +++ b/sound/firewire/fireface/ff-hwdep.c
+> @@ -35,13 +35,11 @@ static long hwdep_read(struct snd_hwdep *hwdep, char __user *buf,  long count,
+>  	}
+>  
+>  	memset(&event, 0, sizeof(event));
+> -	if (ff->dev_lock_changed) {
+> -		event.lock_status.type = SNDRV_FIREWIRE_EVENT_LOCK_STATUS;
+> -		event.lock_status.status = (ff->dev_lock_count > 0);
+> -		ff->dev_lock_changed = false;
+> +	event.lock_status.type = SNDRV_FIREWIRE_EVENT_LOCK_STATUS;
+> +	event.lock_status.status = (ff->dev_lock_count > 0);
+> +	ff->dev_lock_changed = false;
+>  
+> -		count = min_t(long, count, sizeof(event.lock_status));
+> -	}
+> +	count = min_t(long, count, sizeof(event.lock_status));
+>  
+>  	spin_unlock_irq(&ff->lock);
+>  
+> -- 
+> 2.29.2
+ 
+Thanks
+
+Takashi Sakamoto

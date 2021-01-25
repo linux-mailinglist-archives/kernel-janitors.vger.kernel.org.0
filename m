@@ -2,169 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF54F304811
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jan 2021 20:17:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FEA1304816
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jan 2021 20:18:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387767AbhAZFwH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Jan 2021 00:52:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:34064 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727315AbhAYKXh (ORCPT
+        id S2388869AbhAZFxZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Jan 2021 00:53:25 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:51912 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729678AbhAYQC0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 Jan 2021 05:23:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1611570102;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=neC9gRrB4GfD4ikmR6bOJWjEMRDiBCVqaviG/V2Kj6M=;
-        b=bzyyobXeLlbDDcoXFCfNB/hDbPLn8MYVluNY7gmmbzyU6XSmiBM7eXb0DendK0BxXJ6lSm
-        rnPwinzwdSLCXr4sPU5ltXvbhz0Aunzvy3UfB1oL760/hQsv6ZXSq7u0A4Z0+0OwjLEXgl
-        H0JdYmNFgvSHukLI3zeo92D55P9ZF9A=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-385-9MWVKo4iM3KI4M0D_kxdMA-1; Mon, 25 Jan 2021 05:21:40 -0500
-X-MC-Unique: 9MWVKo4iM3KI4M0D_kxdMA-1
-Received: by mail-wr1-f69.google.com with SMTP id l7so1513199wrp.1
-        for <kernel-janitors@vger.kernel.org>; Mon, 25 Jan 2021 02:21:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=neC9gRrB4GfD4ikmR6bOJWjEMRDiBCVqaviG/V2Kj6M=;
-        b=qmQHjxJuMpYww4YORpV4DPUAT8s2w1d04x0zcBr8ICZNUAPVt/lb4P9IxGQa5LSdxr
-         5d4K8iOnv+KfAiyvta0QcB2HzGLUrt8AlF3wFYL2MCcqZ/hjTu0mtHHFDsQxQ5G2hBl/
-         COCQ/RCLg2e+KuKpiQC0Nn3lqJJBhRliqmsr1kGbjtm+UiUDMO3uhMCGfER8uMoaagFd
-         BGPT5KizzWD7ahKb59ubYbXgsQpG7ItqiJa3i92HnVKwHM85aYYEWks+EYH5/WGhIvVl
-         eM+UCmiiIhbE2SylqXMbsPMf/bt5fY1ZqR3ZdHckuWGiEK14JyDKIonqfNUdGBzJCgtM
-         162g==
-X-Gm-Message-State: AOAM531lh5ivLk+5W+KpLk73ZlVllvkIG0Tv8j+VfF8dFILDtRsAt8Yd
-        FRjkC3j6z4cS+yLZxlVWhdOjVoXPbG4+RmRu7ob/aaIOH+b6ID2r4nW6ARVSjqaQ/GEFb/QwmCa
-        8HvHhSq0tEZzEBHuO2zmtYb0TjgOs
-X-Received: by 2002:a05:6000:108b:: with SMTP id y11mr47290wrw.379.1611570099631;
-        Mon, 25 Jan 2021 02:21:39 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzo8xB0nNvfVQNlZFuiUUrKX4YBDOVPnzKGovmFB65m63nYV0NQGp/FRjcrGa9UOHgLHWoAig==
-X-Received: by 2002:a05:6000:108b:: with SMTP id y11mr47272wrw.379.1611570099455;
-        Mon, 25 Jan 2021 02:21:39 -0800 (PST)
-Received: from steredhat (host-79-34-249-199.business.telecomitalia.it. [79.34.249.199])
-        by smtp.gmail.com with ESMTPSA id z130sm20270523wmb.33.2021.01.25.02.21.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Jan 2021 02:21:38 -0800 (PST)
-Date:   Mon, 25 Jan 2021 11:21:36 +0100
-From:   Stefano Garzarella <sgarzare@redhat.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "Michael S . Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Parav Pandit <parav@nvidia.com>, Eli Cohen <elic@nvidia.com>,
-        virtualization@lists.linux-foundation.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] vpda: Fix memory leaks of msg on error return paths
-Message-ID: <20210125102136.6e7dye5ucoe5qiw2@steredhat>
-References: <20210122145235.209121-1-colin.king@canonical.com>
+        Mon, 25 Jan 2021 11:02:26 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10PBAUjk042006;
+        Mon, 25 Jan 2021 11:13:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2020-01-29; bh=wPullc5Bu3+R1BBsmC867SgbXXzzTXKO3sGsYZn2Yts=;
+ b=BRt1bG4eRUGTS+bs/+Vg8hfKBQwmlHFBLSVLRVkj8qVNSqELhqZkcNqONF6Se3hvO33z
+ nEfou9S+th39T9vqO3qIhjxwi1c48hePsnhs6TRuY9OshxktmHwnGUVqI6clZyQ7KdWz
+ vmiWq90IXMd3PY0Y64oTQfsbYZ9DV1mt4g1ZveWLH3nuaVPEvp4UFT8s5PZPikpmFmj+
+ OstuCCRMLrYE9iwgktsJmRkqj3p8smNC26dkl/y1CqQ/QmVO3HcKqzrHqPWD75cYrBM0
+ CimMXcH16FE01bzffSOpiEs8Fxr1jqUehcJYRRG/EXSd+TER9359Jy1ni53yq0/iDKMQ /A== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 368brkcrgs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 25 Jan 2021 11:13:09 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10PBBTTh055713;
+        Mon, 25 Jan 2021 11:13:07 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 368wjpjsc9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 25 Jan 2021 11:13:07 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 10PBD1WH001794;
+        Mon, 25 Jan 2021 11:13:03 GMT
+Received: from mwanda (/10.175.173.24)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 25 Jan 2021 03:13:00 -0800
+Date:   Mon, 25 Jan 2021 14:12:54 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Clemens Ladisch <clemens@ladisch.de>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>,
+        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH v2 1/2] ALSA: oxfw: remove an unnecessary condition in
+ hwdep_read()
+Message-ID: <YA6ntkBxT/4DJ4YK@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210122145235.209121-1-colin.king@canonical.com>
+In-Reply-To: <20210122071354.GI20820@kadam>
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9874 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0
+ adultscore=0 mlxscore=0 malwarescore=0 spamscore=0 mlxlogscore=999
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101250065
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9874 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
+ phishscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999
+ lowpriorityscore=0 spamscore=0 mlxscore=0 suspectscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101250065
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jan 22, 2021 at 02:52:35PM +0000, Colin King wrote:
->From: Colin Ian King <colin.king@canonical.com>
->
->There are two error return paths that neglect to free the allocated
->object msg that lead to memory leaks. Fix this by adding an error
->exit path that frees msg.
->
->Addresses-Coverity: ("Resource leak")
->Fixes: 39502d042a70 ("vdpa: Enable user to query vdpa device info")
->Signed-off-by: Colin Ian King <colin.king@canonical.com>
->---
-> drivers/vdpa/vdpa.c | 7 +++++--
-> 1 file changed, 5 insertions(+), 2 deletions(-)
->
->diff --git a/drivers/vdpa/vdpa.c b/drivers/vdpa/vdpa.c
->index 9700a0adcca0..eb1f5a514103 100644
->--- a/drivers/vdpa/vdpa.c
->+++ b/drivers/vdpa/vdpa.c
->@@ -540,13 +540,15 @@ static int vdpa_nl_cmd_dev_get_doit(struct sk_buff *skb, struct genl_info *info)
-> 	if (!dev) {
-> 		mutex_unlock(&vdpa_dev_mutex);
-> 		NL_SET_ERR_MSG_MOD(info->extack, "device not found");
->-		return -ENODEV;
->+		err = -ENODEV;
->+		goto err;
-> 	}
-> 	vdev = container_of(dev, struct vdpa_device, dev);
-> 	if (!vdev->mdev) {
-> 		mutex_unlock(&vdpa_dev_mutex);
-> 		put_device(dev);
->-		return -EINVAL;
->+		err = -EINVAL;
->+		goto err;
-> 	}
-> 	err = vdpa_dev_fill(vdev, msg, info->snd_portid, info->snd_seq, 0, info->extack);
-> 	if (!err)
->@@ -554,6 +556,7 @@ static int vdpa_nl_cmd_dev_get_doit(struct sk_buff *skb, struct genl_info *info)
-> 	put_device(dev);
-> 	mutex_unlock(&vdpa_dev_mutex);
->
->+err:
-> 	if (err)
-> 		nlmsg_free(msg);
-> 	return err;
+Smatch complains that "count" isn't clamped properly and
+"oxfw->dev_lock_changed" is false then it leads to an information
+leak.  But it turns out that "oxfw->dev_lock_changed" is always
+set and the condition can be removed.
 
-The patch looks okay, but reviewing it I figure out that if 
-genlmsg_reply() returns an error, it also frees the sk_buff passed, so 
-IIUC calling nlmsg_free() when genlmsg_reply() fails should cause a 
-double free.
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+v2: this version just removes the condition
 
-Maybe we should do something like this (not tested):
+ sound/firewire/oxfw/oxfw-hwdep.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/vdpa/vdpa.c b/drivers/vdpa/vdpa.c
-index 9700a0adcca0..920afcb4aa75 100644
---- a/drivers/vdpa/vdpa.c
-+++ b/drivers/vdpa/vdpa.c
-@@ -538,24 +538,29 @@ static int vdpa_nl_cmd_dev_get_doit(struct sk_buff *skb, struct genl_info *info)
-         mutex_lock(&vdpa_dev_mutex);
-         dev = bus_find_device(&vdpa_bus, NULL, devname, vdpa_name_match);
-         if (!dev) {
--               mutex_unlock(&vdpa_dev_mutex);
-                 NL_SET_ERR_MSG_MOD(info->extack, "device not found");
--               return -ENODEV;
-+               err= -ENODEV;
-+               goto err_msg;
-         }
-         vdev = container_of(dev, struct vdpa_device, dev);
-         if (!vdev->mdev) {
--               mutex_unlock(&vdpa_dev_mutex);
--               put_device(dev);
--               return -EINVAL;
-+               err = -EINVAL;
-+               goto err_dev;
-         }
-         err = vdpa_dev_fill(vdev, msg, info->snd_portid, info->snd_seq, 0, info->extack);
--       if (!err)
--               err = genlmsg_reply(msg, info);
-+       if (err)
-+               goto err_dev;
-+
-         put_device(dev);
-         mutex_unlock(&vdpa_dev_mutex);
-  
--       if (err)
--               nlmsg_free(msg);
-+       return genlmsg_reply(msg, info);
-+
-+err_dev:
-+       put_device(dev);
-+err_msg:
-+       mutex_unlock(&vdpa_dev_mutex);
-+       nlmsg_free(msg);
-         return err;
-  }
-  
-
-Thanks,
-Stefano
+diff --git a/sound/firewire/oxfw/oxfw-hwdep.c b/sound/firewire/oxfw/oxfw-hwdep.c
+index 9e1b3e151bad..a0fe99618554 100644
+--- a/sound/firewire/oxfw/oxfw-hwdep.c
++++ b/sound/firewire/oxfw/oxfw-hwdep.c
+@@ -35,13 +35,11 @@ static long hwdep_read(struct snd_hwdep *hwdep, char __user *buf,  long count,
+ 	}
+ 
+ 	memset(&event, 0, sizeof(event));
+-	if (oxfw->dev_lock_changed) {
+-		event.lock_status.type = SNDRV_FIREWIRE_EVENT_LOCK_STATUS;
+-		event.lock_status.status = (oxfw->dev_lock_count > 0);
+-		oxfw->dev_lock_changed = false;
++	event.lock_status.type = SNDRV_FIREWIRE_EVENT_LOCK_STATUS;
++	event.lock_status.status = (oxfw->dev_lock_count > 0);
++	oxfw->dev_lock_changed = false;
+ 
+-		count = min_t(long, count, sizeof(event.lock_status));
+-	}
++	count = min_t(long, count, sizeof(event.lock_status));
+ 
+ 	spin_unlock_irq(&oxfw->lock);
+ 
+-- 
+2.29.2
 

@@ -2,93 +2,120 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B2491302560
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Jan 2021 14:17:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0162B3025CD
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Jan 2021 15:00:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728699AbhAYNO7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 25 Jan 2021 08:14:59 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:59472 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728678AbhAYNOC (ORCPT
+        id S1729186AbhAYN6Q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 25 Jan 2021 08:58:16 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:51366 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729180AbhAYN5Q (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 Jan 2021 08:14:02 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10P8iTaT171912;
-        Mon, 25 Jan 2021 08:48:14 GMT
+        Mon, 25 Jan 2021 08:57:16 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10P8Z3mL017485;
+        Mon, 25 Jan 2021 08:44:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=pSuQ6+zFIOAaRAOPaTbRFPTUs8YM615/VcVUuMuizOI=;
- b=YG4rajvThpUpN9nEkZfyESkOH72I/fJvR+SenZKckmZwRGUtBGP9UqRnlLh23eccvEvi
- wVLLZIL3WYiStBjMrH9qX3csoncsconBoJPuHFStaAxGNVWm9aE6TjdfveK4LtbVSTFc
- t6LRe/DQzt/mH7ZTxHe68slBmrz+NJKEWjwD55D0B8rz1vVqht9K817b3YGvKI/SNdjP
- Lqu82B8hA1UieQPlLCM2A1e2oVro//hV5HbHGlwZBZPJ1KWt2wEduE+9MmWTrG9E+tqo
- nn7aLT98FtNEK3fzIIVq2UGb6os1w+2JAAdJ3Gk1iTgMF46h5wykaZ/BMftwA2JChiFN RQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 368brkc44n-1
+ bh=TawASkgzxobqNycAxeq1iSH/tMCNfK27y/lI3OlEpqw=;
+ b=NSmJLY2ju6/YudQrJGQxyjpXAWhKkaEI+J3HgQHVbbEicRmtcJpQ/rrkuf5z4Dw0q5Vc
+ Q3rQIOR0T3rn1B+6j/L3RiCoZpE8WI9BwvV0P1qhmiPL77QCkTY/E2SaLKPUURVrVOCt
+ 07Ns4HGLYmsE9PvnVSHJxjh+eLNrdUsKFwnZkpqt+d8gP8o/9oMP5IdOZkYsEZ/qfVRX
+ o6Ry35Sf9EXAb+U1/47REYGx+1VAGQ5y1LWUYMrjH0Go3WisKUF2gWfABi0hhAWz4ctz
+ kLmsRJAFqTrihRfQO2xTAY5Ol6OlP3mqu4uoXUIVZkcl4KG48YcC0UFlXev87/URX0uF Aw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 3689aacaw2-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 25 Jan 2021 08:48:14 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10P8k3V2018946;
-        Mon, 25 Jan 2021 08:46:11 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 368wqunn0t-1
+        Mon, 25 Jan 2021 08:44:48 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10P8YwkF062347;
+        Mon, 25 Jan 2021 08:44:45 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 368wck9nu5-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 25 Jan 2021 08:46:11 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 10P8k9oG024058;
-        Mon, 25 Jan 2021 08:46:09 GMT
+        Mon, 25 Jan 2021 08:44:45 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 10P8ifZJ019858;
+        Mon, 25 Jan 2021 08:44:42 GMT
 Received: from mwanda (/102.36.221.92)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 25 Jan 2021 00:46:09 -0800
-Date:   Mon, 25 Jan 2021 11:46:03 +0300
+        with ESMTP ; Mon, 25 Jan 2021 00:44:41 -0800
+Date:   Mon, 25 Jan 2021 11:44:34 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] media: i2c: ov5648: remove unnecessary NULL check
-Message-ID: <YA6FSxjBGVtRgT+Z@mwanda>
+To:     James Smart <james.smart@broadcom.com>
+Cc:     Dick Kennedy <dick.kennedy@broadcom.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        James Bottomley <James.Bottomley@steeleye.com>,
+        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] scsi: lpfc: Fix ancient double free
+Message-ID: <YA6E8rO51hE56SVw@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9874 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 phishscore=0
- adultscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0 bulkscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 suspectscore=0
+ phishscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0 spamscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101250052
+ definitions=main-2101250051
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9874 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
- phishscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999
- lowpriorityscore=0 spamscore=0 mlxscore=0 suspectscore=0 malwarescore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101250052
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0
+ lowpriorityscore=0 mlxlogscore=999 clxscore=1011 phishscore=0 bulkscore=0
+ spamscore=0 priorityscore=1501 mlxscore=0 suspectscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101250051
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "mode_index == ARRAY_SIZE(ov5648_modes)" check ensures that we
-exited the loop via a break statement so we know that "mode" must
-be valid.  Delete this unnecessary NULL check.
+The "pmb" pointer is freed at the start of the function and then freed
+again in the error handling code.
 
+Fixes: 92d7f7b0cde3 ("[SCSI] lpfc: NPIV: add NPIV support on top of SLI-3")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/media/i2c/ov5648.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_hbadisc.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/media/i2c/ov5648.c b/drivers/media/i2c/ov5648.c
-index 609aa67b54ce..b3864be33df2 100644
---- a/drivers/media/i2c/ov5648.c
-+++ b/drivers/media/i2c/ov5648.c
-@@ -2337,7 +2337,7 @@ static int ov5648_enum_frame_interval(struct v4l2_subdev *subdev,
- 		}
- 	}
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index f890b5b7e6ca..48ca4a612f80 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -1155,13 +1155,14 @@ lpfc_mbx_cmpl_local_config_link(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
+ 	struct lpfc_vport *vport = pmb->vport;
+ 	LPFC_MBOXQ_t *sparam_mb;
+ 	struct lpfc_dmabuf *sparam_mp;
++	u16 status = pmb->u.mb.mbxStatus;
+ 	int rc;
  
--	if (mode_index == ARRAY_SIZE(ov5648_modes) || !mode)
-+	if (mode_index == ARRAY_SIZE(ov5648_modes))
- 		return -EINVAL;
+-	if (pmb->u.mb.mbxStatus)
+-		goto out;
+-
+ 	mempool_free(pmb, phba->mbox_mem_pool);
  
- 	switch (interval_enum->code) {
++	if (status)
++		goto out;
++
+ 	/* don't perform discovery for SLI4 loopback diagnostic test */
+ 	if ((phba->sli_rev == LPFC_SLI_REV4) &&
+ 	    !(phba->hba_flag & HBA_FCOE_MODE) &&
+@@ -1224,12 +1225,10 @@ lpfc_mbx_cmpl_local_config_link(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
+ 
+ out:
+ 	lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
+-			 "0306 CONFIG_LINK mbxStatus error x%x "
+-			 "HBA state x%x\n",
+-			 pmb->u.mb.mbxStatus, vport->port_state);
+-sparam_out:
+-	mempool_free(pmb, phba->mbox_mem_pool);
++			 "0306 CONFIG_LINK mbxStatus error x%x HBA state x%x\n",
++			 status, vport->port_state);
+ 
++sparam_out:
+ 	lpfc_linkdown(phba);
+ 
+ 	lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
 -- 
 2.29.2
 

@@ -2,96 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE16830480C
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jan 2021 20:17:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B12B7304824
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jan 2021 20:22:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388733AbhAZFwV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Jan 2021 00:52:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51644 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727512AbhAYKkS (ORCPT
+        id S2388710AbhAZFvc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Jan 2021 00:51:32 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:41340 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727205AbhAYJsv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 Jan 2021 05:40:18 -0500
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08194C061788;
-        Mon, 25 Jan 2021 00:18:12 -0800 (PST)
-Received: by mail-wm1-x332.google.com with SMTP id y187so9889228wmd.3;
-        Mon, 25 Jan 2021 00:18:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=L0W9wzZk2KHjHBqzXgEillis1FzBzYM0WKoWJPRNyc0=;
-        b=uT80n4EuuiPnr573jqlyrWg4gtgjyZltb26yudbKIK9JjhPrZynPr7Y6XNRcCMARTN
-         5tIOlWEXkhrgvvANF9iiUrMNtVM1kDWaSe1SBOJkjBYYJtE4CcXCQ+kzDA/SJ0uE0kIW
-         qWEUbfpW3S8gCHAlBwRakCSBzDlZZY4JrWmJpxzfwbKJHK4PRZwVgWwVwOsRXzb35049
-         iqkyJHDcKvRTf8388GCUp3Q5jP7w1peIQIyHPi5kH+LIKYbjoK75AoLj2d/exIoeVVvf
-         VmSr8uBUpSE+LUi9ejMv9mU6/A0bacI2MPYBIhyzJUAPfLmXjvhBK8xrF0OstrPf+Yk0
-         ZUuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=L0W9wzZk2KHjHBqzXgEillis1FzBzYM0WKoWJPRNyc0=;
-        b=cB1jT+mPZWHwodQ/wxx8hlnBjL0AYuiCTeA9wry5QS13goSEfWvDe9/i3ObB0cDiNX
-         9soFLGjkDNM5wtz/n1HqEpsk/JHLKgVG5Q4+czJ7TKo2Ba/bKp4uRy68dc7UJiJ4r0tE
-         JqoocQ/BK/YnnO/dTpBrj1cHgCmFsncJcNJqyOvlrYhhz/RUm6tHkdgUY0DeE7RSd1+z
-         ZcY6Gqu5e+U6ZKecjFfVMMHiFzuXNmou6Mw55TAxLI/7gn2D6TtDixKlhb8ZxLn69KKv
-         5U7fQcENBb8bM2skc8MNE/XdxlgOxZC5XgqWIUa6c3uThEj2NukFu6RFdl3gKQjfFApY
-         1czA==
-X-Gm-Message-State: AOAM5308DX31zu/8MouzmSeT/HsMU5JPISwRTF5/vU+H51lbtFigKIdL
-        CBldFXkY+09fJDElENi3RKE=
-X-Google-Smtp-Source: ABdhPJwEfP+Mgrdx9WUqHhmI4d/faaRuR7bmvVT6RogtYoEwA2G4GhvbxRdjZ7k/stx8O1SdulvCow==
-X-Received: by 2002:a7b:c1c6:: with SMTP id a6mr342079wmj.23.1611562690743;
-        Mon, 25 Jan 2021 00:18:10 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d4b:4500:649e:f82b:bf2d:2571])
-        by smtp.gmail.com with ESMTPSA id b2sm5559333wmd.41.2021.01.25.00.18.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Jan 2021 00:18:10 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        John Ogness <john.ogness@linutronix.de>,
-        linux-kernel@vger.kernel.org
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] printk: rectify kernel-doc for prb_rec_init_wr()
-Date:   Mon, 25 Jan 2021 09:17:48 +0100
-Message-Id: <20210125081748.19903-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 25 Jan 2021 04:48:51 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10P8Jmuf180207;
+        Mon, 25 Jan 2021 08:19:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=Gny0ys3dn79MPY7dervEdEGIVTuwIAFn9k0P2oupp44=;
+ b=yHxJdtNEIaY3XlUc7Uwu7L7y2c2DzCw06sdIJalG3n6a7RE4xPR07T6+ab+ub7gBBlTY
+ Q2PJeDF1W6K+Q6DBOKY7/woV8+ZRMMcTC2KBRNt/MS70trKLZK95mBxHdpPGTqAdZXuJ
+ YIrXMBLfC/SrvfMXlpOmYOevF4UZ0xZqwqnC0bEhZkuZvyOGQ66PaJcggUN1WnRXyinf
+ PkjOXIRpTWUscKNE0QNKG/gRqMcDFnup29r2QALsHy2ULIzwWmcYdjmsOzCF2/x0ioBF
+ IFe9tZPhbEAxmCJGWnMSwVfpvOLDG54lHO/NYQQHLmWpynRdZewdhLfPIX3AUusV9iwL zQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 368b7qm2b0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 25 Jan 2021 08:19:51 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10P8JU5P037779;
+        Mon, 25 Jan 2021 08:19:49 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 368wjpd2hb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 25 Jan 2021 08:19:49 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 10P8Jl2K023050;
+        Mon, 25 Jan 2021 08:19:47 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 25 Jan 2021 00:19:47 -0800
+Date:   Mon, 25 Jan 2021 11:19:40 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc:     Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        UNGLinuxDriver@microchip.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH 1/2 net-next] net: mscc: ocelot: fix error handling bugs
+ in mscc_ocelot_init_ports()
+Message-ID: <20210125081940.GK20820@kadam>
+References: <YA59en4lJCiYsPHv@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YA59en4lJCiYsPHv@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9874 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0
+ adultscore=0 mlxscore=0 malwarescore=0 spamscore=0 mlxlogscore=999
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101250049
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9874 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 phishscore=0
+ adultscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 mlxscore=0 clxscore=1015 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101250049
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The command 'find ./kernel/printk/ | xargs ./scripts/kernel-doc -none'
-reported a mismatch with the kernel-doc of prb_rec_init_wr().
 
-Rectify the kernel-doc, such that no issues remain for ./kernel/printk/.
+Oops.  Please ignore this patch.  Part of it is missing.
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-applies cleanly on v5.11-rc5 and next-20210122
-
-John, please ack.
-Petr, please pick this minor typo fixup.
-
- kernel/printk/printk_ringbuffer.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/printk/printk_ringbuffer.h b/kernel/printk/printk_ringbuffer.h
-index 5dc9d022db07..73cc80e01cef 100644
---- a/kernel/printk/printk_ringbuffer.h
-+++ b/kernel/printk/printk_ringbuffer.h
-@@ -287,7 +287,7 @@ _DEFINE_PRINTKRB(name, descbits, avgtextbits, &_##name##_text[0])
- /* Writer Interface */
- 
- /**
-- * prb_rec_init_wd() - Initialize a buffer for writing records.
-+ * prb_rec_init_wr() - Initialize a buffer for writing records.
-  *
-  * @r:             The record to initialize.
-  * @text_buf_size: The needed text buffer size.
--- 
-2.17.1
+regards,
+dan carpenter
 

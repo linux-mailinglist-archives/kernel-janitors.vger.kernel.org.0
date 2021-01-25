@@ -2,136 +2,169 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A5FC304815
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jan 2021 20:18:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF54F304811
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jan 2021 20:17:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388829AbhAZFv7 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Jan 2021 00:51:59 -0500
-Received: from mga03.intel.com ([134.134.136.65]:50192 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727497AbhAYKWY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 Jan 2021 05:22:24 -0500
-IronPort-SDR: CVXrASrWj1vF9UWmss1ilPUasLSzuYGg9JiKqsGuYomDY5EyXnlnDGkyx86IhQteL7LASnl9+W
- bHZb/sXJ5RnQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9874"; a="179781960"
-X-IronPort-AV: E=Sophos;i="5.79,373,1602572400"; 
-   d="scan'208";a="179781960"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2021 02:20:50 -0800
-IronPort-SDR: akytaJWiaBld45QFQLP5/MONALtuGt4SKABR6xA3o42a3g3MrkWEFLfrFSURJG6/jhy4+NcjaP
- UDMwn1QNu5vQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,373,1602572400"; 
-   d="scan'208";a="361422328"
-Received: from fmsmsx606.amr.corp.intel.com ([10.18.126.86])
-  by fmsmga008.fm.intel.com with ESMTP; 25 Jan 2021 02:20:50 -0800
-Received: from bgsmsx605.gar.corp.intel.com (10.67.234.7) by
- fmsmsx606.amr.corp.intel.com (10.18.126.86) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 25 Jan 2021 02:20:49 -0800
-Received: from bgsmsx604.gar.corp.intel.com (10.67.234.6) by
- BGSMSX605.gar.corp.intel.com (10.67.234.7) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 25 Jan 2021 15:50:47 +0530
-Received: from bgsmsx604.gar.corp.intel.com ([10.67.234.6]) by
- BGSMSX604.gar.corp.intel.com ([10.67.234.6]) with mapi id 15.01.1713.004;
- Mon, 25 Jan 2021 15:50:47 +0530
-From:   "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Colin King <colin.king@canonical.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        "Vivi, Rodrigo" <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "C, Ramalingam" <ramalingam.c@intel.com>,
-        "Shankar, Uma" <uma.shankar@intel.com>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH][next] drm/i915/hdcp: Fix return of value in uninitialized
- variable ret
-Thread-Topic: [PATCH][next] drm/i915/hdcp: Fix return of value in
- uninitialized variable ret
-Thread-Index: AQHW8NCsVaR1vL8Y9E2VXHHZueOJa6ozZo4AgAS/EtA=
-Date:   Mon, 25 Jan 2021 10:20:47 +0000
-Message-ID: <422669df7166485aa5d4acfa3d3bf58e@intel.com>
-References: <20210122150957.209779-1-colin.king@canonical.com>
- <87y2glj8v5.fsf@intel.com>
-In-Reply-To: <87y2glj8v5.fsf@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-version: 11.5.1.3
-dlp-reaction: no-action
-x-originating-ip: [10.223.10.1]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S2387767AbhAZFwH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Jan 2021 00:52:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:34064 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727315AbhAYKXh (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 25 Jan 2021 05:23:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1611570102;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=neC9gRrB4GfD4ikmR6bOJWjEMRDiBCVqaviG/V2Kj6M=;
+        b=bzyyobXeLlbDDcoXFCfNB/hDbPLn8MYVluNY7gmmbzyU6XSmiBM7eXb0DendK0BxXJ6lSm
+        rnPwinzwdSLCXr4sPU5ltXvbhz0Aunzvy3UfB1oL760/hQsv6ZXSq7u0A4Z0+0OwjLEXgl
+        H0JdYmNFgvSHukLI3zeo92D55P9ZF9A=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-385-9MWVKo4iM3KI4M0D_kxdMA-1; Mon, 25 Jan 2021 05:21:40 -0500
+X-MC-Unique: 9MWVKo4iM3KI4M0D_kxdMA-1
+Received: by mail-wr1-f69.google.com with SMTP id l7so1513199wrp.1
+        for <kernel-janitors@vger.kernel.org>; Mon, 25 Jan 2021 02:21:40 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=neC9gRrB4GfD4ikmR6bOJWjEMRDiBCVqaviG/V2Kj6M=;
+        b=qmQHjxJuMpYww4YORpV4DPUAT8s2w1d04x0zcBr8ICZNUAPVt/lb4P9IxGQa5LSdxr
+         5d4K8iOnv+KfAiyvta0QcB2HzGLUrt8AlF3wFYL2MCcqZ/hjTu0mtHHFDsQxQ5G2hBl/
+         COCQ/RCLg2e+KuKpiQC0Nn3lqJJBhRliqmsr1kGbjtm+UiUDMO3uhMCGfER8uMoaagFd
+         BGPT5KizzWD7ahKb59ubYbXgsQpG7ItqiJa3i92HnVKwHM85aYYEWks+EYH5/WGhIvVl
+         eM+UCmiiIhbE2SylqXMbsPMf/bt5fY1ZqR3ZdHckuWGiEK14JyDKIonqfNUdGBzJCgtM
+         162g==
+X-Gm-Message-State: AOAM531lh5ivLk+5W+KpLk73ZlVllvkIG0Tv8j+VfF8dFILDtRsAt8Yd
+        FRjkC3j6z4cS+yLZxlVWhdOjVoXPbG4+RmRu7ob/aaIOH+b6ID2r4nW6ARVSjqaQ/GEFb/QwmCa
+        8HvHhSq0tEZzEBHuO2zmtYb0TjgOs
+X-Received: by 2002:a05:6000:108b:: with SMTP id y11mr47290wrw.379.1611570099631;
+        Mon, 25 Jan 2021 02:21:39 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzo8xB0nNvfVQNlZFuiUUrKX4YBDOVPnzKGovmFB65m63nYV0NQGp/FRjcrGa9UOHgLHWoAig==
+X-Received: by 2002:a05:6000:108b:: with SMTP id y11mr47272wrw.379.1611570099455;
+        Mon, 25 Jan 2021 02:21:39 -0800 (PST)
+Received: from steredhat (host-79-34-249-199.business.telecomitalia.it. [79.34.249.199])
+        by smtp.gmail.com with ESMTPSA id z130sm20270523wmb.33.2021.01.25.02.21.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Jan 2021 02:21:38 -0800 (PST)
+Date:   Mon, 25 Jan 2021 11:21:36 +0100
+From:   Stefano Garzarella <sgarzare@redhat.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "Michael S . Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Parav Pandit <parav@nvidia.com>, Eli Cohen <elic@nvidia.com>,
+        virtualization@lists.linux-foundation.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] vpda: Fix memory leaks of msg on error return paths
+Message-ID: <20210125102136.6e7dye5ucoe5qiw2@steredhat>
+References: <20210122145235.209121-1-colin.king@canonical.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20210122145235.209121-1-colin.king@canonical.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-It is already merged to drm-intel-next 
-https://cgit.freedesktop.org/drm/drm-intel/commit/?h=drm-intel-next&id=40a6cead28f841ac350bd38dd7260ecacd5eab03
+On Fri, Jan 22, 2021 at 02:52:35PM +0000, Colin King wrote:
+>From: Colin Ian King <colin.king@canonical.com>
+>
+>There are two error return paths that neglect to free the allocated
+>object msg that lead to memory leaks. Fix this by adding an error
+>exit path that frees msg.
+>
+>Addresses-Coverity: ("Resource leak")
+>Fixes: 39502d042a70 ("vdpa: Enable user to query vdpa device info")
+>Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>---
+> drivers/vdpa/vdpa.c | 7 +++++--
+> 1 file changed, 5 insertions(+), 2 deletions(-)
+>
+>diff --git a/drivers/vdpa/vdpa.c b/drivers/vdpa/vdpa.c
+>index 9700a0adcca0..eb1f5a514103 100644
+>--- a/drivers/vdpa/vdpa.c
+>+++ b/drivers/vdpa/vdpa.c
+>@@ -540,13 +540,15 @@ static int vdpa_nl_cmd_dev_get_doit(struct sk_buff *skb, struct genl_info *info)
+> 	if (!dev) {
+> 		mutex_unlock(&vdpa_dev_mutex);
+> 		NL_SET_ERR_MSG_MOD(info->extack, "device not found");
+>-		return -ENODEV;
+>+		err = -ENODEV;
+>+		goto err;
+> 	}
+> 	vdev = container_of(dev, struct vdpa_device, dev);
+> 	if (!vdev->mdev) {
+> 		mutex_unlock(&vdpa_dev_mutex);
+> 		put_device(dev);
+>-		return -EINVAL;
+>+		err = -EINVAL;
+>+		goto err;
+> 	}
+> 	err = vdpa_dev_fill(vdev, msg, info->snd_portid, info->snd_seq, 0, info->extack);
+> 	if (!err)
+>@@ -554,6 +556,7 @@ static int vdpa_nl_cmd_dev_get_doit(struct sk_buff *skb, struct genl_info *info)
+> 	put_device(dev);
+> 	mutex_unlock(&vdpa_dev_mutex);
+>
+>+err:
+> 	if (err)
+> 		nlmsg_free(msg);
+> 	return err;
 
-> -----Original Message-----
-> From: Jani Nikula <jani.nikula@linux.intel.com>
-> Sent: Friday, January 22, 2021 8:51 PM
-> To: Colin King <colin.king@canonical.com>; Joonas Lahtinen
-> <joonas.lahtinen@linux.intel.com>; Vivi, Rodrigo <rodrigo.vivi@intel.com>;
-> David Airlie <airlied@linux.ie>; Daniel Vetter <daniel@ffwll.ch>; C, Ramalingam
-> <ramalingam.c@intel.com>; Gupta, Anshuman <anshuman.gupta@intel.com>;
-> Shankar, Uma <uma.shankar@intel.com>; intel-gfx@lists.freedesktop.org; dri-
-> devel@lists.freedesktop.org
-> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
-> Subject: Re: [PATCH][next] drm/i915/hdcp: Fix return of value in uninitialized
-> variable ret
-> 
-> On Fri, 22 Jan 2021, Colin King <colin.king@canonical.com> wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> >
-> > Currently when there are other connectors on the port using HDCP the
-> > function _intel_hdcp_disable returns a garbage uninitialized value in
-> > variable ret.  I believe the intention is to return 0, so return this
-> > literal value instead of the value in ret.
-> >
-> > Addresses-Coverity: ("Uninitialized scalar return")
-> > Fixes: 899c8762f981 ("drm/i915/hdcp: Configure HDCP2.2 MST steram
-> > encryption status")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> 
-> Thanks, but there's already a fix in progress:
-> 
-> http://lore.kernel.org/r/20210119064655.1605-3-anshuman.gupta@intel.com
-> 
-> BR,
-> Jani.
-> 
-> 
-> > ---
-> >  drivers/gpu/drm/i915/display/intel_hdcp.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/gpu/drm/i915/display/intel_hdcp.c
-> > b/drivers/gpu/drm/i915/display/intel_hdcp.c
-> > index db8dff2eeb0a..a0e7b0bf892b 100644
-> > --- a/drivers/gpu/drm/i915/display/intel_hdcp.c
-> > +++ b/drivers/gpu/drm/i915/display/intel_hdcp.c
-> > @@ -883,7 +883,7 @@ static int _intel_hdcp_disable(struct intel_connector
-> *connector)
-> >  	 * until it disabled HDCP encryption for all connectors in MST topology.
-> >  	 */
-> >  	if (dig_port->num_hdcp_streams > 0)
-> > -		return ret;
-> > +		return 0;
-> >
-> >  	hdcp->hdcp_encrypted = false;
-> >  	intel_de_write(dev_priv, HDCP_CONF(dev_priv, cpu_transcoder, port),
-> > 0);
-> 
-> --
-> Jani Nikula, Intel Open Source Graphics Center
+The patch looks okay, but reviewing it I figure out that if 
+genlmsg_reply() returns an error, it also frees the sk_buff passed, so 
+IIUC calling nlmsg_free() when genlmsg_reply() fails should cause a 
+double free.
+
+Maybe we should do something like this (not tested):
+
+diff --git a/drivers/vdpa/vdpa.c b/drivers/vdpa/vdpa.c
+index 9700a0adcca0..920afcb4aa75 100644
+--- a/drivers/vdpa/vdpa.c
++++ b/drivers/vdpa/vdpa.c
+@@ -538,24 +538,29 @@ static int vdpa_nl_cmd_dev_get_doit(struct sk_buff *skb, struct genl_info *info)
+         mutex_lock(&vdpa_dev_mutex);
+         dev = bus_find_device(&vdpa_bus, NULL, devname, vdpa_name_match);
+         if (!dev) {
+-               mutex_unlock(&vdpa_dev_mutex);
+                 NL_SET_ERR_MSG_MOD(info->extack, "device not found");
+-               return -ENODEV;
++               err= -ENODEV;
++               goto err_msg;
+         }
+         vdev = container_of(dev, struct vdpa_device, dev);
+         if (!vdev->mdev) {
+-               mutex_unlock(&vdpa_dev_mutex);
+-               put_device(dev);
+-               return -EINVAL;
++               err = -EINVAL;
++               goto err_dev;
+         }
+         err = vdpa_dev_fill(vdev, msg, info->snd_portid, info->snd_seq, 0, info->extack);
+-       if (!err)
+-               err = genlmsg_reply(msg, info);
++       if (err)
++               goto err_dev;
++
+         put_device(dev);
+         mutex_unlock(&vdpa_dev_mutex);
+  
+-       if (err)
+-               nlmsg_free(msg);
++       return genlmsg_reply(msg, info);
++
++err_dev:
++       put_device(dev);
++err_msg:
++       mutex_unlock(&vdpa_dev_mutex);
++       nlmsg_free(msg);
+         return err;
+  }
+  
+
+Thanks,
+Stefano
+

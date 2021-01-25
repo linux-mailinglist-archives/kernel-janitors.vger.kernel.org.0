@@ -2,120 +2,204 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3654C303259
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jan 2021 04:02:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61F213035B8
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jan 2021 06:52:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728776AbhAYNY3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 25 Jan 2021 08:24:29 -0500
-Received: from mail-eopbgr150057.outbound.protection.outlook.com ([40.107.15.57]:64000
-        "EHLO EUR01-DB5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728789AbhAYNX4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 Jan 2021 08:23:56 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=h26e/RTkYhxpbRLxuUYdbcinu6lYU3/lPoCwUGqLgl/vO/TfDKsqgH/oAJ375VAt+GEGDBD+BXdvkqUTZENXW0h3NE9udWzA9QZ0BwHb216rC3rrB4hPN75hPqTAEL6cXdJxXDTEdnj7Mxw6/K2M/Z+f1T4CU6/q7GLANSLZmxITEfa3oaRFYYQXJT2MH0MQDhZmYmEK7hZPvZK7a9PdXaU0InSbZwjaipgj3FrGMOquEBmA8TqSBjOtl5sLSPjUxTpiKgoGASLt8uheeWqU4lUUBhNmy2ljq+7y/cKXYki710IyPlFcRaPG3+26i1LqSedcpXUIYNfI0aSXhAG3Eg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uRlAEqaS5kzZtTlXrUTKD9//yLHMKNCM1LtPSQlHqNA=;
- b=bHch1xdNlBoQrU1S7YdRc/ATKLFUdL9osnNEjShFQm2qGQVcsTiuuarC4j1dmAhbSVolA2amT5EtcjHRC3OX9dXOft4WN3cNenutJu1xvivAk6yiHWonHZYVWjj2Uc1GzwgEhJo9ndJqDFIn0xcemYUXTNBZQhKXKpcr19ZV1Dr0fKogOE6XePqhdEmgR1RCKcRPZHNqnoPjRuO6pmLwkWewYoDCXZKtOmYnUaV2EHj5SCZbVaoZSwk/Xx6n1mDeOvl78mmU+VYdnCvPUK/ya8F1pIZmuWo48aOptUAXu+0rKJnAtACq11s5kFHQJpg9aCA0ZvLf6/+n+T+AmaojUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uRlAEqaS5kzZtTlXrUTKD9//yLHMKNCM1LtPSQlHqNA=;
- b=h59sTK6iZgA3F8Jrp2LBlmuc/y6aL56ICWe0c86b2rVEXoRc1w3V6Nlx/0SdVYULfQqySq9agGG3DeaAml0UgGcgz0LxkwR6sm+vRRJhEWV0BCHv9j+eY25jxEPOlE5mHpAskYcSpTsIFzuJPYUO79uX5GZrWxaQELplkiI5gZQ=
-Received: from VI1PR04MB5136.eurprd04.prod.outlook.com (2603:10a6:803:55::19)
- by VI1PR04MB3197.eurprd04.prod.outlook.com (2603:10a6:802:b::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3763.11; Mon, 25 Jan
- 2021 13:23:07 +0000
-Received: from VI1PR04MB5136.eurprd04.prod.outlook.com
- ([fe80::3df3:2eba:51bb:58d7]) by VI1PR04MB5136.eurprd04.prod.outlook.com
- ([fe80::3df3:2eba:51bb:58d7%6]) with mapi id 15.20.3784.012; Mon, 25 Jan 2021
- 13:23:07 +0000
-From:   Vladimir Oltean <vladimir.oltean@nxp.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     Claudiu Manoil <claudiu.manoil@nxp.com>,
+        id S2388596AbhAZFwN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Jan 2021 00:52:13 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:33410 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727519AbhAYK3G (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 25 Jan 2021 05:29:06 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10P8AVSE101478;
+        Mon, 25 Jan 2021 08:12:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=3v5ov03CgWGnjGR/strYEROcXrL34Fr8nIjtf5Iguwg=;
+ b=x7axNsTK9ZqhnGkiPnDz8khmaU8wLifzrx6bT35UZDfZQm9BtVPMr64o7QJN4MBntudN
+ Bn8SXcp08lGBr5mZb9w9AxkNNcYr4XBgwk2fC9hcHneKJnVe+yZz0PQiyVt1ZWj+Ymqb
+ 7cPk0vlb6kTigZC49pC18Btt66nPz9GoeFdHcME42sZihdT4ijuQdKeMnS0enPrDI4xk
+ YSJxStU3mne0kpgmSPAKk+gGB2AqKTSg+NACbrjROgDk/Oj2t0DgK7WKWIyGqSVdu/IA
+ QebbqlDTKYTng7+wD3wWuhqb3BVCaI/wBOMID3Xxfb4+r9WNQNDdta/sUkLfXKThPt0h fg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 368brkc06h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 25 Jan 2021 08:12:59 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10P8BSCX003702;
+        Mon, 25 Jan 2021 08:12:57 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 368wjpctkh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 25 Jan 2021 08:12:57 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 10P8CpgI020970;
+        Mon, 25 Jan 2021 08:12:51 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 25 Jan 2021 00:12:50 -0800
+Date:   Mon, 25 Jan 2021 11:12:42 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc:     Claudiu Manoil <claudiu.manoil@nxp.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        "UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
+        UNGLinuxDriver@microchip.com,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH 2/2 net-next] net: mscc: ocelot: fix error code in
- mscc_ocelot_probe()
-Thread-Topic: [PATCH 2/2 net-next] net: mscc: ocelot: fix error code in
- mscc_ocelot_probe()
-Thread-Index: AQHW8vIB6h7I1Bq+YUy7tkic5JXUWao4VIoA
-Date:   Mon, 25 Jan 2021 13:23:07 +0000
-Message-ID: <20210125132306.czc7thwgd3o3lbnw@skbuf>
-References: <YA59en4lJCiYsPHv@mwanda> <YA59n5DbO0BkK7rv@mwanda>
-In-Reply-To: <YA59n5DbO0BkK7rv@mwanda>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: oracle.com; dkim=none (message not signed)
- header.d=none;oracle.com; dmarc=none action=none header.from=nxp.com;
-x-originating-ip: [5.12.227.87]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: fe2bbdea-2058-4d94-8114-08d8c1345a8d
-x-ms-traffictypediagnostic: VI1PR04MB3197:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VI1PR04MB3197A39DD3DD5FC6BE5EB977E0BD0@VI1PR04MB3197.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:565;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: CrcHXvORXEEfQVf7DGnhKMknyryksWclWuadDo6Xc6c7auQOfvHW/FgbOgfUcwvGxLaHphX5/7Tz0YoK30X0vrPQImW5+F5QuUCLS1VxWK7QEHYqkckxA6PytJbJ/syXkPPEh1FD2Msuk1OuKAEn3qMFdJWsRVRT/MdSmZTDvlTh5xVxR8ybMbDMhkvcL8Pvo/PY/GVdX3Ai6ebHobu+TB8T00vg8KgIJXYtQNfwaIcr4Fdum9YCO/PgW3puPOpQYQh583Z4n0LFSg28r2iSRGGKIKb89VQNVs1SWbf4i/rd2BtoE1dgqbpJlmnih81qoFqHlGo2EAmfLLFFQiSlrWQx6eb7HZSNqbadnExm3gJs3FO2KD8WhnQfUjwNq5b8AMdOm46YsLtTSMnPLkSFcg==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB5136.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(7916004)(366004)(376002)(39860400002)(396003)(346002)(136003)(26005)(478600001)(86362001)(66946007)(33716001)(66556008)(64756008)(6486002)(66446008)(66476007)(6512007)(91956017)(76116006)(8936002)(4326008)(9686003)(186003)(1076003)(71200400001)(6506007)(316002)(4744005)(54906003)(6916009)(8676002)(2906002)(44832011)(5660300002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: =?us-ascii?Q?dr61DF4gI0j+YWr7G8I8Wf4E+jS41vSb0lAxEwx7D1ExasMxNMCnaxAJRF8d?=
- =?us-ascii?Q?PuHA+MAHOZTkkS/3lP7m1MAXTnpHQJeMlhLuIDXG9jvKKQzyMBcB1A7CeIoU?=
- =?us-ascii?Q?K5/NsMISiUOd3IssXSduGm/6BntD+KaOHrLGm0ZXfV2DkTW0oZ/FwzJFGMe9?=
- =?us-ascii?Q?flA2DPnSlfzE+YWlE2Jq62lm0j/xeUubkXL9v7M575JHdJtKQK72glVOOebF?=
- =?us-ascii?Q?Qb11ND1ePIX7TXQEnaQqV0i5hOnMik15luNIKqQmsBJq3fBd8HvfcA8+/9Nx?=
- =?us-ascii?Q?pglMVsiYl/9rjxfVSJi+ilNzCUOCTIX4TZt+VF6nMxXvefJeK/vt4/0FzTfS?=
- =?us-ascii?Q?PiAWJTeDYL1qUgH1WQUI2G6vm771zC7PC9PLuj4XvRaZLaTitFWsX3TuWkxz?=
- =?us-ascii?Q?H6MR5lno/w7N4wjmvVBjjUMYUi75m7PQs5Mz6E/QriN92/ysujpjCMTv4qQ6?=
- =?us-ascii?Q?I37IGmjhMCdUthU86qgG16KFCdN1nbBUYb/5qIVqsk4jTYJEncxCzF/U3Fw4?=
- =?us-ascii?Q?EFqdw+kwisi44cJZIhRSl4DXLq21I8N7F5HtOYEVN0bETHMOMl9DkPm05FwL?=
- =?us-ascii?Q?0TJUgSIzZ52YC7e+q1zULdHJ5jV9fDAqN7lzsmWWXSi8laeU+fb+dWDatfDN?=
- =?us-ascii?Q?Y2hu2eN1A5VBOqfa4MRQxbHWFWeESTWDXgEsl51ngr2RzsEG4ILrjmQTUhbY?=
- =?us-ascii?Q?ii56tAcUhmvRfUuE/aXLCqwTL6P9gahsQBw7m+KO6RBQ0SZ7cROFyOmx5Pjt?=
- =?us-ascii?Q?xX4mVt4d5D3ebLopK+JS1J0TW4p349tSTFe0maNyoq8NjIYHJbm2DITaV9Wq?=
- =?us-ascii?Q?mb7tivlJKmZTqSwqgBspfChYztQpi17ioXD+IqVGNRMGDvNejLr6raKMnNKw?=
- =?us-ascii?Q?zYha7vb+qK+0XdCXFmHjG4qBicluaUEZudNSEfky83503lvZqfHFvIcLJxh0?=
- =?us-ascii?Q?UGL6pTUKlZY3DjSUe8JD9+2HvW2LSTYjUvFHGuoW45dusp6S39MlOq6RcTC5?=
- =?us-ascii?Q?tt5++hShIqrSiUwz2C9kLMdZLuy1/FTfViaWk0jUCxoJm2tdd0t7wzo8PcrB?=
- =?us-ascii?Q?oa50dFX8?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <7B138E9780D20E4D9540B8764D0B4C2D@eurprd04.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH 1/2 net-next] net: mscc: ocelot: fix error handling bugs in
+ mscc_ocelot_init_ports()
+Message-ID: <YA59en4lJCiYsPHv@mwanda>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5136.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe2bbdea-2058-4d94-8114-08d8c1345a8d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Jan 2021 13:23:07.3588
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +zqBNvSoauBzxnhHyHUti2zTTAe9Syrb3QQiiLXfgo+s4YLzkA+DtMmMfjXJg+wxZr70oVroeiFWm69u9djRhw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB3197
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9874 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0
+ adultscore=0 mlxscore=0 malwarescore=0 spamscore=0 mlxlogscore=999
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101250048
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9874 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
+ phishscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999
+ lowpriorityscore=0 spamscore=0 mlxscore=0 suspectscore=0 malwarescore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101250048
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jan 25, 2021 at 11:13:19AM +0300, Dan Carpenter wrote:
-> Probe should return an error code if platform_get_irq_byname() fails
-> but it returns success instead.
->=20
-> Fixes: 6c30384eb1de ("net: mscc: ocelot: register devlink ports")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
+There are several error handling bugs in mscc_ocelot_init_ports().  I
+went through the code, and carefully audited it and made fixes and
+cleanups.
 
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>=
+1) The ocelot_probe_port() function didn't have a mirror release function
+   so it was hard to follow.  I created the ocelot_release_port()
+   function.
+2) In the ocelot_probe_port() function, if the register_netdev() call
+   failed, then it lead to a double free_netdev(dev) bug.  Fix this
+   by moving the "ocelot->ports[port] = ocelot_port;" assignment to the
+   end of the function after everything has succeeded.
+3) I was concerned that the "port" which comes from of_property_read_u32()
+   might be out of bounds so I added a check for that.
+4) In the original code if ocelot_regmap_init() failed then the driver
+   tried to continue but I think that should be a fatal error.
+5) If ocelot_probe_port() failed then the most recent devlink was leaked.
+   Fix this by moving the "registered_ports[port] = true;" assignment
+   earlier.
+6) The error handling if the final ocelot_port_devlink_init() failed had
+   two problems.  The "while (port-- >= 0)" loop should have been
+   "--port" pre-op instead of a post-op to avoid a buffer underflow.
+   The "if (!registered_ports[port])" condition was reversed leading to
+   resource leaks and double frees.
+
+Fixes: 6c30384eb1de ("net: mscc: ocelot: register devlink ports")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/ethernet/mscc/ocelot_vsc7514.c | 39 +++++++++-------------
+ 1 file changed, 16 insertions(+), 23 deletions(-)
+
+diff --git a/drivers/net/ethernet/mscc/ocelot_vsc7514.c b/drivers/net/ethernet/mscc/ocelot_vsc7514.c
+index 30a38df08a21..2c82ffe2c611 100644
+--- a/drivers/net/ethernet/mscc/ocelot_vsc7514.c
++++ b/drivers/net/ethernet/mscc/ocelot_vsc7514.c
+@@ -1064,7 +1064,6 @@ static void mscc_ocelot_release_ports(struct ocelot *ocelot)
+ 	int port;
+ 
+ 	for (port = 0; port < ocelot->num_phys_ports; port++) {
+-		struct ocelot_port_private *priv;
+ 		struct ocelot_port *ocelot_port;
+ 
+ 		ocelot_port = ocelot->ports[port];
+@@ -1072,12 +1071,7 @@ static void mscc_ocelot_release_ports(struct ocelot *ocelot)
+ 			continue;
+ 
+ 		ocelot_deinit_port(ocelot, port);
+-
+-		priv = container_of(ocelot_port, struct ocelot_port_private,
+-				    port);
+-
+-		unregister_netdev(priv->dev);
+-		free_netdev(priv->dev);
++		ocelot_release_port(ocelot_port);
+ 	}
+ }
+ 
+@@ -1123,14 +1117,22 @@ static int mscc_ocelot_init_ports(struct platform_device *pdev,
+ 			continue;
+ 
+ 		port = reg;
++		if (port < 0 || port >= ocelot->num_phys_ports) {
++			dev_err(ocelot->dev,
++				"invalid port number: %d >= %d\n", port,
++				ocelot->num_phys_ports);
++			continue;
++		}
+ 
+ 		snprintf(res_name, sizeof(res_name), "port%d", port);
+ 
+ 		res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+ 						   res_name);
+ 		target = ocelot_regmap_init(ocelot, res);
+-		if (IS_ERR(target))
+-			continue;
++		if (IS_ERR(target)) {
++			err = PTR_ERR(target);
++			goto out_teardown;
++		}
+ 
+ 		phy_node = of_parse_phandle(portnp, "phy-handle", 0);
+ 		if (!phy_node)
+@@ -1147,6 +1149,7 @@ static int mscc_ocelot_init_ports(struct platform_device *pdev,
+ 			of_node_put(portnp);
+ 			goto out_teardown;
+ 		}
++		registered_ports[port] = true;
+ 
+ 		err = ocelot_probe_port(ocelot, port, target, phy);
+ 		if (err) {
+@@ -1154,8 +1157,6 @@ static int mscc_ocelot_init_ports(struct platform_device *pdev,
+ 			goto out_teardown;
+ 		}
+ 
+-		registered_ports[port] = true;
+-
+ 		ocelot_port = ocelot->ports[port];
+ 		priv = container_of(ocelot_port, struct ocelot_port_private,
+ 				    port);
+@@ -1213,15 +1214,9 @@ static int mscc_ocelot_init_ports(struct platform_device *pdev,
+ 
+ 		err = ocelot_port_devlink_init(ocelot, port,
+ 					       DEVLINK_PORT_FLAVOUR_UNUSED);
+-		if (err) {
+-			while (port-- >= 0) {
+-				if (!registered_ports[port])
+-					continue;
+-				ocelot_port_devlink_teardown(ocelot, port);
+-			}
+-
++		if (err)
+ 			goto out_teardown;
+-		}
++		registered_ports[port] = true;
+ 	}
+ 
+ 	kfree(registered_ports);
+@@ -1233,10 +1228,8 @@ static int mscc_ocelot_init_ports(struct platform_device *pdev,
+ 	mscc_ocelot_release_ports(ocelot);
+ 	/* Tear down devlink ports for the registered network interfaces */
+ 	for (port = 0; port < ocelot->num_phys_ports; port++) {
+-		if (!registered_ports[port])
+-			continue;
+-
+-		ocelot_port_devlink_teardown(ocelot, port);
++		if (registered_ports[port])
++			ocelot_port_devlink_teardown(ocelot, port);
+ 	}
+ 	kfree(registered_ports);
+ 	return err;
+-- 
+2.29.2
+

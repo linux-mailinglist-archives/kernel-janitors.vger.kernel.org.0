@@ -2,71 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61F213035B8
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jan 2021 06:52:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21ED43035B1
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jan 2021 06:52:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388596AbhAZFwN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Jan 2021 00:52:13 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:33410 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727519AbhAYK3G (ORCPT
+        id S1732226AbhAZFur (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Jan 2021 00:50:47 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:48416 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726116AbhAYJQ1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 Jan 2021 05:29:06 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10P8AVSE101478;
-        Mon, 25 Jan 2021 08:12:59 GMT
+        Mon, 25 Jan 2021 04:16:27 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10P8a9c9018450;
+        Mon, 25 Jan 2021 08:42:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=3v5ov03CgWGnjGR/strYEROcXrL34Fr8nIjtf5Iguwg=;
- b=x7axNsTK9ZqhnGkiPnDz8khmaU8wLifzrx6bT35UZDfZQm9BtVPMr64o7QJN4MBntudN
- Bn8SXcp08lGBr5mZb9w9AxkNNcYr4XBgwk2fC9hcHneKJnVe+yZz0PQiyVt1ZWj+Ymqb
- 7cPk0vlb6kTigZC49pC18Btt66nPz9GoeFdHcME42sZihdT4ijuQdKeMnS0enPrDI4xk
- YSJxStU3mne0kpgmSPAKk+gGB2AqKTSg+NACbrjROgDk/Oj2t0DgK7WKWIyGqSVdu/IA
- QebbqlDTKYTng7+wD3wWuhqb3BVCaI/wBOMID3Xxfb4+r9WNQNDdta/sUkLfXKThPt0h fg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 368brkc06h-1
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2020-01-29; bh=BgLPaVKgIgdP94HtqYID5cE+Urus7OpTziV0O304eRA=;
+ b=GwvnfMPNFzESaxT7XtzW89sE6QKBig4g94XjkiAgNhFj5ffKCd3Qst0/VZw4J/FFS/6J
+ xw3vROrwWtSsLY9gTjjnCk8YqGk6PEyQ9l+htYMn9GSx30A9rYvXq5Ef+LxLSaFvoEB7
+ aIyBmkk/zuWi8DCWWierFermzrN5DqFdfGorXTe88m3/Pr+JpDceBD/fV7juFnVobrP7
+ Z9ejeAJFUDC1m0f9+joqidhsKRqFXIfPP+mAeu+kU2B1d+KdDGbheT2RanbsGDQVWroZ
+ wsaQ+8vmSMsxecxfLOImaDfioNksqSK1RFX3taBNIYV4Bxst4LAO3hhj1yUaL+ej/xDx Qg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 3689aacakf-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 25 Jan 2021 08:12:59 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10P8BSCX003702;
-        Mon, 25 Jan 2021 08:12:57 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 368wjpctkh-1
+        Mon, 25 Jan 2021 08:42:16 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10P8YwuX062461;
+        Mon, 25 Jan 2021 08:42:14 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 368wck9jwp-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 25 Jan 2021 08:12:57 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 10P8CpgI020970;
-        Mon, 25 Jan 2021 08:12:51 GMT
+        Mon, 25 Jan 2021 08:42:14 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 10P8gCWc001970;
+        Mon, 25 Jan 2021 08:42:12 GMT
 Received: from mwanda (/102.36.221.92)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 25 Jan 2021 00:12:50 -0800
-Date:   Mon, 25 Jan 2021 11:12:42 +0300
+        with ESMTP ; Mon, 25 Jan 2021 00:42:11 -0800
+Date:   Mon, 25 Jan 2021 11:42:03 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
 To:     Vladimir Oltean <vladimir.oltean@nxp.com>
 Cc:     Claudiu Manoil <claudiu.manoil@nxp.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         UNGLinuxDriver@microchip.com,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH 1/2 net-next] net: mscc: ocelot: fix error handling bugs in
- mscc_ocelot_init_ports()
-Message-ID: <YA59en4lJCiYsPHv@mwanda>
+        Jakub Kicinski <kuba@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH v2 1/2 net-next] net: mscc: ocelot: fix error handling bugs
+ in mscc_ocelot_init_ports()
+Message-ID: <YA6EW9SPE4q6x7d3@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20210125081940.GK20820@kadam>
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9874 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0
- adultscore=0 mlxscore=0 malwarescore=0 spamscore=0 mlxlogscore=999
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101250048
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 suspectscore=0
+ phishscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101250051
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9874 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
- phishscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999
- lowpriorityscore=0 spamscore=0 mlxscore=0 suspectscore=0 malwarescore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101250048
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0
+ lowpriorityscore=0 mlxlogscore=999 clxscore=1015 phishscore=0 bulkscore=0
+ spamscore=0 priorityscore=1501 mlxscore=0 suspectscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101250051
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -98,9 +100,59 @@ cleanups.
 Fixes: 6c30384eb1de ("net: mscc: ocelot: register devlink ports")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/ethernet/mscc/ocelot_vsc7514.c | 39 +++++++++-------------
- 1 file changed, 16 insertions(+), 23 deletions(-)
+v2: In v1, I accidentally left out parts of the commit so it didn't
+compile.
 
+ drivers/net/ethernet/mscc/ocelot.h         |  1 +
+ drivers/net/ethernet/mscc/ocelot_net.c     | 15 +++++++--
+ drivers/net/ethernet/mscc/ocelot_vsc7514.c | 39 +++++++++-------------
+ 3 files changed, 30 insertions(+), 25 deletions(-)
+
+diff --git a/drivers/net/ethernet/mscc/ocelot.h b/drivers/net/ethernet/mscc/ocelot.h
+index e8621dbc14f7..76b8d8ce3b48 100644
+--- a/drivers/net/ethernet/mscc/ocelot.h
++++ b/drivers/net/ethernet/mscc/ocelot.h
+@@ -121,6 +121,7 @@ void ocelot_port_writel(struct ocelot_port *port, u32 val, u32 reg);
+ 
+ int ocelot_probe_port(struct ocelot *ocelot, int port, struct regmap *target,
+ 		      struct phy_device *phy);
++void ocelot_release_port(struct ocelot_port *ocelot_port);
+ int ocelot_devlink_init(struct ocelot *ocelot);
+ void ocelot_devlink_teardown(struct ocelot *ocelot);
+ int ocelot_port_devlink_init(struct ocelot *ocelot, int port,
+diff --git a/drivers/net/ethernet/mscc/ocelot_net.c b/drivers/net/ethernet/mscc/ocelot_net.c
+index 9553eb3e441c..875ab8532d8c 100644
+--- a/drivers/net/ethernet/mscc/ocelot_net.c
++++ b/drivers/net/ethernet/mscc/ocelot_net.c
+@@ -1262,7 +1262,6 @@ int ocelot_probe_port(struct ocelot *ocelot, int port, struct regmap *target,
+ 	ocelot_port = &priv->port;
+ 	ocelot_port->ocelot = ocelot;
+ 	ocelot_port->target = target;
+-	ocelot->ports[port] = ocelot_port;
+ 
+ 	dev->netdev_ops = &ocelot_port_netdev_ops;
+ 	dev->ethtool_ops = &ocelot_ethtool_ops;
+@@ -1282,7 +1281,19 @@ int ocelot_probe_port(struct ocelot *ocelot, int port, struct regmap *target,
+ 	if (err) {
+ 		dev_err(ocelot->dev, "register_netdev failed\n");
+ 		free_netdev(dev);
++		return err;
+ 	}
+ 
+-	return err;
++	ocelot->ports[port] = ocelot_port;
++	return 0;
++}
++
++void ocelot_release_port(struct ocelot_port *ocelot_port)
++{
++	struct ocelot_port_private *priv = container_of(ocelot_port,
++						struct ocelot_port_private,
++						port);
++
++	unregister_netdev(priv->dev);
++	free_netdev(priv->dev);
+ }
 diff --git a/drivers/net/ethernet/mscc/ocelot_vsc7514.c b/drivers/net/ethernet/mscc/ocelot_vsc7514.c
 index 30a38df08a21..2c82ffe2c611 100644
 --- a/drivers/net/ethernet/mscc/ocelot_vsc7514.c

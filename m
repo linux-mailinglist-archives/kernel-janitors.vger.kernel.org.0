@@ -2,115 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 011BA301EA7
-	for <lists+kernel-janitors@lfdr.de>; Sun, 24 Jan 2021 21:16:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB133302058
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Jan 2021 03:25:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726103AbhAXUPZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 24 Jan 2021 15:15:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36664 "EHLO
+        id S1726727AbhAYCYM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 24 Jan 2021 21:24:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725948AbhAXUPY (ORCPT
+        with ESMTP id S1726904AbhAYBzF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 24 Jan 2021 15:15:24 -0500
-Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com [IPv6:2607:f8b0:4864:20::f36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B17CC061573;
-        Sun, 24 Jan 2021 12:14:44 -0800 (PST)
-Received: by mail-qv1-xf36.google.com with SMTP id l14so3243717qvp.2;
-        Sun, 24 Jan 2021 12:14:44 -0800 (PST)
+        Sun, 24 Jan 2021 20:55:05 -0500
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC458C061573;
+        Sun, 24 Jan 2021 17:41:44 -0800 (PST)
+Received: by mail-qk1-x736.google.com with SMTP id d85so11154454qkg.5;
+        Sun, 24 Jan 2021 17:41:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=OSqM/+hDSvLrv13lOWN3p2jAOoGEE3+xx2u807DxGhI=;
-        b=b3lztcn5pSshC/3esauyTw+hxCipPz+MJyymarpFLFxQhyqJRiK0Q5Glo6b7KifBk8
-         f55+fm+KG4Hp913zv0oxXC3KyC8LgnsIjloAmXIq2wCyIablTcUrwIraJ0h7O9EXSpR0
-         Wr6V8hzjL1U+31FiHwpqqh9bYJltn8zh8jssuRfjJAJQt0YuMFT5W6AaXSuyjnn3hOmo
-         En0Au3qkMCJkc0EiQC+yEBuoFYSTDpZ/vyPsK+ggc778kKLn06Q3hahskXu2svqNBRqk
-         XJTWw7Y7JCmJ5tXoaphmclJk8oREYPAkefDB7jWG4XjJ/yDeVkTTonLaKvi8HS6QexBn
-         Y0OQ==
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=dB7AV+eR2Q61jkORlAJSRwyf/ZJ9KntrjND2fG3o7wA=;
+        b=LpcvtcY1Nmd4Ld5MdvccLdwuEAPflNL0Vb53u1cstyJ1Esir7VdFUNOwyP2nPhr3lO
+         /ypg7QsMiyB9dEgf1yBNH2GNmnMS3e4SAtlCYdZfRoRkujUa7+cS+5yrRc4coxLEsU+y
+         1xr2pLgv+GZ/Z5elSdfMtFCaETuLfmZR/g4aCLc8wi0Fj5YCXVX0W8De/kmSMgnGcUJm
+         6RVhyCuHkI5ln9lENiy+yMNRm7YEXj+1afJTTgqoKOZ+p3ybUoe6Wu/FAhGeWFHqO0KL
+         EC4HrLP6+BjiWM1mY+xKRuayAnfrIiMslIJuiPcb3ocs1mswey/VNBIvL3D2tOB3YqDL
+         mrIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=OSqM/+hDSvLrv13lOWN3p2jAOoGEE3+xx2u807DxGhI=;
-        b=Mt9zkDhaQrqirTUg9JC0/AnZhBsS+/KNUJWcfVuIwKp4T6yNtnRAi/+GLLmhjEcaje
-         oPIGBFHdYpyJu1jG2zjE12BByEN7r6B0UWW2OjO5YUk0H943mXmo+IPBS/UOiuqnGsTK
-         aewJtarg85Y8ojIBxX/3RoUeeuKNO99Fv7hrN9j1lbRvC9xsU3pCpVrfeIyJT8c5z6Ir
-         8/2NHd58ndxxK1zCr0IgI50FpP8DbJFHOIcFBR0NhQV05LiDZETfvr+WaoWbjYb7kroG
-         1qcOzO2hJRm85SbqbGNo/3a4/qt/NUiZiojBcK0LrEV7mQEdJLx8FnDtA0tOqCz3MzF1
-         j2FQ==
-X-Gm-Message-State: AOAM533xXzKlw3BjQrm5Enx3urNvvLVmqrARytGVu5UNIqn8jt7kbv9a
-        qCVGFlTLLDre4rDSVS74PfBbkh+AhRqdPJdKvla8+WV/XWU=
-X-Google-Smtp-Source: ABdhPJxVOToYv0HkdS45AHJioCJ8pGX18Nrco3AhpQ3fAv/W1LW+yvun2Ke603zBouNanpWWNdyQ/PX8p+H6laXhHYQ=
-X-Received: by 2002:a0c:9e5e:: with SMTP id z30mr4524736qve.56.1611519283494;
- Sun, 24 Jan 2021 12:14:43 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=dB7AV+eR2Q61jkORlAJSRwyf/ZJ9KntrjND2fG3o7wA=;
+        b=g/i1R7ccrgb9cXNfq/f281N/4Nz3yxhC4X+7aXGs99Wnl+8jlEr/onMDPjMK91IcE6
+         UAk9zM93XrcKwo9dnWA3tWYCGjL0tGnjdKCzEQj18NAE8mZ5nsHTVPqjJtxkgUis8kGX
+         H7neOXQmSKafRMMgaxbs1YDOSkmRvImti3XZWpwA1TX4NpT5q7CZDenO/S/hyK69KHp1
+         Xsj28IB0ynfYy4og2A3YGBY/7EyId35Y3Y2Fvn1GvngI+OCkCKHLy95/UNh4neJX/4w2
+         18OiRlJ5ZDb5BPrEXFIbPa7fQZAqywXkKKsXvxbL1tRJLqEu1Dy9j1GGSwe7f6wbSlUw
+         wRmw==
+X-Gm-Message-State: AOAM5318bZBClElakqUIFVByYsGyfI66LKHYkesC6h1+/j0waNaUomx8
+        Z24j8WB2vqFNDvGR4SkSjZfBD6SB2lm/vIOp
+X-Google-Smtp-Source: ABdhPJy437+EdlnubuMXXmNByYvaJ1sr46qpoG8lAyB3G5SFh7tFj85LgQ9BAbg8J5qXxgP2+BkqWA==
+X-Received: by 2002:a37:4587:: with SMTP id s129mr882183qka.62.1611538903733;
+        Sun, 24 Jan 2021 17:41:43 -0800 (PST)
+Received: from fedora ([2604:2000:ffc0:0:347e:7d23:25c9:8337])
+        by smtp.gmail.com with ESMTPSA id t51sm5856228qte.8.2021.01.24.17.41.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Jan 2021 17:41:43 -0800 (PST)
+Date:   Sun, 24 Jan 2021 20:41:41 -0500
+From:   Nigel Christian <nigel.l.christian@gmail.com>
+To:     clm@fb.com, josef@toxicpanda.com, dsterba@suse.com
+Cc:     linux-btrfs@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] btrfs: remove repeated word
+Message-ID: <20210125014141.GA10137@fedora>
 MIME-Version: 1.0
-References: <20210124073955.728797-1-christophe.jaillet@wanadoo.fr> <fe72d1d2-8222-5cda-74ff-9327725f196a@web.de>
-In-Reply-To: <fe72d1d2-8222-5cda-74ff-9327725f196a@web.de>
-From:   Richard Weinberger <richard.weinberger@gmail.com>
-Date:   Sun, 24 Jan 2021 21:14:32 +0100
-Message-ID: <CAFLxGvzFDPBGY1uoB7vqJreOSfs9N2PGMDTbQ24PYBWBRVR4oQ@mail.gmail.com>
-Subject: Re: [PATCH] mtd: rawnand: Fix an error handling path in 'ebu_dma_start()'
-To:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>
-Cc:     linux-mtd@lists.infradead.org,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Richard Weinberger <richard@nod.at>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Ramuthevar Vadivel Murugan 
-        <vadivel.muruganx.ramuthevar@linux.intel.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Jan 24, 2021 at 9:13 PM Markus Elfring <Markus.Elfring@web.de> wrot=
-e:
->
-> > If 'dmaengine_prep_slave_single()' fails, we must undo a previous
-> > 'dma_map_single()' call, as already done in all the other error handlin=
-g
-> > paths of this function.
->
-> Would you ever like to use an imperative wording for the change descripti=
-on?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/D=
-ocumentation/process/submitting-patches.rst?id=3Dfdbc80bdc4365078a0f7d65631=
-171cb80e3ffd6e#n89
->
->
-> =E2=80=A6
-> > +++ b/drivers/mtd/nand/raw/intel-nand-controller.c
-> > @@ -318,8 +318,10 @@ static int ebu_dma_start(struct ebu_nand_controlle=
-r *ebu_host, u32 dir,
-> >       }
-> >
-> >       tx =3D dmaengine_prep_slave_single(chan, buf_dma, len, dir, flags=
-);
-> > -     if (!tx)
-> > -             return -ENXIO;
-> > +     if (!tx) {
-> > +             ret =3D -ENXIO;
-> > +             goto err_unmap;
-> > +     }
-> >
-> >       tx->callback =3D callback;
-> =E2=80=A6
->
-> By the way:
-> Can it be nicer to achieve the statement =E2=80=9Cret =3D -EIO;=E2=80=9D =
-by a jump for
-> a target like =E2=80=9Ce_io=E2=80=9D so that less exception handling code=
- would be duplicated
-> for this function implementation?
+Comment for processed extent end of range has an
+unnecessary "in". Eradicate it.
 
-Please feel free to ignore Markus.
+Signed-off-by: Nigel Christian <nigel.l.christian@gmail.com>
+---
+ fs/btrfs/extent_io.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-https://lore.kernel.org/lkml/X+x3pIanr18Ep4ga@kroah.com/
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 7f689ad7709c..2dc98eeb3c93 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -2775,7 +2775,7 @@ struct processed_extent {
+ 	struct btrfs_inode *inode;
+ 	/* Start of the range in @inode */
+ 	u64 start;
+-	/* End of the range in in @inode */
++	/* End of the range in @inode */
+ 	u64 end;
+ 	bool uptodate;
+ };
+-- 
+2.29.2
 
---=20
-Thanks,
-//richard

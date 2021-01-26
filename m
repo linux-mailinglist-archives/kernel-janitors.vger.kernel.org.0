@@ -2,57 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85750303A3D
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jan 2021 11:29:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9FCC304066
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jan 2021 15:35:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403976AbhAZK3D (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Jan 2021 05:29:03 -0500
-Received: from mx2.suse.de ([195.135.220.15]:47300 "EHLO mx2.suse.de"
+        id S2392735AbhAZOeC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Jan 2021 09:34:02 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55858 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2403940AbhAZK2h (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 Jan 2021 05:28:37 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1611656871; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=pOda+MvC/sHys1dv13U5VXg25nGXKMCvumVGvRV1f6c=;
-        b=YXcm+GxgMkbGv/c1skH0GerHWmZ9Lg6XaKFaz1+x8Tcu5n/72+9fgMM3TUNxfnCmzzpFjB
-        8LaejLB6PN4pv9IecvMVR1SJ8AdLY6X8WgHAwU63vhnjo21J7xY+xKr1h7JIQ+ELYwN25i
-        vBEg+gsy5UtGntgHdqm3PK8WpPW62lw=
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 164A5ABDA;
-        Tue, 26 Jan 2021 10:27:51 +0000 (UTC)
-Date:   Tue, 26 Jan 2021 11:27:50 +0100
-From:   Petr Mladek <pmladek@suse.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        John Ogness <john.ogness@linutronix.de>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] printk: rectify kernel-doc for prb_rec_init_wr()
-Message-ID: <YA/upguVH/Jj0GJz@localhost.localdomain>
-References: <20210125081748.19903-1-lukas.bulwahn@gmail.com>
+        id S2392764AbhAZOb6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 26 Jan 2021 09:31:58 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4E7D522EBD;
+        Tue, 26 Jan 2021 14:31:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611671478;
+        bh=lCDeEllePGSdbC047wovpja/TxDcxspb898XpipaVc0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HRFJzuy3C6mTXV1Gcu/3015BtWNKEwMMNA+dO6P6cvWTPsTaV2MEKe1nko/O42ZRs
+         mQUGWHoclmR/bcTV59HtIORnG4rAzgg80RXLjcVYHydFYS5TDPeKAcYivi8QUj8CQ4
+         cBR4mcLE+AbphShfCXBAzC4K2OafWJQbCYsmPmCfmjqnNZi80k5ttd6GDvoHZpceZj
+         /GZB9WinGx3JiPnQtWoPTI4SBfRRrwvYzpytvYAdvrXU5w7bXKEax/k8P0es7D6Gms
+         zRvHeHcumXT1YcjWLLXJzkfBXh0+36IBMU1fe/WU5Lk9i3UHDpm85D28DAqXqI+LD7
+         mnd5sIl/qddTQ==
+Received: from johan by xi.lan with local (Exim 4.93.0.4)
+        (envelope-from <johan@kernel.org>)
+        id 1l4PNO-0007dd-VZ; Tue, 26 Jan 2021 15:31:27 +0100
+Date:   Tue, 26 Jan 2021 15:31:26 +0100
+From:   Johan Hovold <johan@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Johan Hovold <johan@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Paul B Schroeder <pschroeder@uplogix.com>,
+        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] USB: serial: mos7840: fix error code in mos7840_write()
+Message-ID: <YBAnvtBE4H0ef+5a@hovoldconsulting.com>
+References: <YA/ubifCUlJXxG5g@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210125081748.19903-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <YA/ubifCUlJXxG5g@mwanda>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon 2021-01-25 09:17:48, Lukas Bulwahn wrote:
-> The command 'find ./kernel/printk/ | xargs ./scripts/kernel-doc -none'
-> reported a mismatch with the kernel-doc of prb_rec_init_wr().
+On Tue, Jan 26, 2021 at 01:26:54PM +0300, Dan Carpenter wrote:
+> This should return -ENOMEM instead of 0 if the kmalloc() fails.
 > 
-> Rectify the kernel-doc, such that no issues remain for ./kernel/printk/.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> Fixes: 3f5429746d91 ("USB: Moschip 7840 USB-Serial Driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-The patch has been committed into printk/linux.git, branch
-printk-rework.
+Applied, thanks.
 
-Best Regards,
-Petr
+Johan

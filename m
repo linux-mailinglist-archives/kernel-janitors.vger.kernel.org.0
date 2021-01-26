@@ -2,49 +2,42 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D3AD303841
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jan 2021 09:47:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94FFA303864
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jan 2021 09:53:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390413AbhAZInT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Jan 2021 03:43:19 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:51622 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390387AbhAZImg (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 Jan 2021 03:42:36 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10Q7TwEe152538;
-        Tue, 26 Jan 2021 07:30:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=SJ15W1q+FIQewIC7/ta0Gam/PBScbc3sS8SJfQABM8k=;
- b=yfl5WGMhTpd/DXeQgDuA4Tubu7v9oSADO5smZXJqV2rnKPR5OtonhX/s3jwZVelrO5DZ
- WsKeCZymXwZ1fedKbeEkVPEiB/aF/SuH4m/zdN4rpxpyitBdzj+n+c/4YdxFTDKgDVGx
- t89pqHt3J9pNRpIu8aPscHGIzW/bOeZ8IRpNgEAaIv20mD+eADBgTytm7XdUVVnJMC+A
- VeJnfEJ7oyOfE/jJpReCnSjZ3tfykQ45BhfEhmP7v/jkfOZqk6vbN9KLArLhJKgPEw0x
- /eeqcVoGVXJMcE3a2I91jfv3bpnwddRP9YdJTmzMwq37r8s/VgTaYCvzpH9Qr3ai7qyn jQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 368b7qrt2e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 26 Jan 2021 07:30:10 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10Q7K5QJ013329;
-        Tue, 26 Jan 2021 07:28:08 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 368wqw2rxe-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 26 Jan 2021 07:28:08 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 10Q7S3P7026709;
-        Tue, 26 Jan 2021 07:28:03 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 25 Jan 2021 23:28:02 -0800
-Date:   Tue, 26 Jan 2021 10:27:53 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc:     Claudiu Manoil <claudiu.manoil@nxp.com>,
+        id S2390520AbhAZIxP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Jan 2021 03:53:15 -0500
+Received: from mail-eopbgr60044.outbound.protection.outlook.com ([40.107.6.44]:27310
+        "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2390499AbhAZIwc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 26 Jan 2021 03:52:32 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=LH8YGHyq/oRAIBU5PkbHoaO2I/lNeZwf7176yTRJAGGB+ap8XomgDYfSSJK3xfrZd2L/otZE+xtbilT+ulp3nRpmjQ8+1zvtX2rhHeUktmzkDDMKwP06sIST3cfarZDVRfloruH3HE1KZzG/n2jn3KKzJw+u8Q+SbFIs4DAGT4Hz8bX85NGoBDvbPnuKmJqO3NSG+RzwUAQs3tSYb+1gxWIkJA3dkXg0SGB873VuO9gPog/SU2RYbh1qPEYNbiEIygd547NOMW1wUGoeiICZI/2K1GNoDCUJhnv0OBbBEjDSpNMYm4bIhFa4ulRlcaCLCXEEn8hUuvZ20cVK4y6NMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zu2YldFnltaISAy6Bw8TLYvc+ts/ek1qhKlS7Tipu0Y=;
+ b=RSnCz48jAeWzXgCOnDjzrklXpkgsjw4eVuzHi8XsbJpxi750Sym0gCR788ptujyCzsbFECiPv4Z13whuDESzf40QZz5tSph8oPMdXV6W3MNedhaPEN5jZkdQwktsd4/TjaKhrMOm+GS2RWEHdHLbA6AbYSKDjzm2inDWjTHB8/YmPYne34CH4tXz5jVti6z1HMbaEJtIQrOF0hhzH6z6nsTNbQvuSKHnl/WInj31CL3pZf/Tf470SVPBEiuaFufWjjgOzOrJlMeOep5WTjCE937p/J5lk3E7m0xMlL+/aW0JOkk7Vv28ILPCT72G/1dhXhbztW4o/kJN0zbOPMn4xA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zu2YldFnltaISAy6Bw8TLYvc+ts/ek1qhKlS7Tipu0Y=;
+ b=JWln3OZUbEpdPmDoEOO2EM8KwsoXTS/CyuTTBtfYLbUnqEhENHF8XzB7vi3Jw4Ta7X1qqrGGyZ4hNNmd/NDm8O8bRqq+h6B9PTmZfB7cOJ5bbsWwi6aHwmSJtbo1msokH+ZpQ9icZ57AM6E9T2kngrzAlxu1SHWUVvMvY0KgstE=
+Received: from VI1PR04MB5136.eurprd04.prod.outlook.com (2603:10a6:803:55::19)
+ by VI1PR0401MB2511.eurprd04.prod.outlook.com (2603:10a6:800:50::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3784.15; Tue, 26 Jan
+ 2021 08:51:43 +0000
+Received: from VI1PR04MB5136.eurprd04.prod.outlook.com
+ ([fe80::3df3:2eba:51bb:58d7]) by VI1PR04MB5136.eurprd04.prod.outlook.com
+ ([fe80::3df3:2eba:51bb:58d7%6]) with mapi id 15.20.3784.019; Tue, 26 Jan 2021
+ 08:51:43 +0000
+From:   Vladimir Oltean <vladimir.oltean@nxp.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+CC:     Claudiu Manoil <claudiu.manoil@nxp.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         "UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
         "David S. Miller" <davem@davemloft.net>,
@@ -54,112 +47,90 @@ Cc:     Claudiu Manoil <claudiu.manoil@nxp.com>,
         "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
 Subject: Re: [PATCH v2 1/2 net-next] net: mscc: ocelot: fix error handling
  bugs in mscc_ocelot_init_ports()
-Message-ID: <20210126072753.GU2696@kadam>
-References: <20210125081940.GK20820@kadam>
- <YA6EW9SPE4q6x7d3@mwanda>
- <20210125161806.q5rmiqj6r3yvp3ke@skbuf>
+Thread-Topic: [PATCH v2 1/2 net-next] net: mscc: ocelot: fix error handling
+ bugs in mscc_ocelot_init_ports()
+Thread-Index: AQHW8vYEy9kRVDNRbU2EPw8q4M1MGKo4hWcAgAD+MYCAABdrAA==
+Date:   Tue, 26 Jan 2021 08:51:43 +0000
+Message-ID: <20210126085142.rrr6jbm6hj6ijjzq@skbuf>
+References: <20210125081940.GK20820@kadam> <YA6EW9SPE4q6x7d3@mwanda>
+ <20210125161806.q5rmiqj6r3yvp3ke@skbuf> <20210126072753.GU2696@kadam>
+In-Reply-To: <20210126072753.GU2696@kadam>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: oracle.com; dkim=none (message not signed)
+ header.d=none;oracle.com; dmarc=none action=none header.from=nxp.com;
+x-originating-ip: [5.12.227.87]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 95e71142-e852-4963-fee8-08d8c1d79afd
+x-ms-traffictypediagnostic: VI1PR0401MB2511:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <VI1PR0401MB25118B38765C69C6BC08FF81E0BC0@VI1PR0401MB2511.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Il3p0Ouls/Or/N6qpYVDgk9032C1RRJGxrhojl67ezCCnhnvNJWuCEKL/vOBeCsJvEAY2LSG8qM+fjWFOOvExOGyxxvuKnlbfj2i/g5zjBSU3Zp3DOB/NZpN1Uw0oVFDTCKpamUD21jaV0DOY8NpR1A6BmcoJSEbpgw0Jvzdte7ZyQcD3CX/60A3O18W93m1b9BHAq4cqDelfk7mspjAag5ivTmdlvF0kOsY2IDT07fQznMHfCCiw+9VWQILiFpRLeGmmQr+dboa1sPZ2NTJpFJGimYGN0egV0BTnEGiEC69qCGgq/bC7z3bIePffnQ9tfHQJUZZEJNNnw8jvyJFXaXb4JTxzKskRhVbNfoqDkghPSmh2vEjMn/Tb0vUSgO4C6sK8T4byiapd+iBKqyx161SpuhvOyC6/K2A/2jFS/OHcNi0PfOL79TrxnB8xOCAdvguQOG7/aCyPAVWrMvaEYUBieRbn08v+jJDut3brF3iEJbRmZoobG47Z+JirrhSfiAnvO2NQumHo/+P36MrBHLfWiMxiF8sxLLOVgCtrVvkOHYC+puyK1//WsGT3fvDUaZ7LH2VBXLJpJiQ2eRQKfIapIaSpDvIu5Sn03IQQA8=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB5136.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(7916004)(4636009)(366004)(39860400002)(346002)(136003)(396003)(376002)(64756008)(1076003)(5660300002)(6512007)(966005)(66556008)(66446008)(8936002)(86362001)(66476007)(44832011)(54906003)(26005)(8676002)(66946007)(316002)(2906002)(9686003)(4744005)(4326008)(186003)(6916009)(6486002)(33716001)(478600001)(6506007)(76116006)(71200400001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: =?us-ascii?Q?T3SiscXcQP7/rYqUnBCCOZGBIXGjiGjqxe+Zm2hjZMOZphT5nTCebmtm+Ubr?=
+ =?us-ascii?Q?L+bvyYLoPezH6inj/yYJRr/cKgWV9bfVbW9IFVMjyIqfn+gfhGt+22p3eNo1?=
+ =?us-ascii?Q?uRQ96ZTU2rmvNvdP4AqN5zaMe8aNoLbi697ebZFYd0W8AxBGa/QkftC0Gvrd?=
+ =?us-ascii?Q?vCN7BqTECVC6U4cuxv4UOATGmxdjTTpFeuj6sgCPV3udERg2lSrvGhGtfe2Z?=
+ =?us-ascii?Q?vEKY3ZXeH4iVnVGfy153BVi6v7N359ZnHZ9AkgxrOioRRMxKZ0IpjXzyj2qT?=
+ =?us-ascii?Q?dLWuhqGhcEC2fNAmjO59Q5RxGl3LURTI+jhq5cl1M17j0qwst1xuEu97VrSe?=
+ =?us-ascii?Q?XuBwCVv1uBy3WvDywIsqHFNQYWk2zYSbUIv/tKn8iAdcAF/jvu1gVHcEzamW?=
+ =?us-ascii?Q?OIQmIz8VQcXxG/U0wQHZWsOX3LiuftyaGImIrvKKX7hAOiq9Q6ULZefZAEuE?=
+ =?us-ascii?Q?NVR5c86SRwIXAM5HjQl4hq2TQv0cxuRmrHQ3CMIqu5gWSb7C3TFLIPhRibJj?=
+ =?us-ascii?Q?PVQh25+xu9NSNhGSkhhttgE/PoIg8lL2utRD68eJsQciaIE1+idMm06Q4qYA?=
+ =?us-ascii?Q?jeL2l78gqbAEDOEsycoewMamuQL+yiBSE8hnldp6L5/9YApHdjDUJpbK8iCL?=
+ =?us-ascii?Q?MIibYPHaHQfdoW5WTDIlObdIO6YdBQOyntWMmdQUubg2/I3JXDOlEUulQn99?=
+ =?us-ascii?Q?8kbbkh4NqCRGVhQNpFQ62TmqHrVoRcxAdj1/eAho98+lYRlPSwNfEzmhiRsx?=
+ =?us-ascii?Q?AWwk+vceGE+79JsI9dp20f0G46LToUaJjYT3ES3sSyu/WwXMtsI26U+oBiSk?=
+ =?us-ascii?Q?EKVGAlxih6/NORZgIkhXToCW544Sm4tswU1xASrtvucNeq+iZf3+lI+2RaJ/?=
+ =?us-ascii?Q?gSI7mrLr4jUsYs78LYGYhVLAbpZddRdOHjtz1kJMCZohQDQ2Ult8czSSaGer?=
+ =?us-ascii?Q?xIf2mq9cF818j7tWxR6BQWuopl7r4IhnwB1pFtzwU7QxXl8GxQhKnTxrmfCL?=
+ =?us-ascii?Q?ES9A/1t7GOlH2/5BcfzxmZKssPW3sIXJ/IXKjutcNkueL2kO+SVtmtrMfQQ5?=
+ =?us-ascii?Q?HUk3RJTW?=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <16931E61DE79F04CB10041CBEAD631BB@eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210125161806.q5rmiqj6r3yvp3ke@skbuf>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9875 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 phishscore=0
- adultscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101260037
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9875 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 phishscore=0
- adultscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 mlxscore=0 clxscore=1015 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101260038
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5136.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 95e71142-e852-4963-fee8-08d8c1d79afd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jan 2021 08:51:43.4812
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 4N6ioaziD5cYSzRbLfYlxxJmeT+dkAKtSN6C7Wx1bMj0fb/Dj/bGv+d24lbcxbCuJGCQ+0CHVDsGyCEwfs9/gQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0401MB2511
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jan 25, 2021 at 04:18:07PM +0000, Vladimir Oltean wrote:
-> Hi Dan,
-> 
-> On Mon, Jan 25, 2021 at 11:42:03AM +0300, Dan Carpenter wrote:
-> > diff --git a/drivers/net/ethernet/mscc/ocelot_net.c b/drivers/net/ethernet/mscc/ocelot_net.c
-> > index 9553eb3e441c..875ab8532d8c 100644
-> > --- a/drivers/net/ethernet/mscc/ocelot_net.c
-> > +++ b/drivers/net/ethernet/mscc/ocelot_net.c
-> > @@ -1262,7 +1262,6 @@ int ocelot_probe_port(struct ocelot *ocelot, int port, struct regmap *target,
-> >  	ocelot_port = &priv->port;
-> >  	ocelot_port->ocelot = ocelot;
-> >  	ocelot_port->target = target;
-> > -	ocelot->ports[port] = ocelot_port;
-> 
-> You cannot remove this from here just like that, because
-> ocelot_init_port right below accesses ocelot->ports[port], and it will
-> dereference through a NULL pointer otherwise.
-> 
+On Tue, Jan 26, 2021 at 10:27:53AM +0300, Dan Carpenter wrote:
+> > If you resend, can you please squash this diff on top of your patch?
+>
+> Yep.  I will resend.  Thanks for basically writing v2 for me.  Your
+> review comments were very clear but code is always 100% clear so that's
+> really great.
 
-Argh...  Thanks for spotting that.
+Until the code is wrong :)
 
-> >  	dev->netdev_ops = &ocelot_port_netdev_ops;
-> >  	dev->ethtool_ops = &ocelot_ethtool_ops;
-> > @@ -1282,7 +1281,19 @@ int ocelot_probe_port(struct ocelot *ocelot, int port, struct regmap *target,
-> >  	if (err) {
-> >  		dev_err(ocelot->dev, "register_netdev failed\n");
-> >  		free_netdev(dev);
-> > +		return err;
-> >  	}
-> >  
-> > -	return err;
-> > +	ocelot->ports[port] = ocelot_port;
-> > +	return 0;
-> > +}
-> > +
-> > +void ocelot_release_port(struct ocelot_port *ocelot_port)
-> > +{
-> > +	struct ocelot_port_private *priv = container_of(ocelot_port,
-> > +						struct ocelot_port_private,
-> > +						port);
-> 
-> Can this assignment please be done separately from the declaration?
-> 
-> 	struct ocelot_port_private *priv;
-> 
-> 	priv = container_of(ocelot_port, struct ocelot_port_private, port);
-> 
-> > +
-> > +	unregister_netdev(priv->dev);
-> > +	free_netdev(priv->dev);
-> >  }
-> 
-> Fun, isn't it? :D
-> Thanks for taking the time to untangle this.
-> 
-> Additionally, you have changed the meaning of "registered_ports" from
-> "this port had its net_device registered" to "this port had its
-> devlink_port registered". This is ok, but I would like the variable
-> renamed now, too. I think devlink_ports_registered would be ok.
-> 
-> In hindsight, I was foolish for using a heap-allocated boolean array for
-> registered_ports, because this switch architecture is guaranteed to not
-> have more than 32 ports, so a u32 bitmask is fine.
-> 
-> If you resend, can you please squash this diff on top of your patch?
+> I've never seen anyone do that before.  I should copy
+> that for my own reviews and hopefully it's a new trend.
 
-Yep.  I will resend.  Thanks for basically writing v2 for me.  Your
-review comments were very clear but code is always 100% clear so that's
-really great.  I've never seen anyone do that before.  I should copy
-that for my own reviews and hopefully it's a new trend.
+I took that from Florian, it was helpful to me when I wasn't minding my
+own business and touching code I couldn't test:
+https://patchwork.kernel.org/project/netdevbpf/patch/20201218223852.2717102=
+-4-vladimir.oltean@nxp.com/#23858835
 
-> 
-> Then you can add:
-> 
-> Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> 
-> Also, it's strange but I don't see the v2 patches in patchwork. Did you
-> send them in-reply-to v1 or something?
+> > Also, it's strange but I don't see the v2 patches in patchwork. Did you
+> > send them in-reply-to v1 or something?
+>
+> I did send them as a reply to v1.  Patchwork doesn't like that?
 
-I did send them as a reply to v1.  Patchwork doesn't like that?
-
-regards,
-dan carpenter
-
+Nope.=

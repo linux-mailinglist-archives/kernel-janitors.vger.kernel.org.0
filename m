@@ -2,113 +2,164 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9302A3035BB
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jan 2021 06:52:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D3AD303841
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jan 2021 09:47:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728866AbhAZFwk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Jan 2021 00:52:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49424 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727959AbhAYMkh (ORCPT
+        id S2390413AbhAZInT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Jan 2021 03:43:19 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:51622 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390387AbhAZImg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 Jan 2021 07:40:37 -0500
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 363DBC06121E;
-        Mon, 25 Jan 2021 03:11:08 -0800 (PST)
-Received: by mail-lf1-x133.google.com with SMTP id q12so17078101lfo.12;
-        Mon, 25 Jan 2021 03:11:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=mkFulIPCsoB/b5g0i/rfsI5cAgHAoXFR1p3T8KjUEhI=;
-        b=G2Rsddlka1TkEcZCZ57d/jktPQt1Ge+Y77Y7wZJlV7EFIdunloe7k9EQoum05y/oi2
-         cCv30PlohibKYXE4Oi5ihQ8ZshmO6WOUsWfFPCAnfIym+kbS3gHR5YG+MRDkjklhAa5v
-         s4TmrfIv2iyGuLgpxmRbR848pXUFMNzn41oIimFHIDgFw6IXcIFYEENTRrmtWbrxoS7u
-         LtdbqGaOJYD4kpgUTk3YVWPaV+U3KCMRevZzV9Iwfe327nuC8MdeXwBVGeE7p6LAGPGI
-         czgfiVuT5u4MK5gIV5cqqZsJ/OrVexIUeU+3ZiK76lfDwRc/wCm/CLsWHJvFiFkon3DL
-         9WeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=mkFulIPCsoB/b5g0i/rfsI5cAgHAoXFR1p3T8KjUEhI=;
-        b=dkIDY3AW6ANxJawNonqLSa587YqCc1D/0tddi5y2s2BwINI3uF7HR9bQzo/Ati0rXU
-         HbDtUe4rGCfnE2xNEJMrxoiE4pzAqsL+G/du1QRJ2I7rkCqjarG1rqyyKtHKituOsXzU
-         XTWoNWj9+6JN8zP4N+MHf6aD0M+IsHvlpGKzfsjfrNJbjXtxRhdfLeSY3gjqpZ8cqH9N
-         GL3FZeUUbTWBeyzpWAzZOrUSbAAhg7Bg7CKpXioAQlrb+aKe95iS9dwLIq3DQtp8MLtc
-         iMojKV+8mPTzXSn9ulXk29t+7O0u8NC0JCFR3uIQc/TXml45vXjX/F3EuRJ0VE2hCulY
-         fkQg==
-X-Gm-Message-State: AOAM5300oZcl1Z4/TSpbiZ1KMN9wu1Nh1B9zTwtL0ujSwXi9yoJOPhoK
-        hp350qLel4WKIaKjf2skfKylz4vxZqvKg931
-X-Google-Smtp-Source: ABdhPJz3xQlsGu+rZV/WoZqeTxzmsyY3f66L2wgYUGzJcQvZjgBkp8nQP2Dry1YXE06LjxTmfHSHuA==
-X-Received: by 2002:ac2:495a:: with SMTP id o26mr31631lfi.192.1611573066438;
-        Mon, 25 Jan 2021 03:11:06 -0800 (PST)
-Received: from [10.0.0.42] (91-157-86-155.elisa-laajakaista.fi. [91.157.86.155])
-        by smtp.gmail.com with ESMTPSA id 8sm1432390lfz.113.2021.01.25.03.11.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Jan 2021 03:11:05 -0800 (PST)
-Subject: Re: [PATCH] dmaengine: ti: k3-udma: Fix a resource leak in an error
- handling path
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        dan.j.williams@intel.com, vkoul@kernel.org
-Cc:     dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20210124070923.724479-1-christophe.jaillet@wanadoo.fr>
-From:   =?UTF-8?Q?P=c3=a9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
-Message-ID: <f0b99332-fcac-093a-5f9e-997c9955ad7c@gmail.com>
-Date:   Mon, 25 Jan 2021 13:13:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+        Tue, 26 Jan 2021 03:42:36 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10Q7TwEe152538;
+        Tue, 26 Jan 2021 07:30:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=SJ15W1q+FIQewIC7/ta0Gam/PBScbc3sS8SJfQABM8k=;
+ b=yfl5WGMhTpd/DXeQgDuA4Tubu7v9oSADO5smZXJqV2rnKPR5OtonhX/s3jwZVelrO5DZ
+ WsKeCZymXwZ1fedKbeEkVPEiB/aF/SuH4m/zdN4rpxpyitBdzj+n+c/4YdxFTDKgDVGx
+ t89pqHt3J9pNRpIu8aPscHGIzW/bOeZ8IRpNgEAaIv20mD+eADBgTytm7XdUVVnJMC+A
+ VeJnfEJ7oyOfE/jJpReCnSjZ3tfykQ45BhfEhmP7v/jkfOZqk6vbN9KLArLhJKgPEw0x
+ /eeqcVoGVXJMcE3a2I91jfv3bpnwddRP9YdJTmzMwq37r8s/VgTaYCvzpH9Qr3ai7qyn jQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 368b7qrt2e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 26 Jan 2021 07:30:10 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10Q7K5QJ013329;
+        Tue, 26 Jan 2021 07:28:08 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 368wqw2rxe-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 26 Jan 2021 07:28:08 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 10Q7S3P7026709;
+        Tue, 26 Jan 2021 07:28:03 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 25 Jan 2021 23:28:02 -0800
+Date:   Tue, 26 Jan 2021 10:27:53 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc:     Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2 net-next] net: mscc: ocelot: fix error handling
+ bugs in mscc_ocelot_init_ports()
+Message-ID: <20210126072753.GU2696@kadam>
+References: <20210125081940.GK20820@kadam>
+ <YA6EW9SPE4q6x7d3@mwanda>
+ <20210125161806.q5rmiqj6r3yvp3ke@skbuf>
 MIME-Version: 1.0
-In-Reply-To: <20210124070923.724479-1-christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210125161806.q5rmiqj6r3yvp3ke@skbuf>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9875 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 phishscore=0
+ adultscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101260037
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9875 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 phishscore=0
+ adultscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 mlxscore=0 clxscore=1015 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101260038
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
-
-On 1/24/21 9:09 AM, Christophe JAILLET wrote:
-> In 'dma_pool_create()', we return -ENOMEM, but don't release the resources
-> already allocated, as in all the other error handling paths.
+On Mon, Jan 25, 2021 at 04:18:07PM +0000, Vladimir Oltean wrote:
+> Hi Dan,
 > 
-> Go to 'err_res_free' instead of returning directly.
-
-Interesting that I only had error for the bcdma path...
-
-> Fixes: 017794739702 ("dmaengine: ti: k3-udma: Initial support for K3 BCDMA")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> This patch is not even compile tested.
-> I don't have the needed configuration.
-
-No issue, that patch is trivial,
-
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-
-> ---
->   drivers/dma/ti/k3-udma.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+> On Mon, Jan 25, 2021 at 11:42:03AM +0300, Dan Carpenter wrote:
+> > diff --git a/drivers/net/ethernet/mscc/ocelot_net.c b/drivers/net/ethernet/mscc/ocelot_net.c
+> > index 9553eb3e441c..875ab8532d8c 100644
+> > --- a/drivers/net/ethernet/mscc/ocelot_net.c
+> > +++ b/drivers/net/ethernet/mscc/ocelot_net.c
+> > @@ -1262,7 +1262,6 @@ int ocelot_probe_port(struct ocelot *ocelot, int port, struct regmap *target,
+> >  	ocelot_port = &priv->port;
+> >  	ocelot_port->ocelot = ocelot;
+> >  	ocelot_port->target = target;
+> > -	ocelot->ports[port] = ocelot_port;
 > 
-> diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
-> index 8e3fd1119a77..96ad21869ba7 100644
-> --- a/drivers/dma/ti/k3-udma.c
-> +++ b/drivers/dma/ti/k3-udma.c
-> @@ -2447,7 +2447,8 @@ static int bcdma_alloc_chan_resources(struct dma_chan *chan)
->   			dev_err(ud->ddev.dev,
->   				"Descriptor pool allocation failed\n");
->   			uc->use_dma_pool = false;
-> -			return -ENOMEM;
-> +			ret = -ENOMEM;
-> +			goto err_res_free;
->   		}
->   
->   		uc->use_dma_pool = true;
+> You cannot remove this from here just like that, because
+> ocelot_init_port right below accesses ocelot->ports[port], and it will
+> dereference through a NULL pointer otherwise.
 > 
 
--- 
-Péter
+Argh...  Thanks for spotting that.
+
+> >  	dev->netdev_ops = &ocelot_port_netdev_ops;
+> >  	dev->ethtool_ops = &ocelot_ethtool_ops;
+> > @@ -1282,7 +1281,19 @@ int ocelot_probe_port(struct ocelot *ocelot, int port, struct regmap *target,
+> >  	if (err) {
+> >  		dev_err(ocelot->dev, "register_netdev failed\n");
+> >  		free_netdev(dev);
+> > +		return err;
+> >  	}
+> >  
+> > -	return err;
+> > +	ocelot->ports[port] = ocelot_port;
+> > +	return 0;
+> > +}
+> > +
+> > +void ocelot_release_port(struct ocelot_port *ocelot_port)
+> > +{
+> > +	struct ocelot_port_private *priv = container_of(ocelot_port,
+> > +						struct ocelot_port_private,
+> > +						port);
+> 
+> Can this assignment please be done separately from the declaration?
+> 
+> 	struct ocelot_port_private *priv;
+> 
+> 	priv = container_of(ocelot_port, struct ocelot_port_private, port);
+> 
+> > +
+> > +	unregister_netdev(priv->dev);
+> > +	free_netdev(priv->dev);
+> >  }
+> 
+> Fun, isn't it? :D
+> Thanks for taking the time to untangle this.
+> 
+> Additionally, you have changed the meaning of "registered_ports" from
+> "this port had its net_device registered" to "this port had its
+> devlink_port registered". This is ok, but I would like the variable
+> renamed now, too. I think devlink_ports_registered would be ok.
+> 
+> In hindsight, I was foolish for using a heap-allocated boolean array for
+> registered_ports, because this switch architecture is guaranteed to not
+> have more than 32 ports, so a u32 bitmask is fine.
+> 
+> If you resend, can you please squash this diff on top of your patch?
+
+Yep.  I will resend.  Thanks for basically writing v2 for me.  Your
+review comments were very clear but code is always 100% clear so that's
+really great.  I've never seen anyone do that before.  I should copy
+that for my own reviews and hopefully it's a new trend.
+
+> 
+> Then you can add:
+> 
+> Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> 
+> Also, it's strange but I don't see the v2 patches in patchwork. Did you
+> send them in-reply-to v1 or something?
+
+I did send them as a reply to v1.  Patchwork doesn't like that?
+
+regards,
+dan carpenter
+

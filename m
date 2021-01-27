@@ -2,113 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D271E3064F4
-	for <lists+kernel-janitors@lfdr.de>; Wed, 27 Jan 2021 21:21:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B66C83067FB
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 00:35:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232082AbhA0UTZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 27 Jan 2021 15:19:25 -0500
-Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:50085 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231138AbhA0UTV (ORCPT
+        id S234841AbhA0Xcs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 27 Jan 2021 18:32:48 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:49592 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231453AbhA0XcX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 27 Jan 2021 15:19:21 -0500
-Received: from localhost.localdomain ([92.131.99.25])
-        by mwinf5d75 with ME
-        id MwHZ240090Ys01Y03wHaW9; Wed, 27 Jan 2021 21:17:38 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 27 Jan 2021 21:17:38 +0100
-X-ME-IP: 92.131.99.25
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     stanimir.varbanov@linaro.org, agross@kernel.org,
-        bjorn.andersson@linaro.org, mchehab@kernel.org,
-        georgi.djakov@linaro.org
-Cc:     linux-media@vger.kernel.org, linux-arm-msm@lists.infradead.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] media: venus: core: Fix some resource leaks in the error path of 'venus_probe()'
-Date:   Wed, 27 Jan 2021 21:17:32 +0100
-Message-Id: <20210127201732.743938-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.27.0
+        Wed, 27 Jan 2021 18:32:23 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1l4uHh-00019P-Uz; Wed, 27 Jan 2021 23:31:38 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     "K . Y . Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>, linux-hyperv@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] hv_utils: Fix spelling mistake "Hearbeat" -> "Heartbeat"
+Date:   Wed, 27 Jan 2021 23:31:36 +0000
+Message-Id: <20210127233136.623465-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If an error occurs after a successful 'of_icc_get()' call, it must be
-undone by a corresponding 'icc_put()' call.
+From: Colin Ian King <colin.king@canonical.com>
 
-Add it in the error handling path of the probe function as already done in
-the remove function.
+There is a spelling mistake in an error message. Fix it.
 
-Fixes: 32f0a6ddc8c9 ("media: venus: Use on-chip interconnect API")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/media/platform/qcom/venus/core.c | 31 +++++++++++++++++-------
- 1 file changed, 22 insertions(+), 9 deletions(-)
+ drivers/hv/hv_util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
-index 0bde19edac86..8fd5da941067 100644
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -200,27 +200,35 @@ static int venus_probe(struct platform_device *pdev)
- 		return PTR_ERR(core->video_path);
+diff --git a/drivers/hv/hv_util.c b/drivers/hv/hv_util.c
+index 34f3e789cc9a..e4aefeb330da 100644
+--- a/drivers/hv/hv_util.c
++++ b/drivers/hv/hv_util.c
+@@ -507,7 +507,7 @@ static void heartbeat_onchannelcallback(void *context)
  
- 	core->cpucfg_path = of_icc_get(dev, "cpu-cfg");
--	if (IS_ERR(core->cpucfg_path))
--		return PTR_ERR(core->cpucfg_path);
-+	if (IS_ERR(core->cpucfg_path)) {
-+		ret = PTR_ERR(core->cpucfg_path);
-+		goto err_video_path_put;
-+	}
- 
- 	core->irq = platform_get_irq(pdev, 0);
--	if (core->irq < 0)
--		return core->irq;
-+	if (core->irq < 0) {
-+		ret = core->irq;
-+		goto err_cpucfg_path_put;
-+	}
- 
- 	core->res = of_device_get_match_data(dev);
--	if (!core->res)
--		return -ENODEV;
-+	if (!core->res) {
-+		ret = -ENODEV;
-+		goto err_cpucfg_path_put;
-+	}
- 
- 	mutex_init(&core->pm_lock);
- 
- 	core->pm_ops = venus_pm_get(core->res->hfi_version);
--	if (!core->pm_ops)
--		return -ENODEV;
-+	if (!core->pm_ops) {
-+		ret = -ENODEV;
-+		goto err_cpucfg_path_put;
-+	}
- 
- 	if (core->pm_ops->core_get) {
- 		ret = core->pm_ops->core_get(dev);
- 		if (ret)
--			return ret;
-+			goto err_cpucfg_path_put;
- 	}
- 
- 	ret = dma_set_mask_and_coherent(dev, core->res->dma_mask);
-@@ -305,6 +313,11 @@ static int venus_probe(struct platform_device *pdev)
- err_core_put:
- 	if (core->pm_ops->core_put)
- 		core->pm_ops->core_put(dev);
-+err_cpucfg_path_put:
-+	icc_put(core->cpucfg_path);
-+err_video_path_put:
-+	icc_put(core->video_path);
-+
- 	return ret;
- }
- 
+ 		/* Ensure recvlen is big enough to read header data */
+ 		if (recvlen < ICMSG_HDR) {
+-			pr_err_ratelimited("Hearbeat request received. Packet length too small: %d\n",
++			pr_err_ratelimited("Heartbeat request received. Packet length too small: %d\n",
+ 					   recvlen);
+ 			break;
+ 		}
 -- 
-2.27.0
+2.29.2
 

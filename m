@@ -2,78 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AFEA30613E
-	for <lists+kernel-janitors@lfdr.de>; Wed, 27 Jan 2021 17:48:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D271E3064F4
+	for <lists+kernel-janitors@lfdr.de>; Wed, 27 Jan 2021 21:21:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231352AbhA0Qs0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 27 Jan 2021 11:48:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46168 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232348AbhA0Qr7 (ORCPT
+        id S232082AbhA0UTZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 27 Jan 2021 15:19:25 -0500
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:50085 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231138AbhA0UTV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 27 Jan 2021 11:47:59 -0500
-Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BDF4C061573;
-        Wed, 27 Jan 2021 08:47:19 -0800 (PST)
-Received: by mail-ot1-x333.google.com with SMTP id i30so2296509ota.6;
-        Wed, 27 Jan 2021 08:47:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=t6uTcRB+VXkCIz3lATiC5ggdGg++l8XBk0JLBAVQyRQ=;
-        b=fCW6mx9zEt2P86ZIqjIsfJcDC1V4MfMEZyirQNvF2vL1kz3lJUWtTGd8TUDd7hakp8
-         k32c6iRH8RPNgnYa75OBVDpqZANTvlys+z1EG4hKaTCWruNFx/tAZ7fC8uDoDZ8B5IYx
-         xkGSeP9dyiTpCI8lE8s/T0/alGi180d7s3omYCcS0G0kUcEhce1MJl/Q5qq/H2pnsful
-         CjP4xDV7KlVd1sdtqZof84gg6Q0oFB0NKe5m4XlLZfUqmgJnwQSYgoYoh06kruXjZDl+
-         UUqIVADrPqcbNYW0UdEn4gkf7KY4ruQ3LDUGnqck3ixESYsaXbjawfI73+tLXVPI1iz9
-         iH2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=t6uTcRB+VXkCIz3lATiC5ggdGg++l8XBk0JLBAVQyRQ=;
-        b=uibVIV2Mg3OLNQnGUlrcniBYGde5Qsb+k/9c5E58bk63ng2tUUoKcOsggNjijKu09q
-         +HzZcY7cRd8S9PaSQtTby0f+Em5V7VYa0hNFzbpqDfMM7ANhrN1WJgsTwenSTnItvXnB
-         F15LgimZPPzQ+Dzmagi6Z974TWef1wYUGgjgyJ3BeY0Z46UTvh9eOjzWfU1R32HmUhh2
-         ixglDrwCeZ1mfgf8YQ7iI/jZBHU3SieFBujVyazCIqJfMxtIRSScDwTrrEKTNCbA5pcm
-         mXusqZs2x2RbRwsnRHcXXhGSFH52a98vvkqcWOFr2WuzHvOkfjBvvCe48rA8213eNsjQ
-         JBvw==
-X-Gm-Message-State: AOAM532wLrSMduV9k+Sy0sS+sZH7+J8k8OvF3zh7F/ysiVs6T9AsoMCx
-        gxbLUoiVP8k78+GM7Uj01hY=
-X-Google-Smtp-Source: ABdhPJzKG5KnvSNuCkZXm21/QqAzF/JQysiApHzQFt10KML1H/pgvR8MPsys8PnMbxu5Dcc53D7EsA==
-X-Received: by 2002:a9d:748a:: with SMTP id t10mr8321054otk.336.1611766038922;
-        Wed, 27 Jan 2021 08:47:18 -0800 (PST)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id k20sm447650otr.34.2021.01.27.08.47.17
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 27 Jan 2021 08:47:18 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 27 Jan 2021 08:47:16 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jean Delvare <jdelvare@suse.com>,
-        Johannes Cornelis Draaijer <jcdra1@gmail.com>,
-        linux-hwmon@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] hwmon: (aht10) Unlock on error in aht10_read_values()
-Message-ID: <20210127164716.GA144600@roeck-us.net>
-References: <YBD5Ro549hMJSnW4@mwanda>
+        Wed, 27 Jan 2021 15:19:21 -0500
+Received: from localhost.localdomain ([92.131.99.25])
+        by mwinf5d75 with ME
+        id MwHZ240090Ys01Y03wHaW9; Wed, 27 Jan 2021 21:17:38 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 27 Jan 2021 21:17:38 +0100
+X-ME-IP: 92.131.99.25
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     stanimir.varbanov@linaro.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, mchehab@kernel.org,
+        georgi.djakov@linaro.org
+Cc:     linux-media@vger.kernel.org, linux-arm-msm@lists.infradead.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] media: venus: core: Fix some resource leaks in the error path of 'venus_probe()'
+Date:   Wed, 27 Jan 2021 21:17:32 +0100
+Message-Id: <20210127201732.743938-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YBD5Ro549hMJSnW4@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jan 27, 2021 at 08:25:26AM +0300, Dan Carpenter wrote:
-> This error path needs to drop the lock before returning.
-> 
-> Fixes: afd018716398 ("hwmon: Add AHT10 Temperature and Humidity Sensor Driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+If an error occurs after a successful 'of_icc_get()' call, it must be
+undone by a corresponding 'icc_put()' call.
 
-Applied.
+Add it in the error handling path of the probe function as already done in
+the remove function.
 
-Thanks,
-Guenter
+Fixes: 32f0a6ddc8c9 ("media: venus: Use on-chip interconnect API")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/media/platform/qcom/venus/core.c | 31 +++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
+index 0bde19edac86..8fd5da941067 100644
+--- a/drivers/media/platform/qcom/venus/core.c
++++ b/drivers/media/platform/qcom/venus/core.c
+@@ -200,27 +200,35 @@ static int venus_probe(struct platform_device *pdev)
+ 		return PTR_ERR(core->video_path);
+ 
+ 	core->cpucfg_path = of_icc_get(dev, "cpu-cfg");
+-	if (IS_ERR(core->cpucfg_path))
+-		return PTR_ERR(core->cpucfg_path);
++	if (IS_ERR(core->cpucfg_path)) {
++		ret = PTR_ERR(core->cpucfg_path);
++		goto err_video_path_put;
++	}
+ 
+ 	core->irq = platform_get_irq(pdev, 0);
+-	if (core->irq < 0)
+-		return core->irq;
++	if (core->irq < 0) {
++		ret = core->irq;
++		goto err_cpucfg_path_put;
++	}
+ 
+ 	core->res = of_device_get_match_data(dev);
+-	if (!core->res)
+-		return -ENODEV;
++	if (!core->res) {
++		ret = -ENODEV;
++		goto err_cpucfg_path_put;
++	}
+ 
+ 	mutex_init(&core->pm_lock);
+ 
+ 	core->pm_ops = venus_pm_get(core->res->hfi_version);
+-	if (!core->pm_ops)
+-		return -ENODEV;
++	if (!core->pm_ops) {
++		ret = -ENODEV;
++		goto err_cpucfg_path_put;
++	}
+ 
+ 	if (core->pm_ops->core_get) {
+ 		ret = core->pm_ops->core_get(dev);
+ 		if (ret)
+-			return ret;
++			goto err_cpucfg_path_put;
+ 	}
+ 
+ 	ret = dma_set_mask_and_coherent(dev, core->res->dma_mask);
+@@ -305,6 +313,11 @@ static int venus_probe(struct platform_device *pdev)
+ err_core_put:
+ 	if (core->pm_ops->core_put)
+ 		core->pm_ops->core_put(dev);
++err_cpucfg_path_put:
++	icc_put(core->cpucfg_path);
++err_video_path_put:
++	icc_put(core->video_path);
++
+ 	return ret;
+ }
+ 
+-- 
+2.27.0
+

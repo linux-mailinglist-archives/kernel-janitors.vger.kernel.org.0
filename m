@@ -2,96 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22A6B305CC8
-	for <lists+kernel-janitors@lfdr.de>; Wed, 27 Jan 2021 14:17:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AFEA30613E
+	for <lists+kernel-janitors@lfdr.de>; Wed, 27 Jan 2021 17:48:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S313526AbhAZWoE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Jan 2021 17:44:04 -0500
-Received: from mga11.intel.com ([192.55.52.93]:61097 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732673AbhAZFZs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 Jan 2021 00:25:48 -0500
-IronPort-SDR: TJQpT4MYSAJotnUotqi6mG6pkcroWnk637aB9abt2/Iea8NHhDEv9xWYrVVQ7CR9q7ARjIwj5p
- Fz5Q4YFCTzCQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9875"; a="176339202"
-X-IronPort-AV: E=Sophos;i="5.79,375,1602572400"; 
-   d="asc'?scan'208";a="176339202"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2021 21:23:57 -0800
-IronPort-SDR: eaBlv4AGGijngGP3ws/b3rP3NdBkcHvxQf2pWxo6jNO0z+G6Pw5uviBojrjszIlien2DQ2S0Pf
- zWsQp+kD/zbQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,375,1602572400"; 
-   d="asc'?scan'208";a="573943834"
-Received: from zhen-hp.sh.intel.com (HELO zhen-hp) ([10.239.160.147])
-  by fmsmga006.fm.intel.com with ESMTP; 25 Jan 2021 21:23:54 -0800
-Date:   Tue, 26 Jan 2021 13:09:01 +0800
-From:   Zhenyu Wang <zhenyuw@linux.intel.com>
-To:     Chris Wilson <chris@chris-wilson.co.uk>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Yan Zhao <yan.y.zhao@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        intel-gvt-dev@lists.freedesktop.org,
-        Zhi Wang <zhi.a.wang@intel.com>
-Subject: Re: [PATCH] drm/i915/gvt: fix uninitialized return in
- intel_gvt_update_reg_whitelist()
-Message-ID: <20210126050901.GF1538@zhen-hp.sh.intel.com>
-Reply-To: Zhenyu Wang <zhenyuw@linux.intel.com>
-References: <YA6F3oF8mRaNQWjb@mwanda>
- <161156789392.31416.7341729779003502151@build.alporthouse.com>
+        id S231352AbhA0Qs0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 27 Jan 2021 11:48:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46168 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232348AbhA0Qr7 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 27 Jan 2021 11:47:59 -0500
+Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BDF4C061573;
+        Wed, 27 Jan 2021 08:47:19 -0800 (PST)
+Received: by mail-ot1-x333.google.com with SMTP id i30so2296509ota.6;
+        Wed, 27 Jan 2021 08:47:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=t6uTcRB+VXkCIz3lATiC5ggdGg++l8XBk0JLBAVQyRQ=;
+        b=fCW6mx9zEt2P86ZIqjIsfJcDC1V4MfMEZyirQNvF2vL1kz3lJUWtTGd8TUDd7hakp8
+         k32c6iRH8RPNgnYa75OBVDpqZANTvlys+z1EG4hKaTCWruNFx/tAZ7fC8uDoDZ8B5IYx
+         xkGSeP9dyiTpCI8lE8s/T0/alGi180d7s3omYCcS0G0kUcEhce1MJl/Q5qq/H2pnsful
+         CjP4xDV7KlVd1sdtqZof84gg6Q0oFB0NKe5m4XlLZfUqmgJnwQSYgoYoh06kruXjZDl+
+         UUqIVADrPqcbNYW0UdEn4gkf7KY4ruQ3LDUGnqck3ixESYsaXbjawfI73+tLXVPI1iz9
+         iH2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=t6uTcRB+VXkCIz3lATiC5ggdGg++l8XBk0JLBAVQyRQ=;
+        b=uibVIV2Mg3OLNQnGUlrcniBYGde5Qsb+k/9c5E58bk63ng2tUUoKcOsggNjijKu09q
+         +HzZcY7cRd8S9PaSQtTby0f+Em5V7VYa0hNFzbpqDfMM7ANhrN1WJgsTwenSTnItvXnB
+         F15LgimZPPzQ+Dzmagi6Z974TWef1wYUGgjgyJ3BeY0Z46UTvh9eOjzWfU1R32HmUhh2
+         ixglDrwCeZ1mfgf8YQ7iI/jZBHU3SieFBujVyazCIqJfMxtIRSScDwTrrEKTNCbA5pcm
+         mXusqZs2x2RbRwsnRHcXXhGSFH52a98vvkqcWOFr2WuzHvOkfjBvvCe48rA8213eNsjQ
+         JBvw==
+X-Gm-Message-State: AOAM532wLrSMduV9k+Sy0sS+sZH7+J8k8OvF3zh7F/ysiVs6T9AsoMCx
+        gxbLUoiVP8k78+GM7Uj01hY=
+X-Google-Smtp-Source: ABdhPJzKG5KnvSNuCkZXm21/QqAzF/JQysiApHzQFt10KML1H/pgvR8MPsys8PnMbxu5Dcc53D7EsA==
+X-Received: by 2002:a9d:748a:: with SMTP id t10mr8321054otk.336.1611766038922;
+        Wed, 27 Jan 2021 08:47:18 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id k20sm447650otr.34.2021.01.27.08.47.17
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 27 Jan 2021 08:47:18 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Wed, 27 Jan 2021 08:47:16 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Johannes Cornelis Draaijer <jcdra1@gmail.com>,
+        linux-hwmon@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] hwmon: (aht10) Unlock on error in aht10_read_values()
+Message-ID: <20210127164716.GA144600@roeck-us.net>
+References: <YBD5Ro549hMJSnW4@mwanda>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="/WwmFnJnmDyWGHa4"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <161156789392.31416.7341729779003502151@build.alporthouse.com>
+In-Reply-To: <YBD5Ro549hMJSnW4@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Wed, Jan 27, 2021 at 08:25:26AM +0300, Dan Carpenter wrote:
+> This error path needs to drop the lock before returning.
+> 
+> Fixes: afd018716398 ("hwmon: Add AHT10 Temperature and Humidity Sensor Driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
---/WwmFnJnmDyWGHa4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied.
 
-On 2021.01.25 09:44:53 +0000, Chris Wilson wrote:
-> Quoting Dan Carpenter (2021-01-25 08:48:30)
-> > Smatch found an uninitialized variable bug in this code:
-> >=20
-> >     drivers/gpu/drm/i915/gvt/cmd_parser.c:3191 intel_gvt_update_reg_whi=
-telist()
-> >     error: uninitialized symbol 'ret'.
-> >=20
-> > The first thing that Smatch complains about is that "ret" isn't set if
-> > we don't enter the "for_each_engine(engine, &dev_priv->gt, id) {" loop.
-> > Presumably we always have at least one engine so that's a false
-> > positive.
-> >=20
-> > But it's definitely a bug to not set "ret" if i915_gem_object_pin_map()
-> > fails.
->=20
-> True.
-> =20
-> > Let's fix the bug and silence the false positive.
-> >=20
-> > Fixes: 493f30cd086e ("drm/i915/gvt: parse init context to update cmd ac=
-cessible reg whitelist")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
-
-Thanks, Dan & Chris! Queued this up.
-
---/WwmFnJnmDyWGHa4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EARECAB0WIQTXuabgHDW6LPt9CICxBBozTXgYJwUCYA+j6AAKCRCxBBozTXgY
-J5cJAJ9sFEZY0fDpLiQtUxokU7lBHau3GQCePa3i/LHx5XYBX6y/5g6zbXsx+DQ=
-=ooGI
------END PGP SIGNATURE-----
-
---/WwmFnJnmDyWGHa4--
+Thanks,
+Guenter

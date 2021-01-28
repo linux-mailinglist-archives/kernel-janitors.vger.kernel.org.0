@@ -2,28 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7742307B9F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 18:02:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F612307BEE
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 18:15:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232816AbhA1RAa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Jan 2021 12:00:30 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:46344 "EHLO
+        id S232747AbhA1RN5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Jan 2021 12:13:57 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:46787 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232723AbhA1Q7w (ORCPT
+        with ESMTP id S231436AbhA1RLg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Jan 2021 11:59:52 -0500
+        Thu, 28 Jan 2021 12:11:36 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1l5AdT-0005DK-CY; Thu, 28 Jan 2021 16:59:11 +0000
+        id 1l5Aoi-000613-GH; Thu, 28 Jan 2021 17:10:48 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] media: drxj: remove redundant assignments to variable image_to_select
-Date:   Thu, 28 Jan 2021 16:59:11 +0000
-Message-Id: <20210128165911.644307-1-colin.king@canonical.com>
+Subject: [PATCH] rtlwifi: rtl8192se: remove redundant initialization of variable rtstatus
+Date:   Thu, 28 Jan 2021 17:10:48 +0000
+Message-Id: <20210128171048.644669-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -34,28 +37,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable image_to_select is being initialized with a value that
-is never read and it is being updated later with a new value.  The
-initialization is redundant and can be removed.
+The variable rtstatu is being initialized with a value that is never
+read and it is being updated later with a new value.  The initialization
+is redundant and can be removed.
 
+Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/media/dvb-frontends/drx39xyj/drxj.c | 2 +-
+ drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/drx39xyj/drxj.c b/drivers/media/dvb-frontends/drx39xyj/drxj.c
-index 37b32d9b398d..bf9e4ef35684 100644
---- a/drivers/media/dvb-frontends/drx39xyj/drxj.c
-+++ b/drivers/media/dvb-frontends/drx39xyj/drxj.c
-@@ -4775,7 +4775,7 @@ set_frequency(struct drx_demod_instance *demod,
- 	bool select_pos_image = false;
- 	bool rf_mirror;
- 	bool tuner_mirror;
--	bool image_to_select = true;
-+	bool image_to_select;
- 	s32 fm_frequency_shift = 0;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
+index 63283d9e7485..aaa004d4d6d0 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
+@@ -1017,7 +1017,7 @@ bool rtl92s_phy_bb_config(struct ieee80211_hw *hw)
+ {
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+ 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	bool rtstatus = true;
++	bool rtstatus;
+ 	u8 pathmap, index, rf_num = 0;
+ 	u8 path1, path2;
  
- 	rf_mirror = (ext_attr->mirror == DRX_MIRROR_YES) ? true : false;
 -- 
 2.29.2
 

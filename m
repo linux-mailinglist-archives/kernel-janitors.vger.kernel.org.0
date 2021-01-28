@@ -2,83 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13DC4307F8A
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 21:25:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60068307FEF
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 21:54:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231355AbhA1UY1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Jan 2021 15:24:27 -0500
-Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:36015 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229825AbhA1UYW (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Jan 2021 15:24:22 -0500
-Received: from localhost.localdomain ([92.131.99.25])
-        by mwinf5d73 with ME
-        id NLNc2400S0Ys01Y03LNdAh; Thu, 28 Jan 2021 21:22:40 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 28 Jan 2021 21:22:40 +0100
-X-ME-IP: 92.131.99.25
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     stanimir.varbanov@linaro.org, agross@kernel.org,
-        bjorn.andersson@linaro.org, mchehab@kernel.org,
-        georgi.djakov@linaro.org
-Cc:     linux-media@vger.kernel.org, linux-arm-msm@lists.infradead.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH v2] media: venus: core: Fix some resource leaks in the error path of 'venus_probe()'
-Date:   Thu, 28 Jan 2021 21:22:34 +0100
-Message-Id: <20210128202234.747048-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.27.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S231224AbhA1UwY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Jan 2021 15:52:24 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55668 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229791AbhA1UwR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 Jan 2021 15:52:17 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9702264DE0;
+        Thu, 28 Jan 2021 20:51:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1611867090;
+        bh=xphOtEftTu7lP4Gys6R2t4vfQ/b/ea8bPkcZ8sh133c=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=KlgaJcRLccaM7VL4bcABB0YaqCKnbY+UbV6gSJA9KmbWUFjH+gCAJU6O6GQ8IxJfT
+         Zz9iSrJVr+vVASFSL6F+L5CuZR0UsIKNZLc/M4lk6rzdGMnKAxLgeKJyO58nxx12Zf
+         41FdYmQu5hBDGWph414x+bE9JsmYSwL3lX+YLHAI=
+Date:   Thu, 28 Jan 2021 12:51:29 -0800
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Vlastimil Babka <vbabka@suse.cz>
+Cc:     Colin King <colin.king@canonical.com>,
+        Seth Jennings <sjenning@redhat.com>,
+        Dan Streetman <ddstreet@ieee.org>,
+        Vitaly Wool <vitaly.wool@konsulko.com>,
+        Tian Tao <tiantao6@hisilicon.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>, linux-mm@kvack.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] mm/zswap: fix potential uninitialized pointer
+ read on tmp
+Message-Id: <20210128125129.27dd2042b8d04b28c45ad7c0@linux-foundation.org>
+In-Reply-To: <2dee1f77-863b-e7aa-a3d2-bb4591d4f720@suse.cz>
+References: <20210128141728.639030-1-colin.king@canonical.com>
+        <2dee1f77-863b-e7aa-a3d2-bb4591d4f720@suse.cz>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If an error occurs after a successful 'of_icc_get()' call, it must be
-undone.
+On Thu, 28 Jan 2021 16:18:23 +0100 Vlastimil Babka <vbabka@suse.cz> wrote:
 
-Use 'devm_of_icc_get()' instead of 'of_icc_get()' to avoid the leak.
-Update the remove function accordingly and axe the now unneeded
-'icc_put()' calls.
+> On 1/28/21 3:17 PM, Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > In the case where zpool_can_sleep_mapped(pool) returns 0
+> > then tmp is not allocated and tmp is then an uninitialized
+> > pointer. Later if entry is null, tmp is freed, hence free'ing
+> > an uninitialized pointer. Fix this by ensuring tmp is initialized
+> > to NULL.
+> > 
+> > Addresses-Coverity: ("Uninitialized pointer read")
+> > Fixes: 908aa806dba0 ("mm/zswap: fix potential memory leak")
+> 
+> That's a linux-next hash, patch is in mmotm [1] *) You know what it means...
+> 
+> *) actually it's not there, yet it is in -next. What's going on?
+> 
+> [1]
+> https://ozlabs.org/~akpm/mmotm/broken-out/mm-zswap-fix-potential-memory-leak.patch
 
-Fixes: 32f0a6ddc8c9 ("media: venus: Use on-chip interconnect API")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-v1->v2: use managed resources instead of expanding the error handling path.
----
- drivers/media/platform/qcom/venus/core.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+The containing file was renamed to
+https://ozlabs.org/~akpm/mmotm/broken-out/mm-zswap-add-the-flag-can_sleep_mapped-fix-2.patch,
+since it's a fix against mm-zswap-add-the-flag-can_sleep_mapped.patch.
 
-diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
-index 0bde19edac86..c2458dee794b 100644
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -195,11 +195,11 @@ static int venus_probe(struct platform_device *pdev)
- 	if (IS_ERR(core->base))
- 		return PTR_ERR(core->base);
- 
--	core->video_path = of_icc_get(dev, "video-mem");
-+	core->video_path = devm_of_icc_get(dev, "video-mem");
- 	if (IS_ERR(core->video_path))
- 		return PTR_ERR(core->video_path);
- 
--	core->cpucfg_path = of_icc_get(dev, "cpu-cfg");
-+	core->cpucfg_path = devm_of_icc_get(dev, "cpu-cfg");
- 	if (IS_ERR(core->cpucfg_path))
- 		return PTR_ERR(core->cpucfg_path);
- 
-@@ -334,9 +334,6 @@ static int venus_remove(struct platform_device *pdev)
- 
- 	hfi_destroy(core);
- 
--	icc_put(core->video_path);
--	icc_put(core->cpucfg_path);
--
- 	v4l2_device_unregister(&core->v4l2_dev);
- 	mutex_destroy(&core->pm_lock);
- 	mutex_destroy(&core->lock);
--- 
-2.27.0
+And this patch's containing file will of course be
+mm-zswap-add-the-flag-can_sleep_mapped-fix-3.patch.
 

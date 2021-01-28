@@ -2,66 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F828307774
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 14:53:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 533EA307791
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 15:00:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231215AbhA1Nvy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Jan 2021 08:51:54 -0500
-Received: from mail-wr1-f44.google.com ([209.85.221.44]:37936 "EHLO
-        mail-wr1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231179AbhA1Nvy (ORCPT
+        id S231236AbhA1OAI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Jan 2021 09:00:08 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:40844 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231159AbhA1OAG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Jan 2021 08:51:54 -0500
-Received: by mail-wr1-f44.google.com with SMTP id s7so2480788wru.5;
-        Thu, 28 Jan 2021 05:51:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=4iEdjsINNCN9xHQ/bPSSlSE4qPnRqOgYhiFEfNZAgT8=;
-        b=qbcbswTm6BzZwotO7NDQs6usNXG1po4TxC6ZPScESWJfIeq+8LfRtd3phn1EXF3mLv
-         rPsVcBu2HKtXS1qS3WvmfWuD1H+DVdzGui/hGN7iSfDVpuXRxeIIkJoeqK4VtXdRGWon
-         2ME7NQVP4fyFhtF5547MEP08sjJ66IPQxczjb3h6JMUJi6yLzyREHK+kFWsrMLRmKdzE
-         tYR0vQAgpiPPYSLmv7fnHdh7Uu2nrLDJldKGGQAoTmVWGd1xyMEIEnFfCNcSEJCeAhMA
-         isnQw0dVigWoaZSVL2ahutIjO/InFg0RVefJuXSCESKI/0bMYaIcJPjhFXK6loy80U/+
-         afNQ==
-X-Gm-Message-State: AOAM532F+C9rLsuj+lXMQEaDA0jQHOu3ZVDMSDrPrBlFKgRpSeIT3Bsy
-        pzp0lKrnt67kzBAloYql12Q=
-X-Google-Smtp-Source: ABdhPJwdzM9UQYwe3e17Mcko1vj1A7/Gtb6ol8sF+TJwt/HaeF4adnESAzsCB5yrTISTZfuxnA+1/w==
-X-Received: by 2002:adf:ce89:: with SMTP id r9mr16677435wrn.345.1611841872546;
-        Thu, 28 Jan 2021 05:51:12 -0800 (PST)
-Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
-        by smtp.gmail.com with ESMTPSA id v126sm6269778wma.22.2021.01.28.05.51.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Jan 2021 05:51:11 -0800 (PST)
-Date:   Thu, 28 Jan 2021 13:51:10 +0000
-From:   Wei Liu <wei.liu@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "K . Y . Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>, linux-hyperv@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] hv_utils: Fix spelling mistake "Hearbeat" ->
- "Heartbeat"
-Message-ID: <20210128135110.h74cq7j2iavmz2pt@liuwe-devbox-debian-v2>
-References: <20210127233136.623465-1-colin.king@canonical.com>
+        Thu, 28 Jan 2021 09:00:06 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1l57pT-0000M7-UN; Thu, 28 Jan 2021 13:59:24 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Ricardo Ribalda <ribalda@chromium.org>,
+        linux-media@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][V2][next] media: uvcvideo: Fix memory leak when gpiod_to_irq fails
+Date:   Thu, 28 Jan 2021 13:59:23 +0000
+Message-Id: <20210128135923.638480-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210127233136.623465-1-colin.king@canonical.com>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jan 27, 2021 at 11:31:36PM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in an error message. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied to hyperv-next. Thanks.
+Currently when the call to gpiod_to_irq fails the error return
+path does not kfree the recently allocated object 'unit'. Fix this
+swapping the order of the irq call and the allocation of unit.
 
-Wei.
+Thanks to Ricardo Ribalda for suggesting this fix.
+
+Addresses-Coverity: ("Resource leak")
+Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+
+V2: swap order of gpiod_to_irq call and allocation of unit to simplify
+    error cleanup.
+
+---
+ drivers/media/usb/uvc/uvc_driver.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 1abc122a0977..f62e6cb66daf 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -1534,10 +1534,6 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+ 	if (IS_ERR_OR_NULL(gpio_privacy))
+ 		return PTR_ERR_OR_ZERO(gpio_privacy);
+ 
+-	unit = uvc_alloc_entity(UVC_EXT_GPIO_UNIT, UVC_EXT_GPIO_UNIT_ID, 0, 1);
+-	if (!unit)
+-		return -ENOMEM;
+-
+ 	irq = gpiod_to_irq(gpio_privacy);
+ 	if (irq < 0) {
+ 		if (irq != EPROBE_DEFER)
+@@ -1546,6 +1542,10 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+ 		return irq;
+ 	}
+ 
++	unit = uvc_alloc_entity(UVC_EXT_GPIO_UNIT, UVC_EXT_GPIO_UNIT_ID, 0, 1);
++	if (!unit)
++		return -ENOMEM;
++
+ 	unit->gpio.gpio_privacy = gpio_privacy;
+ 	unit->gpio.irq = irq;
+ 	unit->gpio.bControlSize = 1;
+-- 
+2.29.2
+

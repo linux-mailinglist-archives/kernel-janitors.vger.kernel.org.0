@@ -2,51 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3F9730730B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 10:45:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42DF53072E5
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 10:40:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232431AbhA1Jmn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Jan 2021 04:42:43 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:55302 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232550AbhA1JiO (ORCPT
+        id S231758AbhA1JjD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Jan 2021 04:39:03 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:36398 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231641AbhA1Jgs (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Jan 2021 04:38:14 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10S9DtJp014317;
-        Thu, 28 Jan 2021 09:37:31 GMT
+        Thu, 28 Jan 2021 04:36:48 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10S9FE15118562;
+        Thu, 28 Jan 2021 09:36:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=atZj01cJfkidzySXjXsuRWJq8wRW5TFiP6hnSKOyVAg=;
- b=NfVs/QMZXJNwD/kdxlZgWFTR8TxvdD/8+amaCaWzkuprlPBXEVWMQayXMINY6o577Rf+
- XTeLT8b3/22zjfjsHchy90CNUhYkzUQKUC1dQiLptpq3YF4BJNCtwq+QUU5DcyiYEaoE
- 9z6AjMpgYWapNB5f8PR+qPeKWS4GqXTGiAiu9WL4SDV08VX/maR7DwBy1vM17d/WtTH+
- pggeTFeUbtwYIGsOGofjKqgSRYR20Rr8vhwo4KTID/8CEhmXrZ7zGce2irFKr+TJRQ7X
- Dl05tjyIzA9XEXoD0dUQnfBhShwPSZgu6gsPcFT87eSD7DpwrVh+E42KkiUJb/7iUEvo WQ== 
+ bh=R1Fdx62Xf99Nzq0W82FyQBbmwyGKC1XkdoIOB/k4UWY=;
+ b=sFrH09d1HGxtjiY0UMp6vCb1pDf26ztgRvD6dy17ROOoTPvyJ5vQ56f3Apv2oQXgacft
+ fjQjtmmxlXL5fBH/HWh/5GclgAK0kPVB74nKXkspW7vs9RsEiDphydCYn5+F6TxVBDs9
+ 3TE4cI1KGTBm6Rv8YBD+pmgh+DDKh1cZ+9AYcHHQQzNNP0sf0H9v/OHiR3mV38jOzOgl
+ vlAD/z131TGICuzMPUvieN67SdH1D8YnLJnKh8FYQXYU6UTbPZjI4BIqcS0HAqClT/FK
+ bKtnnVCHTdf0vQ19v/OSW89CZF2sPS2R7zV87WDi1tsvlfSZHzs7i2WGLWBEydvPyyNA fg== 
 Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 368b7r36jj-1
+        by aserp2130.oracle.com with ESMTP id 3689aaubjb-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 28 Jan 2021 09:37:31 +0000
+        Thu, 28 Jan 2021 09:36:00 +0000
 Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10S9GEQC156326;
-        Thu, 28 Jan 2021 09:35:30 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 368wr02pv1-1
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10S9GE6H156504;
+        Thu, 28 Jan 2021 09:35:58 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 368wr02qhb-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 28 Jan 2021 09:35:30 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 10S9ZTtP029490;
-        Thu, 28 Jan 2021 09:35:29 GMT
+        Thu, 28 Jan 2021 09:35:58 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 10S9ZvGP024403;
+        Thu, 28 Jan 2021 09:35:58 GMT
 Received: from mwanda (/10.175.203.176)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 28 Jan 2021 01:35:28 -0800
-Date:   Thu, 28 Jan 2021 12:35:23 +0300
+        with ESMTP ; Thu, 28 Jan 2021 01:35:57 -0800
+Date:   Thu, 28 Jan 2021 12:35:51 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] USB: serial: mos7720: Fix error code in mos7720_write()
-Message-ID: <YBKFW60qMJbtjvum@mwanda>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Shaun Jackman <sjackman@gmail.com>,
+        linux-input@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] Input: elo - fix an error code in elo_connect()
+Message-ID: <YBKFd5CvDu+jVmfW@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -57,61 +58,39 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamsc
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2101280048
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9877 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 phishscore=0
- adultscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 mlxscore=0 clxscore=1015 mlxlogscore=999
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0
+ lowpriorityscore=0 mlxlogscore=999 clxscore=1011 phishscore=0 bulkscore=0
+ spamscore=0 priorityscore=1501 mlxscore=0 suspectscore=0 impostorscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2101280048
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This code should return -ENOMEM if the kmalloc() fails but instead
-it returns success.
+If elo_setup_10() fails then this should return an error code instead
+of success.
 
+Fixes: fae3006e4b42 ("Input: elo - add support for non-pressure-sensitive touchscreens")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-The first error path is probably wrong as well?
-
-drivers/usb/serial/mos7720.c
-  1077          /* try to find a free urb in the list */
-  1078          urb = NULL;
-  1079  
-  1080          for (i = 0; i < NUM_URBS; ++i) {
-  1081                  if (mos7720_port->write_urb_pool[i] &&
-  1082                      mos7720_port->write_urb_pool[i]->status != -EINPROGRESS) {
-  1083                          urb = mos7720_port->write_urb_pool[i];
-  1084                          dev_dbg(&port->dev, "URB:%d\n", i);
-  1085                          break;
-  1086                  }
-  1087          }
-  1088  
-  1089          if (urb == NULL) {
-  1090                  dev_dbg(&port->dev, "%s - no more free urbs\n", __func__);
-  1091                  goto exit;
-
-Should return -ENODEV?
-
-  1092          }
-
- drivers/usb/serial/mos7720.c | 4 +++-
+ drivers/input/touchscreen/elo.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/serial/mos7720.c b/drivers/usb/serial/mos7720.c
-index ed347a6d50ba..aa55169796a3 100644
---- a/drivers/usb/serial/mos7720.c
-+++ b/drivers/usb/serial/mos7720.c
-@@ -1094,8 +1094,10 @@ static int mos7720_write(struct tty_struct *tty, struct usb_serial_port *port,
- 	if (urb->transfer_buffer == NULL) {
- 		urb->transfer_buffer = kmalloc(URB_TRANSFER_BUFFER_SIZE,
- 					       GFP_ATOMIC);
--		if (!urb->transfer_buffer)
-+		if (!urb->transfer_buffer) {
-+			bytes_sent = -ENOMEM;
- 			goto exit;
+diff --git a/drivers/input/touchscreen/elo.c b/drivers/input/touchscreen/elo.c
+index e0bacd34866a..4b2fb73da5e2 100644
+--- a/drivers/input/touchscreen/elo.c
++++ b/drivers/input/touchscreen/elo.c
+@@ -341,8 +341,10 @@ static int elo_connect(struct serio *serio, struct serio_driver *drv)
+ 	switch (elo->id) {
+ 
+ 	case 0: /* 10-byte protocol */
+-		if (elo_setup_10(elo))
++		if (elo_setup_10(elo)) {
++			err = -EINVAL;
+ 			goto fail3;
 +		}
- 	}
- 	transfer_size = min(count, URB_TRANSFER_BUFFER_SIZE);
+ 
+ 		break;
  
 -- 
 2.29.2

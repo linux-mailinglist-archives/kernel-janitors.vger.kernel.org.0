@@ -2,62 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACA4A3078AC
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 15:52:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AC833078D7
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 16:01:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232395AbhA1OwB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Jan 2021 09:52:01 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:42271 "EHLO
+        id S231607AbhA1O50 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Jan 2021 09:57:26 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:42430 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231893AbhA1OuT (ORCPT
+        with ESMTP id S231537AbhA1O41 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Jan 2021 09:50:19 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        Thu, 28 Jan 2021 09:56:27 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212])
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1l58c4-0004GU-6X; Thu, 28 Jan 2021 14:49:36 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     "J . Bruce Fields" <bfields@fieldses.org>,
-        Chuck Lever <chuck.lever@oracle.com>, linux-nfs@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] nfsd: fix check of statid returned from call to find_stateid_by_type
-Date:   Thu, 28 Jan 2021 14:49:35 +0000
-Message-Id: <20210128144935.640026-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.29.2
+        id 1l58i1-0004jj-BX; Thu, 28 Jan 2021 14:55:45 +0000
+Subject: Re: [PATCH][next] Input: iqs5xx: Ensure error_bl is initialized on
+ error exit path
+To:     Jeff LaBundy <jeff@labundy.com>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-input@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20210128121903.636652-1-colin.king@canonical.com>
+ <20210128143946.GA14625@labundy.com>
+From:   Colin Ian King <colin.king@canonical.com>
+Message-ID: <b5dc0706-1933-fd2b-5dfc-49fb4aed38f1@canonical.com>
+Date:   Thu, 28 Jan 2021 14:55:44 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210128143946.GA14625@labundy.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 28/01/2021 14:39, Jeff LaBundy wrote:
+> Hi Colin,
+> 
+> On Thu, Jan 28, 2021 at 12:19:03PM +0000, Colin King wrote:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> Currently if the call to qs5xx_fw_file_parse fails the error return
+>> exit path will read the uninitialized variable error_bl. Fix this
+>> by ensuring error_bl is initialized to zero.
+>>
+>> Addresses-Coverity: ("Uninitialized scalar variable")
+>> Fixes: 2539da6677b6 ("Input: iqs5xx - preserve bootloader errors")
+>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> 
+> This was fixed in [1]; it just needs pushed.
 
-The call to find_stateid_by_type is setting the return value in *stid
-yet the NULL check of the return is checking stid instead of *stid.
-Fix this by adding in the missing pointer * operator.
-
-Addresses-Coverity: ("Dereference before null check")
-Fixes: 6cdaa72d4dde ("nfsd: find_cpntf_state cleanup")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- fs/nfsd/nfs4state.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index f554e3480bb1..423fd6683f3a 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -5824,7 +5824,7 @@ static __be32 find_cpntf_state(struct nfsd_net *nn, stateid_t *st,
- 
- 	*stid = find_stateid_by_type(found, &cps->cp_p_stateid,
- 			NFS4_DELEG_STID|NFS4_OPEN_STID|NFS4_LOCK_STID);
--	if (stid)
-+	if (*stid)
- 		status = nfs_ok;
- 	else
- 		status = nfserr_bad_stateid;
--- 
-2.29.2
+OK, thanks for letting me know.
+> 
+> [1] https://patchwork.kernel.org/patch/12043701
+> 
+>> ---
+>>  drivers/input/touchscreen/iqs5xx.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/input/touchscreen/iqs5xx.c b/drivers/input/touchscreen/iqs5xx.c
+>> index 05e0c6ff217b..54f30038dca4 100644
+>> --- a/drivers/input/touchscreen/iqs5xx.c
+>> +++ b/drivers/input/touchscreen/iqs5xx.c
+>> @@ -852,7 +852,7 @@ static int iqs5xx_fw_file_parse(struct i2c_client *client,
+>>  static int iqs5xx_fw_file_write(struct i2c_client *client, const char *fw_file)
+>>  {
+>>  	struct iqs5xx_private *iqs5xx = i2c_get_clientdata(client);
+>> -	int error, error_bl;
+>> +	int error, error_bl = 0;
+>>  	u8 *pmap;
+>>  
+>>  	if (iqs5xx->bl_status == IQS5XX_BL_STATUS_NONE)
+>> -- 
+>> 2.29.2
+>>
+> 
+> Kind regards,
+> Jeff LaBundy
+> 
 

@@ -2,71 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6BE5307E8C
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 20:03:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13DC4307F8A
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 21:25:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231718AbhA1S4K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Jan 2021 13:56:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42922 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232120AbhA1Sv0 (ORCPT
+        id S231355AbhA1UY1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Jan 2021 15:24:27 -0500
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:36015 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229825AbhA1UYW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Jan 2021 13:51:26 -0500
-Received: from fieldses.org (fieldses.org [IPv6:2600:3c00:e000:2f7::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED38FC06178B;
-        Thu, 28 Jan 2021 10:50:43 -0800 (PST)
-Received: by fieldses.org (Postfix, from userid 2815)
-        id A2A634163; Thu, 28 Jan 2021 13:50:42 -0500 (EST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 fieldses.org A2A634163
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fieldses.org;
-        s=default; t=1611859842;
-        bh=O2QhWKxUiDcf6x2ujs95u3iWaIVVJV2+uNn4cjNsIZk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=DnFtCSnGXeQSWFAGogu4NtdJQorx/JwnTjo8DDlJKGQvtjpjEJdmOvO2mruqjuCmR
-         9WMMvdojVUSY4nWRQitFuNyo43M6acrmGb0bS459az3mLRiRvR567hgROU+8kmCdhJ
-         xKW9op6vkSZWaKLswRknRbf5LIezAf098S8+kOu4=
-Date:   Thu, 28 Jan 2021 13:50:42 -0500
-From:   Bruce Fields <bfields@fieldses.org>
-To:     Chuck Lever <chuck.lever@oracle.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Colin King <colin.king@canonical.com>,
-        Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH][next] nfsd: fix check of statid returned from call to
- find_stateid_by_type
-Message-ID: <20210128185042.GB29887@fieldses.org>
-References: <20210128144935.640026-1-colin.king@canonical.com>
- <793C88A3-B117-4138-B74A-845E0BD383C9@oracle.com>
- <20210128153456.GI2696@kadam>
- <80ACEDFA-B496-44E0-AABB-BD4A7826516B@oracle.com>
+        Thu, 28 Jan 2021 15:24:22 -0500
+Received: from localhost.localdomain ([92.131.99.25])
+        by mwinf5d73 with ME
+        id NLNc2400S0Ys01Y03LNdAh; Thu, 28 Jan 2021 21:22:40 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 28 Jan 2021 21:22:40 +0100
+X-ME-IP: 92.131.99.25
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     stanimir.varbanov@linaro.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, mchehab@kernel.org,
+        georgi.djakov@linaro.org
+Cc:     linux-media@vger.kernel.org, linux-arm-msm@lists.infradead.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH v2] media: venus: core: Fix some resource leaks in the error path of 'venus_probe()'
+Date:   Thu, 28 Jan 2021 21:22:34 +0100
+Message-Id: <20210128202234.747048-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <80ACEDFA-B496-44E0-AABB-BD4A7826516B@oracle.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jan 28, 2021 at 03:53:36PM +0000, Chuck Lever wrote:
-> > On Jan 28, 2021, at 10:34 AM, Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> > Fixes tags are used for a lot of different things:
-> > 1)  If there is a fixes tag, then you can tell it does *NOT* have to
-> >    be back ported because the original commit is not in the stable
-> >    tree.  It saves time for the stable maintainers.
-> > 2)  Metrics to figure out how quickly we are fixing bugs.
-> > 3)  Sometimes the Fixes tag helps because we want to review the original
-> >    patch to see what the intent was.
-> > 
-> > All sorts of stuff.  Etc.
-> 
-> Yep, I'm a fan of all that. I just want to avoid poking the stable
-> automation bear when it's unnecessary.
+If an error occurs after a successful 'of_icc_get()' call, it must be
+undone.
 
-I've routinely had patches with Fixes: lines referencing other queued-up
-patches, and I didn't get any stable mail about it.
+Use 'devm_of_icc_get()' instead of 'of_icc_get()' to avoid the leak.
+Update the remove function accordingly and axe the now unneeded
+'icc_put()' calls.
 
-100% not something to worry about.
+Fixes: 32f0a6ddc8c9 ("media: venus: Use on-chip interconnect API")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+v1->v2: use managed resources instead of expanding the error handling path.
+---
+ drivers/media/platform/qcom/venus/core.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---b.
+diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
+index 0bde19edac86..c2458dee794b 100644
+--- a/drivers/media/platform/qcom/venus/core.c
++++ b/drivers/media/platform/qcom/venus/core.c
+@@ -195,11 +195,11 @@ static int venus_probe(struct platform_device *pdev)
+ 	if (IS_ERR(core->base))
+ 		return PTR_ERR(core->base);
+ 
+-	core->video_path = of_icc_get(dev, "video-mem");
++	core->video_path = devm_of_icc_get(dev, "video-mem");
+ 	if (IS_ERR(core->video_path))
+ 		return PTR_ERR(core->video_path);
+ 
+-	core->cpucfg_path = of_icc_get(dev, "cpu-cfg");
++	core->cpucfg_path = devm_of_icc_get(dev, "cpu-cfg");
+ 	if (IS_ERR(core->cpucfg_path))
+ 		return PTR_ERR(core->cpucfg_path);
+ 
+@@ -334,9 +334,6 @@ static int venus_remove(struct platform_device *pdev)
+ 
+ 	hfi_destroy(core);
+ 
+-	icc_put(core->video_path);
+-	icc_put(core->cpucfg_path);
+-
+ 	v4l2_device_unregister(&core->v4l2_dev);
+ 	mutex_destroy(&core->pm_lock);
+ 	mutex_destroy(&core->lock);
+-- 
+2.27.0
+

@@ -2,61 +2,135 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56E2D307CB9
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 18:39:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8EE4307CDC
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 18:44:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233082AbhA1Rh7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Jan 2021 12:37:59 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:47533 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233172AbhA1Rhr (ORCPT
+        id S233158AbhA1RoM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Jan 2021 12:44:12 -0500
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:32431 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232789AbhA1Rnv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Jan 2021 12:37:47 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1l5BE7-0007g0-7L; Thu, 28 Jan 2021 17:37:03 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Lee Jones <lee.jones@linaro.org>, devel@driverdev.osuosl.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: net: wimax: i2400m: fw: remove redundant initialization of variable result
-Date:   Thu, 28 Jan 2021 17:37:02 +0000
-Message-Id: <20210128173703.645328-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.29.2
+        Thu, 28 Jan 2021 12:43:51 -0500
+Received: from [192.168.1.41] ([92.131.99.25])
+        by mwinf5d58 with ME
+        id NHi22400V0Ys01Y03Hi4sp; Thu, 28 Jan 2021 18:42:09 +0100
+X-ME-Helo: [192.168.1.41]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 28 Jan 2021 18:42:09 +0100
+X-ME-IP: 92.131.99.25
+Subject: Re: [PATCH] media: venus: core: Fix some resource leaks in the error
+ path of 'venus_probe()'
+To:     Georgi Djakov <georgi.djakov@linaro.org>,
+        stanimir.varbanov@linaro.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, mchehab@kernel.org
+Cc:     linux-media@vger.kernel.org, linux-arm-msm@lists.infradead.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20210127201732.743938-1-christophe.jaillet@wanadoo.fr>
+ <309678ef-c3b9-0269-0715-05a469c04345@linaro.org>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <bb2aa9f2-3e1b-7af0-8009-f543adec3c2a@wanadoo.fr>
+Date:   Thu, 28 Jan 2021 18:42:00 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <309678ef-c3b9-0269-0715-05a469c04345@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
 
-The variable result is being initialized with a value that is never
-read and it is being updated later with a new value.  The initialization
-is redundant and can be removed.
+Le 28/01/2021 à 11:49, Georgi Djakov a écrit :
+> Hi Christophe,
+>
+> Thanks for the fix!
+>
+> On 1/27/21 22:17, Christophe JAILLET wrote:
+>> If an error occurs after a successful 'of_icc_get()' call, it must be
+>> undone by a corresponding 'icc_put()' call.
+>
+> This works, but why not switch to devm_of_icc_get() instead?
+>
+Because I was not aware of devm_of_icc_get :)
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/staging/wimax/i2400m/fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I'll send a V2.
 
-diff --git a/drivers/staging/wimax/i2400m/fw.c b/drivers/staging/wimax/i2400m/fw.c
-index edb5eba0898b..b2fd4bd2c5f9 100644
---- a/drivers/staging/wimax/i2400m/fw.c
-+++ b/drivers/staging/wimax/i2400m/fw.c
-@@ -583,7 +583,7 @@ ssize_t i2400m_bm_cmd(struct i2400m *i2400m,
- 		      struct i2400m_bootrom_header *ack, size_t ack_size,
- 		      int flags)
- {
--	ssize_t result = -ENOMEM, rx_bytes;
-+	ssize_t result, rx_bytes;
- 	struct device *dev = i2400m_dev(i2400m);
- 	int opcode = cmd == NULL ? -1 : i2400m_brh_get_opcode(cmd);
- 
--- 
-2.29.2
+Thanks for the review and the feedback.
 
+CJ
+
+
+> Thanks,
+> Georgi
+>
+>>
+>> Add it in the error handling path of the probe function as already 
+>> done in
+>> the remove function.
+>>
+>> Fixes: 32f0a6ddc8c9 ("media: venus: Use on-chip interconnect API")
+>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>> ---
+>>   drivers/media/platform/qcom/venus/core.c | 31 +++++++++++++++++-------
+>>   1 file changed, 22 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/drivers/media/platform/qcom/venus/core.c 
+>> b/drivers/media/platform/qcom/venus/core.c
+>> index 0bde19edac86..8fd5da941067 100644
+>> --- a/drivers/media/platform/qcom/venus/core.c
+>> +++ b/drivers/media/platform/qcom/venus/core.c
+>> @@ -200,27 +200,35 @@ static int venus_probe(struct platform_device 
+>> *pdev)
+>>           return PTR_ERR(core->video_path);
+>>         core->cpucfg_path = of_icc_get(dev, "cpu-cfg");
+>> -    if (IS_ERR(core->cpucfg_path))
+>> -        return PTR_ERR(core->cpucfg_path);
+>> +    if (IS_ERR(core->cpucfg_path)) {
+>> +        ret = PTR_ERR(core->cpucfg_path);
+>> +        goto err_video_path_put;
+>> +    }
+>>         core->irq = platform_get_irq(pdev, 0);
+>> -    if (core->irq < 0)
+>> -        return core->irq;
+>> +    if (core->irq < 0) {
+>> +        ret = core->irq;
+>> +        goto err_cpucfg_path_put;
+>> +    }
+>>         core->res = of_device_get_match_data(dev);
+>> -    if (!core->res)
+>> -        return -ENODEV;
+>> +    if (!core->res) {
+>> +        ret = -ENODEV;
+>> +        goto err_cpucfg_path_put;
+>> +    }
+>>         mutex_init(&core->pm_lock);
+>>         core->pm_ops = venus_pm_get(core->res->hfi_version);
+>> -    if (!core->pm_ops)
+>> -        return -ENODEV;
+>> +    if (!core->pm_ops) {
+>> +        ret = -ENODEV;
+>> +        goto err_cpucfg_path_put;
+>> +    }
+>>         if (core->pm_ops->core_get) {
+>>           ret = core->pm_ops->core_get(dev);
+>>           if (ret)
+>> -            return ret;
+>> +            goto err_cpucfg_path_put;
+>>       }
+>>         ret = dma_set_mask_and_coherent(dev, core->res->dma_mask);
+>> @@ -305,6 +313,11 @@ static int venus_probe(struct platform_device 
+>> *pdev)
+>>   err_core_put:
+>>       if (core->pm_ops->core_put)
+>>           core->pm_ops->core_put(dev);
+>> +err_cpucfg_path_put:
+>> +    icc_put(core->cpucfg_path);
+>> +err_video_path_put:
+>> +    icc_put(core->video_path);
+>> +
+>>       return ret;
+>>   }
+>>

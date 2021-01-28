@@ -2,28 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67C983075D5
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 13:21:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB5303076CF
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 14:12:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231319AbhA1MTt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Jan 2021 07:19:49 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:38598 "EHLO
+        id S231383AbhA1NLu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Jan 2021 08:11:50 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:39718 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229569AbhA1MTq (ORCPT
+        with ESMTP id S231797AbhA1NLj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Jan 2021 07:19:46 -0500
+        Thu, 28 Jan 2021 08:11:39 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1l56GN-0001Zy-Hp; Thu, 28 Jan 2021 12:19:03 +0000
+        id 1l574Y-00053e-CY; Thu, 28 Jan 2021 13:10:54 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Jeff LaBundy <jeff@labundy.com>, linux-input@vger.kernel.org
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Ricardo Ribalda <ribalda@chromium.org>,
+        linux-media@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] Input: iqs5xx: Ensure error_bl is initialized on error exit path
-Date:   Thu, 28 Jan 2021 12:19:03 +0000
-Message-Id: <20210128121903.636652-1-colin.king@canonical.com>
+Subject: [PATCH][next] media: uvcvideo: Fix memory leak when gpiod_to_irq fails
+Date:   Thu, 28 Jan 2021 13:10:54 +0000
+Message-Id: <20210128131054.637715-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -34,30 +36,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently if the call to qs5xx_fw_file_parse fails the error return
-exit path will read the uninitialized variable error_bl. Fix this
-by ensuring error_bl is initialized to zero.
+Currently when the call to gpiod_to_irq fails the error return
+path does not kfree the recently allocated object 'unit'. Fix this
+by kfree'ing it before returning.
 
-Addresses-Coverity: ("Uninitialized scalar variable")
-Fixes: 2539da6677b6 ("Input: iqs5xx - preserve bootloader errors")
+Addresses-Coverity: ("Resource leak")
+Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/input/touchscreen/iqs5xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_driver.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/input/touchscreen/iqs5xx.c b/drivers/input/touchscreen/iqs5xx.c
-index 05e0c6ff217b..54f30038dca4 100644
---- a/drivers/input/touchscreen/iqs5xx.c
-+++ b/drivers/input/touchscreen/iqs5xx.c
-@@ -852,7 +852,7 @@ static int iqs5xx_fw_file_parse(struct i2c_client *client,
- static int iqs5xx_fw_file_write(struct i2c_client *client, const char *fw_file)
- {
- 	struct iqs5xx_private *iqs5xx = i2c_get_clientdata(client);
--	int error, error_bl;
-+	int error, error_bl = 0;
- 	u8 *pmap;
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 1abc122a0977..56f867790ef1 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -1543,6 +1543,7 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+ 		if (irq != EPROBE_DEFER)
+ 			dev_err(&dev->udev->dev,
+ 				"No IRQ for privacy GPIO (%d)\n", irq);
++		kfree(unit);
+ 		return irq;
+ 	}
  
- 	if (iqs5xx->bl_status == IQS5XX_BL_STATUS_NONE)
 -- 
 2.29.2
 

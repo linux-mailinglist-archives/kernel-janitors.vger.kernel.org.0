@@ -2,135 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8EE4307CDC
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 18:44:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9816C307D47
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 19:03:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233158AbhA1RoM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Jan 2021 12:44:12 -0500
-Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:32431 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232789AbhA1Rnv (ORCPT
+        id S231249AbhA1SBV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Jan 2021 13:01:21 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:47992 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231420AbhA1SAK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Jan 2021 12:43:51 -0500
-Received: from [192.168.1.41] ([92.131.99.25])
-        by mwinf5d58 with ME
-        id NHi22400V0Ys01Y03Hi4sp; Thu, 28 Jan 2021 18:42:09 +0100
-X-ME-Helo: [192.168.1.41]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 28 Jan 2021 18:42:09 +0100
-X-ME-IP: 92.131.99.25
-Subject: Re: [PATCH] media: venus: core: Fix some resource leaks in the error
- path of 'venus_probe()'
-To:     Georgi Djakov <georgi.djakov@linaro.org>,
-        stanimir.varbanov@linaro.org, agross@kernel.org,
-        bjorn.andersson@linaro.org, mchehab@kernel.org
-Cc:     linux-media@vger.kernel.org, linux-arm-msm@lists.infradead.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20210127201732.743938-1-christophe.jaillet@wanadoo.fr>
- <309678ef-c3b9-0269-0715-05a469c04345@linaro.org>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <bb2aa9f2-3e1b-7af0-8009-f543adec3c2a@wanadoo.fr>
-Date:   Thu, 28 Jan 2021 18:42:00 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        Thu, 28 Jan 2021 13:00:10 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1l5BZj-0000Zw-LC; Thu, 28 Jan 2021 17:59:23 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Pablo Neira Ayuso <pablo@netfilter.org>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] netfilter: nf_tables: remove redundant assignment of variable err
+Date:   Thu, 28 Jan 2021 17:59:23 +0000
+Message-Id: <20210128175923.645865-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <309678ef-c3b9-0269-0715-05a469c04345@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
-Le 28/01/2021 à 11:49, Georgi Djakov a écrit :
-> Hi Christophe,
->
-> Thanks for the fix!
->
-> On 1/27/21 22:17, Christophe JAILLET wrote:
->> If an error occurs after a successful 'of_icc_get()' call, it must be
->> undone by a corresponding 'icc_put()' call.
->
-> This works, but why not switch to devm_of_icc_get() instead?
->
-Because I was not aware of devm_of_icc_get :)
+The variable err is being assigned a value that is never read,
+the same error number is being returned at the error return
+path via label err1.  Clean up the code by removing the assignment.
 
-I'll send a V2.
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ net/netfilter/nft_cmp.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Thanks for the review and the feedback.
+diff --git a/net/netfilter/nft_cmp.c b/net/netfilter/nft_cmp.c
+index 00e563a72d3d..acbabffefebb 100644
+--- a/net/netfilter/nft_cmp.c
++++ b/net/netfilter/nft_cmp.c
+@@ -268,10 +268,8 @@ nft_cmp_select_ops(const struct nft_ctx *ctx, const struct nlattr * const tb[])
+ 	if (err < 0)
+ 		return ERR_PTR(err);
+ 
+-	if (desc.type != NFT_DATA_VALUE) {
+-		err = -EINVAL;
++	if (desc.type != NFT_DATA_VALUE)
+ 		goto err1;
+-	}
+ 
+ 	if (desc.len <= sizeof(u32) && (op == NFT_CMP_EQ || op == NFT_CMP_NEQ))
+ 		return &nft_cmp_fast_ops;
+-- 
+2.29.2
 
-CJ
-
-
-> Thanks,
-> Georgi
->
->>
->> Add it in the error handling path of the probe function as already 
->> done in
->> the remove function.
->>
->> Fixes: 32f0a6ddc8c9 ("media: venus: Use on-chip interconnect API")
->> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->> ---
->>   drivers/media/platform/qcom/venus/core.c | 31 +++++++++++++++++-------
->>   1 file changed, 22 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/media/platform/qcom/venus/core.c 
->> b/drivers/media/platform/qcom/venus/core.c
->> index 0bde19edac86..8fd5da941067 100644
->> --- a/drivers/media/platform/qcom/venus/core.c
->> +++ b/drivers/media/platform/qcom/venus/core.c
->> @@ -200,27 +200,35 @@ static int venus_probe(struct platform_device 
->> *pdev)
->>           return PTR_ERR(core->video_path);
->>         core->cpucfg_path = of_icc_get(dev, "cpu-cfg");
->> -    if (IS_ERR(core->cpucfg_path))
->> -        return PTR_ERR(core->cpucfg_path);
->> +    if (IS_ERR(core->cpucfg_path)) {
->> +        ret = PTR_ERR(core->cpucfg_path);
->> +        goto err_video_path_put;
->> +    }
->>         core->irq = platform_get_irq(pdev, 0);
->> -    if (core->irq < 0)
->> -        return core->irq;
->> +    if (core->irq < 0) {
->> +        ret = core->irq;
->> +        goto err_cpucfg_path_put;
->> +    }
->>         core->res = of_device_get_match_data(dev);
->> -    if (!core->res)
->> -        return -ENODEV;
->> +    if (!core->res) {
->> +        ret = -ENODEV;
->> +        goto err_cpucfg_path_put;
->> +    }
->>         mutex_init(&core->pm_lock);
->>         core->pm_ops = venus_pm_get(core->res->hfi_version);
->> -    if (!core->pm_ops)
->> -        return -ENODEV;
->> +    if (!core->pm_ops) {
->> +        ret = -ENODEV;
->> +        goto err_cpucfg_path_put;
->> +    }
->>         if (core->pm_ops->core_get) {
->>           ret = core->pm_ops->core_get(dev);
->>           if (ret)
->> -            return ret;
->> +            goto err_cpucfg_path_put;
->>       }
->>         ret = dma_set_mask_and_coherent(dev, core->res->dma_mask);
->> @@ -305,6 +313,11 @@ static int venus_probe(struct platform_device 
->> *pdev)
->>   err_core_put:
->>       if (core->pm_ops->core_put)
->>           core->pm_ops->core_put(dev);
->> +err_cpucfg_path_put:
->> +    icc_put(core->cpucfg_path);
->> +err_video_path_put:
->> +    icc_put(core->video_path);
->> +
->>       return ret;
->>   }
->>

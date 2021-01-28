@@ -2,108 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F40BC30795D
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 16:18:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0486E30798E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 16:25:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231472AbhA1PSF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Jan 2021 10:18:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53374 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229728AbhA1PR5 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Jan 2021 10:17:57 -0500
-Received: from fieldses.org (fieldses.org [IPv6:2600:3c00:e000:2f7::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40C17C061574;
-        Thu, 28 Jan 2021 07:17:17 -0800 (PST)
-Received: by fieldses.org (Postfix, from userid 2815)
-        id C826B4599; Thu, 28 Jan 2021 10:17:15 -0500 (EST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 fieldses.org C826B4599
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fieldses.org;
-        s=default; t=1611847035;
-        bh=FZYksZ+xxCQyFfy7d8pSVmgkeucghwwUsQVzWsdSYDw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RkrJOVeDVcr67fOmQOYN6RgMZE178IyjlZRHLXjOQf33ge9YxdTmt9DFxdziNSU4y
-         0KbQjAnUL2xtLIBAsnYDU7ZeMv8DpRgAPHvaVQ79qw0QuiQ6PIG42ouVkhpKZ2m/uB
-         1n8jrGc4MBBqX1L4LdilAQMmR4yz/L1DSXFVxkzI=
-Date:   Thu, 28 Jan 2021 10:17:15 -0500
-From:   Bruce Fields <bfields@fieldses.org>
-To:     Chuck Lever <chuck.lever@oracle.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH][next] nfsd: fix check of statid returned from call to
- find_stateid_by_type
-Message-ID: <20210128151715.GA29887@fieldses.org>
-References: <20210128144935.640026-1-colin.king@canonical.com>
- <793C88A3-B117-4138-B74A-845E0BD383C9@oracle.com>
+        id S231931AbhA1PVr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Jan 2021 10:21:47 -0500
+Received: from mx2.suse.de ([195.135.220.15]:35816 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231783AbhA1PTG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 Jan 2021 10:19:06 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 2853DACB7;
+        Thu, 28 Jan 2021 15:18:24 +0000 (UTC)
+Subject: Re: [PATCH][next] mm/zswap: fix potential uninitialized pointer read
+ on tmp
+To:     Colin King <colin.king@canonical.com>,
+        Seth Jennings <sjenning@redhat.com>,
+        Dan Streetman <ddstreet@ieee.org>,
+        Vitaly Wool <vitaly.wool@konsulko.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tian Tao <tiantao6@hisilicon.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>, linux-mm@kvack.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210128141728.639030-1-colin.king@canonical.com>
+From:   Vlastimil Babka <vbabka@suse.cz>
+Message-ID: <2dee1f77-863b-e7aa-a3d2-bb4591d4f720@suse.cz>
+Date:   Thu, 28 Jan 2021 16:18:23 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <793C88A3-B117-4138-B74A-845E0BD383C9@oracle.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+In-Reply-To: <20210128141728.639030-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jan 28, 2021 at 03:05:06PM +0000, Chuck Lever wrote:
-> Hi Colin-
+On 1/28/21 3:17 PM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> > On Jan 28, 2021, at 9:49 AM, Colin King <colin.king@canonical.com> wrote:
-> > 
-> > From: Colin Ian King <colin.king@canonical.com>
-> > 
-> > The call to find_stateid_by_type is setting the return value in *stid
-> > yet the NULL check of the return is checking stid instead of *stid.
-> > Fix this by adding in the missing pointer * operator.
-> > 
-> > Addresses-Coverity: ("Dereference before null check")
-> > Fixes: 6cdaa72d4dde ("nfsd: find_cpntf_state cleanup")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> In the case where zpool_can_sleep_mapped(pool) returns 0
+> then tmp is not allocated and tmp is then an uninitialized
+> pointer. Later if entry is null, tmp is freed, hence free'ing
+> an uninitialized pointer. Fix this by ensuring tmp is initialized
+> to NULL.
 > 
-> Thanks for your patch. I've committed it to the for-next branch at
-> 
-> git://git.kernel.org/pub/scm/linux/kernel/git/cel/linux.git
-> 
-> in preparation for the v5.12 merge window, with the following changes:
-> 
-> - ^statid^stateid
-> - Fixes: tag removed, since no stable backport is necessary
+> Addresses-Coverity: ("Uninitialized pointer read")
+> Fixes: 908aa806dba0 ("mm/zswap: fix potential memory leak")
 
-Please keep the "Fixes:" tag!  It's still very useful information.  For
-example, if someone needs to backport the original patch, this is a
-reminder they'll want this one as well.
+That's a linux-next hash, patch is in mmotm [1] *) You know what it means...
 
-(Of course, if you fold this patch into the earlier one instead, that's
-a different situation.)
+*) actually it's not there, yet it is in -next. What's going on?
 
---b.
+[1]
+https://ozlabs.org/~akpm/mmotm/broken-out/mm-zswap-fix-potential-memory-leak.patch
 
-> The commit you are fixing has not been merged upstream yet.
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  mm/zswap.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 8d1381b1178d..578d9f256920 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -935,7 +935,7 @@ static int zswap_writeback_entry(struct zpool *pool, unsigned long handle)
+>  	struct scatterlist input, output;
+>  	struct crypto_acomp_ctx *acomp_ctx;
+>  
+> -	u8 *src, *tmp;
+> +	u8 *src, *tmp = NULL;
+>  	unsigned int dlen;
+>  	int ret;
+>  	struct writeback_control wbc = {
 > 
-> > ---
-> > fs/nfsd/nfs4state.c | 2 +-
-> > 1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-> > index f554e3480bb1..423fd6683f3a 100644
-> > --- a/fs/nfsd/nfs4state.c
-> > +++ b/fs/nfsd/nfs4state.c
-> > @@ -5824,7 +5824,7 @@ static __be32 find_cpntf_state(struct nfsd_net *nn, stateid_t *st,
-> > 
-> > 	*stid = find_stateid_by_type(found, &cps->cp_p_stateid,
-> > 			NFS4_DELEG_STID|NFS4_OPEN_STID|NFS4_LOCK_STID);
-> > -	if (stid)
-> > +	if (*stid)
-> > 		status = nfs_ok;
-> > 	else
-> > 		status = nfserr_bad_stateid;
-> > -- 
-> > 2.29.2
-> > 
-> 
-> --
-> Chuck Lever
-> 
-> 
+

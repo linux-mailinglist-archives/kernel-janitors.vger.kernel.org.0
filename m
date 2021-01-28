@@ -2,81 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29FD6307E69
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 19:48:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6BE5307E8C
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 20:03:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232226AbhA1Srm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Jan 2021 13:47:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41678 "EHLO
+        id S231718AbhA1S4K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Jan 2021 13:56:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232464AbhA1Sph (ORCPT
+        with ESMTP id S232120AbhA1Sv0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Jan 2021 13:45:37 -0500
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6EA2C06178A;
-        Thu, 28 Jan 2021 10:44:56 -0800 (PST)
-Received: by mail-ed1-x529.google.com with SMTP id d2so7843018edz.3;
-        Thu, 28 Jan 2021 10:44:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=7KqrQELa5Ib7c8yGtm34ctZRTTgOgBVXw/XDTJkuZzM=;
-        b=IXUtJ5Szhp/b70fyb4fSpJB8MQDglir6QCQtRcOrmv1bOwcD30SolN6AWHVYYLzuwS
-         Ph9uWqoX8bPzCBV5yduoFUKIMf/UTx1rJTaO0PZoaUQLZXV3B5EJcQQxwUEA5XuZ2d3s
-         CPYwOuFB3/APwHAQ3lBl+Ic/R+5RplfC+/sBICq2Xs93/BbeEaV7gefkYvgc7UaF9nKw
-         pyXGaplyNyZNFjRpLi+t3zesfnHoGqLYcjCKlX9WVN5eFXEW32BbGusLapPR6aRLoKeC
-         lzeArUreGdckovm7Dnp8qmYzXUyrLZzgSqhE+N8/+Nx25xagQ7UO5FFCOQIdZfC0vK1X
-         vkOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7KqrQELa5Ib7c8yGtm34ctZRTTgOgBVXw/XDTJkuZzM=;
-        b=ogCpXC1JFrPWlzMro0/tNi/7ppNGLQ12sWKglQh68DwsU4Hwua/wq12JoAVsozlJQ5
-         LKnXr4HE61jjgPmCegWsvDcat463jPkB2ZQ7yKPZqLnytQppMDfuFZwAlHNo1bKs/le1
-         fJ1ykVjQIZ+WbvWR6J6TAtrNL1X/gl+2N+sl3nB4Q1z4r7rPul7mmZOZ0iXeyhYGdJFR
-         ReZ2GnzVYLvRnKP8hxtdzcYfPem4iSrAoZCFaVDR+qgrKcgXPYuHbKGU0aXyEubQnxHy
-         C6MJiIKJ7EgZjx568MkP3c0qPhmvXMiHAxh+BHF99JiNf75bLOlyTbW/fQ59GVS+OCuf
-         bRnA==
-X-Gm-Message-State: AOAM530xWh0hcK+GJSM+lwrOlwFYbX8sPLyn0POZRzGlf70LRQhqYY/l
-        X9v7n/5hYb5AWLGVKJkqMVGXaixNpCOxOtek6kg=
-X-Google-Smtp-Source: ABdhPJwYXgpelFGaMKtoBoeGm2MCJD/XU+Wcb7Htk7rD2MP9VZhUJRVc4yNmq5clr0JIitmRa50x0bg55Xw+iNAQrBY=
-X-Received: by 2002:aa7:d1d7:: with SMTP id g23mr1120272edp.6.1611859495550;
- Thu, 28 Jan 2021 10:44:55 -0800 (PST)
+        Thu, 28 Jan 2021 13:51:26 -0500
+Received: from fieldses.org (fieldses.org [IPv6:2600:3c00:e000:2f7::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED38FC06178B;
+        Thu, 28 Jan 2021 10:50:43 -0800 (PST)
+Received: by fieldses.org (Postfix, from userid 2815)
+        id A2A634163; Thu, 28 Jan 2021 13:50:42 -0500 (EST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 fieldses.org A2A634163
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fieldses.org;
+        s=default; t=1611859842;
+        bh=O2QhWKxUiDcf6x2ujs95u3iWaIVVJV2+uNn4cjNsIZk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=DnFtCSnGXeQSWFAGogu4NtdJQorx/JwnTjo8DDlJKGQvtjpjEJdmOvO2mruqjuCmR
+         9WMMvdojVUSY4nWRQitFuNyo43M6acrmGb0bS459az3mLRiRvR567hgROU+8kmCdhJ
+         xKW9op6vkSZWaKLswRknRbf5LIezAf098S8+kOu4=
+Date:   Thu, 28 Jan 2021 13:50:42 -0500
+From:   Bruce Fields <bfields@fieldses.org>
+To:     Chuck Lever <chuck.lever@oracle.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Colin King <colin.king@canonical.com>,
+        Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][next] nfsd: fix check of statid returned from call to
+ find_stateid_by_type
+Message-ID: <20210128185042.GB29887@fieldses.org>
+References: <20210128144935.640026-1-colin.king@canonical.com>
+ <793C88A3-B117-4138-B74A-845E0BD383C9@oracle.com>
+ <20210128153456.GI2696@kadam>
+ <80ACEDFA-B496-44E0-AABB-BD4A7826516B@oracle.com>
 MIME-Version: 1.0
-References: <20210128171048.644669-1-colin.king@canonical.com>
-In-Reply-To: <20210128171048.644669-1-colin.king@canonical.com>
-From:   Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Date:   Thu, 28 Jan 2021 13:44:18 -0500
-Message-ID: <CAF=yD-KvXYW-r69k8Mf80uQ5Ww60HEfT+FrxNbu4FCxOF=Xy0Q@mail.gmail.com>
-Subject: Re: [PATCH] rtlwifi: rtl8192se: remove redundant initialization of
- variable rtstatus
-To:     Colin King <colin.king@canonical.com>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <80ACEDFA-B496-44E0-AABB-BD4A7826516B@oracle.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jan 28, 2021 at 12:15 PM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> The variable rtstatu is being initialized with a value that is never
-> read and it is being updated later with a new value.  The initialization
-> is redundant and can be removed.
->
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On Thu, Jan 28, 2021 at 03:53:36PM +0000, Chuck Lever wrote:
+> > On Jan 28, 2021, at 10:34 AM, Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> > Fixes tags are used for a lot of different things:
+> > 1)  If there is a fixes tag, then you can tell it does *NOT* have to
+> >    be back ported because the original commit is not in the stable
+> >    tree.  It saves time for the stable maintainers.
+> > 2)  Metrics to figure out how quickly we are fixing bugs.
+> > 3)  Sometimes the Fixes tag helps because we want to review the original
+> >    patch to see what the intent was.
+> > 
+> > All sorts of stuff.  Etc.
+> 
+> Yep, I'm a fan of all that. I just want to avoid poking the stable
+> automation bear when it's unnecessary.
 
-(for netdrv)
+I've routinely had patches with Fixes: lines referencing other queued-up
+patches, and I didn't get any stable mail about it.
 
-Acked-by: Willem de Bruijn <willemb@google.com>
+100% not something to worry about.
+
+--b.

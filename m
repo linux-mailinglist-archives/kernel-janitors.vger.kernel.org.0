@@ -2,99 +2,154 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB23F30733F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 10:57:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64B64307416
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jan 2021 11:51:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231657AbhA1J4a (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Jan 2021 04:56:30 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57536 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231441AbhA1J43 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Jan 2021 04:56:29 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4DB2764DBD;
-        Thu, 28 Jan 2021 09:55:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611827748;
-        bh=mBgQ7BhQNLfTDvEM329uswkizG5yDnT7aHC+WNziWyo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UJgaEzPj1+N/vtnW7UVX8WHu133K49njFU0hMSmm5RNhpyZTenrP2GGmI1mUXvQWu
-         jL8iN5aqlOx88qXl2VAtJliVFaFBd89b1/8InYwlkToE6xnqtSEvzQ3W2yBrS63H7r
-         odrNrMMe0sGzJSZRkYidG6T8feWsfStE5Z6hO+cjRC0eqK6A//n9CM/poZy739Nkm2
-         aiU/mzd6Ydgrj4nscCaA4q+yu2xamY3iO4LC8d2jU718/AyuxmB97QFGMFAXr2HO2T
-         ke9c9CcXNISfS+Z6eej7xHFEMPMiaPvya7wFzS5JRkWLYfJuMW6vwIez3/NCKaWYEN
-         aNOujcvd7zTqg==
-Received: from johan by xi.lan with local (Exim 4.93.0.4)
-        (envelope-from <johan@kernel.org>)
-        id 1l541w-0003LY-Ji; Thu, 28 Jan 2021 10:56:00 +0100
-Date:   Thu, 28 Jan 2021 10:56:00 +0100
-From:   Johan Hovold <johan@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Johan Hovold <johan@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] USB: serial: mos7720: Fix error code in mos7720_write()
-Message-ID: <YBKKMK9UfRjB52sW@hovoldconsulting.com>
-References: <YBKFW60qMJbtjvum@mwanda>
+        id S231422AbhA1Ktw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Jan 2021 05:49:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52258 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231154AbhA1Ktn (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 Jan 2021 05:49:43 -0500
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77322C0613D6
+        for <kernel-janitors@vger.kernel.org>; Thu, 28 Jan 2021 02:49:03 -0800 (PST)
+Received: by mail-wr1-x42e.google.com with SMTP id z6so4844657wrq.10
+        for <kernel-janitors@vger.kernel.org>; Thu, 28 Jan 2021 02:49:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=to:cc:references:from:subject:message-id:date:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=FiLg8koZzFFIIjcPeegfAacRaJIBA7V42bfPp42lOV8=;
+        b=sm+wd3C8tunflXHyxlaQRjfer+D7EeWBR7dOtqLatBkedelPvSMdK89rZVUTbJ4vCQ
+         u7IYHIr4xnQel8ULjvNl0yjSpUURbhaqo88Ip2fUKMZoFkd3ryyECcCTP2kf2Z146vVB
+         Pmc0vpK+lZsAAe+/a94WSrdygKRlxLU9vBHOc6WrvLck3dvjSUoEUjXzebpexN15bF9k
+         jM+P8kcl5+rRUpsizPVfYZOunen0CwTGjtG8vprE50WHsVsjVNGdQYS2/8HhyOzRlw7C
+         iPa1zD86w80Ho9H/jGyirHFxodc+XPuOh8Q2OUDQwI3nKa8mR74SHy4Vuk/PA9iRJBez
+         C0Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:cc:references:from:subject:message-id:date
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=FiLg8koZzFFIIjcPeegfAacRaJIBA7V42bfPp42lOV8=;
+        b=GSWeTNHx/PEKJ2BZR+ul4sXrxdE594CM1TK56z/QTwVU54BdkpLdv5hBUm0Dl7J6w/
+         Nqa+q+4MgrOtyRMajZIhifazYKJ9PF0qXI167/24yvo/++v/moLTtTLBlvRf6GIYQvI8
+         X5fPam+ZTx4iCXwYq40BvXJ2/MYsRoHffFCrtZuRfQSt6erstIery3plHm7pDAtImsaq
+         8DLYG/AlkrvYD7f9Ao/TW7myZ7Vss7x2fbyJS7ZVv6jXTpB8+lsPKdGY9doXO/qY7dgE
+         62UqUWnQzYQaZL5UHA/fBS3CPPbw9ogLHXBk71BcV2VSEv9lZP4mOGICu41548h0Q98F
+         51vA==
+X-Gm-Message-State: AOAM532IEsVCqOcJjcFvZ8oClpfeHm+Edq/gx7LN0zaEPutDYk4K9EXs
+        RV/nFoOMT28ZLcF3/4ZykCR2vFkgxtgmRA==
+X-Google-Smtp-Source: ABdhPJyFCP6jRG7uwA6TDz/h9WJOEs9xc4fD/ffZsngV7ExqzXZqyPkNyKjeEFDrQmQZX6RW5QSwrA==
+X-Received: by 2002:adf:f6c4:: with SMTP id y4mr15193598wrp.127.1611830942202;
+        Thu, 28 Jan 2021 02:49:02 -0800 (PST)
+Received: from [10.44.66.8] ([212.45.67.2])
+        by smtp.googlemail.com with ESMTPSA id u10sm5334118wmj.40.2021.01.28.02.49.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Jan 2021 02:49:01 -0800 (PST)
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        stanimir.varbanov@linaro.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, mchehab@kernel.org
+Cc:     linux-media@vger.kernel.org, linux-arm-msm@lists.infradead.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20210127201732.743938-1-christophe.jaillet@wanadoo.fr>
+From:   Georgi Djakov <georgi.djakov@linaro.org>
+Subject: Re: [PATCH] media: venus: core: Fix some resource leaks in the error
+ path of 'venus_probe()'
+Message-ID: <309678ef-c3b9-0269-0715-05a469c04345@linaro.org>
+Date:   Thu, 28 Jan 2021 12:49:00 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YBKFW60qMJbtjvum@mwanda>
+In-Reply-To: <20210127201732.743938-1-christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jan 28, 2021 at 12:35:23PM +0300, Dan Carpenter wrote:
-> This code should return -ENOMEM if the kmalloc() fails but instead
-> it returns success.
+Hi Christophe,
+
+Thanks for the fix!
+
+On 1/27/21 22:17, Christophe JAILLET wrote:
+> If an error occurs after a successful 'of_icc_get()' call, it must be
+> undone by a corresponding 'icc_put()' call.
+
+This works, but why not switch to devm_of_icc_get() instead?
+
+Thanks,
+Georgi
+
 > 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Add it in the error handling path of the probe function as already done in
+> the remove function.
+> 
+> Fixes: 32f0a6ddc8c9 ("media: venus: Use on-chip interconnect API")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > ---
-> The first error path is probably wrong as well?
+>   drivers/media/platform/qcom/venus/core.c | 31 +++++++++++++++++-------
+>   1 file changed, 22 insertions(+), 9 deletions(-)
 > 
-> drivers/usb/serial/mos7720.c
->   1077          /* try to find a free urb in the list */
->   1078          urb = NULL;
->   1079  
->   1080          for (i = 0; i < NUM_URBS; ++i) {
->   1081                  if (mos7720_port->write_urb_pool[i] &&
->   1082                      mos7720_port->write_urb_pool[i]->status != -EINPROGRESS) {
->   1083                          urb = mos7720_port->write_urb_pool[i];
->   1084                          dev_dbg(&port->dev, "URB:%d\n", i);
->   1085                          break;
->   1086                  }
->   1087          }
->   1088  
->   1089          if (urb == NULL) {
->   1090                  dev_dbg(&port->dev, "%s - no more free urbs\n", __func__);
->   1091                  goto exit;
+> diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
+> index 0bde19edac86..8fd5da941067 100644
+> --- a/drivers/media/platform/qcom/venus/core.c
+> +++ b/drivers/media/platform/qcom/venus/core.c
+> @@ -200,27 +200,35 @@ static int venus_probe(struct platform_device *pdev)
+>   		return PTR_ERR(core->video_path);
+>   
+>   	core->cpucfg_path = of_icc_get(dev, "cpu-cfg");
+> -	if (IS_ERR(core->cpucfg_path))
+> -		return PTR_ERR(core->cpucfg_path);
+> +	if (IS_ERR(core->cpucfg_path)) {
+> +		ret = PTR_ERR(core->cpucfg_path);
+> +		goto err_video_path_put;
+> +	}
+>   
+>   	core->irq = platform_get_irq(pdev, 0);
+> -	if (core->irq < 0)
+> -		return core->irq;
+> +	if (core->irq < 0) {
+> +		ret = core->irq;
+> +		goto err_cpucfg_path_put;
+> +	}
+>   
+>   	core->res = of_device_get_match_data(dev);
+> -	if (!core->res)
+> -		return -ENODEV;
+> +	if (!core->res) {
+> +		ret = -ENODEV;
+> +		goto err_cpucfg_path_put;
+> +	}
+>   
+>   	mutex_init(&core->pm_lock);
+>   
+>   	core->pm_ops = venus_pm_get(core->res->hfi_version);
+> -	if (!core->pm_ops)
+> -		return -ENODEV;
+> +	if (!core->pm_ops) {
+> +		ret = -ENODEV;
+> +		goto err_cpucfg_path_put;
+> +	}
+>   
+>   	if (core->pm_ops->core_get) {
+>   		ret = core->pm_ops->core_get(dev);
+>   		if (ret)
+> -			return ret;
+> +			goto err_cpucfg_path_put;
+>   	}
+>   
+>   	ret = dma_set_mask_and_coherent(dev, core->res->dma_mask);
+> @@ -305,6 +313,11 @@ static int venus_probe(struct platform_device *pdev)
+>   err_core_put:
+>   	if (core->pm_ops->core_put)
+>   		core->pm_ops->core_put(dev);
+> +err_cpucfg_path_put:
+> +	icc_put(core->cpucfg_path);
+> +err_video_path_put:
+> +	icc_put(core->video_path);
+> +
+>   	return ret;
+>   }
+>   
 > 
-> Should return -ENODEV?
-
-No, this bit is correct (modulo the missing locking and reliance on the
-URB status). When there are no free URBs we want the tty layer to
-retry later.
-
->   1092          }
-> 
->  drivers/usb/serial/mos7720.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/serial/mos7720.c b/drivers/usb/serial/mos7720.c
-> index ed347a6d50ba..aa55169796a3 100644
-> --- a/drivers/usb/serial/mos7720.c
-> +++ b/drivers/usb/serial/mos7720.c
-> @@ -1094,8 +1094,10 @@ static int mos7720_write(struct tty_struct *tty, struct usb_serial_port *port,
->  	if (urb->transfer_buffer == NULL) {
->  		urb->transfer_buffer = kmalloc(URB_TRANSFER_BUFFER_SIZE,
->  					       GFP_ATOMIC);
-> -		if (!urb->transfer_buffer)
-> +		if (!urb->transfer_buffer) {
-> +			bytes_sent = -ENOMEM;
->  			goto exit;
-> +		}
->  	}
->  	transfer_size = min(count, URB_TRANSFER_BUFFER_SIZE);
-
-Now applied, thanks.
-
-Johan

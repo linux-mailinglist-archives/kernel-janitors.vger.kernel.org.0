@@ -2,103 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ED55308479
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Jan 2021 05:11:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCAE63084BF
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Jan 2021 05:56:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231697AbhA2EJl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Jan 2021 23:09:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49588 "EHLO
+        id S231881AbhA2Ez4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Jan 2021 23:55:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231386AbhA2EJj (ORCPT
+        with ESMTP id S229757AbhA2Ezz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Jan 2021 23:09:39 -0500
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ED9DC061574;
-        Thu, 28 Jan 2021 20:08:59 -0800 (PST)
-Received: by mail-ed1-x534.google.com with SMTP id a14so9082473edu.7;
-        Thu, 28 Jan 2021 20:08:59 -0800 (PST)
+        Thu, 28 Jan 2021 23:55:55 -0500
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42F8FC061574;
+        Thu, 28 Jan 2021 20:55:14 -0800 (PST)
+Received: by mail-ej1-x633.google.com with SMTP id l9so11148010ejx.3;
+        Thu, 28 Jan 2021 20:55:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
-        bh=OZ7PniycqC1RtILMk9WI7xj65U10DcWXv360uL6AeTQ=;
-        b=n4HiATxnobZ29zCQVzIZ55f963r/lEssTtXJXv75iOozu2Wb5hmrSnX+TJdvr39P4E
-         +WGOrInJeSDpKouSMiisNNhk0bkB3W20/w4RAGQOiPSkbVxiddg7f+8WGfdCdvOwYKUo
-         Poa/E29ovMLrUFam5zZqcSokatskxfW2MjrzTmKg8Pidj/xX+vn1dd7obWIr2dEkC5wd
-         qwQueiVd3hC6OWWPoNzEWr1G98fEvzPo09XXSRglwgb3Hyrn2QhSwaEt1b6n1ev54Vp2
-         09bBNMenlzvdyCnRbhkut/O8b0DlF7cp1Q2FWYVc/moz1rN4JvbkdySLBLy+aIc50N6J
-         mH9Q==
+        bh=LFbmYzoW/dOJ4Ds9GuxLWzJiVIPVogsncjpBRDxZzqE=;
+        b=G6b6hHEZQolaoYujMThrCKsmeO318Q0jyKSCNGH2d2SfQQtyNLnDWuvidfyOAs4g5j
+         FUPrXpcsDl83Vjl8JUIZMNiYyy8LdcvAJXhi+ptk2E0mpZXTuiTYF8cPCtUhVIx1xRve
+         yDAszQxrLEw94kyi+ymJlrh3VE/3xstSQEa/Icf1ob5CI/L4O8PpDbtxGdjP6mi7xvYU
+         BsHkXsUpjHbrbvLYesJuNE/0wdDxLxITddXN2Kz3Vd8o4lN2X5+h6H5zEwhcsXJsG0mA
+         PWr3dGI4f/IxGiXf1lzLWU0OCLrUT/JMvG0z3Uz5q2bNKo1xpWAtyqw6+kHoV8PagUyv
+         S8Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=OZ7PniycqC1RtILMk9WI7xj65U10DcWXv360uL6AeTQ=;
-        b=G780u7aUhr32GiMrSvYrKHQYDqxqjSIAAEiCW1WiQWi6sk2sznyXdve/6b5DM39BHU
-         gZ5Pi+Z7IKhTESMIkz2fy4ZWSz4Iq2skv7/ArNCgWgX1sCguQoKOq/Pc3IDIGTIXBatY
-         c+q4HWFF5e3m13luRr9F4fE/jXhHJEwz6hxWuj5Q+m2tIpOtFYge8EAkywQdMYP83TMJ
-         3L/6czuQ2xluzB8U0CJH0nZRvH/E5XbS/+seNyzh2unSGLsqH3sB7KKD6o5y5dVuzy2t
-         WvvKYrLCEoaF31G2Zl4g+ZmnHZuS7x0KSPCsWdFw250jt+TDWsjLtVFSZLo7r2IGEjp6
-         DiPw==
-X-Gm-Message-State: AOAM531D9qn5cR9Fn7ZniwRnmcr9r4EXWkL5Y9sdT2+9EtgBpYK4TqRC
-        /vtgGlVnMQKgtgvBWNlYt2g=
-X-Google-Smtp-Source: ABdhPJz9OdksQfUHSsaicRgt8qhekpX2Ah4ZzkSCFixcXUzHp22t/f0tEjdrvs0mamy5UNf1gSJmOQ==
-X-Received: by 2002:a05:6402:3514:: with SMTP id b20mr3036790edd.100.1611893338182;
-        Thu, 28 Jan 2021 20:08:58 -0800 (PST)
+        bh=LFbmYzoW/dOJ4Ds9GuxLWzJiVIPVogsncjpBRDxZzqE=;
+        b=ChaD/Yrn8moFyGqlHJ7Hyl+7eMJSX459wJUwdm8rxK07NVFMvfK44KS3YOCiBafki0
+         1XgC89gwC9JXKvw5g/i4NCLNVGYKyqDdounCis3DJu00C3IbCNPkV1hbwuTr569/biRE
+         SO+7Z62FovNY54ufjwUZICLd73lIv2MiqRU1SiRo5TDMr2LwzeUp4q7q/xRJd4eFZ6mJ
+         cPC5GvNBlGBSN5J+sj42ejr7hsLLkrrGeh9WxuJLoZYz0gjOB1uXugc7Uyad1eTqNJOO
+         0izRTBh8bWGOlPWHmKFKXWglGcRfpQtrOcJItiBZ3RnzJEmj4PXzW5tk0ZD0DbrNE1mK
+         MO3Q==
+X-Gm-Message-State: AOAM533DnJP+vzzZve3HpnKNghEQLJRsFMlt0Y84vgOD+NJXzyaQtXxI
+        1r6KOyi8MoJvltwrwlW/E5U=
+X-Google-Smtp-Source: ABdhPJwNS6rwahyR633e4Gd8I9bZfMcKgs0PMLK9XcLNmGucYcJzYw7VCH3ZwhfsqauuYNUVEEGEHA==
+X-Received: by 2002:a17:906:259a:: with SMTP id m26mr2846528ejb.399.1611896113320;
+        Thu, 28 Jan 2021 20:55:13 -0800 (PST)
 Received: from felia.fritz.box ([2001:16b8:2d91:2600:859e:aee:ff42:2cc6])
-        by smtp.gmail.com with ESMTPSA id bm9sm3218828ejb.14.2021.01.28.20.08.56
+        by smtp.gmail.com with ESMTPSA id b26sm3981366edy.57.2021.01.28.20.55.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Jan 2021 20:08:57 -0800 (PST)
+        Thu, 28 Jan 2021 20:55:12 -0800 (PST)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Nitin Joshi <njoshi1@lenovo.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        platform-driver-x86@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Corbet <corbet@lwn.net>,
+To:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org
+Cc:     Christoph Hellwig <hch@lst.de>, Jonathan Corbet <corbet@lwn.net>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] platform/x86: thinkpad_acpi: rectify length of title underline
-Date:   Fri, 29 Jan 2021 05:08:49 +0100
-Message-Id: <20210129040849.26740-1-lukas.bulwahn@gmail.com>
+Subject: [PATCH] block: remove typo in kernel-doc of set_disk_ro()
+Date:   Fri, 29 Jan 2021 05:55:05 +0100
+Message-Id: <20210129045505.22743-1-lukas.bulwahn@gmail.com>
 X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit d7cbe2773aed ("platform/x86: thinkpad_acpi: set keyboard language")
-adds information on keyboard setting to the thinkpad documentation, but
-made the subsection title underline too short.
+Commit 52f019d43c22 ("block: add a hard-readonly flag to struct gendisk")
+provides some kernel-doc for set_disk_ro(), but introduces a small typo.
 
-Hence, make htmldocs warns:
+Hence, make htmldocs warns on ./block/genhd.c:1441:
 
-  Documentation/admin-guide/laptops/thinkpad-acpi.rst:1472: \
-    WARNING: Title underline too short.
+  warning: Function parameter or member 'read_only' not described in 'set_disk_ro'
+  warning: Excess function parameter 'ready_only' description in 'set_disk_ro'
 
-Rectify length of subsection title underline.
+Remove that typo in the kernel-doc for set_disk_ro().
 
 Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
-applies cleanly on next-20210128
+Jens, please pick this minor fix on your block-next tree.
 
-Nitin, please ack.
-
-Hans, please pick this minor fixup for your platform/x86 -next tree.
-
- Documentation/admin-guide/laptops/thinkpad-acpi.rst | 2 +-
+ block/genhd.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/laptops/thinkpad-acpi.rst b/Documentation/admin-guide/laptops/thinkpad-acpi.rst
-index b1188f05a99a..0e4c5bb7fb70 100644
---- a/Documentation/admin-guide/laptops/thinkpad-acpi.rst
-+++ b/Documentation/admin-guide/laptops/thinkpad-acpi.rst
-@@ -1469,7 +1469,7 @@ Sysfs notes
- 
- 
- Setting keyboard language
---------------------
-+-------------------------
- 
- sysfs: keyboard_lang
- 
+diff --git a/block/genhd.c b/block/genhd.c
+index d3ef29fbc536..304f8dcc9a9b 100644
+--- a/block/genhd.c
++++ b/block/genhd.c
+@@ -1431,7 +1431,7 @@ static void set_disk_ro_uevent(struct gendisk *gd, int ro)
+ /**
+  * set_disk_ro - set a gendisk read-only
+  * @disk:	gendisk to operate on
+- * @ready_only:	%true to set the disk read-only, %false set the disk read/write
++ * @read_only:	%true to set the disk read-only, %false set the disk read/write
+  *
+  * This function is used to indicate whether a given disk device should have its
+  * read-only flag set. set_disk_ro() is typically used by device drivers to
 -- 
 2.17.1
 

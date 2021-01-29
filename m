@@ -2,38 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C63CC3084F7
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Jan 2021 06:13:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F018308531
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Jan 2021 06:29:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231966AbhA2FNA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 29 Jan 2021 00:13:00 -0500
-Received: from verein.lst.de ([213.95.11.211]:59979 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231907AbhA2FMz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 29 Jan 2021 00:12:55 -0500
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 4F4AB68AFE; Fri, 29 Jan 2021 06:12:12 +0100 (CET)
-Date:   Fri, 29 Jan 2021 06:12:12 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
-        Christoph Hellwig <hch@lst.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] block: remove typo in kernel-doc of set_disk_ro()
-Message-ID: <20210129051212.GB2053@lst.de>
-References: <20210129045505.22743-1-lukas.bulwahn@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210129045505.22743-1-lukas.bulwahn@gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+        id S230249AbhA2F31 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 29 Jan 2021 00:29:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38318 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229459AbhA2F30 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 29 Jan 2021 00:29:26 -0500
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 327C0C061573;
+        Thu, 28 Jan 2021 21:28:46 -0800 (PST)
+Received: by mail-ej1-x62f.google.com with SMTP id g12so11187644ejf.8;
+        Thu, 28 Jan 2021 21:28:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=8f3on+5v4iBB2rL3AykrTv13S1IND7BtLGtDGclV4MM=;
+        b=Y784vclj8qO6YSnTkd4sR+M4m3PKkQGBgvHcxtrMatOOxgdxfEvhgGzrqBUB6SRVTe
+         9C1o0I6KlFYG/0obNYhYl6iIROEYE2tKc2/vz1IhrkdpPytkZO+Bt3WHVuzfU60sbdvo
+         uGzTck+LBFEhPGNmRLi0OlNljFTeXLBDoFH7Os0xHv/fvlsfp0xepPzMTpQlDI1MLz7W
+         yE6GP/Yn5ZGY1Lh9h2+RMPFhULsD5SWN2wp8yhJVY6jGRuCACYCh6MjnMg0Wbk5Vgvd9
+         Ia85kqK2BPI+V4Glvfduivweo7ni/oLuT6ZnproJFxiGZhEFkxBUkDnXdy1yntgLlV2T
+         GRWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=8f3on+5v4iBB2rL3AykrTv13S1IND7BtLGtDGclV4MM=;
+        b=nWrADbdl5ML/Yknm2ZgWZk0UOMf0dDX3Kowov3E1FxE3a8MREMIRvzgzd6bS7VDU4g
+         FiFAHBsagfsybdjWUlGMRguhoIoj7I66Lk09G87PoYn6OBARAQbdP7TCPGVBQWyMq4+/
+         EowO0RUP2bWo46Wf001DOSfeRxZM0d0MKLwFLHSuYTqx/ApsCz46gB6cW2y50VnXVN0B
+         r+PImtIfc1f5fnAhlWoBr3C8CHXV4uJCZ11WKgxrwrRdjtvpPF0d+n1XIegJqJVfWXA9
+         z4g+1c4OxFHApurCVjcozHgrNZG/Dx2aKNyuzxye1XuIWwDJzUCrHdpyZBEAEpWFCGOz
+         1/5Q==
+X-Gm-Message-State: AOAM533TKORfmEZU9bZS0pLN33MK8UkbQ00PaI8vo0YELnCuawZCJRq4
+        HRjWR6hlBAdPmp4jkrQvg3JKvP7bt7OczA==
+X-Google-Smtp-Source: ABdhPJzTsfH5S/gnj802+W55fEk+rmkRp6O5DvJ3OUFe5YNQEKZMOYln9Qfx6rIvdxFKDAd4Gv5Z/g==
+X-Received: by 2002:a17:906:c7d2:: with SMTP id dc18mr2849467ejb.149.1611898124934;
+        Thu, 28 Jan 2021 21:28:44 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d91:2600:859e:aee:ff42:2cc6])
+        by smtp.gmail.com with ESMTPSA id p16sm3252082ejz.103.2021.01.28.21.28.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Jan 2021 21:28:44 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Hannes Reinecke <hare@suse.de>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org
+Cc:     Joe Perches <joe@perches.com>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: adjust to gdth scsi driver removal
+Date:   Fri, 29 Jan 2021 06:28:29 +0100
+Message-Id: <20210129052829.13642-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Looks good,
+Commit 0653c358d2dc ("scsi: Drop gdth driver") misses to adjust MAINTAINERS.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
+
+  warning: no file matches F:    drivers/scsi/gdt*
+
+Remove the GDT SCSI DISK ARRAY CONTROLLER DRIVER section as well, as the
+driver is removed now.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on next-20210128
+
+Hannes, Martin, please pick this minor fix-up on your scsi-next tree.
+
+ MAINTAINERS | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index dfb1f1af32bb..5e1fec71f21b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7363,13 +7363,6 @@ M:	Kieran Bingham <kbingham@kernel.org>
+ S:	Supported
+ F:	scripts/gdb/
+ 
+-GDT SCSI DISK ARRAY CONTROLLER DRIVER
+-M:	Achim Leubner <achim_leubner@adaptec.com>
+-L:	linux-scsi@vger.kernel.org
+-S:	Supported
+-W:	http://www.icp-vortex.com/
+-F:	drivers/scsi/gdt*
+-
+ GEMTEK FM RADIO RECEIVER DRIVER
+ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+-- 
+2.17.1
+

@@ -2,59 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B0003083DF
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Jan 2021 03:35:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ED55308479
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Jan 2021 05:11:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231224AbhA2Ce2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Jan 2021 21:34:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59274 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229786AbhA2CeZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Jan 2021 21:34:25 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 043C564DBD;
-        Fri, 29 Jan 2021 02:33:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611887624;
-        bh=KLQefFFQ5pcFGhFE5flj1il6GX5Wea1PhTE94Uz6hYE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=MZ+co7AvQk6qveAR4nht7gM/Y/c82FD1tJUeaK33QfEdXfJOsceC4kIO2gcamZAfr
-         ZxvWE5GasPZ7fOiCZK3QqocokNq+XEQTyM6CeM1Sb54B0s6w4bSKWX0HUkGw5FkuNE
-         +CT61naj4Uml/97JOXO7DSauiIVPeh/IbVarrsdnaxWp4Yhpzgn5sUZBn6cJVj4qTp
-         orHgeVjKIXuBd1D7Lj2DmNyBSTK8cAf2xtHm6uz+woDx+BWO2xyGKG42NkvV1VwS9m
-         EPkcJppVEC9AhKK2lUuPaxPwF20jxEzB/juxgWTqfQ6pNeCO871oOL4Lq9uwcJ3ByI
-         0NEI8asrYSKlA==
-Date:   Thu, 28 Jan 2021 18:33:43 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>
-Cc:     "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "Brandeburg, Jesse" <jesse.brandeburg@intel.com>,
-        "Brown, Aaron F" <aaron.f.brown@intel.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH resend] e100: switch from 'pci_' to 'dma_' API
-Message-ID: <20210128183343.06762fc6@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <268fcfd4dbd929948e8cdb58457ede1efa3898c6.camel@intel.com>
-References: <20210128210736.749724-1-christophe.jaillet@wanadoo.fr>
-        <268fcfd4dbd929948e8cdb58457ede1efa3898c6.camel@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S231697AbhA2EJl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Jan 2021 23:09:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49588 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231386AbhA2EJj (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 Jan 2021 23:09:39 -0500
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ED9DC061574;
+        Thu, 28 Jan 2021 20:08:59 -0800 (PST)
+Received: by mail-ed1-x534.google.com with SMTP id a14so9082473edu.7;
+        Thu, 28 Jan 2021 20:08:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=OZ7PniycqC1RtILMk9WI7xj65U10DcWXv360uL6AeTQ=;
+        b=n4HiATxnobZ29zCQVzIZ55f963r/lEssTtXJXv75iOozu2Wb5hmrSnX+TJdvr39P4E
+         +WGOrInJeSDpKouSMiisNNhk0bkB3W20/w4RAGQOiPSkbVxiddg7f+8WGfdCdvOwYKUo
+         Poa/E29ovMLrUFam5zZqcSokatskxfW2MjrzTmKg8Pidj/xX+vn1dd7obWIr2dEkC5wd
+         qwQueiVd3hC6OWWPoNzEWr1G98fEvzPo09XXSRglwgb3Hyrn2QhSwaEt1b6n1ev54Vp2
+         09bBNMenlzvdyCnRbhkut/O8b0DlF7cp1Q2FWYVc/moz1rN4JvbkdySLBLy+aIc50N6J
+         mH9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=OZ7PniycqC1RtILMk9WI7xj65U10DcWXv360uL6AeTQ=;
+        b=G780u7aUhr32GiMrSvYrKHQYDqxqjSIAAEiCW1WiQWi6sk2sznyXdve/6b5DM39BHU
+         gZ5Pi+Z7IKhTESMIkz2fy4ZWSz4Iq2skv7/ArNCgWgX1sCguQoKOq/Pc3IDIGTIXBatY
+         c+q4HWFF5e3m13luRr9F4fE/jXhHJEwz6hxWuj5Q+m2tIpOtFYge8EAkywQdMYP83TMJ
+         3L/6czuQ2xluzB8U0CJH0nZRvH/E5XbS/+seNyzh2unSGLsqH3sB7KKD6o5y5dVuzy2t
+         WvvKYrLCEoaF31G2Zl4g+ZmnHZuS7x0KSPCsWdFw250jt+TDWsjLtVFSZLo7r2IGEjp6
+         DiPw==
+X-Gm-Message-State: AOAM531D9qn5cR9Fn7ZniwRnmcr9r4EXWkL5Y9sdT2+9EtgBpYK4TqRC
+        /vtgGlVnMQKgtgvBWNlYt2g=
+X-Google-Smtp-Source: ABdhPJz9OdksQfUHSsaicRgt8qhekpX2Ah4ZzkSCFixcXUzHp22t/f0tEjdrvs0mamy5UNf1gSJmOQ==
+X-Received: by 2002:a05:6402:3514:: with SMTP id b20mr3036790edd.100.1611893338182;
+        Thu, 28 Jan 2021 20:08:58 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d91:2600:859e:aee:ff42:2cc6])
+        by smtp.gmail.com with ESMTPSA id bm9sm3218828ejb.14.2021.01.28.20.08.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Jan 2021 20:08:57 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Nitin Joshi <njoshi1@lenovo.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        platform-driver-x86@vger.kernel.org
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] platform/x86: thinkpad_acpi: rectify length of title underline
+Date:   Fri, 29 Jan 2021 05:08:49 +0100
+Message-Id: <20210129040849.26740-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 28 Jan 2021 21:45:02 +0000 Nguyen, Anthony L wrote:
-> >  drivers/net/ethernet/intel/e100.c | 92 ++++++++++++++++-------------
-> 
-> My apologies, this patch slipped through the cracks for me. I will send
-> it in my next net-next 1GbE series or Jakub you can take it directly if
-> you'd like.
+Commit d7cbe2773aed ("platform/x86: thinkpad_acpi: set keyboard language")
+adds information on keyboard setting to the thinkpad documentation, but
+made the subsection title underline too short.
 
-No preference but since I have to type a response either way let me say:
+Hence, make htmldocs warns:
 
-Applied, thanks!
+  Documentation/admin-guide/laptops/thinkpad-acpi.rst:1472: \
+    WARNING: Title underline too short.
 
-;)
+Rectify length of subsection title underline.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on next-20210128
+
+Nitin, please ack.
+
+Hans, please pick this minor fixup for your platform/x86 -next tree.
+
+ Documentation/admin-guide/laptops/thinkpad-acpi.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/admin-guide/laptops/thinkpad-acpi.rst b/Documentation/admin-guide/laptops/thinkpad-acpi.rst
+index b1188f05a99a..0e4c5bb7fb70 100644
+--- a/Documentation/admin-guide/laptops/thinkpad-acpi.rst
++++ b/Documentation/admin-guide/laptops/thinkpad-acpi.rst
+@@ -1469,7 +1469,7 @@ Sysfs notes
+ 
+ 
+ Setting keyboard language
+--------------------
++-------------------------
+ 
+ sysfs: keyboard_lang
+ 
+-- 
+2.17.1
+

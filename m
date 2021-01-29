@@ -2,236 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFF43309B05
-	for <lists+kernel-janitors@lfdr.de>; Sun, 31 Jan 2021 08:57:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FA5530BC2C
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Feb 2021 11:39:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229769AbhAaH4B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 31 Jan 2021 02:56:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34692 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229641AbhAaHzf (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 31 Jan 2021 02:55:35 -0500
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC200C06174A;
-        Sat, 30 Jan 2021 23:54:54 -0800 (PST)
-Received: by mail-wr1-x434.google.com with SMTP id v15so13183977wrx.4;
-        Sat, 30 Jan 2021 23:54:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=TlnMMUHzs0gVAUol/fqoFC0sKz26EovlEEypljhkOAU=;
-        b=foo2wXFSFIblemDPocX9l0etI+cNHgr9kVmmBmln/H8p47AX3wT/g/iSYQLxl+Hetv
-         6wgUh3oGf0vGSWi/Rty1dk82UfLJ2ftOa1Af5M2DuiivB38jYKQXs738xRf1mFAAKBsJ
-         6PDxWculAvXNlI5G1lHibIBsGPUXWkGlDcSCRDIqmFWJEWLRQ3INh//laGhITv+Ekv/y
-         1bbWchJuosHwugWkds0Ecb0EnwpYuz7YFWqDH3cHuxvs3GZmKstXinf0cuttH/3iQPwB
-         C5FubnLJjdgCPbp+MbHDwqB04gZhADrMccQ3P54f44e0/wEdah912jL40tfooN/aMZQL
-         SZ/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=TlnMMUHzs0gVAUol/fqoFC0sKz26EovlEEypljhkOAU=;
-        b=f4jqaSxydzCnIzOv6NmWILBHbaCU4jthVnDnLRaiAPZ5IPeMa9Al3DbkiR/Dxqnu4V
-         N/JVCORArDiptxjPAGmXFIHH7aTB56OQFfAIqBuk8vjTQGMlE+cQ7ohyFy2zkJvtbTSl
-         UlRkem8S85wvOl1wbd/F32bPklaRs8qRvsYMrvevQxzFqXxVbol5UhUMdpCgYsdEQQvH
-         WwwlRl8jFS/b7LCm6Ja1p6+EQV9/pK+aeAuvn5RV6+srkTKcFh6Mk8ZOhrQ7Ed6zdLFk
-         j544poI+xejhNHIwl/Fh2WCan5kjZYiU7TnpBNCcsJGOTlF4+R02g/+RfoKOZwmkWm4O
-         q+Gg==
-X-Gm-Message-State: AOAM531vIdEAdldXVMRaTJ4KufFDQ+//TjrVPUI4AgfP0TGQYsy4Wd6X
-        roKNWNTyn8SQvoyeG6Vo9sQ=
-X-Google-Smtp-Source: ABdhPJyCI9dYQOzut+jklS1h+lO1K2qemD54AAaOVMN7mzWvqpHvoFKC4sQqYM9JDv2CCF9o0BMbZw==
-X-Received: by 2002:a05:6000:1202:: with SMTP id e2mr953534wrx.328.1612079693359;
-        Sat, 30 Jan 2021 23:54:53 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d29:6400:618b:2d13:c477:783d])
-        by smtp.gmail.com with ESMTPSA id n16sm17687386wmi.5.2021.01.30.23.54.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Jan 2021 23:54:52 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH for -next] docs: hwmon: rectify table in max16601.rst
-Date:   Sun, 31 Jan 2021 08:54:45 +0100
-Message-Id: <20210131075445.21222-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S229894AbhBBKiN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Feb 2021 05:38:13 -0500
+Received: from [20.39.40.203] ([20.39.40.203]:60175 "EHLO optinix.in"
+        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S229787AbhBBKiL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Feb 2021 05:38:11 -0500
+dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
+        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
+        b=IZ6mDSBO6UqYNcZetwa8IeP7buzdV6KR8MkAtOf+pscuUzts0y8Xrv50zSTRQkJnpYVvw9eKWGytAkCjTtOlF2QSHn6jxM5vjq7S6dEHeZGvW1CWtxcqbscagneq2m6aaDDY/G0Ds17sT2aalbzzbPhAeyFiEBSUuHUh4BOZUnuNfQyS3KU/UGenen6dBo4qY5uGGnV3EHB0rk3IXjOL3Sv6VHYEET31F7/xVXJDDZWSjYUMtjyV50h01m
+        ZgZNZY0y97UDnyA9dnzhF4FC6xtlxDPbMms3+9aomQZGhqgr0tup0KMMXd/J4pi4wCAsW/OMxu5O43tHqOXrTnUiqWjw==
+Received: from User (Unknown [52.231.31.5])
+        by optinix.in with ESMTP
+        ; Fri, 29 Jan 2021 23:00:28 +0000
+Message-ID: <E2673FFE-FCB3-4969-B70F-F16A2FB9787E@optinix.in>
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <support@digitalsol.in>
+Subject: Re:read
+Date:   Fri, 29 Jan 2021 23:00:27 -0000
+MIME-Version: 1.0
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 90b0f71d62df ("hwmon: (pmbus/max16601) Determine and use number of
-populated phases") adjusts content in the table of
-./Documentation/hwmon/max16601.rst, but one row went beyond the column's
-length.
+Hello,
 
-Hence, make htmldocs warns:
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-  Documentation/hwmon/max16601.rst:94: WARNING: Malformed table.
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-Adjust the column length of that table for this longer row to fit.
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-applies cleanly on next-20210129
-
-Guenter, please pick this minor fixup for your hwmon-next tree.
-
- Documentation/hwmon/max16601.rst | 143 +++++++++++++++----------------
- 1 file changed, 71 insertions(+), 72 deletions(-)
-
-diff --git a/Documentation/hwmon/max16601.rst b/Documentation/hwmon/max16601.rst
-index d16792be7533..d265a2224354 100644
---- a/Documentation/hwmon/max16601.rst
-+++ b/Documentation/hwmon/max16601.rst
-@@ -53,75 +53,74 @@ Sysfs entries
- 
- The following attributes are supported.
- 
--======================= =======================================================
--in1_label		"vin1"
--in1_input		VCORE input voltage.
--in1_alarm		Input voltage alarm.
--
--in2_label		"vout1"
--in2_input		VCORE output voltage.
--in2_alarm		Output voltage alarm.
--
--curr1_label		"iin1"
--curr1_input		VCORE input current, derived from duty cycle and output
--			current.
--curr1_max		Maximum input current.
--curr1_max_alarm		Current high alarm.
--
--curr[P+2]_label		"iin1.P"
--curr[P+2]_input		VCORE phase P input current.
--
--curr[N+2]_label		"iin2"
--curr[N+2]_input		VCORE input current, derived from sensor element.
--			'N' is the number of enabled/populated phases.
--
--curr[N+3]_label		"iin3"
--curr[N+3]_input		VSA input current.
--
--curr[N+4]_label		"iout1"
--curr[N+4]_input		VCORE output current.
--curr[N+4]_crit		Critical output current.
--curr[N+4]_crit_alarm	Output current critical alarm.
--curr[N+4]_max		Maximum output current.
--curr[N+4]_max_alarm	Output current high alarm.
--
--curr[N+P+5]_label	"iout1.P"
--curr[N+P+5]_input	VCORE phase P output current.
--
--curr[2*N+5]_label	"iout3"
--curr[2*N+5]_input	VSA output current.
--curr[2*N+5]_highest	Historical maximum VSA output current.
--curr[2*N+5]_reset_history
--			Write any value to reset curr21_highest.
--curr[2*N+5]_crit	Critical output current.
--curr[2*N+5]_crit_alarm	Output current critical alarm.
--curr[2*N+5]_max		Maximum output current.
--curr[2*N+5]_max_alarm	Output current high alarm.
--
--power1_label		"pin1"
--power1_input		Input power, derived from duty cycle and output current.
--power1_alarm		Input power alarm.
--
--power2_label		"pin2"
--power2_input		Input power, derived from input current sensor.
--
--power3_label		"pout"
--power3_input		Output power.
--
--temp1_input		VCORE temperature.
--temp1_crit		Critical high temperature.
--temp1_crit_alarm	Chip temperature critical high alarm.
--temp1_max		Maximum temperature.
--temp1_max_alarm		Chip temperature high alarm.
--
--temp2_input		TSENSE_0 temperature
--temp3_input		TSENSE_1 temperature
--temp4_input		TSENSE_2 temperature
--temp5_input		TSENSE_3 temperature
--
--temp6_input		VSA temperature.
--temp6_crit		Critical high temperature.
--temp6_crit_alarm	Chip temperature critical high alarm.
--temp6_max		Maximum temperature.
--temp6_max_alarm		Chip temperature high alarm.
--======================= =======================================================
-+========================= =======================================================
-+in1_label		  "vin1"
-+in1_input		  VCORE input voltage.
-+in1_alarm		  Input voltage alarm.
-+
-+in2_label		  "vout1"
-+in2_input		  VCORE output voltage.
-+in2_alarm		  Output voltage alarm.
-+
-+curr1_label		  "iin1"
-+curr1_input		  VCORE input current, derived from duty cycle and output
-+			  current.
-+curr1_max		  Maximum input current.
-+curr1_max_alarm		  Current high alarm.
-+
-+curr[P+2]_label		  "iin1.P"
-+curr[P+2]_input		  VCORE phase P input current.
-+
-+curr[N+2]_label		  "iin2"
-+curr[N+2]_input		  VCORE input current, derived from sensor element.
-+			  'N' is the number of enabled/populated phases.
-+
-+curr[N+3]_label		  "iin3"
-+curr[N+3]_input		  VSA input current.
-+
-+curr[N+4]_label		  "iout1"
-+curr[N+4]_input		  VCORE output current.
-+curr[N+4]_crit		  Critical output current.
-+curr[N+4]_crit_alarm	  Output current critical alarm.
-+curr[N+4]_max		  Maximum output current.
-+curr[N+4]_max_alarm	  Output current high alarm.
-+
-+curr[N+P+5]_label	  "iout1.P"
-+curr[N+P+5]_input	  VCORE phase P output current.
-+
-+curr[2*N+5]_label	  "iout3"
-+curr[2*N+5]_input	  VSA output current.
-+curr[2*N+5]_highest	  Historical maximum VSA output current.
-+curr[2*N+5]_reset_history Write any value to reset curr21_highest.
-+curr[2*N+5]_crit	  Critical output current.
-+curr[2*N+5]_crit_alarm	  Output current critical alarm.
-+curr[2*N+5]_max		  Maximum output current.
-+curr[2*N+5]_max_alarm	  Output current high alarm.
-+
-+power1_label		  "pin1"
-+power1_input		  Input power, derived from duty cycle and output current.
-+power1_alarm		  Input power alarm.
-+
-+power2_label		  "pin2"
-+power2_input		  Input power, derived from input current sensor.
-+
-+power3_label		  "pout"
-+power3_input		  Output power.
-+
-+temp1_input		  VCORE temperature.
-+temp1_crit		  Critical high temperature.
-+temp1_crit_alarm	  Chip temperature critical high alarm.
-+temp1_max		  Maximum temperature.
-+temp1_max_alarm		  Chip temperature high alarm.
-+
-+temp2_input		  TSENSE_0 temperature
-+temp3_input		  TSENSE_1 temperature
-+temp4_input		  TSENSE_2 temperature
-+temp5_input		  TSENSE_3 temperature
-+
-+temp6_input		  VSA temperature.
-+temp6_crit		  Critical high temperature.
-+temp6_crit_alarm	  Chip temperature critical high alarm.
-+temp6_max		  Maximum temperature.
-+temp6_max_alarm		  Chip temperature high alarm.
-+========================= =======================================================
--- 
-2.17.1
+Regards,
+Ms. Reem.
 

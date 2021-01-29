@@ -2,103 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F018308531
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Jan 2021 06:29:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97E113088A9
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Jan 2021 12:57:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230249AbhA2F31 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 29 Jan 2021 00:29:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38318 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbhA2F30 (ORCPT
+        id S232384AbhA2L5K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 29 Jan 2021 06:57:10 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:43375 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232408AbhA2L4T (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 29 Jan 2021 00:29:26 -0500
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 327C0C061573;
-        Thu, 28 Jan 2021 21:28:46 -0800 (PST)
-Received: by mail-ej1-x62f.google.com with SMTP id g12so11187644ejf.8;
-        Thu, 28 Jan 2021 21:28:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=8f3on+5v4iBB2rL3AykrTv13S1IND7BtLGtDGclV4MM=;
-        b=Y784vclj8qO6YSnTkd4sR+M4m3PKkQGBgvHcxtrMatOOxgdxfEvhgGzrqBUB6SRVTe
-         9C1o0I6KlFYG/0obNYhYl6iIROEYE2tKc2/vz1IhrkdpPytkZO+Bt3WHVuzfU60sbdvo
-         uGzTck+LBFEhPGNmRLi0OlNljFTeXLBDoFH7Os0xHv/fvlsfp0xepPzMTpQlDI1MLz7W
-         yE6GP/Yn5ZGY1Lh9h2+RMPFhULsD5SWN2wp8yhJVY6jGRuCACYCh6MjnMg0Wbk5Vgvd9
-         Ia85kqK2BPI+V4Glvfduivweo7ni/oLuT6ZnproJFxiGZhEFkxBUkDnXdy1yntgLlV2T
-         GRWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=8f3on+5v4iBB2rL3AykrTv13S1IND7BtLGtDGclV4MM=;
-        b=nWrADbdl5ML/Yknm2ZgWZk0UOMf0dDX3Kowov3E1FxE3a8MREMIRvzgzd6bS7VDU4g
-         FiFAHBsagfsybdjWUlGMRguhoIoj7I66Lk09G87PoYn6OBARAQbdP7TCPGVBQWyMq4+/
-         EowO0RUP2bWo46Wf001DOSfeRxZM0d0MKLwFLHSuYTqx/ApsCz46gB6cW2y50VnXVN0B
-         r+PImtIfc1f5fnAhlWoBr3C8CHXV4uJCZ11WKgxrwrRdjtvpPF0d+n1XIegJqJVfWXA9
-         z4g+1c4OxFHApurCVjcozHgrNZG/Dx2aKNyuzxye1XuIWwDJzUCrHdpyZBEAEpWFCGOz
-         1/5Q==
-X-Gm-Message-State: AOAM533TKORfmEZU9bZS0pLN33MK8UkbQ00PaI8vo0YELnCuawZCJRq4
-        HRjWR6hlBAdPmp4jkrQvg3JKvP7bt7OczA==
-X-Google-Smtp-Source: ABdhPJzTsfH5S/gnj802+W55fEk+rmkRp6O5DvJ3OUFe5YNQEKZMOYln9Qfx6rIvdxFKDAd4Gv5Z/g==
-X-Received: by 2002:a17:906:c7d2:: with SMTP id dc18mr2849467ejb.149.1611898124934;
-        Thu, 28 Jan 2021 21:28:44 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d91:2600:859e:aee:ff42:2cc6])
-        by smtp.gmail.com with ESMTPSA id p16sm3252082ejz.103.2021.01.28.21.28.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Jan 2021 21:28:44 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Hannes Reinecke <hare@suse.de>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org
-Cc:     Joe Perches <joe@perches.com>,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: adjust to gdth scsi driver removal
-Date:   Fri, 29 Jan 2021 06:28:29 +0100
-Message-Id: <20210129052829.13642-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Fri, 29 Jan 2021 06:56:19 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1l5R34-0002mf-MK; Fri, 29 Jan 2021 10:30:42 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] net/mlx5e: Fix spelling mistake "Unknouwn" -> "Unknown"
+Date:   Fri, 29 Jan 2021 10:30:42 +0000
+Message-Id: <20210129103042.12217-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 0653c358d2dc ("scsi: Drop gdth driver") misses to adjust MAINTAINERS.
+From: Colin Ian King <colin.king@canonical.com>
 
-Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
+There is a spelling mistake in a netdev_warn message. Fix it.
 
-  warning: no file matches F:    drivers/scsi/gdt*
-
-Remove the GDT SCSI DISK ARRAY CONTROLLER DRIVER section as well, as the
-driver is removed now.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
-applies cleanly on next-20210128
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Hannes, Martin, please pick this minor fix-up on your scsi-next tree.
-
- MAINTAINERS | 7 -------
- 1 file changed, 7 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index dfb1f1af32bb..5e1fec71f21b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7363,13 +7363,6 @@ M:	Kieran Bingham <kbingham@kernel.org>
- S:	Supported
- F:	scripts/gdb/
- 
--GDT SCSI DISK ARRAY CONTROLLER DRIVER
--M:	Achim Leubner <achim_leubner@adaptec.com>
--L:	linux-scsi@vger.kernel.org
--S:	Supported
--W:	http://www.icp-vortex.com/
--F:	drivers/scsi/gdt*
--
- GEMTEK FM RADIO RECEIVER DRIVER
- M:	Hans Verkuil <hverkuil@xs4all.nl>
- L:	linux-media@vger.kernel.org
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index aad3887e3c1a..cc3f5ac17e19 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -223,7 +223,7 @@ static int blocking_event(struct notifier_block *nb, unsigned long event, void *
+ 		err = mlx5e_handle_trap_event(priv, data);
+ 		break;
+ 	default:
+-		netdev_warn(priv->netdev, "Sync event: Unknouwn event %ld\n", event);
++		netdev_warn(priv->netdev, "Sync event: Unknown event %ld\n", event);
+ 		err = -EINVAL;
+ 	}
+ 	return err;
 -- 
-2.17.1
+2.29.2
 

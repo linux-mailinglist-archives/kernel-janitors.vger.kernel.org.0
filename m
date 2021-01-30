@@ -2,123 +2,303 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98FC0308D70
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Jan 2021 20:36:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 478C730950B
+	for <lists+kernel-janitors@lfdr.de>; Sat, 30 Jan 2021 13:01:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232882AbhA2T3k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 29 Jan 2021 14:29:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48816 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232848AbhA2T3e (ORCPT
+        id S229468AbhA3MB1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 30 Jan 2021 07:01:27 -0500
+Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:42898 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229498AbhA3MBZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 29 Jan 2021 14:29:34 -0500
-Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C361C061573;
-        Fri, 29 Jan 2021 11:28:54 -0800 (PST)
-Received: by mail-ot1-x336.google.com with SMTP id i20so9698940otl.7;
-        Fri, 29 Jan 2021 11:28:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TTlFa+FhQ9E3hhXfUpHEFEwCBTVYyl2tyI+bhrzBYYc=;
-        b=HFD5J2YGALukCCHDNdUuWUGonkc1xmVsI1d3GEijBb8667YTNlXUdOAG88IFOwVKwM
-         O6Yu1YojShf0ToL3HOpg7BzIaSuQT93GgaiAcmwXUD/xt6IDxmVTp65+9h7dvzaFAktN
-         cfiOlUNf8jKAM4t+v1grcMJGGAYiN3lmYLNhcXZ2Z6Py40ujQHWr2wdjSW6TX3VBqvI1
-         6i1OHd9husSAeIWsJxQ2jBQLTeVnDJ5T3/8hZSOLDH5amJHUpTEBUba9CZRBboNEPQjk
-         FPmSB6iyiKFPlBo9Q5uFm3JMrOr57NnEGYVekWikGXwddj783DGt/Tv/qs4Qc0R7+CT0
-         0sVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TTlFa+FhQ9E3hhXfUpHEFEwCBTVYyl2tyI+bhrzBYYc=;
-        b=Aw+mVaTZs3VYY42J34gQHTNKbefHYrVQUXMORDtY9piuzeb970wS4yDbCzuXhs/g4C
-         3Ha5pD5QOqGcCg/kuRjMUXHQVhyefLbhibLPoI7VvnfjpvlTfRAy5vdApzH2woMiTJZ4
-         W3XT03o3V5c4ClCsh39QoVQs44x2PuITg8R6eHLU2mGipxGq/qFWNUP9vUa2rZuC30eE
-         Icbx3TlO27JJcYNHqA7lculrcS6WOoRIGuBpsWKFBSYiSjZZKBNkE90A+UXe27eqMRBg
-         PXIdie2uwCoUDAPHoPxVR/BguzAQuG3dpR0tDcJ3qY5sHvZOYU/Ysh2zfyZsQQkOZezV
-         WGxA==
-X-Gm-Message-State: AOAM530mO0S1b9li1u0rc2KJrDjLfgBpfTQ4cyk4gbymMOiXYorhNskl
-        gAz4AukrGLtNUU92JodrwxtSge9nBcDFRC7F9/A=
-X-Google-Smtp-Source: ABdhPJxeJccHQSNbhg5zM7E4+pnL0FyDxpIvUiHsVHtDscx7vBeclhvpXx/FSZrPFKM7KT0j6hQkBi0B1zyn07NtQ3Y=
-X-Received: by 2002:a9d:784a:: with SMTP id c10mr4094218otm.132.1611948533511;
- Fri, 29 Jan 2021 11:28:53 -0800 (PST)
+        Sat, 30 Jan 2021 07:01:25 -0500
+Received: from localhost.localdomain ([92.131.99.25])
+        by mwinf5d35 with ME
+        id NuY32400A0Ys01Y03uY3bc; Sat, 30 Jan 2021 07:32:04 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 30 Jan 2021 07:32:04 +0100
+X-ME-IP: 92.131.99.25
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
+        romain.perier@gmail.com, allen.lkml@gmail.com
+Cc:     linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH resend] media: ngene: switch from 'pci_' to 'dma_' API
+Date:   Sat, 30 Jan 2021 07:32:00 +0100
+Message-Id: <20210130063200.752615-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-References: <20210129120759.375725-1-colin.king@canonical.com>
-In-Reply-To: <20210129120759.375725-1-colin.king@canonical.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Fri, 29 Jan 2021 14:28:42 -0500
-Message-ID: <CADnq5_O2MKy7jPc2o7u8H-VsDxweumxGHc7oBprg7ZyP_BMu2w@mail.gmail.com>
-Subject: Re: [PATCH][next] drm/amdgpu: Fix memory leak of object caps on error
- return paths
-To:     Colin King <colin.king@canonical.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Leo Liu <leo.liu@amd.com>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jan 29, 2021 at 7:08 AM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Currently there are three error return paths that don't kfree object
-> caps.  Fix this by performing the allocation of caps after the checks
-> and error return paths to avoid the premature allocation and memory
-> leaking.
->
-> Addresses-Coverity: ("Resource leak")
-> Fixes: 555fc7fbb2a2 ("drm/amdgpu: add INFO ioctl support for querying video caps")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-Applied.  Thanks!
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GFP_ with a correct flag.
+It has been compile tested.
 
-Alex
+When memory is allocated, GFP_KERNEL can be used because in all cases,
+it is called from a probe function and no lock is taken in the between.
+
+The call chain is:
+  ngene_probe                       (probe function, used in ngene-cards.c)
+    --> ngene_get_buffers
+      --> AllocCommonBuffers                  (call dma_alloc_coherent)
+        --> create_ring_buffer                (call dma_alloc_coherent)
+        --> AllocateRingBuffers               (call dma_alloc_coherent)
 
 
-> ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-> index 84b666fcfaf6..730f4ac7487b 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-> @@ -988,10 +988,6 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
->                 struct drm_amdgpu_info_video_caps *caps;
->                 int r;
->
-> -               caps = kzalloc(sizeof(*caps), GFP_KERNEL);
-> -               if (!caps)
-> -                       return -ENOMEM;
-> -
->                 switch (info->video_cap.type) {
->                 case AMDGPU_INFO_VIDEO_CAPS_DECODE:
->                         r = amdgpu_asic_query_video_codecs(adev, false, &codecs);
-> @@ -1009,6 +1005,11 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
->                                       info->video_cap.type);
->                         return -EINVAL;
->                 }
-> +
-> +               caps = kzalloc(sizeof(*caps), GFP_KERNEL);
-> +               if (!caps)
-> +                       return -ENOMEM;
-> +
->                 for (i = 0; i < codecs->codec_count; i++) {
->                         int idx = codecs->codec_array[i].codec_type;
->
-> --
-> 2.29.2
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
+
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+---
+ drivers/media/pci/ngene/ngene-core.c | 56 ++++++++++++++--------------
+ 1 file changed, 28 insertions(+), 28 deletions(-)
+
+diff --git a/drivers/media/pci/ngene/ngene-core.c b/drivers/media/pci/ngene/ngene-core.c
+index f9f94f47d76b..07f342db6701 100644
+--- a/drivers/media/pci/ngene/ngene-core.c
++++ b/drivers/media/pci/ngene/ngene-core.c
+@@ -763,23 +763,22 @@ static void free_ringbuffer(struct ngene *dev, struct SRingBufferDescriptor *rb)
+ 
+ 	for (j = 0; j < rb->NumBuffers; j++, Cur = Cur->Next) {
+ 		if (Cur->Buffer1)
+-			pci_free_consistent(dev->pci_dev,
+-					    rb->Buffer1Length,
+-					    Cur->Buffer1,
+-					    Cur->scList1->Address);
++			dma_free_coherent(&dev->pci_dev->dev,
++					  rb->Buffer1Length, Cur->Buffer1,
++					  Cur->scList1->Address);
+ 
+ 		if (Cur->Buffer2)
+-			pci_free_consistent(dev->pci_dev,
+-					    rb->Buffer2Length,
+-					    Cur->Buffer2,
+-					    Cur->scList2->Address);
++			dma_free_coherent(&dev->pci_dev->dev,
++					  rb->Buffer2Length, Cur->Buffer2,
++					  Cur->scList2->Address);
+ 	}
+ 
+ 	if (rb->SCListMem)
+-		pci_free_consistent(dev->pci_dev, rb->SCListMemSize,
+-				    rb->SCListMem, rb->PASCListMem);
++		dma_free_coherent(&dev->pci_dev->dev, rb->SCListMemSize,
++				  rb->SCListMem, rb->PASCListMem);
+ 
+-	pci_free_consistent(dev->pci_dev, rb->MemSize, rb->Head, rb->PAHead);
++	dma_free_coherent(&dev->pci_dev->dev, rb->MemSize, rb->Head,
++			  rb->PAHead);
+ }
+ 
+ static void free_idlebuffer(struct ngene *dev,
+@@ -813,15 +812,13 @@ static void free_common_buffers(struct ngene *dev)
+ 	}
+ 
+ 	if (dev->OverflowBuffer)
+-		pci_free_consistent(dev->pci_dev,
+-				    OVERFLOW_BUFFER_SIZE,
+-				    dev->OverflowBuffer, dev->PAOverflowBuffer);
++		dma_free_coherent(&dev->pci_dev->dev, OVERFLOW_BUFFER_SIZE,
++				  dev->OverflowBuffer, dev->PAOverflowBuffer);
+ 
+ 	if (dev->FWInterfaceBuffer)
+-		pci_free_consistent(dev->pci_dev,
+-				    4096,
+-				    dev->FWInterfaceBuffer,
+-				    dev->PAFWInterfaceBuffer);
++		dma_free_coherent(&dev->pci_dev->dev, 4096,
++				  dev->FWInterfaceBuffer,
++				  dev->PAFWInterfaceBuffer);
+ }
+ 
+ /****************************************************************************/
+@@ -848,7 +845,7 @@ static int create_ring_buffer(struct pci_dev *pci_dev,
+ 	if (MemSize < 4096)
+ 		MemSize = 4096;
+ 
+-	Head = pci_alloc_consistent(pci_dev, MemSize, &tmp);
++	Head = dma_alloc_coherent(&pci_dev->dev, MemSize, &tmp, GFP_KERNEL);
+ 	PARingBufferHead = tmp;
+ 
+ 	if (!Head)
+@@ -899,7 +896,8 @@ static int AllocateRingBuffers(struct pci_dev *pci_dev,
+ 	if (SCListMemSize < 4096)
+ 		SCListMemSize = 4096;
+ 
+-	SCListMem = pci_alloc_consistent(pci_dev, SCListMemSize, &tmp);
++	SCListMem = dma_alloc_coherent(&pci_dev->dev, SCListMemSize, &tmp,
++				       GFP_KERNEL);
+ 
+ 	PASCListMem = tmp;
+ 	if (SCListMem == NULL)
+@@ -918,8 +916,8 @@ static int AllocateRingBuffers(struct pci_dev *pci_dev,
+ 	for (i = 0; i < pRingBuffer->NumBuffers; i += 1, Cur = Cur->Next) {
+ 		u64 PABuffer;
+ 
+-		void *Buffer = pci_alloc_consistent(pci_dev, Buffer1Length,
+-						    &tmp);
++		void *Buffer = dma_alloc_coherent(&pci_dev->dev,
++						  Buffer1Length, &tmp, GFP_KERNEL);
+ 		PABuffer = tmp;
+ 
+ 		if (Buffer == NULL)
+@@ -951,7 +949,8 @@ static int AllocateRingBuffers(struct pci_dev *pci_dev,
+ 		if (!Buffer2Length)
+ 			continue;
+ 
+-		Buffer = pci_alloc_consistent(pci_dev, Buffer2Length, &tmp);
++		Buffer = dma_alloc_coherent(&pci_dev->dev, Buffer2Length,
++					    &tmp, GFP_KERNEL);
+ 		PABuffer = tmp;
+ 
+ 		if (Buffer == NULL)
+@@ -1040,17 +1039,18 @@ static int AllocCommonBuffers(struct ngene *dev)
+ {
+ 	int status = 0, i;
+ 
+-	dev->FWInterfaceBuffer = pci_alloc_consistent(dev->pci_dev, 4096,
+-						     &dev->PAFWInterfaceBuffer);
++	dev->FWInterfaceBuffer = dma_alloc_coherent(&dev->pci_dev->dev, 4096,
++						    &dev->PAFWInterfaceBuffer,
++						    GFP_KERNEL);
+ 	if (!dev->FWInterfaceBuffer)
+ 		return -ENOMEM;
+ 	dev->hosttongene = dev->FWInterfaceBuffer;
+ 	dev->ngenetohost = dev->FWInterfaceBuffer + 256;
+ 	dev->EventBuffer = dev->FWInterfaceBuffer + 512;
+ 
+-	dev->OverflowBuffer = pci_zalloc_consistent(dev->pci_dev,
+-						    OVERFLOW_BUFFER_SIZE,
+-						    &dev->PAOverflowBuffer);
++	dev->OverflowBuffer = dma_alloc_coherent(&dev->pci_dev->dev,
++						 OVERFLOW_BUFFER_SIZE,
++						 &dev->PAOverflowBuffer, GFP_KERNEL);
+ 	if (!dev->OverflowBuffer)
+ 		return -ENOMEM;
+ 
+-- 
+2.25.1
+

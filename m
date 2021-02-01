@@ -2,85 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5089F30A23A
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Feb 2021 07:51:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4789930A78B
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Feb 2021 13:25:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231630AbhBAGur (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Feb 2021 01:50:47 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:11650 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232272AbhBAGnw (ORCPT
+        id S230189AbhBAMZP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Feb 2021 07:25:15 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:47550 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230002AbhBAMZO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Feb 2021 01:43:52 -0500
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4DTddk6LW6z162QB;
-        Mon,  1 Feb 2021 14:41:46 +0800 (CST)
-Received: from [10.174.179.80] (10.174.179.80) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.498.0; Mon, 1 Feb 2021 14:43:01 +0800
-Subject: Re: [PATCH] nbd: Fix NULL pointer in flush_workqueue
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        <linux-block@vger.kernel.org>, <nbd@other.debian.org>
-CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        "Jens Axboe" <axboe@kernel.dk>, Josef Bacik <josef@toxicpanda.com>
-References: <20210128074153.1633374-1-sunke32@huawei.com>
- <1739e522-5980-f86e-cb90-19b61539a5cf@web.de>
-From:   Sun Ke <sunke32@huawei.com>
-Message-ID: <28c83b00-7d0b-ee0d-640b-017c9f8410eb@huawei.com>
-Date:   Mon, 1 Feb 2021 14:43:00 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+        Mon, 1 Feb 2021 07:25:14 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 111CEpWQ077887;
+        Mon, 1 Feb 2021 12:24:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=tLvdFlLOpMReHiVP2YoEZepdkqZJj3ibXM9lnjBT0Vc=;
+ b=YC7t2XO1JboNJat8x3dc8+1UvHuDj8jIZ7HONbqoDyj3ycInVkkRr8Bc6bTeJOVs68kT
+ SienA6R8IWtMEy7fsINdeStL4qaHiGd+EbfONipJ3kVfV/FU+rTRhNsB43SxGiDkJn42
+ F6D3ICSlDl4f36XazxTN1OLHWaXHzabyKBr2L/+ZpZNrePNYsxtZawvgRB3GjFGMWo/s
+ FYGBWPmok483WrNuJyDcTcHKESI3SJPz/TiXqio08WWqpZTnAos7vFipvcqNEQd85Ry9
+ cJ/PRQsKWR5AVKc1c9dUmWg0I0J7I5IjX8bQAmhRlOyZ200V+LI1UMNaz2/DoQs13Wdz PQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 36cydkmwxc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 01 Feb 2021 12:24:25 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 111CBOxT118872;
+        Mon, 1 Feb 2021 12:22:23 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 36dh1m9yc8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 01 Feb 2021 12:22:23 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 111CMFsw001328;
+        Mon, 1 Feb 2021 12:22:16 GMT
+Received: from mwanda (/10.175.186.133)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 01 Feb 2021 04:22:14 -0800
+Date:   Mon, 1 Feb 2021 15:22:07 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Scott Branden <scott.branden@broadcom.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Olof Johansson <olof@lixom.net>,
+        Desmond Yan <desmond.yan@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] misc: bcm-vk: unlock on error in bcm_to_h_msg_dequeue()
+Message-ID: <YBfyb+jU5lDUe+5g@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <1739e522-5980-f86e-cb90-19b61539a5cf@web.de>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.80]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-IMR: 1
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9881 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 phishscore=0
+ suspectscore=0 mlxlogscore=999 bulkscore=0 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102010064
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9881 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 clxscore=1011
+ spamscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102010064
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-hi，Markus
+Unlock before returning on this error path.
 
-在 2021/1/29 3:42, Markus Elfring 写道:
-> …
->> +++ b/drivers/block/nbd.c
->> @@ -2011,12 +2011,20 @@ static int nbd_genl_disconnect(struct sk_buff *skb, struct genl_info *info)
->>   		       index);
->>   		return -EINVAL;
->>   	}
->> +	mutex_lock(&nbd->config_lock);
->>   	if (!refcount_inc_not_zero(&nbd->refs)) {
->>   		mutex_unlock(&nbd_index_mutex);
->> +		mutex_unlock(&nbd->config_lock);
-> Can an other function call order become relevant for the unlocking of these mutexes?
-Do you think the nbd->config_lock  mutex here is useless?
->
->
->>   		printk(KERN_ERR "nbd: device at index %d is going down\n",
->>   		       index);
-> May such an error message be moved into the lock scope?
-Sure.
->
->
->>   		return -EINVAL;
->>   	}
->> +	if (!nbd->recv_workq) {
->> +		mutex_unlock(&nbd->config_lock);
->> +		mutex_unlock(&nbd_index_mutex);
->> +		return -EINVAL;
->> +	}
-> How do you think about to connect the code from this if branch
-> with a jump target like “unlock” so that such statements would be shareable
-> for the desired exception handling?
-OK, I will improve it in V2 patch.
->
->
->> +	mutex_unlock(&nbd->config_lock);
->>   	mutex_unlock(&nbd_index_mutex);
->>   	if (!refcount_inc_not_zero(&nbd->config_refs)) {
->>   		nbd_put(nbd);
->
-> Regards,
-> Markus
-> .
+Fixes: 111d746bb476 ("misc: bcm-vk: add VK messaging support")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/misc/bcm-vk/bcm_vk_msg.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/misc/bcm-vk/bcm_vk_msg.c b/drivers/misc/bcm-vk/bcm_vk_msg.c
+index eec90494777d..fc972e43258a 100644
+--- a/drivers/misc/bcm-vk/bcm_vk_msg.c
++++ b/drivers/misc/bcm-vk/bcm_vk_msg.c
+@@ -849,7 +849,8 @@ s32 bcm_to_h_msg_dequeue(struct bcm_vk *vk)
+ 				 * that is fatal.
+ 				 */
+ 				dev_crit(dev, "Kernel mem allocation failure.\n");
+-				return -ENOMEM;
++				total = -ENOMEM;
++				goto idx_err;
+ 			}
+ 
+ 			/* flush rd pointer after a message is dequeued */
+-- 
+2.29.2
+

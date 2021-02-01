@@ -2,108 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7746530AF5E
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Feb 2021 19:33:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77D5630AF8D
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Feb 2021 19:39:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233009AbhBASdf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Feb 2021 13:33:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52916 "EHLO
+        id S232850AbhBASid (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Feb 2021 13:38:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232892AbhBAScm (ORCPT
+        with ESMTP id S232908AbhBASdM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Feb 2021 13:32:42 -0500
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76174C06174A
-        for <kernel-janitors@vger.kernel.org>; Mon,  1 Feb 2021 10:32:01 -0800 (PST)
-Received: by mail-wr1-x435.google.com with SMTP id c12so17727225wrc.7
-        for <kernel-janitors@vger.kernel.org>; Mon, 01 Feb 2021 10:32:01 -0800 (PST)
+        Mon, 1 Feb 2021 13:33:12 -0500
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC93AC061756
+        for <kernel-janitors@vger.kernel.org>; Mon,  1 Feb 2021 10:32:31 -0800 (PST)
+Received: by mail-wr1-x42b.google.com with SMTP id g10so17738129wrx.1
+        for <kernel-janitors@vger.kernel.org>; Mon, 01 Feb 2021 10:32:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=S3/oKhysHO/pOiT1iyW7BMPwpGl0CMdjgnrZFZt1WNY=;
-        b=LuiT0Huwuj2C5/ndTXHIvUC4GxAKfVNEUspbGp9VsqoGiJ686B/fEwzNqEwUSlFPKN
-         O0tCs7rNyG3fFnREVq1one/pMYi02ArGAOHSItnwybHvnIsDZ54CI7p04iXmUDY3HiGa
-         QsduFmkY4AUVOGqQdpGXxE8+FW8YKkZrz7kgs=
+        bh=NHbmw3pLczJWiviuY4n47v/KgULrZJeoqTUijooyOh0=;
+        b=QPVctOPabbKMlSbjtR3Ah+FIIuzyQzempuUXvzcCzn9SVIxNn2HKrq1h7EVUJi0snm
+         ZF4GEgdDxs5nG6JAept6Jdfm+miNvKqLhaZ16Q+J/JLrVpOycKDMxZjFnyTLYP4jqfuV
+         yQ1djPxiuTMIKg2/Lku895m6sbC4svtC+YmR8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=S3/oKhysHO/pOiT1iyW7BMPwpGl0CMdjgnrZFZt1WNY=;
-        b=ss3838ovre1vPVhHPx8HIIgvBb75o2/bj+HaTHUTbvyLN354BXp58sDpIW3xJeb7YV
-         ZMYzFrYdsF/dWqOfq/Vxk9lkRv2gHFkqM/c3v3DteGEiCIu6tdWoF6N7BxhVnvunwlHc
-         8tZ6cqtaWFA7SirYghSGJiYDVIgfIksjjFGgII42k9aMPeW08mZW/zpWDvbMugqiRvGU
-         NjwM7PWrK55jWGZcg2+JuXWaymrYRSvIcyvnGY/pDZCndOqmD4opopN/0kSbYj3NLczc
-         d4/wQFA5u6slALx5S9CeDEX1wj26L1JCFyMdNYLmlhaRoihOQ8S9sNTUqkMEsr87Ze9t
-         eFtw==
-X-Gm-Message-State: AOAM532RJuFfwFOSbsf39KG740h/MJuCqWX23feFw28mz1otYpatTdie
-        zGkzwAIfhSddUKTOMvJ9/CCELCaCHvMcPnOIzt0hYg==
-X-Google-Smtp-Source: ABdhPJzW0raaLdsyJa/pVY1yy1ug4OX5v2KHm51ujt9+9FP9lME1RcuXz6GvwUPifz40r6bFM3BFA2dC7Bt7a0bFlJI=
-X-Received: by 2002:a5d:62c4:: with SMTP id o4mr19909114wrv.292.1612204320100;
- Mon, 01 Feb 2021 10:32:00 -0800 (PST)
+        bh=NHbmw3pLczJWiviuY4n47v/KgULrZJeoqTUijooyOh0=;
+        b=gm9OLWIphPWVVHkYtZzICB0FzDBiQnhReBR1GrkJBOBpL5ju1b0B7/gFMLkOUWjVHY
+         YUxRXG5rt/lqGzkANOwsIBLrAaW45Vm4e1FiQgZVsRjDgqIqmxrC2FpsLpV2WMdQSUna
+         5L+yFyXXQcasFOyr8WGxgqWexmxEm4d0T7ZxJuRLwepdVGdj+kYQXkNtMayJMGsU0epr
+         3ws+ZbJ4xXYHHWkj3pUMEOLxgyo9q1EiHU3SBY19olT1xWfiNy5vpJMTZBUnrgpgpMr6
+         7/UWy42XC7e73ZsQip0hEuhv4rmPX63YFKxtEa6mAaN2qsAuc6F4vxkgFSE1fhULD0Ib
+         Drrg==
+X-Gm-Message-State: AOAM5311Dw9tPRiSbyI3BiRHRuIQBeRFJN2PewnPwliQraG9q0GsGvo0
+        CLLPqP1GRU0rQhVyCjrv0gcTNU8XwU86c5nfJtz7FA==
+X-Google-Smtp-Source: ABdhPJyX273jY7n68N4d5ro/RTJSVYLfjE7A9LCeHrP4/19FLesCEXbrzrtQqZFi1Nqil9ORcjeRpuuXEh3TG6kTBo8=
+X-Received: by 2002:a5d:5544:: with SMTP id g4mr19302087wrw.59.1612204350381;
+ Mon, 01 Feb 2021 10:32:30 -0800 (PST)
 MIME-Version: 1.0
-References: <YBfyb+jU5lDUe+5g@mwanda> <cf899c97-2c26-afc4-f0ea-4976a074a05e@broadcom.com>
-In-Reply-To: <cf899c97-2c26-afc4-f0ea-4976a074a05e@broadcom.com>
+References: <YBfyb+jU5lDUe+5g@mwanda>
+In-Reply-To: <YBfyb+jU5lDUe+5g@mwanda>
 From:   Desmond Yan <desmond.yan@broadcom.com>
-Date:   Mon, 1 Feb 2021 10:31:49 -0800
-Message-ID: <CAEuuh2-uNkbK6wsJVBUEXMv2TQdhQaRCqtM0GdULWgVHU+JDnQ@mail.gmail.com>
+Date:   Mon, 1 Feb 2021 10:32:19 -0800
+Message-ID: <CAEuuh2_BH4_7bm7tTZ2VSKNv7eCjj-ZU=zcV3vKbD1H_tJRLcQ@mail.gmail.com>
 Subject: Re: [PATCH] misc: bcm-vk: unlock on error in bcm_to_h_msg_dequeue()
-To:     Scott Branden <scott.branden@broadcom.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Scott Branden <scott.branden@broadcom.com>,
         Arnd Bergmann <arnd@arndb.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Olof Johansson <olof@lixom.net>,
         bcm-kernel-feedback-list@broadcom.com,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000d2c21d05ba4a9179"
+        boundary="000000000000a1044805ba4a9343"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
---000000000000d2c21d05ba4a9179
+--000000000000a1044805ba4a9343
 Content-Type: text/plain; charset="UTF-8"
 
-Yes, in this situation, it is fatal and we would turn off processing
-anyway.  But, Dan's change seems more appropriate and proper practice
-(thxs for the patch).
+Acked-by: Desmond Yan <desmond.yan@broadcom.com>
 
-Des
-
-On Mon, Feb 1, 2021 at 9:31 AM Scott Branden <scott.branden@broadcom.com> wrote:
+On Mon, Feb 1, 2021 at 4:24 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
 >
+> Unlock before returning on this error path.
 >
+> Fixes: 111d746bb476 ("misc: bcm-vk: add VK messaging support")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/misc/bcm-vk/bcm_vk_msg.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> On 2021-02-01 4:22 a.m., Dan Carpenter wrote:
-> > Unlock before returning on this error path.
-> >
-> > Fixes: 111d746bb476 ("misc: bcm-vk: add VK messaging support")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> >  drivers/misc/bcm-vk/bcm_vk_msg.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/misc/bcm-vk/bcm_vk_msg.c b/drivers/misc/bcm-vk/bcm_vk_msg.c
-> > index eec90494777d..fc972e43258a 100644
-> > --- a/drivers/misc/bcm-vk/bcm_vk_msg.c
-> > +++ b/drivers/misc/bcm-vk/bcm_vk_msg.c
-> > @@ -849,7 +849,8 @@ s32 bcm_to_h_msg_dequeue(struct bcm_vk *vk)
-> >                                * that is fatal.
-> >                                */
-> >                               dev_crit(dev, "Kernel mem allocation failure.\n");
-> > -                             return -ENOMEM;
-> > +                             total = -ENOMEM;
-> > +                             goto idx_err;
-> >                       }
-> >
-> This is a pretty fatal case if we fail to allocate memory here.
-> Will let Desmond respond if we wanted to keep the mutex locked forever in this
-> case or if we do want to return and keep mutex locked if it is fatal and there is
-> no real recovery path.
-> >                       /* flush rd pointer after a message is dequeued */
+> diff --git a/drivers/misc/bcm-vk/bcm_vk_msg.c b/drivers/misc/bcm-vk/bcm_vk_msg.c
+> index eec90494777d..fc972e43258a 100644
+> --- a/drivers/misc/bcm-vk/bcm_vk_msg.c
+> +++ b/drivers/misc/bcm-vk/bcm_vk_msg.c
+> @@ -849,7 +849,8 @@ s32 bcm_to_h_msg_dequeue(struct bcm_vk *vk)
+>                                  * that is fatal.
+>                                  */
+>                                 dev_crit(dev, "Kernel mem allocation failure.\n");
+> -                               return -ENOMEM;
+> +                               total = -ENOMEM;
+> +                               goto idx_err;
+>                         }
+>
+>                         /* flush rd pointer after a message is dequeued */
+> --
+> 2.29.2
 >
 
---000000000000d2c21d05ba4a9179
+--000000000000a1044805ba4a9343
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -173,14 +164,14 @@ kQkyrew0cHrPRSHhE0qx+BLKJF2SQbb1cH/Ra7JhcLfXeJA/eBw1b9Ss/yfnSj3z/TAKOpYsicFX
 b+ynK9BBF17HGsWw/7TOms5t0Qk1P6+IBbzUxeh5s4cDAMsDfE1xvUvUVu/2ASpap+hXkoss+Vcc
 G2gxggJvMIICawIBATBtMF0xCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNh
 MTMwMQYDVQQDEypHbG9iYWxTaWduIFBlcnNvbmFsU2lnbiAyIENBIC0gU0hBMjU2IC0gRzMCDFJS
-0nbv//4itGuVqDANBglghkgBZQMEAgEFAKCB1DAvBgkqhkiG9w0BCQQxIgQgCMsT0WNSM66IvgdT
-1XlKWLEVp/VpuFMmWhXCS+AOgbQwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0B
-CQUxDxcNMjEwMjAxMTgzMjAwWjBpBgkqhkiG9w0BCQ8xXDBaMAsGCWCGSAFlAwQBKjALBglghkgB
+0nbv//4itGuVqDANBglghkgBZQMEAgEFAKCB1DAvBgkqhkiG9w0BCQQxIgQgt0bttFoAZbEReWIE
+KbLWCX6DSvO1MhqnWN6S+j+MLR4wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0B
+CQUxDxcNMjEwMjAxMTgzMjMwWjBpBgkqhkiG9w0BCQ8xXDBaMAsGCWCGSAFlAwQBKjALBglghkgB
 ZQMEARYwCwYJYIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBCjALBgkqhkiG9w0BAQcw
-CwYJYIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBAL2MJ8i+E+/KaYoJbLFjsAEYR+0TOvCn0oop
-/F3WX14+50bpvqdeoi+VgP8BkbajRrs/YtUX7RuCJsBlYsDIBuIrMWeVpqimItexR0Ve4nXtrcSG
-/uCuHpZz4gxLmNyV/GWxqxQAVSNkq3weSD5yIJEYQtllDHdqUdn/OnatqmSPhBwaHQGpJzUmOcBq
-tMurxYlhQVxeBs0pTD01wmTTWPMIgUC04H+UH/sfm9nsvr780chuX+ODAGFRp4Dx9f7ESRSdmLsP
-yf8K41gAsWOHNpTvwlRUva1it3FdoyLbWEFP3CuYsEf6ZRi5ttpYT7n/Ll7CnH+kSjrdjpdrcZox
-FNY=
---000000000000d2c21d05ba4a9179--
+CwYJYIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBACy9AbWdTQXCiqqRNWd5cYtuFBW8/i0u2eCb
+Ekpb8YFDTj7o4vq6DGxaUo3xtIaCis6AKEAk2/Jg+8nRcl7ISb7EKWvsQeJXnNCTVSNQibUpVVUP
+SbzbM+F+eS4HSL68d454M1Q5ffZQgfy+BIaLPL1sHxYy0QfTEw24VCvHa4i25LgtLqdRq6SNJJHJ
+Q65SxFv2KWC5GuVgP9GrpkwSI+HA2m8cxmkCWjMQWuqiMjgw/UyjbH5FUB8laovkuA8DtaHbGnFJ
+QRjslDAuRLSJglJK+g/uDiWzXrpukX9tyUvgSfRO7gKKhtHKhZJxQ6LzAeayoOGC8CK3tNnOI9E+
+yAk=
+--000000000000a1044805ba4a9343--

@@ -2,176 +2,157 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77D5630AF8D
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Feb 2021 19:39:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0921930AF90
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Feb 2021 19:39:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232850AbhBASid (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Feb 2021 13:38:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53024 "EHLO
+        id S232340AbhBASio (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Feb 2021 13:38:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232908AbhBASdM (ORCPT
+        with ESMTP id S232710AbhBASia (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Feb 2021 13:33:12 -0500
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC93AC061756
-        for <kernel-janitors@vger.kernel.org>; Mon,  1 Feb 2021 10:32:31 -0800 (PST)
-Received: by mail-wr1-x42b.google.com with SMTP id g10so17738129wrx.1
-        for <kernel-janitors@vger.kernel.org>; Mon, 01 Feb 2021 10:32:31 -0800 (PST)
+        Mon, 1 Feb 2021 13:38:30 -0500
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79576C061756;
+        Mon,  1 Feb 2021 10:37:49 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id 190so210507wmz.0;
+        Mon, 01 Feb 2021 10:37:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NHbmw3pLczJWiviuY4n47v/KgULrZJeoqTUijooyOh0=;
-        b=QPVctOPabbKMlSbjtR3Ah+FIIuzyQzempuUXvzcCzn9SVIxNn2HKrq1h7EVUJi0snm
-         ZF4GEgdDxs5nG6JAept6Jdfm+miNvKqLhaZ16Q+J/JLrVpOycKDMxZjFnyTLYP4jqfuV
-         yQ1djPxiuTMIKg2/Lku895m6sbC4svtC+YmR8=
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=AaOtEeHuaSFZ2GkBHVMVepHP95DL8NVdazqKLO7HNr4=;
+        b=HfcsYPUB0n4AyFeX1kubvaQqLsElYwTM/1O0irEPJaGaC4UWxvNp0nh9pJcipSryu6
+         DKH/RpKFrs15ILcu8FrYqRc8kZr/5Gns3Y+vNZ6xqslUA0LVeZM5Ne3WXA2a/N0kTGRh
+         +IZuCm9KFX892IETdVJYgE/V+WtVHmt6yq89WvyNOoX1ddbKM4ayHrjBwkFaAo/lt1AT
+         l/38XEmle4ZjLVrGYQAsBtXyLQg/mSUWJqZJMshhALov4RE827JwbTvUC1P8Y5ui0yC+
+         NuCJRww3npoH/8TGCLW+ORJZhovi0QOTRlbQr7Yx9LiwPIBQhAm+3loamyJi6mrR5Qxb
+         627g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NHbmw3pLczJWiviuY4n47v/KgULrZJeoqTUijooyOh0=;
-        b=gm9OLWIphPWVVHkYtZzICB0FzDBiQnhReBR1GrkJBOBpL5ju1b0B7/gFMLkOUWjVHY
-         YUxRXG5rt/lqGzkANOwsIBLrAaW45Vm4e1FiQgZVsRjDgqIqmxrC2FpsLpV2WMdQSUna
-         5L+yFyXXQcasFOyr8WGxgqWexmxEm4d0T7ZxJuRLwepdVGdj+kYQXkNtMayJMGsU0epr
-         3ws+ZbJ4xXYHHWkj3pUMEOLxgyo9q1EiHU3SBY19olT1xWfiNy5vpJMTZBUnrgpgpMr6
-         7/UWy42XC7e73ZsQip0hEuhv4rmPX63YFKxtEa6mAaN2qsAuc6F4vxkgFSE1fhULD0Ib
-         Drrg==
-X-Gm-Message-State: AOAM5311Dw9tPRiSbyI3BiRHRuIQBeRFJN2PewnPwliQraG9q0GsGvo0
-        CLLPqP1GRU0rQhVyCjrv0gcTNU8XwU86c5nfJtz7FA==
-X-Google-Smtp-Source: ABdhPJyX273jY7n68N4d5ro/RTJSVYLfjE7A9LCeHrP4/19FLesCEXbrzrtQqZFi1Nqil9ORcjeRpuuXEh3TG6kTBo8=
-X-Received: by 2002:a5d:5544:: with SMTP id g4mr19302087wrw.59.1612204350381;
- Mon, 01 Feb 2021 10:32:30 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=AaOtEeHuaSFZ2GkBHVMVepHP95DL8NVdazqKLO7HNr4=;
+        b=Qgf7LTYLwgR7wL142pbeIlcC0ze2s53D8uhCmcQcsoVThvx9Ckm5IFc5yxW4E8kptf
+         9PDVxF66BZOnqG5+3wPFCxupWrGqBEiISm/t2UTUrj5CU7G0FmtqmxzQvQ+oWez4Nx5c
+         5tPEUn6w8b5AXy+X+v8bjifdcpjf5Te7ccUq2svRklMEww6bzCouxS4ptaeBmVXinpfR
+         rkAjwR4+s9VCt9oElGR7ON0JN+Q6yMbTGJUow8yBGNFjhnx1lMY+egdlyjQqD5yjcf81
+         2IMos0Zia76gEdzg9xqloqm/76aRCN9v22w4TtowW5xEQ4XwKD0peavH5yO/vadhGQOK
+         meOw==
+X-Gm-Message-State: AOAM532QJFrJ3bH/NPd6CdSwC8NOQsgCif7XqW1P+dxEcaae75QNZhuW
+        77hVjLjMR5K3N8z9GgkVEWId5YK/YK4=
+X-Google-Smtp-Source: ABdhPJwG8erx72RdncYg1nep9BYyexNWGUpyK23jD8ohfmckaxbgKIHQxElkrH2+EGOXqXpSv7LSzA==
+X-Received: by 2002:a05:600c:1457:: with SMTP id h23mr236546wmi.30.1612204667510;
+        Mon, 01 Feb 2021 10:37:47 -0800 (PST)
+Received: from [192.168.8.167] ([185.69.145.241])
+        by smtp.gmail.com with ESMTPSA id h23sm149653wmi.26.2021.02.01.10.37.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Feb 2021 10:37:46 -0800 (PST)
+Subject: Re: [PATCH] io_uring: Fix NULL dereference in error in
+ io_sqe_files_register()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Bijan Mottahedeh <bijan.mottahedeh@oracle.com>
+Cc:     io-uring@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <YBfyzmcP1N6jpDjo@mwanda>
+From:   Pavel Begunkov <asml.silence@gmail.com>
+Autocrypt: addr=asml.silence@gmail.com; prefer-encrypt=mutual; keydata=
+ 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 bA==
+Message-ID: <71e8a8a4-5189-4ac1-b885-1b1a60403452@gmail.com>
+Date:   Mon, 1 Feb 2021 18:34:04 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-References: <YBfyb+jU5lDUe+5g@mwanda>
-In-Reply-To: <YBfyb+jU5lDUe+5g@mwanda>
-From:   Desmond Yan <desmond.yan@broadcom.com>
-Date:   Mon, 1 Feb 2021 10:32:19 -0800
-Message-ID: <CAEuuh2_BH4_7bm7tTZ2VSKNv7eCjj-ZU=zcV3vKbD1H_tJRLcQ@mail.gmail.com>
-Subject: Re: [PATCH] misc: bcm-vk: unlock on error in bcm_to_h_msg_dequeue()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Scott Branden <scott.branden@broadcom.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Olof Johansson <olof@lixom.net>,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000a1044805ba4a9343"
+In-Reply-To: <YBfyzmcP1N6jpDjo@mwanda>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
---000000000000a1044805ba4a9343
-Content-Type: text/plain; charset="UTF-8"
+On 01/02/2021 12:23, Dan Carpenter wrote:
+> If we hit a "goto out_free;" before the "ctx->file_data" pointer has
+> been assigned then it leads to a NULL derefence when we call:
+> 
+> 	free_fixed_rsrc_data(ctx->file_data);
+> 
+> We can fix this by moving the assignment earlier.
 
-Acked-by: Desmond Yan <desmond.yan@broadcom.com>
+looks good, thanks
 
-On Mon, Feb 1, 2021 at 4:24 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> Unlock before returning on this error path.
->
-> Fixes: 111d746bb476 ("misc: bcm-vk: add VK messaging support")
+Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+
+> 
+> Fixes: 3cfb739c561e ("io_uring: create common fixed_rsrc_data allocation routines")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  drivers/misc/bcm-vk/bcm_vk_msg.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/misc/bcm-vk/bcm_vk_msg.c b/drivers/misc/bcm-vk/bcm_vk_msg.c
-> index eec90494777d..fc972e43258a 100644
-> --- a/drivers/misc/bcm-vk/bcm_vk_msg.c
-> +++ b/drivers/misc/bcm-vk/bcm_vk_msg.c
-> @@ -849,7 +849,8 @@ s32 bcm_to_h_msg_dequeue(struct bcm_vk *vk)
->                                  * that is fatal.
->                                  */
->                                 dev_crit(dev, "Kernel mem allocation failure.\n");
-> -                               return -ENOMEM;
-> +                               total = -ENOMEM;
-> +                               goto idx_err;
->                         }
->
->                         /* flush rd pointer after a message is dequeued */
-> --
-> 2.29.2
->
+>  fs/io_uring.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/io_uring.c b/fs/io_uring.c
+> index 03748faa5295..8e8b74dd7d9b 100644
+> --- a/fs/io_uring.c
+> +++ b/fs/io_uring.c
+> @@ -7869,6 +7869,7 @@ static int io_sqe_files_register(struct io_ring_ctx *ctx, void __user *arg,
+>  	file_data = alloc_fixed_rsrc_data(ctx);
+>  	if (!file_data)
+>  		return -ENOMEM;
+> +	ctx->file_data = file_data;
+>  
+>  	nr_tables = DIV_ROUND_UP(nr_args, IORING_MAX_FILES_TABLE);
+>  	file_data->table = kcalloc(nr_tables, sizeof(*file_data->table),
+> @@ -7878,7 +7879,6 @@ static int io_sqe_files_register(struct io_ring_ctx *ctx, void __user *arg,
+>  
+>  	if (io_sqe_alloc_file_tables(file_data, nr_tables, nr_args))
+>  		goto out_free;
+> -	ctx->file_data = file_data;
+>  
+>  	for (i = 0; i < nr_args; i++, ctx->nr_user_files++) {
+>  		struct fixed_rsrc_table *table;
+> 
 
---000000000000a1044805ba4a9343
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-C/imrCGPzTVeQHFrCwhpbeRImN6Dxt4RJPXqccMKDYJ6X2SdBHFhCVYewhFlWE6P9lH+lwIDAQAB
-o4IBzzCCAcswDgYDVR0PAQH/BAQDAgWgMIGeBggrBgEFBQcBAQSBkTCBjjBNBggrBgEFBQcwAoZB
-aHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NwZXJzb25hbHNpZ24yc2hhMmcz
-b2NzcC5jcnQwPQYIKwYBBQUHMAGGMWh0dHA6Ly9vY3NwMi5nbG9iYWxzaWduLmNvbS9nc3BlcnNv
-bmFsc2lnbjJzaGEyZzMwTQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYBBQUHAgEWJmh0
-dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwRAYDVR0fBD0w
-OzA5oDegNYYzaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc3BlcnNvbmFsc2lnbjJzaGEyZzMu
-Y3JsMCMGA1UdEQQcMBqBGGRlc21vbmQueWFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEF
-BQcDBDAfBgNVHSMEGDAWgBRpcoJiMWeVRIV3kYDEBDZJnXsLYTAdBgNVHQ4EFgQUjANHprywiIFE
-21XAvmsM2JqOdVAwDQYJKoZIhvcNAQELBQADggEBAIiBxkVwdJubzdNzXu4JI18hnJ4a6i/u7Vok
-eQCoZ1GqqZsuNpJNXVs/EDoAzj33GWBA9yljpVufyTiot99BghGGhFdMk9asp2iABfVKVbelgkjV
-o5qRsPEFKs9CX5YkhefyfeIgmAe4FMMD72DnLpt8Yr0NOaWKrsbE8KYQ8L7T5GZVd1W7ufOAw0JS
-kQkyrew0cHrPRSHhE0qx+BLKJF2SQbb1cH/Ra7JhcLfXeJA/eBw1b9Ss/yfnSj3z/TAKOpYsicFX
-b+ynK9BBF17HGsWw/7TOms5t0Qk1P6+IBbzUxeh5s4cDAMsDfE1xvUvUVu/2ASpap+hXkoss+Vcc
-G2gxggJvMIICawIBATBtMF0xCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNh
-MTMwMQYDVQQDEypHbG9iYWxTaWduIFBlcnNvbmFsU2lnbiAyIENBIC0gU0hBMjU2IC0gRzMCDFJS
-0nbv//4itGuVqDANBglghkgBZQMEAgEFAKCB1DAvBgkqhkiG9w0BCQQxIgQgt0bttFoAZbEReWIE
-KbLWCX6DSvO1MhqnWN6S+j+MLR4wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0B
-CQUxDxcNMjEwMjAxMTgzMjMwWjBpBgkqhkiG9w0BCQ8xXDBaMAsGCWCGSAFlAwQBKjALBglghkgB
-ZQMEARYwCwYJYIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBCjALBgkqhkiG9w0BAQcw
-CwYJYIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBACy9AbWdTQXCiqqRNWd5cYtuFBW8/i0u2eCb
-Ekpb8YFDTj7o4vq6DGxaUo3xtIaCis6AKEAk2/Jg+8nRcl7ISb7EKWvsQeJXnNCTVSNQibUpVVUP
-SbzbM+F+eS4HSL68d454M1Q5ffZQgfy+BIaLPL1sHxYy0QfTEw24VCvHa4i25LgtLqdRq6SNJJHJ
-Q65SxFv2KWC5GuVgP9GrpkwSI+HA2m8cxmkCWjMQWuqiMjgw/UyjbH5FUB8laovkuA8DtaHbGnFJ
-QRjslDAuRLSJglJK+g/uDiWzXrpukX9tyUvgSfRO7gKKhtHKhZJxQ6LzAeayoOGC8CK3tNnOI9E+
-yAk=
---000000000000a1044805ba4a9343--
+-- 
+Pavel Begunkov

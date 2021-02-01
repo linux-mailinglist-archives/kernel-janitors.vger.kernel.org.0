@@ -2,101 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 88E0B30A79A
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Feb 2021 13:28:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BB3B30A7A2
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Feb 2021 13:29:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231320AbhBAM1g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Feb 2021 07:27:36 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:40132 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231272AbhBAM1b (ORCPT
+        id S231226AbhBAM3x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Feb 2021 07:29:53 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:55524 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229554AbhBAM3u (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Feb 2021 07:27:31 -0500
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 111CEOoY184450;
-        Mon, 1 Feb 2021 12:26:43 GMT
+        Mon, 1 Feb 2021 07:29:50 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 111CEAQA173379;
+        Mon, 1 Feb 2021 12:29:03 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=SsPzUh6Wt1YOVgk/HsFNH+iSurpmStehMn4xyz3aHzw=;
- b=v9zl8gdIRcpNs6CUHQJ83O/kNFxpJdi2yFbezVhkV+nLxbWIB4v7bCZBNdqWNGNgKKmJ
- pJhDONwLeuib2OWUk4nUkG03uxTbxndUlg3Dcux78VuVmiJ0V647MaUBaqLn178tJ95u
- LrsQrOXn3KlplpVKApGqrKsLkCCMyWjXFJoR9ITK+p9b28MCgiimmV4H8SGQELpWLt6/
- AqN5Wg3GuLO9S75ulKY/XsKugCL8JI++Pyy6xo8/1Nv4JPFZuWTwNf0UlhfclObk1sEP
- 7soOadt0lIuA9lvWNppJTGi3iv8/rTR0955hxsIrWWASkuqj0ZrYt9XxaBXPqjdJ6QuF IQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2130.oracle.com with ESMTP id 36cvyan50p-1
+ bh=PBNq7gOuz6MH/3F/CeGL6t5zFVKRrjV8r/ABw1F27D0=;
+ b=YjpTfaVofaVVA/uacU1LiOgPFQ/lRg6AoJ5ep+lA5z376jmbOvb71YX7TZFF3tYtL9/7
+ RgeQVkq+ZW9F4ti0pIYpe2gUt+5i7PB1lb56BMuGBq+bSGoOWxKlhwkz2SweeTgN3s8m
+ ooCmyifcLEienQz0eC5RlkFA+sML9IGtMSJRh8QjehVCmvQHTj8NUJtL1epNwxVIgzP4
+ FntrU5Yk2NLl/mV/JvY9ovUXiX/YDslyByp3myY+1S50awRninsTEX1NldSdjZcgjMPK
+ EASiuKA80IotPjziEL8IkBb3NuhxhLSVOR6RBvbiA0qvrid+yVzy57jGgKcTGA+8k+7m gA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 36cxvqw03n-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 01 Feb 2021 12:26:43 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 111CAtGE097799;
-        Mon, 1 Feb 2021 12:26:41 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 36dhbwht30-1
+        Mon, 01 Feb 2021 12:29:03 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 111CA7IJ146815;
+        Mon, 1 Feb 2021 12:29:02 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 36dh7pn8p5-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 01 Feb 2021 12:26:41 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 111CQcCD008334;
-        Mon, 1 Feb 2021 12:26:39 GMT
+        Mon, 01 Feb 2021 12:29:02 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 111CT1lf006023;
+        Mon, 1 Feb 2021 12:29:01 GMT
 Received: from mwanda (/10.175.186.133)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 01 Feb 2021 04:26:38 -0800
-Date:   Mon, 1 Feb 2021 15:26:31 +0300
+        with ESMTP ; Mon, 01 Feb 2021 04:29:00 -0800
+Date:   Mon, 1 Feb 2021 15:28:54 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rahul Gottipati <rahul.blr97@gmail.com>,
-        Alan Cox <alan@linux.intel.com>, linux-media@vger.kernel.org,
-        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] media: atomisp: double free in atomisp_alloc_css_stat_bufs()
-Message-ID: <YBfzd3XtDl/r9KUC@mwanda>
+To:     Stuart Yoder <stuyoder@gmail.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>
+Cc:     Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] bus: fsl-mc: Fix test for end of loop
+Message-ID: <YBf0Br9obNGZTcNI@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-IMR: 1
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9881 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 suspectscore=0
- spamscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999 phishscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0
+ suspectscore=0 spamscore=0 mlxlogscore=999 phishscore=0 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102010064
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9881 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ mlxscore=0 priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1011
+ suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2102010064
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9881 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 impostorscore=0
- mlxscore=0 spamscore=0 bulkscore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 malwarescore=0 phishscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102010064
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "s3a_buf" has already been added to the "&asd->s3a_stats" list
-and it gets cleaned up in the error handling code at the end of
-the function.  This kfree() leads to a use after free and a double
-free.  Delete it.
+The "desc" pointer can't possibly be NULL here.  If we can't find the
+correct "desc" then tt points to the last element of the
+fsl_mc_accepted_cmds[] array.  Fix this by testing if
+"i == FSL_MC_NUM_ACCEPTED_CMDS" instead.
 
-Fixes: a49d25364dfb ("staging/atomisp: Add support for the Intel IPU v2")
+Fixes: 2cf1e703f066 ("bus: fsl-mc: add fsl-mc userspace support")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/staging/media/atomisp/pci/atomisp_ioctl.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/bus/fsl-mc/fsl-mc-uapi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/media/atomisp/pci/atomisp_ioctl.c b/drivers/staging/media/atomisp/pci/atomisp_ioctl.c
-index 2ae50decfc8b..9da82855552d 100644
---- a/drivers/staging/media/atomisp/pci/atomisp_ioctl.c
-+++ b/drivers/staging/media/atomisp/pci/atomisp_ioctl.c
-@@ -948,10 +948,8 @@ int atomisp_alloc_css_stat_bufs(struct atomisp_sub_device *asd,
- 		dev_dbg(isp->dev, "allocating %d dis buffers\n", count);
- 		while (count--) {
- 			dis_buf = kzalloc(sizeof(struct atomisp_dis_buf), GFP_KERNEL);
--			if (!dis_buf) {
--				kfree(s3a_buf);
-+			if (!dis_buf)
- 				goto error;
--			}
- 			if (atomisp_css_allocate_stat_buffers(
- 				asd, stream_id, NULL, dis_buf, NULL)) {
- 				kfree(dis_buf);
+diff --git a/drivers/bus/fsl-mc/fsl-mc-uapi.c b/drivers/bus/fsl-mc/fsl-mc-uapi.c
+index eeb988c9f4bb..bdcd9d983a78 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-uapi.c
++++ b/drivers/bus/fsl-mc/fsl-mc-uapi.c
+@@ -338,7 +338,7 @@ static int fsl_mc_command_check(struct fsl_mc_device *mc_dev,
+ 		if ((cmdid & desc->cmdid_mask) == desc->cmdid_value)
+ 			break;
+ 	}
+-	if (!desc) {
++	if (i == FSL_MC_NUM_ACCEPTED_CMDS) {
+ 		dev_err(&mc_dev->dev, "MC command 0x%04x: cmdid not accepted\n", cmdid);
+ 		return -EACCES;
+ 	}
 -- 
 2.29.2
 

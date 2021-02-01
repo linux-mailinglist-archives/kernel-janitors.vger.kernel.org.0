@@ -2,96 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BB3B30A7A2
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Feb 2021 13:29:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD31130ADE7
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Feb 2021 18:32:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231226AbhBAM3x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Feb 2021 07:29:53 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:55524 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229554AbhBAM3u (ORCPT
+        id S231941AbhBARcS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Feb 2021 12:32:18 -0500
+Received: from lpdvacalvio01.broadcom.com ([192.19.229.182]:48078 "EHLO
+        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232021AbhBARcM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Feb 2021 07:29:50 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 111CEAQA173379;
-        Mon, 1 Feb 2021 12:29:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=PBNq7gOuz6MH/3F/CeGL6t5zFVKRrjV8r/ABw1F27D0=;
- b=YjpTfaVofaVVA/uacU1LiOgPFQ/lRg6AoJ5ep+lA5z376jmbOvb71YX7TZFF3tYtL9/7
- RgeQVkq+ZW9F4ti0pIYpe2gUt+5i7PB1lb56BMuGBq+bSGoOWxKlhwkz2SweeTgN3s8m
- ooCmyifcLEienQz0eC5RlkFA+sML9IGtMSJRh8QjehVCmvQHTj8NUJtL1epNwxVIgzP4
- FntrU5Yk2NLl/mV/JvY9ovUXiX/YDslyByp3myY+1S50awRninsTEX1NldSdjZcgjMPK
- EASiuKA80IotPjziEL8IkBb3NuhxhLSVOR6RBvbiA0qvrid+yVzy57jGgKcTGA+8k+7m gA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 36cxvqw03n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 01 Feb 2021 12:29:03 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 111CA7IJ146815;
-        Mon, 1 Feb 2021 12:29:02 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 36dh7pn8p5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 01 Feb 2021 12:29:02 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 111CT1lf006023;
-        Mon, 1 Feb 2021 12:29:01 GMT
-Received: from mwanda (/10.175.186.133)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 01 Feb 2021 04:29:00 -0800
-Date:   Mon, 1 Feb 2021 15:28:54 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Stuart Yoder <stuyoder@gmail.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>
-Cc:     Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Mon, 1 Feb 2021 12:32:12 -0500
+Received: from [10.136.13.65] (lbrmn-lnxub113.ric.broadcom.net [10.136.13.65])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTPS id 57C927DC5;
+        Mon,  1 Feb 2021 09:31:18 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 57C927DC5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1612200678;
+        bh=ii84u06WrT1wiRPFXlO0+eF4/FLJ4dFwcrOss1Lc6eA=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=QpuYK2w/7lPWXicgXQL/GcriLG2q2s1bXucpzb/a/peLGHJud2LpfTe5ceUb8ON5q
+         nSwQhYA6Ui/ZUynwD3N9PKe5Z+RhJF36eM6xdE4PmdeNWc7fBqq6wvdxlyPsykWwOv
+         J/ND1doXxrVt5JfTBGnxG1e+ofO5FqiaY985sqp8=
+Subject: Re: [PATCH] misc: bcm-vk: unlock on error in bcm_to_h_msg_dequeue()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Olof Johansson <olof@lixom.net>,
+        Desmond Yan <desmond.yan@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] bus: fsl-mc: Fix test for end of loop
-Message-ID: <YBf0Br9obNGZTcNI@mwanda>
+References: <YBfyb+jU5lDUe+5g@mwanda>
+From:   Scott Branden <scott.branden@broadcom.com>
+Message-ID: <cf899c97-2c26-afc4-f0ea-4976a074a05e@broadcom.com>
+Date:   Mon, 1 Feb 2021 09:31:17 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-IMR: 1
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9881 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0
- suspectscore=0 spamscore=0 mlxlogscore=999 phishscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102010064
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9881 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
- mlxscore=0 priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1011
- suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2102010064
+In-Reply-To: <YBfyb+jU5lDUe+5g@mwanda>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-CA
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "desc" pointer can't possibly be NULL here.  If we can't find the
-correct "desc" then tt points to the last element of the
-fsl_mc_accepted_cmds[] array.  Fix this by testing if
-"i == FSL_MC_NUM_ACCEPTED_CMDS" instead.
 
-Fixes: 2cf1e703f066 ("bus: fsl-mc: add fsl-mc userspace support")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/bus/fsl-mc/fsl-mc-uapi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bus/fsl-mc/fsl-mc-uapi.c b/drivers/bus/fsl-mc/fsl-mc-uapi.c
-index eeb988c9f4bb..bdcd9d983a78 100644
---- a/drivers/bus/fsl-mc/fsl-mc-uapi.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-uapi.c
-@@ -338,7 +338,7 @@ static int fsl_mc_command_check(struct fsl_mc_device *mc_dev,
- 		if ((cmdid & desc->cmdid_mask) == desc->cmdid_value)
- 			break;
- 	}
--	if (!desc) {
-+	if (i == FSL_MC_NUM_ACCEPTED_CMDS) {
- 		dev_err(&mc_dev->dev, "MC command 0x%04x: cmdid not accepted\n", cmdid);
- 		return -EACCES;
- 	}
--- 
-2.29.2
+On 2021-02-01 4:22 a.m., Dan Carpenter wrote:
+> Unlock before returning on this error path.
+>
+> Fixes: 111d746bb476 ("misc: bcm-vk: add VK messaging support")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/misc/bcm-vk/bcm_vk_msg.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/misc/bcm-vk/bcm_vk_msg.c b/drivers/misc/bcm-vk/bcm_vk_msg.c
+> index eec90494777d..fc972e43258a 100644
+> --- a/drivers/misc/bcm-vk/bcm_vk_msg.c
+> +++ b/drivers/misc/bcm-vk/bcm_vk_msg.c
+> @@ -849,7 +849,8 @@ s32 bcm_to_h_msg_dequeue(struct bcm_vk *vk)
+>  				 * that is fatal.
+>  				 */
+>  				dev_crit(dev, "Kernel mem allocation failure.\n");
+> -				return -ENOMEM;
+> +				total = -ENOMEM;
+> +				goto idx_err;
+>  			}
+>  
+This is a pretty fatal case if we fail to allocate memory here.
+Will let Desmond respond if we wanted to keep the mutex locked forever in this
+case or if we do want to return and keep mutex locked if it is fatal and there is
+no real recovery path.
+>  			/* flush rd pointer after a message is dequeued */
 

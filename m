@@ -2,53 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC62E30A786
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Feb 2021 13:25:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 282DD30A797
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Feb 2021 13:28:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229892AbhBAMYk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Feb 2021 07:24:40 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:47162 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229500AbhBAMYj (ORCPT
+        id S231284AbhBAM1a (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Feb 2021 07:27:30 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:52370 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229519AbhBAM10 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Feb 2021 07:24:39 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 111CEpWO077887;
-        Mon, 1 Feb 2021 12:23:53 GMT
+        Mon, 1 Feb 2021 07:27:26 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 111CE8J2173357;
+        Mon, 1 Feb 2021 12:26:36 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=TDLU8elTzfkETu0v7dnO9J6Fm1wtMapt/et95Jh9m88=;
- b=AKmYuYVdCHZL5ke3Y0ufc5+bdoxgxCoVReOtZIGT02LBsXf0+5SR3+zQXG6Mvuz09T+s
- m2keYWcLA20KEUc5I3uMNh48MDieMf/Rj9X/lndlwIOZSR52hsdxHrY/2UNVpPDavLsu
- 9JmIP7GjbY0bD3Agxd3NInjm5bbYm04Y+qg4PmFOL2lcit8VblxqHlZdEdElUjQNdPWw
- eJidf0Hguu8EvDuBBT75dC3gUmeKSIX5mn+ZXxGoB+D2I/wAt7y31XsP4KGVE9jkAJpq
- VktCATgbuvJRuCkn9sJX8Se4HgQJljT+ksIC3VRrigunwMa5MY7aOUYKkUEfXnWOYa8V Fw== 
+ bh=Drq82AAAZybV+JfLoh1I4PB5deHmrlfF6kc31xE4YQ4=;
+ b=fykI8TT8vGGXGX5EZWEiyspa/Gf7gOxE2kOHblTBsGpbzT0i5M39XUKLz3kmssSs2sby
+ iiZX9LZv1f2CxqbCwNqw3xEL3oEAOf2ETrmzcGTHviXfKV+Vag1B5nd+Cf9XrarvI6zf
+ mrpcxC+Z9W4O/J1ebOJA0SIjW8OqC1pZlXVZsSFdBDuBKv+9RjysQ0hN9AXCV4TOuczN
+ SvWdYgBS6cUJDQs2ESW+BwB6QDt4dTRt9e9mUTUfgN8qLRj7pAlTysMYTS4NbJYjYvYS
+ /IhAG4xQ4Amz98Yj+VMTEGcysM7YEhmHOmQEZ9AZ+StuHT007j2GzuEiJvtI9RjuLIbW zQ== 
 Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 36cydkmwvg-1
+        by userp2130.oracle.com with ESMTP id 36cxvqvyt6-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 01 Feb 2021 12:23:53 +0000
+        Mon, 01 Feb 2021 12:26:36 +0000
 Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 111CA8Lg147030;
-        Mon, 1 Feb 2021 12:23:51 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 36dh7pn27q-1
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 111CA7F1146790;
+        Mon, 1 Feb 2021 12:24:34 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 36dh7pn35n-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 01 Feb 2021 12:23:51 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 111CNm61018588;
-        Mon, 1 Feb 2021 12:23:48 GMT
+        Mon, 01 Feb 2021 12:24:34 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 111COXa4012862;
+        Mon, 1 Feb 2021 12:24:33 GMT
 Received: from mwanda (/10.175.186.133)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 01 Feb 2021 04:23:48 -0800
-Date:   Mon, 1 Feb 2021 15:23:42 +0300
+        with ESMTP ; Mon, 01 Feb 2021 04:24:33 -0800
+Date:   Mon, 1 Feb 2021 15:24:27 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jens Axboe <axboe@kernel.dk>,
-        Bijan Mottahedeh <bijan.mottahedeh@oracle.com>
-Cc:     Pavel Begunkov <asml.silence@gmail.com>, io-uring@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] io_uring: Fix NULL dereference in error in
- io_sqe_files_register()
-Message-ID: <YBfyzmcP1N6jpDjo@mwanda>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Carl Huang <cjhuang@codeaurora.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] ath11k: fix a locking bug in ath11k_mac_op_start()
+Message-ID: <YBfy+zc3XkiyIe6t@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -60,48 +58,42 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 ml
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2009150000 definitions=main-2102010064
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9881 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0
- priorityscore=1501 impostorscore=0 malwarescore=0 clxscore=1011
- spamscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102010064
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ mlxscore=0 priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1015
+ suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102010064
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If we hit a "goto out_free;" before the "ctx->file_data" pointer has
-been assigned then it leads to a NULL derefence when we call:
+This error path leads to a Smatch warning:
 
-	free_fixed_rsrc_data(ctx->file_data);
+    drivers/net/wireless/ath/ath11k/mac.c:4269 ath11k_mac_op_start()
+    error: double unlocked '&ar->conf_mutex' (orig line 4251)
 
-We can fix this by moving the assignment earlier.
+We're not holding the lock when we do the "goto err;" so it leads to a
+double unlock.  We should hold the lock because the error path sets
+"ar->state" so the right fix is to take the lock before doing the goto.
 
-Fixes: 3cfb739c561e ("io_uring: create common fixed_rsrc_data allocation routines")
+Fixes: c83c500b55b6 ("ath11k: enable idle power save mode")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- fs/io_uring.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/io_uring.c b/fs/io_uring.c
-index 03748faa5295..8e8b74dd7d9b 100644
---- a/fs/io_uring.c
-+++ b/fs/io_uring.c
-@@ -7869,6 +7869,7 @@ static int io_sqe_files_register(struct io_ring_ctx *ctx, void __user *arg,
- 	file_data = alloc_fixed_rsrc_data(ctx);
- 	if (!file_data)
- 		return -ENOMEM;
-+	ctx->file_data = file_data;
- 
- 	nr_tables = DIV_ROUND_UP(nr_args, IORING_MAX_FILES_TABLE);
- 	file_data->table = kcalloc(nr_tables, sizeof(*file_data->table),
-@@ -7878,7 +7879,6 @@ static int io_sqe_files_register(struct io_ring_ctx *ctx, void __user *arg,
- 
- 	if (io_sqe_alloc_file_tables(file_data, nr_tables, nr_args))
- 		goto out_free;
--	ctx->file_data = file_data;
- 
- 	for (i = 0; i < nr_args; i++, ctx->nr_user_files++) {
- 		struct fixed_rsrc_table *table;
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index c1608f64ea95..12e981e9e3d7 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -4259,6 +4259,7 @@ static int ath11k_mac_op_start(struct ieee80211_hw *hw)
+ 						1, pdev->pdev_id);
+ 		if (ret) {
+ 			ath11k_err(ab, "failed to enable idle ps: %d\n", ret);
++			mutex_lock(&ar->conf_mutex);
+ 			goto err;
+ 		}
+ 	}
 -- 
 2.29.2
 

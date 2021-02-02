@@ -2,106 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 376CC30BAC3
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Feb 2021 10:18:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51C1130BD39
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Feb 2021 12:36:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232812AbhBBJRb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Feb 2021 04:17:31 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:35682 "EHLO
+        id S231383AbhBBLe6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Feb 2021 06:34:58 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:39762 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231688AbhBBJQt (ORCPT
+        with ESMTP id S231312AbhBBLcl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Feb 2021 04:16:49 -0500
+        Tue, 2 Feb 2021 06:32:41 -0500
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1129ExLs039270;
-        Tue, 2 Feb 2021 09:15:58 GMT
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 112BOwGw190982;
+        Tue, 2 Feb 2021 11:31:49 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=XeW5vxg1oljfl4NXPYOgql+RYM8k8nJCK9uJMauzFyQ=;
- b=iFSps5hvLXTkb1IpbQtL4B+9QdQaiKeCoS6sZnAMrma4suhj/OQqd8hItpALHuAkaD+L
- KBf2c4Z+fTIBvnLxRXCfDFKhd492Mu60m8dhyzDq2vpVwuSAb60jbu5l52bdPECKtqU8
- 0T3/UHRgQIAQSa1YCuUN+aakiE5DU58bu1N6JjfWmzThHRdxEH4V1SNyz3xk34inkY72
- dUWgAyE1G6fn3KQ5eKT1dbLAj0rdCLcAfpxSvp18KNF4n0ZHUXeL+KW5YdUzzuChLAWt
- STyT715+iN75/vVRF1ySKgZOZkQ9XHNRAclG03wC0DRj2wJmDYbCAUA5rpDulqDs0fSC pw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 36cydksmf6-1
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=mIAj0+BtQpwVNeD3mExb1e30dz1P2CVY0gpH20dJPwM=;
+ b=Dl+OduYa/ToMiitDUCbixlER3h2NJcJ6WerwpbuxJaSSf7fAcN1ldv0dSIYcclAgDn92
+ FSWG28NHsXdfUDEa3z4NFHQUQXhR/tDN+Dj5DQqrm64A7usugUyPh1qbuo1A3t4tGCgw
+ 7oLQyDmKf2yADaQc3WRCqMacmizIEik8dPDf81nwIgXZvcJiu9gZqd+E/eqtK3FpM3PJ
+ qGJWl+vvPWJFps3HnS/nsx/qb63Fikoi2b74Wid+YtMkSwl9knxlCEBBipp7pp/6xQYX
+ QFmsGL0yFx+CV/k0SkFFUTqGaT1RX1G+aPaT+8UYfmSmhU00+hfXhhClRR7J9qUNxdIB yw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 36cydkt8x7-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 02 Feb 2021 09:15:58 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 11299Trh073369;
-        Tue, 2 Feb 2021 09:13:55 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 36dh1npd0v-1
+        Tue, 02 Feb 2021 11:31:49 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 112BUwI1059872;
+        Tue, 2 Feb 2021 11:31:47 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 36dhby3rjq-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 02 Feb 2021 09:13:55 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 1129DqdL032702;
-        Tue, 2 Feb 2021 09:13:53 GMT
+        Tue, 02 Feb 2021 11:31:47 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 112BVjDM023682;
+        Tue, 2 Feb 2021 11:31:46 GMT
 Received: from mwanda (/102.36.221.92)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 02 Feb 2021 01:13:52 -0800
-Date:   Tue, 2 Feb 2021 12:13:44 +0300
+        with ESMTP ; Tue, 02 Feb 2021 03:31:45 -0800
+Date:   Tue, 2 Feb 2021 14:31:38 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc:     Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        UNGLinuxDriver@microchip.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH v3 2/2 net-next] net: mscc: ocelot: fix error code in
- mscc_ocelot_probe()
-Message-ID: <YBkXyFIl4V9hgxYM@mwanda>
+To:     Kalle Valo <kvalo@codeaurora.org>, Peter Oh <peter.oh@eero.com>
+Cc:     Carl Huang <cjhuang@codeaurora.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH v2] ath11k: fix a locking bug in ath11k_mac_op_start()
+Message-ID: <YBk4GoeE+yc0wlJH@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YBkXhqRxHtRGzSnJ@mwanda>
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-IMR: 1
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9882 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 phishscore=0
- suspectscore=0 mlxlogscore=999 bulkscore=0 mlxscore=0 malwarescore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 suspectscore=0
+ spamscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2102020064
+ definitions=main-2102020080
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9882 signatures=668683
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0
- priorityscore=1501 impostorscore=0 malwarescore=0 clxscore=1015
+ priorityscore=1501 impostorscore=0 malwarescore=0 clxscore=1011
  spamscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
  suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102020065
+ engine=8.12.0-2009150000 definitions=main-2102020079
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Probe should return an error code if platform_get_irq_byname() fails
-but it returns success instead.
+This error path leads to a Smatch warning:
 
-Fixes: 6c30384eb1de ("net: mscc: ocelot: register devlink ports")
+	drivers/net/wireless/ath/ath11k/mac.c:4269 ath11k_mac_op_start()
+	error: double unlocked '&ar->conf_mutex' (orig line 4251)
+
+We're not holding the lock when we do the "goto err;" so it leads to a
+double unlock.  The fix is to hold the lock for a little longer.
+
+Fixes: c83c500b55b6 ("ath11k: enable idle power save mode")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
-v3: rebase
+v2: reviewers were concern that v1 was racy
 
- drivers/net/ethernet/mscc/ocelot_vsc7514.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mscc/ocelot_vsc7514.c b/drivers/net/ethernet/mscc/ocelot_vsc7514.c
-index b52e24826b10..6b6eb92149ba 100644
---- a/drivers/net/ethernet/mscc/ocelot_vsc7514.c
-+++ b/drivers/net/ethernet/mscc/ocelot_vsc7514.c
-@@ -1300,8 +1300,10 @@ static int mscc_ocelot_probe(struct platform_device *pdev)
- 		goto out_free_devlink;
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index c1608f64ea95..464d3425488b 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -4248,8 +4248,6 @@ static int ath11k_mac_op_start(struct ieee80211_hw *hw)
+ 	/* Configure the hash seed for hash based reo dest ring selection */
+ 	ath11k_wmi_pdev_lro_cfg(ar, ar->pdev->pdev_id);
  
- 	irq_xtr = platform_get_irq_byname(pdev, "xtr");
--	if (irq_xtr < 0)
-+	if (irq_xtr < 0) {
-+		err = irq_xtr;
- 		goto out_free_devlink;
-+	}
+-	mutex_unlock(&ar->conf_mutex);
+-
+ 	rcu_assign_pointer(ab->pdevs_active[ar->pdev_idx],
+ 			   &ab->pdevs[ar->pdev_idx]);
  
- 	err = devm_request_threaded_irq(&pdev->dev, irq_xtr, NULL,
- 					ocelot_xtr_irq_handler, IRQF_ONESHOT,
+@@ -4262,6 +4260,9 @@ static int ath11k_mac_op_start(struct ieee80211_hw *hw)
+ 			goto err;
+ 		}
+ 	}
++
++	mutex_unlock(&ar->conf_mutex);
++
+ 	return 0;
+ 
+ err:
 -- 
 2.30.0
 

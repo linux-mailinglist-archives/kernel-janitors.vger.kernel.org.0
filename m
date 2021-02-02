@@ -2,110 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51C1130BD39
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Feb 2021 12:36:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B406F30BD3C
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Feb 2021 12:36:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231383AbhBBLe6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Feb 2021 06:34:58 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:39762 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231312AbhBBLcl (ORCPT
+        id S231289AbhBBLfT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Feb 2021 06:35:19 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:47812 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231343AbhBBLdV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Feb 2021 06:32:41 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 112BOwGw190982;
-        Tue, 2 Feb 2021 11:31:49 GMT
+        Tue, 2 Feb 2021 06:33:21 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 112BNYPR162661;
+        Tue, 2 Feb 2021 11:32:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=mIAj0+BtQpwVNeD3mExb1e30dz1P2CVY0gpH20dJPwM=;
- b=Dl+OduYa/ToMiitDUCbixlER3h2NJcJ6WerwpbuxJaSSf7fAcN1ldv0dSIYcclAgDn92
- FSWG28NHsXdfUDEa3z4NFHQUQXhR/tDN+Dj5DQqrm64A7usugUyPh1qbuo1A3t4tGCgw
- 7oLQyDmKf2yADaQc3WRCqMacmizIEik8dPDf81nwIgXZvcJiu9gZqd+E/eqtK3FpM3PJ
- qGJWl+vvPWJFps3HnS/nsx/qb63Fikoi2b74Wid+YtMkSwl9knxlCEBBipp7pp/6xQYX
- QFmsGL0yFx+CV/k0SkFFUTqGaT1RX1G+aPaT+8UYfmSmhU00+hfXhhClRR7J9qUNxdIB yw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 36cydkt8x7-1
+ bh=D3tgOWXZwM2v+gsQnYFE/CSbnZRad1II9wbsUKgMXJQ=;
+ b=h69AzxXFpXgJK5w+uNRi+8VsiUNhL65LwSpjLvf8zQ74V/3BjZGsH36+9zUOPTrhtcOP
+ YZSaXbYdWA+xpTw5la5V85kqQgEt0+H/bzFFLlvOGlpHMFmxF6s2rsisDGZoIgcnMCd1
+ IPHQfBzpPH8jYZs0E2Nc8zkm2kCb0gnU8w13TrfJzmmkrKOWVtJs5gLXtAiwsPp6f9uz
+ VNyAEsTxMYQg5t5fA57NqjAbN5mqwnRdp/M0BRxF5AzqA2SQpHAjQEn9BL78hYILiNSj
+ xa57ZjUZBaxZD6u6NJyCE927P/hhqNpiX6pFrro8d850IZFz+lyLXPDQeo6Z1FXke0SP fw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 36cvyatg25-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 02 Feb 2021 11:31:49 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 112BUwI1059872;
-        Tue, 2 Feb 2021 11:31:47 GMT
+        Tue, 02 Feb 2021 11:32:19 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 112BVUFi014496;
+        Tue, 2 Feb 2021 11:32:17 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by aserp3030.oracle.com with ESMTP id 36dh1nv8j4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 02 Feb 2021 11:32:17 +0000
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 112BWGKR017014;
+        Tue, 2 Feb 2021 11:32:16 GMT
 Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 36dhby3rjq-1
+        by aserp3030.oracle.com with ESMTP id 36dh1nv8h9-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 02 Feb 2021 11:31:47 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 112BVjDM023682;
-        Tue, 2 Feb 2021 11:31:46 GMT
+        Tue, 02 Feb 2021 11:32:16 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 112BWC7j023955;
+        Tue, 2 Feb 2021 11:32:12 GMT
 Received: from mwanda (/102.36.221.92)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 02 Feb 2021 03:31:45 -0800
-Date:   Tue, 2 Feb 2021 14:31:38 +0300
+        with ESMTP ; Tue, 02 Feb 2021 03:32:12 -0800
+Date:   Tue, 2 Feb 2021 14:32:03 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Kalle Valo <kvalo@codeaurora.org>, Peter Oh <peter.oh@eero.com>
-Cc:     Carl Huang <cjhuang@codeaurora.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] ath11k: fix a locking bug in ath11k_mac_op_start()
-Message-ID: <YBk4GoeE+yc0wlJH@mwanda>
+To:     Mark Fasheh <mark@fasheh.com>
+Cc:     Joel Becker <jlbec@evilplan.org>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Takashi Iwai <tiwai@suse.de>, Jens Axboe <axboe@kernel.dk>,
+        Alex Shi <alex.shi@linux.alibaba.com>,
+        Jiri Slaby <jirislaby@kernel.org>, ocfs2-devel@oss.oracle.com,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH v2] ocfs2: Fix a use after free on error
+Message-ID: <YBk4M6HUG8jB/jc7@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-IMR: 1
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9882 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 suspectscore=0
- spamscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2102020080
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9882 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0
- priorityscore=1501 impostorscore=0 malwarescore=0 clxscore=1011
- spamscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 impostorscore=0
+ mlxscore=0 spamscore=0 bulkscore=0 priorityscore=1501 adultscore=0
+ lowpriorityscore=0 malwarescore=0 phishscore=0 mlxlogscore=999
  suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2009150000 definitions=main-2102020079
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This error path leads to a Smatch warning:
+The error handling in this function frees "reg" but it is still on the
+"o2hb_all_regions" list so it will lead to a use after freew.  Joseph Qi
+points out that we need to clear the bit in the "o2hb_region_bitmap" as
+well
 
-	drivers/net/wireless/ath/ath11k/mac.c:4269 ath11k_mac_op_start()
-	error: double unlocked '&ar->conf_mutex' (orig line 4251)
-
-We're not holding the lock when we do the "goto err;" so it leads to a
-double unlock.  The fix is to hold the lock for a little longer.
-
-Fixes: c83c500b55b6 ("ath11k: enable idle power save mode")
+Fixes: 1cf257f51191 ("ocfs2: fix memory leak")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-v2: reviewers were concern that v1 was racy
+v2: The first version didn't clear the bit.
 
- drivers/net/wireless/ath/ath11k/mac.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/ocfs2/cluster/heartbeat.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index c1608f64ea95..464d3425488b 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -4248,8 +4248,6 @@ static int ath11k_mac_op_start(struct ieee80211_hw *hw)
- 	/* Configure the hash seed for hash based reo dest ring selection */
- 	ath11k_wmi_pdev_lro_cfg(ar, ar->pdev->pdev_id);
+diff --git a/fs/ocfs2/cluster/heartbeat.c b/fs/ocfs2/cluster/heartbeat.c
+index 0179a73a3fa2..12a7590601dd 100644
+--- a/fs/ocfs2/cluster/heartbeat.c
++++ b/fs/ocfs2/cluster/heartbeat.c
+@@ -2042,7 +2042,7 @@ static struct config_item *o2hb_heartbeat_group_make_item(struct config_group *g
+ 			o2hb_nego_timeout_handler,
+ 			reg, NULL, &reg->hr_handler_list);
+ 	if (ret)
+-		goto free;
++		goto remove_item;
  
--	mutex_unlock(&ar->conf_mutex);
--
- 	rcu_assign_pointer(ab->pdevs_active[ar->pdev_idx],
- 			   &ab->pdevs[ar->pdev_idx]);
+ 	ret = o2net_register_handler(O2HB_NEGO_APPROVE_MSG, reg->hr_key,
+ 			sizeof(struct o2hb_nego_msg),
+@@ -2057,6 +2057,12 @@ static struct config_item *o2hb_heartbeat_group_make_item(struct config_group *g
  
-@@ -4262,6 +4260,9 @@ static int ath11k_mac_op_start(struct ieee80211_hw *hw)
- 			goto err;
- 		}
- 	}
-+
-+	mutex_unlock(&ar->conf_mutex);
-+
- 	return 0;
- 
- err:
+ unregister_handler:
+ 	o2net_unregister_handler_list(&reg->hr_handler_list);
++remove_item:
++	spin_lock(&o2hb_live_lock);
++	list_del(&reg->hr_all_item);
++	if (o2hb_global_heartbeat_active())
++		clear_bit(reg->hr_region_num, o2hb_region_bitmap);
++	spin_unlock(&o2hb_live_lock);
+ free:
+ 	kfree(reg);
+ 	return ERR_PTR(ret);
 -- 
 2.30.0
 

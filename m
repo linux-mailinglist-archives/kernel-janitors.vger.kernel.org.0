@@ -2,88 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7CB830BDC5
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Feb 2021 13:10:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CF7130BE52
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Feb 2021 13:37:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230430AbhBBMJs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Feb 2021 07:09:48 -0500
-Received: from out30-57.freemail.mail.aliyun.com ([115.124.30.57]:59406 "EHLO
-        out30-57.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231299AbhBBMJW (ORCPT
+        id S231656AbhBBMge (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Feb 2021 07:36:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59588 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231453AbhBBMgT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Feb 2021 07:09:22 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04420;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0UNgkalg_1612267708;
-Received: from B-D1K7ML85-0059.local(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0UNgkalg_1612267708)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 02 Feb 2021 20:08:29 +0800
-Subject: Re: [PATCH v2] ocfs2: Fix a use after free on error
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Mark Fasheh <mark@fasheh.com>
-Cc:     Joel Becker <jlbec@evilplan.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Takashi Iwai <tiwai@suse.de>, Jens Axboe <axboe@kernel.dk>,
-        Alex Shi <alex.shi@linux.alibaba.com>,
-        Jiri Slaby <jirislaby@kernel.org>, ocfs2-devel@oss.oracle.com,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <YBk4M6HUG8jB/jc7@mwanda>
-From:   Joseph Qi <joseph.qi@linux.alibaba.com>
-Message-ID: <56634c6b-1c68-83dc-e372-09fd4bda3c7d@linux.alibaba.com>
-Date:   Tue, 2 Feb 2021 20:08:28 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.7.0
+        Tue, 2 Feb 2021 07:36:19 -0500
+Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2744DC061573;
+        Tue,  2 Feb 2021 04:35:39 -0800 (PST)
+Received: by mail-io1-xd2f.google.com with SMTP id u20so6960773iot.9;
+        Tue, 02 Feb 2021 04:35:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pk+wpqbCAe4I46yOh6S+R7rrTPaxklQnaM5Nq4w5vlM=;
+        b=qom9KtqXuEGXqsp6PCWauy/cZbndP8+XZfRL6igySi+vVDRU++z9x+7njiZxlHN2Tt
+         v7J8qdUhgD7UKQqnkxTXx8Apv2wvm7XJz06otiiu6uTj8Gl2K7GXXD//zpNrBqAqQ/1N
+         O/EU0aC0HMB0+QEK/KuyOkmirtD6fGM164Sec0f24zU8JiWjpZ+mhTeez+qZAIHbg4um
+         OCiJ8WK6w/4Fz/OEldDWR1W9EkFrb4xfkJ5iXcKKL875IGpGKNGsNKHjKMYbTrxIlYW8
+         L81EaHtAbEfJ5mQPeZH/91hnxj5X68Vg3E+G5DvrUkA/XPIT/GAF6h6Qkkmu4/rTsEBT
+         58Lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pk+wpqbCAe4I46yOh6S+R7rrTPaxklQnaM5Nq4w5vlM=;
+        b=MW48y9f1H8IwlDlFjOv4H5OFWySBi4DnDFPtNWr+G+/HpVsRK4YLEXLvGy91FX0J3i
+         DPI8v0OP4itlZL4XdehP4blFqYm317V+ttH8K02sKvL43ZBXxvu8PHIyr+5jr32oxFTH
+         9+p9wUT3GPBv3ADRHFcEIlplSEpKjUMCLZhzfRBCt7kMnl+ivaozbPclReHZxUXbZLPo
+         NjtT3QoUAz9LmW/WH3WB2O9XYIHoqf5cHZVA3ExZFpCUj9/mR/8v1/b1q02bEexzUbEt
+         /ESNE7wsDUopb1It1Bw+EuBaC5bpk0dzO0X5FSJry9/srZ/izsU3nzAcUtzmfi7rZvcp
+         9ecQ==
+X-Gm-Message-State: AOAM530mpqwocWOR8X+xSURfCSwvF7DBnXyLUTZuMQ8+R4ZVqAx+ihqE
+        3otB1uP8LItun/RgSxHYQrHR2zzcvCTqlsY4hK4=
+X-Google-Smtp-Source: ABdhPJzI80HZKkno6cMLw6Xpih+WJv/HHTAfdPNg6yhoZLoV3SRngH2WGJAsTajy5F9JpJaupCOpnDHDQVoFUggYq+g=
+X-Received: by 2002:a02:c724:: with SMTP id h4mr10803895jao.69.1612269338483;
+ Tue, 02 Feb 2021 04:35:38 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <YBk4M6HUG8jB/jc7@mwanda>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <YBjne8A1gn0mvQtT@mwanda>
+In-Reply-To: <YBjne8A1gn0mvQtT@mwanda>
+From:   Ilya Dryomov <idryomov@gmail.com>
+Date:   Tue, 2 Feb 2021 13:35:35 +0100
+Message-ID: <CAOi1vP_GSHBFwDeuAatpTbuJM90ootzZ31-oK1FKKM93JOmf_g@mail.gmail.com>
+Subject: Re: [PATCH] ceph: Fix an Oops in error handling
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jeff Layton <jlayton@kernel.org>,
+        Ceph Development <ceph-devel@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On 2/2/21 7:32 PM, Dan Carpenter wrote:
-> The error handling in this function frees "reg" but it is still on the
-> "o2hb_all_regions" list so it will lead to a use after freew.  Joseph Qi
-> points out that we need to clear the bit in the "o2hb_region_bitmap" as
-> well
-> 
-> Fixes: 1cf257f51191 ("ocfs2: fix memory leak")
+On Tue, Feb 2, 2021 at 6:47 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> The "req" pointer is an error pointer and not NULL so this check needs
+> to be fixed.
+>
+> Fixes: 1cf7fdf52d5a ("ceph: convert readpage to fscache read helper")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-Looks good.
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-
 > ---
-> v2: The first version didn't clear the bit.
-> 
->  fs/ocfs2/cluster/heartbeat.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/ocfs2/cluster/heartbeat.c b/fs/ocfs2/cluster/heartbeat.c
-> index 0179a73a3fa2..12a7590601dd 100644
-> --- a/fs/ocfs2/cluster/heartbeat.c
-> +++ b/fs/ocfs2/cluster/heartbeat.c
-> @@ -2042,7 +2042,7 @@ static struct config_item *o2hb_heartbeat_group_make_item(struct config_group *g
->  			o2hb_nego_timeout_handler,
->  			reg, NULL, &reg->hr_handler_list);
->  	if (ret)
-> -		goto free;
-> +		goto remove_item;
->  
->  	ret = o2net_register_handler(O2HB_NEGO_APPROVE_MSG, reg->hr_key,
->  			sizeof(struct o2hb_nego_msg),
-> @@ -2057,6 +2057,12 @@ static struct config_item *o2hb_heartbeat_group_make_item(struct config_group *g
->  
->  unregister_handler:
->  	o2net_unregister_handler_list(&reg->hr_handler_list);
-> +remove_item:
-> +	spin_lock(&o2hb_live_lock);
-> +	list_del(&reg->hr_all_item);
-> +	if (o2hb_global_heartbeat_active())
-> +		clear_bit(reg->hr_region_num, o2hb_region_bitmap);
-> +	spin_unlock(&o2hb_live_lock);
->  free:
->  	kfree(reg);
->  	return ERR_PTR(ret);
-> 
+>  fs/ceph/addr.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+> index 5eec6f66fe52..fb0238a4d34f 100644
+> --- a/fs/ceph/addr.c
+> +++ b/fs/ceph/addr.c
+> @@ -273,7 +273,7 @@ static void ceph_netfs_issue_op(struct netfs_read_subrequest *subreq)
+>         if (err)
+>                 iput(inode);
+>  out:
+> -       if (req)
+> +       if (!IS_ERR_OR_NULL(req))
+>                 ceph_osdc_put_request(req);
+>         if (err)
+>                 netfs_subreq_terminated(subreq, err);
+
+Hi Dan,
+
+I think a better fix would be to set req to NULL in the offending
+IS_ERR branch since ceph_osdc_new_request() never returns NULL or
+use two separate goto labels.
+
+While at it, the initialization of req and the check on req before
+calling ceph_osdc_put_request() are redundant.
+
+Thanks,
+
+                Ilya

@@ -2,94 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12FFB30C189
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Feb 2021 15:28:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5C6930C628
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Feb 2021 17:40:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234322AbhBBO0k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Feb 2021 09:26:40 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:47046 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234095AbhBBOW0 (ORCPT
+        id S235882AbhBBQkb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Feb 2021 11:40:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55392 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236396AbhBBQjk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Feb 2021 09:22:26 -0500
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 112EJWVa141442;
-        Tue, 2 Feb 2021 14:20:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=zym7dCMbrQWtny8phtxzYDJHLtNzxPA2RobQi2pE6gk=;
- b=u9a6c0rjvJHP1TzqGUMatcQr7wLCMoC37iw2MKd7wAD5YH4cGba1iriFtZN8nu9EcdQB
- rkGW6ET2wSpWCxi7IVgwaNBrJUpW3A3OhRsnhh/ZFw3LfBVp4Ztz6Qv5QEGVIUm9ZKvG
- Ov4YicUMsyAWP4zxKfly1ibAJhT9+dbQ5lDUuDNXRhbfibqixxiqAMGUG0RPmYUPEUrO
- kPLbMh3YzXoipzIkG2KMePifcmULfzZiCTgbv97ES+2CN4JcBtU+Pq9+mEMJD1gLxBpU
- 5ZkR6g5NvAOiXrae3GXS4o94vYWnf5LmJRuJM2LWhyqYPp7j+CxS4gmfNOIMUgXeMCvv eg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2130.oracle.com with ESMTP id 36cvyau5m9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 02 Feb 2021 14:20:57 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 112EKW1a100431;
-        Tue, 2 Feb 2021 14:20:54 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 36dhcwrdwm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 02 Feb 2021 14:20:54 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 112EKr2H019198;
-        Tue, 2 Feb 2021 14:20:53 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 02 Feb 2021 06:20:52 -0800
-Date:   Tue, 2 Feb 2021 17:20:45 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jeff Layton <jlayton@kernel.org>
-Cc:     dhowells@redhat.com, idryomov@gmail.com,
-        ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] ceph: fix an oops in error handling in
- ceph_netfs_issue_op
-Message-ID: <20210202142045.GD20820@kadam>
-References: <20210202131041.43977-1-jlayton@kernel.org>
+        Tue, 2 Feb 2021 11:39:40 -0500
+Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 060F7C061573
+        for <kernel-janitors@vger.kernel.org>; Tue,  2 Feb 2021 08:39:00 -0800 (PST)
+Received: by mail-ot1-x32d.google.com with SMTP id i30so20429709ota.6
+        for <kernel-janitors@vger.kernel.org>; Tue, 02 Feb 2021 08:38:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gEB6YhLiShPxcpG0N7ia5oN52NnO6sE8qIUDaGWPBqA=;
+        b=H/dmYbhX8sl+0ST7w5MlKdD/viYei2HClPFduE5wjMtX0MTvQ+FFssg71dRZuHNgzJ
+         iJWHq/aO5YwpXS+D6hXPkHrjRA5X7QXN+OIF/CzTxRfQESJxI+gpwYrbdY1ERM604qrQ
+         iXVL7sUj7738Mq//8BiZavNoWWDDFYOAP4TXBcWFyTyH9twY4JOd90yTEuJttZGcDp7A
+         Hy5uhVN1BfEo2PLEQvJHGj00eq5aiPJwurj+52SRd8ZnQGX1S1FjssM3O7V4ThrrhA+6
+         ExWR+kLq/PjzCKP02j/F20TaLHXW5yh5br8M8DlrtNgzgA6Ej12SMjymNxAzor92P75l
+         bg1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gEB6YhLiShPxcpG0N7ia5oN52NnO6sE8qIUDaGWPBqA=;
+        b=AhtsimG/3FvChk4MKdlESxzZgqVQMo8QwMlPoo0eR749YZmCgPYa/HT5ey6LaKRd/R
+         dFRvs1ErruzMGo5quWb0k/iTgfLLPeUFw7E8jXicGd8ZVIRe8Eg0K2vgsCsC7uF0vwWj
+         cMLlTt9A4GTFp3cx1NYNnt4WDWRq1FCTQ8MpUdqMJnsI/giI8T+k3PYlmARoblzHEnMf
+         mFHaIKGALLJBMI22nDcO8W/xfKT4THXpJZmlUD39YFNQIkOFqEAOrSQVKNjQ7Q4ex2bW
+         RPqAqkdkmmABUWDHg1ar1Tn6FH362QxXuKxhINhMEAll8qOnmLyOu08jl8kLypYdCEDV
+         NPGw==
+X-Gm-Message-State: AOAM5333DMjrF9ehNSYtiHL3Jxs3z4Ir3VR8ddKpp4g6QZ3HM8RXDylA
+        nWvzf+eMZ8PlKvEc6TKpBe6R7wDs3ssiSJTWof5RXIH5
+X-Google-Smtp-Source: ABdhPJzQZdEDqjoPyL5u/GjncG3C5HgSbpUNlogxNxADbL5hCcP/xjRntfr0srln2kwPoWRfUuARVrNICr8iVQb3zZ8=
+X-Received: by 2002:a9d:ec7:: with SMTP id 65mr11172551otj.311.1612283939430;
+ Tue, 02 Feb 2021 08:38:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210202131041.43977-1-jlayton@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-IMR: 1
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9882 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999 phishscore=0
- spamscore=0 suspectscore=0 malwarescore=0 adultscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2102020098
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9882 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 impostorscore=0
- mlxscore=0 spamscore=0 bulkscore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 malwarescore=0 phishscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102020098
+References: <YBjplLOof9J1E2o5@mwanda>
+In-Reply-To: <YBjplLOof9J1E2o5@mwanda>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Tue, 2 Feb 2021 11:38:48 -0500
+Message-ID: <CADnq5_Mw+wjzRLhNaGUC7VFS92=GeZ0UwvrhiHMjnXpF1=nMHw@mail.gmail.com>
+Subject: Re: [PATCH] drm/amdgpu: Prevent shift wrapping in amdgpu_read_mask()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
+        Xiaojian Du <Xiaojian.Du@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        kernel-janitors@vger.kernel.org, Kevin Wang <kevin1.wang@amd.com>,
+        Huang Rui <ray.huang@amd.com>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Nirmoy Das <nirmoy.das@amd.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Eric Huang <JinHuiEric.Huang@amd.com>,
+        Evan Quan <evan.quan@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Feb 02, 2021 at 08:10:41AM -0500, Jeff Layton wrote:
-> Dan reported a potential oops in the cleanup if ceph_osdc_new_request
-> returns an error. Eliminate the unneeded initialization of "req" and
-> then just set it to NULL in the case where it holds an ERR_PTR.
-> 
-> Also, drop the unneeded NULL check before calling
-> ceph_osdc_put_request.
-> 
-> Fixes: 1cf7fdf52d5a ("ceph: convert readpage to fscache read helper")
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Suggested-by: Ilya Dryomov <idryomov@gmail.com>
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+On Tue, Feb 2, 2021 at 12:57 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> If the user passes a "level" value which is higher than 31 then that
+> leads to shift wrapping.  The undefined behavior will lead to a
+> syzkaller stack dump.
+>
+> Fixes: 5632708f4452 ("drm/amd/powerplay: add dpm force multiple levels on cz/tonga/fiji/polaris (v2)")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
+Applied.  Thanks!
 
-Looks good.
+Alex
 
-Acked-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-regards,
-dan carpenter
-
+> ---
+>  drivers/gpu/drm/amd/pm/amdgpu_pm.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/pm/amdgpu_pm.c b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+> index e9b569b76716..1a4010fcf561 100644
+> --- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+> +++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+> @@ -1094,7 +1094,7 @@ static ssize_t amdgpu_get_pp_dpm_sclk(struct device *dev,
+>  static ssize_t amdgpu_read_mask(const char *buf, size_t count, uint32_t *mask)
+>  {
+>         int ret;
+> -       long level;
+> +       unsigned long level;
+>         char *sub_str = NULL;
+>         char *tmp;
+>         char buf_cpy[AMDGPU_MASK_BUF_MAX + 1];
+> @@ -1109,9 +1109,9 @@ static ssize_t amdgpu_read_mask(const char *buf, size_t count, uint32_t *mask)
+>         tmp = buf_cpy;
+>         while (tmp[0]) {
+>                 sub_str = strsep(&tmp, delimiter);
+> -               if (strlen(sub_str)) {
+> -                       ret = kstrtol(sub_str, 0, &level);
+> -                       if (ret)
+> +               if (sub_str[0]) {
+> +                       ret = kstrtoul(sub_str, 0, &level);
+> +                       if (ret || level > 31)
+>                                 return -EINVAL;
+>                         *mask |= 1 << level;
+>                 } else
+> --
+> 2.29.2
+>
+> _______________________________________________
+> amd-gfx mailing list
+> amd-gfx@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/amd-gfx

@@ -2,101 +2,114 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DE8230B77E
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Feb 2021 06:56:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F3EC30B785
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Feb 2021 06:59:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231853AbhBBF4V (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Feb 2021 00:56:21 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:42722 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231509AbhBBF4U (ORCPT
+        id S231920AbhBBF5r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Feb 2021 00:57:47 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:53002 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231923AbhBBF5p (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Feb 2021 00:56:20 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1125oM7s103164;
-        Tue, 2 Feb 2021 05:55:35 GMT
+        Tue, 2 Feb 2021 00:57:45 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1125nUUr119900;
+        Tue, 2 Feb 2021 05:56:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=2HotEF9KBpERyxgvGJrKJdjPjfRvptLxpAAXNGUkRB4=;
- b=cIaMSqCZx/CetN4MhnU7Vt9satoDay7TQqIwD0LRxN8cnwmmG1q4UdPU2cTo5l6JFKQZ
- vy9euDmG+A8FZ2m6lrXi56cCbB28bwSxbRp+NebRdcIGakA3Y+QGdDpzkAuaPu1t7knx
- bichIGRf+oPylyJbGn0kMP4q9rM3Ykf21YZjMtaftMATEE73iLT0/WiGzkkFZcWEPpRG
- gZN7zYkba1Suvk0qS/ZfYJ1bGmR6D5M+O7KJdJ856b3NwNvXSgCxJgLjKAPxnPN5ucJh
- 8MWp20qrtt4DN33oplM7Zl1Tom5Hfk0OTrCD6rJlzptVZDaw8/xzMplRZfRDZcHF26q1 qw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 36cxvr0xuu-1
+ bh=9IuKZtvrE56xfifC04umU53E2kdecYzftZfmTwMIrGk=;
+ b=I0pbUQZGzDkxskJVMgq1+a3gB5oiBOQMRa+5XL+Wvl0FRaJdMaR8vbrZtNyr9PTn8uLK
+ nMjQweElT3OoqDy92afctO+S3stRs4OI+0/Smgl9VBBvfvTk2+JwhBK977LQolPtYiM+
+ SWs0iUgD9kJaHjvlzKTq7qwjgyjjC35Z1X+T5gnVvo0+2zfyzHglvpAaKLJvBps5/pM1
+ rl6gHfMGbHabAT7Lcu6NSTH1MYogjigpzDX4fQLuiP2IBigB/4Xk4zDbc+2fUEGVw1wX
+ BWSUDbjpgfQuHaZbjl22wE4Ec6LRFSHEA9AdNHdYDo4ORgQ0vbBNQ43NII7CJUpml3kA kQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2130.oracle.com with ESMTP id 36cvyas4ck-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 02 Feb 2021 05:55:35 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1125sVvA188081;
-        Tue, 2 Feb 2021 05:55:34 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 36dhcw410x-1
+        Tue, 02 Feb 2021 05:56:58 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1125st8t183439;
+        Tue, 2 Feb 2021 05:56:56 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 36dhbxqs6q-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 02 Feb 2021 05:55:34 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 1125tXBe028894;
-        Tue, 2 Feb 2021 05:55:33 GMT
+        Tue, 02 Feb 2021 05:56:56 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 1125uiTN007720;
+        Tue, 2 Feb 2021 05:56:45 GMT
 Received: from mwanda (/102.36.221.92)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 01 Feb 2021 21:55:32 -0800
-Date:   Tue, 2 Feb 2021 08:55:25 +0300
+        with ESMTP ; Mon, 01 Feb 2021 21:56:44 -0800
+Date:   Tue, 2 Feb 2021 08:56:36 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Alex Elder <elder@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH net] net: ipa: pass correct dma_handle to  dma_free_coherent()
-Message-ID: <YBjpTU2oejkNIULT@mwanda>
+To:     Alex Deucher <alexander.deucher@amd.com>
+Cc:     Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, Evan Quan <evan.quan@amd.com>,
+        Nirmoy Das <nirmoy.das@amd.com>,
+        Kevin Wang <kevin1.wang@amd.com>,
+        Huang Rui <ray.huang@amd.com>,
+        Xiaojian Du <Xiaojian.Du@amd.com>,
+        Eric Huang <JinHuiEric.Huang@amd.com>,
+        amd-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] drm/amdgpu: Prevent shift wrapping in amdgpu_read_mask()
+Message-ID: <YBjplLOof9J1E2o5@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-IMR: 1
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9882 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999 phishscore=0
- spamscore=0 suspectscore=0 malwarescore=0 adultscore=0 bulkscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 suspectscore=0
+ spamscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2102020041
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9882 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
- mlxscore=0 priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1015
- suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2102020040
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 impostorscore=0
+ mlxscore=0 spamscore=0 bulkscore=0 priorityscore=1501 adultscore=0
+ lowpriorityscore=0 malwarescore=0 phishscore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102020040
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "ring->addr = addr;" assignment is done a few lines later so we
-can't use "ring->addr" yet.  The correct dma_handle is "addr".
+If the user passes a "level" value which is higher than 31 then that
+leads to shift wrapping.  The undefined behavior will lead to a
+syzkaller stack dump.
 
-Fixes: 650d1603825d ("soc: qcom: ipa: the generic software interface")
+Fixes: 5632708f4452 ("drm/amd/powerplay: add dpm force multiple levels on cz/tonga/fiji/polaris (v2)")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-Smatch also complians about:
+ drivers/gpu/drm/amd/pm/amdgpu_pm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-    drivers/net/ipa/gsi.c:1739 gsi_channel_setup()
-    warn: missing error code 'ret'
-
-It probably should return -EINVAL, but I'm not positive.
-
- drivers/net/ipa/gsi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ipa/gsi.c b/drivers/net/ipa/gsi.c
-index f79cf3c327c1..b559d14271e2 100644
---- a/drivers/net/ipa/gsi.c
-+++ b/drivers/net/ipa/gsi.c
-@@ -1373,7 +1373,7 @@ static int gsi_ring_alloc(struct gsi *gsi, struct gsi_ring *ring, u32 count)
- 	/* Hardware requires a 2^n ring size, with alignment equal to size */
- 	ring->virt = dma_alloc_coherent(dev, size, &addr, GFP_KERNEL);
- 	if (ring->virt && addr % size) {
--		dma_free_coherent(dev, size, ring->virt, ring->addr);
-+		dma_free_coherent(dev, size, ring->virt, addr);
- 		dev_err(dev, "unable to alloc 0x%zx-aligned ring buffer\n",
- 			size);
- 		return -EINVAL;	/* Not a good error value, but distinct */
+diff --git a/drivers/gpu/drm/amd/pm/amdgpu_pm.c b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+index e9b569b76716..1a4010fcf561 100644
+--- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+@@ -1094,7 +1094,7 @@ static ssize_t amdgpu_get_pp_dpm_sclk(struct device *dev,
+ static ssize_t amdgpu_read_mask(const char *buf, size_t count, uint32_t *mask)
+ {
+ 	int ret;
+-	long level;
++	unsigned long level;
+ 	char *sub_str = NULL;
+ 	char *tmp;
+ 	char buf_cpy[AMDGPU_MASK_BUF_MAX + 1];
+@@ -1109,9 +1109,9 @@ static ssize_t amdgpu_read_mask(const char *buf, size_t count, uint32_t *mask)
+ 	tmp = buf_cpy;
+ 	while (tmp[0]) {
+ 		sub_str = strsep(&tmp, delimiter);
+-		if (strlen(sub_str)) {
+-			ret = kstrtol(sub_str, 0, &level);
+-			if (ret)
++		if (sub_str[0]) {
++			ret = kstrtoul(sub_str, 0, &level);
++			if (ret || level > 31)
+ 				return -EINVAL;
+ 			*mask |= 1 << level;
+ 		} else
 -- 
 2.29.2
 

@@ -2,117 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B406F30BD3C
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Feb 2021 12:36:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C65D30BD60
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Feb 2021 12:49:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231289AbhBBLfT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Feb 2021 06:35:19 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:47812 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231343AbhBBLdV (ORCPT
+        id S230221AbhBBLs4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Feb 2021 06:48:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49394 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230058AbhBBLsy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Feb 2021 06:33:21 -0500
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 112BNYPR162661;
-        Tue, 2 Feb 2021 11:32:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=D3tgOWXZwM2v+gsQnYFE/CSbnZRad1II9wbsUKgMXJQ=;
- b=h69AzxXFpXgJK5w+uNRi+8VsiUNhL65LwSpjLvf8zQ74V/3BjZGsH36+9zUOPTrhtcOP
- YZSaXbYdWA+xpTw5la5V85kqQgEt0+H/bzFFLlvOGlpHMFmxF6s2rsisDGZoIgcnMCd1
- IPHQfBzpPH8jYZs0E2Nc8zkm2kCb0gnU8w13TrfJzmmkrKOWVtJs5gLXtAiwsPp6f9uz
- VNyAEsTxMYQg5t5fA57NqjAbN5mqwnRdp/M0BRxF5AzqA2SQpHAjQEn9BL78hYILiNSj
- xa57ZjUZBaxZD6u6NJyCE927P/hhqNpiX6pFrro8d850IZFz+lyLXPDQeo6Z1FXke0SP fw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2130.oracle.com with ESMTP id 36cvyatg25-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 02 Feb 2021 11:32:19 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 112BVUFi014496;
-        Tue, 2 Feb 2021 11:32:17 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by aserp3030.oracle.com with ESMTP id 36dh1nv8j4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 02 Feb 2021 11:32:17 +0000
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 112BWGKR017014;
-        Tue, 2 Feb 2021 11:32:16 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 36dh1nv8h9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 02 Feb 2021 11:32:16 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 112BWC7j023955;
-        Tue, 2 Feb 2021 11:32:12 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 02 Feb 2021 03:32:12 -0800
-Date:   Tue, 2 Feb 2021 14:32:03 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Mark Fasheh <mark@fasheh.com>
-Cc:     Joel Becker <jlbec@evilplan.org>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Takashi Iwai <tiwai@suse.de>, Jens Axboe <axboe@kernel.dk>,
-        Alex Shi <alex.shi@linux.alibaba.com>,
-        Jiri Slaby <jirislaby@kernel.org>, ocfs2-devel@oss.oracle.com,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] ocfs2: Fix a use after free on error
-Message-ID: <YBk4M6HUG8jB/jc7@mwanda>
+        Tue, 2 Feb 2021 06:48:54 -0500
+Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23B75C06174A
+        for <kernel-janitors@vger.kernel.org>; Tue,  2 Feb 2021 03:48:14 -0800 (PST)
+Received: by mail-il1-x12e.google.com with SMTP id a16so1086376ilq.5
+        for <kernel-janitors@vger.kernel.org>; Tue, 02 Feb 2021 03:48:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ieee.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=i8yjWv7ZYVQ87c8yLM3My2cCeuFw/bHz0Id/b7ZzflI=;
+        b=g1bjm1Cw4dRx9KuSznNwNqd9zMQxQ8mh/yPrLOZIv2NVpVGDtDfMGVabbrqiubOOz6
+         QEERr305GVQlhPfuD4A1r0tkvP90qZ4m0UQBQzKLtKq8Sywf15xP5pwELhTkU1pzySgX
+         4pzlOZF4NXUvhNa7Cq+XO/G2GwSWxIkjNc5JY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=i8yjWv7ZYVQ87c8yLM3My2cCeuFw/bHz0Id/b7ZzflI=;
+        b=IpadDct0v6UKTQ6U/RhY0A9QaVnw9HUBjfhV4wbg0SByXNFMDJqgyczHTgXILTmXGd
+         lvrd7912HlYZrtNdkK0nqG3hXadiXOyDd8IovIAcrdklXNtVehZRaChMw54H7dO0U7BF
+         1HoFV1BH6f9A1LLbXy1BhHvlqTF77aJWD4IP6fpGMlLYdGtvhQoMqyE+IQlrVoHc6lzH
+         WtR/B1rVFnBf36esrK82BWmHyT0jnnwVzutvFdEkPdW0CCc3m4lWLvHhHO4wBBpGaks/
+         Q1Nj09KoG+lfkySFLw5IVFrBHysq1z+5xj7k8v0eMbw5zQTLv+kPIS0VdbArh929UOc9
+         jR+A==
+X-Gm-Message-State: AOAM533/FItZHBVzg4PH/X3TDVLtAAHYN/zVFAwwu/ZfDwAz62uSgqWI
+        6Ab9q/OwdyUVzthSd3Gi8qZJLjjKEx18Cw==
+X-Google-Smtp-Source: ABdhPJz0wwATr5H/UtuNxpv0rTHAbjagxB2WPYjGve68R6vxpl2aolDKibNUmvaHUK5vQ+GagzOt6Q==
+X-Received: by 2002:a05:6e02:48f:: with SMTP id b15mr18473415ils.144.1612266493375;
+        Tue, 02 Feb 2021 03:48:13 -0800 (PST)
+Received: from [172.22.22.26] (c-73-185-129-58.hsd1.mn.comcast.net. [73.185.129.58])
+        by smtp.googlemail.com with ESMTPSA id j25sm9762363iog.27.2021.02.02.03.48.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Feb 2021 03:48:12 -0800 (PST)
+Subject: Re: [PATCH net] net: ipa: pass correct dma_handle to
+ dma_free_coherent()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Alex Elder <elder@kernel.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <YBjpTU2oejkNIULT@mwanda>
+From:   Alex Elder <elder@ieee.org>
+Message-ID: <cc689bd3-90d8-5ad5-661b-e2c3b76c7341@ieee.org>
+Date:   Tue, 2 Feb 2021 05:48:11 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-IMR: 1
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9882 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 impostorscore=0
- mlxscore=0 spamscore=0 bulkscore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 malwarescore=0 phishscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102020079
+In-Reply-To: <YBjpTU2oejkNIULT@mwanda>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The error handling in this function frees "reg" but it is still on the
-"o2hb_all_regions" list so it will lead to a use after freew.  Joseph Qi
-points out that we need to clear the bit in the "o2hb_region_bitmap" as
-well
+On 2/1/21 11:55 PM, Dan Carpenter wrote:
+> The "ring->addr = addr;" assignment is done a few lines later so we
+> can't use "ring->addr" yet.  The correct dma_handle is "addr".
+> 
+> Fixes: 650d1603825d ("soc: qcom: ipa: the generic software interface")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Fixes: 1cf257f51191 ("ocfs2: fix memory leak")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-v2: The first version didn't clear the bit.
+Yikes.  Thank you for the fix.
 
- fs/ocfs2/cluster/heartbeat.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Reviewed-by: Alex Elder <elder@linaro.org>
 
-diff --git a/fs/ocfs2/cluster/heartbeat.c b/fs/ocfs2/cluster/heartbeat.c
-index 0179a73a3fa2..12a7590601dd 100644
---- a/fs/ocfs2/cluster/heartbeat.c
-+++ b/fs/ocfs2/cluster/heartbeat.c
-@@ -2042,7 +2042,7 @@ static struct config_item *o2hb_heartbeat_group_make_item(struct config_group *g
- 			o2hb_nego_timeout_handler,
- 			reg, NULL, &reg->hr_handler_list);
- 	if (ret)
--		goto free;
-+		goto remove_item;
- 
- 	ret = o2net_register_handler(O2HB_NEGO_APPROVE_MSG, reg->hr_key,
- 			sizeof(struct o2hb_nego_msg),
-@@ -2057,6 +2057,12 @@ static struct config_item *o2hb_heartbeat_group_make_item(struct config_group *g
- 
- unregister_handler:
- 	o2net_unregister_handler_list(&reg->hr_handler_list);
-+remove_item:
-+	spin_lock(&o2hb_live_lock);
-+	list_del(&reg->hr_all_item);
-+	if (o2hb_global_heartbeat_active())
-+		clear_bit(reg->hr_region_num, o2hb_region_bitmap);
-+	spin_unlock(&o2hb_live_lock);
- free:
- 	kfree(reg);
- 	return ERR_PTR(ret);
--- 
-2.30.0
+> ---
+> Smatch also complians about:
+> 
+>     drivers/net/ipa/gsi.c:1739 gsi_channel_setup()
+>     warn: missing error code 'ret'
+> 
+> It probably should return -EINVAL, but I'm not positive.
+> 
+>  drivers/net/ipa/gsi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ipa/gsi.c b/drivers/net/ipa/gsi.c
+> index f79cf3c327c1..b559d14271e2 100644
+> --- a/drivers/net/ipa/gsi.c
+> +++ b/drivers/net/ipa/gsi.c
+> @@ -1373,7 +1373,7 @@ static int gsi_ring_alloc(struct gsi *gsi, struct gsi_ring *ring, u32 count)
+>  	/* Hardware requires a 2^n ring size, with alignment equal to size */
+>  	ring->virt = dma_alloc_coherent(dev, size, &addr, GFP_KERNEL);
+>  	if (ring->virt && addr % size) {
+> -		dma_free_coherent(dev, size, ring->virt, ring->addr);
+> +		dma_free_coherent(dev, size, ring->virt, addr);
+>  		dev_err(dev, "unable to alloc 0x%zx-aligned ring buffer\n",
+>  			size);
+>  		return -EINVAL;	/* Not a good error value, but distinct */
+> 
 

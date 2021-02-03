@@ -2,30 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1939A30DB77
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Feb 2021 14:39:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98A8830DBBA
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Feb 2021 14:49:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232114AbhBCNj0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Feb 2021 08:39:26 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:37195 "EHLO
+        id S232320AbhBCNsl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Feb 2021 08:48:41 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:37455 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231490AbhBCNjT (ORCPT
+        with ESMTP id S232139AbhBCNrl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Feb 2021 08:39:19 -0500
+        Wed, 3 Feb 2021 08:47:41 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1l7IMd-0007Q7-2D; Wed, 03 Feb 2021 13:38:35 +0000
+        id 1l7IUe-0008KI-Ao; Wed, 03 Feb 2021 13:46:52 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Manish Chopra <manishc@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Coiby Xu <coiby.xu@gmail.com>, netdev@vger.kernel.org,
-        devel@driverdev.osuosl.org
+To:     Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Sia Jee Heng <jee.heng.sia@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        dmaengine@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] staging: qlge: fix read of an uninitialized pointer
-Date:   Wed,  3 Feb 2021 13:38:34 +0000
-Message-Id: <20210203133834.22388-1-colin.king@canonical.com>
+Subject: [PATCH][next] dmaengine: dw-axi-dmac: remove redundant null check on desc
+Date:   Wed,  3 Feb 2021 13:46:52 +0000
+Message-Id: <20210203134652.22618-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,37 +37,32 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently the pointer 'reporter' is not being initialized and is
-being read in a netdev_warn message.  The pointer is not used
-and is redundant, fix this by removing it and replacing the reference
-to it with priv->reporter instead.
+The pointer desc is being null checked twice, the second null check
+is redundant because desc has not been re-assigned between the
+checks. Remove the redundant second null check on desc.
 
-Addresses-Coverity: ("Uninitialized pointer read")
-Fixes: 1053c27804df ("staging: qlge: coredump via devlink health reporter")
+Addresses-Coverity: ("Logically dead code")
+Fixes: ef6fb2d6f1ab ("dmaengine: dw-axi-dmac: simplify descriptor management")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/staging/qlge/qlge_devlink.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/staging/qlge/qlge_devlink.c b/drivers/staging/qlge/qlge_devlink.c
-index c6ef5163e241..86834d96cebf 100644
---- a/drivers/staging/qlge/qlge_devlink.c
-+++ b/drivers/staging/qlge/qlge_devlink.c
-@@ -150,7 +150,6 @@ static const struct devlink_health_reporter_ops qlge_reporter_ops = {
+diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
+index ac3d81b72a15..d9e4ac3edb4e 100644
+--- a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
++++ b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
+@@ -919,10 +919,6 @@ dma_chan_prep_dma_memcpy(struct dma_chan *dchan, dma_addr_t dst_adr,
+ 		num++;
+ 	}
  
- void qlge_health_create_reporters(struct qlge_adapter *priv)
- {
--	struct devlink_health_reporter *reporter;
- 	struct devlink *devlink;
- 
- 	devlink = priv_to_devlink(priv);
-@@ -160,5 +159,5 @@ void qlge_health_create_reporters(struct qlge_adapter *priv)
- 	if (IS_ERR(priv->reporter))
- 		netdev_warn(priv->ndev,
- 			    "Failed to create reporter, err = %ld\n",
--			    PTR_ERR(reporter));
-+			    PTR_ERR(priv->reporter));
- }
+-	/* Total len of src/dest sg == 0, so no descriptor were allocated */
+-	if (unlikely(!desc))
+-		return NULL;
+-
+ 	/* Set end-of-link to the last link descriptor of list */
+ 	set_desc_last(&desc->hw_desc[num - 1]);
+ 	/* Managed transfer list */
 -- 
 2.29.2
 

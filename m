@@ -2,101 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC81630DA9D
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Feb 2021 14:09:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29D7E30DABC
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Feb 2021 14:13:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230086AbhBCNH6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Feb 2021 08:07:58 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:42324 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbhBCNHz (ORCPT
+        id S231367AbhBCNLb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Feb 2021 08:11:31 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:36508 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231346AbhBCNL1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Feb 2021 08:07:55 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 113CtO4v015470;
-        Wed, 3 Feb 2021 13:07:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=cl2aXKizTIGDJGF1T/hPewB/I3rBty63KBFEmXaHt58=;
- b=GMEptSmLHQv7CmJSuskBX6p8WfhLFBnEPN5Ry84DYhHbSzjy2YKOm4BSWiKaOT3C0I8l
- g5kgGo27ldOZi0JNi2IdShG8jQZYNP8A3ybeQ3A1VPOcABQvzN/rmybD5cySFCFtsSXO
- IimnqfAoJUVEFqOKK0dy7SmsWr3Qb931leLKjiFxStedibv9UVfMv/bt06vrqGvYCw7/
- FCFZat5o9VqnOAXX04TL7ZM1cTZCqDzckrVrez/021rPDTvz+Rco0qUVHS8pRr4Qh2Z1
- esNLpW2KF49564Wk5QSee9hBEyCQlZLoIcVlXpgDPKUz8RWyGHY6V/DRRVGbiUO7tmbv Zg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 36fs458p5j-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 03 Feb 2021 13:07:06 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 113Csn3w113898;
-        Wed, 3 Feb 2021 13:07:05 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 36dhcyktph-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 03 Feb 2021 13:07:05 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 113D72l2010626;
-        Wed, 3 Feb 2021 13:07:03 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 03 Feb 2021 05:07:01 -0800
-Date:   Wed, 3 Feb 2021 16:06:50 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Pawel Laszczak <pawell@cadence.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] usb: cdnsp: Fix spelling mistake "delagete" ->
- "delegate"
-Message-ID: <20210203130440.GV2696@kadam>
-References: <20210203111239.18313-1-colin.king@canonical.com>
+        Wed, 3 Feb 2021 08:11:27 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1l7Hvc-0004Em-NA; Wed, 03 Feb 2021 13:10:40 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Huazhong Tan <tanhuazhong@huawei.com>,
+        Guangbin Huang <huangguangbin2@huawei.com>,
+        netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] net: hns3: remove redundant null check of an array
+Date:   Wed,  3 Feb 2021 13:10:40 +0000
+Message-Id: <20210203131040.21656-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210203111239.18313-1-colin.king@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-IMR: 1
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9883 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999 phishscore=0
- spamscore=0 suspectscore=0 malwarescore=0 adultscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2102030080
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9883 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 adultscore=0
- malwarescore=0 priorityscore=1501 impostorscore=0 suspectscore=0
- phishscore=0 clxscore=1015 lowpriorityscore=0 spamscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2102030080
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Feb 03, 2021 at 11:12:39AM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in a literal string. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/usb/cdns3/cdnsp-ep0.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/cdns3/cdnsp-ep0.c b/drivers/usb/cdns3/cdnsp-ep0.c
-> index e2b1bcb3f80e..e30931ebc870 100644
-> --- a/drivers/usb/cdns3/cdnsp-ep0.c
-> +++ b/drivers/usb/cdns3/cdnsp-ep0.c
-> @@ -45,7 +45,7 @@ static int cdnsp_ep0_delegate_req(struct cdnsp_device *pdev,
->  {
->  	int ret;
->  
-> -	trace_cdnsp_ep0_request("delagete");
-> +	trace_cdnsp_ep0_request("delegate");
->  
+From: Colin Ian King <colin.king@canonical.com>
 
-This printk is useless and should just be deleted.  Use ftrace instead.
+The null check of filp->f_path.dentry->d_iname is redundant because
+it is an array of DNAME_INLINE_LEN chars and cannot be a null. Fix
+this by removing the null check.
 
-regards,
-dan carpenter
+Addresses-Coverity: ("Array compared against 0")
+Fixes: 04987ca1b9b6 ("net: hns3: add debugfs support for tm nodes, priority and qset info")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+index 6978304f1ac5..c5958754f939 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+@@ -494,9 +494,6 @@ static ssize_t hns3_dbg_read(struct file *filp, char __user *buffer,
+ 	ssize_t size = 0;
+ 	int ret = 0;
+ 
+-	if (!filp->f_path.dentry->d_iname)
+-		return -EINVAL;
+-
+ 	read_buf = kzalloc(HNS3_DBG_READ_LEN, GFP_KERNEL);
+ 	if (!read_buf)
+ 		return -ENOMEM;
+-- 
+2.29.2
 

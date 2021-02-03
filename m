@@ -2,59 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCCFC30D83D
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Feb 2021 12:14:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF15630D8F1
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Feb 2021 12:42:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234042AbhBCLN1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Feb 2021 06:13:27 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:33408 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233879AbhBCLNW (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Feb 2021 06:13:22 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1l7G5P-0007Fi-EL; Wed, 03 Feb 2021 11:12:39 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Pawel Laszczak <pawell@cadence.com>,
+        id S234367AbhBCLlU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Feb 2021 06:41:20 -0500
+Received: from ozlabs.org ([203.11.71.1]:33183 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234297AbhBCLlS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 3 Feb 2021 06:41:18 -0500
+Received: by ozlabs.org (Postfix, from userid 1034)
+        id 4DW09c0GBmz9vG0; Wed,  3 Feb 2021 22:40:35 +1100 (AEDT)
+From:   Michael Ellerman <patch-notifications@ellerman.id.au>
+To:     linuxppc-dev@lists.ozlabs.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Markus Elfring <Markus.Elfring@web.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] usb: cdnsp: Fix spelling mistake "delagete" -> "delegate"
-Date:   Wed,  3 Feb 2021 11:12:39 +0000
-Message-Id: <20210203111239.18313-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.29.2
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Paul Mackerras <paulus@samba.org>,
+        Enrico Weigelt <lkml@metux.net>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+In-Reply-To: <6dc7d70e-8a40-46ab-897b-d2eaf9a87d77@web.de>
+References: <6dc7d70e-8a40-46ab-897b-d2eaf9a87d77@web.de>
+Subject: Re: [PATCH 0/2] powerpc/82xx: Adjustments for pq2ads_pci_init_irq()
+Message-Id: <161235200985.1516112.15383644631445109361.b4-ty@ellerman.id.au>
+Date:   Wed,  3 Feb 2021 22:40:35 +1100 (AEDT)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Tue, 27 Aug 2019 10:23:29 +0200, Markus Elfring wrote:
+> Two update suggestions were taken into account
+> from static source code analysis.
+> 
+> Markus Elfring (2):
+>   Delete an unnecessary of_node_put() call
+>   Use common error handling code
+> 
+> [...]
 
-There is a spelling mistake in a literal string. Fix it.
+Applied to powerpc/next.
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/usb/cdns3/cdnsp-ep0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[1/2] powerpc/82xx: Delete an unnecessary of_node_put() call in pq2ads_pci_init_irq()
+      https://git.kernel.org/powerpc/c/60aece416483fdf7e51728a3518438e0458bdabb
+[2/2] powerpc/82xx: Use common error handling code in pq2ads_pci_init_irq()
+      https://git.kernel.org/powerpc/c/c0cff7a17781f8b02b4837a9fc434a7eed322a14
 
-diff --git a/drivers/usb/cdns3/cdnsp-ep0.c b/drivers/usb/cdns3/cdnsp-ep0.c
-index e2b1bcb3f80e..e30931ebc870 100644
---- a/drivers/usb/cdns3/cdnsp-ep0.c
-+++ b/drivers/usb/cdns3/cdnsp-ep0.c
-@@ -45,7 +45,7 @@ static int cdnsp_ep0_delegate_req(struct cdnsp_device *pdev,
- {
- 	int ret;
- 
--	trace_cdnsp_ep0_request("delagete");
-+	trace_cdnsp_ep0_request("delegate");
- 
- 	spin_unlock(&pdev->lock);
- 	ret = pdev->gadget_driver->setup(&pdev->gadget, ctrl);
--- 
-2.29.2
-
+cheers

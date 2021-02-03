@@ -2,31 +2,48 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C75C30E321
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Feb 2021 20:17:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 096F130E3D8
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Feb 2021 21:08:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232220AbhBCTQj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Feb 2021 14:16:39 -0500
-Received: from relay.smtp-ext.broadcom.com ([192.19.232.172]:40198 "EHLO
-        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231401AbhBCTQj (ORCPT
+        id S231824AbhBCUIg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Feb 2021 15:08:36 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:36166 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231301AbhBCUIe (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Feb 2021 14:16:39 -0500
-Received: from [10.136.13.65] (lbrmn-lnxub113.ric.broadcom.net [10.136.13.65])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by relay.smtp-ext.broadcom.com (Postfix) with ESMTPS id 76DB380F7;
-        Wed,  3 Feb 2021 11:15:36 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 76DB380F7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1612379737;
-        bh=0Ba7wQq+yd6bEiZD4x7v1uhSeliXjYFVZHpW3ghfO8A=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=VFCBhBrhqzAbYbEpixHoudazsIRp1p81UVJi7Dd0UfXWSm8NWtbcRdEjhEsASwcCs
-         yga43ggw301N2cyeSNN90zCtrvp+Vbcms0XgqoXSHEvtHR82UV8UH7jdnmQBMUQJpT
-         bA+lRF7u+hKas5mDDq5U1RyJlYBkewLP/nxnz5NU=
-Subject: Re: [PATCH] misc: bcm-vk: Fix a couple error codes in probe()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
+        Wed, 3 Feb 2021 15:08:34 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 113K4EEq064527;
+        Wed, 3 Feb 2021 20:07:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=vZEiDU8hQT1UhocoLYdWh7SyEagKbQkYSVRWu2mgg74=;
+ b=H7jrVtQ4rlAoqdfgK2tbVUqouj8mPov9s4UpOnZn1tUG6Ve4R7S57r6fp0FGSY17hX4W
+ 1AgHjIMp2maWZXS7RSNxzGVv2iokb8NRx6XpU80GX7kIkyJTdsJjEYjDFwV35gdKycC5
+ TLq335ZPD9zx+8k7L1vMgObSpyRJHEXrcvZGBrVnYTT9f2TLVKeryl8lhCeCFFk7cB6v
+ RWPceW+x5yodpsaXo3yWhYu733hpbJdQlivA83EFK41rR62cLxs0DPLcYVuSonJXqTwD
+ PJElzy78ZsYcDm4k4ZqHRqfJPoTvK1+fAAulGyRmVeLX3UzmYt24IixC7vvEDrug/zlz HA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 36cxvr4qa3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 03 Feb 2021 20:07:43 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 113JuHNM179710;
+        Wed, 3 Feb 2021 20:05:42 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 36dh7u2rwt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 03 Feb 2021 20:05:42 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 113K5c8j029149;
+        Wed, 3 Feb 2021 20:05:39 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 03 Feb 2021 12:05:37 -0800
+Date:   Wed, 3 Feb 2021 23:05:29 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Scott Branden <scott.branden@broadcom.com>
 Cc:     Arnd Bergmann <arnd@arndb.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Desmond Yan <desmond.yan@broadcom.com>,
@@ -34,57 +51,51 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         James Hu <james.hu@broadcom.com>,
         bcm-kernel-feedback-list@broadcom.com,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] misc: bcm-vk: Fix a couple error codes in probe()
+Message-ID: <20210203200529.GH20820@kadam>
 References: <YBpyEbmz00rjvT9S@mwanda>
-From:   Scott Branden <scott.branden@broadcom.com>
-Message-ID: <55880105-a097-0268-de54-478d7dbae084@broadcom.com>
-Date:   Wed, 3 Feb 2021 11:15:35 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <55880105-a097-0268-de54-478d7dbae084@broadcom.com>
 MIME-Version: 1.0
-In-Reply-To: <YBpyEbmz00rjvT9S@mwanda>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-CA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <55880105-a097-0268-de54-478d7dbae084@broadcom.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-IMR: 1
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9884 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0
+ suspectscore=0 spamscore=0 mlxlogscore=999 phishscore=0 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102030117
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9884 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ mlxscore=0 priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1015
+ suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102030118
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Thanks Dan,
+On Wed, Feb 03, 2021 at 11:15:35AM -0800, Scott Branden wrote:
+> Thanks Dan,
+> 
+> On 2021-02-03 6:42 a.m., Dan Carpenter wrote:
+> > These errors should return negative error codes instead of returning
+> > success.
+> Do you have a script running to report such issues or just manually reviewing
+> to find such paths?
 
-On 2021-02-03 6:42 a.m., Dan Carpenter wrote:
-> These errors should return negative error codes instead of returning
-> success.
-Do you have a script running to report such issues or just manually reviewing
-to find such paths?
->
-> Fixes: 064ffc7c3939 ("misc: bcm-vk: add autoload support")
-> Fixes: 522f692686a7 ("misc: bcm-vk: add Broadcom VK driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Acked-by: Scott Branden <scott.branden@broadcom.com>
-> ---
->  drivers/misc/bcm-vk/bcm_vk_dev.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/misc/bcm-vk/bcm_vk_dev.c b/drivers/misc/bcm-vk/bcm_vk_dev.c
-> index c3d2bba68ef1..a82a8927d92b 100644
-> --- a/drivers/misc/bcm-vk/bcm_vk_dev.c
-> +++ b/drivers/misc/bcm-vk/bcm_vk_dev.c
-> @@ -1358,6 +1358,7 @@ static int bcm_vk_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
->  		vk->bar[i] = pci_ioremap_bar(pdev, i * 2);
->  		if (!vk->bar[i]) {
->  			dev_err(dev, "failed to remap BAR%d\n", i);
-> +			err = -ENOMEM;
->  			goto err_iounmap;
->  		}
->  	}
-> @@ -1463,7 +1464,8 @@ static int bcm_vk_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
->  	boot_status = vkread32(vk, BAR_0, BAR_BOOT_STATUS);
->  	if (auto_load) {
->  		if ((boot_status & BOOT_STATE_MASK) == BROM_RUNNING) {
-> -			if (bcm_vk_trigger_autoload(vk))
-> +			err = bcm_vk_trigger_autoload(vk);
-> +			if (err)
->  				goto err_bcm_vk_tty_exit;
->  		} else {
->  			dev_err(dev,
+Yeah.  This is a new Smatch check.  The heuristic is this:
+
+	<-- ret is not set within 3 lines of the goto
+	goto label;  <-- we hit a goto
+
+
+	return 0;  <-- success path right before the cleanup block
+
+label:	<-- labels
+	return ret;  <-- This return has to sometimes returns negatives
+
+regards,
+dan carpenter
 

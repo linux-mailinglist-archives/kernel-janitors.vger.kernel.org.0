@@ -2,83 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73F3230F6B3
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Feb 2021 16:48:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40FA830F80D
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Feb 2021 17:36:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237477AbhBDPqr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Feb 2021 10:46:47 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34012 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237446AbhBDPqJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Feb 2021 10:46:09 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 39B5864F4A;
-        Thu,  4 Feb 2021 15:45:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612453527;
-        bh=lI0HC3GQbRFgXxSEIB/73Da0jQE/c8jAVtTEPB7vO28=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Hw7jGjaOFkLAvQ61LL+VxqPi61iCFS1TZYi2B+cwgM1q3w4+wR4x7emm3TtBViZSm
-         2GrhUdgflJlyA+3u1JkgT7g8skKX5b+ttzIYkKYfQUS0BUV02aYO6Vu9aMuWtT+a/J
-         HYXBSDBHv3esRV8xFzPZ0ZZsEwLG6E7+g0tJKRYthwIUBadcNIZ4Nl+Fc5PzKNxBkS
-         P4ep96lwNbV642I7ry+o7/5eT0bzGj2Is8PseM6TWB5lR91u2uVlVK+KG6Guhsy/Mx
-         FHr2kz+NeXH4zrLOD04Eq42qyz8QOF9S1LNXYEOhfHwN0aDczIa6cgbUbFdj5jW86r
-         Sgee71aeHeEGQ==
-Date:   Thu, 4 Feb 2021 15:45:23 +0000
-From:   Will Deacon <will@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Joerg Roedel <joro@8bytes.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        iommu@lists.linux-foundation.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next][V2] iommu/mediatek: Fix unsigned domid comparison
- with less than zero
-Message-ID: <20210204154522.GD21058@willie-the-truck>
-References: <20210204150001.102672-1-colin.king@canonical.com>
+        id S237957AbhBDQfM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Feb 2021 11:35:12 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:56437 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237893AbhBDQev (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Feb 2021 11:34:51 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1l7hZs-0007Ok-FC; Thu, 04 Feb 2021 16:33:56 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jean-Christophe Trotin <jean-christophe.trotin@st.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] media: platform: sti: make a const array static, makes object smaller
+Date:   Thu,  4 Feb 2021 16:33:56 +0000
+Message-Id: <20210204163356.105945-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210204150001.102672-1-colin.king@canonical.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Feb 04, 2021 at 03:00:01PM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently the check for domid < 0 is always false because domid
-> is unsigned. Fix this by casting domid to an int before making
-> the comparison.
-> 
-> Addresses-Coverity: ("Unsigned comparison against 0")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
-> 
-> V2: cast domid rather than making it an int. Replace L with : in
->     the commit message.
-> 
-> ---
->  drivers/iommu/mtk_iommu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-> index 0ad14a7604b1..1f262621ef19 100644
-> --- a/drivers/iommu/mtk_iommu.c
-> +++ b/drivers/iommu/mtk_iommu.c
-> @@ -645,7 +645,7 @@ static void mtk_iommu_get_resv_regions(struct device *dev,
->  	struct iommu_resv_region *region;
->  	int prot = IOMMU_WRITE | IOMMU_READ;
->  
-> -	if (domid < 0)
-> +	if ((int)domid < 0)
->  		return;
->  	curdom = data->plat_data->iova_region + domid;
->  	for (i = 0; i < data->plat_data->iova_region_nr; i++) {
+From: Colin Ian King <colin.king@canonical.com>
 
-Thanks, Colin.
+Don't populate the const array bws on the stack but instead it
+static. Makes the object code smaller by 8 bytes:
 
-Acked-by: Will Deacon <will@kernel.org>
+Before:
+   text	   data	    bss	    dec	    hex	filename
+  12504	   4568	      0	  17072	   42b0	media/platform/sti/hva/hva-h264.o
 
-Will
+After:
+   text	   data	    bss	    dec	    hex	filename
+  12272	   4792	      0	  17064	   42a8	media/platform/sti/hva/hva-h264.o
+
+(gcc version 10.2.0)
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/media/platform/sti/hva/hva-h264.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/media/platform/sti/hva/hva-h264.c b/drivers/media/platform/sti/hva/hva-h264.c
+index c34f7cf5aed2..98cb00d2d868 100644
+--- a/drivers/media/platform/sti/hva/hva-h264.c
++++ b/drivers/media/platform/sti/hva/hva-h264.c
+@@ -428,8 +428,10 @@ static int hva_h264_fill_slice_header(struct hva_ctx *pctx,
+ 	 */
+ 	struct device *dev = ctx_to_dev(pctx);
+ 	int  cabac = V4L2_MPEG_VIDEO_H264_ENTROPY_MODE_CABAC;
+-	const unsigned char slice_header[] = { 0x00, 0x00, 0x00, 0x01,
+-					       0x41, 0x34, 0x07, 0x00};
++	static const unsigned char slice_header[] = {
++		0x00, 0x00, 0x00, 0x01,
++		0x41, 0x34, 0x07, 0x00
++	};
+ 	int idr_pic_id = frame_num % 2;
+ 	enum hva_picture_coding_type type;
+ 	u32 frame_order = frame_num % ctrls->gop_size;
+@@ -488,7 +490,7 @@ static int hva_h264_fill_data_nal(struct hva_ctx *pctx,
+ 				  unsigned int stream_size, unsigned int *size)
+ {
+ 	struct device *dev = ctx_to_dev(pctx);
+-	const u8 start[] = { 0x00, 0x00, 0x00, 0x01 };
++	static const u8 start[] = { 0x00, 0x00, 0x00, 0x01 };
+ 
+ 	dev_dbg(dev, "%s   %s stuffing bytes %d\n", pctx->name, __func__,
+ 		stuffing_bytes);
+@@ -521,7 +523,7 @@ static int hva_h264_fill_sei_nal(struct hva_ctx *pctx,
+ 				 u8 *addr, u32 *size)
+ {
+ 	struct device *dev = ctx_to_dev(pctx);
+-	const u8 start[] = { 0x00, 0x00, 0x00, 0x01 };
++	static const u8 start[] = { 0x00, 0x00, 0x00, 0x01 };
+ 	struct hva_h264_stereo_video_sei info;
+ 	u8 offset = 7;
+ 	u8 msg = 0;
+-- 
+2.29.2
+

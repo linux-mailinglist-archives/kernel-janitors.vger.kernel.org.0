@@ -2,82 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71A8B30EFAB
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Feb 2021 10:28:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 753DE30EFBE
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Feb 2021 10:35:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235205AbhBDJ0q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Feb 2021 04:26:46 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58832 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234620AbhBDJ0p (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Feb 2021 04:26:45 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2B8A964F48;
-        Thu,  4 Feb 2021 09:26:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612430764;
-        bh=iPr0CA2pIHDHh2dXkae4rNvFekouTDxQFLqezinvrzI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pWSNLJIttnbgsu3Ltschs2qhIDAn3WsWGlCpTGDn5YCZSXTbF+ZoZJYp0uzRXGLOU
-         tEkRiLiu80c4yGmWLO8kZbRsZ+ye9vUeOtYUWDa1aDk11OOplr9Z86NsjPVDmZlVFV
-         62t8B3MrYdVi37kaqdN5IqTn8aVW6QFgVn6hlKoeiEKsQGjw+RNmZtUdsac/7qvYsG
-         AHseRnGyZ9DloI+Ng/A6MPwGv6q8duHiDS5+0rIOv2Bj5rWl+XqbxC5pmGwORXlqkY
-         dHcM2nOLZyKERvGRzkEWss4zBUQe6q9y7H4Oca3P3p2GswRWxJfqy5QbZG6UmA3syV
-         7BbxUlIPU5i+w==
-Date:   Thu, 4 Feb 2021 09:25:58 +0000
-From:   Will Deacon <will@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Joerg Roedel <joro@8bytes.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Anan sun <anan.sun@mediatek.com>,
-        Yong Wu <yong.wu@mediatek.com>,
-        Chao Hao <chao.hao@mediatek.com>,
-        Tomasz Figa <tfiga@chromium.org>,
-        iommu@lists.linux-foundation.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] iommu/mediatek: Fix unsigned domid comparison with
- less than zero
-Message-ID: <20210204092558.GA20244@willie-the-truck>
-References: <20210203135936.23016-1-colin.king@canonical.com>
+        id S235244AbhBDJdU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Feb 2021 04:33:20 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:41295 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233628AbhBDJdS (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Feb 2021 04:33:18 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1l7b04-00008O-Bw; Thu, 04 Feb 2021 09:32:32 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] net/mlx5e: Fix spelling mistake "channles" -> "channels"
+Date:   Thu,  4 Feb 2021 09:32:32 +0000
+Message-Id: <20210204093232.50924-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210203135936.23016-1-colin.king@canonical.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Feb 03, 2021 at 01:59:36PM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently the check for domid < 0 is always false because domid
-> is unsigned.  Fix this by making it signed.
-> 
-> Addresses-CoverityL ("Unsigned comparison against 0")
+From: Colin Ian King <colin.king@canonical.com>
 
-Typo here ('L' instead of ':')
+There is a spelling mistake in a netdev_warn message. Fix it.
 
-> Fixes: ab1d5281a62b ("iommu/mediatek: Add iova reserved function")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/iommu/mtk_iommu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-> index 0ad14a7604b1..823d719945b2 100644
-> --- a/drivers/iommu/mtk_iommu.c
-> +++ b/drivers/iommu/mtk_iommu.c
-> @@ -640,7 +640,7 @@ static void mtk_iommu_get_resv_regions(struct device *dev,
->  				       struct list_head *head)
->  {
->  	struct mtk_iommu_data *data = dev_iommu_priv_get(dev);
-> -	unsigned int domid = mtk_iommu_get_domain_id(dev, data->plat_data), i;
-> +	int domid = mtk_iommu_get_domain_id(dev, data->plat_data), i;
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Not sure if it's intentional, but this also makes 'i' signed. It probably
-should remain 'unsigned' to match 'iova_region_nr' in
-'struct mtk_iommu_plat_data'.
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 4cfdba997f24..35f69354e07a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -5647,7 +5647,7 @@ int mlx5e_netdev_change_profile(struct mlx5e_priv *priv,
+ 	/* sanity */
+ 	if (new_max_nch != priv->max_nch) {
+ 		netdev_warn(priv->netdev,
+-			    "%s: Replacing profile with different max channles\n",
++			    "%s: Replacing profile with different max channels\n",
+ 			    __func__);
+ 		return -EINVAL;
+ 	}
+-- 
+2.29.2
 
-Will

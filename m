@@ -2,108 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9100230F162
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Feb 2021 12:01:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBEBF30F414
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Feb 2021 14:45:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235478AbhBDK7k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Feb 2021 05:59:40 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:43546 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235317AbhBDK7g (ORCPT
+        id S236332AbhBDNnc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Feb 2021 08:43:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44102 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236327AbhBDNnC (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Feb 2021 05:59:36 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 114At134051786;
-        Thu, 4 Feb 2021 10:58:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=5Dl5uO0wuQ9Io7YroGP2O/XkHkibc2tH4ARZF9oPjfc=;
- b=KGHsn6yGxfavfKSIId/0eta1s1zHRZMQHrFXULbjClqi0vGXssKTv0aIFOSLVsOfw+xF
- lBibWjQvIJsV3lvtbTMCmqNE17vZ0F7X+1u9XVBpwR1hSWqgTBn3NcTJB6BhdwZ3ZDM0
- ULwXfiK8PXYD6BPr3bVnsK9YPuX0S2eM+USmrTGHgqjPhg5zS6lQe+uNwueFFotQUCZb
- JN3OnR/iWn3/veoJw5NSxlOEWLAEIA+EaEBvMIP4lwFWRFcPsQgYeOtvH0EFLifX2ulA
- gLaNHsJszMTBbFyiaPgmxrIdcBQqBS3Qj6ddawxw/mlBuXrd7RMxQ6Gv+/TexaCBPKZL bw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 36cydm4mgy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 04 Feb 2021 10:58:49 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 114At6hC066890;
-        Thu, 4 Feb 2021 10:58:47 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 36dhc2hc71-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 04 Feb 2021 10:58:47 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 114AwjDY030437;
-        Thu, 4 Feb 2021 10:58:45 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 04 Feb 2021 02:58:45 -0800
-Date:   Thu, 4 Feb 2021 13:58:37 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Mark Brown <broonie@opensource.wolfsonmicro.com>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        patches@opensource.cirrus.com, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH RESEND] mfd: wm831x-auxadc: Prevent use after free in
- wm831x_auxadc_read_irq()
-Message-ID: <20210204105837.GI20820@kadam>
-References: <20210129143724.GX20820@kadam>
- <20210204103724.GC2789116@dell>
+        Thu, 4 Feb 2021 08:43:02 -0500
+X-Greylist: delayed 621 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 04 Feb 2021 05:42:20 PST
+Received: from theia.8bytes.org (8bytes.org [IPv6:2a01:238:4383:600:38bc:a715:4b6d:a889])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9F3AC0613D6
+        for <kernel-janitors@vger.kernel.org>; Thu,  4 Feb 2021 05:42:20 -0800 (PST)
+Received: by theia.8bytes.org (Postfix, from userid 1000)
+        id 8F0DE387; Thu,  4 Feb 2021 14:31:55 +0100 (CET)
+Date:   Thu, 4 Feb 2021 14:31:48 +0100
+From:   Joerg Roedel <joro@8bytes.org>
+To:     Will Deacon <will@kernel.org>
+Cc:     Colin King <colin.king@canonical.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Anan sun <anan.sun@mediatek.com>,
+        Yong Wu <yong.wu@mediatek.com>,
+        Chao Hao <chao.hao@mediatek.com>,
+        Tomasz Figa <tfiga@chromium.org>,
+        iommu@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] iommu/mediatek: Fix unsigned domid comparison with
+ less than zero
+Message-ID: <20210204133148.GA27686@8bytes.org>
+References: <20210203135936.23016-1-colin.king@canonical.com>
+ <20210204092558.GA20244@willie-the-truck>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210204103724.GC2789116@dell>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-IMR: 1
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9884 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 suspectscore=0
- spamscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2102040068
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9884 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0
- priorityscore=1501 impostorscore=0 malwarescore=0 clxscore=1015
- spamscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102040068
+In-Reply-To: <20210204092558.GA20244@willie-the-truck>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Feb 04, 2021 at 10:37:24AM +0000, Lee Jones wrote:
-> On Fri, 29 Jan 2021, Dan Carpenter wrote:
-> 
-> > The "req" struct is always added to the "wm831x->auxadc_pending" list,
-> > but it's only removed from the list on the success path.  If a failure
-> > occurs then the "req" struct is freed but it's still on the list,
-> > leading to a use after free.
+On Thu, Feb 04, 2021 at 09:25:58AM +0000, Will Deacon wrote:
+> On Wed, Feb 03, 2021 at 01:59:36PM +0000, Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
 > > 
-> > Fixes: 78bb3688ea18 ("mfd: Support multiple active WM831x AUXADC conversions")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> > Currently the check for domid < 0 is always false because domid
+> > is unsigned.  Fix this by making it signed.
+> > 
+> > Addresses-CoverityL ("Unsigned comparison against 0")
+> 
+> Typo here ('L' instead of ':')
+> 
+> > Fixes: ab1d5281a62b ("iommu/mediatek: Add iova reserved function")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > > ---
-> >  drivers/mfd/wm831x-auxadc.c | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
+> >  drivers/iommu/mtk_iommu.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
+> > index 0ad14a7604b1..823d719945b2 100644
+> > --- a/drivers/iommu/mtk_iommu.c
+> > +++ b/drivers/iommu/mtk_iommu.c
+> > @@ -640,7 +640,7 @@ static void mtk_iommu_get_resv_regions(struct device *dev,
+> >  				       struct list_head *head)
+> >  {
+> >  	struct mtk_iommu_data *data = dev_iommu_priv_get(dev);
+> > -	unsigned int domid = mtk_iommu_get_domain_id(dev, data->plat_data), i;
+> > +	int domid = mtk_iommu_get_domain_id(dev, data->plat_data), i;
 > 
-> Patchwork still can't find this.
-> 
-> I've applied it manually, thanks.
+> Not sure if it's intentional, but this also makes 'i' signed. It probably
+> should remain 'unsigned' to match 'iova_region_nr' in
+> 'struct mtk_iommu_plat_data'.
 
-Ah...  You know what it is?  I normally use Mutt instead of
-git-send-email.  Some of the patchworks have been hacked a bit to only
-accept patches from git-send-email as a spam filtering method.  What I
-do is my patch scripts add a header:
+Yes, 'i' should stay unsigned. Colin, can you please fix that up and
+re-send?
 
-	X-Mailer: git-send-email haha only kidding
+Thanks,
 
-But because this was a resend, I didn't use my normal patch scripts and
-just resent it from Mutt so it didn't have the header.  Something for me
-to remember for next time I guess.
-
-regards,
-dan carpenter
-
+	Joerg

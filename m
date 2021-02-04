@@ -2,88 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F25A30EFF8
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Feb 2021 10:51:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80B7830F0C4
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Feb 2021 11:31:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235295AbhBDJua (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Feb 2021 04:50:30 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:41749 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233597AbhBDJu2 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Feb 2021 04:50:28 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1l7bGi-0001fi-6J; Thu, 04 Feb 2021 09:49:44 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jose Abreu <Jose.Abreu@synopsys.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] net: dwc-xlgmac: Fix spelling mistake in function name
-Date:   Thu,  4 Feb 2021 09:49:44 +0000
-Message-Id: <20210204094944.51460-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.29.2
+        id S235523AbhBDK3v (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Feb 2021 05:29:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39282 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235531AbhBDK2N (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Feb 2021 05:28:13 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 52C8364DDE;
+        Thu,  4 Feb 2021 10:27:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1612434452;
+        bh=XRH1UWEZTqhLyy25/WwW5h0FyhJIwo9GjMdZ3vSVVDk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=x3QhhfWGd/2APyylfT/FNXHf7InV8/KWv37rXICmrB9Q07Y3UwiGa23dixhcZv0ZZ
+         +BN+FgrI7h2gD5dsSSyYbSDNeq+4CeivT1eyYc7GnVH+lD/q470pdVc+2DRFT9Cg0h
+         qld1sISLOfUAxCJZLy/ZefR6O9+/F74ICQjZoROI=
+Date:   Thu, 4 Feb 2021 11:27:28 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Pawel Laszczak <pawell@cadence.com>
+Cc:     peter.chen@nxp.com, dan.carpenter@oracle.com,
+        colin.king@canonical.com, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        kurahul@cadence.com
+Subject: Re: [PATCH] usb: cdnsp: Removes some useless trace events
+Message-ID: <YBvMENpo3OTp5vrj@kroah.com>
+References: <20210204092035.32424-1-pawell@cadence.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210204092035.32424-1-pawell@cadence.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Thu, Feb 04, 2021 at 10:20:35AM +0100, Pawel Laszczak wrote:
+> Patch removes some useless trace events that can
+> be replaced by ftrace.
+> 
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+> ---
+>  drivers/usb/cdns3/cdnsp-ep0.c    |  5 -----
+>  drivers/usb/cdns3/cdnsp-gadget.c |  2 --
+>  drivers/usb/cdns3/cdnsp-ring.c   |  1 -
+>  drivers/usb/cdns3/cdnsp-trace.h  | 10 ----------
+>  4 files changed, 18 deletions(-)
 
-There is a spelling mistake in the function name alloc_channles_and_rings.
-Fix this by renaming it to alloc_channels_and_rings.
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/ethernet/synopsys/dwc-xlgmac-desc.c | 2 +-
- drivers/net/ethernet/synopsys/dwc-xlgmac-net.c  | 2 +-
- drivers/net/ethernet/synopsys/dwc-xlgmac.h      | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/synopsys/dwc-xlgmac-desc.c b/drivers/net/ethernet/synopsys/dwc-xlgmac-desc.c
-index 8c4195a9a2cc..589797bad1f9 100644
---- a/drivers/net/ethernet/synopsys/dwc-xlgmac-desc.c
-+++ b/drivers/net/ethernet/synopsys/dwc-xlgmac-desc.c
-@@ -634,7 +634,7 @@ static int xlgmac_map_tx_skb(struct xlgmac_channel *channel,
- 
- void xlgmac_init_desc_ops(struct xlgmac_desc_ops *desc_ops)
- {
--	desc_ops->alloc_channles_and_rings = xlgmac_alloc_channels_and_rings;
-+	desc_ops->alloc_channels_and_rings = xlgmac_alloc_channels_and_rings;
- 	desc_ops->free_channels_and_rings = xlgmac_free_channels_and_rings;
- 	desc_ops->map_tx_skb = xlgmac_map_tx_skb;
- 	desc_ops->map_rx_buffer = xlgmac_map_rx_buffer;
-diff --git a/drivers/net/ethernet/synopsys/dwc-xlgmac-net.c b/drivers/net/ethernet/synopsys/dwc-xlgmac-net.c
-index 26aa7f32151f..26d178f8616b 100644
---- a/drivers/net/ethernet/synopsys/dwc-xlgmac-net.c
-+++ b/drivers/net/ethernet/synopsys/dwc-xlgmac-net.c
-@@ -654,7 +654,7 @@ static int xlgmac_open(struct net_device *netdev)
- 	pdata->rx_buf_size = ret;
- 
- 	/* Allocate the channels and rings */
--	ret = desc_ops->alloc_channles_and_rings(pdata);
-+	ret = desc_ops->alloc_channels_and_rings(pdata);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/net/ethernet/synopsys/dwc-xlgmac.h b/drivers/net/ethernet/synopsys/dwc-xlgmac.h
-index cab3e40a86b9..8598aaf3ec99 100644
---- a/drivers/net/ethernet/synopsys/dwc-xlgmac.h
-+++ b/drivers/net/ethernet/synopsys/dwc-xlgmac.h
-@@ -379,7 +379,7 @@ struct xlgmac_channel {
- } ____cacheline_aligned;
- 
- struct xlgmac_desc_ops {
--	int (*alloc_channles_and_rings)(struct xlgmac_pdata *pdata);
-+	int (*alloc_channels_and_rings)(struct xlgmac_pdata *pdata);
- 	void (*free_channels_and_rings)(struct xlgmac_pdata *pdata);
- 	int (*map_tx_skb)(struct xlgmac_channel *channel,
- 			  struct sk_buff *skb);
--- 
-2.29.2
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>

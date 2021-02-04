@@ -2,30 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CF1830FAA3
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Feb 2021 19:06:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3793430FB2C
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Feb 2021 19:22:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238873AbhBDSFF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Feb 2021 13:05:05 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:59026 "EHLO
+        id S238933AbhBDSTE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Feb 2021 13:19:04 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:59687 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238784AbhBDSEA (ORCPT
+        with ESMTP id S237811AbhBDSSk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Feb 2021 13:04:00 -0500
+        Thu, 4 Feb 2021 13:18:40 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1l7iyH-0005JS-IL; Thu, 04 Feb 2021 18:03:13 +0000
+        id 1l7jCW-0006Sg-KL; Thu, 04 Feb 2021 18:17:56 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Vinod Koul <vkoul@kernel.org>, linux-arm-msm@vger.kernel.org
+To:     Dave Airlie <airlied@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] phy: qcom-qmp: make a const array static, makes object smaller
-Date:   Thu,  4 Feb 2021 18:03:13 +0000
-Message-Id: <20210204180313.108876-1-colin.king@canonical.com>
+Subject: [PATCH] drm/mgag200: make a const array static, makes object smaller
+Date:   Thu,  4 Feb 2021 18:17:56 +0000
+Message-Id: <20210204181756.109549-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,37 +37,37 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Don't populate the const array cfg1_settings on the stack but instead make
-it static. Makes the object code smaller by 24 bytes:
+Don't populate the const array m_div_val on the stack but instead make
+it static. Makes the object code smaller by 29 bytes:
 
 Before:
-   text	   data	    bss	    dec	    hex	filename
-  73585	  20240	     64	  93889	  16ec1	drivers/phy/qualcomm/phy-qcom-qmp.o
+   text	   data	  bss   dec    hex filename
+  34736	   4552	    0 39288   9978 drivers/gpu/drm/mgag200/mgag200_mode.o
 
 After:
-   text	   data	    bss	    dec	    hex	filename
-  73465	  20336	     64	  93865	  16ea9	drivers/phy/qualcomm/phy-qcom-qmp.o
+   text	   data	  bss   dec    hex filename
+  34625	   4616	    0 39241   9949 drivers/gpu/drm/mgag200/mgag200_mode.o
 
 (gcc version 10.2.0)
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp.c | 2 +-
+ drivers/gpu/drm/mgag200/mgag200_mode.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp.c b/drivers/phy/qualcomm/phy-qcom-qmp.c
-index a679b5fb7b48..d0dfb6743965 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp.c
-@@ -3421,7 +3421,7 @@ static int qcom_qmp_phy_configure_dp_phy(struct qmp_phy *qphy)
- static int qcom_qmp_dp_phy_calibrate(struct phy *phy)
- {
- 	struct qmp_phy *qphy = phy_get_drvdata(phy);
--	const u8 cfg1_settings[] = { 0x13, 0x23, 0x1d };
-+	static const u8 cfg1_settings[] = { 0x13, 0x23, 0x1d };
- 	u8 val;
+diff --git a/drivers/gpu/drm/mgag200/mgag200_mode.c b/drivers/gpu/drm/mgag200/mgag200_mode.c
+index 1dfc42170059..27f33af09798 100644
+--- a/drivers/gpu/drm/mgag200/mgag200_mode.c
++++ b/drivers/gpu/drm/mgag200/mgag200_mode.c
+@@ -712,7 +712,7 @@ static int mga_g200er_set_plls(struct mga_device *mdev, long clock)
+ 	unsigned int p, m, n;
+ 	unsigned int computed, vco;
+ 	int tmp;
+-	const unsigned int m_div_val[] = { 1, 2, 4, 8 };
++	static const unsigned int m_div_val[] = { 1, 2, 4, 8 };
  
- 	qphy->dp_aux_cfg++;
+ 	m = n = p = 0;
+ 	vcomax = 1488000;
 -- 
 2.29.2
 

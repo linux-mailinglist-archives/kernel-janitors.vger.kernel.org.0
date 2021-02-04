@@ -2,78 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AC0430E925
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Feb 2021 02:12:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA69630E971
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Feb 2021 02:31:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233750AbhBDBMD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Feb 2021 20:12:03 -0500
-Received: from Mailgw01.mediatek.com ([1.203.163.78]:34579 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S232184AbhBDBMD (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Feb 2021 20:12:03 -0500
-X-UUID: 5d784d263b7043e084225b404753ac45-20210204
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=Mn/ebbC9LsmEJbQuuUcinkZOL/S9ftYROo8U9Oj+0Po=;
-        b=tHb7ekMh+g+dP+Jk60pyz+yKaHk3fCc56qBeBQK9Da1JyPSbOzrjhqg3Ti7O/7tSdxnOEMgN5T1p6/JKGJikRsLYaEEc/Zw010MdHidryOcfdXdyroDscCemy3gPxzd0MKx2wrFinRxCtvbW1ZY8LNagR46skC519oC4OS2keUw=;
-X-UUID: 5d784d263b7043e084225b404753ac45-20210204
-Received: from mtkcas35.mediatek.inc [(172.27.4.253)] by mailgw01.mediatek.com
-        (envelope-from <yong.wu@mediatek.com>)
-        (mailgw01.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1030138190; Thu, 04 Feb 2021 09:11:20 +0800
-Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS31N1.mediatek.inc
- (172.27.4.69) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 4 Feb
- 2021 09:11:10 +0800
-Received: from [10.17.3.153] (10.17.3.153) by MTKCAS32.mediatek.inc
- (172.27.4.170) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 4 Feb 2021 09:11:09 +0800
-Message-ID: <1612401069.2524.14.camel@mhfsdcap03>
-Subject: Re: [PATCH][next] iommu/mediatek: Fix unsigned domid comparison
- with less than zero
-From:   Yong Wu <yong.wu@mediatek.com>
-To:     Colin King <colin.king@canonical.com>
-CC:     Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        "Matthias Brugger" <matthias.bgg@gmail.com>,
-        Anan sun <anan.sun@mediatek.com>,
-        "Chao Hao" <chao.hao@mediatek.com>,
-        Tomasz Figa <tfiga@chromium.org>,
-        <iommu@lists.linux-foundation.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Date:   Thu, 4 Feb 2021 09:11:09 +0800
-In-Reply-To: <20210203135936.23016-1-colin.king@canonical.com>
-References: <20210203135936.23016-1-colin.king@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu2 
+        id S234193AbhBDBav (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Feb 2021 20:30:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44228 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232478AbhBDBas (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 3 Feb 2021 20:30:48 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id 44DA264F60;
+        Thu,  4 Feb 2021 01:30:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1612402207;
+        bh=nwfi/1UxhX12mPrvHki7pPxyX4rl5qXPeqI9vhAMKkE=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=AgKPb70r+3owl/Dm07v5Q+fzFu0P1F7aWoHWjPkzkad73UrlHq+DsZB4NDMJFgpuA
+         4Nq1CTaESYk9piNimS92t4bWTpL8ikvdVEt3ISeZcX1gQaR6ED7Fop5d11ZsIvfvAU
+         2mnE8McoeRtDfCxKuxiO32NodpC6nYxiRowd5xZjJLiKOxtSxv3rZeGgxGfTgQr688
+         BTcJ5slfXj8iJ5b9FBmLF0wCzwzYYhr7U4t8uR+UInxRN6+URgo6XDj205Sox84ElW
+         caqvJUajmFIhzdvKnstuOX4V4oGyirU4Kfc5+4XCtv3z8yUU38UuQqN8lKrGrNiAut
+         f1imesKxuVVZg==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 254AC609EC;
+        Thu,  4 Feb 2021 01:30:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-TM-SNTS-SMTP: 9BDBFE8346E958A37D1A2EE99CA3980372E31BF52999FC51717954E6E3C6FFB92000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: mscc: ocelot: fix error handling bugs in
+ mscc_ocelot_init_ports()
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <161240220714.12107.14490522702137689689.git-patchwork-notify@kernel.org>
+Date:   Thu, 04 Feb 2021 01:30:07 +0000
+References: <YBkXhqRxHtRGzSnJ@mwanda>
+In-Reply-To: <YBkXhqRxHtRGzSnJ@mwanda>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     vladimir.oltean@nxp.com, claudiu.manoil@nxp.com,
+        alexandre.belloni@bootlin.com, UNGLinuxDriver@microchip.com,
+        davem@davemloft.net, kuba@kernel.org, f.fainelli@gmail.com,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-T24gV2VkLCAyMDIxLTAyLTAzIGF0IDEzOjU5ICswMDAwLCBDb2xpbiBLaW5nIHdyb3RlOg0KPiBG
-cm9tOiBDb2xpbiBJYW4gS2luZyA8Y29saW4ua2luZ0BjYW5vbmljYWwuY29tPg0KPiANCj4gQ3Vy
-cmVudGx5IHRoZSBjaGVjayBmb3IgZG9taWQgPCAwIGlzIGFsd2F5cyBmYWxzZSBiZWNhdXNlIGRv
-bWlkDQo+IGlzIHVuc2lnbmVkLiAgRml4IHRoaXMgYnkgbWFraW5nIGl0IHNpZ25lZC4NCj4gDQo+
-IEFkZHJlc3Nlcy1Db3Zlcml0eUwgKCJVbnNpZ25lZCBjb21wYXJpc29uIGFnYWluc3QgMCIpDQo+
-IEZpeGVzOiBhYjFkNTI4MWE2MmIgKCJpb21tdS9tZWRpYXRlazogQWRkIGlvdmEgcmVzZXJ2ZWQg
-ZnVuY3Rpb24iKQ0KPiBTaWduZWQtb2ZmLWJ5OiBDb2xpbiBJYW4gS2luZyA8Y29saW4ua2luZ0Bj
-YW5vbmljYWwuY29tPg0KDQpUaGFua3MgZm9yIHRoZSBmaXguDQoNClJldmlld2VkLWJ5OiBZb25n
-IFd1IDx5b25nLnd1QG1lZGlhdGVrLmNvbT4NCg0KPiAtLS0NCj4gIGRyaXZlcnMvaW9tbXUvbXRr
-X2lvbW11LmMgfCAyICstDQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVs
-ZXRpb24oLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lvbW11L210a19pb21tdS5jIGIv
-ZHJpdmVycy9pb21tdS9tdGtfaW9tbXUuYw0KPiBpbmRleCAwYWQxNGE3NjA0YjEuLjgyM2Q3MTk5
-NDViMiAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9pb21tdS9tdGtfaW9tbXUuYw0KPiArKysgYi9k
-cml2ZXJzL2lvbW11L210a19pb21tdS5jDQo+IEBAIC02NDAsNyArNjQwLDcgQEAgc3RhdGljIHZv
-aWQgbXRrX2lvbW11X2dldF9yZXN2X3JlZ2lvbnMoc3RydWN0IGRldmljZSAqZGV2LA0KPiAgCQkJ
-CSAgICAgICBzdHJ1Y3QgbGlzdF9oZWFkICpoZWFkKQ0KPiAgew0KPiAgCXN0cnVjdCBtdGtfaW9t
-bXVfZGF0YSAqZGF0YSA9IGRldl9pb21tdV9wcml2X2dldChkZXYpOw0KPiAtCXVuc2lnbmVkIGlu
-dCBkb21pZCA9IG10a19pb21tdV9nZXRfZG9tYWluX2lkKGRldiwgZGF0YS0+cGxhdF9kYXRhKSwg
-aTsNCj4gKwlpbnQgZG9taWQgPSBtdGtfaW9tbXVfZ2V0X2RvbWFpbl9pZChkZXYsIGRhdGEtPnBs
-YXRfZGF0YSksIGk7DQo+ICAJY29uc3Qgc3RydWN0IG10a19pb21tdV9pb3ZhX3JlZ2lvbiAqcmVz
-diwgKmN1cmRvbTsNCj4gIAlzdHJ1Y3QgaW9tbXVfcmVzdl9yZWdpb24gKnJlZ2lvbjsNCj4gIAlp
-bnQgcHJvdCA9IElPTU1VX1dSSVRFIHwgSU9NTVVfUkVBRDsNCg0K
+Hello:
+
+This series was applied to netdev/net-next.git (refs/heads/master):
+
+On Tue, 2 Feb 2021 12:12:38 +0300 you wrote:
+> There are several error handling bugs in mscc_ocelot_init_ports().  I
+> went through the code, and carefully audited it and made fixes and
+> cleanups.
+> 
+> 1) The ocelot_probe_port() function didn't have a mirror release function
+>    so it was hard to follow.  I created the ocelot_release_port()
+>    function.
+> 2) In the ocelot_probe_port() function, if the register_netdev() call
+>    failed, then it lead to a double free_netdev(dev) bug.  Fix this by
+>    setting "ocelot->ports[port] = NULL" on the error path.
+> 3) I was concerned that the "port" which comes from of_property_read_u32()
+>    might be out of bounds so I added a check for that.
+> 4) In the original code if ocelot_regmap_init() failed then the driver
+>    tried to continue but I think that should be a fatal error.
+> 5) If ocelot_probe_port() failed then the most recent devlink was leaked.
+>    The fix for mostly came Vladimir Oltean.  Get rid of "registered_ports"
+>    and just set a bit in "devlink_ports_registered" to say when the
+>    devlink port has been registered (and needs to be unregistered on
+>    error).  There are fewer than 32 ports so a u32 is large enough for
+>    this purpose.
+> 6) The error handling if the final ocelot_port_devlink_init() failed had
+>    two problems.  The "while (port-- >= 0)" loop should have been
+>    "--port" pre-op instead of a post-op to avoid a buffer underflow.
+>    The "if (!registered_ports[port])" condition was reversed leading to
+>    resource leaks and double frees.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] net: mscc: ocelot: fix error handling bugs in mscc_ocelot_init_ports()
+    https://git.kernel.org/netdev/net-next/c/e0c16233577f
+  - [v3,2/2,net-next] net: mscc: ocelot: fix error code in mscc_ocelot_probe()
+    https://git.kernel.org/netdev/net-next/c/4160d9ec5b41
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 

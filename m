@@ -2,29 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C99F310EB5
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Feb 2021 18:31:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6A4C310F3B
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Feb 2021 18:58:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233365AbhBEPrD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Feb 2021 10:47:03 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:38568 "EHLO
+        id S233588AbhBEQO0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Feb 2021 11:14:26 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:39774 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233290AbhBEPaA (ORCPT
+        with ESMTP id S233603AbhBEQMR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Feb 2021 10:30:00 -0500
+        Fri, 5 Feb 2021 11:12:17 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1l84du-0001ZI-5s; Fri, 05 Feb 2021 17:11:38 +0000
+        id 1l85Im-0004k3-Ez; Fri, 05 Feb 2021 17:53:52 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Dave Kleikamp <shaggy@kernel.org>,
-        Tino Reichardt <milky-kernel@mcmilk.de>,
-        jfs-discussion@lists.sourceforge.net
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "John W . Linville" <linville@tuxdriver.com>,
+        Luis Carlos Cobo <luisca@cozybit.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] fs/jfs: fix potential integer overflow on shift of a int
-Date:   Fri,  5 Feb 2021 17:11:37 +0000
-Message-Id: <20210205171137.208121-1-colin.king@canonical.com>
+Subject: [PATCH] mac80211: fix potential overflow when multiplying to u32 integers
+Date:   Fri,  5 Feb 2021 17:53:52 +0000
+Message-Id: <20210205175352.208841-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,31 +38,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The left shift of int 32 bit integer constant 1 is evaluated using 32 bit
-arithmetic and then assigned to a signed 64 bit integer. In the case where
-l2nb is 32 or more this can lead to an overflow.  Avoid this by shifting
-using the BIT_ULL macro instead.
+The multiplication of the u32 variables tx_time and estimated_retx is
+performed using a 32 bit multiplication and the result is stored in
+a u64 result. This has a potential u32 overflow issue, so avoid this
+by casting tx_time to a u64 to force a 64 bit multiply.
 
-Addresses-Coverity: ("Uninitentional integer overflow")
-Fixes: b40c2e665cd5 ("fs/jfs: TRIM support for JFS Filesystem")
+Addresses-Coverity: ("Unintentional integer overflow")
+Fixes: 050ac52cbe1f ("mac80211: code for on-demand Hybrid Wireless Mesh Protocol")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- fs/jfs/jfs_dmap.c | 2 +-
+ net/mac80211/mesh_hwmp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 94b7c1cb5ceb..47dbca7e52e0 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -1656,7 +1656,7 @@ s64 dbDiscardAG(struct inode *ip, int agno, s64 minlen)
- 		} else if (rc == -ENOSPC) {
- 			/* search for next smaller log2 block */
- 			l2nb = BLKSTOL2(nblocks) - 1;
--			nblocks = 1 << l2nb;
-+			nblocks = BIT_ULL(l2nb);
- 		} else {
- 			/* Trim any already allocated blocks */
- 			jfs_error(bmp->db_ipbmap->i_sb, "-EIO\n");
+diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
+index 313eee12410e..3db514c4c63a 100644
+--- a/net/mac80211/mesh_hwmp.c
++++ b/net/mac80211/mesh_hwmp.c
+@@ -356,7 +356,7 @@ u32 airtime_link_metric_get(struct ieee80211_local *local,
+ 	 */
+ 	tx_time = (device_constant + 10 * test_frame_len / rate);
+ 	estimated_retx = ((1 << (2 * ARITH_SHIFT)) / (s_unit - err));
+-	result = (tx_time * estimated_retx) >> (2 * ARITH_SHIFT);
++	result = ((u64)tx_time * estimated_retx) >> (2 * ARITH_SHIFT);
+ 	return (u32)result;
+ }
+ 
 -- 
 2.29.2
 

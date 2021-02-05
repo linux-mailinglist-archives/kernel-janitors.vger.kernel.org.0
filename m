@@ -2,100 +2,145 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 637EA31163D
-	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Feb 2021 00:00:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA859311534
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Feb 2021 23:32:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230470AbhBEW6x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Feb 2021 17:58:53 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:43684 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232319AbhBEMrs (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Feb 2021 07:47:48 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 115CUYPJ079869;
-        Fri, 5 Feb 2021 12:46:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=zXwtIkuYEvqCQ/ph9hBq5tQzsewQzXSxbOL7lVa4vXg=;
- b=oH1DGtQvWsFrFUqJ19MwDJRh34+8Yu03cm+lpQkudCPi/di7LwYhcw4ZMEZ4lVkvcojZ
- zYuIwAjkAhbxaMwqyVFBF1BHpOtY+vMh48Vajs6mwdAaILpboJJoDZ2dC3PXorURrE9t
- adkCNmNZKw4Ipg4Q+ec3wb0uKgpZ7WzzVBgZ5cTUnYekFvIo5GNi3gSvOMqtpgcuxZWY
- vpmCCnQuDA6IAhqd7/csnwlfnX34A27zJ8yOzv/6xkB2bGeeLxZitUxZZwdKlO2kyX2G
- PXUcdckWkwK8+1EkoTys0aL4ywUxpQAOhEp0id70M3BXMgGldczItGn/oGXk1wRpSNfM 7g== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 36cxvrcb5r-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 05 Feb 2021 12:46:40 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 115CVOCK100352;
-        Fri, 5 Feb 2021 12:46:34 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 36dhc437au-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 05 Feb 2021 12:46:34 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 115CkRpd001622;
-        Fri, 5 Feb 2021 12:46:30 GMT
-Received: from mwanda (/41.210.143.249)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 05 Feb 2021 04:46:26 -0800
-Date:   Fri, 5 Feb 2021 15:46:17 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Joerg Roedel <joro@8bytes.org>, Yong Wu <yong.wu@mediatek.com>
-Cc:     Will Deacon <will@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Tomasz Figa <tfiga@chromium.org>,
-        iommu@lists.linux-foundation.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] iommu/mediatek: Fix error code in probe()
-Message-ID: <YB0+GU5akSdu29Vu@mwanda>
+        id S232929AbhBEWYr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Feb 2021 17:24:47 -0500
+Received: from mx2.suse.de ([195.135.220.15]:48730 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232613AbhBEOZb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 5 Feb 2021 09:25:31 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id D031EACBA;
+        Fri,  5 Feb 2021 14:43:45 +0000 (UTC)
+Subject: Re: [PATCH][V2] drm/mgag200: make a const array static, makes object
+ smaller
+To:     Colin King <colin.king@canonical.com>,
+        Dave Airlie <airlied@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210204191156.110778-1-colin.king@canonical.com>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+Message-ID: <c9dd8c05-93cf-f74c-48a0-e512f2e2ed9b@suse.de>
+Date:   Fri, 5 Feb 2021 15:43:44 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-IMR: 1
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9885 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 suspectscore=0
- spamscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2102050083
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9885 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
- mlxscore=0 priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1011
- suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2102050083
+In-Reply-To: <20210204191156.110778-1-colin.king@canonical.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="iIYPSx0lbNbPQSd7MPbsqFdxlsweQNlMx"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This error path is supposed to return -EINVAL.  It used to return
-directly but we added some clean up and accidentally removed the
-error code.  Also I fixed a typo in the error message.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--iIYPSx0lbNbPQSd7MPbsqFdxlsweQNlMx
+Content-Type: multipart/mixed; boundary="tYKCTmFoO52fIfy9sx49pj0Ydixv7HwHo";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Colin King <colin.king@canonical.com>, Dave Airlie <airlied@redhat.com>,
+ David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+ dri-devel@lists.freedesktop.org
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-ID: <c9dd8c05-93cf-f74c-48a0-e512f2e2ed9b@suse.de>
+Subject: Re: [PATCH][V2] drm/mgag200: make a const array static, makes object
+ smaller
+References: <20210204191156.110778-1-colin.king@canonical.com>
+In-Reply-To: <20210204191156.110778-1-colin.king@canonical.com>
 
-Fixes: c0b57581b73b ("iommu/mediatek: Add power-domain operation")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/iommu/mtk_iommu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+--tYKCTmFoO52fIfy9sx49pj0Ydixv7HwHo
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-index 0ad14a7604b1..5f78ac0dc30e 100644
---- a/drivers/iommu/mtk_iommu.c
-+++ b/drivers/iommu/mtk_iommu.c
-@@ -886,7 +886,8 @@ static int mtk_iommu_probe(struct platform_device *pdev)
- 	link = device_link_add(data->smicomm_dev, dev,
- 			DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME);
- 	if (!link) {
--		dev_err(dev, "Unable link %s.\n", dev_name(data->smicomm_dev));
-+		dev_err(dev, "Unable to link %s.\n", dev_name(data->smicomm_dev));
-+		ret = -EINVAL;
- 		goto out_runtime_disable;
- 	}
- 
--- 
-2.30.0
+Merged.
 
+Am 04.02.21 um 20:11 schrieb Colin King:
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> Don't populate the const array m_div_val on the stack but instead make
+> it static. Makes the object code smaller by 29 bytes:
+>=20
+> Before:
+>     text	   data	  bss   dec    hex filename
+>    34736	   4552	    0 39288   9978 drivers/gpu/drm/mgag200/mgag200_mod=
+e.o
+>=20
+> After:
+>     text	   data	  bss   dec    hex filename
+>    34625	   4616	    0 39241   9949 drivers/gpu/drm/mgag200/mgag200_mod=
+e.o
+>=20
+> (gcc version 10.2.0)
+>=20
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+> ---
+>=20
+> V2: move static declaration to the top of the declarations
+>=20
+> ---
+>   drivers/gpu/drm/mgag200/mgag200_mode.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/gpu/drm/mgag200/mgag200_mode.c b/drivers/gpu/drm/m=
+gag200/mgag200_mode.c
+> index 1dfc42170059..c3dfde8cad25 100644
+> --- a/drivers/gpu/drm/mgag200/mgag200_mode.c
+> +++ b/drivers/gpu/drm/mgag200/mgag200_mode.c
+> @@ -706,13 +706,13 @@ static int mga_g200eh_set_plls(struct mga_device =
+*mdev, long clock)
+>  =20
+>   static int mga_g200er_set_plls(struct mga_device *mdev, long clock)
+>   {
+> +	static const unsigned int m_div_val[] =3D { 1, 2, 4, 8 };
+>   	unsigned int vcomax, vcomin, pllreffreq;
+>   	unsigned int delta, tmpdelta;
+>   	int testr, testn, testm, testo;
+>   	unsigned int p, m, n;
+>   	unsigned int computed, vco;
+>   	int tmp;
+> -	const unsigned int m_div_val[] =3D { 1, 2, 4, 8 };
+>  =20
+>   	m =3D n =3D p =3D 0;
+>   	vcomax =3D 1488000;
+>=20
+
+--=20
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
+(HRB 36809, AG N=C3=BCrnberg)
+Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
+
+
+--tYKCTmFoO52fIfy9sx49pj0Ydixv7HwHo--
+
+--iIYPSx0lbNbPQSd7MPbsqFdxlsweQNlMx
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmAdWaAFAwAAAAAACgkQlh/E3EQov+CW
+7A/+NovrsdcN0AX8UJln3uk/CiH43FmwEWUjtLjlOnSQRIx95ecS6gZ/ZXWlZAfBP9iu9cqcZnN7
+ycJbGDWeSixB1tPKLEIHL+Pv5kqGKdpea4recuxZ22uU+ZziWqVvpXabE6o5+7CE0i64NxbUVyS6
+ylKq7WJ6u4M8Xm9m1YZuM70j3kgZpWseDRySTpJU5SSqzLAcaRqe+q1bOaF979PYPbwaCgBrd0KG
+m/grVtRLRV0OHKmzgqdbCGrCsQjQ3SY3ckebSVNIxmuhvDBjc8mZEosADu5+jBdpj+C1WUtcKjA6
+SOG/pkpdh/UylTRFOvwKdaKKLOv7XmekEbMT8xisWGWp/TqDwz+DvPIzAhKI2EV1aM5sF3lwXWol
+ICk2/0IqwZUR7etUYgXJhXAvb/CzZpmNYvVh6uwsk9YbdpFxW7gZAagbOgsH8+ZOH4Ce/srrqFM5
+9TwdBJNTs6Nvp+TxbyBVaHilMZiVpSc1L5fYOjxy/xrOdo7ZCTV3Bl+hZXA3uJ4a729+cluvdXpr
+5EoHqqXdKRvigmcHIbJfbvbAPRN4aS4aSjpHMImmlcgb11HdNbQgB38T+h+IMbhM4YE7eN9EjlOT
+DAQcUdeI9PnkMk5Ucr9sIwPTCcgvRq2Qqki6lW+mMSLdh1GC0yCgkCr3QEwbC28cf7qovKedoG2j
+GLM=
+=v0Sv
+-----END PGP SIGNATURE-----
+
+--iIYPSx0lbNbPQSd7MPbsqFdxlsweQNlMx--

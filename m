@@ -2,72 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F5D931030D
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Feb 2021 04:01:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 333C93103C1
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Feb 2021 04:39:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229754AbhBEDAu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Feb 2021 22:00:50 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54672 "EHLO mail.kernel.org"
+        id S230292AbhBEDjV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Feb 2021 22:39:21 -0500
+Received: from helcar.hmeau.com ([216.24.177.18]:54510 "EHLO fornost.hmeau.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229579AbhBEDAt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Feb 2021 22:00:49 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPS id 6A56764FB7;
-        Fri,  5 Feb 2021 03:00:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612494008;
-        bh=fUR5wDI5UzxhOxkLaalOXN4vs7xHb1GYpZ7BV03OQKc=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=g1fvTTdVLH2ilS+FKcZPXxILECfcwXBHYblzk3doVcD0RWlia96X5FchduN4jveKB
-         UoCemZ5wfJOaLaMfo/G8sM4X6jAkzYEw5uBfDp6ajcjp4XiZ00hE+cFoEqGR6apBMo
-         uLHVQDNy2qQtckkoc0u0Ek+ttHFxky1L2PG2JwX/3V0kbzNtI+nLRJfSUnswJffhww
-         mOfX9b1WWAy+xI3fyassdV5FzkrsMdpSybjAfnr42+mfT5l63bmLuL5xm1ZrKrZnRt
-         xryBeBHV87zbRBV9EVU3R0d5EOnF2S8CVbX6X5+SFgIgWyEDCNiQKziSafbCmqqNNp
-         t51mmg48cRaNA==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 58055609F4;
-        Fri,  5 Feb 2021 03:00:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S229989AbhBEDjS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Feb 2021 22:39:18 -0500
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.103.7])
+        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
+        id 1l7rwu-0002aK-LD; Fri, 05 Feb 2021 14:38:25 +1100
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 05 Feb 2021 14:38:24 +1100
+Date:   Fri, 5 Feb 2021 14:38:24 +1100
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Boris Brezillon <bbrezillon@kernel.org>,
+        Arnaud Ebalard <arno@natisbad.org>,
+        Srujana Challa <schalla@marvell.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Suheil Chandran <schandran@marvell.com>,
+        Lukasz Bartosik <lbartosik@marvell.com>,
+        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] crypto: octeontx2 - fix signedness bug in
+ cptvf_register_interrupts()
+Message-ID: <20210205033824.GA14594@gondor.apana.org.au>
+References: <YBD5Z11GeYlJGuTh@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH][next] net: hns3: remove redundant null check of an array
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <161249400835.18283.15622720081111992226.git-patchwork-notify@kernel.org>
-Date:   Fri, 05 Feb 2021 03:00:08 +0000
-References: <20210203131040.21656-1-colin.king@canonical.com>
-In-Reply-To: <20210203131040.21656-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     yisen.zhuang@huawei.com, salil.mehta@huawei.com,
-        davem@davemloft.net, kuba@kernel.org, tanhuazhong@huawei.com,
-        huangguangbin2@huawei.com, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YBD5Z11GeYlJGuTh@mwanda>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
-
-This patch was applied to netdev/net-next.git (refs/heads/master):
-
-On Wed,  3 Feb 2021 13:10:40 +0000 you wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Wed, Jan 27, 2021 at 08:25:59AM +0300, Dan Carpenter wrote:
+> The "num_vec" has to be signed for the error handling to work.
 > 
-> The null check of filp->f_path.dentry->d_iname is redundant because
-> it is an array of DNAME_INLINE_LEN chars and cannot be a null. Fix
-> this by removing the null check.
-> 
-> Addresses-Coverity: ("Array compared against 0")
-> Fixes: 04987ca1b9b6 ("net: hns3: add debugfs support for tm nodes, priority and qset info")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> 
-> [...]
+> Fixes: 19d8e8c7be15 ("crypto: octeontx2 - add virtual function driver support")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Here is the summary with links:
-  - [next] net: hns3: remove redundant null check of an array
-    https://git.kernel.org/netdev/net-next/c/8f8a42ff003a
-
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

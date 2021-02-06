@@ -2,145 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA859311534
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Feb 2021 23:32:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 859D8311BFF
+	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Feb 2021 08:47:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232929AbhBEWYr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Feb 2021 17:24:47 -0500
-Received: from mx2.suse.de ([195.135.220.15]:48730 "EHLO mx2.suse.de"
+        id S229541AbhBFHq4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 6 Feb 2021 02:46:56 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51862 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232613AbhBEOZb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Feb 2021 09:25:31 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id D031EACBA;
-        Fri,  5 Feb 2021 14:43:45 +0000 (UTC)
-Subject: Re: [PATCH][V2] drm/mgag200: make a const array static, makes object
- smaller
-To:     Colin King <colin.king@canonical.com>,
-        Dave Airlie <airlied@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210204191156.110778-1-colin.king@canonical.com>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-Message-ID: <c9dd8c05-93cf-f74c-48a0-e512f2e2ed9b@suse.de>
-Date:   Fri, 5 Feb 2021 15:43:44 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+        id S229492AbhBFHqy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 6 Feb 2021 02:46:54 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 85C6764FBA;
+        Sat,  6 Feb 2021 07:46:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1612597574;
+        bh=yUYOCBeTH5VbtXJ+NRfVOolPSOtHblYZttrAmI6QgTA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nN4J6o/TkS3NwWXFfYR0VC4AECVZduFKDddEP/miGvjDrDBepZafFzU/KGGur8bJT
+         3TblSSfwkFQ0NcWZaEpJ4P8Gs9Dcmxa72xvla+agBJ0DhhSAS+g97rdlkkrtMBRvdh
+         1tro8vVbhxZ7x8oaLSUyl3gZ4k+dCspeWxdzMe0BI/kTP15ABy9WB6cKw7vq/HNOPK
+         rpGiY7UYMQgcc6HOw8ZUIRaV0q0lZLSIqR3lpVwnlUfvKMt+sEsy7i5z3zJFJbZ5DJ
+         amsxzRikqXqYSQgeKrZm3Cuf6lozCu0aWne93PgMwvDGHO3i+dAqp5C+7P24q9OOV/
+         JP/VWAM+wyMsg==
+Date:   Sat, 6 Feb 2021 15:46:10 +0800
+From:   Peter Chen <peter.chen@kernel.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Pawel Laszczak <pawell@cadence.com>, peter.chen@nxp.com,
+        dan.carpenter@oracle.com, colin.king@canonical.com,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, kurahul@cadence.com
+Subject: Re: [PATCH] usb: cdnsp: Removes some useless trace events
+Message-ID: <20210206074610.GA2648@b29397-desktop>
+References: <20210204092035.32424-1-pawell@cadence.com>
+ <YBvMENpo3OTp5vrj@kroah.com>
 MIME-Version: 1.0
-In-Reply-To: <20210204191156.110778-1-colin.king@canonical.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="iIYPSx0lbNbPQSd7MPbsqFdxlsweQNlMx"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YBvMENpo3OTp5vrj@kroah.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---iIYPSx0lbNbPQSd7MPbsqFdxlsweQNlMx
-Content-Type: multipart/mixed; boundary="tYKCTmFoO52fIfy9sx49pj0Ydixv7HwHo";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Colin King <colin.king@canonical.com>, Dave Airlie <airlied@redhat.com>,
- David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
- dri-devel@lists.freedesktop.org
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-ID: <c9dd8c05-93cf-f74c-48a0-e512f2e2ed9b@suse.de>
-Subject: Re: [PATCH][V2] drm/mgag200: make a const array static, makes object
- smaller
-References: <20210204191156.110778-1-colin.king@canonical.com>
-In-Reply-To: <20210204191156.110778-1-colin.king@canonical.com>
+On 21-02-04 11:27:28, Greg KH wrote:
+> On Thu, Feb 04, 2021 at 10:20:35AM +0100, Pawel Laszczak wrote:
+> > Patch removes some useless trace events that can
+> > be replaced by ftrace.
+> > 
+> > Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+> > ---
+> >  drivers/usb/cdns3/cdnsp-ep0.c    |  5 -----
+> >  drivers/usb/cdns3/cdnsp-gadget.c |  2 --
+> >  drivers/usb/cdns3/cdnsp-ring.c   |  1 -
+> >  drivers/usb/cdns3/cdnsp-trace.h  | 10 ----------
+> >  4 files changed, 18 deletions(-)
+> 
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
---tYKCTmFoO52fIfy9sx49pj0Ydixv7HwHo
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Applied, thanks Pawel.
 
-Merged.
+-- 
 
-Am 04.02.21 um 20:11 schrieb Colin King:
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> Don't populate the const array m_div_val on the stack but instead make
-> it static. Makes the object code smaller by 29 bytes:
->=20
-> Before:
->     text	   data	  bss   dec    hex filename
->    34736	   4552	    0 39288   9978 drivers/gpu/drm/mgag200/mgag200_mod=
-e.o
->=20
-> After:
->     text	   data	  bss   dec    hex filename
->    34625	   4616	    0 39241   9949 drivers/gpu/drm/mgag200/mgag200_mod=
-e.o
->=20
-> (gcc version 10.2.0)
->=20
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
->=20
-> V2: move static declaration to the top of the declarations
->=20
-> ---
->   drivers/gpu/drm/mgag200/mgag200_mode.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/mgag200/mgag200_mode.c b/drivers/gpu/drm/m=
-gag200/mgag200_mode.c
-> index 1dfc42170059..c3dfde8cad25 100644
-> --- a/drivers/gpu/drm/mgag200/mgag200_mode.c
-> +++ b/drivers/gpu/drm/mgag200/mgag200_mode.c
-> @@ -706,13 +706,13 @@ static int mga_g200eh_set_plls(struct mga_device =
-*mdev, long clock)
->  =20
->   static int mga_g200er_set_plls(struct mga_device *mdev, long clock)
->   {
-> +	static const unsigned int m_div_val[] =3D { 1, 2, 4, 8 };
->   	unsigned int vcomax, vcomin, pllreffreq;
->   	unsigned int delta, tmpdelta;
->   	int testr, testn, testm, testo;
->   	unsigned int p, m, n;
->   	unsigned int computed, vco;
->   	int tmp;
-> -	const unsigned int m_div_val[] =3D { 1, 2, 4, 8 };
->  =20
->   	m =3D n =3D p =3D 0;
->   	vcomax =3D 1488000;
->=20
+Thanks,
+Peter Chen
 
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-(HRB 36809, AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
-
-
---tYKCTmFoO52fIfy9sx49pj0Ydixv7HwHo--
-
---iIYPSx0lbNbPQSd7MPbsqFdxlsweQNlMx
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmAdWaAFAwAAAAAACgkQlh/E3EQov+CW
-7A/+NovrsdcN0AX8UJln3uk/CiH43FmwEWUjtLjlOnSQRIx95ecS6gZ/ZXWlZAfBP9iu9cqcZnN7
-ycJbGDWeSixB1tPKLEIHL+Pv5kqGKdpea4recuxZ22uU+ZziWqVvpXabE6o5+7CE0i64NxbUVyS6
-ylKq7WJ6u4M8Xm9m1YZuM70j3kgZpWseDRySTpJU5SSqzLAcaRqe+q1bOaF979PYPbwaCgBrd0KG
-m/grVtRLRV0OHKmzgqdbCGrCsQjQ3SY3ckebSVNIxmuhvDBjc8mZEosADu5+jBdpj+C1WUtcKjA6
-SOG/pkpdh/UylTRFOvwKdaKKLOv7XmekEbMT8xisWGWp/TqDwz+DvPIzAhKI2EV1aM5sF3lwXWol
-ICk2/0IqwZUR7etUYgXJhXAvb/CzZpmNYvVh6uwsk9YbdpFxW7gZAagbOgsH8+ZOH4Ce/srrqFM5
-9TwdBJNTs6Nvp+TxbyBVaHilMZiVpSc1L5fYOjxy/xrOdo7ZCTV3Bl+hZXA3uJ4a729+cluvdXpr
-5EoHqqXdKRvigmcHIbJfbvbAPRN4aS4aSjpHMImmlcgb11HdNbQgB38T+h+IMbhM4YE7eN9EjlOT
-DAQcUdeI9PnkMk5Ucr9sIwPTCcgvRq2Qqki6lW+mMSLdh1GC0yCgkCr3QEwbC28cf7qovKedoG2j
-GLM=
-=v0Sv
------END PGP SIGNATURE-----
-
---iIYPSx0lbNbPQSd7MPbsqFdxlsweQNlMx--

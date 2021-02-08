@@ -2,109 +2,45 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FADE312B4C
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 08:55:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CCF1312B7D
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 09:12:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230122AbhBHHz3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Feb 2021 02:55:29 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:47484 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229959AbhBHHz2 (ORCPT
+        id S229581AbhBHIMT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Feb 2021 03:12:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46246 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229503AbhBHIMR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Feb 2021 02:55:28 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id ADFD21C0B76; Mon,  8 Feb 2021 08:54:43 +0100 (CET)
-Date:   Mon, 8 Feb 2021 08:54:43 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Kevin Hilman <khilman@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Len Brown <len.brown@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Marc Titinger <mtitinger+renesas@baylibre.com>,
-        Lina Iyer <lina.iyer@linaro.org>, linux-pm@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] PM / Domains: Fix integer overflows on u32 bit multiplies
-Message-ID: <20210208075442.GA13982@amd>
-References: <20210207224648.8137-1-colin.king@canonical.com>
+        Mon, 8 Feb 2021 03:12:17 -0500
+Received: from theia.8bytes.org (8bytes.org [IPv6:2a01:238:4383:600:38bc:a715:4b6d:a889])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BC36C06174A;
+        Mon,  8 Feb 2021 00:11:37 -0800 (PST)
+Received: by theia.8bytes.org (Postfix, from userid 1000)
+        id E6CDD3A7; Mon,  8 Feb 2021 09:11:33 +0100 (CET)
+Date:   Mon, 8 Feb 2021 09:11:30 +0100
+From:   Joerg Roedel <joro@8bytes.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Yong Wu <yong.wu@mediatek.com>, Will Deacon <will@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Tomasz Figa <tfiga@chromium.org>,
+        iommu@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iommu/mediatek: Fix error code in probe()
+Message-ID: <20210208081130.GA7302@8bytes.org>
+References: <YB0+GU5akSdu29Vu@mwanda>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="XsQoSWH+UP9D9v3l"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210207224648.8137-1-colin.king@canonical.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <YB0+GU5akSdu29Vu@mwanda>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Fri, Feb 05, 2021 at 03:46:17PM +0300, Dan Carpenter wrote:
+>  drivers/iommu/mtk_iommu.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
---XsQoSWH+UP9D9v3l
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sun 2021-02-07 22:46:48, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> There are three occurrances of u32 variables being multiplied by
-> 1000 using 32 bit multiplies and the result being assigned to a
-> 64 bit signed integer.  These can potentially lead to a 32 bit
-> overflows, so fix this by casting 1000 to a UL first to force
-> a 64 bit multiply hence avoiding the overflow.
-
-Ummm. No?
-
-a) Can you imagine any situation where they result in overflow?
-
-b) How does casting to UL help on 32 bit system?
-
-Best regards,
-
-								Pavel
-
-> Addresses-Coverity: ("Unintentional integer overflow")
-> Fixes: 30f604283e05 ("PM / Domains: Allow domain power states to be read =
-=66rom DT")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/base/power/domain.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
-> index aaf6c83b5cf6..ddeff69126ff 100644
-> --- a/drivers/base/power/domain.c
-> +++ b/drivers/base/power/domain.c
-> @@ -2831,10 +2831,10 @@ static int genpd_parse_state(struct genpd_power_s=
-tate *genpd_state,
-> =20
->  	err =3D of_property_read_u32(state_node, "min-residency-us", &residency=
-);
->  	if (!err)
-> -		genpd_state->residency_ns =3D 1000 * residency;
-> +		genpd_state->residency_ns =3D 1000UL * residency;
-> =20
-> -	genpd_state->power_on_latency_ns =3D 1000 * exit_latency;
-> -	genpd_state->power_off_latency_ns =3D 1000 * entry_latency;
-> +	genpd_state->power_on_latency_ns =3D 1000UL * exit_latency;
-> +	genpd_state->power_off_latency_ns =3D 1000UL * entry_latency;
->  	genpd_state->fwnode =3D &state_node->fwnode;
-> =20
->  	return 0;
-
---=20
-http://www.livejournal.com/~pavelmachek
-
---XsQoSWH+UP9D9v3l
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAmAg7kIACgkQMOfwapXb+vKDiQCgkJZyxGlRaw1dIv7Thley0C+0
-qkIAn3HsqdmQXesDf9whJPhztRMkU4lx
-=WTDB
------END PGP SIGNATURE-----
-
---XsQoSWH+UP9D9v3l--
+Applied, thanks.

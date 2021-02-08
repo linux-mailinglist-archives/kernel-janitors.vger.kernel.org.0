@@ -2,185 +2,152 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D85273138D2
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 17:06:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D23B8314191
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 22:21:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234294AbhBHQFa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Feb 2021 11:05:30 -0500
-Received: from mx01-sz.bfs.de ([194.94.69.67]:9684 "EHLO mx02-sz.bfs.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S234178AbhBHQFA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Feb 2021 11:05:00 -0500
-X-Greylist: delayed 525 seconds by postgrey-1.27 at vger.kernel.org; Mon, 08 Feb 2021 11:04:57 EST
-Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
-        by mx02-sz.bfs.de (Postfix) with ESMTPS id 74B9F204F3;
-        Mon,  8 Feb 2021 16:55:17 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1612799717;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=q4HzirnLJM+HViDyDhv1Iv1CcEDPj4NYgUsCPRWFOew=;
-        b=aa7jb1qMtg3IF54oaINCd8U3kJ5ybkDW3rt/h6GHNSJRpcN0o9DwwixE/Bg5YW3I8rKl+I
-        qyykWQtk1m5iFB8BZpjW07wn7jV/jQtQloFMskJuctENTMAtHOvQWCbu84f5lm3DhKPb/N
-        NMx/23sgYKlp+w3fbRwb+uQq+N3AIiNMzgbXyfCUKlUM4T4lAoz71oFEEURXsDNEKavkWD
-        iWePkaN6/0KZDCjhToopivDBD2/x+0AELN8yGHjkT+cf6BsoYVA7Wl4QrQEfqOt61ardd9
-        EzfbCYffPOuvCMOYOyZOUBK0e5csuEVpA/rGIvXdd0Kd2tPf0KCDDnBkBh2gLw==
-Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
- (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2176.2; Mon, 8 Feb 2021
- 16:55:16 +0100
-Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
- SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%13]) with mapi id
- 15.01.2176.002; Mon, 8 Feb 2021 16:55:16 +0100
-From:   Walter Harms <wharms@bfs.de>
-To:     =?iso-8859-1?Q?Christian_K=F6nig?= <christian.koenig@amd.com>,
-        Colin King <colin.king@canonical.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        "David Airlie" <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        Huang Rui <ray.huang@amd.com>,
-        Junwei Zhang <Jerry.Zhang@amd.com>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: AW: [PATCH] drm/amdgpu: fix potential integer overflow on shift of a
- int
-Thread-Topic: [PATCH] drm/amdgpu: fix potential integer overflow on shift of a
- int
-Thread-Index: AQHW/aZibC6c7NmnTEaIp1k5r3gR16pN6nEAgAAuR36AAAM1gIAATkm8
-Date:   Mon, 8 Feb 2021 15:55:16 +0000
-Message-ID: <b9d63b56e0f849f1a5a2def73c899047@bfs.de>
-References: <20210207230751.8576-1-colin.king@canonical.com>
- <c6c99dba-aea9-304c-2246-e24632955479@amd.com>
- <3aed86cfb8014badbcbc4ee9f007976d@bfs.de>,<877bdf13-08d3-b471-40fb-02941cce3e4e@amd.com>
-In-Reply-To: <877bdf13-08d3-b471-40fb-02941cce3e4e@amd.com>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.137.16.40]
-x-tm-as-product-ver: SMEX-14.0.0.3080-8.6.1012-25962.000
-x-tm-as-result: No-10--6.728500-5.000000
-x-tmase-matchedrid: dtkKbEKn3AnRubRCcrbc5grcxrzwsv5u3dCmvEa6IiFVKNUgZ3luWnLM
-        2R9NW5DWbdmNIofb74J0NVTfdsoLhdxNhdpa5boviVJZi91I9JgORjM32hn2b63DfQXYDXXmRiM
-        0r5DoZkB5MS8Z0lVS9j9wo1JHFTI2cLf/qdMcXRsjCTunWqnclng+heom5LgRAg3B8AeZrNzn9R
-        Ub2w6sFdDaNZpK9gNYEi2pD9yuIToXgRHNsAEPAMzSKGx9g8xhF8lNgsbZcW+Qh1IdwvRaDMASM
-        1FbRaAi1P0GXW6c5H7/W3GjkvPseF5Saok1/fZC72Rb2bEJC+0N5vzU/2kgxH3Oo/70kBrausTh
-        0mw9TQnfPhslDCCNNpscC5DV1Se5wxJ3bCddR8Zwju9EALAXQn0tCKdnhB581B0Hk1Q1KyLUZxE
-        AlFPo846HM5rqDwqtDGOPLcPHxZMNsOtWzwsguS5xc40Grrs8djI7RHudf/gKeUc3m2FtmpDl99
-        zmxDOhKUWv6klB9qHZzZxu20/SO8O5fvxIK4XIKKz2OxxCkpzNG0L98j8bMvraKq/vKbWfY+pdI
-        oZ/f0rVm/fNL/ipsw==
-x-tm-as-user-approved-sender: No
-x-tm-as-user-blocked-sender: No
-x-tmase-result: 10--6.728500-5.000000
-x-tmase-version: SMEX-14.0.0.3080-8.6.1012-25962.000
-x-tm-snts-smtp: AB96EA7908BCA3CC0F264015106D55C460AB61EC7E14EBC137F4B49FF802374F2000:9
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S236023AbhBHVUw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Feb 2021 16:20:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46618 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234033AbhBHVUm (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 8 Feb 2021 16:20:42 -0500
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 600BAC06178C;
+        Mon,  8 Feb 2021 13:20:01 -0800 (PST)
+Received: by mail-pg1-x532.google.com with SMTP id b21so11071811pgk.7;
+        Mon, 08 Feb 2021 13:20:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=09mnFiAUC1uIgX7j6aLVn1pXmb/4BdIWDNycwfH+97I=;
+        b=GvY2uNMxdNK8rKW7z304FacwVgqVlT859heoGslF/OtXoLywlVk4GJXt63HKTaHuJk
+         8u6TY+v3D/cYUuHTDmv5CYx0jhDTsE7PohtLn1Zvwbk1DTTxDpefUSkToEsXBJDFB+kW
+         SdBZ+93dpGpi7b5PAfVFkbzWwF1VH/tPX5W20lSBfDzoOFB/4LaHgh7uaVik2+T3H49f
+         csZgMY7BXBV0J6f48fMA3N7PByS5Vv5F5p3uyag5QSOl/iIR+UZ/fyp3mEl71azn1bBy
+         QDrzf2JaxC3qh+6sVbyOykNNIvCDprMu3HnK8rQbpcgiZi7rPyEyN9D8azyUTBTCHO49
+         vIHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=09mnFiAUC1uIgX7j6aLVn1pXmb/4BdIWDNycwfH+97I=;
+        b=Z5KQQEAEZKl4UafMJ8YiMxBU+ETTMjAEf5SqapjVrjc35rAzbL8OUc+l8EPk5cnmh+
+         djJprqjqWcAPgry92DhSFKlpYlESHb4ft245ACR3UNTytSQ0kDs3AdaQUQ9x+sJUjNM6
+         1DArrtsxr/fyAERnhfCmUvIm9Doi5t5Q3fZsw3buaiRlH2jy575Os9mUhcGp/mc5weWE
+         A/Bpybuw5bDtAfQZom9AeK7RQyt/cims+a/x2W0IxQ3pxxsmHFJKQc4ixH5WEq1VDjGt
+         5krt00A3YwV2FBUdhBk761wo2XDdLlBGvAOgVpys6wlqVqFjFqTqxV1VYVtrkPXOIP24
+         UxNg==
+X-Gm-Message-State: AOAM533lymo5u5v9K1Bzy/DugLptcAEVeG7IwrBz+OfwiiNzgiQB9wYu
+        OmF4Okt24eQQdLzea06JP64J1GKI7SM=
+X-Google-Smtp-Source: ABdhPJyEq+eZr3nGp/a6MTlXntqwP8b1SNVErmniIw+cSv+HoXzI8r7UbOiI4M22lR7WIAr8+l+pOA==
+X-Received: by 2002:a63:4a1a:: with SMTP id x26mr19733595pga.260.1612819200533;
+        Mon, 08 Feb 2021 13:20:00 -0800 (PST)
+Received: from [10.67.49.228] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id o1sm3719889pgm.71.2021.02.08.13.19.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Feb 2021 13:20:00 -0800 (PST)
+Subject: Re: [PATCH] MAINTAINERS: rectify BROADCOM PMB (POWER MANAGEMENT BUS)
+ DRIVER
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com, linux-pm@vger.kernel.org
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20210208071619.3234-1-lukas.bulwahn@gmail.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
+ 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
+ M5kY0ACeNhCZJvZ5g4C2Lc9fcTHu8jxmEkI=
+Message-ID: <f29d6d17-2524-ad13-6d0c-a4320a2c50a9@gmail.com>
+Date:   Mon, 8 Feb 2021 13:19:58 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.76
-Authentication-Results: mx02-sz.bfs.de;
-        none
-X-Spamd-Result: default: False [-2.76 / 7.00];
-         ARC_NA(0.00)[];
-         TO_DN_EQ_ADDR_SOME(0.00)[];
-         HAS_XOIP(0.00)[];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         DKIM_SIGNED(0.00)[bfs.de:s=dkim201901];
-         RCPT_COUNT_SEVEN(0.00)[11];
-         NEURAL_HAM(-0.00)[-1.000];
-         RCVD_NO_TLS_LAST(0.10)[];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         MID_RHS_MATCH_FROM(0.00)[];
-         BAYES_HAM(-2.76)[98.97%]
+In-Reply-To: <20210208071619.3234-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-thx for info
-________________________________________
-Von: Christian K=F6nig <christian.koenig@amd.com>
-Gesendet: Montag, 8. Februar 2021 13:14:49
-An: Walter Harms; Colin King; Alex Deucher; David Airlie; Daniel Vetter; Hu=
-ang Rui; Junwei Zhang; amd-gfx@lists.freedesktop.org; dri-devel@lists.freed=
-esktop.org
-Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
-Betreff: Re: [PATCH] drm/amdgpu: fix potential integer overflow on shift of=
- a int
+On 2/7/21 11:16 PM, Lukas Bulwahn wrote:
+> Commit 8bcac4011ebe ("soc: bcm: add PM driver for Broadcom's PMB") includes
+> a new MAINTAINERS section BROADCOM PMB (POWER MANAGEMENT BUS) DRIVER with
+> 'drivers/soc/bcm/bcm-pmb.c', but the file was actually added at
+> 'drivers/soc/bcm/bcm63xx/bcm-pmb.c'.
+> 
+> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
+> 
+>   warning: no file matches  F:    drivers/soc/bcm/bcm-pmb.c
+> 
+> Point the file entry to the right location.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+> applies cleanly on next-20210205
+> 
+> Rafal, please ack.
+> Florian, please pick this minor fixup patch for soc next tree.
 
-For start and end?  The hardware has 48 bit address space and that won't
-fit into 32bits.
-
-Only the fragment handling can't do more than 2GB at the same time.
-
-Christian.
-
-Am 08.02.21 um 12:05 schrieb Walter Harms:
-> i am curious:
-> what is the win to have a unsigned 64 bit integer in the first
-> place ?
->
-> re,
->   wh
-> ________________________________________
-> Von: Christian K=F6nig <christian.koenig@amd.com>
-> Gesendet: Montag, 8. Februar 2021 10:17:42
-> An: Colin King; Alex Deucher; David Airlie; Daniel Vetter; Huang Rui; Jun=
-wei Zhang; amd-gfx@lists.freedesktop.org; dri-devel@lists.freedesktop.org
-> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
-> Betreff: Re: [PATCH] drm/amdgpu: fix potential integer overflow on shift =
-of a int
->
-> Am 08.02.21 um 00:07 schrieb Colin King:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> The left shift of int 32 bit integer constant 1 is evaluated using 32
->> bit arithmetic and then assigned to an unsigned 64 bit integer. In the
->> case where *frag is 32 or more this can lead to an oveflow.  Avoid this
->> by shifting 1ULL.
-> Well that can't happen. Take a look at the code in that function:
->
->>                  max_frag =3D 31;
-> ...
->>          if (*frag >=3D max_frag) {
->>                  *frag =3D max_frag;
->>                  *frag_end =3D end & ~((1ULL << max_frag) - 1);
->>          } else {
->>                  *frag_end =3D start + (1 << *frag);
->>          }
-> But I'm fine with applying the patch if it silences your warning.
->
-> Regards,
-> Christian.
->
->> Addresses-Coverity: ("Unintentional integer overflow")
->> Fixes: dfcd99f6273e ("drm/amdgpu: meld together VM fragment and huge pag=
-e handling")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>    drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 2 +-
->>    1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/am=
-d/amdgpu/amdgpu_vm.c
->> index 9d19078246c8..53a925600510 100644
->> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
->> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
->> @@ -1412,7 +1412,7 @@ static void amdgpu_vm_fragment(struct amdgpu_vm_up=
-date_params *params,
->>                *frag =3D max_frag;
->>                *frag_end =3D end & ~((1ULL << max_frag) - 1);
->>        } else {
->> -             *frag_end =3D start + (1 << *frag);
->> +             *frag_end =3D start + (1ULL << *frag);
->>        }
->>    }
->>
-
+Applied, thanks Lukas.
+-- 
+Florian

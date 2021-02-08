@@ -2,101 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF9DF312A92
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 07:11:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D435312ACF
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 07:38:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229601AbhBHGLg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Feb 2021 01:11:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48550 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229564AbhBHGLS (ORCPT
+        id S229706AbhBHGh2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Feb 2021 01:37:28 -0500
+Received: from Mailgw01.mediatek.com ([1.203.163.78]:20372 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229626AbhBHGgs (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Feb 2021 01:11:18 -0500
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D77CCC061786;
-        Sun,  7 Feb 2021 22:10:37 -0800 (PST)
-Received: by mail-wr1-x42f.google.com with SMTP id 7so15782067wrz.0;
-        Sun, 07 Feb 2021 22:10:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=IzgnsVIfQ7MUr3Ild4g6lH/jjkDlQ+c5fZz2xq4Qd0M=;
-        b=IFdCDqIq3K4sR7qI23+MXf/nE+MnBNzqSkyVuO4r4wN26UzDYoL07WtEvfssn0BIfo
-         Mk0lfYh/dKCl/TQo/5T9QAg0rxjsFnThCnuZpRG4BRV3L6wILC9S3y+JgjP8EbL1rOv7
-         pHk+NMNjFXwQK3hZzrBvcrIyM0I3vXL9eAy6rM+QacznPveyuyT80126LftBl54p4lMM
-         Xh7+4g6zXfld33SAq50bSzurmCwoFo32eEGeUVboYb7FitTrO4AggnL8DEneRmGtdWTn
-         HD4dmKhx9vAZcOmoS83LegWJk1KKQIO8YtWx9x28T1A+vcsazdKE3WBXOFII+cIuFard
-         NIaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=IzgnsVIfQ7MUr3Ild4g6lH/jjkDlQ+c5fZz2xq4Qd0M=;
-        b=nBibVutnX19HOtzY0D4g/p8kU8Pezkl/ir3ZbeXqyogK3rqqQGUPcKig6qMa93CNEU
-         o1+W/j7f5MjPDfIMl33XC5V5LGVNeTc1wJUEaTZl+rYGB2kaCzDEyrfxMn0sqRHXBFG2
-         yzsOji7ONKw5JC61hCfuOMEJsDFAlX2TloYd//uz6J488bfyzFYMaCjGY4fK6W1sB6rr
-         9a5yy7GI1kjhOMsFEK12okttU3ooaT50dx5XuMmxGzPks5xQnui+f1xNiQObsuUaKdky
-         CMU2mwJM5OFzma8ECSQjtTSAyIb3dTi9+v6wV9Nr+09raUyDF1eebWUZsfKTT4FtCwG2
-         ZlkA==
-X-Gm-Message-State: AOAM532fbSvVYm32kHuJt+AXSOT3KOeSLQ1sMx/jhSFskdIj7k8e+qiK
-        QqJ09CuIN2BVrSJiKgGWaYw=
-X-Google-Smtp-Source: ABdhPJwAklcz2IhxWhplULsILsyJcC1/7jVHUHOswyE9u52R6xwuOO+plQjS+Yqkm/ETdvCcMKtJXA==
-X-Received: by 2002:a5d:414c:: with SMTP id c12mr18487516wrq.251.1612764636586;
-        Sun, 07 Feb 2021 22:10:36 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d8e:7300:842e:a74a:35f3:bd06])
-        by smtp.gmail.com with ESMTPSA id m2sm18466356wml.34.2021.02.07.22.10.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Feb 2021 22:10:35 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Yong Wu <yong.wu@mediatek.com>, linux-mediatek@lists.infradead.org,
-        iommu@lists.linux-foundation.org, Will Deacon <will@kernel.org>
-Cc:     Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Mon, 8 Feb 2021 01:36:48 -0500
+X-UUID: 9b9ccf36a8f8412a87f8fd34127b7a8d-20210208
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=3N9rRASFzxmeOt/wKztN0VIoYEGnGsamx+GlAqJh9+4=;
+        b=GUGSnm/9H8jEaAidO3sdb9qdvwlFwyjmwO+0edSlA1nQh7eH+Q/ntAg0t/zf675jEsMG42KldyEJaThQlZIz5IyMSzvLFTgRXQFlpx+4PZcq+a/SUl69oQoDMoMDaI8mCnVoh6sFLgSXwJVnLQZE00sCDge0I/X72nCWe0EWSgo=;
+X-UUID: 9b9ccf36a8f8412a87f8fd34127b7a8d-20210208
+Received: from mtkcas36.mediatek.inc [(172.27.4.253)] by mailgw01.mediatek.com
+        (envelope-from <yong.wu@mediatek.com>)
+        (mailgw01.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 452771816; Mon, 08 Feb 2021 14:35:27 +0800
+Received: from MTKCAS36.mediatek.inc (172.27.4.186) by MTKMBS32N2.mediatek.inc
+ (172.27.4.72) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 8 Feb
+ 2021 14:35:25 +0800
+Received: from [10.17.3.153] (10.17.3.153) by MTKCAS36.mediatek.inc
+ (172.27.4.170) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 8 Feb 2021 14:35:24 +0800
+Message-ID: <1612766125.19482.3.camel@mhfsdcap03>
+Subject: Re: [PATCH] MAINTAINERS: repair file pattern in MEDIATEK IOMMU
+ DRIVER
+From:   Yong Wu <yong.wu@mediatek.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Joerg Roedel <joro@8bytes.org>
+CC:     <linux-mediatek@lists.infradead.org>,
+        <iommu@lists.linux-foundation.org>, Will Deacon <will@kernel.org>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
         Tomasz Figa <tfiga@chromium.org>,
         Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
         Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: repair file pattern in MEDIATEK IOMMU DRIVER
-Date:   Mon,  8 Feb 2021 07:10:25 +0100
-Message-Id: <20210208061025.29198-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Joe Perches <joe@perches.com>,
+        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Date:   Mon, 8 Feb 2021 14:35:25 +0800
+In-Reply-To: <20210208061025.29198-1-lukas.bulwahn@gmail.com>
+References: <20210208061025.29198-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4-0ubuntu2 
+MIME-Version: 1.0
+X-TM-SNTS-SMTP: A293A2F4DB79585306E07C30A2048CADF97377D97F56478078E0BA17EB9CA5692000:8
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 6af4873852c4 ("MAINTAINERS: Add entry for MediaTek IOMMU") mentions
-the pattern 'drivers/iommu/mtk-iommu*', but the files are actually named
-with an underscore, not with a hyphen.
-
-Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
-
-  warning: no file matches  F:    drivers/iommu/mtk-iommu*
-
-Repair this minor typo in the file pattern.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-applies cleanly on next-20210205
-
-Yong, please ack.
-Will, please pick this minor fixup for your iommu-next tree.
-
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 674f42375acf..6b507e8d7828 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11200,7 +11200,7 @@ L:	iommu@lists.linux-foundation.org
- L:	linux-mediatek@lists.infradead.org (moderated for non-subscribers)
- S:	Supported
- F:	Documentation/devicetree/bindings/iommu/mediatek*
--F:	drivers/iommu/mtk-iommu*
-+F:	drivers/iommu/mtk_iommu*
- F:	include/dt-bindings/memory/mt*-port.h
- 
- MEDIATEK JPEG DRIVER
--- 
-2.17.1
+T24gTW9uLCAyMDIxLTAyLTA4IGF0IDA3OjEwICswMTAwLCBMdWthcyBCdWx3YWhuIHdyb3RlOg0K
+PiBDb21taXQgNmFmNDg3Mzg1MmM0ICgiTUFJTlRBSU5FUlM6IEFkZCBlbnRyeSBmb3IgTWVkaWFU
+ZWsgSU9NTVUiKSBtZW50aW9ucw0KPiB0aGUgcGF0dGVybiAnZHJpdmVycy9pb21tdS9tdGstaW9t
+bXUqJywgYnV0IHRoZSBmaWxlcyBhcmUgYWN0dWFsbHkgbmFtZWQNCj4gd2l0aCBhbiB1bmRlcnNj
+b3JlLCBub3Qgd2l0aCBhIGh5cGhlbi4NCj4gDQo+IEhlbmNlLCAuL3NjcmlwdHMvZ2V0X21haW50
+YWluZXIucGwgLS1zZWxmLXRlc3Q9cGF0dGVybnMgY29tcGxhaW5zOg0KPiANCj4gICB3YXJuaW5n
+OiBubyBmaWxlIG1hdGNoZXMgIEY6ICAgIGRyaXZlcnMvaW9tbXUvbXRrLWlvbW11Kg0KPiANCj4g
+UmVwYWlyIHRoaXMgbWlub3IgdHlwbyBpbiB0aGUgZmlsZSBwYXR0ZXJuLg0KPiANCj4gU2lnbmVk
+LW9mZi1ieTogTHVrYXMgQnVsd2FobiA8bHVrYXMuYnVsd2FobkBnbWFpbC5jb20+DQo+IC0tLQ0K
+PiBhcHBsaWVzIGNsZWFubHkgb24gbmV4dC0yMDIxMDIwNQ0KPiANCj4gWW9uZywgcGxlYXNlIGFj
+ay4NCg0KK0pvZXJnLg0KDQpzb3JyeSBmb3IgdGhlIHR5cG8uDQoNCkFja2VkLWJ5OiBZb25nIFd1
+IDx5b25nLnd1QG1lZGlhdGVrLmNvbT4NCg0KPiBXaWxsLCBwbGVhc2UgcGljayB0aGlzIG1pbm9y
+IGZpeHVwIGZvciB5b3VyIGlvbW11LW5leHQgdHJlZS4NCj4gDQo+ICBNQUlOVEFJTkVSUyB8IDIg
+Ky0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KPiAN
+Cj4gZGlmZiAtLWdpdCBhL01BSU5UQUlORVJTIGIvTUFJTlRBSU5FUlMNCj4gaW5kZXggNjc0ZjQy
+Mzc1YWNmLi42YjUwN2U4ZDc4MjggMTAwNjQ0DQo+IC0tLSBhL01BSU5UQUlORVJTDQo+ICsrKyBi
+L01BSU5UQUlORVJTDQo+IEBAIC0xMTIwMCw3ICsxMTIwMCw3IEBAIEw6CWlvbW11QGxpc3RzLmxp
+bnV4LWZvdW5kYXRpb24ub3JnDQo+ICBMOglsaW51eC1tZWRpYXRla0BsaXN0cy5pbmZyYWRlYWQu
+b3JnIChtb2RlcmF0ZWQgZm9yIG5vbi1zdWJzY3JpYmVycykNCj4gIFM6CVN1cHBvcnRlZA0KPiAg
+RjoJRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2lvbW11L21lZGlhdGVrKg0KPiAt
+RjoJZHJpdmVycy9pb21tdS9tdGstaW9tbXUqDQo+ICtGOglkcml2ZXJzL2lvbW11L210a19pb21t
+dSoNCj4gIEY6CWluY2x1ZGUvZHQtYmluZGluZ3MvbWVtb3J5L210Ki1wb3J0LmgNCj4gIA0KPiAg
+TUVESUFURUsgSlBFRyBEUklWRVINCg0K
 

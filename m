@@ -2,137 +2,185 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DACAA31387E
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 16:51:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D85273138D2
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 17:06:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234070AbhBHPuX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Feb 2021 10:50:23 -0500
-Received: from mail-eopbgr50076.outbound.protection.outlook.com ([40.107.5.76]:44337
-        "EHLO EUR03-VE1-obe.outbound.protection.outlook.com"
+        id S234294AbhBHQFa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Feb 2021 11:05:30 -0500
+Received: from mx01-sz.bfs.de ([194.94.69.67]:9684 "EHLO mx02-sz.bfs.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S234153AbhBHPuN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Feb 2021 10:50:13 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FU2Vam//HeSyBRL9g2Td9t4v6GmrO9pX9w098+wy0n84Fe8/TI9G3oX+dqABd7H3mLwXbpx8hfIHW1PQE3dGUol1qqRYzeTi8pRgZ1TQOnNTvZ+V2m90l+ygL257sv5eS9tmFIdNDwA0jwwMOF/hrjY0Xd2C6lg1T+KV5H3t53WZCbKvCE7vwvJ4QcoqSwSmgjlXXJ/Va015wEuqRjFJ/ayEMY5PjnKVtk4UkCI/7KJqSkQ4uZZvvJrigcKM5VaN54e7+f6/Y6d5Qx3V3smUc/hgpZRi6qiuq9NZhNgrINRMF5q9IqYP2s1951MnxxmeJqGv9ZccsZfYLgrEVHGwBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0MCCtH0QRY+SSHef1HN9h2oOk3jN8mjhcYmwBylRUfI=;
- b=Sn+r90Mzlcrfnk+lSGzrbvie/kcNxCPpAK5jApvyONUd4aa48uEnxRn7J0OxQsd2r9WwPwbzn8whltHaIwSAhCP0nwOMQ4Oh7djMaIO3rezmGJJwTIreZqmC6/i+1tb4b/jeU9JBgHcfxUsq1T/B0oL+LT8Y64NERnay1LhViQXhW4xiE7AI1EkeUEFMiOaxPysIlA8osKzpYP4noHOrDRhezdj4ESVOlwDPYegb7G/UdP9Ya0H2CgBP9R1Cg31rMS8QsElhWPHe0cZPwHa6mDv/2KhQLE/glPI+ZJqLy0B1+4iTIVcfu/M2tkYY9XIvwaHpm+DNNeeRkaOARPxHEQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0MCCtH0QRY+SSHef1HN9h2oOk3jN8mjhcYmwBylRUfI=;
- b=b3HYnwWRvRiZFmh3ltN5tn0/rkvgIc3OWRDOVO6xO4777I4m8VX421gnfQ4fI8FmOvOQwXQg4cLB+A75Kc0JdbH+DC1qbOHpdVZdTBANdnkoVd1a/UJL94nekTo3hRrMHoXbeSZ+7jOdIouFSBbO+FpTXrL5QKGVEcpwhy3EWVY=
-Received: from VI1PR0402MB3871.eurprd04.prod.outlook.com
- (2603:10a6:803:16::14) by VI1PR04MB7197.eurprd04.prod.outlook.com
- (2603:10a6:800:129::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.23; Mon, 8 Feb
- 2021 15:49:16 +0000
-Received: from VI1PR0402MB3871.eurprd04.prod.outlook.com
- ([fe80::b0d0:3a81:c999:e88]) by VI1PR0402MB3871.eurprd04.prod.outlook.com
- ([fe80::b0d0:3a81:c999:e88%3]) with mapi id 15.20.3825.030; Mon, 8 Feb 2021
- 15:49:16 +0000
-From:   Ioana Ciornei <ioana.ciornei@nxp.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     Stuart Yoder <stuyoder@gmail.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH] bus: fsl-mc: Fix test for end of loop
-Thread-Topic: [PATCH] bus: fsl-mc: Fix test for end of loop
-Thread-Index: AQHW+JXWIedFA+IGmEmzK+UDvJ/0YKpOWUCAgAAO7oCAAAqMAA==
-Date:   Mon, 8 Feb 2021 15:49:16 +0000
-Message-ID: <20210208154914.h6lunbjxwmdb2bvu@skbuf>
-References: <YBf0Br9obNGZTcNI@mwanda> <20210208141803.bqbnbgvprtlo3vs6@skbuf>
- <20210208151129.GJ2696@kadam>
-In-Reply-To: <20210208151129.GJ2696@kadam>
-Accept-Language: en-US
-Content-Language: en-US
+        id S234178AbhBHQFA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 8 Feb 2021 11:05:00 -0500
+X-Greylist: delayed 525 seconds by postgrey-1.27 at vger.kernel.org; Mon, 08 Feb 2021 11:04:57 EST
+Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
+        by mx02-sz.bfs.de (Postfix) with ESMTPS id 74B9F204F3;
+        Mon,  8 Feb 2021 16:55:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1612799717;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=q4HzirnLJM+HViDyDhv1Iv1CcEDPj4NYgUsCPRWFOew=;
+        b=aa7jb1qMtg3IF54oaINCd8U3kJ5ybkDW3rt/h6GHNSJRpcN0o9DwwixE/Bg5YW3I8rKl+I
+        qyykWQtk1m5iFB8BZpjW07wn7jV/jQtQloFMskJuctENTMAtHOvQWCbu84f5lm3DhKPb/N
+        NMx/23sgYKlp+w3fbRwb+uQq+N3AIiNMzgbXyfCUKlUM4T4lAoz71oFEEURXsDNEKavkWD
+        iWePkaN6/0KZDCjhToopivDBD2/x+0AELN8yGHjkT+cf6BsoYVA7Wl4QrQEfqOt61ardd9
+        EzfbCYffPOuvCMOYOyZOUBK0e5csuEVpA/rGIvXdd0Kd2tPf0KCDDnBkBh2gLw==
+Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
+ (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2176.2; Mon, 8 Feb 2021
+ 16:55:16 +0100
+Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
+ SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%13]) with mapi id
+ 15.01.2176.002; Mon, 8 Feb 2021 16:55:16 +0100
+From:   Walter Harms <wharms@bfs.de>
+To:     =?iso-8859-1?Q?Christian_K=F6nig?= <christian.koenig@amd.com>,
+        Colin King <colin.king@canonical.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        "David Airlie" <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Huang Rui <ray.huang@amd.com>,
+        Junwei Zhang <Jerry.Zhang@amd.com>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: AW: [PATCH] drm/amdgpu: fix potential integer overflow on shift of a
+ int
+Thread-Topic: [PATCH] drm/amdgpu: fix potential integer overflow on shift of a
+ int
+Thread-Index: AQHW/aZibC6c7NmnTEaIp1k5r3gR16pN6nEAgAAuR36AAAM1gIAATkm8
+Date:   Mon, 8 Feb 2021 15:55:16 +0000
+Message-ID: <b9d63b56e0f849f1a5a2def73c899047@bfs.de>
+References: <20210207230751.8576-1-colin.king@canonical.com>
+ <c6c99dba-aea9-304c-2246-e24632955479@amd.com>
+ <3aed86cfb8014badbcbc4ee9f007976d@bfs.de>,<877bdf13-08d3-b471-40fb-02941cce3e4e@amd.com>
+In-Reply-To: <877bdf13-08d3-b471-40fb-02941cce3e4e@amd.com>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-authentication-results: oracle.com; dkim=none (message not signed)
- header.d=none;oracle.com; dmarc=none action=none header.from=nxp.com;
-x-originating-ip: [5.12.227.87]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: ff2b8a46-de5a-4c85-3b50-08d8cc491738
-x-ms-traffictypediagnostic: VI1PR04MB7197:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VI1PR04MB7197A9C7A222315DEFF25F96E08F9@VI1PR04MB7197.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: whR+LWyBJBhgbvg0W5mMjhr5sL2bC32uUByfiwMzChO+s2xPAuffiN6+IzEnYvTzjwAHpacKZ7LPtSZKmgwTb8fauexkAW685DjmY/FiOFx1/69X+3akyUEHZCkMUD0qNyEpzKm57MAInXWc262U3/bKzHPEFTmcktTvXCzqrfhNtbExR2q/8/HQhHH4cUsC0Ung7gOiKGZ3L/ewEYEF14Z1Hhx2CGNSvU6KwuSfsAp4vwfrs3imqybX9ZnJrny7O3Rg8+Aq4Vnvh7SG524xcG6e+Uu01AVxO0whJ7VACKXBwZFu5F60DZ9s5tnilRG6uGxZtXFicXinGOoQSoQo3qWbCRob0r52SAUcgwjuGbMn/gFrRMvL4BPoI4A6ao2//hMolLhvmFLOvygH6OkedMOl5JW2IRc3l0Z6r8s+FEUCpnXLT6A7zfwoz2WNSAAGa4qQ/7y8EDtA3pOIHjtAl5HsO3f+QUyd9E9CHKfc3AW5QIn+LnW6n09Hf7m6Aun5AulAGZOrts5mo/IW8F2T3Q==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR0402MB3871.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(7916004)(4636009)(376002)(39860400002)(136003)(366004)(396003)(346002)(6506007)(8936002)(86362001)(2906002)(9686003)(6512007)(26005)(8676002)(4326008)(186003)(478600001)(1076003)(71200400001)(33716001)(91956017)(316002)(66556008)(5660300002)(64756008)(66476007)(44832011)(54906003)(83380400001)(6486002)(6916009)(66946007)(76116006)(66446008);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: =?us-ascii?Q?cze4gtGY4cOteMHg8z5LgXuuPxSBk3B7LGswpjAo4H9KwMiSTrhZ7IyQC89K?=
- =?us-ascii?Q?BkB+gTK9WYmDoRZ/vWk05bqbYJVi6DQCCNpIx/hjCiZcQ5Hqg7okkryos5gr?=
- =?us-ascii?Q?XwsRdB9s1Beb4ettIsPwE5g/z9fcf+JJlRasLfrzwGNjrjc0WVs/xb4C3yqY?=
- =?us-ascii?Q?KWFbSeDNGpHJSS55M3jaqoYKOhnslgUHx/Bu9nLsNSlXb5kHXtFsn+Red809?=
- =?us-ascii?Q?Qex1YLc4QFZogUtw/KLnHPQPugo+Y8UfklBN/9c6QXdWRgnXGwTCDnV4Y9gS?=
- =?us-ascii?Q?wqWLXvSAWrXDOVLc34eU9EXA/R/sJOBL88//cef60d58IHzusJH851jtUI8d?=
- =?us-ascii?Q?3gz45p2A3dANh/xMCGjYmYX6pQAHMOLxM6BrOC3M9r4MiCNGXhVUsawvnMKp?=
- =?us-ascii?Q?yxEaSSIZ9fgJNzw5oRFig1Wld6L1iqkP0acA0+LDX1YIbTvhnic9mbkzjh9J?=
- =?us-ascii?Q?5DJON1hg7KZmWVeL6SpfaorFg7WJ+Q4o/6/qHb6B9HnxE/Le67iCE5iRVVfS?=
- =?us-ascii?Q?moMDeqhgsSCmJPN3AHyWXxfA/OhE0jKvQ11TK37CumdcueZ7L5ObIGyQnWL3?=
- =?us-ascii?Q?cFrufhoZP6QasI3ewdAEkqI7jJIVmJvKaPrNKd0eNW5+nDgxXob+EvgCRTI0?=
- =?us-ascii?Q?dUNQyvOubDpRBGa/z5u0+j/bMHS9CIGkdYUsnoSWrJGqntgH4JvmSybHo3Ok?=
- =?us-ascii?Q?/sxk8WwwIsnR9kYF9Q6vQ+CADwjumEhRxQ5cMOsR9M5EGynn2zr454K7gM0t?=
- =?us-ascii?Q?frFr5bKLhqETETMK2X7Dq1CPdPyIsOyl467H2qJUf/1KwyZIm/SkLSEy/05r?=
- =?us-ascii?Q?k1OhEEfP+6cLjDndkFrs92TK2/uTpoGV+a9NKCbf95T04MmuoZL7CdGDprmN?=
- =?us-ascii?Q?SJ1ohEPel2ikFC4JswpzC2OXoSx/m4TAoY4+rJSSF6gpBv6b8+AplEw+fSTh?=
- =?us-ascii?Q?RR6U7qGuOlp1tVTWqxaMBHr6kIEi8I87KKsSDiuYZnsiWKspStCu/r4BVa0I?=
- =?us-ascii?Q?NKyPMS8Qt3zpjwpVB/JSR1B+IfJY/s4DkSKOR7BaN/svtRN0RGMI5+H6c8Uq?=
- =?us-ascii?Q?AlsONR0WvqYlyFgk6qEmYN/pvBSNgvoaNrhATaKuhCPJoaxSzDOJn2v3Jpzz?=
- =?us-ascii?Q?aqsHfvFriotbMRkKK+wFgMwcZKzbWT6dz1+mZiDfABQE1BPv2luan0ZjgdNW?=
- =?us-ascii?Q?kGNK8Oshtgrh3TpDhC1+h0v4T50Orku4jLcYBtBn9mUzhd9F2MO7nC4xWORU?=
- =?us-ascii?Q?o2R/zJ+1T8VCJADrDe/Q7z7vh5IfldU6fZGU3J8l8VaXPXYo5K/n4njO4SsN?=
- =?us-ascii?Q?TDOe6yfdGxvleDuxGgBI3r3w?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <C0E693604B0E2E46840A4B36D95F002B@eurprd04.prod.outlook.com>
+x-originating-ip: [10.137.16.40]
+x-tm-as-product-ver: SMEX-14.0.0.3080-8.6.1012-25962.000
+x-tm-as-result: No-10--6.728500-5.000000
+x-tmase-matchedrid: dtkKbEKn3AnRubRCcrbc5grcxrzwsv5u3dCmvEa6IiFVKNUgZ3luWnLM
+        2R9NW5DWbdmNIofb74J0NVTfdsoLhdxNhdpa5boviVJZi91I9JgORjM32hn2b63DfQXYDXXmRiM
+        0r5DoZkB5MS8Z0lVS9j9wo1JHFTI2cLf/qdMcXRsjCTunWqnclng+heom5LgRAg3B8AeZrNzn9R
+        Ub2w6sFdDaNZpK9gNYEi2pD9yuIToXgRHNsAEPAMzSKGx9g8xhF8lNgsbZcW+Qh1IdwvRaDMASM
+        1FbRaAi1P0GXW6c5H7/W3GjkvPseF5Saok1/fZC72Rb2bEJC+0N5vzU/2kgxH3Oo/70kBrausTh
+        0mw9TQnfPhslDCCNNpscC5DV1Se5wxJ3bCddR8Zwju9EALAXQn0tCKdnhB581B0Hk1Q1KyLUZxE
+        AlFPo846HM5rqDwqtDGOPLcPHxZMNsOtWzwsguS5xc40Grrs8djI7RHudf/gKeUc3m2FtmpDl99
+        zmxDOhKUWv6klB9qHZzZxu20/SO8O5fvxIK4XIKKz2OxxCkpzNG0L98j8bMvraKq/vKbWfY+pdI
+        oZ/f0rVm/fNL/ipsw==
+x-tm-as-user-approved-sender: No
+x-tm-as-user-blocked-sender: No
+x-tmase-result: 10--6.728500-5.000000
+x-tmase-version: SMEX-14.0.0.3080-8.6.1012-25962.000
+x-tm-snts-smtp: AB96EA7908BCA3CC0F264015106D55C460AB61EC7E14EBC137F4B49FF802374F2000:9
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR0402MB3871.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff2b8a46-de5a-4c85-3b50-08d8cc491738
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Feb 2021 15:49:16.6355
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: NOyYHWpTHflQbspJ5XJUJn64TLHvlZpuNSqnd5vg6D1XLrtTWetmYN3xDU3Me3h1xOv9J8LvxjpOcoNUiwfwQw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7197
+X-Spam-Status: No, score=-2.76
+Authentication-Results: mx02-sz.bfs.de;
+        none
+X-Spamd-Result: default: False [-2.76 / 7.00];
+         ARC_NA(0.00)[];
+         TO_DN_EQ_ADDR_SOME(0.00)[];
+         HAS_XOIP(0.00)[];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         MIME_GOOD(-0.10)[text/plain];
+         DKIM_SIGNED(0.00)[bfs.de:s=dkim201901];
+         RCPT_COUNT_SEVEN(0.00)[11];
+         NEURAL_HAM(-0.00)[-1.000];
+         RCVD_NO_TLS_LAST(0.10)[];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         RCVD_COUNT_TWO(0.00)[2];
+         MID_RHS_MATCH_FROM(0.00)[];
+         BAYES_HAM(-2.76)[98.97%]
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Feb 08, 2021 at 06:11:29PM +0300, Dan Carpenter wrote:
-> On Mon, Feb 08, 2021 at 02:18:04PM +0000, Ioana Ciornei wrote:
-> > On Mon, Feb 01, 2021 at 03:28:54PM +0300, Dan Carpenter wrote:
-> > > The "desc" pointer can't possibly be NULL here.  If we can't find the
-> > > correct "desc" then tt points to the last element of the
-> > > fsl_mc_accepted_cmds[] array.  Fix this by testing if
-> > > "i =3D=3D FSL_MC_NUM_ACCEPTED_CMDS" instead.
-> > >=20
-> > > Fixes: 2cf1e703f066 ("bus: fsl-mc: add fsl-mc userspace support")
-> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> >=20
-> > Hi,
-> >=20
-> > I just noticed that Greg wasn't copied on the initial email.
-> >=20
-> > If you don't mind I will re-submit your patch along with other updates
-> > to the fsl-mc bus so that you don't have to bother.
-> >=20
->=20
-> Thanks for doing that!
->=20
-> Was Greg supposed to have been copied, though?  He's not listed in the
-> ./scripts/get_maintainer.pl output.
->=20
+thx for info
+________________________________________
+Von: Christian K=F6nig <christian.koenig@amd.com>
+Gesendet: Montag, 8. Februar 2021 13:14:49
+An: Walter Harms; Colin King; Alex Deucher; David Airlie; Daniel Vetter; Hu=
+ang Rui; Junwei Zhang; amd-gfx@lists.freedesktop.org; dri-devel@lists.freed=
+esktop.org
+Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+Betreff: Re: [PATCH] drm/amdgpu: fix potential integer overflow on shift of=
+ a int
 
-Huh, he's not listed indeed. I didn't check this before since the fsl-mc
-bus changes have always been pushed through Greg's char-misc tree.=
+For start and end?  The hardware has 48 bit address space and that won't
+fit into 32bits.
+
+Only the fragment handling can't do more than 2GB at the same time.
+
+Christian.
+
+Am 08.02.21 um 12:05 schrieb Walter Harms:
+> i am curious:
+> what is the win to have a unsigned 64 bit integer in the first
+> place ?
+>
+> re,
+>   wh
+> ________________________________________
+> Von: Christian K=F6nig <christian.koenig@amd.com>
+> Gesendet: Montag, 8. Februar 2021 10:17:42
+> An: Colin King; Alex Deucher; David Airlie; Daniel Vetter; Huang Rui; Jun=
+wei Zhang; amd-gfx@lists.freedesktop.org; dri-devel@lists.freedesktop.org
+> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+> Betreff: Re: [PATCH] drm/amdgpu: fix potential integer overflow on shift =
+of a int
+>
+> Am 08.02.21 um 00:07 schrieb Colin King:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> The left shift of int 32 bit integer constant 1 is evaluated using 32
+>> bit arithmetic and then assigned to an unsigned 64 bit integer. In the
+>> case where *frag is 32 or more this can lead to an oveflow.  Avoid this
+>> by shifting 1ULL.
+> Well that can't happen. Take a look at the code in that function:
+>
+>>                  max_frag =3D 31;
+> ...
+>>          if (*frag >=3D max_frag) {
+>>                  *frag =3D max_frag;
+>>                  *frag_end =3D end & ~((1ULL << max_frag) - 1);
+>>          } else {
+>>                  *frag_end =3D start + (1 << *frag);
+>>          }
+> But I'm fine with applying the patch if it silences your warning.
+>
+> Regards,
+> Christian.
+>
+>> Addresses-Coverity: ("Unintentional integer overflow")
+>> Fixes: dfcd99f6273e ("drm/amdgpu: meld together VM fragment and huge pag=
+e handling")
+>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>> ---
+>>    drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 2 +-
+>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/am=
+d/amdgpu/amdgpu_vm.c
+>> index 9d19078246c8..53a925600510 100644
+>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+>> @@ -1412,7 +1412,7 @@ static void amdgpu_vm_fragment(struct amdgpu_vm_up=
+date_params *params,
+>>                *frag =3D max_frag;
+>>                *frag_end =3D end & ~((1ULL << max_frag) - 1);
+>>        } else {
+>> -             *frag_end =3D start + (1 << *frag);
+>> +             *frag_end =3D start + (1ULL << *frag);
+>>        }
+>>    }
+>>
+

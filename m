@@ -2,66 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3516D312DF0
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 10:52:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 308F7312F47
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 11:44:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232004AbhBHJvF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Feb 2021 04:51:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38424 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231945AbhBHJrc (ORCPT
+        id S232641AbhBHKma (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Feb 2021 05:42:30 -0500
+Received: from mail29.static.mailgun.info ([104.130.122.29]:20668 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232565AbhBHKkY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Feb 2021 04:47:32 -0500
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4BD8C061788
-        for <kernel-janitors@vger.kernel.org>; Mon,  8 Feb 2021 01:44:06 -0800 (PST)
-Received: by mail-wm1-x331.google.com with SMTP id w4so11979141wmi.4
-        for <kernel-janitors@vger.kernel.org>; Mon, 08 Feb 2021 01:44:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=z7Z/JdX0RhrlgqchmamXWMY47TIIKUp5Zm0+e0J1lMs=;
-        b=qEX1JtmNabSyoaHKqSWvjnEiWcG01CS58saCHjR8eGDxHGYCMaFsM8JGMowu/Pp5Fd
-         8l4g2P1a62zd9HgLavPjJm8mNVnVaoUJ3vJuiTaP69KHULJBu4cn9GJerMgiygcujsY8
-         bmzcrJB/r4bh0E1eWGu4cajviUQLZluNqExxbGtXCtDuVOtXSax6Isyig0HL8lDYvGIN
-         uSIc1yszAy83G9ghhb6KjuBmQELXqHuFN+gr/8GJi7KcFGqihf6cRhoavpJ5qwwdpxwb
-         nmZpx2fe3yWZUZApIMGOawVVVYuWvLGpC1jvtDXBeEcPBD58PFPtmktskHWe7AsAkrlb
-         Swtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=z7Z/JdX0RhrlgqchmamXWMY47TIIKUp5Zm0+e0J1lMs=;
-        b=Qtq/mE9k3UyEsaKI8CCfiDKCiSfyGXmHOFRsGPkZHeesvv4WfW4hvC5oXRAzs7K83x
-         Vsn3tP6943354QwHv6kOoRMR65xU1itFVLY+Tjge0S9EcxAH51umDBGC3wzVJofMHlsr
-         ePRWVuCVZ5Z4HELRgJee5fxtiYVBnj0riLeEIxe1BkKooxsLq46Ae/vhrLzxu4a82Kv9
-         DZ/fHJxjSVTYwFTT7SpDD9QfJMVYGqzY35GXIp7s8joBrkPKxD8IE+gRfdLBpXvo5Co/
-         oCoWg1ojn9L00dfFG5W4y8Nu+XgVQt7Yu7TEcM8XSmVMRAWJtPALBNeRbV/apZ9Ch2Vi
-         Di0Q==
-X-Gm-Message-State: AOAM53170VVLXKrdO5AuoAclFi9j8F2lHcLjscOy+Km+806q6z+Mszg4
-        G2ql2KebUT+JvrKyLgia23UufNRlxc4Gkz09mxo=
-X-Google-Smtp-Source: ABdhPJw0J40Clrt8ZFz18Ahtat/hCcCHNLqpc/1hLdzhebT+u3fmxWZ+CBAxy7//z5oBGV1dBb1WVAgpnKFhHQmWENg=
-X-Received: by 2002:a1c:730a:: with SMTP id d10mr13630809wmb.53.1612777445432;
- Mon, 08 Feb 2021 01:44:05 -0800 (PST)
+        Mon, 8 Feb 2021 05:40:24 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1612780801; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=rsWO5gVXQJgQ7C6h+zCZSstEnkqvJD9Aka1MxQopoAM=;
+ b=CU1mg2QeJVwT4Hp62PLkwfW/7/v/IiIHjVqN5mp2FpG+vlZmoWE1/dhj2ABT1jcU7VAP/o0u
+ AXS9uKBj9YWEZiHKDsDHGMaQPl63jjcPYmzVhha9cLEcD5bJQKXe6uZu84LSGjSdO3Nbj5rj
+ NvcH7kdTDZDiRnYtvVZvEDv7xsM=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 602114e58e43a988b7a023a4 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 08 Feb 2021 10:39:33
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id CF51AC43464; Mon,  8 Feb 2021 10:39:32 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7F72AC433ED;
+        Mon,  8 Feb 2021 10:39:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7F72AC433ED
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:a1c:2c82:0:0:0:0:0 with HTTP; Mon, 8 Feb 2021 01:44:05 -0800 (PST)
-Reply-To: infowebb@citromail.hu
-From:   "Mr. Richard Thomas" <rictthhomas@gmail.com>
-Date:   Mon, 8 Feb 2021 01:44:05 -0800
-Message-ID: <CAHG73zxJMRd6+VRQeaHj3krQ9-2QA6vuJA-QcV-ZrpLki6am7Q@mail.gmail.com>
-Subject: Re Thanks.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] rtlwifi: rtl8192se: remove redundant initialization of
+ variable rtstatus
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210128171048.644669-1-colin.king@canonical.com>
+References: <20210128171048.644669-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210208103932.CF51AC43464@smtp.codeaurora.org>
+Date:   Mon,  8 Feb 2021 10:39:32 +0000 (UTC)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dear Friend,
-I will be pleased if you can allow me to invest $104M Dollars in
-Estate Management,in your company or any area you best that will be
-of good profit to both of us
+Colin King <colin.king@canonical.com> wrote:
 
-Please do well to respond including your information for more details.
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable rtstatu is being initialized with a value that is never
+> read and it is being updated later with a new value.  The initialization
+> is redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Acked-by: Willem de Bruijn <willemb@google.com>
 
-Thanks.
-Mr.Richard Thomas
+Patch applied to wireless-drivers-next.git, thanks.
+
+711fa16f1dfe rtlwifi: rtl8192se: remove redundant initialization of variable rtstatus
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20210128171048.644669-1-colin.king@canonical.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+

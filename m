@@ -2,82 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6223531365E
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 16:10:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64AC23136B8
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 16:15:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232754AbhBHPJw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Feb 2021 10:09:52 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:58387 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230442AbhBHPIY (ORCPT
+        id S233492AbhBHPOM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Feb 2021 10:14:12 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:60316 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232256AbhBHPMb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Feb 2021 10:08:24 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1l988U-0002fU-6W; Mon, 08 Feb 2021 15:07:34 +0000
-Subject: Re: [PATCH] HID: logitech-dj: fix unintentional integer overflow on
- left shift
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Nestor Lopez Casado <nlopezcasad@logitech.com>,
-        linux-input@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210207232120.8885-1-colin.king@canonical.com>
- <20210208150610.GI2696@kadam>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <7f79107a-93ad-251d-33bd-9a2cf2748aa9@canonical.com>
-Date:   Mon, 8 Feb 2021 15:07:33 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        Mon, 8 Feb 2021 10:12:31 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 118F9dXs033475;
+        Mon, 8 Feb 2021 15:11:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=ol0bPClWvCVaUabTFV3GQWU3n5U4mCJ6uK7XYxDPnOw=;
+ b=jDxgdzGTLBnP6+nzD+E4c4OXKjj8BaMZY3zto3j55JioKi859w9ZvWaTXo/BbmgrhriC
+ 68VjFxt9JyUw+tozgVeM4exrcRUItb+FUFuuyd4ymoAhAtHRFoWakJskVsmc3IoQ+JmP
+ wjAl0hYVe9P0+IuXjW55v6RevJw2BYFAhvYs3BOB82PGotX7zaHb3OlPUHJOaQRT0mxU
+ Ymecj9rctUocNoCrO7cDYH1UbB2rBPUW5vHLrVElahxrNvH3cz9b37lrc1N3TPjRJbMo
+ Pvn58i5G3sLmoHw2LU8irUVpIY3uGclayuN36jgbXNu3GKZuVXZ3VxMqf/fG5vhD6D0a +A== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 36hkrmv52r-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 08 Feb 2021 15:11:41 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 118FBLAc039903;
+        Mon, 8 Feb 2021 15:11:39 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 36j50yxrwk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 08 Feb 2021 15:11:39 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 118FBad0027411;
+        Mon, 8 Feb 2021 15:11:36 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 08 Feb 2021 07:11:36 -0800
+Date:   Mon, 8 Feb 2021 18:11:29 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Ioana Ciornei <ioana.ciornei@nxp.com>
+Cc:     Stuart Yoder <stuyoder@gmail.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] bus: fsl-mc: Fix test for end of loop
+Message-ID: <20210208151129.GJ2696@kadam>
+References: <YBf0Br9obNGZTcNI@mwanda>
+ <20210208141803.bqbnbgvprtlo3vs6@skbuf>
 MIME-Version: 1.0
-In-Reply-To: <20210208150610.GI2696@kadam>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210208141803.bqbnbgvprtlo3vs6@skbuf>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-IMR: 1
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9888 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0 adultscore=0
+ mlxlogscore=999 phishscore=0 spamscore=0 suspectscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102080104
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9888 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
+ priorityscore=1501 bulkscore=0 spamscore=0 impostorscore=0 mlxscore=0
+ suspectscore=0 mlxlogscore=999 adultscore=0 clxscore=1015
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102080104
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 08/02/2021 15:06, Dan Carpenter wrote:
-> On Sun, Feb 07, 2021 at 11:21:20PM +0000, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> Shifting the integer value 1 is evaluated using 32-bit rithmetic
->> and then used in an expression that expects a 64-bit value, so
->> there is potentially an integer overflow. Fix this by using th
->> BIT_ULL macro to perform the shift and avoid the overflow.
->>
->> Addresses-Coverity: ("Uninitentional integer overflow")
->> Fixes: 534a7b8e10ec ("HID: Add full support for Logitech Unifying receivers")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>  drivers/hid/hid-logitech-dj.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/hid/hid-logitech-dj.c b/drivers/hid/hid-logitech-dj.c
->> index 45e7e0bdd382..747f41be0603 100644
->> --- a/drivers/hid/hid-logitech-dj.c
->> +++ b/drivers/hid/hid-logitech-dj.c
->> @@ -1035,7 +1035,7 @@ static void logi_dj_recv_forward_null_report(struct dj_receiver_dev *djrcv_dev,
->>  	memset(reportbuffer, 0, sizeof(reportbuffer));
->>  
->>  	for (i = 0; i < NUMBER_OF_HID_REPORTS; i++) {
->                         ^^^^^^^^^^^^^^^^^^^^^
-> This is 32, so it can't be undefined.
+On Mon, Feb 08, 2021 at 02:18:04PM +0000, Ioana Ciornei wrote:
+> On Mon, Feb 01, 2021 at 03:28:54PM +0300, Dan Carpenter wrote:
+> > The "desc" pointer can't possibly be NULL here.  If we can't find the
+> > correct "desc" then tt points to the last element of the
+> > fsl_mc_accepted_cmds[] array.  Fix this by testing if
+> > "i == FSL_MC_NUM_ACCEPTED_CMDS" instead.
+> > 
+> > Fixes: 2cf1e703f066 ("bus: fsl-mc: add fsl-mc userspace support")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> 
+> Hi,
+> 
+> I just noticed that Greg wasn't copied on the initial email.
+> 
+> If you don't mind I will re-submit your patch along with other updates
+> to the fsl-mc bus so that you don't have to bother.
+> 
 
-Urgh, looks like coverity is being overly pedantic here. :-(
+Thanks for doing that!
 
-> 
->> -		if (djdev->reports_supported & (1 << i)) {
->> +		if (djdev->reports_supported & BIT_ULL(i)) {
->>  			reportbuffer[0] = i;
->>  			if (hid_input_report(djdev->hdev,
->>  					     HID_INPUT_REPORT,
-> 
-> regards,
-> dan carpenter
-> 
+Was Greg supposed to have been copied, though?  He's not listed in the
+./scripts/get_maintainer.pl output.
+
+regards,
+dan carpenter
 

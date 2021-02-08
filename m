@@ -2,190 +2,153 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 563803131FC
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 13:16:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9C8B313523
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 15:27:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231197AbhBHMQA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Feb 2021 07:16:00 -0500
-Received: from mail-dm6nam12on2043.outbound.protection.outlook.com ([40.107.243.43]:34304
-        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231148AbhBHMPu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Feb 2021 07:15:50 -0500
+        id S233000AbhBHO1K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Feb 2021 09:27:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40852 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233150AbhBHOZD (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 8 Feb 2021 09:25:03 -0500
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on061e.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe0d::61e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9E50C061221;
+        Mon,  8 Feb 2021 06:18:20 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CM6EiUZs71SgnFYE1ns+0wDl4tmIrd1lxi1p0Hc2KXsIs3zKLlExWSDas5+pjx3U2CF/lAWs4y2sZujnZq35Ksaf6P3BqntIYKQcyV1J6UmVgzbN+ziZzu10FTuZ8CVfIVFmINXt+d9S+/FlhVZqUqM62bdoXgVL4LK8ZF2qp2KntQ+YM5l7Cvaionzq+8fh7aNYIOkCHyIFEP4e3tLGOTD3B1+p6P8JplTUnNBEZNgEtNJ8APfEYSWWz33Ja+1Mt6PQa+YosC6rdMuj2wpq5PcxKqxrkovmiNk/McMJYOmN4/nPM/GxFnlnPsSygjhgbMmogAfT47J8OQJzXZbAzg==
+ b=bDIhhGpLxzjpe/PquveG06Hbji+z0R6RpM077Kx8TT53RpzTlbNiFxAy5IUQvuj/ybx/4nyFGO31niRBHUiWaSqfBmAMW2OWtGi2lFKfOeuHO0NhrCxyGcKf30YOr6NUcbXegzt8I4mgC6nG2atHyP3HWuLyUpS6KwKa4/AZ9JkzsNG2Tif1Wm+KiOpCydZI9dssp9iNkCrvniFJdyXbDoek9q9GvKmOF2fpDOVQ74gYc7+TDhQacjz2eiU7HQnZ+qjmBa6yIxzy56igUuQtBXmcjbOnHdkWyOFB5o72tzvAhl44XPLvNEJ3J4lM2wjmFkgjjCMwDYXFplQjWKZA+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c7cp3d5PdEbwJD96QXJ6NN3uF8k8qzXjcQ1n1dC/U4M=;
- b=Ky15JuauYGy4rsP5inwOlYPVxYCRxBr+QJByy1eZ6Y+URzWJxBSJfXXoHAR8Se01Xh7PnyOnyLtMjqz697OH1etG4+uoDbYRAuiSd+6EaJe4QZIrxQcyiiVYFdRynZLuplHjKg2NOl3lZ3kYyAkQMrVKvmMnWNboo+JwqznUAPrU3THn19Fg8Phk1IkldEGl2Fx+siPL7zyF0ntqyJGDXwHCTB+FcA7RIGEr+gWw3+VZZByXM78sCqV6IOeALaC6z9AHcjzBF7FLzeuoLohecYrulEzrlas7KU5WlfzUarcagXar2KPdf4B2bL9m/ii2pIQ1ApWz1/byTW/Fvoyuig==
+ bh=Vm2mrlLcmGetzERIQAD4298pZE9n2sgn32ti9yazeJU=;
+ b=IKUIWssOGnimyGAQkbnQGmTVt1w41iQcoSELYZMBr1U5CYNwPQpVU66Rz9MncBpGmnQ0WH5scfV88QHnZqnDi7wSqwtPldDveBqyOlMDtXf9u7aACOhlWq8jTMbnt3qw7Ecb5UjAZ1S1mMOE8vgXSxbIemLC2Xb4E4CM/dWc2wyeZ06S1R8PPj1MGW4dptrI5ep/lUFMcegQkCCgWw8urU3v98tlA6xCw/t1oLyaW+MRUB9VRz+PFjPg3LqI3e7eIUoamncfWpqy9H8Nx+aGkRfWAOpXyfvmj/KrSEd3WTNn20QljHoMR2PguAlrnio3COPRid1XSvlGd9+ZOep+UA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c7cp3d5PdEbwJD96QXJ6NN3uF8k8qzXjcQ1n1dC/U4M=;
- b=On3XXYJycuLoQL+S2ug2DqK+0VfsDaywBb6tpJzXAnA/ltZck8tzk2rfDWKNzKEemEFHki/hiYivVrF8h5fA06PlwOtQhXvxJtpUkxqtPVAvex71cKip2qgC3oE28VR/mgqQPQ5bBTTDeZt83ayQKMDL5lSjAY8lv+g0xvEEDuw=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=amd.com;
-Received: from MN2PR12MB3775.namprd12.prod.outlook.com (2603:10b6:208:159::19)
- by MN2PR12MB4343.namprd12.prod.outlook.com (2603:10b6:208:26f::9) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=Vm2mrlLcmGetzERIQAD4298pZE9n2sgn32ti9yazeJU=;
+ b=TUOPa6PLZIGt6W4xrnjfkrJCeEKNIzaHLIVTdwOlh18ggYE0747NwNf+uEN4K+xzP/6LzwEj2XcxFb9uFfOSXVXqHCiLz/sLiK1tsqhZ5u+SGwu8DE4c1Bzc9Don74iiQYvk6zvFSEDjd0IIaS1/lD3lrZIA7uJ2dtfMB9eGBUI=
+Received: from VI1PR0402MB3871.eurprd04.prod.outlook.com
+ (2603:10a6:803:16::14) by VI1PR0402MB3741.eurprd04.prod.outlook.com
+ (2603:10a6:803:18::14) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.17; Mon, 8 Feb
- 2021 12:14:56 +0000
-Received: from MN2PR12MB3775.namprd12.prod.outlook.com
- ([fe80::c1ff:dcf1:9536:a1f2]) by MN2PR12MB3775.namprd12.prod.outlook.com
- ([fe80::c1ff:dcf1:9536:a1f2%2]) with mapi id 15.20.3825.030; Mon, 8 Feb 2021
- 12:14:55 +0000
-Subject: Re: [PATCH] drm/amdgpu: fix potential integer overflow on shift of a
- int
-To:     Walter Harms <wharms@bfs.de>,
-        Colin King <colin.king@canonical.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Huang Rui <ray.huang@amd.com>,
-        Junwei Zhang <Jerry.Zhang@amd.com>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
-Cc:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20210207230751.8576-1-colin.king@canonical.com>
- <c6c99dba-aea9-304c-2246-e24632955479@amd.com>
- <3aed86cfb8014badbcbc4ee9f007976d@bfs.de>
-From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
-Message-ID: <877bdf13-08d3-b471-40fb-02941cce3e4e@amd.com>
-Date:   Mon, 8 Feb 2021 13:14:49 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-In-Reply-To: <3aed86cfb8014badbcbc4ee9f007976d@bfs.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+ 2021 14:18:04 +0000
+Received: from VI1PR0402MB3871.eurprd04.prod.outlook.com
+ ([fe80::b0d0:3a81:c999:e88]) by VI1PR0402MB3871.eurprd04.prod.outlook.com
+ ([fe80::b0d0:3a81:c999:e88%3]) with mapi id 15.20.3825.030; Mon, 8 Feb 2021
+ 14:18:04 +0000
+From:   Ioana Ciornei <ioana.ciornei@nxp.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+CC:     Stuart Yoder <stuyoder@gmail.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] bus: fsl-mc: Fix test for end of loop
+Thread-Topic: [PATCH] bus: fsl-mc: Fix test for end of loop
+Thread-Index: AQHW+JXWIedFA+IGmEmzK+UDvJ/0YKpOWUCA
+Date:   Mon, 8 Feb 2021 14:18:04 +0000
+Message-ID: <20210208141803.bqbnbgvprtlo3vs6@skbuf>
+References: <YBf0Br9obNGZTcNI@mwanda>
+In-Reply-To: <YBf0Br9obNGZTcNI@mwanda>
+Accept-Language: en-US
 Content-Language: en-US
-X-Originating-IP: [2a02:908:1252:fb60:be8a:bd56:1f94:86e7]
-X-ClientProxiedBy: AM4PR05CA0028.eurprd05.prod.outlook.com (2603:10a6:205::41)
- To MN2PR12MB3775.namprd12.prod.outlook.com (2603:10b6:208:159::19)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: oracle.com; dkim=none (message not signed)
+ header.d=none;oracle.com; dmarc=none action=none header.from=nxp.com;
+x-originating-ip: [5.12.227.87]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: a5786758-0695-47ee-dad5-08d8cc3c599e
+x-ms-traffictypediagnostic: VI1PR0402MB3741:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <VI1PR0402MB3741CA1F3E4D8B898464EF99E08F9@VI1PR0402MB3741.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:2582;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 1RkjDwAKxlpNKiiFGCluHBL9zfZCln2gY6EiS9xllPjfGcDr41ry4BW0c9tkKeER+IpWG4NwFvqOmRGrz9E2SREOL96FQlanc0yCZoqU/NtwtVMSMD7wARLaXJ8LtQ0dtrwWhsDeb/TM4dOrwdvnKveBmWvdYuev3ycWOkdusCcAOwmxq2s8hU2uelRo4D/A6eW7+DGjcmhG/5wDcFy56Pk3niGm7t8TsDA+QRDZZN05kuCu+lcHCIEYi8PPZQNsXEo/gNyqT/6ztsImaBhIojELK5S/UQqB0Xy3tpdeeMili/ds8NWS77AVrTURlXG54qUSmrwshRfGFNOAndZr7xBNzoQVNyal1zx/tLxOGLvI67ec8fxBBmB5FyN/ISxBSI0rNp1/gVWc0N9WSRsYk/97OOidNHA7IvaR8b/4c+x0wKF0aUmmXx3p2hE+5BuASegf/i7P6AJpX16i72HrUNeOPZVe4XKVuE3Ei+Ob4xFRt1twP37DszXLiO3ZYejTsG/9hH8yMM+lr0nosLwa0g==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR0402MB3871.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(7916004)(396003)(346002)(39860400002)(136003)(366004)(376002)(64756008)(66446008)(2906002)(66556008)(33716001)(66946007)(66476007)(76116006)(91956017)(54906003)(71200400001)(6512007)(44832011)(9686003)(4326008)(8936002)(6506007)(478600001)(316002)(83380400001)(86362001)(6486002)(6916009)(5660300002)(186003)(26005)(1076003)(8676002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: =?us-ascii?Q?vEr8NMTFAkm2odSw8CR8KKbrhw1G8xwpzUjkOFdSIMDky0CpRLh/kPefbl3r?=
+ =?us-ascii?Q?YAMjITakfk4zetGYndHH4YkWES7iGoLqN1kkuhDhenpCvWbS+4OJKP9p4dWO?=
+ =?us-ascii?Q?755u9szb5wV8LqpHwRlhTEQPljpQVzfiDFqDA00EUi0wrW5T7tkEXCVMvNCR?=
+ =?us-ascii?Q?lMokar4xTGCVDI4hfHO6rwFbueeSPHKxo7uoaDAw1jMQXMvuBvta14xVqTeT?=
+ =?us-ascii?Q?CIWEZmYPjnkl6NIF2yJZbLGLVE2WuBFlZzbrYOzNqxylUmXFi7YBgn9M//3j?=
+ =?us-ascii?Q?nMrp6UUIhAwiIL3ItAhrOm50AGd0DgrWRYL7WxmwRE3KWQFUPV2lS4V247KZ?=
+ =?us-ascii?Q?I/0D4iRVCZNntabKMfHWFW8UMIdKIg5urwHTMGk1LpuJxITWjFjMpm3tlGz6?=
+ =?us-ascii?Q?mhn1y6zW5gec6Ep4/Oc0tf0YP/18g6QCdjlxbZLBA6RiCe9dzy3/BU1FGX9y?=
+ =?us-ascii?Q?laDT7vVegaFZ+f+SNprSP57aat2fdimMd+XaWv6osTa9l3leFFGGr7cnVYFg?=
+ =?us-ascii?Q?5wYuUk8UD5BKGlYJQFXG8mbsYsfpSm+SgKPSjxhyHVAiN/EOo1hx9U0QxBOi?=
+ =?us-ascii?Q?OQw53/H2akyjxMPYCZaXKEa0o6+ZkdASyK1cHl4UF9adaiszGyFg0jGRsLFB?=
+ =?us-ascii?Q?CccZ0olHfxH9Tn+9g0pp/54upKjldm/tdqEjJacoDqKmBbIUc+8NF46vLYuJ?=
+ =?us-ascii?Q?B3Vut8ysXJ5vy82KNT1G0/vRsblwLrjfu9Q34mCY4HAuAuthxkwCorKOI718?=
+ =?us-ascii?Q?3juUaB3HpD3fJeyxwFz7lkwAtQCgWtTOGn3IF03NaPY6QBNqGmyK6uFgaL2i?=
+ =?us-ascii?Q?h7VxQQjq63aX4LWwaAhP6qbVf3/M48O4za5mShT+d5k64SaO3TE4HmuIXI0R?=
+ =?us-ascii?Q?Buv50Ub6WBW0UWKsInIhSvaylCKCwjI2bxnmDlVwa4q0MUUClJzQvnRQi92m?=
+ =?us-ascii?Q?pC8AbJPj+1IFqWDcL23fY2AhBTVJvpXKubYf8c3gLJ3tA4Pto1Spu6qA4EPR?=
+ =?us-ascii?Q?Yfb4Kra9oA3qRxgTmIyxNkoOOkr5DP4/AKjQAlpNrypGlFZO1Y4+4/9aFE0v?=
+ =?us-ascii?Q?3NQH7oJbK69OnPQ9VhDfDDB4cK7V1iA+98AIVRwndqIKcyZvP+wfvv2Mg5lR?=
+ =?us-ascii?Q?7uW82iQ0YZ7FGLDLNVWR2lcUqCTCAiONNbEWI4jQHahUAtixex30lxvKdkiC?=
+ =?us-ascii?Q?wIbi+dEnG7Yi7cZYtd3PRwuKS8XKKw+4ZZAi0Br7ih/DIsGOL+nn+pg+7yzX?=
+ =?us-ascii?Q?K1i/WxcbP6AVlneT/37MPvgacM7NRVly2UpMrceB2Cnx9T1k/pPzYz/xt2L4?=
+ =?us-ascii?Q?o7vad9b77ctW6SaXODqzrfnT?=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <E6F8F4BC3EF4A442A8258E31E89D3F44@eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [IPv6:2a02:908:1252:fb60:be8a:bd56:1f94:86e7] (2a02:908:1252:fb60:be8a:bd56:1f94:86e7) by AM4PR05CA0028.eurprd05.prod.outlook.com (2603:10a6:205::41) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.20 via Frontend Transport; Mon, 8 Feb 2021 12:14:53 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: f643ca1c-307f-4a66-a7af-08d8cc2b2526
-X-MS-TrafficTypeDiagnostic: MN2PR12MB4343:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <MN2PR12MB4343A284A015D17CEED93379838F9@MN2PR12MB4343.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: spGpbA4CIkWtOQ9ynagqgpYWCs2jVUlF1/bvuSlsIHautJJDZ8yShf424guU2OBTxGn7Dg0MITVvb7lbuezdzHR64NSloBtW6DJcQv/gpkbDdEBpwEKWg/grOBwnmnzWetg6yKCG4o2s3DJg5dV04zXWI0dM0aTxcQRFJArToZwsfMTXE1ORVN1vHf9ulRT1T0K33Ppql7HUw9EgUGheuhAnD1SKT85MdceLXbwhyoqHhZKalT0peJMCCGKSDhJVBr4wJqblAaVGxs65Vnp2qLsZuqx+JcD1AWKuXu5KnHRu36eX/dDyQ9MIx7hMxDOqrFWYgTkEltny9Utp0nmbV0cD1IbkWEwnFdKoIG6IBQJSIraSab9A/a9RqdSmR9CY8b12LytmKdsYqBFVgMwa8AbTI5e9RQUajaoyqDgHlGIWGGMk+cCAHJOws0GZ8SwbQLDXWRnHThRZoiPQSQHnadWAFwGsDwl12l5HDukZYZ8gPyUHOeGUgWqYUz9K4zmRtSxA4LL2MgaMJ1DbnZUowo52WZJxohYc14EgNrn92O26Hi9isA99QSAuitI3bTpyVbkMY5ExW3PQBijp4aPI1WbaCytK0gOn86fTFBnJ2XQ=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3775.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(346002)(366004)(396003)(39860400002)(136003)(36756003)(54906003)(5660300002)(186003)(8936002)(2616005)(478600001)(86362001)(6666004)(16526019)(31696002)(110136005)(66946007)(316002)(4326008)(66476007)(31686004)(66556008)(8676002)(66574015)(83380400001)(52116002)(2906002)(6486002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?akI4eU51YXNmRFk4eEY4UmFveFVaTm1EMnNLVS9zM3NWbXpKMWxPZ1VJbU02?=
- =?utf-8?B?eW1vRGorVUZ3eFQ4U1psV0ROQVZnQUtZZTZpUnBUZXdMSTdKenhJVDdFMjFa?=
- =?utf-8?B?dkF6dHZCbW9rTnpKWjB4QzZxbUFjVFFhV01QL0RUaUtuSWVZTkpRamthZERI?=
- =?utf-8?B?RGgrQ1RCK2NTNHRLVnpNMnA3ZWJXcjl6RWdwN2s2TmhOeXV3Q0xuL3NTbHc4?=
- =?utf-8?B?OVhla0FaMXhtcXVlOGdqdUVQWklKd2E3S08vKzVPamx3NTNPRS9lTzJVTzhk?=
- =?utf-8?B?cCtRY0NQTzViK3FJY1NvMThVbXRxSjRSd1BBTzlYU3pXenYxcGk0MXJpNVB4?=
- =?utf-8?B?dk1FenVhS2MwR0Fnd1ZRZVlacWpCNjl1VVpzOVhzOE1nUC9WQi9ST3BpYURZ?=
- =?utf-8?B?MkdzN01Fak5PUHBpOGU3RzdrOTRCTmVzZGd1QnRDeGJNd3RRa0pIZUJtQ1VP?=
- =?utf-8?B?OWVwRE96aXhDektNREtOWHN5Z1h5TDNjNC9ZQzZwejg4WXNyUk9YOVQ2OHV3?=
- =?utf-8?B?VFc5NjFtb2hXejlQT3YxUXQ4cjNCSHc5WGhjSjdyOTdEeElDTjVyRkhEeERk?=
- =?utf-8?B?bzlETTh4ZnhLMFBwZGlOUDJIL0IvL1JYMzg3ZWx0SGNPaGhwMjZpUjJzcGNw?=
- =?utf-8?B?WHhRRFZpVXlkcGFVcWE1SFdiWnd5aTNSWWFuZnpySGdQKzZqREd2ME9hNzFT?=
- =?utf-8?B?U0lwSjdrS1ptZ0krdjlQRjAwYVJkdHZ6VjdaK3ZSQldRem14RWJwbnNVc0k4?=
- =?utf-8?B?OEZIUFMyT1Jza3AvSWpwVG1MdkVZbkZsSXY4WlorekxwWExHOFYxMzdnK1pz?=
- =?utf-8?B?cDJ0THRNUU9qdXFVa0laWGh4bmFFRUlZTlBCMFNBOVAxaks4SFNBN3dwQmQ1?=
- =?utf-8?B?dHZzWXJPbUZMYVV5TDlQSHBmWFRHMDdDZUVUalhIUU5tMlhVTWtpN0tsVjVY?=
- =?utf-8?B?QzJRaHVRemhQOTg1Y3dhR0dTQk80YlJMd3NEMGYyQWxhWmJjN290VElIMkRr?=
- =?utf-8?B?SUtKZFRrNTZlcTMybWFkNm5jTmx5TTAvakJNaEVGZlBHRDkyZFlFVUF5SzA4?=
- =?utf-8?B?UHkwSzdWbXhPRUFPNmpoaXVRb01BeTBzdm1LR1VMRjY0MEJ6N0pDb25Jamoz?=
- =?utf-8?B?a0hZUlpDQWpQYmZjVlNyc1BySUorNVJqUzEzNVBkUVBxeGJ0c1JQSEEwVFk1?=
- =?utf-8?B?bDZ3SHBsOEFWS2VhNU4wc3MzRGF4VTFqcHhkN1M4eHMxdjlDMDlISVlkQm1z?=
- =?utf-8?B?NDFWeEdwTjV1TmFDc1JDZkRWK1dQUVNLSjhLa1pQdlF1YnZYWFhKeXRwaUxR?=
- =?utf-8?B?aTJZandxYmo1a0drMm5jd2RISk51amp2SjdQNFBseFc4L2VMSUV2RkF1dHI2?=
- =?utf-8?B?T2NNcCtYbzZVbWx2REFSOHFmQ094dVIyaUpNWkxkVDB5V1VWTTVaMUxJRnJk?=
- =?utf-8?B?eWQwQnN0RzhUUEpPTTlvdklxY3hSQ2JEUExidGZLTmdWakhBVmN4N2ZobjBM?=
- =?utf-8?B?ZW9qOEVSbmh6RUZsSElPRzErejNnMjhuT3RmNnlwZndtL2tGNU9BOVExekps?=
- =?utf-8?B?dlRsS01ranZjdjZpbWVOZWhVc3IwSno1bi8vaVdHRWI4ZW1VYkZnVlg4MFZR?=
- =?utf-8?B?SklMZ2Z5VFZWRlM2WDdXMjlpT3lnejFENkFDZlA4Z1dHd0RaWnVEVjN3Vllw?=
- =?utf-8?B?MEdYREgwSGlabmFjSEFWaC9POVM0dS9pVlMxNEVvL2RzU2VTRmhzUzVJMVl5?=
- =?utf-8?B?QUgxTTRQdXZmVHo4b1p1NWxyc3ZKUHZTaVh6NTNtVTlVOE1iRkViT1hxS2ph?=
- =?utf-8?B?R3ZRbEIxSmoxUkxWZG1UOWtDbGxwY1ZDOTBxZXJmNS9idUxFWmM2eUI4b0kz?=
- =?utf-8?Q?qJ/lpnMZWwSOy?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f643ca1c-307f-4a66-a7af-08d8cc2b2526
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3775.namprd12.prod.outlook.com
+X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Feb 2021 12:14:55.8941
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR0402MB3871.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a5786758-0695-47ee-dad5-08d8cc3c599e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Feb 2021 14:18:04.5272
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SRQoA3+6S55jpvZitHIQsLu6zmRZiCo/bjMnBNjhlTuTtaAEgnpqittC1LCYky1U
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4343
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: u8X3QC98TUCezuGimtTR3HZN+2hUogZja9wR0RwNfGtytEvdJU7tAaBuoIfqT6Nfjb92hd+ZjLxj54Fiy2PMcg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0402MB3741
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-For start and end?  The hardware has 48 bit address space and that won't 
-fit into 32bits.
+On Mon, Feb 01, 2021 at 03:28:54PM +0300, Dan Carpenter wrote:
+> The "desc" pointer can't possibly be NULL here.  If we can't find the
+> correct "desc" then tt points to the last element of the
+> fsl_mc_accepted_cmds[] array.  Fix this by testing if
+> "i =3D=3D FSL_MC_NUM_ACCEPTED_CMDS" instead.
+>=20
+> Fixes: 2cf1e703f066 ("bus: fsl-mc: add fsl-mc userspace support")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Only the fragment handling can't do more than 2GB at the same time.
+Hi,
 
-Christian.
+I just noticed that Greg wasn't copied on the initial email.
 
-Am 08.02.21 um 12:05 schrieb Walter Harms:
-> i am curious:
-> what is the win to have a unsigned 64 bit integer in the first
-> place ?
->
-> re,
->   wh
-> ________________________________________
-> Von: Christian König <christian.koenig@amd.com>
-> Gesendet: Montag, 8. Februar 2021 10:17:42
-> An: Colin King; Alex Deucher; David Airlie; Daniel Vetter; Huang Rui; Junwei Zhang; amd-gfx@lists.freedesktop.org; dri-devel@lists.freedesktop.org
-> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
-> Betreff: Re: [PATCH] drm/amdgpu: fix potential integer overflow on shift of a int
->
-> Am 08.02.21 um 00:07 schrieb Colin King:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> The left shift of int 32 bit integer constant 1 is evaluated using 32
->> bit arithmetic and then assigned to an unsigned 64 bit integer. In the
->> case where *frag is 32 or more this can lead to an oveflow.  Avoid this
->> by shifting 1ULL.
-> Well that can't happen. Take a look at the code in that function:
->
->>                  max_frag = 31;
-> ...
->>          if (*frag >= max_frag) {
->>                  *frag = max_frag;
->>                  *frag_end = end & ~((1ULL << max_frag) - 1);
->>          } else {
->>                  *frag_end = start + (1 << *frag);
->>          }
-> But I'm fine with applying the patch if it silences your warning.
->
-> Regards,
-> Christian.
->
->> Addresses-Coverity: ("Unintentional integer overflow")
->> Fixes: dfcd99f6273e ("drm/amdgpu: meld together VM fragment and huge page handling")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>    drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 2 +-
->>    1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
->> index 9d19078246c8..53a925600510 100644
->> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
->> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
->> @@ -1412,7 +1412,7 @@ static void amdgpu_vm_fragment(struct amdgpu_vm_update_params *params,
->>                *frag = max_frag;
->>                *frag_end = end & ~((1ULL << max_frag) - 1);
->>        } else {
->> -             *frag_end = start + (1 << *frag);
->> +             *frag_end = start + (1ULL << *frag);
->>        }
->>    }
->>
+If you don't mind I will re-submit your patch along with other updates
+to the fsl-mc bus so that you don't have to bother.
 
+Ioana
+
+> ---
+>  drivers/bus/fsl-mc/fsl-mc-uapi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/bus/fsl-mc/fsl-mc-uapi.c b/drivers/bus/fsl-mc/fsl-mc=
+-uapi.c
+> index eeb988c9f4bb..bdcd9d983a78 100644
+> --- a/drivers/bus/fsl-mc/fsl-mc-uapi.c
+> +++ b/drivers/bus/fsl-mc/fsl-mc-uapi.c
+> @@ -338,7 +338,7 @@ static int fsl_mc_command_check(struct fsl_mc_device =
+*mc_dev,
+>  		if ((cmdid & desc->cmdid_mask) =3D=3D desc->cmdid_value)
+>  			break;
+>  	}
+> -	if (!desc) {
+> +	if (i =3D=3D FSL_MC_NUM_ACCEPTED_CMDS) {
+>  		dev_err(&mc_dev->dev, "MC command 0x%04x: cmdid not accepted\n", cmdid=
+);
+>  		return -EACCES;
+>  	}
+> --=20
+> 2.29.2
+> =

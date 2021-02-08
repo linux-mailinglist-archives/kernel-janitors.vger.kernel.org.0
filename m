@@ -2,66 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B06743128C4
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 02:34:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF9DF312A92
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 07:11:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229565AbhBHBeQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 7 Feb 2021 20:34:16 -0500
-Received: from smtp-18d.idc2.mandic.com.br ([177.70.124.135]:53934 "EHLO
-        smtp-18.idc2.mandic.com.br" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S229570AbhBHBeJ (ORCPT
+        id S229601AbhBHGLg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Feb 2021 01:11:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48550 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229564AbhBHGLS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 7 Feb 2021 20:34:09 -0500
-Received: by smtp-18.smtp.mandic.prv (Postfix, from userid 491)
-        id E91A260736F1; Sun,  7 Feb 2021 22:33:23 -0300 (-03)
-Received: from smtp-18.idc2.mandic.com.br (ifsmtp2 [192.168.1.38])
-        by smtp-18.smtp.mandic.prv (Postfix) with ESMTPS id C183D607234A;
-        Sun,  7 Feb 2021 22:33:16 -0300 (-03)
-Received: from User (unknown [52.235.38.23])
-        by smtp-18.smtp.mandic.prv (Postfix) with ESMTPA id 1FAC1468FC50;
-        Sun,  7 Feb 2021 22:30:43 -0300 (-03)
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <stefy@macrometrica.com.br>
-Subject: Re:reply
-Date:   Mon, 8 Feb 2021 01:33:16 -0000
-MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-X-Mandic-Auth: DYB6x5JcyVot9snxiAasWC73cfc93V+pC3vUrorm87+eXbqAUeEHL0ZNPgpM50IYQeUbiYx0PkMIK2oavHcOOA==
-X-Mandic-Sender: stefy@macrometrica.com.br
-Message-Id: <20210208013316.C183D607234A@smtp-18.smtp.mandic.prv>
-To:     unlisted-recipients:; (no To-header on input)
+        Mon, 8 Feb 2021 01:11:18 -0500
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D77CCC061786;
+        Sun,  7 Feb 2021 22:10:37 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id 7so15782067wrz.0;
+        Sun, 07 Feb 2021 22:10:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=IzgnsVIfQ7MUr3Ild4g6lH/jjkDlQ+c5fZz2xq4Qd0M=;
+        b=IFdCDqIq3K4sR7qI23+MXf/nE+MnBNzqSkyVuO4r4wN26UzDYoL07WtEvfssn0BIfo
+         Mk0lfYh/dKCl/TQo/5T9QAg0rxjsFnThCnuZpRG4BRV3L6wILC9S3y+JgjP8EbL1rOv7
+         pHk+NMNjFXwQK3hZzrBvcrIyM0I3vXL9eAy6rM+QacznPveyuyT80126LftBl54p4lMM
+         Xh7+4g6zXfld33SAq50bSzurmCwoFo32eEGeUVboYb7FitTrO4AggnL8DEneRmGtdWTn
+         HD4dmKhx9vAZcOmoS83LegWJk1KKQIO8YtWx9x28T1A+vcsazdKE3WBXOFII+cIuFard
+         NIaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=IzgnsVIfQ7MUr3Ild4g6lH/jjkDlQ+c5fZz2xq4Qd0M=;
+        b=nBibVutnX19HOtzY0D4g/p8kU8Pezkl/ir3ZbeXqyogK3rqqQGUPcKig6qMa93CNEU
+         o1+W/j7f5MjPDfIMl33XC5V5LGVNeTc1wJUEaTZl+rYGB2kaCzDEyrfxMn0sqRHXBFG2
+         yzsOji7ONKw5JC61hCfuOMEJsDFAlX2TloYd//uz6J488bfyzFYMaCjGY4fK6W1sB6rr
+         9a5yy7GI1kjhOMsFEK12okttU3ooaT50dx5XuMmxGzPks5xQnui+f1xNiQObsuUaKdky
+         CMU2mwJM5OFzma8ECSQjtTSAyIb3dTi9+v6wV9Nr+09raUyDF1eebWUZsfKTT4FtCwG2
+         ZlkA==
+X-Gm-Message-State: AOAM532fbSvVYm32kHuJt+AXSOT3KOeSLQ1sMx/jhSFskdIj7k8e+qiK
+        QqJ09CuIN2BVrSJiKgGWaYw=
+X-Google-Smtp-Source: ABdhPJwAklcz2IhxWhplULsILsyJcC1/7jVHUHOswyE9u52R6xwuOO+plQjS+Yqkm/ETdvCcMKtJXA==
+X-Received: by 2002:a5d:414c:: with SMTP id c12mr18487516wrq.251.1612764636586;
+        Sun, 07 Feb 2021 22:10:36 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d8e:7300:842e:a74a:35f3:bd06])
+        by smtp.gmail.com with ESMTPSA id m2sm18466356wml.34.2021.02.07.22.10.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Feb 2021 22:10:35 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Yong Wu <yong.wu@mediatek.com>, linux-mediatek@lists.infradead.org,
+        iommu@lists.linux-foundation.org, Will Deacon <will@kernel.org>
+Cc:     Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Tomasz Figa <tfiga@chromium.org>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: repair file pattern in MEDIATEK IOMMU DRIVER
+Date:   Mon,  8 Feb 2021 07:10:25 +0100
+Message-Id: <20210208061025.29198-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
+Commit 6af4873852c4 ("MAINTAINERS: Add entry for MediaTek IOMMU") mentions
+the pattern 'drivers/iommu/mtk-iommu*', but the files are actually named
+with an underscore, not with a hyphen.
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
+  warning: no file matches  F:    drivers/iommu/mtk-iommu*
 
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
+Repair this minor typo in the file pattern.
 
-Regards,
-Ms. Reem.
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on next-20210205
+
+Yong, please ack.
+Will, please pick this minor fixup for your iommu-next tree.
+
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 674f42375acf..6b507e8d7828 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -11200,7 +11200,7 @@ L:	iommu@lists.linux-foundation.org
+ L:	linux-mediatek@lists.infradead.org (moderated for non-subscribers)
+ S:	Supported
+ F:	Documentation/devicetree/bindings/iommu/mediatek*
+-F:	drivers/iommu/mtk-iommu*
++F:	drivers/iommu/mtk_iommu*
+ F:	include/dt-bindings/memory/mt*-port.h
+ 
+ MEDIATEK JPEG DRIVER
+-- 
+2.17.1
+

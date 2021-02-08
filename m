@@ -2,65 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1EC0312824
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 00:22:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B06743128C4
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Feb 2021 02:34:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229581AbhBGXWF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 7 Feb 2021 18:22:05 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:36875 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbhBGXWE (ORCPT
+        id S229565AbhBHBeQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 7 Feb 2021 20:34:16 -0500
+Received: from smtp-18d.idc2.mandic.com.br ([177.70.124.135]:53934 "EHLO
+        smtp-18.idc2.mandic.com.br" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229570AbhBHBeJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 7 Feb 2021 18:22:04 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1l8tMm-00013l-9Z; Sun, 07 Feb 2021 23:21:20 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Nestor Lopez Casado <nlopezcasad@logitech.com>,
-        linux-input@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] HID: logitech-dj: fix unintentional integer overflow on left shift
-Date:   Sun,  7 Feb 2021 23:21:20 +0000
-Message-Id: <20210207232120.8885-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.29.2
+        Sun, 7 Feb 2021 20:34:09 -0500
+Received: by smtp-18.smtp.mandic.prv (Postfix, from userid 491)
+        id E91A260736F1; Sun,  7 Feb 2021 22:33:23 -0300 (-03)
+Received: from smtp-18.idc2.mandic.com.br (ifsmtp2 [192.168.1.38])
+        by smtp-18.smtp.mandic.prv (Postfix) with ESMTPS id C183D607234A;
+        Sun,  7 Feb 2021 22:33:16 -0300 (-03)
+Received: from User (unknown [52.235.38.23])
+        by smtp-18.smtp.mandic.prv (Postfix) with ESMTPA id 1FAC1468FC50;
+        Sun,  7 Feb 2021 22:30:43 -0300 (-03)
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <stefy@macrometrica.com.br>
+Subject: Re:reply
+Date:   Mon, 8 Feb 2021 01:33:16 -0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Mandic-Auth: DYB6x5JcyVot9snxiAasWC73cfc93V+pC3vUrorm87+eXbqAUeEHL0ZNPgpM50IYQeUbiYx0PkMIK2oavHcOOA==
+X-Mandic-Sender: stefy@macrometrica.com.br
+Message-Id: <20210208013316.C183D607234A@smtp-18.smtp.mandic.prv>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hello,
 
-Shifting the integer value 1 is evaluated using 32-bit rithmetic
-and then used in an expression that expects a 64-bit value, so
-there is potentially an integer overflow. Fix this by using th
-BIT_ULL macro to perform the shift and avoid the overflow.
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-Addresses-Coverity: ("Uninitentional integer overflow")
-Fixes: 534a7b8e10ec ("HID: Add full support for Logitech Unifying receivers")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/hid/hid-logitech-dj.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-diff --git a/drivers/hid/hid-logitech-dj.c b/drivers/hid/hid-logitech-dj.c
-index 45e7e0bdd382..747f41be0603 100644
---- a/drivers/hid/hid-logitech-dj.c
-+++ b/drivers/hid/hid-logitech-dj.c
-@@ -1035,7 +1035,7 @@ static void logi_dj_recv_forward_null_report(struct dj_receiver_dev *djrcv_dev,
- 	memset(reportbuffer, 0, sizeof(reportbuffer));
- 
- 	for (i = 0; i < NUMBER_OF_HID_REPORTS; i++) {
--		if (djdev->reports_supported & (1 << i)) {
-+		if (djdev->reports_supported & BIT_ULL(i)) {
- 			reportbuffer[0] = i;
- 			if (hid_input_report(djdev->hdev,
- 					     HID_INPUT_REPORT,
--- 
-2.29.2
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
 
+Regards,
+Ms. Reem.

@@ -2,122 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E35A0316077
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 09:00:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E517D3160B3
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 09:13:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233199AbhBJIAj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Feb 2021 03:00:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42616 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233070AbhBJIAi (ORCPT
+        id S233693AbhBJINP convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Feb 2021 03:13:15 -0500
+Received: from spam.auroraoh.com ([24.56.89.101]:55110 "EHLO
+        barracuda.auroraoh.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231324AbhBJIMT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Feb 2021 03:00:38 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABCD2C061574;
-        Tue,  9 Feb 2021 23:59:57 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id l12so1765931edt.3;
-        Tue, 09 Feb 2021 23:59:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=6+Y+v0mf5SvNQeLGUI6zmXJKmFCPE8MP5k1v0xa403Q=;
-        b=b4XWVQ7l167lCCU8tm3PcBUEZenz+6KZuxZicTmhBF6ZaqXf4F0WpbEgmO9odZSyeQ
-         QS+gwT1guxNGc8txE8JNkjHmnHOZ4fIjhcYnZj8iomLcMmEXouN1ErVvR8+vh74T4Kq0
-         VStESSSuV9kkuVn4d/9QFL9YAVhnu9+9/ASSbKaRUXyxDixTkQQK29PulZ04pv7PJ/bN
-         1r4Yt3wwXFEQA4XGt3Qm8OY0KJ6SFwlBVo7lZP3iI4iMPqgUQhpB7zT0ejz42c4zIE+z
-         cgpPTfyHpwR/P/CVBG/giG4QxD1/N//ZEw4k7jOl9eQF0B1pLMz7l8l2iEQ6y4lf8x63
-         rJyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=6+Y+v0mf5SvNQeLGUI6zmXJKmFCPE8MP5k1v0xa403Q=;
-        b=BKwcGqn2YBSSRz1NwKDi2fLTbHBWsQitTrxOAMJs/hlOukS4ptwEZ2qxlQP69tm/Xt
-         sOyfQmacjjVinRtcTQDujlsz48mtpSyTI7QRxkskN5DwMN10q9rzll2lcyHQLNfwXpUl
-         laGYruyHZnRKIBx8OgJI6tZd9piKrklqlwOj7/cxrymdwumPDOG8cJOP8Xv7ouBq1ne1
-         DnElvnUVkED+vIce4gvxsidmieiQdXOKhPT6fJK0TGZFSYjokJeuUNAoOFzA6dub679g
-         pG8wcmousA8C7CmjDaLC18IbCPuILOa/OYk3+5gIJy1WFsioIV5mxjzfJsA9g9C/k0nD
-         sfPQ==
-X-Gm-Message-State: AOAM533wHD0WH+GZaEwt1D7k0UwE/yAfMG9QiFCcvGLSjzA8U44p/b5D
-        8YFn3LIv/gPrmSiqQwuEjUrAk4EKcfYGZw==
-X-Google-Smtp-Source: ABdhPJw2mVlmcWbZgsGJ6E4Ewxaxytwh9nNbkSiFkNHSY5JfY9tBfHckwV+HRFWfPpaYFdLoLONV6w==
-X-Received: by 2002:a50:e882:: with SMTP id f2mr2028558edn.35.1612943996343;
-        Tue, 09 Feb 2021 23:59:56 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2d7e:e500:60d3:cde9:82a5:6b47])
-        by smtp.gmail.com with ESMTPSA id l5sm433116edv.50.2021.02.09.23.59.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Feb 2021 23:59:55 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Keguang Zhang <keguang.zhang@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@linux-mips.org
-Cc:     Joe Perches <joe@perches.com>,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: replace non-matching patterns for loongson{2,3}
-Date:   Wed, 10 Feb 2021 08:59:47 +0100
-Message-Id: <20210210075947.15604-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Wed, 10 Feb 2021 03:12:19 -0500
+X-ASG-Debug-ID: 1612944670-112c0d6a799cb90001-Bu01HM
+Received: from COASRV-MAIL2.auroraoh.loc (coasrv-mail2.auroraoh.loc [10.3.1.15]) by barracuda.auroraoh.com with ESMTP id jJ81a9DkExpcgPkc; Wed, 10 Feb 2021 03:11:10 -0500 (EST)
+X-Barracuda-Envelope-From: JanuskaD@auroraoh.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.3.1.15
+Received: from [172.20.10.5] (197.210.29.8) by COASRV-MAIL2.auroraoh.loc
+ (10.3.1.15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Tue, 9 Feb 2021
+ 02:45:33 -0500
+Content-Type: text/plain; charset="iso-8859-1"
+X-Barracuda-RBL-Trusted-Forwarder: 172.20.10.5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: We are a registered Private Loan Investment Company in the United Kingdom,
+ we also registered with the Turkish British Chamber of Commerce and Industry
+ (TBCCI) we have operations in Europe and Asia.
+To:     Recipients <januskad@auroraoh.com>
+X-ASG-Orig-Subj: We are a registered Private Loan Investment Company in the United Kingdom,
+ we also registered with the Turkish British Chamber of Commerce and Industry
+ (TBCCI) we have operations in Europe and Asia.
+From:   <januskad@auroraoh.com>
+Date:   Tue, 9 Feb 2021 15:44:47 +0800
+Reply-To: <cfolimiited@gmail.com>
+X-Priority: 1 (High)
+X-Antivirus: Avast (VPS 210207-2, 02/07/2021), Outbound message
+X-Antivirus-Status: Clean
+Message-ID: <04dad0e2-2f3b-46a3-bb30-cab23ca007d4@COASRV-MAIL2.auroraoh.loc>
+X-Originating-IP: [197.210.29.8]
+X-ClientProxiedBy: COASRV-MAIL3.auroraoh.loc (10.3.1.13) To
+ COASRV-MAIL2.auroraoh.loc (10.3.1.15)
+X-Barracuda-Connect: coasrv-mail2.auroraoh.loc[10.3.1.15]
+X-Barracuda-Start-Time: 1612944670
+X-Barracuda-URL: https://10.3.1.12:443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at auroraoh.com
+X-Barracuda-Scan-Msg-Size: 755
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Spam-Score: 1.61
+X-Barracuda-Spam-Status: No, SCORE=1.61 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=5.0 tests=BSF_SC0_SA609_NRN, BSF_SC0_SA912_RP_FR, BSF_SC0_SA_TO_FROM_ADDR_MATCH, NO_REAL_NAME
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.87880
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------------------------
+        0.00 NO_REAL_NAME           From: does not include a real name
+        0.01 BSF_SC0_SA912_RP_FR    Custom Rule BSF_SC0_SA912_RP_FR
+        0.50 BSF_SC0_SA_TO_FROM_ADDR_MATCH Sender Address Matches Recipient
+                                   Address
+        1.10 BSF_SC0_SA609_NRN      Custom Rule SA609_NRN
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit ffe1f9356fbe ("MAINTAINERS: Add Loongson-2/Loongson-3 maintainers")
-adds quite generic file entries for drivers/*/*loongson{2,3}* and
-drivers/*/*/*loongson{2,3}* to be informed on changes to all loongson{2,3}
-files in drivers.
+We are seeking for beneficiaries who source for fund to expand/relocating their business interest abroad. We are ready to fund projects outside Turkey and United Kingdom in the form of Soft Loan. We grant loans to both corporate and private entities at a low interest rate of 2% R.O.I per annul.
 
-However, only the pattern 'drivers/*/*loongson2*' matches to one file in
-the repository, i.e., drivers/cpufreq/loongson2_cpufreq.c; all other
-patterns have no file matches.
+We like to grant loan in the following sectors: oil/Gas, banking, real estate, stock speculation and mining, transportation, health sector and tobacco, Communication Services, Agriculture Forestry & Fishing, thus any sector. The terms are very flexible and interesting.
 
-Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
+Please contact us for more details;
 
-  warning: no file matches    F:    drivers/*/*/*loongson2*
-  warning: no file matches    F:    drivers/*/*/*loongson3*
-  warning: no file matches    F:    drivers/*/*loongson3*
 
-As in the last two and half years, no further files and drivers have
-showed up to match those patterns, just name the one file that matches
-explicitly and delete the others without a match.
+Kind regards,
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-applies cleanly on current master and next-20201102
+Paul McCann
 
-Keguang, Huacai, Jiaxun, please ack.
-
-Thomas, please pick this minor non-urgent cleanup patch.
-
- MAINTAINERS | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b4197e9da495..fc08f628e196 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11719,8 +11719,7 @@ L:	linux-mips@vger.kernel.org
- S:	Maintained
- F:	arch/mips/include/asm/mach-loongson2ef/
- F:	arch/mips/loongson2ef/
--F:	drivers/*/*/*loongson2*
--F:	drivers/*/*loongson2*
-+F:	drivers/cpufreq/loongson2_cpufreq.c
- 
- MIPS/LOONGSON64 ARCHITECTURE
- M:	Huacai Chen <chenhc@lemote.com>
-@@ -11729,8 +11728,6 @@ L:	linux-mips@vger.kernel.org
- S:	Maintained
- F:	arch/mips/include/asm/mach-loongson64/
- F:	arch/mips/loongson64/
--F:	drivers/*/*/*loongson3*
--F:	drivers/*/*loongson3*
- F:	drivers/irqchip/irq-loongson*
- F:	drivers/platform/mips/cpu_hwmon.c
- 
 -- 
-2.17.1
+This email has been checked for viruses by Avast antivirus software.
+https://www.avast.com/antivirus
 

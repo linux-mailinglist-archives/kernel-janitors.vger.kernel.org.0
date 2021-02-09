@@ -2,105 +2,186 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FECE31511F
-	for <lists+kernel-janitors@lfdr.de>; Tue,  9 Feb 2021 15:02:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 726FC31546E
+	for <lists+kernel-janitors@lfdr.de>; Tue,  9 Feb 2021 17:54:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231671AbhBIOBT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 9 Feb 2021 09:01:19 -0500
-Received: from mga17.intel.com ([192.55.52.151]:21970 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231135AbhBIOAM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 9 Feb 2021 09:00:12 -0500
-IronPort-SDR: z1e9eDjPMLmE/7WRo/xvcHHVzmyT4Er5fJjvBeX+0oIflKxPAXiU1FjEntfHH/psojq+iiMTh/
- vGE4/At19n5w==
-X-IronPort-AV: E=McAfee;i="6000,8403,9889"; a="161631320"
-X-IronPort-AV: E=Sophos;i="5.81,165,1610438400"; 
-   d="scan'208";a="161631320"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2021 05:58:23 -0800
-IronPort-SDR: fbcFkfxI0Fa4AC+LfvEwX7YMNHGwehcMIqgwFS77VTBC+afRizCswvdfHN1HH2Mvbs7YsvFYy7
- 2xPKK6sY2m+g==
-X-IronPort-AV: E=Sophos;i="5.81,165,1610438400"; 
-   d="scan'208";a="378978690"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2021 05:58:21 -0800
-Received: by paasikivi.fi.intel.com (Postfix, from userid 1000)
-        id 2ED00206D0; Tue,  9 Feb 2021 15:58:19 +0200 (EET)
-Date:   Tue, 9 Feb 2021 15:58:19 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     "Paul J. Murphy" <paul.j.murphy@intel.com>,
-        Martina Krasteva <martinax.krasteva@intel.com>,
-        Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        Gjorgji Rosikopulos <gjorgjix.rosikopulos@intel.com>,
-        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] media: i2c: imx334: Fix an error message
-Message-ID: <20210209135819.GE32460@paasikivi.fi.intel.com>
-References: <YCJsUCngklBkJMgw@mwanda>
- <20210209120804.GD32460@paasikivi.fi.intel.com>
- <20210209134938.GP2696@kadam>
+        id S232898AbhBIQyB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 9 Feb 2021 11:54:01 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:33798 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232959AbhBIQxv (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 9 Feb 2021 11:53:51 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 119GY5vu051014;
+        Tue, 9 Feb 2021 16:52:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2020-01-29;
+ bh=rQ2mS8ucJ28TvXRHHjroXvheckYN/0SlaynncLjbqMw=;
+ b=VZ+Nznokv+QJ+vz6ZhnjTCS7tYv3bjYbM/Qs9w4U5i4ZXkWNMRQfVpJzxxRKuy9sczSk
+ 2z8DTrMZ9WFKMdJvEz4t8jXurTgzgn4lpfNmUG2nvpKaWY0VHHN3LjVrtTgXQS6YC9vA
+ A1QCvjcUBZb38LxdegDlZgqMRZjRN6kPnRQeoIIKKbcq4LV37b96QNdTWg4DPeFDJqW9
+ CNHmJlD7NZOLt+Xkamm3p3qgMZ/AqLrKBKaeHgh0j2yuFuShDqeq6JPVZx1laCm0ILVF
+ KojSTU2WwzR4XJTlOTy6AeuMT+ivG9At0LuBLY6/GGBTRh4UKy3P+qqCQVzl/PRNp2jF iw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2130.oracle.com with ESMTP id 36hgmagaqj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 09 Feb 2021 16:52:36 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 119GZPb9158401;
+        Tue, 9 Feb 2021 16:52:36 GMT
+Received: from nam02-bl2-obe.outbound.protection.outlook.com (mail-bl2nam02lp2052.outbound.protection.outlook.com [104.47.38.52])
+        by aserp3020.oracle.com with ESMTP id 36j511ferj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 09 Feb 2021 16:52:36 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JYP1cZca6k9xa/Km5OiYoSf6jobD55lZYam9kcVaswOkfWQXvRisx3GdpHh1UuPymmKJGUgnfI+cTZbcp+nODhp8oj7Ao3zvv3xbYZLlYEc/+7j523/5a6kuPATDmOtKrIXkkIVtM5OwS1C4ovmsMMTA+pB08XkndL2TcKPS+bcVinyaKF6cv8/xHtKKhZKGpNNYfjQDQOhhvQu04sbb1pYRr88TNSEOsmRIkYrsWrnt88sqSeFQ7y7Pqgswe6ni17zcPvoymulA+EvFvzmXKJIsx96Q/MTrhf6bdXvuE2wKEiq6capWujiTE25eOzKngl+x7k9ongZ1eCHDnXZrXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rQ2mS8ucJ28TvXRHHjroXvheckYN/0SlaynncLjbqMw=;
+ b=G31lNf8xUap9VPkpaS3L5s2ww1TbxZ1Cj7/+Zxk57nE7dK1+EXU8v+9Q/8dbqXryQLbZCA7AUPJgFb8i/hDitagVkY6rgKZA0tWyP2eGIrop0LuxQ7d/6WvqP0hXN6yasx/BnsUqAQLEGm/M5v1aiwdaMbyzOne3dY026JLtiJOMlNW10g0atotnMEJKvrRsB4JWX69TaU81hYoxQk05svpmumJRW8sp4u1CGjsdft4acOp02eIQIHHRangbrQRtwTARBDFlRhdkSUH6bdvSvOz9mRT3wIOV1V2AFlOpOj6xLyMVHL8M6d7qtjQhuw5fyVlMnu0jade9rZNAh8e3Xw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rQ2mS8ucJ28TvXRHHjroXvheckYN/0SlaynncLjbqMw=;
+ b=R77o1utSlzECviqxapS01ok9Z/cU3CB1IBtucQhPJ36hLgk4EbO97rCNCn1bA8Bj1TS7ceHq1PZic2t8KXDwkhss6WknfErGWTLrFkqIJs89dCWH9KNztXCHUP7pmPIc8jY6TEQa9fr7tUufbA7TAVdToOg4LsNB8mmo7vknSTU=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=oracle.com;
+Received: from CH2PR10MB4118.namprd10.prod.outlook.com (2603:10b6:610:a4::8)
+ by CH2PR10MB4232.namprd10.prod.outlook.com (2603:10b6:610:a4::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.25; Tue, 9 Feb
+ 2021 16:52:34 +0000
+Received: from CH2PR10MB4118.namprd10.prod.outlook.com
+ ([fe80::b4f8:316f:3a25:faac]) by CH2PR10MB4118.namprd10.prod.outlook.com
+ ([fe80::b4f8:316f:3a25:faac%7]) with mapi id 15.20.3846.025; Tue, 9 Feb 2021
+ 16:52:34 +0000
+Subject: Re: [PATCH] fs/jfs: fix potential integer overflow on shift of a int
+To:     Colin King <colin.king@canonical.com>,
+        Tino Reichardt <milky-kernel@mcmilk.de>,
+        jfs-discussion@lists.sourceforge.net
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210205171137.208121-1-colin.king@canonical.com>
+From:   Dave Kleikamp <dave.kleikamp@oracle.com>
+Message-ID: <044b0372-8612-6fb9-23c5-9c4e6ab79114@oracle.com>
+Date:   Tue, 9 Feb 2021 10:52:32 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
+In-Reply-To: <20210205171137.208121-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [68.201.65.98]
+X-ClientProxiedBy: SA0PR11CA0162.namprd11.prod.outlook.com
+ (2603:10b6:806:1bb::17) To CH2PR10MB4118.namprd10.prod.outlook.com
+ (2603:10b6:610:a4::8)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210209134938.GP2696@kadam>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.0.190] (68.201.65.98) by SA0PR11CA0162.namprd11.prod.outlook.com (2603:10b6:806:1bb::17) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3846.25 via Frontend Transport; Tue, 9 Feb 2021 16:52:33 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 4ce5dd46-f579-4492-b5e5-08d8cd1b1927
+X-MS-TrafficTypeDiagnostic: CH2PR10MB4232:
+X-Microsoft-Antispam-PRVS: <CH2PR10MB42323C4251B6E36110392DDC878E9@CH2PR10MB4232.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: X6qTC5CzBTby6Vz0EEiAJ1OysXtdDC0QZ5zHg/fbHV65eh/Wnq4bZwR/JRv1TjiKsPxUnL+2XlCzUEihAXohBqKWCOF5oanTnZhvGzklmZY6ClyRdDMf5fsoyoj+1llAyUk16M+kdrtD4aqJh1C+UU/TSMhjmrwlsGgYhM0YKx+XOOOLvyPHk1s7UzJIsoCI0OIAq4IRTXGFdjcX4fmtZQd2KCjQwXhDDlbWdcSWgfJ8ObHbinY+UZgq9LmILSGnE7xVDmsy52/2G2KSz8Fes8iHXpqiz29s/omboE3KDCUoz1QFx+Xb5EEHjPgDvrMHtEZBz+d532VRL9mZG+1nEs7Wy+XhH+bmzb56T1MVSJmcwcEfXLcJKftgYSqM1MoE6eHo82szUjPGpZc/hv71cG4g8pV4F63VHWFn4tn3WkHqnYqmWv1J6tHRZAgyMCCjeEcjPfbIsQHXhxXJjkgCh1tf2OgLQkJzQnpXN67gmGQN22IJFCTa1yONstOcY+aqJ4c4bR/47BpuybpHWYZDgHlVgsZgMMtHLAOLx4G0ii8zMwIqsRLvr7YaCRlHLpXqgEEYJHel9qS9QT/gER+TdcrGbiqsel6aTsnBBh9OIo4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR10MB4118.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(39860400002)(346002)(136003)(376002)(396003)(366004)(66556008)(66476007)(26005)(31696002)(478600001)(83380400001)(2906002)(2616005)(44832011)(186003)(956004)(66946007)(31686004)(16576012)(316002)(16526019)(53546011)(8676002)(4326008)(86362001)(110136005)(5660300002)(36756003)(6486002)(8936002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?ZElwN29RUTRUYVVyUmVKNW9nRDBtRHp6TUpRQ3hMUXltR052ckUrZ2p6dkpE?=
+ =?utf-8?B?OWRDckdseG1TMU9qcEkwVXh2OWNOczJYM0N4eW9ObWEya1lxYnFOWWdBdEo2?=
+ =?utf-8?B?YWpqZk5LdllIR2xuTkxPN3lUcnI4dVZ4bVNaQlpZN3ZBKzhGa2o4VXBXZ3lZ?=
+ =?utf-8?B?RHRlOWVULytLb2lGckJaZVl5cWVKTGVRWWg4WWxLMks3NGF6cWl2aXhLdW5l?=
+ =?utf-8?B?ZFdSMWZDbExQbjhFblpaSHpKN2hHRGVuSnVNOGE3WE1TSHd6cy9wbThobUww?=
+ =?utf-8?B?Z283bURXM1NJOUdaUko0Z1ExY1VkWUxNd21NOUpROHdocTRLNlBuR3NndW1P?=
+ =?utf-8?B?M2pOMXlpajdWajU2cEVpeWlNTjhBbnZvUGV3TUpRSW8yOWpQZ09PMGhpR0VQ?=
+ =?utf-8?B?dzdienBtVlV1UXY3eDR5R2JscXpUTW04ODdLdHR4VGlnaUNmOTR4c2VVQjA3?=
+ =?utf-8?B?aEZZOTV5MGNYM3NFNWdTOHUrWGpZYzd6OVFWUytnZmFGcE85bTArMENNbWl4?=
+ =?utf-8?B?bUFKSHd4RUQxUHRPTldZRnVySy9MUVE2eDVlVDlXYjFmZk9RUndPa0RwRjJv?=
+ =?utf-8?B?dHlsVHk5elhzczVoRlg2QjlUeEJiUm9tMEVzcEJsZE1PZGYvdnozZXUyWGZI?=
+ =?utf-8?B?NFFOLzNNd1p4clFLT0NQSCtqWGpQMmtHSHVhOFdxa3RsZmVxTDZyL25KQnBp?=
+ =?utf-8?B?N1IycjBXOVIwSkZMd0tzaDZYcGFNd3lQSkN2MFFtZ2ZaV2VjWDV4V0FVVDRF?=
+ =?utf-8?B?djVRd3JNeUU1SEtnVk96YzZ2SDN5N0V6NVQvUDhXUFZBaXdNVkpCSDVCNmtt?=
+ =?utf-8?B?eHkrK3NFcDZlN00wZ2U2NndDc0JUOGQ5VFlyci9pZGdCbGRaUnFkTWcvOXFt?=
+ =?utf-8?B?NHdhNlJ3alNhTTd6YUkzR2lSdGNVV2phQ2Y3TDlISFNPdjlMVG9QV21idnJ3?=
+ =?utf-8?B?dXVadkZubkxDVlJYOUZ6ZldhWElaZXpOUDE4UHBoaGt1OFRxR0FqNFRUelhx?=
+ =?utf-8?B?NHZsWm4zTklDR2t5MG9yZVVWSzMwMWRjMHljV0l4OGV1YW90TVZVeldDYjRM?=
+ =?utf-8?B?ME4vRnhCUjlUY0ZsZ3VHdVg0R3BRUWI5Ui94Y0k1QUtTcFZRRXduNEttQ2Z0?=
+ =?utf-8?B?aFN6aEJ2VDh1aUhWWUcya1BTODJxeDk2QzFwZ1p6QmRDZUN5ei9nbnNqVkJz?=
+ =?utf-8?B?UGhpK1UrTUVlNERRNmp5MjlQY3YxQTJ0VTBBRUw3VmNManFwZjF6VmlhelF5?=
+ =?utf-8?B?RlRaUmcvaGJtaVRlME1qZjA2RkdLZWgxVDZJYy91Z0REazJmOGxrcmVSanZT?=
+ =?utf-8?B?VHUwa2hLb1hjYTlvR2hrMGtLMlVrRVRNYXN0VEMrOWlWUktvOGxHT3h0Y3lO?=
+ =?utf-8?B?MlREMDVvWW9CdEJselhwTkIwazUzdVc5UWlrSjVxa3BoazJsWDY4Qmh3cEE0?=
+ =?utf-8?B?SlZzMkxMKzBDaktpRko0b09qWnRrZFcxWXlzN1RIdUxScC84MjRDbHRDT3Ri?=
+ =?utf-8?B?OTl6bjNONkM2UURvQ0FWRDBIZXlRTkN6L1MxcHVlWnVuTUR6VVA3WUw1cUZ5?=
+ =?utf-8?B?ZUVxU1Jtc1RnRW44OTVsMXlpUlJFQXV4WTlzN1RIWmVWQ2lweDlKQjMwS04x?=
+ =?utf-8?B?UGgvbStucGg3Z3c1dWV6Q2x6NkkycVMvNFRZdWZNRFlKcERtVERFYjBiaVZk?=
+ =?utf-8?B?VHpZRE0wVmJqVHlocitxQmNnL1RVYkdOVUQwNm1SVENrRzZzR2hIaW1kb0N3?=
+ =?utf-8?Q?yPYP3vf9WO/yrCqofyPgqLOJTssv7a+9AC7yzOM?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ce5dd46-f579-4492-b5e5-08d8cd1b1927
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR10MB4118.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2021 16:52:34.5228
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LuESIHbJCDiJFZD22wmt+YmXxM8cqHnDVkd4U7rP74sHvT2nP85RjYJJo9XzuiDuV1R+Q8Qnk1q5CGofgp0tb97X39+spzlsZrJbgVIL1Y8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR10MB4232
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9890 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0 adultscore=0
+ mlxlogscore=999 phishscore=0 spamscore=0 suspectscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102090082
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9890 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ spamscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 impostorscore=0
+ suspectscore=0 mlxscore=0 clxscore=1011 mlxlogscore=999 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102090082
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Feb 09, 2021 at 04:49:39PM +0300, Dan Carpenter wrote:
-> On Tue, Feb 09, 2021 at 02:08:04PM +0200, Sakari Ailus wrote:
-> > Hi Dan,
-> > 
-> > On Tue, Feb 09, 2021 at 02:04:48PM +0300, Dan Carpenter wrote:
-> > > The "ret" variable is uninitialized in this error message.
-> > > 
-> > > Fixes: 9746b11715c3 ("media: i2c: Add imx334 camera sensor driver")
-> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > 
-> > Thanks for the patch. This has been already addressed by a patch from Hans
-> > (but not merged yet):
-> > 
-> > <URL:https://patchwork.linuxtv.org/project/linux-media/patch/917ccfef-b93e-4d90-0b5a-4974145ab187@xs4all.nl/>
-> > 
-> > > ---
-> > > When new drivers are merged into the kernel, then could we use the
-> > > driver prefix?  In other words something like this:
-> > > 
-> > > media: i2c/imx334: Add imx334 camera sensor driver
-> > 
-> > We've usually had driver's name and Mauro's scripts add media: prefix ---
-> > unless it's already there. Are you suggesting also the bus should be part
-> > of it?
+On 2/5/21 11:11 AM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> No, what I'm saying is when people add a new driver they do:
+> The left shift of int 32 bit integer constant 1 is evaluated using 32 bit
+> arithmetic and then assigned to a signed 64 bit integer. In the case where
+> l2nb is 32 or more this can lead to an overflow.  Avoid this by shifting
+> using the BIT_ULL macro instead.
 > 
-> [PATCH] subsystem: Add new driver for foo345
+> Addresses-Coverity: ("Uninitentional integer overflow")
+> Fixes: b40c2e665cd5 ("fs/jfs: TRIM support for JFS Filesystem")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>   fs/jfs/jfs_dmap.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> But it would be better if they added "foo345" to the prefix.
-> 
-> [PATCH] subsystem: foo345: Add new driver for foo345
+> diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+> index 94b7c1cb5ceb..47dbca7e52e0 100644
+> --- a/fs/jfs/jfs_dmap.c
+> +++ b/fs/jfs/jfs_dmap.c
+> @@ -1656,7 +1656,7 @@ s64 dbDiscardAG(struct inode *ip, int agno, s64 minlen)
+>   		} else if (rc == -ENOSPC) {
+>   			/* search for next smaller log2 block */
+>   			l2nb = BLKSTOL2(nblocks) - 1;
+> -			nblocks = 1 << l2nb;
+> +			nblocks = BIT_ULL(l2nb);
 
-Ah, yes. I also prefer this but I guess this hasn't been consistently
-enforced nor documented (or is it?) and can be easily missed in review.
-Then there are patches that touch a number of drivers at the same time...
+I'm not sure I like the use of this macro here. It seems to imply a bit 
+flag of some sort. I think it would be clearer to use
 
+			nblocks = 1ULL << l2nb;
+
+Maybe 1LL rather than 1ULL since nblocks is s64.
+
+>   		} else {
+>   			/* Trim any already allocated blocks */
+>   			jfs_error(bmp->db_ipbmap->i_sb, "-EIO\n");
 > 
-> Doing it the way that I'm suggesting has become more common for the past
-> four years.  Four years ago was when I started complaining that I can't
-> guess the correct prefix for new drivers.  That was also the last time
-> that someone complained to me that I had used the incorrect patch prefix.
-> I would argue that Hans used the wrong patch prefix for his patch so
-> maybe we have just become more mellow these days.
-> 
-> And also I'm surprised that Mauro adds the media: prefix for you instead
-> of making everyone do it themselves...  He's the only person who does
-> this that I know of.
-
-It's possible since Mauro picks the patches from the pull request instead
-of pulling it.
-
--- 
-Sakari Ailus

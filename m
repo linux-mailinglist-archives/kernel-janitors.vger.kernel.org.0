@@ -2,65 +2,129 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52C8B3160C5
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 09:19:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 898B13160E7
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 09:24:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233472AbhBJITN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Feb 2021 03:19:13 -0500
-Received: from smtprelay0130.hostedemail.com ([216.40.44.130]:46280 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S231494AbhBJITL (ORCPT
+        id S233980AbhBJIYj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Feb 2021 03:24:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47736 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233976AbhBJIYZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Feb 2021 03:19:11 -0500
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id A67FE127A6;
-        Wed, 10 Feb 2021 08:18:30 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:967:973:988:989:1260:1261:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1539:1568:1593:1594:1711:1714:1730:1747:1777:1792:1981:2194:2199:2393:2525:2565:2682:2685:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3622:3865:3867:3868:3870:3872:3873:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4362:5007:7652:8985:9025:10004:10400:10848:11232:11658:11914:12043:12048:12050:12297:12555:12740:12760:12895:12986:13069:13311:13357:13439:14096:14097:14181:14659:14721:21080:21212:21611:21627:21749:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: party75_5a0b9892760e
-X-Filterd-Recvd-Size: 1872
-Received: from [192.168.1.159] (unknown [47.151.137.21])
-        (Authenticated sender: joe@perches.com)
-        by omf07.hostedemail.com (Postfix) with ESMTPA;
-        Wed, 10 Feb 2021 08:18:28 +0000 (UTC)
-Message-ID: <aeaa56b9a50444c571a5ab34914d9b4590a9d629.camel@perches.com>
-Subject: Re: [PATCH] MAINTAINERS: replace non-matching patterns for
- loongson{2,3}
-From:   Joe Perches <joe@perches.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Keguang Zhang <keguang.zhang@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@linux-mips.org
-Cc:     Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Wed, 10 Feb 2021 00:18:27 -0800
-In-Reply-To: <20210210075947.15604-1-lukas.bulwahn@gmail.com>
-References: <20210210075947.15604-1-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+        Wed, 10 Feb 2021 03:24:25 -0500
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44D2AC0613D6
+        for <kernel-janitors@vger.kernel.org>; Wed, 10 Feb 2021 00:23:45 -0800 (PST)
+Received: by mail-wr1-x436.google.com with SMTP id n6so1433291wrv.8
+        for <kernel-janitors@vger.kernel.org>; Wed, 10 Feb 2021 00:23:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=MJzRoK5AHHgr8V25vpyceNTWmZxiFyKsyjhqQm8Vxxc=;
+        b=d/b3ponHrtEaGh9+nR4CHVGjqOHtnpraE5raOOOMutWd3Y/vW/uw1i/PmwjfcCAOlI
+         hSBPogoT7cAULj0g3PmoKbO+SoDAWMPSOECHnT1Hf4DW/HG3NgCZs5Oz4yycpbsGpbXz
+         6aDc3GNQtnk1ZzXHSwQCVv4LOVj0FL2tcZrnkEKPH22CeUw6azGEwO6gqPhOeo/UTzC8
+         CAGMYMu0CibvYCRJgy2fuPg3TqVZbhGt5gHufNtUof0Gw0FDR3KgWX5KWtTvRU2bJCB3
+         6J8LXoac3H1R5/6ZWZ8wIHim0sOUZG312tHezmcG2vA/YZDFQNq2NLrC7BlZj/TPwF8d
+         LG7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=MJzRoK5AHHgr8V25vpyceNTWmZxiFyKsyjhqQm8Vxxc=;
+        b=kA7iDFMCJ5V+lGMMQgPRUEP1hmOb+vwKZFk9vIlpV5Yl+OED3dOgCiRHrlDKROHIGO
+         ZLSCRlSys0BTLDVSsPXE6ti/vLpIEC/X41N6xA+hR3bP2Z42I2IFueCj/h7ZcJs06YV1
+         rvNYSpcgzMQI6R/XxxMRNPcmHt7rrrhxyUF7DG6rg0d+ui20D+0aEDE2hMk04BDOoTGp
+         GoNL/4/axKI+iV2bRRbueC5Hd/PHYMJVj/xvHRi1pWRoR3TLvSJTHc3EWsGFKIlCXTqN
+         gYMs3MsC6ei4zfUoPrjgAP0Dzn9jZT1wzFlrsqO8xdU6MCU+ste7gzjIbG+U1dlfbdk8
+         dc+w==
+X-Gm-Message-State: AOAM533UMjpXbWph//TP0PrRTSaiHW4+X3hOjsX8ywe9oh355fvSvxOs
+        u737GNk2dpsOm3ulzMOuE0K0Qw==
+X-Google-Smtp-Source: ABdhPJzpmLKGtf/B7RhbJlQwrCAP0Mb8Tyioqci54O7y0v57o4U82PROFirmSWr5+lJk79X2A0kouQ==
+X-Received: by 2002:a05:6000:2cf:: with SMTP id o15mr2236419wry.184.1612945423966;
+        Wed, 10 Feb 2021 00:23:43 -0800 (PST)
+Received: from dell ([91.110.221.237])
+        by smtp.gmail.com with ESMTPSA id h9sm1850897wrc.94.2021.02.10.00.23.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Feb 2021 00:23:43 -0800 (PST)
+Date:   Wed, 10 Feb 2021 08:23:41 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     Fabio Estevam <festevam@gmail.com>,
+        kernel-janitors@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Michal Simek <michal.simek@xilinx.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        NXP Linux Team <linux-imx@nxp.com>
+Subject: Re: [PATCH] video: use getter/setter functions
+Message-ID: <20210210082341.GH220368@dell>
+References: <20210209211325.1261842-1-Julia.Lawall@inria.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210209211325.1261842-1-Julia.Lawall@inria.fr>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 2021-02-10 at 08:59 +0100, Lukas Bulwahn wrote:
-> Commit ffe1f9356fbe ("MAINTAINERS: Add Loongson-2/Loongson-3 maintainers")
-> adds quite generic file entries for drivers/*/*loongson{2,3}* and
-> drivers/*/*/*loongson{2,3}* to be informed on changes to all loongson{2,3}
-> files in drivers.
+On Tue, 09 Feb 2021, Julia Lawall wrote:
+
+> Use getter and setter functions, for platform_device structures and a
+> spi_device structure.
 > 
-> However, only the pattern 'drivers/*/*loongson2*' matches to one file in
-> the repository, i.e., drivers/cpufreq/loongson2_cpufreq.c; all other
-> patterns have no file matches.
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> 
+> ---
+>  drivers/video/backlight/qcom-wled.c                                  |    2 +-
 
-Thank you.  I hope one day it gets applied...
+This patch is fine.
 
-https://lore.kernel.org/linux-mips/20190325212717.27044-1-joe@perches.com/
-https://lore.kernel.org/linux-mips/20180928215928.30611-1-joe@perches.com/
-https://lore.kernel.org/linux-mips/20180928220034.30697-1-joe@perches.com/
+Could you please split it out and submit it separately though please.
 
+>  drivers/video/fbdev/amifb.c                                          |    4 ++--
+>  drivers/video/fbdev/da8xx-fb.c                                       |    4 ++--
+>  drivers/video/fbdev/imxfb.c                                          |    2 +-
+>  drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c |    6 +++---
+>  drivers/video/fbdev/omap2/omapfb/dss/dpi.c                           |    4 ++--
+>  drivers/video/fbdev/omap2/omapfb/dss/dsi.c                           |    4 ++--
+>  drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c                         |    2 +-
+>  drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c                         |    2 +-
+>  drivers/video/fbdev/xilinxfb.c                                       |    2 +-
+>  10 files changed, 16 insertions(+), 16 deletions(-)
 
+...]
+
+> diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+> index 3bc7800eb0a9..091f07e7c145 100644
+> --- a/drivers/video/backlight/qcom-wled.c
+> +++ b/drivers/video/backlight/qcom-wled.c
+> @@ -1692,7 +1692,7 @@ static int wled_probe(struct platform_device *pdev)
+>  
+>  static int wled_remove(struct platform_device *pdev)
+>  {
+> -	struct wled *wled = dev_get_drvdata(&pdev->dev);
+> +	struct wled *wled = platform_get_drvdata(pdev);
+>  
+>  	mutex_destroy(&wled->lock);
+>  	cancel_delayed_work_sync(&wled->ovp_work);
+
+For my own reference (apply this as-is to your sign-off block):
+
+  Acked-for-Backlight-by: Lee Jones <lee.jones@linaro.org>
+
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog

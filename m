@@ -2,31 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF75F316F3F
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 19:54:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 531D6316FAD
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 20:09:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234395AbhBJSwm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Feb 2021 13:52:42 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:53127 "EHLO
+        id S234401AbhBJTIo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Feb 2021 14:08:44 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:53433 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233586AbhBJSug (ORCPT
+        with ESMTP id S233117AbhBJTIh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Feb 2021 13:50:36 -0500
+        Wed, 10 Feb 2021 14:08:37 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1l9uYU-0007ag-NO; Wed, 10 Feb 2021 18:49:38 +0000
+        id 1l9uq9-0000HE-1u; Wed, 10 Feb 2021 19:07:53 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Michael Tretter <m.tretter@pengutronix.de>,
-        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To:     "Paul J . Murphy" <paul.j.murphy@intel.com>,
+        Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Martina Krasteva <martinax.krasteva@intel.com>,
+        Gjorgji Rosikopulos <gjorgjix.rosikopulos@intel.com>,
+        linux-media@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] soc: xilinx: vcu: remove deadcode on null divider check
-Date:   Wed, 10 Feb 2021 18:49:38 +0000
-Message-Id: <20210210184938.146124-1-colin.king@canonical.com>
+Subject: [PATCH][next] media: i2c: imx334: Fix a read of the uninitialized variable ret
+Date:   Wed, 10 Feb 2021 19:07:52 +0000
+Message-Id: <20210210190752.146631-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,29 +39,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The pointer 'divider' has previously been null checked followed by
-a return, hence the subsequent null check is redundant deadcode
-that can be removed.  Clean up the code and remove it.
+Currently there is a dev_err error message that is printing the
+error status in variable ret (that has not been set) instead of
+the correct error status from imx334->reset_gpio.  Fix this.
 
-Fixes: 9c789deea206 ("soc: xilinx: vcu: implement clock provider for output clocks")
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: 9746b11715c3 ("media: i2c: Add imx334 camera sensor driver")
+
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/clk/xilinx/xlnx_vcu.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/media/i2c/imx334.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/xilinx/xlnx_vcu.c b/drivers/clk/xilinx/xlnx_vcu.c
-index d66b1315114e..607936d7a413 100644
---- a/drivers/clk/xilinx/xlnx_vcu.c
-+++ b/drivers/clk/xilinx/xlnx_vcu.c
-@@ -512,9 +512,6 @@ static void xvcu_clk_hw_unregister_leaf(struct clk_hw *hw)
- 
- 	mux = clk_hw_get_parent(divider);
- 	clk_hw_unregister_mux(mux);
--	if (!divider)
--		return;
--
- 	clk_hw_unregister_divider(divider);
- }
+diff --git a/drivers/media/i2c/imx334.c b/drivers/media/i2c/imx334.c
+index 07e31bc2ef18..f8b1caf26c9b 100644
+--- a/drivers/media/i2c/imx334.c
++++ b/drivers/media/i2c/imx334.c
+@@ -790,7 +790,8 @@ static int imx334_parse_hw_config(struct imx334 *imx334)
+ 	imx334->reset_gpio = devm_gpiod_get_optional(imx334->dev, "reset",
+ 						     GPIOD_OUT_LOW);
+ 	if (IS_ERR(imx334->reset_gpio)) {
+-		dev_err(imx334->dev, "failed to get reset gpio %d", ret);
++		dev_err(imx334->dev, "failed to get reset gpio %ld",
++			IS_ERR_VALUE(imx334->reset_gpio));
+ 		return PTR_ERR(imx334->reset_gpio);
+ 	}
  
 -- 
 2.30.0

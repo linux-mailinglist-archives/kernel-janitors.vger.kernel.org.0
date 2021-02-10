@@ -2,49 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13132316464
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 11:55:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82A79316481
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 12:02:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231336AbhBJKyL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Feb 2021 05:54:11 -0500
-Received: from [125.140.134.231] ([125.140.134.231]:58721 "EHLO
-        WINDOWS-63LO558" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229923AbhBJKv5 (ORCPT
+        id S229935AbhBJLBQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Feb 2021 06:01:16 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:44170 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231712AbhBJK6S (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Feb 2021 05:51:57 -0500
-Received: from WIN-U2MN3QEVVH1 ([154.127.53.41]) by WINDOWS-63LO558 with Microsoft SMTPSVC(10.0.14393.2608);
-         Wed, 10 Feb 2021 19:51:23 +0900
-Reply-To: <mrs.verenich_ekmaterina@yahoo.com>
-From:   "erenich ekaterina" <verenichekaterinaekaterina@gmail.com>
-Subject: Dear Beloved
-Date:   Wed, 10 Feb 2021 02:51:22 -0800
+        Wed, 10 Feb 2021 05:58:18 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 11AAsC4H051795;
+        Wed, 10 Feb 2021 10:57:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=r9UR4B24XVHVTdPlYrUE5hZen0PMrHh0j4KOUgCfPbE=;
+ b=G0evvRgefLZiAQrKqdSv7IlOKlga+Sc1jNzwyfrYT83PYk7RJNzK4ViK7odINfv+YXoY
+ GmgOZvOTqwF4PjPDKDiN98rqD0nF8emC8XioBWtJc22isgl+IlPw1ak1UttJ5DO/49pP
+ CtSjg/36OYQz9x1/rsRjDB2HVY/1dMy2vsu35iKAG9z/Mtl/KSSpOZ2yPPFbU64e7w1h
+ TkArsRYzelEZwzmklpaZBc05Iq7EVkygQ0RnPB2L1VPXibrvlZv5jsy/bZzDr3ic6oSy
+ ZZPfAN2//5t7U8WifknlwMWuE0nEkMJPYvC2dZQx7hM1EkdICvmAQAHzJpgau8sQlv9L AQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 36hgmak26k-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 10 Feb 2021 10:57:21 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 11AAuE7Z187809;
+        Wed, 10 Feb 2021 10:57:20 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 36j4pq05m4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 10 Feb 2021 10:57:20 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 11AAvEEc018879;
+        Wed, 10 Feb 2021 10:57:15 GMT
+Received: from mwanda (/10.175.183.91)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 10 Feb 2021 02:57:14 -0800
+Date:   Wed, 10 Feb 2021 13:57:07 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jessica Yu <jeyu@kernel.org>, Christoph Hellwig <hch@lst.de>
+Cc:     Petr Mladek <pmladek@suse.com>, Miroslav Benes <mbenes@suse.cz>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] module: potential uninitialized return in
+ module_kallsyms_on_each_symbol()
+Message-ID: <YCO8AwE57IzaMamG@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <WINDOWS-63LO558s8eb00034fc0@WINDOWS-63LO558>
-X-OriginalArrivalTime: 10 Feb 2021 10:51:23.0589 (UTC) FILETIME=[AC5DE750:01D6FF9A]
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-IMR: 1
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9890 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0
+ mlxlogscore=999 malwarescore=0 bulkscore=0 phishscore=0 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102100107
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9890 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ spamscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 impostorscore=0
+ suspectscore=0 mlxscore=0 clxscore=1011 mlxlogscore=999 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102100107
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dear Beloved
+Smatch complains that:
 
-Life is gradually passing away from me as a result of my present medical condition and my personal doctor confided in me yesterday that I have only but few more weeks to live.
+	kernel/module.c:4472 module_kallsyms_on_each_symbol()
+        error: uninitialized symbol 'ret'.
 
-In view of this setback, I want to donate my estate for humanitarian assistance, since this has always been the plan of my late husband and besides I have no child.
+This warning looks like it could be correct if the &modules list is
+empty.
 
-In an effort to compliment the good work of God almighty and the wish of my late Husband I donate the sum of $2,800,000.00 (Two Million Eight Hundred Thousand United States Dollars) to you.
+Fixes: 013c1667cf78 ("kallsyms: refactor {,module_}kallsyms_on_each_symbol")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ kernel/module.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On your acknowledgment of this mail and informing me of your nationality and current place of resident, my Bank will facilitate due processes for transfer of this legacy to you.
+diff --git a/kernel/module.c b/kernel/module.c
+index 95186c9d81ea..9bd3c821d029 100644
+--- a/kernel/module.c
++++ b/kernel/module.c
+@@ -4447,7 +4447,7 @@ int module_kallsyms_on_each_symbol(int (*fn)(void *, const char *,
+ {
+ 	struct module *mod;
+ 	unsigned int i;
+-	int ret;
++	int ret = 0;
+ 
+ 	mutex_lock(&module_mutex);
+ 	list_for_each_entry(mod, &modules, list) {
+-- 
+2.30.0
 
-May God bless you as you use this money judiciously for the work of charity.
-
-Sincere regards,
-
-Mrs.verenich ekaterina

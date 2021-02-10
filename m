@@ -2,73 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C452F315F1F
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 06:43:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5626231604F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 08:49:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231484AbhBJFn2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Feb 2021 00:43:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35980 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231458AbhBJFnX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Feb 2021 00:43:23 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 49D1B64E3E;
-        Wed, 10 Feb 2021 05:42:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612935762;
-        bh=LWLN+C2cwhauN4xaZIPOAGBmvFz2pWpCauybY9DtChw=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=MmZOvvXj5DXJD1nC14WUSOxmMJf3onbk/yUVk6MgsWgNrrlVUHaEYvLdwy1J4t3lM
-         mKIARWxLVKQAWmpT4UWXi+0MrWzGXexahrZoQudeWizVLPinyZSGh3w5J3edazc1kE
-         ZbxpABlaB8ZxSR/GygaZ3hRQSbUT0cwO4zDpqc7ULVLJGBZQWM3ZtMipB6KMgKkxoz
-         VG863JxCY6i8ItD5mw/BJb6U9u28bs/GyBE4Jb3LbqsgWsUlN15GCBn/SoCqmvwGaN
-         hKN0G0e2AKvslY0eq6Ar9Wbh4E106hhVunyFlTDbRs9sCV7Tsu6l7TVAWFHXS7q3u8
-         Lw8XXPJq0fChg==
-Message-ID: <28f0dde76d1dbc666a4eaf9e5b23eaec9989aad8.camel@kernel.org>
-Subject: Re: [PATCH] net/mlx5: docs: correct section reference in table of
- contents
-From:   Saeed Mahameed <saeed@kernel.org>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Parav Pandit <parav@nvidia.com>, netdev@vger.kernel.org,
-        linux-rdma@vger.kernel.org
-Cc:     Leon Romanovsky <leon@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Tue, 09 Feb 2021 21:42:41 -0800
-In-Reply-To: <20210205095506.29146-1-lukas.bulwahn@gmail.com>
-References: <20210205095506.29146-1-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3 (3.38.3-1.fc33) 
+        id S232841AbhBJHs2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Feb 2021 02:48:28 -0500
+Received: from mail29.static.mailgun.info ([104.130.122.29]:38527 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232864AbhBJHrU (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 10 Feb 2021 02:47:20 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1612943221; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=iSB3ttwA0JFsbKBWrzyvbO2MfU9rmRMghR0q+MB5dO8=;
+ b=FJ9q5ThMwEzr8w3iQcmmGw6KQYKOCliPzmzv++y6FYDB/Dz6cF5Y3uIvJJlv7Wh9Lx3Z7ZfK
+ bu2HyFhV8MOkBYfGBsljsOqZFN+QpvSsutzakLkI3LRoMfOXg8lDgtnxrmJ3bXZyK4M5wYi1
+ NJCE4Ffu9iJDTio3gxZM5FrbP9k=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 60238f5381f6c45dcef81ebb (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 10 Feb 2021 07:46:27
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 04D54C43463; Wed, 10 Feb 2021 07:46:27 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EFF00C433C6;
+        Wed, 10 Feb 2021 07:46:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EFF00C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] ath11k: fix a locking bug in ath11k_mac_op_start()
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <YBk4GoeE+yc0wlJH@mwanda>
+References: <YBk4GoeE+yc0wlJH@mwanda>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Peter Oh <peter.oh@eero.com>, Carl Huang <cjhuang@codeaurora.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210210074627.04D54C43463@smtp.codeaurora.org>
+Date:   Wed, 10 Feb 2021 07:46:27 +0000 (UTC)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 2021-02-05 at 10:55 +0100, Lukas Bulwahn wrote:
-> Commit 142d93d12dc1 ("net/mlx5: Add devlink subfunction port
-> documentation") refers to a section 'mlx5 port function' in the table
-> of
-> contents, but includes a section 'mlx5 function attributes' instead.
-> 
-> Hence, make htmldocs warns:
-> 
->   mlx5.rst:16: WARNING: Unknown target name: "mlx5 port function".
-> 
-> Correct the section reference in table of contents to the actual name
-> of
-> section in the documentation.
-> 
-> Also, tune another section underline while visiting this document.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
-> Saeed, please pick this patch for your -next tree on top of the
-> commit above.
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-Applied to net-next-mlx5,
+> This error path leads to a Smatch warning:
+> 
+> 	drivers/net/wireless/ath/ath11k/mac.c:4269 ath11k_mac_op_start()
+> 	error: double unlocked '&ar->conf_mutex' (orig line 4251)
+> 
+> We're not holding the lock when we do the "goto err;" so it leads to a
+> double unlock.  The fix is to hold the lock for a little longer.
+> 
+> Fixes: c83c500b55b6 ("ath11k: enable idle power save mode")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> [kvalo@codeaurora.org: move also rcu_assign_pointer() call]
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Thanks,
-Saeed.
+Patch applied to ath-next branch of ath.git, thanks.
+
+c202e2ebe1dc ath11k: fix a locking bug in ath11k_mac_op_start()
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/YBk4GoeE+yc0wlJH@mwanda/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

@@ -2,133 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85FD63167B2
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 14:16:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B80CA316A1F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 16:27:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231311AbhBJNPo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Feb 2021 08:15:44 -0500
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:49754 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229862AbhBJNPl (ORCPT
+        id S231609AbhBJP1g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Feb 2021 10:27:36 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:46462 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229934AbhBJP1e (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Feb 2021 08:15:41 -0500
-X-IronPort-AV: E=Sophos;i="5.81,168,1610406000"; 
-   d="scan'208";a="492258135"
-Received: from 173.121.68.85.rev.sfr.net (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 Feb 2021 14:14:54 +0100
-Date:   Wed, 10 Feb 2021 14:14:54 +0100 (CET)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Daniel Vetter <daniel@ffwll.ch>
-cc:     Lee Jones <lee.jones@linaro.org>,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        kernel-janitors@vger.kernel.org,
-        Michal Simek <michal.simek@xilinx.com>,
-        dri-devel@lists.freedesktop.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-fbdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Shawn Guo <shawnguo@kernel.org>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] video: use getter/setter functions
-In-Reply-To: <YCPbxSHWMipTz+mB@phenom.ffwll.local>
-Message-ID: <alpine.DEB.2.22.394.2102101414100.2881@hadrien>
-References: <20210209211325.1261842-1-Julia.Lawall@inria.fr> <20210210082341.GH220368@dell> <YCPbxSHWMipTz+mB@phenom.ffwll.local>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        Wed, 10 Feb 2021 10:27:34 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1l9rO9-0007dY-2z; Wed, 10 Feb 2021 15:26:45 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Huazhong Tan <tanhuazhong@huawei.com>, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] net: hns3: Fix uninitialized return from function
+Date:   Wed, 10 Feb 2021 15:26:44 +0000
+Message-Id: <20210210152644.137770-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-2043823747-1612962895=:2881"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Colin Ian King <colin.king@canonical.com>
 
---8323329-2043823747-1612962895=:2881
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+Currently function hns3_reset_notify_uninit_enet is returning
+the contents of the uninitialized variable ret.  Fix this by
+removing ret (since it is no longer used) and replace it with
+a return of the literal value 0.
 
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: 64749c9c38a9 ("net: hns3: remove redundant return value of hns3_uninit_all_ring()")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index 9565b7999426..bf4302a5cf95 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -4640,7 +4640,6 @@ static int hns3_reset_notify_uninit_enet(struct hnae3_handle *handle)
+ {
+ 	struct net_device *netdev = handle->kinfo.netdev;
+ 	struct hns3_nic_priv *priv = netdev_priv(netdev);
+-	int ret;
+ 
+ 	if (!test_and_clear_bit(HNS3_NIC_STATE_INITED, &priv->state)) {
+ 		netdev_warn(netdev, "already uninitialized\n");
+@@ -4662,7 +4661,7 @@ static int hns3_reset_notify_uninit_enet(struct hnae3_handle *handle)
+ 
+ 	hns3_put_ring_config(priv);
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static int hns3_reset_notify(struct hnae3_handle *handle,
+-- 
+2.30.0
 
-On Wed, 10 Feb 2021, Daniel Vetter wrote:
-
-> On Wed, Feb 10, 2021 at 08:23:41AM +0000, Lee Jones wrote:
-> > On Tue, 09 Feb 2021, Julia Lawall wrote:
-> >
-> > > Use getter and setter functions, for platform_device structures and a
-> > > spi_device structure.
-> > >
-> > > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> > >
-> > > ---
-> > >  drivers/video/backlight/qcom-wled.c                                  |    2 +-
-> >
-> > This patch is fine.
-> >
-> > Could you please split it out and submit it separately though please.
->
-> Or just apply the entire patch through backlight tree, there's nothing
-> going on in fbdev anyway I think.
-
-I was indeed not sure how much to split this up.  If it is desired to
-split it more, I can do that.
-
-julia
-
->
-> Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
->
-> >
-> > >  drivers/video/fbdev/amifb.c                                          |    4 ++--
-> > >  drivers/video/fbdev/da8xx-fb.c                                       |    4 ++--
-> > >  drivers/video/fbdev/imxfb.c                                          |    2 +-
-> > >  drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c |    6 +++---
-> > >  drivers/video/fbdev/omap2/omapfb/dss/dpi.c                           |    4 ++--
-> > >  drivers/video/fbdev/omap2/omapfb/dss/dsi.c                           |    4 ++--
-> > >  drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c                         |    2 +-
-> > >  drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c                         |    2 +-
-> > >  drivers/video/fbdev/xilinxfb.c                                       |    2 +-
-> > >  10 files changed, 16 insertions(+), 16 deletions(-)
-> >
-> > ...]
-> >
-> > > diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> > > index 3bc7800eb0a9..091f07e7c145 100644
-> > > --- a/drivers/video/backlight/qcom-wled.c
-> > > +++ b/drivers/video/backlight/qcom-wled.c
-> > > @@ -1692,7 +1692,7 @@ static int wled_probe(struct platform_device *pdev)
-> > >
-> > >  static int wled_remove(struct platform_device *pdev)
-> > >  {
-> > > -	struct wled *wled = dev_get_drvdata(&pdev->dev);
-> > > +	struct wled *wled = platform_get_drvdata(pdev);
-> > >
-> > >  	mutex_destroy(&wled->lock);
-> > >  	cancel_delayed_work_sync(&wled->ovp_work);
-> >
-> > For my own reference (apply this as-is to your sign-off block):
-> >
-> >   Acked-for-Backlight-by: Lee Jones <lee.jones@linaro.org>
-> >
-> > --
-> > Lee Jones [李琼斯]
-> > Senior Technical Lead - Developer Services
-> > Linaro.org │ Open source software for Arm SoCs
-> > Follow Linaro: Facebook | Twitter | Blog
-> > _______________________________________________
-> > dri-devel mailing list
-> > dri-devel@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/dri-devel
->
-> --
-> Daniel Vetter
-> Software Engineer, Intel Corporation
-> http://blog.ffwll.ch
->
---8323329-2043823747-1612962895=:2881--

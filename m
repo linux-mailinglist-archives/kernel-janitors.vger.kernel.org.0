@@ -2,88 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5626231604F
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 08:49:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E35A0316077
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 09:00:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232841AbhBJHs2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Feb 2021 02:48:28 -0500
-Received: from mail29.static.mailgun.info ([104.130.122.29]:38527 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232864AbhBJHrU (ORCPT
+        id S233199AbhBJIAj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Feb 2021 03:00:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42616 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233070AbhBJIAi (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Feb 2021 02:47:20 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1612943221; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=iSB3ttwA0JFsbKBWrzyvbO2MfU9rmRMghR0q+MB5dO8=;
- b=FJ9q5ThMwEzr8w3iQcmmGw6KQYKOCliPzmzv++y6FYDB/Dz6cF5Y3uIvJJlv7Wh9Lx3Z7ZfK
- bu2HyFhV8MOkBYfGBsljsOqZFN+QpvSsutzakLkI3LRoMfOXg8lDgtnxrmJ3bXZyK4M5wYi1
- NJCE4Ffu9iJDTio3gxZM5FrbP9k=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 60238f5381f6c45dcef81ebb (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 10 Feb 2021 07:46:27
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 04D54C43463; Wed, 10 Feb 2021 07:46:27 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id EFF00C433C6;
-        Wed, 10 Feb 2021 07:46:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EFF00C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] ath11k: fix a locking bug in ath11k_mac_op_start()
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <YBk4GoeE+yc0wlJH@mwanda>
-References: <YBk4GoeE+yc0wlJH@mwanda>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Peter Oh <peter.oh@eero.com>, Carl Huang <cjhuang@codeaurora.org>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210210074627.04D54C43463@smtp.codeaurora.org>
-Date:   Wed, 10 Feb 2021 07:46:27 +0000 (UTC)
+        Wed, 10 Feb 2021 03:00:38 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABCD2C061574;
+        Tue,  9 Feb 2021 23:59:57 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id l12so1765931edt.3;
+        Tue, 09 Feb 2021 23:59:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=6+Y+v0mf5SvNQeLGUI6zmXJKmFCPE8MP5k1v0xa403Q=;
+        b=b4XWVQ7l167lCCU8tm3PcBUEZenz+6KZuxZicTmhBF6ZaqXf4F0WpbEgmO9odZSyeQ
+         QS+gwT1guxNGc8txE8JNkjHmnHOZ4fIjhcYnZj8iomLcMmEXouN1ErVvR8+vh74T4Kq0
+         VStESSSuV9kkuVn4d/9QFL9YAVhnu9+9/ASSbKaRUXyxDixTkQQK29PulZ04pv7PJ/bN
+         1r4Yt3wwXFEQA4XGt3Qm8OY0KJ6SFwlBVo7lZP3iI4iMPqgUQhpB7zT0ejz42c4zIE+z
+         cgpPTfyHpwR/P/CVBG/giG4QxD1/N//ZEw4k7jOl9eQF0B1pLMz7l8l2iEQ6y4lf8x63
+         rJyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=6+Y+v0mf5SvNQeLGUI6zmXJKmFCPE8MP5k1v0xa403Q=;
+        b=BKwcGqn2YBSSRz1NwKDi2fLTbHBWsQitTrxOAMJs/hlOukS4ptwEZ2qxlQP69tm/Xt
+         sOyfQmacjjVinRtcTQDujlsz48mtpSyTI7QRxkskN5DwMN10q9rzll2lcyHQLNfwXpUl
+         laGYruyHZnRKIBx8OgJI6tZd9piKrklqlwOj7/cxrymdwumPDOG8cJOP8Xv7ouBq1ne1
+         DnElvnUVkED+vIce4gvxsidmieiQdXOKhPT6fJK0TGZFSYjokJeuUNAoOFzA6dub679g
+         pG8wcmousA8C7CmjDaLC18IbCPuILOa/OYk3+5gIJy1WFsioIV5mxjzfJsA9g9C/k0nD
+         sfPQ==
+X-Gm-Message-State: AOAM533wHD0WH+GZaEwt1D7k0UwE/yAfMG9QiFCcvGLSjzA8U44p/b5D
+        8YFn3LIv/gPrmSiqQwuEjUrAk4EKcfYGZw==
+X-Google-Smtp-Source: ABdhPJw2mVlmcWbZgsGJ6E4Ewxaxytwh9nNbkSiFkNHSY5JfY9tBfHckwV+HRFWfPpaYFdLoLONV6w==
+X-Received: by 2002:a50:e882:: with SMTP id f2mr2028558edn.35.1612943996343;
+        Tue, 09 Feb 2021 23:59:56 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d7e:e500:60d3:cde9:82a5:6b47])
+        by smtp.gmail.com with ESMTPSA id l5sm433116edv.50.2021.02.09.23.59.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Feb 2021 23:59:55 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Keguang Zhang <keguang.zhang@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        linux-mips@linux-mips.org
+Cc:     Joe Perches <joe@perches.com>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: replace non-matching patterns for loongson{2,3}
+Date:   Wed, 10 Feb 2021 08:59:47 +0100
+Message-Id: <20210210075947.15604-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+Commit ffe1f9356fbe ("MAINTAINERS: Add Loongson-2/Loongson-3 maintainers")
+adds quite generic file entries for drivers/*/*loongson{2,3}* and
+drivers/*/*/*loongson{2,3}* to be informed on changes to all loongson{2,3}
+files in drivers.
 
-> This error path leads to a Smatch warning:
-> 
-> 	drivers/net/wireless/ath/ath11k/mac.c:4269 ath11k_mac_op_start()
-> 	error: double unlocked '&ar->conf_mutex' (orig line 4251)
-> 
-> We're not holding the lock when we do the "goto err;" so it leads to a
-> double unlock.  The fix is to hold the lock for a little longer.
-> 
-> Fixes: c83c500b55b6 ("ath11k: enable idle power save mode")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> [kvalo@codeaurora.org: move also rcu_assign_pointer() call]
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+However, only the pattern 'drivers/*/*loongson2*' matches to one file in
+the repository, i.e., drivers/cpufreq/loongson2_cpufreq.c; all other
+patterns have no file matches.
 
-Patch applied to ath-next branch of ath.git, thanks.
+Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
 
-c202e2ebe1dc ath11k: fix a locking bug in ath11k_mac_op_start()
+  warning: no file matches    F:    drivers/*/*/*loongson2*
+  warning: no file matches    F:    drivers/*/*/*loongson3*
+  warning: no file matches    F:    drivers/*/*loongson3*
 
+As in the last two and half years, no further files and drivers have
+showed up to match those patterns, just name the one file that matches
+explicitly and delete the others without a match.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on current master and next-20201102
+
+Keguang, Huacai, Jiaxun, please ack.
+
+Thomas, please pick this minor non-urgent cleanup patch.
+
+ MAINTAINERS | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b4197e9da495..fc08f628e196 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -11719,8 +11719,7 @@ L:	linux-mips@vger.kernel.org
+ S:	Maintained
+ F:	arch/mips/include/asm/mach-loongson2ef/
+ F:	arch/mips/loongson2ef/
+-F:	drivers/*/*/*loongson2*
+-F:	drivers/*/*loongson2*
++F:	drivers/cpufreq/loongson2_cpufreq.c
+ 
+ MIPS/LOONGSON64 ARCHITECTURE
+ M:	Huacai Chen <chenhc@lemote.com>
+@@ -11729,8 +11728,6 @@ L:	linux-mips@vger.kernel.org
+ S:	Maintained
+ F:	arch/mips/include/asm/mach-loongson64/
+ F:	arch/mips/loongson64/
+-F:	drivers/*/*/*loongson3*
+-F:	drivers/*/*loongson3*
+ F:	drivers/irqchip/irq-loongson*
+ F:	drivers/platform/mips/cpu_hwmon.c
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/YBk4GoeE+yc0wlJH@mwanda/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.17.1
 

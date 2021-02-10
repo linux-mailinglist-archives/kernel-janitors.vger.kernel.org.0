@@ -2,129 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 898B13160E7
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 09:24:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EADC2316152
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 09:46:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233980AbhBJIYj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Feb 2021 03:24:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47736 "EHLO
+        id S230360AbhBJIpZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Feb 2021 03:45:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233976AbhBJIYZ (ORCPT
+        with ESMTP id S229750AbhBJIjD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Feb 2021 03:24:25 -0500
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44D2AC0613D6
-        for <kernel-janitors@vger.kernel.org>; Wed, 10 Feb 2021 00:23:45 -0800 (PST)
-Received: by mail-wr1-x436.google.com with SMTP id n6so1433291wrv.8
-        for <kernel-janitors@vger.kernel.org>; Wed, 10 Feb 2021 00:23:45 -0800 (PST)
+        Wed, 10 Feb 2021 03:39:03 -0500
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1764C061756;
+        Wed, 10 Feb 2021 00:38:22 -0800 (PST)
+Received: by mail-ed1-x534.google.com with SMTP id t5so1849276eds.12;
+        Wed, 10 Feb 2021 00:38:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=MJzRoK5AHHgr8V25vpyceNTWmZxiFyKsyjhqQm8Vxxc=;
-        b=d/b3ponHrtEaGh9+nR4CHVGjqOHtnpraE5raOOOMutWd3Y/vW/uw1i/PmwjfcCAOlI
-         hSBPogoT7cAULj0g3PmoKbO+SoDAWMPSOECHnT1Hf4DW/HG3NgCZs5Oz4yycpbsGpbXz
-         6aDc3GNQtnk1ZzXHSwQCVv4LOVj0FL2tcZrnkEKPH22CeUw6azGEwO6gqPhOeo/UTzC8
-         CAGMYMu0CibvYCRJgy2fuPg3TqVZbhGt5gHufNtUof0Gw0FDR3KgWX5KWtTvRU2bJCB3
-         6J8LXoac3H1R5/6ZWZ8wIHim0sOUZG312tHezmcG2vA/YZDFQNq2NLrC7BlZj/TPwF8d
-         LG7A==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=FC23kK9l4Y+AmBOl3hxKM27Ymb4/vFiZ7s/f3NCHXFc=;
+        b=afLGtRGPqaIuDJhnxaaU0/3sFtta6QFmaZHhjYAYJkiptmKylrXeFVU7fXZDie3gQu
+         Y0a/rVOM5vn5FaKL8v5PQlbri8mrOpNGWQgIhJkyNPoJoe9KHFXFlkfsgmgrfNjwBLaG
+         /ymmaNUFhrjqEFuih2krNZfn1dPXLfiW00JuNNrqWCrrQlpZJKk9XYj4s8reORLGCUF8
+         pOOFCnlTIr0od/dOP9z3cK3Co/vn7Di5QVizLr1v+ZbE9znTCCfpduZkR7pnDHAMe8NU
+         JPvKDUeTh0ZCnvESuYhKGlLHBeBf0h3Bxy5MMRV5SNRMxoBdv24yWBC8X8V1KjZ14Gsc
+         HIbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=MJzRoK5AHHgr8V25vpyceNTWmZxiFyKsyjhqQm8Vxxc=;
-        b=kA7iDFMCJ5V+lGMMQgPRUEP1hmOb+vwKZFk9vIlpV5Yl+OED3dOgCiRHrlDKROHIGO
-         ZLSCRlSys0BTLDVSsPXE6ti/vLpIEC/X41N6xA+hR3bP2Z42I2IFueCj/h7ZcJs06YV1
-         rvNYSpcgzMQI6R/XxxMRNPcmHt7rrrhxyUF7DG6rg0d+ui20D+0aEDE2hMk04BDOoTGp
-         GoNL/4/axKI+iV2bRRbueC5Hd/PHYMJVj/xvHRi1pWRoR3TLvSJTHc3EWsGFKIlCXTqN
-         gYMs3MsC6ei4zfUoPrjgAP0Dzn9jZT1wzFlrsqO8xdU6MCU+ste7gzjIbG+U1dlfbdk8
-         dc+w==
-X-Gm-Message-State: AOAM533UMjpXbWph//TP0PrRTSaiHW4+X3hOjsX8ywe9oh355fvSvxOs
-        u737GNk2dpsOm3ulzMOuE0K0Qw==
-X-Google-Smtp-Source: ABdhPJzpmLKGtf/B7RhbJlQwrCAP0Mb8Tyioqci54O7y0v57o4U82PROFirmSWr5+lJk79X2A0kouQ==
-X-Received: by 2002:a05:6000:2cf:: with SMTP id o15mr2236419wry.184.1612945423966;
-        Wed, 10 Feb 2021 00:23:43 -0800 (PST)
-Received: from dell ([91.110.221.237])
-        by smtp.gmail.com with ESMTPSA id h9sm1850897wrc.94.2021.02.10.00.23.42
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=FC23kK9l4Y+AmBOl3hxKM27Ymb4/vFiZ7s/f3NCHXFc=;
+        b=nGlWG84NqlkU4F6MGeII9uCadRCrupJeQt9f8HH8GccVK7Yd17505RKOQ54wN/05Pc
+         clIP88RQyA5IudC6vyDSH8nDDRxKqBh+XHtAu/QDEjXq6GlDNxOc2xbbpTLkWpCyg1u/
+         wAq6HActenneWyj16KSIRF+aD1xayJo90gNQkMcRGsdlCMnikHgXseNmt6WWufbh1zsD
+         A/Pwf/zm/dLhJDtllh6kwajJGcr+rgPd/VVNZOtXAUZgvvW0fs6LAJTaOd+eVa+CxwSs
+         AUZcqTlYy33EwacxPViv59dGUM2VgvZpSirA9AxTWrq3tE/V74etLV0Tbnp/UEThC6j5
+         e9dg==
+X-Gm-Message-State: AOAM530hbTuOhSJlMDtVmcFLLE0nQO/c6mzhEoebnLXs++2K/5Ep5xwt
+        /3fAtmMjErdvSDmF9cKk/MU=
+X-Google-Smtp-Source: ABdhPJzxYmpe3XmKO5QxPT2B70wJtkEanUMqmOysq7XfFUpBIwe7/x/B6MFTkhwVErBSYKPQOqCU9A==
+X-Received: by 2002:a05:6402:4316:: with SMTP id m22mr2186877edc.64.1612946301316;
+        Wed, 10 Feb 2021 00:38:21 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d7e:e500:60d3:cde9:82a5:6b47])
+        by smtp.gmail.com with ESMTPSA id kv24sm626676ejc.117.2021.02.10.00.38.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Feb 2021 00:23:43 -0800 (PST)
-Date:   Wed, 10 Feb 2021 08:23:41 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     Fabio Estevam <festevam@gmail.com>,
-        kernel-janitors@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Michal Simek <michal.simek@xilinx.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        NXP Linux Team <linux-imx@nxp.com>
-Subject: Re: [PATCH] video: use getter/setter functions
-Message-ID: <20210210082341.GH220368@dell>
-References: <20210209211325.1261842-1-Julia.Lawall@inria.fr>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210209211325.1261842-1-Julia.Lawall@inria.fr>
+        Wed, 10 Feb 2021 00:38:20 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Keguang Zhang <keguang.zhang@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        linux-mips@linux-mips.org
+Cc:     Joe Perches <joe@perches.com>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH RESEND] MAINTAINERS: replace non-matching patterns for loongson{2,3}
+Date:   Wed, 10 Feb 2021 09:38:12 +0100
+Message-Id: <20210210083812.6126-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 09 Feb 2021, Julia Lawall wrote:
+Commit ffe1f9356fbe ("MAINTAINERS: Add Loongson-2/Loongson-3 maintainers")
+adds quite generic file entries for drivers/*/*loongson{2,3}* and
+drivers/*/*/*loongson{2,3}* to be informed on changes to all loongson{2,3}
+files in drivers.
 
-> Use getter and setter functions, for platform_device structures and a
-> spi_device structure.
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> 
-> ---
->  drivers/video/backlight/qcom-wled.c                                  |    2 +-
+However, only the pattern 'drivers/*/*loongson2*' matches to one file in
+the repository, i.e., drivers/cpufreq/loongson2_cpufreq.c; all other
+patterns have no file matches.
 
-This patch is fine.
+Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
 
-Could you please split it out and submit it separately though please.
+  warning: no file matches    F:    drivers/*/*/*loongson2*
+  warning: no file matches    F:    drivers/*/*/*loongson3*
+  warning: no file matches    F:    drivers/*/*loongson3*
 
->  drivers/video/fbdev/amifb.c                                          |    4 ++--
->  drivers/video/fbdev/da8xx-fb.c                                       |    4 ++--
->  drivers/video/fbdev/imxfb.c                                          |    2 +-
->  drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c |    6 +++---
->  drivers/video/fbdev/omap2/omapfb/dss/dpi.c                           |    4 ++--
->  drivers/video/fbdev/omap2/omapfb/dss/dsi.c                           |    4 ++--
->  drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c                         |    2 +-
->  drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c                         |    2 +-
->  drivers/video/fbdev/xilinxfb.c                                       |    2 +-
->  10 files changed, 16 insertions(+), 16 deletions(-)
+As in the last two and half years, no further files and drivers have
+showed up to match those patterns, just name the one file that matches
+explicitly and delete the others without a match.
 
-...]
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on current master and next-20210209
 
-> diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> index 3bc7800eb0a9..091f07e7c145 100644
-> --- a/drivers/video/backlight/qcom-wled.c
-> +++ b/drivers/video/backlight/qcom-wled.c
-> @@ -1692,7 +1692,7 @@ static int wled_probe(struct platform_device *pdev)
->  
->  static int wled_remove(struct platform_device *pdev)
->  {
-> -	struct wled *wled = dev_get_drvdata(&pdev->dev);
-> +	struct wled *wled = platform_get_drvdata(pdev);
->  
->  	mutex_destroy(&wled->lock);
->  	cancel_delayed_work_sync(&wled->ovp_work);
+Keguang, Huacai, Jiaxun, please ack.
 
-For my own reference (apply this as-is to your sign-off block):
+Thomas, please pick this minor non-urgent cleanup patch.
 
-  Acked-for-Backlight-by: Lee Jones <lee.jones@linaro.org>
+ MAINTAINERS | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9e2ab01363df..4bdf2fdb0456 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -11946,8 +11946,7 @@ L:	linux-mips@vger.kernel.org
+ S:	Maintained
+ F:	arch/mips/include/asm/mach-loongson2ef/
+ F:	arch/mips/loongson2ef/
+-F:	drivers/*/*/*loongson2*
+-F:	drivers/*/*loongson2*
++F:	drivers/cpufreq/loongson2_cpufreq.c
+ 
+ MIPS/LOONGSON64 ARCHITECTURE
+ M:	Huacai Chen <chenhuacai@kernel.org>
+@@ -11956,8 +11955,6 @@ L:	linux-mips@vger.kernel.org
+ S:	Maintained
+ F:	arch/mips/include/asm/mach-loongson64/
+ F:	arch/mips/loongson64/
+-F:	drivers/*/*/*loongson3*
+-F:	drivers/*/*loongson3*
+ F:	drivers/irqchip/irq-loongson*
+ F:	drivers/platform/mips/cpu_hwmon.c
+ 
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.17.1
+

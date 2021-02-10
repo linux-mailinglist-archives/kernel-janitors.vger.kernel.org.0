@@ -2,69 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 531D6316FAD
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 20:09:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 424C6316FDE
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 20:16:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234401AbhBJTIo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Feb 2021 14:08:44 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:53433 "EHLO
+        id S234570AbhBJTPx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Feb 2021 14:15:53 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:53842 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233117AbhBJTIh (ORCPT
+        with ESMTP id S233150AbhBJTPq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Feb 2021 14:08:37 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        Wed, 10 Feb 2021 14:15:46 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212])
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1l9uq9-0000HE-1u; Wed, 10 Feb 2021 19:07:53 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     "Paul J . Murphy" <paul.j.murphy@intel.com>,
-        Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
+        id 1l9ux6-0000pz-Tc; Wed, 10 Feb 2021 19:15:04 +0000
+Subject: NAK: [PATCH][next] media: uvcvideo: remove duplicated dma_dev
+ assignment
+From:   Colin Ian King <colin.king@canonical.com>
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Martina Krasteva <martinax.krasteva@intel.com>,
-        Gjorgji Rosikopulos <gjorgjix.rosikopulos@intel.com>,
-        linux-media@vger.kernel.org
+        Ricardo Ribalda <ribalda@chromium.org>,
+        Tomasz Figa <tfiga@chromium.org>, linux-media@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] media: i2c: imx334: Fix a read of the uninitialized variable ret
-Date:   Wed, 10 Feb 2021 19:07:52 +0000
-Message-Id: <20210210190752.146631-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.30.0
+References: <20210210174555.144128-1-colin.king@canonical.com>
+Message-ID: <1d50eb5e-bed3-50dd-6eaf-b055e188dcf8@canonical.com>
+Date:   Wed, 10 Feb 2021 19:15:04 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210210174555.144128-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 10/02/2021 17:45, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The assignment to dma_dev has been performed twice in one
+> statement. Fix this by removing the extraneous assignment.
+> 
+> Addresses-Coverity: ("Evaluation order violation")
+> Fixes: fdcd02a641e2 ("media: uvcvideo: Use dma_alloc_noncontiguos API")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/media/usb/uvc/uvc_video.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+> index dc81f9a86eca..edf451a956d8 100644
+> --- a/drivers/media/usb/uvc/uvc_video.c
+> +++ b/drivers/media/usb/uvc/uvc_video.c
+> @@ -1105,7 +1105,7 @@ static inline struct device *stream_to_dmadev(struct uvc_streaming *stream)
+>  
+>  static void uvc_urb_dma_sync(struct uvc_urb *uvc_urb, bool for_device)
+>  {
+> -	struct device *dma_dev = dma_dev = stream_to_dmadev(uvc_urb->stream);
+> +	struct device *dma_dev = stream_to_dmadev(uvc_urb->stream);
+>  
+>  	if (for_device) {
+>  		dma_sync_sgtable_for_device(dma_dev, uvc_urb->sgt,
+> 
 
-Currently there is a dev_err error message that is printing the
-error status in variable ret (that has not been set) instead of
-the correct error status from imx334->reset_gpio.  Fix this.
-
-Addresses-Coverity: ("Uninitialized scalar variable")
-Fixes: 9746b11715c3 ("media: i2c: Add imx334 camera sensor driver")
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/media/i2c/imx334.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/media/i2c/imx334.c b/drivers/media/i2c/imx334.c
-index 07e31bc2ef18..f8b1caf26c9b 100644
---- a/drivers/media/i2c/imx334.c
-+++ b/drivers/media/i2c/imx334.c
-@@ -790,7 +790,8 @@ static int imx334_parse_hw_config(struct imx334 *imx334)
- 	imx334->reset_gpio = devm_gpiod_get_optional(imx334->dev, "reset",
- 						     GPIOD_OUT_LOW);
- 	if (IS_ERR(imx334->reset_gpio)) {
--		dev_err(imx334->dev, "failed to get reset gpio %d", ret);
-+		dev_err(imx334->dev, "failed to get reset gpio %ld",
-+			IS_ERR_VALUE(imx334->reset_gpio));
- 		return PTR_ERR(imx334->reset_gpio);
- 	}
- 
--- 
-2.30.0
-
+there are some other occurrences of this, I'll send a V2.

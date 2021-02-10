@@ -2,58 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F777316B00
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 17:19:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7B36316D37
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Feb 2021 18:48:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232246AbhBJQSo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Feb 2021 11:18:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56174 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232062AbhBJQSl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Feb 2021 11:18:41 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2D5BE64E76;
-        Wed, 10 Feb 2021 16:17:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612973880;
-        bh=z11X40ByBwLWoBHw1+NfChx4CZeIHFtuXrvlkGJQ3Ys=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Elq8p36WSo3O9tH0kKFOe6CvIQ9iHj6UkuGTWwI2LlVyzXqa5v02hTGBeqbZkNzRG
-         2Pcpf1aYrNXOPOTPhrfdc9Z9JArg9Icx5yg+4Mua8Qbo5R7AmaoGRn9W0ZC0E3M9Oc
-         oaYs8KWoTjp/AVcH6WhlXg1sgLSiVj+VMURLENI3SHb0sx2L4t6xYaHddcbxzxODn5
-         L2qBgs6yk+tKh/ShCvryuQrA19piAZA8N43oKyHwXWgk+nF9vIRN62hlr/YwpACF84
-         k5WYJUbYLdicclku6tU8UMv3j9jciAgFE4KJwFcxApvij1BRJhbekaI+P179/6c0MJ
-         yHZJU3z7aklMQ==
-Date:   Wed, 10 Feb 2021 17:17:56 +0100
-From:   Jessica Yu <jeyu@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Christoph Hellwig <hch@lst.de>, Petr Mladek <pmladek@suse.com>,
-        Miroslav Benes <mbenes@suse.cz>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] module: potential uninitialized return in
- module_kallsyms_on_each_symbol()
-Message-ID: <YCQHNI3bowhhnRD+@gunter>
-References: <YCO8AwE57IzaMamG@mwanda>
+        id S232976AbhBJRsF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Feb 2021 12:48:05 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:51186 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233230AbhBJRra (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 10 Feb 2021 12:47:30 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1l9tYp-0002MG-H3; Wed, 10 Feb 2021 17:46:41 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Ricardo Ribalda <ribalda@chromium.org>,
+        Tomasz Figa <tfiga@chromium.org>, linux-media@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] media: uvcvideo: remove duplicated dma_dev assignment
+Date:   Wed, 10 Feb 2021 17:45:55 +0000
+Message-Id: <20210210174555.144128-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <YCO8AwE57IzaMamG@mwanda>
-X-OS:   Linux gunter 5.10.12-1-default x86_64
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-+++ Dan Carpenter [10/02/21 13:57 +0300]:
->Smatch complains that:
->
->	kernel/module.c:4472 module_kallsyms_on_each_symbol()
->        error: uninitialized symbol 'ret'.
->
->This warning looks like it could be correct if the &modules list is
->empty.
->
->Fixes: 013c1667cf78 ("kallsyms: refactor {,module_}kallsyms_on_each_symbol")
->Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied, thanks!
+The assignment to dma_dev has been performed twice in one
+statement. Fix this by removing the extraneous assignment.
 
-Jessica
+Addresses-Coverity: ("Evaluation order violation")
+Fixes: fdcd02a641e2 ("media: uvcvideo: Use dma_alloc_noncontiguos API")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/media/usb/uvc/uvc_video.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+index dc81f9a86eca..edf451a956d8 100644
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -1105,7 +1105,7 @@ static inline struct device *stream_to_dmadev(struct uvc_streaming *stream)
+ 
+ static void uvc_urb_dma_sync(struct uvc_urb *uvc_urb, bool for_device)
+ {
+-	struct device *dma_dev = dma_dev = stream_to_dmadev(uvc_urb->stream);
++	struct device *dma_dev = stream_to_dmadev(uvc_urb->stream);
+ 
+ 	if (for_device) {
+ 		dma_sync_sgtable_for_device(dma_dev, uvc_urb->sgt,
+-- 
+2.30.0
+

@@ -2,175 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D27A5318F05
-	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Feb 2021 16:45:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBA64318F4F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Feb 2021 17:01:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229668AbhBKPnk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 11 Feb 2021 10:43:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55292 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbhBKPk5 (ORCPT
+        id S230132AbhBKQAl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 11 Feb 2021 11:00:41 -0500
+Received: from mail-pg1-f169.google.com ([209.85.215.169]:43027 "EHLO
+        mail-pg1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229983AbhBKP6c (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 11 Feb 2021 10:40:57 -0500
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BA78C061574
-        for <kernel-janitors@vger.kernel.org>; Thu, 11 Feb 2021 07:40:17 -0800 (PST)
-Received: by mail-wm1-x334.google.com with SMTP id a16so6136710wmm.0
-        for <kernel-janitors@vger.kernel.org>; Thu, 11 Feb 2021 07:40:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=BQASuo84wfslsSEivWFaPBGKyJ+9IhWQICA1bAqw9pc=;
-        b=G/UnfUhjvghbtT5LL/ccChqvxR3VGoeJDY0GnhgqREnzARjQQ+nIuF6vtPkRJ67lFU
-         IOrCaSzzOWXuAcKHDhheox4KAPQXkPZ0VlDd70F+0DJpVVTh0rBkQDVTuSHeQ06xKPSb
-         c1cmmAz6bP+t0knwzzSCM+lT37KdOsOWUDOEw=
+        Thu, 11 Feb 2021 10:58:32 -0500
+Received: by mail-pg1-f169.google.com with SMTP id n10so4166567pgl.10;
+        Thu, 11 Feb 2021 07:58:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :content-transfer-encoding:in-reply-to;
-        bh=BQASuo84wfslsSEivWFaPBGKyJ+9IhWQICA1bAqw9pc=;
-        b=qG81SLHVaw/UscxIzW8bVFLJt7IFkmQZlF2tDZECCfS85naE7sXVqMr3YCIEn6I1a2
-         JZf8Q/J98hVTGVoolCk33Dp72ryzR6rIJbo9J/L94dPHnwsw3Xm9oRbQ43H7eyw7FqVT
-         NuySUrZbAGOzzGw8NiqNMHMDKqlzJq/4ybAHW9SnJHEXy7u4y84Asa5m3CcmdCmb8Gr8
-         ky82xAamqVFKkCewI91ELFRPAsPAhySFSFCL/NYf24QMJq4XGsQKRdBY5g2stjHTiPy9
-         /nnSpFW1h2H60lFcXJn3tv6areuadDUQLjFM8NpcIN1rqkeOzR1SS/OfcBz5WSiMbVLY
-         Le9A==
-X-Gm-Message-State: AOAM531yH7Yfdic3NpacDvX2GpRLq3fam+dmNlgHlQ5/z8eIMW/lte04
-        sXgQNKaAbfij9t58sYLBWFZnwg==
-X-Google-Smtp-Source: ABdhPJyEz8KdbutPUEkFdfjjXqFBnVRyCrjCSeZ53ICqWwBwbN6UTPF9mpSKyi9zn1yrCN7w9m+Wqg==
-X-Received: by 2002:a1c:113:: with SMTP id 19mr5676819wmb.7.1613058015846;
-        Thu, 11 Feb 2021 07:40:15 -0800 (PST)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id t2sm5773738wru.53.2021.02.11.07.40.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Feb 2021 07:40:15 -0800 (PST)
-Date:   Thu, 11 Feb 2021 16:40:13 +0100
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Julia Lawall <Julia.Lawall@inria.fr>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        kernel-janitors@vger.kernel.org,
-        Michal Simek <michal.simek@xilinx.com>,
-        dri-devel@lists.freedesktop.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-fbdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Shawn Guo <shawnguo@kernel.org>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] video: use getter/setter functions
-Message-ID: <YCVP3ZKBsJUV0m8G@phenom.ffwll.local>
-Mail-Followup-To: Lee Jones <lee.jones@linaro.org>,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        kernel-janitors@vger.kernel.org,
-        Michal Simek <michal.simek@xilinx.com>,
-        dri-devel@lists.freedesktop.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>, NXP Linux Team <linux-imx@nxp.com>,
-        linux-fbdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Shawn Guo <shawnguo@kernel.org>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-References: <20210209211325.1261842-1-Julia.Lawall@inria.fr>
- <20210210082341.GH220368@dell>
- <YCPbxSHWMipTz+mB@phenom.ffwll.local>
- <20210210161258.GA124276@x1>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=mzu5SvT094Aj9xpBSbKSYnATyOFU5sYsh4lDYB93wbw=;
+        b=AabvZcUJqbpXJz26ThSvFyrsUphZ6gGvuCWWc0U+v7CVSSsbtzHgiuHeBBx4WO1sIP
+         qm9YnVN3J52hLCF+hHKtjUyVNQ8GU3AHyRcHr6Wx1JJnbcg1OCEj9Q0QUEZv9U1owMUu
+         +EuYWnOcKqFpRyG/J/B5nE6OGiSUnd5KkNqlSxtzcjxonrYha8kZXa0fixa5iiuLrxL+
+         6xiGUlx2xUhVU4dv7kThx23XalKQ0nXJZZ8xAyZkPo1XbsuhK1rvIXFhVAG0RRMi1l6t
+         atzOiGPobiQUFw0Dr0uk0UT80/jL7t/h6C+izzIfR+5p21AZz/ziyK8n1PTHGtH2RA7R
+         u3zQ==
+X-Gm-Message-State: AOAM531T9dEmlr3DcjNJ9yR3XUK4VeKEb/tI/C5GvWV2qAyzoP0TtD4M
+        CEaIB9h5qpalZM2I+v1Tp5s=
+X-Google-Smtp-Source: ABdhPJzu3MAk0XclPIOwd5kfO2xIarZ3P6Mfu+VaT6x+jBwW135zJW6PpUETbhYZAYz4vclpSSADaA==
+X-Received: by 2002:a63:2746:: with SMTP id n67mr8527633pgn.54.1613059061797;
+        Thu, 11 Feb 2021 07:57:41 -0800 (PST)
+Received: from ?IPv6:2601:647:4000:d7:4fec:f2e9:7034:dfe7? ([2601:647:4000:d7:4fec:f2e9:7034:dfe7])
+        by smtp.gmail.com with ESMTPSA id y2sm5673841pjw.36.2021.02.11.07.57.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Feb 2021 07:57:40 -0800 (PST)
+Subject: Re: [PATCH v2] scsi: qla2xxx: Removed extra space in variable
+ declaration.
+To:     "Milan P. Gandhi" <mgandhi@redhat.com>,
+        kernel-janitors@vger.kernel.org
+Cc:     GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
+        njavali@marvell.com, jejb@linux.ibm.com, martin.petersen@oracle.com
+References: <20210211131628.GA10754@machine1>
+From:   Bart Van Assche <bvanassche@acm.org>
+Message-ID: <ccf393f7-cbfc-fb8c-6f73-bb502eaa54f3@acm.org>
+Date:   Thu, 11 Feb 2021 07:57:38 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
+In-Reply-To: <20210211131628.GA10754@machine1>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210210161258.GA124276@x1>
-X-Operating-System: Linux phenom 5.7.0-1-amd64 
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Feb 10, 2021 at 04:12:58PM +0000, Lee Jones wrote:
-> On Wed, 10 Feb 2021, Daniel Vetter wrote:
+On 2/11/21 5:16 AM, Milan P. Gandhi wrote:
+> Removed extra space in variable declaration in qla2x00_sysfs_write_nvram
 > 
-> > On Wed, Feb 10, 2021 at 08:23:41AM +0000, Lee Jones wrote:
-> > > On Tue, 09 Feb 2021, Julia Lawall wrote:
-> > > 
-> > > > Use getter and setter functions, for platform_device structures and a
-> > > > spi_device structure.
-> > > > 
-> > > > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> > > > 
-> > > > ---
-> > > >  drivers/video/backlight/qcom-wled.c                                  |    2 +-
-> > > 
-> > > This patch is fine.
-> > > 
-> > > Could you please split it out and submit it separately though please.
-> > 
-> > Or just apply the entire patch through backlight tree, there's nothing
-> > going on in fbdev anyway I think.
-> > 
-> > Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-> 
-> I can do that.  Is that an fbdev Ack?
+> Signed-off-by: Milan P. Gandhi <mgandhi@redhat.com>
+> ---
+> changes v2:
+>  - Added a small note about change.
+> ---
+> diff --git a/drivers/scsi/qla2xxx/qla_attr.c b/drivers/scsi/qla2xxx/qla_attr.c
+> index ab45ac1e5a72..7f2db8badb6d 100644
+> --- a/drivers/scsi/qla2xxx/qla_attr.c
+> +++ b/drivers/scsi/qla2xxx/qla_attr.c
+> @@ -226,7 +226,7 @@ qla2x00_sysfs_write_nvram(struct file *filp, struct kobject *kobj,
+>  	struct scsi_qla_host *vha = shost_priv(dev_to_shost(container_of(kobj,
+>  	    struct device, kobj)));
+>  	struct qla_hw_data *ha = vha->hw;
+> -	uint16_t	cnt;
+> +	uint16_t cnt;
+>  
+>  	if (!capable(CAP_SYS_ADMIN) || off != 0 || count != ha->nvram_size ||
+>  	    !ha->isp_ops->write_nvram)
 
-Yeah defacto I'm somehow stuck with that as maintainer of last resort :-)
-Iirc we've got an S: orphaned entry pointing at drm.git trees.
--Daniel
+I'm not sure if such a patch is considered substantial enough to be
+included upstream.
+
+For future patches, please follow the guidelines for submitting patches
+and use the imperative mood for the subject (Removed -> Remove) and do
+not end the patch subject with a dot. See also
+Documentation/process/submitting-patches.rst
+
+Bart.
 
 
-> 
-> > > >  drivers/video/fbdev/amifb.c                                          |    4 ++--
-> > > >  drivers/video/fbdev/da8xx-fb.c                                       |    4 ++--
-> > > >  drivers/video/fbdev/imxfb.c                                          |    2 +-
-> > > >  drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c |    6 +++---
-> > > >  drivers/video/fbdev/omap2/omapfb/dss/dpi.c                           |    4 ++--
-> > > >  drivers/video/fbdev/omap2/omapfb/dss/dsi.c                           |    4 ++--
-> > > >  drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c                         |    2 +-
-> > > >  drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c                         |    2 +-
-> > > >  drivers/video/fbdev/xilinxfb.c                                       |    2 +-
-> > > >  10 files changed, 16 insertions(+), 16 deletions(-)
-> > > 
-> > > ...]
-> > > 
-> > > > diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> > > > index 3bc7800eb0a9..091f07e7c145 100644
-> > > > --- a/drivers/video/backlight/qcom-wled.c
-> > > > +++ b/drivers/video/backlight/qcom-wled.c
-> > > > @@ -1692,7 +1692,7 @@ static int wled_probe(struct platform_device *pdev)
-> > > >  
-> > > >  static int wled_remove(struct platform_device *pdev)
-> > > >  {
-> > > > -	struct wled *wled = dev_get_drvdata(&pdev->dev);
-> > > > +	struct wled *wled = platform_get_drvdata(pdev);
-> > > >  
-> > > >  	mutex_destroy(&wled->lock);
-> > > >  	cancel_delayed_work_sync(&wled->ovp_work);
-> > > 
-> > > For my own reference (apply this as-is to your sign-off block):
-> > > 
-> > >   Acked-for-Backlight-by: Lee Jones <lee.jones@linaro.org>
-> > > 
-> > 
-> 
-> -- 
-> Lee Jones [李琼斯]
-> Senior Technical Lead - Developer Services
-> Linaro.org │ Open source software for Arm SoCs
-> Follow Linaro: Facebook | Twitter | Blog
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
-
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch

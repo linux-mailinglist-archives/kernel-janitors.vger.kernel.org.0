@@ -2,72 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A81B531879B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Feb 2021 11:02:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7797318845
+	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Feb 2021 11:36:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230122AbhBKKAJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 11 Feb 2021 05:00:09 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:45523 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230198AbhBKJ5r (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 11 Feb 2021 04:57:47 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1lA8ib-0004VP-1m; Thu, 11 Feb 2021 09:57:01 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Michael Tretter <m.tretter@pengutronix.de>,
-        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next][V2] soc: xilinx: vcu: fix error check on clk_hw_get_parent call
-Date:   Thu, 11 Feb 2021 09:57:00 +0000
-Message-Id: <20210211095700.158960-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.30.0
+        id S229978AbhBKKfP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 11 Feb 2021 05:35:15 -0500
+Received: from elvis.franken.de ([193.175.24.41]:44696 "EHLO elvis.franken.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229766AbhBKKcN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 11 Feb 2021 05:32:13 -0500
+Received: from uucp (helo=alpha)
+        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+        id 1lA9FS-0005LQ-01; Thu, 11 Feb 2021 11:30:58 +0100
+Received: by alpha.franken.de (Postfix, from userid 1000)
+        id 4B308C0E70; Thu, 11 Feb 2021 11:20:39 +0100 (CET)
+Date:   Thu, 11 Feb 2021 11:20:39 +0100
+From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Keguang Zhang <keguang.zhang@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        linux-mips@linux-mips.org, Joe Perches <joe@perches.com>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Pia Eichinger <pia.eichinger@st.oth-regensburg.de>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RESEND] MAINTAINERS: replace non-matching patterns for
+ loongson{2,3}
+Message-ID: <20210211102039.GB7985@alpha.franken.de>
+References: <20210210083812.6126-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210210083812.6126-1-lukas.bulwahn@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Wed, Feb 10, 2021 at 09:38:12AM +0100, Lukas Bulwahn wrote:
+> Commit ffe1f9356fbe ("MAINTAINERS: Add Loongson-2/Loongson-3 maintainers")
+> adds quite generic file entries for drivers/*/*loongson{2,3}* and
+> drivers/*/*/*loongson{2,3}* to be informed on changes to all loongson{2,3}
+> files in drivers.
+> 
+> However, only the pattern 'drivers/*/*loongson2*' matches to one file in
+> the repository, i.e., drivers/cpufreq/loongson2_cpufreq.c; all other
+> patterns have no file matches.
+> 
+> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
+> 
+>   warning: no file matches    F:    drivers/*/*/*loongson2*
+>   warning: no file matches    F:    drivers/*/*/*loongson3*
+>   warning: no file matches    F:    drivers/*/*loongson3*
+> 
+> As in the last two and half years, no further files and drivers have
+> showed up to match those patterns, just name the one file that matches
+> explicitly and delete the others without a match.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+> applies cleanly on current master and next-20210209
+> 
+> Keguang, Huacai, Jiaxun, please ack.
+> 
+> Thomas, please pick this minor non-urgent cleanup patch.
+> 
+>  MAINTAINERS | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
 
-Currently the check for failur on the call to clk_hw_get_parent
-is checking for a null return in the divider pointer instead of
-checking the mux pointer. Fix this.
+applied to mips-next.
 
-Thanks to Michael Tretter for suggesting the correct fix.
+Thomas.
 
-Addresses-Coverity: ("Logically Dead Code")
-Fixes: 9c789deea206 ("soc: xilinx: vcu: implement clock provider for output clocks")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
-
-V2: Check on mux pointer rather than removing deadcode that wasn't
-    actually really dead code.
-
----
- drivers/clk/xilinx/xlnx_vcu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/clk/xilinx/xlnx_vcu.c b/drivers/clk/xilinx/xlnx_vcu.c
-index d66b1315114e..256b8c4b9ee4 100644
---- a/drivers/clk/xilinx/xlnx_vcu.c
-+++ b/drivers/clk/xilinx/xlnx_vcu.c
-@@ -512,7 +512,7 @@ static void xvcu_clk_hw_unregister_leaf(struct clk_hw *hw)
- 
- 	mux = clk_hw_get_parent(divider);
- 	clk_hw_unregister_mux(mux);
--	if (!divider)
-+	if (!mux)
- 		return;
- 
- 	clk_hw_unregister_divider(divider);
 -- 
-2.30.0
-
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]

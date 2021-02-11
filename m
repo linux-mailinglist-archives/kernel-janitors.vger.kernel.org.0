@@ -2,106 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B69003174B8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Feb 2021 00:51:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB2AF3183F5
+	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Feb 2021 04:29:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234042AbhBJXuT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Feb 2021 18:50:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49648 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233949AbhBJXuR (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Feb 2021 18:50:17 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23E4CC06174A;
-        Wed, 10 Feb 2021 15:49:37 -0800 (PST)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 8D12445E;
-        Thu, 11 Feb 2021 00:49:33 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1613000973;
-        bh=MlMMJDIllbHroxxS5PfHR4lyjqzjRXrCAXqI9l8C7fE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rZwSw4cSoEsy8CtGOULfWaKylP5BwxwR1DoMe36vp980q3gv8FzRClqvyZWItWla4
-         gNPJLqNXTOZ9XtCoBZ2XOkvKiiVY3Df/cKvMz4rRGdzVZTtbRmHszL2jL6//LiSBaA
-         2+80mvrDVUH3bYkoIOJWK2+ujD5iFmenHJppAhBA=
-Date:   Thu, 11 Feb 2021 01:49:09 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Tomasz Figa <tfiga@chromium.org>,
-        Ricardo Ribalda <ribalda@chromium.org>,
-        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH][next][V2] media: uvcvideo: remove duplicated dma_dev
- assignments
-Message-ID: <YCRw9YRQSbC7FmjV@pendragon.ideasonboard.com>
-References: <20210210191942.147083-1-colin.king@canonical.com>
+        id S229521AbhBKD3B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Feb 2021 22:29:01 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33398 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229452AbhBKD3A (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 10 Feb 2021 22:29:00 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2C62764EB9;
+        Thu, 11 Feb 2021 03:28:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1613014100;
+        bh=O78AtTThyeCdbILAa36o9XWAr76NHGXzazjF1/S0oSY=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=btcMP8v6NReE30J3g6e+hTeO9PgryoRSiv69lI15wd8a04nHt7hgINMKqwFJ5asXq
+         c0Z5GkE+1HvdHyx/oCiPk4yES7oVKRao+SjIB3KipcKP942E/VUudViWLTNrwZotoc
+         vQFkwdhCb/dElS/y0Qxj+M6bPp8/wBgNwK3HfSnPB1Ocl+ymW1DOsFZzvhr4DkjjEm
+         bbDYdxpIkKzLTZCAlIPAO9KhxDjwxovaRrRBWjoxg6VCzbzc0PpK39qM4460fTQ1Qu
+         VEkVxkEpPHqrJ34xAHMjEIleAzWQAwVAIRcFz9xaLsCkcM4P3tUdMLmH37lsVfiGFh
+         qsELOitKtwbqw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210210191942.147083-1-colin.king@canonical.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210210184938.146124-1-colin.king@canonical.com>
+References: <20210210184938.146124-1-colin.king@canonical.com>
+Subject: Re: [PATCH][next] soc: xilinx: vcu: remove deadcode on null divider check
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+To:     Colin King <colin.king@canonical.com>,
+        Michael Tretter <m.tretter@pengutronix.de>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
+Date:   Wed, 10 Feb 2021 19:28:18 -0800
+Message-ID: <161301409895.1254594.6980739457487251623@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Colin,
-
-(CC'ing Christoph)
-
-Thank you for the patch.
-
-On Wed, Feb 10, 2021 at 07:19:42PM +0000, Colin King wrote:
+Quoting Colin King (2021-02-10 10:49:38)
 > From: Colin Ian King <colin.king@canonical.com>
-> 
-> The assignment to dma_dev has been performed twice in one
-> statement. Fix this by removing the extraneous assignment.
-> 
-> Addresses-Coverity: ("Evaluation order violation")
-> Fixes: fdcd02a641e2 ("media: uvcvideo: Use dma_alloc_noncontiguos API")
+>=20
+> The pointer 'divider' has previously been null checked followed by
+> a return, hence the subsequent null check is redundant deadcode
+> that can be removed.  Clean up the code and remove it.
+>=20
+> Fixes: 9c789deea206 ("soc: xilinx: vcu: implement clock provider for outp=
+ut clocks")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-The fix looks good to me,
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-As I wasn't CC'ed on the offending patch, and given that it didn't get
-merged through the linux-media tree and isn't in the linux-media master
-branch, I'll let Ricardo and Christoph deal with the fallout for
-linux-next.
-
 > ---
-> 
-> V2:  Fix 2nd occurrence of this same issue.
-> 
-> ---
->  drivers/media/usb/uvc/uvc_video.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-> index dc81f9a86eca..6f2f308d86fe 100644
-> --- a/drivers/media/usb/uvc/uvc_video.c
-> +++ b/drivers/media/usb/uvc/uvc_video.c
-> @@ -1105,7 +1105,7 @@ static inline struct device *stream_to_dmadev(struct uvc_streaming *stream)
->  
->  static void uvc_urb_dma_sync(struct uvc_urb *uvc_urb, bool for_device)
->  {
-> -	struct device *dma_dev = dma_dev = stream_to_dmadev(uvc_urb->stream);
-> +	struct device *dma_dev = stream_to_dmadev(uvc_urb->stream);
->  
->  	if (for_device) {
->  		dma_sync_sgtable_for_device(dma_dev, uvc_urb->sgt,
-> @@ -1586,7 +1586,7 @@ static void uvc_video_complete(struct urb *urb)
->   */
->  static void uvc_free_urb_buffers(struct uvc_streaming *stream)
->  {
-> -	struct device *dma_dev = dma_dev = stream_to_dmadev(stream);
-> +	struct device *dma_dev = stream_to_dmadev(stream);
->  	struct uvc_urb *uvc_urb;
->  
->  	for_each_uvc_urb(uvc_urb, stream) {
+>  drivers/clk/xilinx/xlnx_vcu.c | 3 ---
+>  1 file changed, 3 deletions(-)
+>=20
+> diff --git a/drivers/clk/xilinx/xlnx_vcu.c b/drivers/clk/xilinx/xlnx_vcu.c
+> index d66b1315114e..607936d7a413 100644
+> --- a/drivers/clk/xilinx/xlnx_vcu.c
+> +++ b/drivers/clk/xilinx/xlnx_vcu.c
+> @@ -512,9 +512,6 @@ static void xvcu_clk_hw_unregister_leaf(struct clk_hw=
+ *hw)
+> =20
+>         mux =3D clk_hw_get_parent(divider);
+>         clk_hw_unregister_mux(mux);
+> -       if (!divider)
+> -               return;
+> -
 
--- 
-Regards,
+This code is pretty confusing. Waiting for m.tretter@pengutronix.de to
+reply
 
-Laurent Pinchart
+>         clk_hw_unregister_divider(divider);
+>  }
+>

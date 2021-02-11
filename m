@@ -2,90 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBA64318F4F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Feb 2021 17:01:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28C3C319040
+	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Feb 2021 17:45:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230132AbhBKQAl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 11 Feb 2021 11:00:41 -0500
-Received: from mail-pg1-f169.google.com ([209.85.215.169]:43027 "EHLO
-        mail-pg1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229983AbhBKP6c (ORCPT
+        id S231773AbhBKQnz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 11 Feb 2021 11:43:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40158 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231429AbhBKQlx (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 11 Feb 2021 10:58:32 -0500
-Received: by mail-pg1-f169.google.com with SMTP id n10so4166567pgl.10;
-        Thu, 11 Feb 2021 07:58:07 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=mzu5SvT094Aj9xpBSbKSYnATyOFU5sYsh4lDYB93wbw=;
-        b=AabvZcUJqbpXJz26ThSvFyrsUphZ6gGvuCWWc0U+v7CVSSsbtzHgiuHeBBx4WO1sIP
-         qm9YnVN3J52hLCF+hHKtjUyVNQ8GU3AHyRcHr6Wx1JJnbcg1OCEj9Q0QUEZv9U1owMUu
-         +EuYWnOcKqFpRyG/J/B5nE6OGiSUnd5KkNqlSxtzcjxonrYha8kZXa0fixa5iiuLrxL+
-         6xiGUlx2xUhVU4dv7kThx23XalKQ0nXJZZ8xAyZkPo1XbsuhK1rvIXFhVAG0RRMi1l6t
-         atzOiGPobiQUFw0Dr0uk0UT80/jL7t/h6C+izzIfR+5p21AZz/ziyK8n1PTHGtH2RA7R
-         u3zQ==
-X-Gm-Message-State: AOAM531T9dEmlr3DcjNJ9yR3XUK4VeKEb/tI/C5GvWV2qAyzoP0TtD4M
-        CEaIB9h5qpalZM2I+v1Tp5s=
-X-Google-Smtp-Source: ABdhPJzu3MAk0XclPIOwd5kfO2xIarZ3P6Mfu+VaT6x+jBwW135zJW6PpUETbhYZAYz4vclpSSADaA==
-X-Received: by 2002:a63:2746:: with SMTP id n67mr8527633pgn.54.1613059061797;
-        Thu, 11 Feb 2021 07:57:41 -0800 (PST)
-Received: from ?IPv6:2601:647:4000:d7:4fec:f2e9:7034:dfe7? ([2601:647:4000:d7:4fec:f2e9:7034:dfe7])
-        by smtp.gmail.com with ESMTPSA id y2sm5673841pjw.36.2021.02.11.07.57.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Feb 2021 07:57:40 -0800 (PST)
-Subject: Re: [PATCH v2] scsi: qla2xxx: Removed extra space in variable
- declaration.
-To:     "Milan P. Gandhi" <mgandhi@redhat.com>,
-        kernel-janitors@vger.kernel.org
-Cc:     GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
-        njavali@marvell.com, jejb@linux.ibm.com, martin.petersen@oracle.com
-References: <20210211131628.GA10754@machine1>
-From:   Bart Van Assche <bvanassche@acm.org>
-Message-ID: <ccf393f7-cbfc-fb8c-6f73-bb502eaa54f3@acm.org>
-Date:   Thu, 11 Feb 2021 07:57:38 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        Thu, 11 Feb 2021 11:41:53 -0500
+Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C913DC061756
+        for <kernel-janitors@vger.kernel.org>; Thu, 11 Feb 2021 08:41:12 -0800 (PST)
+Received: from localhost (unknown [IPv6:2601:281:8300:104d::5f6])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ms.lwn.net (Postfix) with ESMTPSA id 6405C4EB3;
+        Thu, 11 Feb 2021 16:39:13 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 6405C4EB3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+        t=1613061553; bh=D0AEZkZBdtIfK0g+dvBXWwh92CNH+OXOsoawWY81IkA=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=jVzO3l39uQAncbOmMLDb05auJMJvZOoWtiwhFe7qRYs548PXCRuvtX7TOm0qMVKTo
+         cCP44/tY67JeIyrWv1oDVAOY0awDEUhifbBaztXZfQOCAPahyewarvVMswLF2Ki8DT
+         zzsyolXWsM4lPcS6RwH2Uk/xFZipA7HZ060Dx1vxc8DpsEtTkXdKjPw/8aFyFEFxph
+         Wr12poLG7r/4KRg2AzzRmRHGy+VV27+zrCP3ArBCJkMdXFn1dh6aq7yj2/N2yLeoqp
+         sOVOjnYVKQQcTDNtxr2QZKa1aur+/jR/YxnpvEsMhJ5ph6tB45509Yrd8LXuxGj21P
+         MpZhz2DaK4oWg==
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Colin King <colin.king@canonical.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Alexey Budankov <alexey.budankov@linux.intel.com>,
+        linux-doc@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] doc/admin-guide: fix spelling mistake: "perfomance" ->
+ "performance"
+In-Reply-To: <20210210115624.53551-1-colin.king@canonical.com>
+References: <20210210115624.53551-1-colin.king@canonical.com>
+Date:   Thu, 11 Feb 2021 09:39:12 -0700
+Message-ID: <875z2yr233.fsf@meer.lwn.net>
 MIME-Version: 1.0
-In-Reply-To: <20210211131628.GA10754@machine1>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2/11/21 5:16 AM, Milan P. Gandhi wrote:
-> Removed extra space in variable declaration in qla2x00_sysfs_write_nvram
-> 
-> Signed-off-by: Milan P. Gandhi <mgandhi@redhat.com>
+Colin King <colin.king@canonical.com> writes:
+
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There is a spelling mistake in the perf-security documentation. Fix it.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
-> changes v2:
->  - Added a small note about change.
-> ---
-> diff --git a/drivers/scsi/qla2xxx/qla_attr.c b/drivers/scsi/qla2xxx/qla_attr.c
-> index ab45ac1e5a72..7f2db8badb6d 100644
-> --- a/drivers/scsi/qla2xxx/qla_attr.c
-> +++ b/drivers/scsi/qla2xxx/qla_attr.c
-> @@ -226,7 +226,7 @@ qla2x00_sysfs_write_nvram(struct file *filp, struct kobject *kobj,
->  	struct scsi_qla_host *vha = shost_priv(dev_to_shost(container_of(kobj,
->  	    struct device, kobj)));
->  	struct qla_hw_data *ha = vha->hw;
-> -	uint16_t	cnt;
-> +	uint16_t cnt;
->  
->  	if (!capable(CAP_SYS_ADMIN) || off != 0 || count != ha->nvram_size ||
->  	    !ha->isp_ops->write_nvram)
+>  Documentation/admin-guide/perf-security.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/Documentation/admin-guide/perf-security.rst b/Documentation/admin-guide/perf-security.rst
+> index 904e4eb37f99..34aa334320ca 100644
+> --- a/Documentation/admin-guide/perf-security.rst
+> +++ b/Documentation/admin-guide/perf-security.rst
+> @@ -72,7 +72,7 @@ monitoring and observability operations, thus, bypass *scope* permissions
+>  checks in the kernel. CAP_PERFMON implements the principle of least
+>  privilege [13]_ (POSIX 1003.1e: 2.2.2.39) for performance monitoring and
+>  observability operations in the kernel and provides a secure approach to
+> -perfomance monitoring and observability in the system.
+> +performance monitoring and observability in the system.
 
-I'm not sure if such a patch is considered substantial enough to be
-included upstream.
+Applied, thanks.
 
-For future patches, please follow the guidelines for submitting patches
-and use the imperative mood for the subject (Removed -> Remove) and do
-not end the patch subject with a dot. See also
-Documentation/process/submitting-patches.rst
-
-Bart.
-
-
+jon

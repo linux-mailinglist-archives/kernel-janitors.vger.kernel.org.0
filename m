@@ -2,90 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0F823188BA
-	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Feb 2021 11:59:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E26F318996
+	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Feb 2021 12:38:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231282AbhBKKyQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 11 Feb 2021 05:54:16 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:47097 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229923AbhBKKvw (ORCPT
+        id S231204AbhBKLeh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 11 Feb 2021 06:34:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58308 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231633AbhBKLbM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 11 Feb 2021 05:51:52 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1lA9Yg-0000EO-CF; Thu, 11 Feb 2021 10:50:50 +0000
-Subject: Re: [PATCH][next] media: i2c: imx334: Fix a read of the uninitialized
- variable ret
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     "Paul J . Murphy" <paul.j.murphy@intel.com>,
-        Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Martina Krasteva <martinax.krasteva@intel.com>,
-        Gjorgji Rosikopulos <gjorgjix.rosikopulos@intel.com>,
-        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210210190752.146631-1-colin.king@canonical.com>
- <20210210210303.GE3@paasikivi.fi.intel.com> <20210211104148.GE2696@kadam>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <afe29495-6608-b0c3-de12-1b81980fac2d@canonical.com>
-Date:   Thu, 11 Feb 2021 10:50:49 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        Thu, 11 Feb 2021 06:31:12 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD9BBC061786
+        for <kernel-janitors@vger.kernel.org>; Thu, 11 Feb 2021 03:30:28 -0800 (PST)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mtr@pengutronix.de>)
+        id 1lAAAw-0004Aj-Dd; Thu, 11 Feb 2021 12:30:22 +0100
+Received: from mtr by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <mtr@pengutronix.de>)
+        id 1lAAAv-00040K-2o; Thu, 11 Feb 2021 12:30:21 +0100
+Date:   Thu, 11 Feb 2021 12:30:21 +0100
+From:   Michael Tretter <m.tretter@pengutronix.de>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next][V2] soc: xilinx: vcu: fix error check on
+ clk_hw_get_parent call
+Message-ID: <20210211113021.GE30300@pengutronix.de>
+References: <20210211095700.158960-1-colin.king@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <20210211104148.GE2696@kadam>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20210211095700.158960-1-colin.king@canonical.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 12:28:10 up 70 days, 23:55, 108 users,  load average: 0.44, 0.23,
+ 0.26
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: mtr@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 11/02/2021 10:41, Dan Carpenter wrote:
-> On Wed, Feb 10, 2021 at 11:03:03PM +0200, Sakari Ailus wrote:
->> Hi Colin,
->>
->> On Wed, Feb 10, 2021 at 07:07:52PM +0000, Colin King wrote:
->>> From: Colin Ian King <colin.king@canonical.com>
->>>
->>> Currently there is a dev_err error message that is printing the
->>> error status in variable ret (that has not been set) instead of
->>> the correct error status from imx334->reset_gpio.  Fix this.
->>>
->>> Addresses-Coverity: ("Uninitialized scalar variable")
->>> Fixes: 9746b11715c3 ("media: i2c: Add imx334 camera sensor driver")
->>>
->>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->>> ---
->>>  drivers/media/i2c/imx334.c | 3 ++-
->>>  1 file changed, 2 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/media/i2c/imx334.c b/drivers/media/i2c/imx334.c
->>> index 07e31bc2ef18..f8b1caf26c9b 100644
->>> --- a/drivers/media/i2c/imx334.c
->>> +++ b/drivers/media/i2c/imx334.c
->>> @@ -790,7 +790,8 @@ static int imx334_parse_hw_config(struct imx334 *imx334)
->>>  	imx334->reset_gpio = devm_gpiod_get_optional(imx334->dev, "reset",
->>>  						     GPIOD_OUT_LOW);
->>>  	if (IS_ERR(imx334->reset_gpio)) {
->>> -		dev_err(imx334->dev, "failed to get reset gpio %d", ret);
->>> +		dev_err(imx334->dev, "failed to get reset gpio %ld",
->>> +			IS_ERR_VALUE(imx334->reset_gpio));
+On Thu, 11 Feb 2021 09:57:00 +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> IS_ERR_VALUE() isn't right.  It would always print 1 here.  It should
-> just be PTR_ERR().
+> Currently the check for failur on the call to clk_hw_get_parent
+> is checking for a null return in the divider pointer instead of
+> checking the mux pointer. Fix this.
 > 
-> IS_ERR_VALUE() is like IS_ERR() but for when you're storing memory
-> addresses in an unsigned long variable.  get_unmapped_area(), for
-> example, returns unsigned longs.
-> 
-> regards,
-> dan carpenter
-> 
-Thanks, that was a brown paper bug mistake for sure :-/
+> Thanks to Michael Tretter for suggesting the correct fix.
 
-Colin
+Thanks!
 
+> 
+> Addresses-Coverity: ("Logically Dead Code")
+> Fixes: 9c789deea206 ("soc: xilinx: vcu: implement clock provider for output clocks")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+> 
+> V2: Check on mux pointer rather than removing deadcode that wasn't
+>     actually really dead code.
+> 
+> ---
+>  drivers/clk/xilinx/xlnx_vcu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/clk/xilinx/xlnx_vcu.c b/drivers/clk/xilinx/xlnx_vcu.c
+> index d66b1315114e..256b8c4b9ee4 100644
+> --- a/drivers/clk/xilinx/xlnx_vcu.c
+> +++ b/drivers/clk/xilinx/xlnx_vcu.c
+> @@ -512,7 +512,7 @@ static void xvcu_clk_hw_unregister_leaf(struct clk_hw *hw)
+>  
+>  	mux = clk_hw_get_parent(divider);
+>  	clk_hw_unregister_mux(mux);
+
+The mux should be unregistered after the check
+
+> -	if (!divider)
+> +	if (!mux)
+>  		return;
+>  
+>  	clk_hw_unregister_divider(divider);
+
+and the divider before the check.
+
+Michael

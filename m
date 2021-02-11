@@ -2,94 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDDB5318B94
-	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Feb 2021 14:11:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0E4D318BDF
+	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Feb 2021 14:22:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231882AbhBKNHM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 11 Feb 2021 08:07:12 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:37120 "EHLO
+        id S231843AbhBKNU0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 11 Feb 2021 08:20:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:50816 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231263AbhBKNEx (ORCPT
+        by vger.kernel.org with ESMTP id S231967AbhBKNSE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 11 Feb 2021 08:04:53 -0500
+        Thu, 11 Feb 2021 08:18:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1613048600;
+        s=mimecast20190719; t=1613049397;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=RgYeth96asLjSdxqzX+bicEvZRy6cX+sEf+GmW7KKqo=;
-        b=ORg0PAcg5kQCXn1E5bxh3j8tx8oO0RtwsSzFkzUj/VkPWtPuHDU/GZbc/fZC77+gooxi1W
-        Jm+mvfpyv81nora86onnMDN7A9v0WYP67YyES4KsxXGoeRgFy4OTngAkwi6/U46Ec3Ss5o
-        HOTEvqmoJ9YeWx3SkcoOw9FPQAP4j/I=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-400-4BGpGgpjMdC2bKSlfH95dQ-1; Thu, 11 Feb 2021 08:03:19 -0500
-X-MC-Unique: 4BGpGgpjMdC2bKSlfH95dQ-1
-Received: by mail-pl1-f198.google.com with SMTP id z9so3942083plg.19
-        for <kernel-janitors@vger.kernel.org>; Thu, 11 Feb 2021 05:03:18 -0800 (PST)
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+        bh=nwfCo96+ORexE4nd9lMvPQewHMvozTYtZvmFeVr87HA=;
+        b=YvFmMbVxWDy/J391shCaeNT4jFiV3TJLfxnt4xSsoEvHA3lPgg/rvGA+wAm+avb4IrN8fY
+        Hc+Y3MR+O1zSYZ4wTJQNBmC6aWBixiwdqnrLyVTHjSw26IfOLkspc7mQ/dGuivzPU0dkEz
+        EtCKJwAFTORYqAqTCd1d+voS00i2Lrs=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-444-GrMAUBPeM46r70i4QH8cig-1; Thu, 11 Feb 2021 08:16:35 -0500
+X-MC-Unique: GrMAUBPeM46r70i4QH8cig-1
+Received: by mail-pj1-f72.google.com with SMTP id fv24so3689746pjb.9
+        for <kernel-janitors@vger.kernel.org>; Thu, 11 Feb 2021 05:16:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=RgYeth96asLjSdxqzX+bicEvZRy6cX+sEf+GmW7KKqo=;
-        b=qs8gMUDfA3Z1tA/q7FjAjedSZhpn3XQXEs4TJZtJ4GDjSOPEbHjXtIYFHonJH3S151
-         mRH91h60qOH82YYwVA4ODCfysdfj4SgS6Lv245/hzPmZW4R1RCneXOdRHEbHbnaZHM+4
-         9R1NPEFtZG9uNgE2X1Ed6p2borTOTUeiZsTuSZfj84BTgucoAO3/Eauy45FmGg8TzNqe
-         paWvc7R0koJaaf81NelZ9uUtYrS/0zxzw+nmYP+Om+rQeE7US9UySZizaGB3FLv58/MW
-         CCTDNoQcpo7I8hiSQaxIq00mdmJScrJW4WXteTVG6zAZpQGHItknF7QGQrDywcVQBSM7
-         tsBw==
-X-Gm-Message-State: AOAM533mkQ0ZFs7oUCp0BfXLGBEMWM1ZW7pgQ6am+P5tLdllrv5W1/45
-        FkzrwThVJaLMyT2OPTSEHRSKVDK58Tv3KsbIuH9zviA1UVgY67LVXAIqr1WU4eCcQioaAEAW8xo
-        FTN+JMYYMDHYWaX2Y83R+UPIji33j
-X-Received: by 2002:a17:90a:6048:: with SMTP id h8mr3965510pjm.139.1613048597683;
-        Thu, 11 Feb 2021 05:03:17 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJx1WIDQt5WM+CZCT8YfL5YV4V4piqMpArUu6Zp1IVhq68pCRGfD0UjmYYQ7P98JAgczop3cQQ==
-X-Received: by 2002:a17:90a:6048:: with SMTP id h8mr3965485pjm.139.1613048597351;
-        Thu, 11 Feb 2021 05:03:17 -0800 (PST)
-Received: from [172.24.0.1] ([171.50.216.159])
-        by smtp.gmail.com with ESMTPSA id h11sm4994767pjg.46.2021.02.11.05.03.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Feb 2021 05:03:16 -0800 (PST)
-Subject: Re: [PATCH] scsi: qla2xxx: Removed extra space in variable
- declaration.
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=nwfCo96+ORexE4nd9lMvPQewHMvozTYtZvmFeVr87HA=;
+        b=aZPZYd3ycn3Opq6wUFzC/iwm7rKEh4t5uzQxBBkQAl0A409bxR/+gaaTBeLMM8c9MQ
+         CnoA/ugrwneszSuQm9uuoyB2bji7LM/JYITEWkQNrtJX8hu4CQxnJM5BdoL9ruZD43zh
+         Fg9DBkH58/YRrxH16Qb72xQ5w71mp6gzl+83vYoUEJj+NKqPcyhMh5SQ4xnXb9eyNqZQ
+         ZU72ouRw091QAOcyHghYIjY221NYA5CJuid66xsAJoE1epCr8IPpxcnCWNK7Bwup3xkd
+         006E17yZxwkVZPeX/++LTPmpNfjQkdASvUnDX7GR37dpRrPFimcv+vYz1nhLNL+SbU35
+         wx/w==
+X-Gm-Message-State: AOAM532HDWymCLTQrDahTEwU2bfG8AXCriuc6mN1kyfsjdwYsFB52LkI
+        uBZWFzGRv0iCoBHhyWUxoSKYgh1ltra4qMqpM83yCFuuKCiVL8WFSfRi4C8oDybhzhDiiDQlcTR
+        s/X1d/L1jHVXr2bimb/buRB7Citv9tkR0edSdyC1YfFzPV7rWq0JdkS8xs53xxwzeRi/j2d5yj1
+        V4VVc=
+X-Received: by 2002:a17:902:c40d:b029:e2:c0c3:75c9 with SMTP id k13-20020a170902c40db02900e2c0c375c9mr7474936plk.46.1613049394114;
+        Thu, 11 Feb 2021 05:16:34 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyVYC6+/htvGDWMyYQ1cg/ylcBsfp+7V0HdpzAXf+akRe5Ur0ljggfKQPKYsXUav1Nw8wDxKg==
+X-Received: by 2002:a17:902:c40d:b029:e2:c0c3:75c9 with SMTP id k13-20020a170902c40db02900e2c0c375c9mr7474893plk.46.1613049393625;
+        Thu, 11 Feb 2021 05:16:33 -0800 (PST)
+Received: from machine1 ([171.50.216.159])
+        by smtp.gmail.com with ESMTPSA id j185sm6207342pge.46.2021.02.11.05.16.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Feb 2021 05:16:33 -0800 (PST)
+Date:   Thu, 11 Feb 2021 18:46:28 +0530
 From:   "Milan P. Gandhi" <mgandhi@redhat.com>
 To:     kernel-janitors@vger.kernel.org
 Cc:     GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
         njavali@marvell.com, jejb@linux.ibm.com, martin.petersen@oracle.com
-References: <20210211093552.GA5375@machine1>
-Organization: Red Hat
-Message-ID: <6266f3b1-1890-d69b-eeed-cb60ee8d02bb@redhat.com>
-Date:   Thu, 11 Feb 2021 18:33:12 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+Subject: [PATCH v2] scsi: qla2xxx: Removed extra space in variable
+ declaration.
+Message-ID: <20210211131628.GA10754@machine1>
 MIME-Version: 1.0
-In-Reply-To: <20210211093552.GA5375@machine1>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Apologies for missing a note about change. Will correct it now and send updated version.
+Removed extra space in variable declaration in qla2x00_sysfs_write_nvram
 
-On 2/11/21 3:05 PM, Milan P. Gandhi wrote:
-> Signed-off-by: Milan P. Gandhi <mgandhi@redhat.com>
-> ---
-> diff --git a/drivers/scsi/qla2xxx/qla_attr.c b/drivers/scsi/qla2xxx/qla_attr.c
-> index ab45ac1e5a72..7f2db8badb6d 100644
-> --- a/drivers/scsi/qla2xxx/qla_attr.c
-> +++ b/drivers/scsi/qla2xxx/qla_attr.c
-> @@ -226,7 +226,7 @@ qla2x00_sysfs_write_nvram(struct file *filp, struct kobject *kobj,
->  	struct scsi_qla_host *vha = shost_priv(dev_to_shost(container_of(kobj,
->  	    struct device, kobj)));
->  	struct qla_hw_data *ha = vha->hw;
-> -	uint16_t	cnt;
-> +	uint16_t cnt;
->  
->  	if (!capable(CAP_SYS_ADMIN) || off != 0 || count != ha->nvram_size ||
->  	    !ha->isp_ops->write_nvram)
-> 
+Signed-off-by: Milan P. Gandhi <mgandhi@redhat.com>
+---
+changes v2:
+ - Added a small note about change.
+---
+diff --git a/drivers/scsi/qla2xxx/qla_attr.c b/drivers/scsi/qla2xxx/qla_attr.c
+index ab45ac1e5a72..7f2db8badb6d 100644
+--- a/drivers/scsi/qla2xxx/qla_attr.c
++++ b/drivers/scsi/qla2xxx/qla_attr.c
+@@ -226,7 +226,7 @@ qla2x00_sysfs_write_nvram(struct file *filp, struct kobject *kobj,
+ 	struct scsi_qla_host *vha = shost_priv(dev_to_shost(container_of(kobj,
+ 	    struct device, kobj)));
+ 	struct qla_hw_data *ha = vha->hw;
+-	uint16_t	cnt;
++	uint16_t cnt;
+ 
+ 	if (!capable(CAP_SYS_ADMIN) || off != 0 || count != ha->nvram_size ||
+ 	    !ha->isp_ops->write_nvram)
 

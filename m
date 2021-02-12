@@ -2,108 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB845319C4C
-	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Feb 2021 11:05:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A135D319D76
+	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Feb 2021 12:39:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230046AbhBLKDu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 12 Feb 2021 05:03:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37422 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbhBLKDk (ORCPT
+        id S230351AbhBLLh3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 12 Feb 2021 06:37:29 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:54049 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230272AbhBLLhP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 12 Feb 2021 05:03:40 -0500
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36D8FC0613D6
-        for <kernel-janitors@vger.kernel.org>; Fri, 12 Feb 2021 02:03:00 -0800 (PST)
-Received: by mail-wm1-x32a.google.com with SMTP id o24so423581wmh.5
-        for <kernel-janitors@vger.kernel.org>; Fri, 12 Feb 2021 02:03:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=6QG81ZJM4e0Z54tok2YgM5IGXnuCS+PLSTvaXCs4Z2g=;
-        b=E49ErNQfQ4F7JxhwHQzgTeuC30dIMojbTZRbamSdRwdB3czRTqDszNo7Sn28rJt8uz
-         pSHlux1bTy4D8YSk1yTP8mIijFRDhlzYmH2FHRhXwzEYCsl3lb/DVyLWpaQjnD3rifEe
-         AcPp6Pv/KAcjhfVAMxvUUaTfgr+4ih/AK6xnkbQewosmXjyliD9D132vlCeyqD0iCIB6
-         07Tdh35P84eeMy37RQ39pXsCdHM8NNLteZHW3YplNJwEPGBYAn7fFj1nGDXSmQmW7Wtm
-         rVvVYkGhsS7vplIxHyOpOTwh4QmNkwNUokld7BmA+QRJE6qRJc6PYSUmA0+yAENfJZhB
-         1+oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=6QG81ZJM4e0Z54tok2YgM5IGXnuCS+PLSTvaXCs4Z2g=;
-        b=R92zsHu95dRxJEUYGaVDvils1PnlGEjBfCYGvfaGd0TzrioOztrpRKuZjX2toiMZ0B
-         3LgxT5fsM586Uo6jW2Bdmknb85kBSKz75j8cCWaxpblTwHlSx9AAXeaajYOOHM71DPFy
-         dxDjkwMrEZ6fxKKyegbtG1GbaA/kjbDGni+5nTlORY/1sd4qRenyFXHD1W8kD8s6Nl2C
-         ZKnUmF7gBxXr4trgJrPWptB+LApAEFyRUpuxSoVxIBlGsAinsyL8Dmu4PxqVwNCoS4/c
-         v5S0w5vEIUFDz9uEO9rCW75XeLdpjQtjxLGOvpEt7DKjRbI7UGPqbUl0iw2Q829lBlo1
-         ez5w==
-X-Gm-Message-State: AOAM533fJuazRVb3okpjC6LzcyIgrWTYB5v18wpthZUDfd6OqSdZJtRG
-        1Y20BQIRAeMpSIbtuA76hM6eHw==
-X-Google-Smtp-Source: ABdhPJwSdOB4cVf8xwsazH54/QT4EC/+//VnZHLp3grjPTZFnxNJeQp+4pBdBM3/PFw9nPHrQYh9LQ==
-X-Received: by 2002:a1c:6487:: with SMTP id y129mr1865928wmb.106.1613124178877;
-        Fri, 12 Feb 2021 02:02:58 -0800 (PST)
-Received: from dell ([91.110.221.187])
-        by smtp.gmail.com with ESMTPSA id u14sm9972510wro.10.2021.02.12.02.02.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Feb 2021 02:02:58 -0800 (PST)
-Date:   Fri, 12 Feb 2021 10:02:56 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     Fabio Estevam <festevam@gmail.com>,
-        kernel-janitors@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Michal Simek <michal.simek@xilinx.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        NXP Linux Team <linux-imx@nxp.com>
-Subject: Re: [PATCH] video: use getter/setter functions
-Message-ID: <20210212100256.GB179940@dell>
-References: <20210209211325.1261842-1-Julia.Lawall@inria.fr>
+        Fri, 12 Feb 2021 06:37:15 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1lAWkN-0006Xt-LS; Fri, 12 Feb 2021 11:36:27 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] ath11k: debugfs: Fix spelling mistake "Opportunies" -> "Opportunities"
+Date:   Fri, 12 Feb 2021 11:36:27 +0000
+Message-Id: <20210212113627.212787-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210209211325.1261842-1-Julia.Lawall@inria.fr>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 09 Feb 2021, Julia Lawall wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> Use getter and setter functions, for platform_device structures and a
-> spi_device structure.
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> 
-> ---
->  drivers/video/backlight/qcom-wled.c                                  |    2 +-
->  drivers/video/fbdev/amifb.c                                          |    4 ++--
->  drivers/video/fbdev/da8xx-fb.c                                       |    4 ++--
->  drivers/video/fbdev/imxfb.c                                          |    2 +-
->  drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c |    6 +++---
->  drivers/video/fbdev/omap2/omapfb/dss/dpi.c                           |    4 ++--
->  drivers/video/fbdev/omap2/omapfb/dss/dsi.c                           |    4 ++--
->  drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c                         |    2 +-
->  drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c                         |    2 +-
->  drivers/video/fbdev/xilinxfb.c                                       |    2 +-
->  10 files changed, 16 insertions(+), 16 deletions(-)
+There is a spelling mistake in some debug text, fix this.
 
-I fixed-up the subject line and commit message a bit and applied.
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/ath/ath11k/debugfs_htt_stats.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks.
-
+diff --git a/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.c
+index e13684343ec3..ec93f14e6d2a 100644
+--- a/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.c
++++ b/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.c
+@@ -3851,7 +3851,7 @@ htt_print_pdev_obss_pd_stats_tlv_v(const void *tag_buf,
+ 			   htt_stats_buf->num_non_srg_ppdu_tried);
+ 	len += HTT_DBG_OUT(buf + len, buf_len - len, "Non-SRG success PPDU = %u\n",
+ 			   htt_stats_buf->num_non_srg_ppdu_success);
+-	len += HTT_DBG_OUT(buf + len, buf_len - len, "SRG Opportunies = %u\n",
++	len += HTT_DBG_OUT(buf + len, buf_len - len, "SRG Opportunities = %u\n",
+ 			   htt_stats_buf->num_srg_opportunities);
+ 	len += HTT_DBG_OUT(buf + len, buf_len - len, "SRG tried PPDU = %u\n",
+ 			   htt_stats_buf->num_srg_ppdu_tried);
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.30.0
+

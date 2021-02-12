@@ -2,131 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04607319904
-	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Feb 2021 05:18:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB845319C4C
+	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Feb 2021 11:05:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229559AbhBLESd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 11 Feb 2021 23:18:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:45951 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229505AbhBLESc (ORCPT
+        id S230046AbhBLKDu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 12 Feb 2021 05:03:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37422 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229457AbhBLKDk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 11 Feb 2021 23:18:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1613103425;
-        h=from:from:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=uGSTJ+HM+7VqDqFE+Eky32FecMVzs7Bcg9hDuw+mgkU=;
-        b=dA61rgb0/bar4ZXZcTnfk/Nwrw0f1RsZ1RgTuqRXOxHAwexSJlPkuIqYFDwJj/FIsKA3N9
-        mHCz0E16MwH18LtUXUEHo5adKbnwTdCaxZMSonKYsSZC0A1pLvzAwABr0JbHbsCc9wSaku
-        DKHaHdyl4sgEYa+JlLdNmu0DQ5Bel2M=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-540-5vcIKVEeNBq-eEe6L7a5yg-1; Thu, 11 Feb 2021 23:17:01 -0500
-X-MC-Unique: 5vcIKVEeNBq-eEe6L7a5yg-1
-Received: by mail-pf1-f199.google.com with SMTP id j7so6388811pfa.14
-        for <kernel-janitors@vger.kernel.org>; Thu, 11 Feb 2021 20:17:01 -0800 (PST)
+        Fri, 12 Feb 2021 05:03:40 -0500
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36D8FC0613D6
+        for <kernel-janitors@vger.kernel.org>; Fri, 12 Feb 2021 02:03:00 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id o24so423581wmh.5
+        for <kernel-janitors@vger.kernel.org>; Fri, 12 Feb 2021 02:03:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=6QG81ZJM4e0Z54tok2YgM5IGXnuCS+PLSTvaXCs4Z2g=;
+        b=E49ErNQfQ4F7JxhwHQzgTeuC30dIMojbTZRbamSdRwdB3czRTqDszNo7Sn28rJt8uz
+         pSHlux1bTy4D8YSk1yTP8mIijFRDhlzYmH2FHRhXwzEYCsl3lb/DVyLWpaQjnD3rifEe
+         AcPp6Pv/KAcjhfVAMxvUUaTfgr+4ih/AK6xnkbQewosmXjyliD9D132vlCeyqD0iCIB6
+         07Tdh35P84eeMy37RQ39pXsCdHM8NNLteZHW3YplNJwEPGBYAn7fFj1nGDXSmQmW7Wtm
+         rVvVYkGhsS7vplIxHyOpOTwh4QmNkwNUokld7BmA+QRJE6qRJc6PYSUmA0+yAENfJZhB
+         1+oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:reply-to:subject:to:cc:references:from
-         :organization:message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=uGSTJ+HM+7VqDqFE+Eky32FecMVzs7Bcg9hDuw+mgkU=;
-        b=kEjEN15+ZqBCkmpWK5Brudoz14vZahteQE0o8QkZ0hNMUmRK9NFNeUtLRL5kaX2j9p
-         uSlwk41jM6wDUNtExLNDfKCIpPiVrSscgQUcAq26CJrnW7HRgDzOfnbZWi5pWHdhm63G
-         eZY3jYz74euOdbWueMTeZtkRqCqNEZOYcFqpz2M/fXGkuFtGY+dD1LObIVp/rotWdo+M
-         uXNaeUEB66Wh/mTIDbM3eC3+jiQBQkiGNDEJhESedn/xSjZuCqq7pQrktUpl0MXf+nh8
-         4GCWXAt8xZH3kupdTMQr2tF1nhI7miBY6eKhnf8Jvh6jx0QZCjojV9bpxOWO3RXFUt3R
-         23PA==
-X-Gm-Message-State: AOAM531kHTv3nB+ji8yNrTVLqmgQEDsUhxErzJa/wl4sXI5FlX1ZPBXn
-        I0+qBtL9l9wNR7CeCOBlurIYGJ/D3yhWnYzkhCSKAUlUJn9rGCGzXR30LIdG+OY4A/8D9JPSHsf
-        2YeisEaE+2jUI2FfASpd4A+DRBRS4
-X-Received: by 2002:a63:f044:: with SMTP id s4mr1347267pgj.355.1613103420219;
-        Thu, 11 Feb 2021 20:17:00 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyduJ+VUkuvUWyn8zdfdOMBfeRnXsDPGGc6LXBWFnQ5eLwYhOE3VLPCITfJhujNVxCd1nLFog==
-X-Received: by 2002:a63:6203:: with SMTP id w3mr1415657pgb.224.1613103016659;
-        Thu, 11 Feb 2021 20:10:16 -0800 (PST)
-Received: from [172.24.0.1] ([122.169.13.134])
-        by smtp.gmail.com with ESMTPSA id nl12sm8449191pjb.2.2021.02.11.20.10.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Feb 2021 20:10:10 -0800 (PST)
-Reply-To: mgandhi@redhat.com
-Subject: Re: [PATCH v2] scsi: qla2xxx: Removed extra space in variable
- declaration.
-To:     Himanshu Madhani <himanshu.madhani@oracle.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        kernel-janitors@vger.kernel.org
-Cc:     GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
-        njavali@marvell.com, jejb@linux.ibm.com, martin.petersen@oracle.com
-References: <20210211131628.GA10754@machine1>
- <ccf393f7-cbfc-fb8c-6f73-bb502eaa54f3@acm.org>
- <b44bd29e-389c-634f-333d-edc88b3d7be9@oracle.com>
-From:   "Milan P. Gandhi" <mgandhi@redhat.com>
-Organization: Red Hat
-Message-ID: <9da0412a-6bf0-1f09-85af-2aec025ee3ec@redhat.com>
-Date:   Fri, 12 Feb 2021 09:40:06 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=6QG81ZJM4e0Z54tok2YgM5IGXnuCS+PLSTvaXCs4Z2g=;
+        b=R92zsHu95dRxJEUYGaVDvils1PnlGEjBfCYGvfaGd0TzrioOztrpRKuZjX2toiMZ0B
+         3LgxT5fsM586Uo6jW2Bdmknb85kBSKz75j8cCWaxpblTwHlSx9AAXeaajYOOHM71DPFy
+         dxDjkwMrEZ6fxKKyegbtG1GbaA/kjbDGni+5nTlORY/1sd4qRenyFXHD1W8kD8s6Nl2C
+         ZKnUmF7gBxXr4trgJrPWptB+LApAEFyRUpuxSoVxIBlGsAinsyL8Dmu4PxqVwNCoS4/c
+         v5S0w5vEIUFDz9uEO9rCW75XeLdpjQtjxLGOvpEt7DKjRbI7UGPqbUl0iw2Q829lBlo1
+         ez5w==
+X-Gm-Message-State: AOAM533fJuazRVb3okpjC6LzcyIgrWTYB5v18wpthZUDfd6OqSdZJtRG
+        1Y20BQIRAeMpSIbtuA76hM6eHw==
+X-Google-Smtp-Source: ABdhPJwSdOB4cVf8xwsazH54/QT4EC/+//VnZHLp3grjPTZFnxNJeQp+4pBdBM3/PFw9nPHrQYh9LQ==
+X-Received: by 2002:a1c:6487:: with SMTP id y129mr1865928wmb.106.1613124178877;
+        Fri, 12 Feb 2021 02:02:58 -0800 (PST)
+Received: from dell ([91.110.221.187])
+        by smtp.gmail.com with ESMTPSA id u14sm9972510wro.10.2021.02.12.02.02.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Feb 2021 02:02:58 -0800 (PST)
+Date:   Fri, 12 Feb 2021 10:02:56 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     Fabio Estevam <festevam@gmail.com>,
+        kernel-janitors@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Michal Simek <michal.simek@xilinx.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        NXP Linux Team <linux-imx@nxp.com>
+Subject: Re: [PATCH] video: use getter/setter functions
+Message-ID: <20210212100256.GB179940@dell>
+References: <20210209211325.1261842-1-Julia.Lawall@inria.fr>
 MIME-Version: 1.0
-In-Reply-To: <b44bd29e-389c-634f-333d-edc88b3d7be9@oracle.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210209211325.1261842-1-Julia.Lawall@inria.fr>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Bart, Himanshu,
+On Tue, 09 Feb 2021, Julia Lawall wrote:
 
-On 2/11/21 10:18 PM, Himanshu Madhani wrote:
-> Hi Milan,
+> Use getter and setter functions, for platform_device structures and a
+> spi_device structure.
 > 
-> On 2/11/21 9:57 AM, Bart Van Assche wrote:
->> On 2/11/21 5:16 AM, Milan P. Gandhi wrote:
->>> Removed extra space in variable declaration in qla2x00_sysfs_write_nvram
->>>
->>> Signed-off-by: Milan P. Gandhi <mgandhi@redhat.com>
->>> ---
->>> changes v2:
->>>   - Added a small note about change.
->>> ---
->>> diff --git a/drivers/scsi/qla2xxx/qla_attr.c b/drivers/scsi/qla2xxx/qla_attr.c
->>> index ab45ac1e5a72..7f2db8badb6d 100644
->>> --- a/drivers/scsi/qla2xxx/qla_attr.c
->>> +++ b/drivers/scsi/qla2xxx/qla_attr.c
->>> @@ -226,7 +226,7 @@ qla2x00_sysfs_write_nvram(struct file *filp, struct kobject *kobj,
->>>       struct scsi_qla_host *vha = shost_priv(dev_to_shost(container_of(kobj,
->>>           struct device, kobj)));
->>>       struct qla_hw_data *ha = vha->hw;
->>> -    uint16_t    cnt;
->>> +    uint16_t cnt;
->>>         if (!capable(CAP_SYS_ADMIN) || off != 0 || count != ha->nvram_size ||
->>>           !ha->isp_ops->write_nvram)
->>
->> I'm not sure if such a patch is considered substantial enough to be
->> included upstream.
->>
->> For future patches, please follow the guidelines for submitting patches
->> and use the imperative mood for the subject (Removed -> Remove) and do
->> not end the patch subject with a dot. See also
->> Documentation/process/submitting-patches.rst
->>
->> Bart.
->>
->>
-> Agree with Bart here.
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 > 
-> What was motivation behind this patch?
-> 
-> if you scroll through code, i am pretty sure you will find more than one place where spaces are not consistent (especially 15+ yr old code).
-> 
-I thought it was a typo and extra space was left, so just fixed it.
-But it looks that there are many other places in qla2xxx source with similar declarations.
-I apologize for the noise.
+> ---
+>  drivers/video/backlight/qcom-wled.c                                  |    2 +-
+>  drivers/video/fbdev/amifb.c                                          |    4 ++--
+>  drivers/video/fbdev/da8xx-fb.c                                       |    4 ++--
+>  drivers/video/fbdev/imxfb.c                                          |    2 +-
+>  drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c |    6 +++---
+>  drivers/video/fbdev/omap2/omapfb/dss/dpi.c                           |    4 ++--
+>  drivers/video/fbdev/omap2/omapfb/dss/dsi.c                           |    4 ++--
+>  drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c                         |    2 +-
+>  drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c                         |    2 +-
+>  drivers/video/fbdev/xilinxfb.c                                       |    2 +-
+>  10 files changed, 16 insertions(+), 16 deletions(-)
 
-Thanks,
-Milan.
+I fixed-up the subject line and commit message a bit and applied.
 
+Thanks.
+
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog

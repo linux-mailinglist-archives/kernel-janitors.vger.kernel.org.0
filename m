@@ -2,149 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A872C31BAAE
-	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Feb 2021 15:03:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BE5631BE6D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Feb 2021 17:12:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230203AbhBOODX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 15 Feb 2021 09:03:23 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51078 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229968AbhBOODV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 15 Feb 2021 09:03:21 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A62FA64DCF;
-        Mon, 15 Feb 2021 14:02:39 +0000 (UTC)
-Date:   Mon, 15 Feb 2021 14:02:36 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Subject: Re: [PATCH] iio: use getter/setter functions
-Message-ID: <20210215140236.351b1941@archlinux>
-In-Reply-To: <20210209211315.1261791-1-Julia.Lawall@inria.fr>
-References: <20210209211315.1261791-1-Julia.Lawall@inria.fr>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S231672AbhBOQJj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 15 Feb 2021 11:09:39 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:41018 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232243AbhBOP56 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 15 Feb 2021 10:57:58 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 11FFo1OB096860;
+        Mon, 15 Feb 2021 15:56:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=7tkxxlsreJWA6Ek4x6TAxcN7G53TF9KpDfP9FbpoT20=;
+ b=dSu2nTZcqhfzvUBdp7OQ4PQ+AwZ1JQe9x630UVNIJg1Or9xo/GBWMV1fMJ0TdfhV/TTY
+ 4uTeFYajN0JLKkJXwHDInABZerIK1TPR9pbbG9ckCqHXKKbMEEBIIUh/BBU5UbEIynek
+ j5Va2Mkp0PJDMcpc+7ljHCGePDenDj/J1gOdIhQ+it9CKBiYgkC+M5tbjrCtO1EEjKbc
+ bhv4hZwwvAGzsZwxQUObdKlOn4xsuW/Kq4L0DNIKtEjqBd8fL7KzGPcpSw0XmXfwz4Eb
+ A+jgX2qAqP0q1X/W+z3JrfnH572t0b4wGEFqB2uCIpPC03KB8oo9DYApGHIj0ke4Gx/7 wA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 36pd9a3wu9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 15 Feb 2021 15:56:58 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 11FFoHXf028575;
+        Mon, 15 Feb 2021 15:56:57 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 36prbm79xs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 15 Feb 2021 15:56:57 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 11FFut56009901;
+        Mon, 15 Feb 2021 15:56:56 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 15 Feb 2021 07:56:55 -0800
+Date:   Mon, 15 Feb 2021 18:56:46 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Sunil Goutham <sgoutham@marvell.com>,
+        Christina Jacob <cjacob@marvell.com>
+Cc:     Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH net-next] octeontx2-pf: fix an off by one bug in
+ otx2_get_fecparam()
+Message-ID: <YCqZvjAzSmJk5Ftb@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-IMR: 1
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9895 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0 mlxscore=0
+ phishscore=0 adultscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102150125
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9896 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 impostorscore=0
+ mlxscore=0 phishscore=0 mlxlogscore=999 spamscore=0 bulkscore=0
+ priorityscore=1501 malwarescore=0 suspectscore=0 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102150125
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue,  9 Feb 2021 22:13:15 +0100
-Julia Lawall <Julia.Lawall@inria.fr> wrote:
+The "<= FEC_MAX_INDEX" comparison should be "< FEC_MAX_INDEX".
 
-> Use getter and setter functions, for a variety of data types.
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+I did some cleanup in this function to hopefully make the code a bit
+clearer.  There was no blank line after the declaration block.  The
+closing curly brace on the fec[] declaration normally goes on a line
+by itself.  And I removed the FEC_MAX_INDEX define and used
+ARRAY_SIZE(fec) instead.
 
-Hi Julia,
+Fixes: d0cf9503e908 ("octeontx2-pf: ethtool fec mode support")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ .../net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c    | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-This crossed with a change of variable name in industrialio-core.c
-so I've applied with a slight tweak to take that into account.
-
-Applied to the togreg branch of iio.git and pushed out as testing
-to let 0-day and friends poke at it.
-
-Thanks,
-
-Jonathan
-
-> 
-> ---
->  drivers/iio/adc/palmas_gpadc.c      |    2 +-
->  drivers/iio/chemical/scd30_serial.c |    2 +-
->  drivers/iio/industrialio-core.c     |    2 +-
->  drivers/iio/potentiometer/max5481.c |    4 ++--
->  drivers/iio/potentiometer/max5487.c |    4 ++--
->  5 files changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/iio/potentiometer/max5487.c b/drivers/iio/potentiometer/max5487.c
-> index 7ec51976ec99..1c0d46a96200 100644
-> --- a/drivers/iio/potentiometer/max5487.c
-> +++ b/drivers/iio/potentiometer/max5487.c
-> @@ -92,7 +92,7 @@ static int max5487_spi_probe(struct spi_device *spi)
->  	if (!indio_dev)
->  		return -ENOMEM;
->  
-> -	dev_set_drvdata(&spi->dev, indio_dev);
-> +	spi_set_drvdata(spi, indio_dev);
->  	data = iio_priv(indio_dev);
->  
->  	data->spi = spi;
-> @@ -114,7 +114,7 @@ static int max5487_spi_probe(struct spi_device *spi)
->  
->  static int max5487_spi_remove(struct spi_device *spi)
->  {
-> -	struct iio_dev *indio_dev = dev_get_drvdata(&spi->dev);
-> +	struct iio_dev *indio_dev = spi_get_drvdata(spi);
->  
->  	iio_device_unregister(indio_dev);
->  
-> diff --git a/drivers/iio/potentiometer/max5481.c b/drivers/iio/potentiometer/max5481.c
-> index a88ed0eb3adc..6e22b538091f 100644
-> --- a/drivers/iio/potentiometer/max5481.c
-> +++ b/drivers/iio/potentiometer/max5481.c
-> @@ -136,7 +136,7 @@ static int max5481_probe(struct spi_device *spi)
->  	if (!indio_dev)
->  		return -ENOMEM;
->  
-> -	dev_set_drvdata(&spi->dev, indio_dev);
-> +	spi_set_drvdata(spi, indio_dev);
->  	data = iio_priv(indio_dev);
->  
->  	data->spi = spi;
-> @@ -163,7 +163,7 @@ static int max5481_probe(struct spi_device *spi)
->  
->  static int max5481_remove(struct spi_device *spi)
->  {
-> -	struct iio_dev *indio_dev = dev_get_drvdata(&spi->dev);
-> +	struct iio_dev *indio_dev = spi_get_drvdata(spi);
->  	struct max5481_data *data = iio_priv(indio_dev);
->  
->  	iio_device_unregister(indio_dev);
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index 7db761afa578..4ef7a39cfb1c 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1596,7 +1596,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
->  	dev->dev.type = &iio_device_type;
->  	dev->dev.bus = &iio_bus_type;
->  	device_initialize(&dev->dev);
-> -	dev_set_drvdata(&dev->dev, (void *)dev);
-> +	iio_device_set_drvdata(dev, (void *)dev);
->  	mutex_init(&dev->mlock);
->  	mutex_init(&dev->info_exist_lock);
->  	INIT_LIST_HEAD(&iio_dev_opaque->channel_attr_list);
-> diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
-> index 889b88768b63..9ae0d7f73155 100644
-> --- a/drivers/iio/adc/palmas_gpadc.c
-> +++ b/drivers/iio/adc/palmas_gpadc.c
-> @@ -517,7 +517,7 @@ static int palmas_gpadc_probe(struct platform_device *pdev)
->  	adc->palmas = dev_get_drvdata(pdev->dev.parent);
->  	adc->adc_info = palmas_gpadc_info;
->  	init_completion(&adc->conv_completion);
-> -	dev_set_drvdata(&pdev->dev, indio_dev);
-> +	platform_set_drvdata(pdev, indio_dev);
->  
->  	adc->auto_conversion_period = gpadc_pdata->auto_conversion_period_ms;
->  	adc->irq = palmas_irq_get_virq(adc->palmas, PALMAS_GPADC_EOC_SW_IRQ);
-> diff --git a/drivers/iio/chemical/scd30_serial.c b/drivers/iio/chemical/scd30_serial.c
-> index 06f85eb1a4dd..568b34486c44 100644
-> --- a/drivers/iio/chemical/scd30_serial.c
-> +++ b/drivers/iio/chemical/scd30_serial.c
-> @@ -177,7 +177,7 @@ static int scd30_serdev_command(struct scd30_state *state, enum scd30_cmd cmd, u
->  static int scd30_serdev_receive_buf(struct serdev_device *serdev,
->  				    const unsigned char *buf, size_t size)
->  {
-> -	struct iio_dev *indio_dev = dev_get_drvdata(&serdev->dev);
-> +	struct iio_dev *indio_dev = serdev_device_get_drvdata(serdev);
->  	struct scd30_serdev_priv *priv;
->  	struct scd30_state *state;
->  	int num;
-> 
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+index 237e5d3321d4..0eaf11107cb7 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+@@ -955,16 +955,17 @@ static int otx2_get_fecparam(struct net_device *netdev,
+ 		ETHTOOL_FEC_OFF,
+ 		ETHTOOL_FEC_BASER,
+ 		ETHTOOL_FEC_RS,
+-		ETHTOOL_FEC_BASER | ETHTOOL_FEC_RS};
+-#define FEC_MAX_INDEX 4
+-	if (pfvf->linfo.fec < FEC_MAX_INDEX)
++		ETHTOOL_FEC_BASER | ETHTOOL_FEC_RS,
++	};
++
++	if (pfvf->linfo.fec < ARRAY_SIZE(fec))
+ 		fecparam->active_fec = fec[pfvf->linfo.fec];
+ 
+ 	rsp = otx2_get_fwdata(pfvf);
+ 	if (IS_ERR(rsp))
+ 		return PTR_ERR(rsp);
+ 
+-	if (rsp->fwdata.supported_fec <= FEC_MAX_INDEX) {
++	if (rsp->fwdata.supported_fec < ARRAY_SIZE(fec)) {
+ 		if (!rsp->fwdata.supported_fec)
+ 			fecparam->fec = ETHTOOL_FEC_NONE;
+ 		else
+-- 
+2.30.0
 

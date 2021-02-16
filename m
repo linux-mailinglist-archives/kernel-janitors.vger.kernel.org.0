@@ -2,33 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A176A31CCC4
-	for <lists+kernel-janitors@lfdr.de>; Tue, 16 Feb 2021 16:17:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0991231CCF1
+	for <lists+kernel-janitors@lfdr.de>; Tue, 16 Feb 2021 16:31:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230001AbhBPPRM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 16 Feb 2021 10:17:12 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:53329 "EHLO
+        id S229880AbhBPPbH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 16 Feb 2021 10:31:07 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:53822 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229946AbhBPPRL (ORCPT
+        with ESMTP id S229585AbhBPPbG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 16 Feb 2021 10:17:11 -0500
+        Tue, 16 Feb 2021 10:31:06 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1lC25S-0005ar-ML; Tue, 16 Feb 2021 15:16:26 +0000
+        id 1lC2Ix-0006Ys-FG; Tue, 16 Feb 2021 15:30:23 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org
+To:     Steven Rostedt <rostedt@goodmis.org>,
+        Viktor Rosendahl <Viktor.Rosendahl@bmw.de>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] thermal: qcom: Fix comparison with uninitialized variable channels_available
-Date:   Tue, 16 Feb 2021 15:16:26 +0000
-Message-Id: <20210216151626.162996-1-colin.king@canonical.com>
+Subject: [PATCH][next][V3] tracing/tools: fix a couple of spelling mistakes
+Date:   Tue, 16 Feb 2021 15:30:23 +0000
+Message-Id: <20210216153023.163488-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,51 +34,44 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently the check of chip->channels[i].channel is against an the
-uninitialized variable channels_available.  I believe the variable
-channels_available needs to be fetched first by the call to adc_tm5_read
-before the channels check. Fix the issue swapping the order of the
-channels check loop with the call to adc_tm5_read.
+There is a spelling mistake in the -g help option, I believe
+it should be "graph".  There is also a spelling mistake in a
+warning message. Fix both mistakes.
 
-Addresses-Coverity: ("Uninitialized scalar variable")
-Fixes: ca66dca5eda6 ("thermal: qcom: add support for adc-tm5 PMIC thermal monitor")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/thermal/qcom/qcom-spmi-adc-tm5.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/thermal/qcom/qcom-spmi-adc-tm5.c b/drivers/thermal/qcom/qcom-spmi-adc-tm5.c
-index a2014375587d..b460b56e981c 100644
---- a/drivers/thermal/qcom/qcom-spmi-adc-tm5.c
-+++ b/drivers/thermal/qcom/qcom-spmi-adc-tm5.c
-@@ -375,13 +375,6 @@ static int adc_tm5_init(struct adc_tm5_chip *chip)
- 	int ret;
- 	unsigned int i;
+V2: Also fix "nummer" spelling mistake.
+V3: re-format text, as suggested by Viktor
+
+---
+ tools/tracing/latency/latency-collector.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/tools/tracing/latency/latency-collector.c b/tools/tracing/latency/latency-collector.c
+index 57b20802e71b..b69de9263ee6 100644
+--- a/tools/tracing/latency/latency-collector.c
++++ b/tools/tracing/latency/latency-collector.c
+@@ -1650,7 +1650,7 @@ static void start_printthread(void)
+ 		if (ufd <  0 ||
+ 		    read(ufd, seed, sizeof(*seed)) != sizeof(*seed)) {
+ 			printf(
+-"Warning! Using trivial random nummer seed, since %s not available\n",
++"Warning! Using trivial random number seed, since %s not available\n",
+ 			DEV_URANDOM);
+ 			fflush(stdout);
+ 			*seed = i;
+@@ -1711,8 +1711,8 @@ static void show_usage(void)
+ "\t\t\tbeginning, end, and backtrace.\n\n"
  
--	for (i = 0; i < chip->nchannels; i++) {
--		if (chip->channels[i].channel >= channels_available) {
--			dev_err(chip->dev, "Invalid channel %d\n", chip->channels[i].channel);
--			return -EINVAL;
--		}
--	}
--
- 	ret = adc_tm5_read(chip, ADC_TM5_NUM_BTM,
- 			   &channels_available, sizeof(channels_available));
- 	if (ret) {
-@@ -389,6 +382,13 @@ static int adc_tm5_init(struct adc_tm5_chip *chip)
- 		return ret;
- 	}
+ "-g, --graph\t\tEnable the display-graph option in trace_option. This\n"
+-"\t\t\toption causes ftrace to show the functionph of how\n"
+-"\t\t\tfunctions are calling other functions.\n\n"
++"\t\t\toption causes ftrace to show the graph of how functions\n"
++"\t\t\tare calling other functions.\n\n"
  
-+	for (i = 0; i < chip->nchannels; i++) {
-+		if (chip->channels[i].channel >= channels_available) {
-+			dev_err(chip->dev, "Invalid channel %d\n", chip->channels[i].channel);
-+			return -EINVAL;
-+		}
-+	}
-+
- 	buf[0] = chip->decimation;
- 	buf[1] = chip->avg_samples | ADC_TM5_FAST_AVG_EN;
- 	buf[2] = ADC_TM5_TIMER1;
+ "-c, --policy POL\tRun the program with scheduling policy POL. POL can be\n"
+ "\t\t\tother, batch, idle, rr or fifo. The default is rr. When\n"
 -- 
 2.30.0
 

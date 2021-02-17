@@ -2,80 +2,132 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A81BB31D4AA
-	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Feb 2021 05:40:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C3CB31D540
+	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Feb 2021 07:06:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230453AbhBQEim (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 16 Feb 2021 23:38:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35438 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230315AbhBQEid (ORCPT
+        id S231587AbhBQGFx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 17 Feb 2021 01:05:53 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:35386 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231566AbhBQGFp (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 16 Feb 2021 23:38:33 -0500
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFBFAC06174A;
-        Tue, 16 Feb 2021 20:37:52 -0800 (PST)
-Received: by mail-pf1-x435.google.com with SMTP id j12so7620427pfj.12;
-        Tue, 16 Feb 2021 20:37:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=BhmsuKnH0E52H/9hYZJn/H63hbz5gesZzSHL5lPaF+k=;
-        b=JNgqrAxGKINEujyV5xnygACyy/PSSR7vRSklUAJ6pmQsEtakziusaHQbnNMb0FJWcx
-         HUQir+nv8Ks8Skx03XXgKXUZe9DtiH4j23xqwZWegg3ufl3NvTXCYesbnHeYpvzvoMc8
-         hVUnA9MhA/syHJsHgGBvkKXWJY5v2jqLIBN4Ht2cvA9J84PIJkBzg7BVq0ItfvkAHpFZ
-         JBSbcm9QkEheDl/GHXolFZiJkzlFbJ4ARgdqZo+Sygduw6xvmtHogGmn3EtwHsizq0s5
-         dDNsVxPGsQH4jGzZVRy56CiVefBco0EKMzce7NCZEapAzJhIZKjuFH3K8+LkuJRdC1Cv
-         jJvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=BhmsuKnH0E52H/9hYZJn/H63hbz5gesZzSHL5lPaF+k=;
-        b=U3P4PM3xBDiL1T5QhYELx4SmFu3tG0p0uEUD/nlS0gLV/XDm7s5jFTywziB+s/0aAZ
-         ADlbRxM2jmIU1HTWH/IJMnAyvls6zbDRYHHypVYyeT6Naj6/KxhCI0a6B6DL8+dkbZm+
-         3g1hjlyA9/bjpNwIX3+WCMzpOdnEIOI/BRspYJJY6LwJvkuYnHIBf+6OoQ2r1iGgUYtm
-         wm6tlPFuKuh7rWUhySy3Hv1XIWJItWe7MuiaIcMf1C7lODLJUduHEjGbePWWQa88E8HS
-         fY50bnCgBazlNwK2incNy45hMmQzimxFoXprA6J220uaM5c8lziL71DqbFN+rawYMfEL
-         2hJQ==
-X-Gm-Message-State: AOAM5302MaDcaDi4N+iK2Ai0G7t4Z3DN3T/2YSisUHq1Wkxd6igsPO16
-        tsvgHG+UIczJWaLImooY8Mc=
-X-Google-Smtp-Source: ABdhPJxgYAkmzaGKK6Rmlt9BuDNilTzv10gEyDILo7x0iWSyVhw41CHQizuqLxgIAzFFEa5r+TODtQ==
-X-Received: by 2002:a63:c44d:: with SMTP id m13mr22321252pgg.64.1613536672447;
-        Tue, 16 Feb 2021 20:37:52 -0800 (PST)
-Received: from google.com ([2620:15c:202:201:21d3:2abc:ad8c:8b3a])
-        by smtp.gmail.com with ESMTPSA id 143sm543848pfv.134.2021.02.16.20.37.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Feb 2021 20:37:51 -0800 (PST)
-Date:   Tue, 16 Feb 2021 20:37:49 -0800
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        Hans Verkuil <hans.verkuil@cisco.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Florian Echtler <floe@butterbrot.org>,
-        linux-input@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] Input: sur40 - Fix an error code in sur40_probe()
-Message-ID: <YCydnRcGmhWYw8Mp@google.com>
-References: <YBKFkbATXa5fA3xj@mwanda>
+        Wed, 17 Feb 2021 01:05:45 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 11H60GlI005907;
+        Wed, 17 Feb 2021 06:04:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=IV9DUOBZsJgn3sW/ZDjfRk2u64J3qZbzCRAclBjXrAQ=;
+ b=hTxcesg4JEE2Qd0fLfHoeo3VNzobykQKOF3sAhuHbiqX59rG4Zwww2/TlrPeRe1vFYq+
+ PqmEzf611uGWn4InyMP22M5DbxiqTIlXFW2EMu/ZSx/XniS3TtmN0hO9XJ510JHRFsBW
+ CVcpA9z+O7lLnJnL56G+5bCJXS6y8JmKQgjaY/bt96apsMxRJi5oJnwIOFE6ehWJbg8k
+ mxf/miwKTuubopTtR81YyG0M6jv3yVNXuvmqfWBD4VBwhbSVLS6LjwdF/VLmaqON/lyD
+ KBNBnZZItpB1goWjPJ7NJP+R8kZJ9CxNDc6/MBjUXccLuCY8YQKZgxycVmEh4tPQZ9qp tg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 36p7dnh38n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 17 Feb 2021 06:04:46 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 11H60DRa177255;
+        Wed, 17 Feb 2021 06:04:44 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 36prnyu6wv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 17 Feb 2021 06:04:44 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 11H64g3R006439;
+        Wed, 17 Feb 2021 06:04:42 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 16 Feb 2021 22:04:41 -0800
+Date:   Wed, 17 Feb 2021 09:04:34 +0300
+From:   Dan Carpenter <dancarpenter@oracle.com>
+To:     Chris Mason <clm@fb.com>, Arne Jansen <sensille@gmx.net>
+Cc:     Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] btrfs: prevent potential out of bounds in
+ btrfs_ioctl_snap_create_v2()
+Message-ID: <YCyx8u40HaplP7a+@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YBKFkbATXa5fA3xj@mwanda>
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-IMR: 1
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9897 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=999
+ bulkscore=0 suspectscore=0 spamscore=0 malwarescore=0 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102170046
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9897 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0 mlxscore=0
+ phishscore=0 spamscore=0 adultscore=0 clxscore=1011 impostorscore=0
+ priorityscore=1501 lowpriorityscore=0 malwarescore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102170046
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jan 28, 2021 at 12:36:17PM +0300, Dan Carpenter wrote:
-> If v4l2_ctrl_handler_setup() fails then probe() should return an error
-> code instead of returning success.
-> 
-> Fixes: cee1e3e2ef39 ("media: add video control handlers using V4L2 control framework")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+The problem is we're copying "inherit" from user space but we don't
+necessarily know that we're copying enough data for a 64 byte
+struct.  Then the next problem is that "inherit" has a variable size
+array at the end, and we have to verify that array is the size we
+expected.
 
-Applied, thank you.
+Fixes: 6f72c7e20dba: ("Btrfs: add qgroup inheritance")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+Presumably only root can create snapshots.  Anyway, I have not tested
+this fix.  I believe it is correct, of course.  But perhaps it's best
+to check.
 
+The calculation for the number of elements in the array was copied from
+btrfs_qgroup_inherit().
+
+ fs/btrfs/ioctl.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
+
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index 384d33ab02c7..9d7b24d3e3bd 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -1941,15 +1941,34 @@ static noinline int btrfs_ioctl_snap_create_v2(struct file *file,
+ 	if (vol_args->flags & BTRFS_SUBVOL_RDONLY)
+ 		readonly = true;
+ 	if (vol_args->flags & BTRFS_SUBVOL_QGROUP_INHERIT) {
+-		if (vol_args->size > PAGE_SIZE) {
++		u64 nums;
++
++		if (vol_args->size < sizeof(*inherit) ||
++		    vol_args->size > PAGE_SIZE) {
+ 			ret = -EINVAL;
+ 			goto free_args;
+ 		}
++
+ 		inherit = memdup_user(vol_args->qgroup_inherit, vol_args->size);
+ 		if (IS_ERR(inherit)) {
+ 			ret = PTR_ERR(inherit);
+ 			goto free_args;
+ 		}
++
++		/* quick and dirty checks to prevent integer overflows */
++		if (inherit->num_qgroups > PAGE_SIZE ||
++		    inherit->num_ref_copies > PAGE_SIZE ||
++		    inherit->num_excl_copies > PAGE_SIZE) {
++			ret = -EINVAL;
++			goto free_inherit;
++		}
++
++		nums = inherit->num_qgroups + 2 * inherit->num_ref_copies +
++		       2 * inherit->num_excl_copies;
++		if (vol_args->size != struct_size(inherit, qgroups, nums)) {
++			ret = -EINVAL;
++			goto free_inherit;
++		}
+ 	}
+ 
+ 	ret = __btrfs_ioctl_snap_create(file, vol_args->name, vol_args->fd,
 -- 
-Dmitry
+2.30.0
+

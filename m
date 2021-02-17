@@ -2,50 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D95C31DDED
-	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Feb 2021 18:09:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4043C31DFD8
+	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Feb 2021 20:52:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234387AbhBQRHp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 17 Feb 2021 12:07:45 -0500
-Received: from vps0.lunn.ch ([185.16.172.187]:46106 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234327AbhBQRHk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 17 Feb 2021 12:07:40 -0500
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
-        (envelope-from <andrew@lunn.ch>)
-        id 1lCQHo-006vv8-9k; Wed, 17 Feb 2021 18:06:48 +0100
-Date:   Wed, 17 Feb 2021 18:06:48 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Michael Walle <michael@walle.cc>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next] net: phy: icplus: Call phy_restore_page() when
- phy_select_page() fails
-Message-ID: <YC1NKO2HznLC887f@lunn.ch>
-References: <YCy1F5xKFJAaLBFw@mwanda>
- <20210217142838.GM2222@kadam>
- <20210217150621.GG1463@shell.armlinux.org.uk>
- <20210217153357.GE1477@shell.armlinux.org.uk>
+        id S233407AbhBQTwV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 17 Feb 2021 14:52:21 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:39068 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229707AbhBQTwU (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 17 Feb 2021 14:52:20 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1lCSrI-0008By-HP; Wed, 17 Feb 2021 19:51:36 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drivers/base/cpu: remove redundant initialization of variable retval
+Date:   Wed, 17 Feb 2021 19:51:36 +0000
+Message-Id: <20210217195136.195789-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210217153357.GE1477@shell.armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> I'm wondering whether we need to add __acquires() and __releases()
-> annotations to some of these functions so that sparse can catch
-> these cases. Thoughts?
+From: Colin Ian King <colin.king@canonical.com>
 
-Hi Russell
+The variable retval is being initialized with a value that is never read
+and it is being updated later with a new value.  The initialization is
+redundant and can be removed.
 
-The more tools we have for catching locking problems the better.
-Jakubs patchwork bot should then catch them when a patch is submitted,
-if the developer did not run sparse themselves.
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/base/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-       Andrew
+diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
+index 8f1d6569564c..2e834cd315d8 100644
+--- a/drivers/base/cpu.c
++++ b/drivers/base/cpu.c
+@@ -409,7 +409,7 @@ __cpu_device_create(struct device *parent, void *drvdata,
+ 		    const char *fmt, va_list args)
+ {
+ 	struct device *dev = NULL;
+-	int retval = -ENODEV;
++	int retval;
+ 
+ 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+ 	if (!dev) {
+-- 
+2.30.0
+

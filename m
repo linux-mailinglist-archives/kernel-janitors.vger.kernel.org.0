@@ -2,45 +2,43 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45FC731E1CC
-	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Feb 2021 23:11:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E03931E2B2
+	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Feb 2021 23:45:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231712AbhBQWKu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 17 Feb 2021 17:10:50 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59798 "EHLO mail.kernel.org"
+        id S232683AbhBQWoe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 17 Feb 2021 17:44:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39284 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229828AbhBQWKr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 17 Feb 2021 17:10:47 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPS id 3400A64E2E;
-        Wed, 17 Feb 2021 22:10:07 +0000 (UTC)
+        id S233025AbhBQWky (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 17 Feb 2021 17:40:54 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id 6648360241;
+        Wed, 17 Feb 2021 22:40:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1613599807;
-        bh=RTrHvcKlu4nh2Uhh5Yy4CCmThHz37p3dsD6u6sdppHU=;
+        s=k20201202; t=1613601607;
+        bh=sWubiTSTGUbhgj9QmN8/B6LZjzkciGgIHXvXLX+YjE8=;
         h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=uBEVVJ/HZ7z777vIkozNbFM/29C1elhPuwU3QdWmus+Q2QYy+MtGovMl9EDNLkj9K
-         hevUVs9zP+zR1XKt7PtaRhhLvHqJvGf74BiUnBfdLEyld/Dyg5Euyq8Vutx5UH0q4q
-         xeWcfb/gB0E/gqlp5I1DNY6t201sKSaaSFd68wDZzmncdmjL/nEbDeo9+3Mait1PjC
-         Q3SXeeVDP8Kdiq/gWe8ERrrSTowVYli9wq9+WekMK4+wPSaduj3+UuBLMGsP2Rvp+2
-         My+M+dw2DrN2dx6OOr9gv0LecvNXWMJp/7DmICwe0ZvIQDU3eiKd+ekALrRj5tNsuO
-         wd+kg4O2iFsIA==
+        b=M0Ypie6tZzTkR/mIF5ZMaOk/i3SJC2GLNbnMZ0WN8M2e8N9k4q4vVwC16mS5KGHmL
+         eNBoZ8ozVXviPLPR7LpNT3zYN0bvAj+TiOs6RHGi7Km/pBBh1ulPbekZ6RzN9rbcQb
+         +sg7LBrzS23SA8EjLkPJYniIxDcsEUYX2fTsQgxg5nt658nQs5L1eJ5c5oIOu2H/es
+         P1NGJ7QiRYIJHyoFvD/Vgyh3n9UadQ+8NoXSI/ol9XhLAFRLiLp6OfntmYu8RzSnxM
+         3j2uPV/mDetJ1BVrE5c3OyDZyhgXzEmndwmsrL6XrgjzYiNCD/4gGDnNL+lLWANXql
+         1aEwcyrZkwQEA==
 Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 22C8560A15;
-        Wed, 17 Feb 2021 22:10:07 +0000 (UTC)
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 557D560A21;
+        Wed, 17 Feb 2021 22:40:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 bpf-next] bpf: fix a warning message in
- mark_ptr_not_null_reg()
+Subject: Re: [PATCH net-next] octeontx2-pf: Fix otx2_get_fecparam()
 From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <161359980713.20364.16930530087071491703.git-patchwork-notify@kernel.org>
-Date:   Wed, 17 Feb 2021 22:10:07 +0000
-References: <YCzJlV3hnF/t1Pk4@mwanda>
-In-Reply-To: <YCzJlV3hnF/t1Pk4@mwanda>
+Message-Id: <161360160734.1867.9120165404237124929.git-patchwork-notify@kernel.org>
+Date:   Wed, 17 Feb 2021 22:40:07 +0000
+References: <YCzIsxW3B70g7lea@mwanda>
+In-Reply-To: <YCzIsxW3B70g7lea@mwanda>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-        kafai@fb.com, songliubraving@fb.com, yhs@fb.com,
-        john.fastabend@gmail.com, kpsingh@kernel.org, me@ubique.spb.ru,
-        bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+Cc:     sgoutham@marvell.com, hkelam@marvell.com, gustavoars@kernel.org,
+        cjacob@marvell.com, gakula@marvell.com, sbhatta@marvell.com,
+        davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -48,21 +46,22 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Hello:
 
-This patch was applied to bpf/bpf-next.git (refs/heads/master):
+This patch was applied to netdev/net-next.git (refs/heads/master):
 
-On Wed, 17 Feb 2021 10:45:25 +0300 you wrote:
-> The WARN_ON() argument is a condition, not an error message.  So this
-> code will print a stack trace but will not print the warning message.
-> Fix that and also change it to only WARN_ONCE().
+On Wed, 17 Feb 2021 10:41:39 +0300 you wrote:
+> Static checkers complained about an off by one read overflow in
+> otx2_get_fecparam() and we applied two conflicting fixes for it.
 > 
-> Fixes: 4ddb74165ae5 ("bpf: Extract nullable reg type conversion into a helper function")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Correct: b0aae0bde26f ("octeontx2: Fix condition.")
+>   Wrong: 93efb0c65683 ("octeontx2-pf: Fix out-of-bounds read in otx2_get_fecparam()")
+> 
+> Revert the incorrect fix.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,bpf-next] bpf: fix a warning message in mark_ptr_not_null_reg()
-    https://git.kernel.org/bpf/bpf-next/c/7b1e385c9a48
+  - [net-next] octeontx2-pf: Fix otx2_get_fecparam()
+    https://git.kernel.org/netdev/net-next/c/38b5133ad607
 
 You are awesome, thank you!
 --

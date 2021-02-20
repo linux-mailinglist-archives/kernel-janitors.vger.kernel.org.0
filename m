@@ -2,41 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48E3D3204C9
-	for <lists+kernel-janitors@lfdr.de>; Sat, 20 Feb 2021 10:41:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10BBD3204C6
+	for <lists+kernel-janitors@lfdr.de>; Sat, 20 Feb 2021 10:40:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229614AbhBTJlS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 20 Feb 2021 04:41:18 -0500
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:46170 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229774AbhBTJlP (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 20 Feb 2021 04:41:15 -0500
-Received: from [192.168.1.18] ([90.126.17.6])
-        by mwinf5d81 with ME
-        id XMfW2400B07rLVE03MfWYW; Sat, 20 Feb 2021 10:39:32 +0100
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 20 Feb 2021 10:39:32 +0100
-X-ME-IP: 90.126.17.6
-Subject: Re: [PATCH] scsi: pm80xx: switch from 'pci_' to 'dma_' API
-To:     sathya.prakash@broadcom.com, sreekanth.reddy@broadcom.com,
-        suganath-prabu.subramani@broadcom.com, jejb@linux.ibm.com,
-        martin.petersen@oracle.com, linux-scsi@vger.kernel.org
-Cc:     MPT-FusionLinux.pdl@broadcom.com, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Newsgroups: gmane.linux.kernel.janitors,gmane.linux.scsi,gmane.linux.kernel
-References: <20210220083159.904990-1-christophe.jaillet@wanadoo.fr>
+        id S229678AbhBTJkY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 20 Feb 2021 04:40:24 -0500
+Received: from ciao.gmane.io ([116.202.254.214]:47148 "EHLO ciao.gmane.io"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229490AbhBTJkU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 20 Feb 2021 04:40:20 -0500
+Received: from list by ciao.gmane.io with local (Exim 4.92)
+        (envelope-from <glkj-kernel-janitors-2@m.gmane-mx.org>)
+        id 1lDOjf-0001Vf-JD
+        for kernel-janitors@vger.kernel.org; Sat, 20 Feb 2021 10:39:35 +0100
+X-Injected-Via-Gmane: http://gmane.org/
+To:     kernel-janitors@vger.kernel.org
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <38b0fe52-879c-7609-9cdf-cae7812ed534@wanadoo.fr>
+Subject: Re: [PATCH] scsi: pm80xx: switch from 'pci_' to 'dma_' API
 Date:   Sat, 20 Feb 2021 10:39:31 +0100
+Message-ID: <38b0fe52-879c-7609-9cdf-cae7812ed534@wanadoo.fr>
+References: <20210220083159.904990-1-christophe.jaillet@wanadoo.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.7.1
-MIME-Version: 1.0
 In-Reply-To: <20210220083159.904990-1-christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Cc:     linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -217,4 +210,5 @@ Le 20/02/2021 à 09:31, Christophe JAILLET a écrit :
 >   		}
 >   		pm8001_ha->ccb_info[i].task = NULL;
 > 
+
 

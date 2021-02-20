@@ -2,60 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5165A320513
-	for <lists+kernel-janitors@lfdr.de>; Sat, 20 Feb 2021 12:20:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D62CA3205B0
+	for <lists+kernel-janitors@lfdr.de>; Sat, 20 Feb 2021 15:31:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229525AbhBTLUV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 20 Feb 2021 06:20:21 -0500
-Received: from mail.jvpinto.com ([65.49.11.60]:16866 "EHLO mail.JVPinto.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229476AbhBTLUU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 20 Feb 2021 06:20:20 -0500
-Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
- RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Thu, 18 Feb 2021 08:46:16 -0800
-Received: from User (20.48.109.21) by RW-EXC1.JVPinto.com (172.32.1.13) with
- Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Thu, 18 Feb 2021
- 08:46:04 -0800
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <johnpinto@jvpinto.com>
-Subject: Re:ok
-Date:   Thu, 18 Feb 2021 16:46:15 +0000
+        id S229658AbhBTOb2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 20 Feb 2021 09:31:28 -0500
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:32060 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229643AbhBTOb1 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 20 Feb 2021 09:31:27 -0500
+Received: from localhost.localdomain ([90.126.17.6])
+        by mwinf5d57 with ME
+        id XSVe2400507rLVE03SVehE; Sat, 20 Feb 2021 15:29:45 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 20 Feb 2021 15:29:45 +0100
+X-ME-IP: 90.126.17.6
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     ulf.hansson@linaro.org, wsa+renesas@sang-engineering.com,
+        yoshihiro.shimoda.uh@renesas.com, kernel@esmil.dk,
+        dianders@chromium.org, yamada.masahiro@socionext.com,
+        linux-arm-kernel@lists.infradead.org
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH 1/2] mmc: uniphier-sd: Fix an error handling path in uniphier_sd_probe()
+Date:   Sat, 20 Feb 2021 15:29:35 +0100
+Message-Id: <20210220142935.918554-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <94f94ddb2ccd4efca5767dc62205000d@RW-EXC1.JVPinto.com>
-To:     Undisclosed recipients:;
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
+A 'uniphier_sd_clk_enable()' call should be balanced by a corresponding
+'uniphier_sd_clk_disable()' call.
+This is done in the remove function, but not in the error handling path of
+the probe.
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+Add the missing call.
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
+Fixes: 3fd784f745dd ("mmc: uniphier-sd: add UniPhier SD/eMMC controller driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/mmc/host/uniphier-sd.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
+diff --git a/drivers/mmc/host/uniphier-sd.c b/drivers/mmc/host/uniphier-sd.c
+index 2413b6750cec..6f0f05466917 100644
+--- a/drivers/mmc/host/uniphier-sd.c
++++ b/drivers/mmc/host/uniphier-sd.c
+@@ -635,7 +635,7 @@ static int uniphier_sd_probe(struct platform_device *pdev)
+ 
+ 	ret = tmio_mmc_host_probe(host);
+ 	if (ret)
+-		goto free_host;
++		goto disable_clk;
+ 
+ 	ret = devm_request_irq(dev, irq, tmio_mmc_irq, IRQF_SHARED,
+ 			       dev_name(dev), host);
+@@ -646,6 +646,8 @@ static int uniphier_sd_probe(struct platform_device *pdev)
+ 
+ remove_host:
+ 	tmio_mmc_host_remove(host);
++disable_clk:
++	uniphier_sd_clk_disable(host);
+ free_host:
+ 	tmio_mmc_host_free(host);
+ 
+-- 
+2.27.0
 
-Regards,
-Ms. Reem.

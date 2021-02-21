@@ -2,104 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7A31320914
-	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Feb 2021 08:43:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E8C6320B5A
+	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Feb 2021 16:27:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229886AbhBUHnS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 21 Feb 2021 02:43:18 -0500
-Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:33312 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229847AbhBUHnS (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 21 Feb 2021 02:43:18 -0500
-Received: from localhost.localdomain ([90.126.17.6])
-        by mwinf5d65 with ME
-        id Xjhb2400607rLVE03jhbrF; Sun, 21 Feb 2021 08:41:36 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 21 Feb 2021 08:41:36 +0100
-X-ME-IP: 90.126.17.6
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     balbi@kernel.org, gregkh@linuxfoundation.org, krzk@kernel.org,
-        nathan@kernel.org, ndesaulniers@google.com, arnd@arndb.de,
-        gustavoars@kernel.org, linux-arm-kernel@lists.infradead.org
-Cc:     linux-usb@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH 2/2] usb: gadget: s3c: Fix the error handling path in 's3c2410_udc_probe()'
-Date:   Sun, 21 Feb 2021 08:41:33 +0100
-Message-Id: <20210221074133.938017-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.27.0
+        id S229884AbhBUP1Z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 21 Feb 2021 10:27:25 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35694 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229663AbhBUP1Y (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 21 Feb 2021 10:27:24 -0500
+Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A12AB64EF1;
+        Sun, 21 Feb 2021 15:26:41 +0000 (UTC)
+Date:   Sun, 21 Feb 2021 15:26:38 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Ioana Ciornei <ciorneiioana@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: adis16400: Fix an error code in
+ adis16400_initial_setup()
+Message-ID: <20210221152638.162fc405@archlinux>
+In-Reply-To: <YCwgFb3JVG6qrlQ+@mwanda>
+References: <YCwgFb3JVG6qrlQ+@mwanda>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Some 'clk_prepare_enable()' and 'clk_get()' must be undone in the error
-handling path of the probe function, as already done in the remove
-function.
+On Tue, 16 Feb 2021 22:42:13 +0300
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-Fixes: 1c6d47aa4f4b ("USB Gadget driver for Samsung s3c2410 ARM SoC")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-checkpatch reports:
-WARNING: Unknown commit id '1c6d47aa4f4b', maybe rebased or not pulled?
-According to https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/drivers/usb/gadget/s3c2410_udc.c?id=3fc154b6b8134b98bb94d60cad9a46ec1ffbe372
-the commit ID looks correct to me. Maybe something should be tweaked somewhere
-before applying, but I don't know what!
----
- drivers/usb/gadget/udc/s3c2410_udc.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+> This is to silence a new Smatch warning:
+> 
+>     drivers/iio/imu/adis16400.c:492 adis16400_initial_setup()
+>     warn: sscanf doesn't return error codes
+> 
+> If the condition "if (st->variant->flags & ADIS16400_HAS_SLOW_MODE) {"
+> is false then we return 1 instead of returning 0 and probe will fail.
+> 
+> Fixes: 72a868b38bdd ("iio: imu: check sscanf return value")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-diff --git a/drivers/usb/gadget/udc/s3c2410_udc.c b/drivers/usb/gadget/udc/s3c2410_udc.c
-index 3fc436286bad..146250e93412 100644
---- a/drivers/usb/gadget/udc/s3c2410_udc.c
-+++ b/drivers/usb/gadget/udc/s3c2410_udc.c
-@@ -1750,7 +1750,8 @@ static int s3c2410_udc_probe(struct platform_device *pdev)
- 	udc_clock = clk_get(NULL, "usb-device");
- 	if (IS_ERR(udc_clock)) {
- 		dev_err(dev, "failed to get udc clock source\n");
--		return PTR_ERR(udc_clock);
-+		retval = PTR_ERR(udc_clock);
-+		goto err_usb_bus_clk;
- 	}
- 
- 	clk_prepare_enable(udc_clock);
-@@ -1773,7 +1774,7 @@ static int s3c2410_udc_probe(struct platform_device *pdev)
- 	base_addr = devm_platform_ioremap_resource(pdev, 0);
- 	if (!base_addr) {
- 		retval = -ENOMEM;
--		goto err;
-+		goto err_udc_clk;
- 	}
- 
- 	the_controller = udc;
-@@ -1791,7 +1792,7 @@ static int s3c2410_udc_probe(struct platform_device *pdev)
- 	if (retval != 0) {
- 		dev_err(dev, "cannot get irq %i, err %d\n", irq_usbd, retval);
- 		retval = -EBUSY;
--		goto err;
-+		goto err_udc_clk;
- 	}
- 
- 	dev_dbg(dev, "got irq %i\n", irq_usbd);
-@@ -1862,7 +1863,14 @@ static int s3c2410_udc_probe(struct platform_device *pdev)
- 		gpio_free(udc_info->vbus_pin);
- err_int:
- 	free_irq(irq_usbd, udc);
--err:
-+err_udc_clk:
-+	clk_disable_unprepare(udc_clock);
-+	clk_put(udc_clock);
-+	udc_clock = NULL;
-+err_usb_bus_clk:
-+	clk_disable_unprepare(usb_bus_clock);
-+	clk_put(usb_bus_clock);
-+	usb_bus_clock = NULL;
- 
- 	return retval;
- }
--- 
-2.27.0
+Hi Dan,
+
+May be worth a follow up at some point to get rid of the silliness
+of goto err_ret by using direct returns.  Obviously that is a rather
+less minimal fix however so not so good for backports.
+
+Hence, applied this to the fixes-togreg branch of iio.git and marked
+for stable. 
+
+Thanks,
+
+
+Jonathan
+
+> ---
+>  drivers/iio/imu/adis16400.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/imu/adis16400.c b/drivers/iio/imu/adis16400.c
+> index 54af2ed664f6..785a4ce606d8 100644
+> --- a/drivers/iio/imu/adis16400.c
+> +++ b/drivers/iio/imu/adis16400.c
+> @@ -462,8 +462,7 @@ static int adis16400_initial_setup(struct iio_dev *indio_dev)
+>  		if (ret)
+>  			goto err_ret;
+>  
+> -		ret = sscanf(indio_dev->name, "adis%u\n", &device_id);
+> -		if (ret != 1) {
+> +		if (sscanf(indio_dev->name, "adis%u\n", &device_id) != 1) {
+>  			ret = -EINVAL;
+>  			goto err_ret;
+>  		}
 

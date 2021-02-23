@@ -2,65 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FDDE3226DF
-	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Feb 2021 09:09:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F1A0322818
+	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Feb 2021 10:54:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232017AbhBWIH7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Feb 2021 03:07:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60026 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232176AbhBWIGt (ORCPT
+        id S232156AbhBWJvc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Feb 2021 04:51:32 -0500
+Received: from mail-oi1-f172.google.com ([209.85.167.172]:39588 "EHLO
+        mail-oi1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230429AbhBWJtZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Feb 2021 03:06:49 -0500
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B432C06121C
-        for <kernel-janitors@vger.kernel.org>; Tue, 23 Feb 2021 00:05:49 -0800 (PST)
-Received: by mail-pg1-x532.google.com with SMTP id h4so685pgf.13
-        for <kernel-janitors@vger.kernel.org>; Tue, 23 Feb 2021 00:05:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=rjFLgW1OULBXQlh3JS0FsFrrUu6RfNW+e5SQFjA5Djs=;
-        b=JxmO513c8N+mSXqGl2XKRQHcg76JR+bfZMPrf+vnxkWzkw3ft1KwYNxHS9vOEkgGiM
-         qBVoGUl1NcPB8WYCRemgEULGFhsYnDu5kKuOWrq27NuRV930Ezd7u789BhF9iHg+aVwC
-         mo/7nt25gCmBuXvwUJPkxT6lBte4JyLXRVjNLR3ZcZMPpmTWc0Egkiv42NUJQRVW98yu
-         LIH9HTaguYFBwcG+hh00ZoHEJvI5bk4QNHB0+Wg+uj3WBH/dcTsVhxSVtfEjlbUJ+Vem
-         acwlvY4dbyvzXFGW9iDsNNh7SdAKlrApFMWnZ0spVFacMbO3cLTxh8IDkZyfnGqpbFw2
-         kPuQ==
+        Tue, 23 Feb 2021 04:49:25 -0500
+Received: by mail-oi1-f172.google.com with SMTP id z126so1359707oiz.6;
+        Tue, 23 Feb 2021 01:49:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=rjFLgW1OULBXQlh3JS0FsFrrUu6RfNW+e5SQFjA5Djs=;
-        b=kEEPFNVxGewlRuWF1UthsCXh53n5q58soldFpy+3jg2wv18bBeym/rQqaSWyVPJlcO
-         ce7DtkO1eGrozmv9qzAZwkVWg72Iui+wcBqW1yVgpjkEGWqOGhHtUWkfXTmNQ1LdHZVy
-         svQTEE97cvG1LotoRtTaJ3hlRj0PRRKk4IxfibZOVfvnCMaT+LIBn1UDbivnPeTOSRJz
-         Dsl9JM0M9VuIv9hq453NsMPk2CGBbgI5IaFSDhfEyOnacHHt+IYHV7+wiEeG/Qf3I2sU
-         qRYwApyyZtKpR3V+AFWFJQX5SKh9ZLFhn6Uc9Z0IL2fpGgdVPNCgamzz7bDRsqVNIzst
-         yjjg==
-X-Gm-Message-State: AOAM532gHqpJDg4nYkQwwKekiFAVqSnKynyp2PYcZdbqYCR/CU3PeSW6
-        EFYn5agS0uqmO0GDQx8z8wHokd8qKsqNmOQys2Q=
-X-Google-Smtp-Source: ABdhPJyOt/exCAd6Wzt/hiCTFLx2ROh2g6hSsLUi9yKtwPelo0Sd4I7YubgfqVYw3V4/E4yTkHXvvlHAuThVLm5kMKM=
-X-Received: by 2002:a63:c349:: with SMTP id e9mr23264867pgd.20.1614067548579;
- Tue, 23 Feb 2021 00:05:48 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=UAweoN6eUtAsuvPXmS5XNF8LZggD1kVsY6H4x3efuu4=;
+        b=fZv1OMHHRl3grwGBdFtw7n2yDshUqcSE3T7zO1kDi6miwEczZ0eL2xHqkQYHDuLaC5
+         beevs9VyGB/rSkkxPrWtyCh0KmqRSpxQNHq+La9y14UMQiILoJGU7ZbbQnWdpO4V/DSs
+         iGL/fzvXoGbP//YhdD9keRvfEolu42cJHHwduks9m39fHaRdneL+rvSs9Ql9tBv1aBxn
+         dPmMae/ZnER4Wedws77aDEVNxT6X3az451BuLs/0DaVbaYh8OmSX9X/Ku6r8IiPBDEOt
+         iYNXCa8ojAcjC7ZTlWYpA4qeP2WRib/GyXCV+J0zIy6Gzd7cm639X0tVuVf2s33h7OuZ
+         RG8g==
+X-Gm-Message-State: AOAM5330OadTDp5Iq0X3e+RrplJOkt0sR4DpmOwdVUqrIYdSHWyXw4S3
+        xK2390J0d/Qs8Wb3WF69mp47fbMOvJRmIeJLV/M=
+X-Google-Smtp-Source: ABdhPJwU9GCzduzw7dt7nUQZfXrlBnfCpmG43OLUcL8UJ9UtQa8drjZtHc3yDw24+LDKbQIv0j4WKI6HX5iVRNJlMmQ=
+X-Received: by 2002:aca:5e84:: with SMTP id s126mr18807216oib.175.1614073717156;
+ Tue, 23 Feb 2021 01:48:37 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:4753:0:0:0:0 with HTTP; Tue, 23 Feb 2021 00:05:48
- -0800 (PST)
-Reply-To: abdwabbomaddahm@gmail.com
-From:   AbdWabbo Maddah <ffoundationcoca@gmail.com>
-Date:   Tue, 23 Feb 2021 09:05:48 +0100
-Message-ID: <CAJHqv63YECQgYUxF9t5MEGAd0fpY7OdQ1YKhb5p7JVagAhCqGw@mail.gmail.com>
-Subject: DID YOU RECEIVE MY MAIL?
-To:     undisclosed-recipients:;
+References: <20210222161905.1153-1-lukas.bulwahn@gmail.com> <20210222161905.1153-3-lukas.bulwahn@gmail.com>
+In-Reply-To: <20210222161905.1153-3-lukas.bulwahn@gmail.com>
+From:   =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <f4bug@amsat.org>
+Date:   Tue, 23 Feb 2021 10:48:26 +0100
+Message-ID: <CAAdtpL4egZYCGS+2K5FQSFYcPKomosuvvrunpDskkiif5Ma5Uw@mail.gmail.com>
+Subject: Re: [PATCH 2/5] MAINTAINERS: remove linux-mips.org references
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        "Maciej W . Rozycki" <macro@orcam.me.uk>,
+        Tiezhu Yang <yangtiezhu@loongson.cn>, Willy Tarreau <w@1wt.eu>,
+        linux-edac@vger.kernel.org, linux-hams@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        open list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
--- 
-Dear,
-I had sent you a mail but i don't think you received it that's why am
-writing you again.It is important you get back to me as soon as you
-can.
+On Mon, Feb 22, 2021 at 5:22 PM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+>
+> The domain lookup for linux-mips.org fails for quite some time now. Hence,
+> webpages, the patchwork instance and Ralf Baechle's email there is not
+> reachable anymore.
+>
+> Remove all references of webpages from linux-mips.org in MAINTAINERS, and
+> refer to the kernel.org's linux-mips patchwork instance instead.
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+>  MAINTAINERS | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e949e561867d..703a50183301 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -4980,7 +4980,6 @@ DECSTATION PLATFORM SUPPORT
+>  M:     "Maciej W. Rozycki" <macro@orcam.me.uk>
+>  L:     linux-mips@vger.kernel.org
+>  S:     Maintained
+> -W:     http://www.linux-mips.org/wiki/DECstation
 
-AbdWabbo Maddah
+Why not use the web archive? The information is still valuable.
+https://web.archive.org/web/20190704000315/https://www.linux-mips.org/wiki/DECstation
+
+>  F:     arch/mips/dec/
+>  F:     arch/mips/include/asm/dec/
+>  F:     arch/mips/include/asm/mach-dec/
+...

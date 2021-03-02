@@ -2,55 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1959A32B51E
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Mar 2021 07:13:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1032332B50E
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Mar 2021 07:13:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345145AbhCCGHC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Mar 2021 01:07:02 -0500
-Received: from mslow2.mail.gandi.net ([217.70.178.242]:53901 "EHLO
-        mslow2.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1835423AbhCBTGX (ORCPT
+        id S232318AbhCCGFG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Mar 2021 01:05:06 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:59917 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1835118AbhCBQhe (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Mar 2021 14:06:23 -0500
-Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
-        by mslow2.mail.gandi.net (Postfix) with ESMTP id 902CE3A88B0;
-        Tue,  2 Mar 2021 16:35:58 +0000 (UTC)
-X-Originating-IP: 86.206.8.148
-Received: from xps13.stephanxp.local (lfbn-tou-1-491-148.w86-206.abo.wanadoo.fr [86.206.8.148])
-        (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id E999CFF80E;
-        Tue,  2 Mar 2021 16:32:42 +0000 (UTC)
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Vipin Kumar <vipin.kumar@st.com>
-Cc:     Fenghua Yu <fenghua.yu@intel.com>, Tony Luck <tony.luck@intel.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Richard Weinberger <richard@nod.at>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        linux-mtd@lists.infradead.org
-Subject: Re: [PATCH] mtd: rawnand: fsmc: Fix error code in fsmc_nand_probe()
-Date:   Tue,  2 Mar 2021 17:32:42 +0100
-Message-Id: <20210302163242.23393-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <YCqaOZ83OvPOzLwh@mwanda>
-References: 
+        Tue, 2 Mar 2021 11:37:34 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1lH7yx-0008WF-5K; Tue, 02 Mar 2021 16:34:47 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Corentin Labbe <clabbe.montjoie@gmail.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@siol.net>,
+        linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] crypto: sun8i-ss: Fix memory leak of object d when dma_iv fails to map
+Date:   Tue,  2 Mar 2021 16:34:46 +0000
+Message-Id: <20210302163446.21047-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: d49ecd70c82d89c7448f5623ae08d0a4a488dc72
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 2021-02-15 at 15:58:49 UTC, Dan Carpenter wrote:
-> If dma_request_channel() fails then the probe fails and it should
-> return a negative error code, but currently it returns success.
-> 
-> fixes: 4774fb0a48aa ("mtd: nand/fsmc: Add DMA support")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git nand/next, thanks.
+In the case where the dma_iv mapping fails, the return error path leaks
+the memory allocated to object d.  Fix this by adding a new error return
+label and jumping to this to ensure d is free'd before the return.
 
-Miquel
+Addresses-Coverity: ("Resource leak")
+Fixes: ac2614d721de ("crypto: sun8i-ss - Add support for the PRNG")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/crypto/allwinner/sun8i-ss/sun8i-ss-prng.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-prng.c b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-prng.c
+index 08a1473b2145..3191527928e4 100644
+--- a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-prng.c
++++ b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-prng.c
+@@ -103,7 +103,8 @@ int sun8i_ss_prng_generate(struct crypto_rng *tfm, const u8 *src,
+ 	dma_iv = dma_map_single(ss->dev, ctx->seed, ctx->slen, DMA_TO_DEVICE);
+ 	if (dma_mapping_error(ss->dev, dma_iv)) {
+ 		dev_err(ss->dev, "Cannot DMA MAP IV\n");
+-		return -EFAULT;
++		err = -EFAULT;
++		goto err_free;
+ 	}
+ 
+ 	dma_dst = dma_map_single(ss->dev, d, todo, DMA_FROM_DEVICE);
+@@ -167,6 +168,7 @@ int sun8i_ss_prng_generate(struct crypto_rng *tfm, const u8 *src,
+ 		memcpy(ctx->seed, d + dlen, ctx->slen);
+ 	}
+ 	memzero_explicit(d, todo);
++err_free:
+ 	kfree(d);
+ 
+ 	return err;
+-- 
+2.30.0
+

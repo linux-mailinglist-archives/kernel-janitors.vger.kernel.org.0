@@ -2,68 +2,114 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B625C32C57E
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Mar 2021 01:59:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA29C32C583
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Mar 2021 01:59:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355220AbhCDAVS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Mar 2021 19:21:18 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:58334 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240329AbhCCK1x (ORCPT
+        id S1355230AbhCDAVX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Mar 2021 19:21:23 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:55210 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1350011AbhCCLAZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Mar 2021 05:27:53 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1lHOij-000445-Ev; Wed, 03 Mar 2021 10:27:09 +0000
-Subject: Re: [PATCH][next] mtd: nand: Fix error handling in nand_prog_page_op
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        linux-mtd@lists.infradead.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210303094246.5724-1-colin.king@canonical.com>
- <20210303104651.2d49fb2c@xps13>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <e7893539-9510-e149-f02b-f88c33f8175b@canonical.com>
-Date:   Wed, 3 Mar 2021 10:27:09 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+        Wed, 3 Mar 2021 06:00:25 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 123AwrsY076562;
+        Wed, 3 Mar 2021 10:59:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2020-01-29; bh=XZsFqSQ50liVCZbNlbeb8g8IToLinTVb61e+knYF4S0=;
+ b=c9XoJVjFMHOZ4VuStylJmiwj6eCiI4mHM8oJX7iw6pmKgw2wq4oD6w2l7h1LEUlWaGwM
+ Ql9YvoRdenYgl4D6h6/O3d3UjQ2qUPP6rT4DHTJAHADaSkJS7DCebaamXjEP0jssHqdq
+ X6zKrL7Z9wrDzG1lpusko6M35PjYd1z7phvTnSZAsl8Gqaj9J+K/2H8ISmMsR0ATJauS
+ KC1DAJcdpT2Kc5294P1opDCMIovl1oy1TrfWy5rU0XoxcbFoUCEM9GtOhUx7Ay6/1KUW
+ b7140MDB3ulgjdL/amAYLMB6JCCUOuMmDQLfcZ7ksXib2BcJ7h6UGLVWg1JPlTBZE++5 QA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 36yeqn2w1w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 03 Mar 2021 10:59:31 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 123At2RW117974;
+        Wed, 3 Mar 2021 10:59:30 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 36yynqdbbj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 03 Mar 2021 10:59:30 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 123AxLCf023593;
+        Wed, 3 Mar 2021 10:59:24 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 03 Mar 2021 02:59:21 -0800
+Date:   Wed, 3 Mar 2021 13:59:12 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Joshua Morris <josh.h.morris@us.ibm.com>,
+        Philip Kelleher <pjk1939@linux.ibm.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH RESEND] rsxx: Return -EFAULT if copy_to_user() fails
+Message-ID: <20210303105912.GZ2222@kadam>
 MIME-Version: 1.0
-In-Reply-To: <20210303104651.2d49fb2c@xps13>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200610172359.GB90634@mwanda>
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9911 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 spamscore=0
+ bulkscore=0 suspectscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103030084
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9911 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 clxscore=1011
+ priorityscore=1501 mlxlogscore=999 suspectscore=0 malwarescore=0
+ impostorscore=0 bulkscore=0 adultscore=0 mlxscore=0 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103030085
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 03/03/2021 09:46, Miquel Raynal wrote:
-> Hi Colin,
-> 
-> Colin King <colin.king@canonical.com> wrote on Wed,  3 Mar 2021
-> 09:42:46 +0000:
-> 
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> The less than zero comparison with status is always false because status
->> is a u8. Fix this by using ret as the return check for the call to
->> chip->legacy.waitfunc() and checking on this and assigning status to ret
->> if it is OK.
->>
->> Addresses-Coverity: ("Unsigned compared against 0")
->> Fixes: 52f67def97f1 ("mtd: nand: fix error handling in nand_prog_page_op() #1")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> 
-> Thanks for the fix, but this has been handled just an hour ago :)
+The copy_to_user() function returns the number of bytes remaining but
+we want to return -EFAULT to the user if it can't complete the copy.
+The "st" variable only holds zero on success or negative error codes on
+failure so the type should be int.
 
-Ah, missed that. Glad to know it's fixed.
+Fixes: 36f988e978f8 ("rsxx: Adding in debugfs entries.")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+I sent this last June as part of a 2 patch series.  No one responded
+to the patches.  The first patch was a NULL derefence fix but I now
+think that the correct fix for that is to remove the "enable_blkdev"
+module option...  Anyway, this patch is uncontroversial so I'm going to
+resend it.
 
-> 
-> Cheers,
-> Miquèl
-> 
+ drivers/block/rsxx/core.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/block/rsxx/core.c b/drivers/block/rsxx/core.c
+index 6207449fa716f..558fa263acbc0 100644
+--- a/drivers/block/rsxx/core.c
++++ b/drivers/block/rsxx/core.c
+@@ -165,15 +165,17 @@ static ssize_t rsxx_cram_read(struct file *fp, char __user *ubuf,
+ {
+ 	struct rsxx_cardinfo *card = file_inode(fp)->i_private;
+ 	char *buf;
+-	ssize_t st;
++	int st;
+ 
+ 	buf = kzalloc(cnt, GFP_KERNEL);
+ 	if (!buf)
+ 		return -ENOMEM;
+ 
+ 	st = rsxx_creg_read(card, CREG_ADD_CRAM + (u32)*ppos, cnt, buf, 1);
+-	if (!st)
+-		st = copy_to_user(ubuf, buf, cnt);
++	if (!st) {
++		if (copy_to_user(ubuf, buf, cnt))
++			st = -EFAULT;
++	}
+ 	kfree(buf);
+ 	if (st)
+ 		return st;
+-- 
+2.26.2

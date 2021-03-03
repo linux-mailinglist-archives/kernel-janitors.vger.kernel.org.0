@@ -2,65 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14F4832C58A
+	by mail.lfdr.de (Postfix) with ESMTP id 6997332C58B
 	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Mar 2021 01:59:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355180AbhCDAVp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Mar 2021 19:21:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42200 "EHLO
+        id S1355246AbhCDAVq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Mar 2021 19:21:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1447549AbhCCPEV (ORCPT
+        with ESMTP id S234327AbhCCPFw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Mar 2021 10:04:21 -0500
-Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 612C5C061760;
-        Wed,  3 Mar 2021 07:03:33 -0800 (PST)
-Received: by mail-oi1-x22a.google.com with SMTP id m25so13242783oie.12;
-        Wed, 03 Mar 2021 07:03:33 -0800 (PST)
+        Wed, 3 Mar 2021 10:05:52 -0500
+Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D1A7C061761
+        for <kernel-janitors@vger.kernel.org>; Wed,  3 Mar 2021 07:04:58 -0800 (PST)
+Received: by mail-ot1-x333.google.com with SMTP id f33so23790650otf.11
+        for <kernel-janitors@vger.kernel.org>; Wed, 03 Mar 2021 07:04:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=UFdmdGIL0QMCEr5PKkU9AQdIZLVV8WmqiWX3bdKwEO8=;
-        b=QQauQWBbvUN9iU7ZIBR5QfpryPCDaxW5eGXds6qSe28kjr/VQDd1TFN796AY2l+wEf
-         QzwToGQJPogy9LWjlpAnFUKI3DowbWVkql+8QFSwkamByG9wl/+NzjoEkIop+f7HjvNN
-         EdYxpRj2DXXcwtdY1I2r00QeUix0enLHaYcsPwVpr830DEL8iruObLGMAc8fTJ4cTG/d
-         //DaE22CAK8yoMZaA3yze89IAonfl7zg6EXf2cuWIIuVou7NQNcXQ2P736Mwc9JMqmkI
-         Igep49NceowL4SLIWSHK/UiyPuf/d8SgmDJgZoRB/bkIaLOvAEyXhstbdRE3HdNji3p7
-         DbVw==
+        bh=awzIJukxIn3496jKn3aKkaMrZCk6YH4VW3bDiugzALY=;
+        b=RvRlGkNcFhWi7u1KmBynlduvXvAvc5OgEvxiJvS8PkXgDfg5eLyypszajtTEC3vJcT
+         g+M4/ctfXdbDVaf8d2jFcnHfHSWvEj770ZYER3fDS8ZqspeBmhnyCqerqOnTROD8Kmyv
+         FGC5mJ414a341MXNhLGFui63z4U8M27ryMOYVGqbAyfpRTfrc2k65TcW/eWR2nB5OF1i
+         zE0viYtCfNdF5ZmLuBKaPRCj5g5bg7zHsoAqcciTUEs0nyEQ96k1tVCb2UDiHUm66baO
+         +cyAectTSxRsmkOMK9NTlCGwqJijr91TYjvbLEi9ySDKzYKjsbNdBjzRB61RDlYvzxKE
+         ktDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=UFdmdGIL0QMCEr5PKkU9AQdIZLVV8WmqiWX3bdKwEO8=;
-        b=pz3/Ry+HqN5Lwlc7Blc2aqACHWo/EHPVwwbNiwzNZxQxDpZMBrpAhX35820HYEnH3/
-         sSxYUkpoDA+ycrocQNaji7pD37sWYxhuXZprVY/6UkrfkckXTbe9fO6gwuhu2AsAGExk
-         b0yMSBz2JJR2fFEjU/1PR1Xo6uWiR0qeEyZrk2vZCk2cFCQ/lC2a32iv5Hm//4HahL2x
-         uesrj8eBQpNR0KxRy7jhLyOmCqUFHpM398HR4WIG7xJ43pad0Clv7qk8INE/aGA26n2T
-         //U4+7A6zxCC4nouFFHuiklhEqcNlcqZIh9D0JbFSVp34ZrwdSbvyVb8g7CNGyh/K72i
-         iABQ==
-X-Gm-Message-State: AOAM530nDX9xjAgd5FA1TW9IigCclD1OAq3PlaNH8tGuIL8upqkATIEa
-        2Z8u7Lo7776CSzAMDopIImVbGjUa9w+Rw6eoaAc=
-X-Google-Smtp-Source: ABdhPJy/Z9v1e0H8KZp7WiXlPIQST+M+l00Z0J29yDOyNADm4PL6rAXPb5X74je0lpVPYXZgHf57Nj4bXaIqH3IfYWw=
-X-Received: by 2002:aca:f485:: with SMTP id s127mr7604275oih.120.1614783812744;
- Wed, 03 Mar 2021 07:03:32 -0800 (PST)
+        bh=awzIJukxIn3496jKn3aKkaMrZCk6YH4VW3bDiugzALY=;
+        b=JGQCinkIy3VYo1Yi7/jiL3g40XhJCQwgS8lSUPsl6W4oF436SLdQpDe3B6L5uz4ugG
+         KkCLDHQJXzV6j4MZwl5CaOYYXMLhZEVkNnrb1KuWi5tKu9MtxZ8zz2FPU22IsMUX8NLQ
+         ExrbsLEPM2JwmMIN0QHm3Yu4v0oeRM0v2UVJCg4PHHvBjMDQd1NCTtuzjLzH9ce7BCJx
+         390BjcrHFf8qX+1O1lkJzc2FQuVwa3Hrm3kxLaSG38Vq7cwhujWj8TPJ4y2ElOjV12d3
+         oagtJ1KEK+Re3UCNlRGcGQoDoUIKWUaz5/fRPomjKnJEQikmAMNt3RcuPCHRRwfXU8Vr
+         SKZQ==
+X-Gm-Message-State: AOAM533aoZWfHeNFKajdgqcO/JhIf2tLeGAFmEubWWTPn8zE6uJdQ7hE
+        NEqipdFKz6ZVEXDIvKzT53oMaMZgMfsABRpNAA/sPvXx
+X-Google-Smtp-Source: ABdhPJzjEtQEJOeMzY2F5sci2j3avEqTW+zAuyAP1IMbYxRCWx1YIw/nrcT+hm+hR+SpmGexRmYpr1qyraOIoTWIEv4=
+X-Received: by 2002:a9d:20c3:: with SMTP id x61mr11841920ota.311.1614783897805;
+ Wed, 03 Mar 2021 07:04:57 -0800 (PST)
 MIME-Version: 1.0
-References: <20210303002759.28752-1-colin.king@canonical.com> <490409f2-9fcb-d402-a6ae-b45c80bae3d2@amd.com>
-In-Reply-To: <490409f2-9fcb-d402-a6ae-b45c80bae3d2@amd.com>
+References: <YD4eZLCFU+fbTGIp@mwanda> <MW3PR12MB45540A69909BB5556C6E1C11F9999@MW3PR12MB4554.namprd12.prod.outlook.com>
+In-Reply-To: <MW3PR12MB45540A69909BB5556C6E1C11F9999@MW3PR12MB4554.namprd12.prod.outlook.com>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Wed, 3 Mar 2021 10:03:21 -0500
-Message-ID: <CADnq5_N9P5AHF3PFTyR-k_s23sofvATCGbER=Q9qbNzQFp66UA@mail.gmail.com>
-Subject: Re: [PATCH] drm/radeon: fix copy of uninitialized variable back to userspace
-To:     =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+Date:   Wed, 3 Mar 2021 10:04:46 -0500
+Message-ID: <CADnq5_NsD2qkoTK9mJhhTLGi4hSP4b+MNMcg6=6xPYYCfWG4rA@mail.gmail.com>
+Subject: Re: [PATCH] drm/amd/display: Fix off by one in hdmi_14_process_transaction()
+To:     "Lakha, Bhawanpreet" <Bhawanpreet.Lakha@amd.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "Wentland, Harry" <Harry.Wentland@amd.com>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "Li, Sun peng (Leo)" <Sunpeng.Li@amd.com>,
+        "Liu, Wenjing" <Wenjing.Liu@amd.com>,
+        "Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
         David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        =?UTF-8?B?TWFyZWsgT2zFocOhaw==?= <marek.olsak@amd.com>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Koenig, Christian" <Christian.Koenig@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -71,51 +73,98 @@ Applied.  Thanks!
 
 Alex
 
-On Wed, Mar 3, 2021 at 2:42 AM Christian K=C3=B6nig <christian.koenig@amd.c=
-om> wrote:
+On Tue, Mar 2, 2021 at 2:26 PM Lakha, Bhawanpreet
+<Bhawanpreet.Lakha@amd.com> wrote:
 >
-> Am 03.03.21 um 01:27 schrieb Colin King:
-> > From: Colin Ian King <colin.king@canonical.com>
-> >
-> > Currently the ioctl command RADEON_INFO_SI_BACKEND_ENABLED_MASK can
-> > copy back uninitialised data in value_tmp that pointer *value points
-> > to. This can occur when rdev->family is less than CHIP_BONAIRE and
-> > less than CHIP_TAHITI.  Fix this by adding in a missing -EINVAL
-> > so that no invalid value is copied back to userspace.
-> >
-> > Addresses-Coverity: ("Uninitialized scalar variable)
-> > Cc: stable@vger.kernel.org # 3.13+
-> > Fixes: 439a1cfffe2c ("drm/radeon: expose render backend mask to the use=
-rspace")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> [AMD Official Use Only - Internal Distribution Only]
 >
-> Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
 >
-> Let's hope that this doesn't break UAPI.
+> Thanks
 >
-> Christian.
+> Reviewed-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+> ________________________________
+> From: Dan Carpenter <dan.carpenter@oracle.com>
+> Sent: March 2, 2021 6:15 AM
+> To: Wentland, Harry <Harry.Wentland@amd.com>; Lakha, Bhawanpreet <Bhawanp=
+reet.Lakha@amd.com>
+> Cc: Li, Sun peng (Leo) <Sunpeng.Li@amd.com>; Deucher, Alexander <Alexande=
+r.Deucher@amd.com>; Koenig, Christian <Christian.Koenig@amd.com>; David Air=
+lie <airlied@linux.ie>; Daniel Vetter <daniel@ffwll.ch>; Dan Carpenter <dan=
+.carpenter@oracle.com>; Lakha, Bhawanpreet <Bhawanpreet.Lakha@amd.com>; Siq=
+ueira, Rodrigo <Rodrigo.Siqueira@amd.com>; Liu, Wenjing <Wenjing.Liu@amd.co=
+m>; amd-gfx@lists.freedesktop.org <amd-gfx@lists.freedesktop.org>; dri-deve=
+l@lists.freedesktop.org <dri-devel@lists.freedesktop.org>; kernel-janitors@=
+vger.kernel.org <kernel-janitors@vger.kernel.org>
+> Subject: [PATCH] drm/amd/display: Fix off by one in hdmi_14_process_trans=
+action()
 >
-> > ---
-> >   drivers/gpu/drm/radeon/radeon_kms.c | 1 +
-> >   1 file changed, 1 insertion(+)
-> >
-> > diff --git a/drivers/gpu/drm/radeon/radeon_kms.c b/drivers/gpu/drm/rade=
-on/radeon_kms.c
-> > index 2479d6ab7a36..58876bb4ef2a 100644
-> > --- a/drivers/gpu/drm/radeon/radeon_kms.c
-> > +++ b/drivers/gpu/drm/radeon/radeon_kms.c
-> > @@ -518,6 +518,7 @@ int radeon_info_ioctl(struct drm_device *dev, void =
-*data, struct drm_file *filp)
-> >                       *value =3D rdev->config.si.backend_enable_mask;
-> >               } else {
-> >                       DRM_DEBUG_KMS("BACKEND_ENABLED_MASK is si+ only!\=
-n");
-> > +                     return -EINVAL;
-> >               }
-> >               break;
-> >       case RADEON_INFO_MAX_SCLK:
+> The hdcp_i2c_offsets[] array did not have an entry for
+> HDCP_MESSAGE_ID_WRITE_CONTENT_STREAM_TYPE so it led to an off by one
+> read overflow.  I added an entry and copied the 0x0 value for the offset
+> from similar code in drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c.
+>
+> I also declared several of these arrays as having HDCP_MESSAGE_ID_MAX
+> entries.  This doesn't change the code, but it's just a belt and
+> suspenders approach to try future proof the code.
+>
+> Fixes: 4c283fdac08a ("drm/amd/display: Add HDCP module")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> From static analysis, as mentioned in the commit message the offset
+> is basically an educated guess.
+>
+> I reported this bug on Apr 16, 2020 but I guess we lost take of it.
+>
+>  drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c b/drivers/gpu=
+/drm/amd/display/dc/hdcp/hdcp_msg.c
+> index 5e384a8a83dc..51855a2624cf 100644
+> --- a/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
+> +++ b/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
+> @@ -39,7 +39,7 @@
+>  #define HDCP14_KSV_SIZE 5
+>  #define HDCP14_MAX_KSV_FIFO_SIZE 127*HDCP14_KSV_SIZE
+>
+> -static const bool hdcp_cmd_is_read[] =3D {
+> +static const bool hdcp_cmd_is_read[HDCP_MESSAGE_ID_MAX] =3D {
+>          [HDCP_MESSAGE_ID_READ_BKSV] =3D true,
+>          [HDCP_MESSAGE_ID_READ_RI_R0] =3D true,
+>          [HDCP_MESSAGE_ID_READ_PJ] =3D true,
+> @@ -75,7 +75,7 @@ static const bool hdcp_cmd_is_read[] =3D {
+>          [HDCP_MESSAGE_ID_WRITE_CONTENT_STREAM_TYPE] =3D false
+>  };
+>
+> -static const uint8_t hdcp_i2c_offsets[] =3D {
+> +static const uint8_t hdcp_i2c_offsets[HDCP_MESSAGE_ID_MAX] =3D {
+>          [HDCP_MESSAGE_ID_READ_BKSV] =3D 0x0,
+>          [HDCP_MESSAGE_ID_READ_RI_R0] =3D 0x8,
+>          [HDCP_MESSAGE_ID_READ_PJ] =3D 0xA,
+> @@ -106,7 +106,8 @@ static const uint8_t hdcp_i2c_offsets[] =3D {
+>          [HDCP_MESSAGE_ID_WRITE_REPEATER_AUTH_SEND_ACK] =3D 0x60,
+>          [HDCP_MESSAGE_ID_WRITE_REPEATER_AUTH_STREAM_MANAGE] =3D 0x60,
+>          [HDCP_MESSAGE_ID_READ_REPEATER_AUTH_STREAM_READY] =3D 0x80,
+> -       [HDCP_MESSAGE_ID_READ_RXSTATUS] =3D 0x70
+> +       [HDCP_MESSAGE_ID_READ_RXSTATUS] =3D 0x70,
+> +       [HDCP_MESSAGE_ID_WRITE_CONTENT_STREAM_TYPE] =3D 0x0,
+>  };
+>
+>  struct protection_properties {
+> @@ -184,7 +185,7 @@ static const struct protection_properties hdmi_14_pro=
+tection =3D {
+>          .process_transaction =3D hdmi_14_process_transaction
+>  };
+>
+> -static const uint32_t hdcp_dpcd_addrs[] =3D {
+> +static const uint32_t hdcp_dpcd_addrs[HDCP_MESSAGE_ID_MAX] =3D {
+>          [HDCP_MESSAGE_ID_READ_BKSV] =3D 0x68000,
+>          [HDCP_MESSAGE_ID_READ_RI_R0] =3D 0x68005,
+>          [HDCP_MESSAGE_ID_READ_PJ] =3D 0xFFFFFFFF,
+> --
+> 2.30.1
 >
 > _______________________________________________
-> amd-gfx mailing list
-> amd-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/amd-gfx
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

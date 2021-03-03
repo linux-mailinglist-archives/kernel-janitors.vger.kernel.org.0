@@ -2,65 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30DA232C57B
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Mar 2021 01:59:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4082832C57F
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Mar 2021 01:59:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245157AbhCDAVI convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Mar 2021 19:21:08 -0500
-Received: from mslow2.mail.gandi.net ([217.70.178.242]:49669 "EHLO
-        mslow2.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1842906AbhCCKWW (ORCPT
+        id S1355225AbhCDAVV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Mar 2021 19:21:21 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:58334 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240078AbhCCK2b (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Mar 2021 05:22:22 -0500
-Received: from relay4-d.mail.gandi.net (unknown [217.70.183.196])
-        by mslow2.mail.gandi.net (Postfix) with ESMTP id 5E7503B0C2F;
-        Wed,  3 Mar 2021 09:47:16 +0000 (UTC)
-X-Originating-IP: 86.206.8.148
-Received: from xps13 (lfbn-tou-1-491-148.w86-206.abo.wanadoo.fr [86.206.8.148])
-        (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 87D3BE0003;
-        Wed,  3 Mar 2021 09:46:52 +0000 (UTC)
-Date:   Wed, 3 Mar 2021 10:46:51 +0100
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        linux-mtd@lists.infradead.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] mtd: nand: Fix error handling in
- nand_prog_page_op
-Message-ID: <20210303104651.2d49fb2c@xps13>
-In-Reply-To: <20210303094246.5724-1-colin.king@canonical.com>
-References: <20210303094246.5724-1-colin.king@canonical.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Wed, 3 Mar 2021 05:28:31 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1lHOGw-00021a-Nu; Wed, 03 Mar 2021 09:58:26 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ray Chi <raychi@google.com>, linux-usb@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] usb: dwc3: Fix dereferencing of null dwc->usb_psy
+Date:   Wed,  3 Mar 2021 09:58:26 +0000
+Message-Id: <20210303095826.6143-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Colin,
+From: Colin Ian King <colin.king@canonical.com>
 
-Colin King <colin.king@canonical.com> wrote on Wed,  3 Mar 2021
-09:42:46 +0000:
+Currently the null check logic on dwc->usb_psy is inverted as it allows
+calls to power_supply_put with a null dwc->usb_psy causing a null
+pointer dereference. Fix this by removing the ! operator.
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The less than zero comparison with status is always false because status
-> is a u8. Fix this by using ret as the return check for the call to
-> chip->legacy.waitfunc() and checking on this and assigning status to ret
-> if it is OK.
-> 
-> Addresses-Coverity: ("Unsigned compared against 0")
-> Fixes: 52f67def97f1 ("mtd: nand: fix error handling in nand_prog_page_op() #1")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Addresses-Coverity: ("Dereference after null check")
+Fixes: 59fa3def35de ("usb: dwc3: add a power supply for current control")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/usb/dwc3/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks for the fix, but this has been handled just an hour ago :)
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index d15f065849cd..94fdbe502ce9 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1628,7 +1628,7 @@ static int dwc3_probe(struct platform_device *pdev)
+ assert_reset:
+ 	reset_control_assert(dwc->reset);
+ 
+-	if (!dwc->usb_psy)
++	if (dwc->usb_psy)
+ 		power_supply_put(dwc->usb_psy);
+ 
+ 	return ret;
+@@ -1653,7 +1653,7 @@ static int dwc3_remove(struct platform_device *pdev)
+ 	dwc3_free_event_buffers(dwc);
+ 	dwc3_free_scratch_buffers(dwc);
+ 
+-	if (!dwc->usb_psy)
++	if (dwc->usb_psy)
+ 		power_supply_put(dwc->usb_psy);
+ 
+ 	return 0;
+-- 
+2.30.0
 
-Cheers,
-Miquèl

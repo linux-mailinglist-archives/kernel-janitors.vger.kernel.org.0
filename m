@@ -2,77 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6993D32C57D
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Mar 2021 01:59:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DEC2532C584
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Mar 2021 01:59:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351468AbhCDAVM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Mar 2021 19:21:12 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:28727 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S239666AbhCCK0y (ORCPT
+        id S1355231AbhCDAVY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Mar 2021 19:21:24 -0500
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:3599 "EHLO
+        mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234197AbhCCL3c (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Mar 2021 05:26:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1614767128;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=CV3tkp8merYe5w3jgDlwc9oNvGcc86ob13BJ0IDLoJA=;
-        b=WPOSR0s6vxIqyUXXbbSd8UfI2PC8mW9SzmPDgmv9hPHyggY7FdSe4AiMtxzYWtpiSEjd9g
-        hmv9omeXVOwY6r8EctKiRy7Rum513t8VzyCqdwUqbhSbanRF6B7ikwh4jDuXVZ+MpGSKSI
-        v1KuWi1YLtHcWeLrnyiDTp80gpC4Mio=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-45-_nJ8wJuPNCmgdVZduZEvbQ-1; Wed, 03 Mar 2021 03:23:25 -0500
-X-MC-Unique: _nJ8wJuPNCmgdVZduZEvbQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7E991100962A;
-        Wed,  3 Mar 2021 08:23:24 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-119-68.rdu2.redhat.com [10.10.119.68])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 356AE60BFA;
-        Wed,  3 Mar 2021 08:23:23 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20210303064028.895953-1-weiyongjun1@huawei.com>
-References: <20210303064028.895953-1-weiyongjun1@huawei.com>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     dhowells@redhat.com, Hulk Robot <hulkci@huawei.com>,
-        linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] afs: Remove unused variable in afs_req_issue_op()
+        Wed, 3 Mar 2021 06:29:32 -0500
+X-IronPort-AV: E=Sophos;i="5.81,219,1610406000"; 
+   d="scan'208";a="374603122"
+Received: from 173.121.68.85.rev.sfr.net (HELO hadrien) ([85.68.121.173])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Mar 2021 09:36:19 +0100
+Date:   Wed, 3 Mar 2021 09:36:19 +0100 (CET)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Bernd Petrovitsch <bernd@petrovitsch.priv.at>
+cc:     Joe Perches <joe@perches.com>, cocci <cocci@systeme.lip6.fr>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernelnewbies <kernelnewbies@kernelnewbies.org>
+Subject: Re: [Cocci] linux-kernel janitorial RFP: Mark static arrays as
+ const
+In-Reply-To: <22d22edd-4213-0f57-d801-1c570f04ec05@petrovitsch.priv.at>
+Message-ID: <alpine.DEB.2.22.394.2103030935020.2980@hadrien>
+References: <053b06c47f08631675c295b5c893b90be4248347.camel@perches.com> <22d22edd-4213-0f57-d801-1c570f04ec05@petrovitsch.priv.at>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2025007.1614759802.1@warthog.procyon.org.uk>
-Date:   Wed, 03 Mar 2021 08:23:22 +0000
-Message-ID: <2025008.1614759802@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Wei Yongjun <weiyongjun1@huawei.com> wrote:
 
-> GCC reports the following warning with W=1:
-> 
-> fs/afs/file.c:291:6: warning:
->  unused variable 'ret' [-Wunused-variable]
->   291 |  int ret;
->       |      ^~~
-> 
-> After commit 799fbdf96cd51, this variable is not used in function
-> afs_req_issue_op(), so this commit remove it to fix the warning.
-> 
-> Fixes: 799fbdf96cd51 ("afs: Use new fscache read helper API")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 
-I've already fixed that and updated my branch, thanks.  linux-next should pick
-it up on the next merging.
+On Tue, 2 Mar 2021, Bernd Petrovitsch wrote:
 
-David
+> Hi all!
+>
+> On 02/03/2021 18:42, Joe Perches wrote:
+> [...]
+> > ------------- For instance: (head -10 of the git grep for file statics)
+> >
+> > drivers/accessibility/speakup/keyhelp.c:18:static u_short masks[] = { 32, 16, 8, 4, 2, 1 };
+> > drivers/accessibility/speakup/keyhelp.c:26:static u_char funcvals[] = {
+> > drivers/accessibility/speakup/main.c:2059:static spkup_hand spkup_handler[] = {
+> > drivers/accessibility/speakup/speakup_acntpc.c:35:static unsigned int synth_portlist[] = { 0x2a8, 0 };
+> > drivers/accessibility/speakup/speakup_decpc.c:133:static int synth_portlist[] = { 0x340, 0x350, 0x240, 0x250, 0 };
+> > drivers/accessibility/speakup/speakup_dectlk.c:110:static int ap_defaults[] = {122, 89, 155, 110, 208, 240, 200, 106, 306};
+> > drivers/accessibility/speakup/speakup_dectlk.c:111:static int g5_defaults[] = {86, 81, 86, 84, 81, 80, 83, 83, 73};
+> > drivers/accessibility/speakup/speakup_dtlk.c:34:static unsigned int synth_portlist[] = {
+> > drivers/accessibility/speakup/speakup_keypc.c:34:static unsigned int synth_portlist[] = { 0x2a8, 0 };
+> > drivers/acpi/ac.c:137:static enum power_supply_property ac_props[] = {
+> >
+> > For drivers/accessibility/speakup/keyhelp.c:18:static u_short masks[] = { 32, 16, 8, 4, 2, 1 };
+>
+> Looking at the examples: Just s/^static /static const / in the lines
+> reported by the grep's above and see if it compiles (and save space)?
 
+There is a small risk with compiling that there may be a problem for a
+configuration you haven't considered.
+
+julia

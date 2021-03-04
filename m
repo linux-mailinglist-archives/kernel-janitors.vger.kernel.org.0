@@ -2,96 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAA3B32C590
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Mar 2021 01:59:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56A3232C9DF
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Mar 2021 02:20:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355269AbhCDAV5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Mar 2021 19:21:57 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:52114 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1391720AbhCCWvS (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Mar 2021 17:51:18 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1lHaH5-0004Mx-2a; Wed, 03 Mar 2021 22:47:23 +0000
-Subject: Re: [PATCH] usb: dwc3: Fix dereferencing of null dwc->usb_psy
-To:     Heiko Thiery <heiko.thiery@gmail.com>, raychi@google.com
-Cc:     balbi@kernel.org, gregkh@linuxfoundation.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org
-References: <CAPBYUsCPj12enyMp9AMzFEAgd5MdKh7dYN5DNFpZwofBYnjG8A@mail.gmail.com>
- <20210303212924.19733-1-heiko.thiery@gmail.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <b93ff323-e03c-10b3-c38d-921bc6b2edc0@canonical.com>
-Date:   Wed, 3 Mar 2021 22:47:22 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+        id S235881AbhCDBO2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Mar 2021 20:14:28 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59712 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1379090AbhCDAzz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 3 Mar 2021 19:55:55 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9EEDB64EBB;
+        Thu,  4 Mar 2021 00:55:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614819314;
+        bh=CrZ0LDgVarSQYHBMvLY+6qReNahMDrXe3e1rU8uL/Ig=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=HMFRWOfDclSs8FrbyU1RN/2lbPp4xkyNj20DJGWDpPXL4eu5faNFoq07sOhXOQOUp
+         3t4WpR3X9ikdW0+qPkzy6K9SQ5urNkdx0yKSCM8w3COVIyu9oafxLJ81yXIl2SShM8
+         1jbC6wctxXcXsouiSJrR0sDwuNzAKIW0yJ3NESc+WeFB63XUkAbsQJoHEU3jxDNcO0
+         HeLSHnfgIrFByRFpIYhhjB9yiKHy5ro0y9H1hhuYD2LodvwO/p6syY/oeIhEd9yF82
+         BDfdBaqWy2Ft66X82cVKdpFdizNZ138PZZWFDsM4gHxOwdJO6JcuTcVc2vFv1pYHUs
+         sxWtzF/Nre1yA==
+From:   Mark Brown <broonie@kernel.org>
+To:     Jaroslav Kysela <perex@perex.cz>,
+        Wei Yongjun <weiyongjun1@huawei.com>,
+        Hulk Robot <hulkci@huawei.com>,
+        Shuming Fan <shumingf@realtek.com>,
+        Oder Chiou <oder_chiou@realtek.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Takashi Iwai <tiwai@suse.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        alsa-devel@alsa-project.org
+In-Reply-To: <20210303064041.898281-1-weiyongjun1@huawei.com>
+References: <20210303064041.898281-1-weiyongjun1@huawei.com>
+Subject: Re: [PATCH -next] ASoC: rt1316: Fix return value check in rt1316_sdw_probe()
+Message-Id: <161481924070.9553.12740264453488013918.b4-ty@kernel.org>
+Date:   Thu, 04 Mar 2021 00:54:00 +0000
 MIME-Version: 1.0
-In-Reply-To: <20210303212924.19733-1-heiko.thiery@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 03/03/2021 21:29, Heiko Thiery wrote:
-> Hi all,
-> 
->> On Wed, Mar 3, 2021 at 6:00 PM Colin King <colin.king@canonical.com> wrote:
->>>
->>> From: Colin Ian King <colin.king@canonical.com>
->>>
->>> Currently the null check logic on dwc->usb_psy is inverted as it allows
->>> calls to power_supply_put with a null dwc->usb_psy causing a null
->>> pointer dereference. Fix this by removing the ! operator.
->>>
->>> Addresses-Coverity: ("Dereference after null check")
->>> Fixes: 59fa3def35de ("usb: dwc3: add a power supply for current control")
->>
->> Acked-by: Ray Chi <raychi@google.com>
->>
->>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> 
-> Tested-by: Heiko Thiery <heiko.thiery@gmail.com>
+On Wed, 3 Mar 2021 06:40:41 +0000, Wei Yongjun wrote:
+> In case of error, the function devm_regmap_init_sdw() returns ERR_PTR()
+> and never returns NULL. The NULL test in the return value check should
+> be replaced with IS_ERR().
 
-Thanks for testing. Much appreciated.
+Applied to
 
-Colin
-> 
->>> ---
->>>  drivers/usb/dwc3/core.c | 4 ++--
->>>  1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
->>> index d15f065849cd..94fdbe502ce9 100644
->>> --- a/drivers/usb/dwc3/core.c
->>> +++ b/drivers/usb/dwc3/core.c
->>> @@ -1628,7 +1628,7 @@ static int dwc3_probe(struct platform_device *pdev)
->>>  assert_reset:
->>>         reset_control_assert(dwc->reset);
->>>
->>> -       if (!dwc->usb_psy)
->>> +       if (dwc->usb_psy)
->>>                 power_supply_put(dwc->usb_psy);
->>>
->>>         return ret;
->>> @@ -1653,7 +1653,7 @@ static int dwc3_remove(struct platform_device *pdev)
->>>         dwc3_free_event_buffers(dwc);
->>>         dwc3_free_scratch_buffers(dwc);
->>>
->>> -       if (!dwc->usb_psy)
->>> +       if (dwc->usb_psy)
->>>                 power_supply_put(dwc->usb_psy);
->>>
->>>         return 0;
->>> --
->>> 2.30.0
->>>
-> 
-> Thank you.
-> 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
+Thanks!
+
+[1/1] ASoC: rt1316: Fix return value check in rt1316_sdw_probe()
+      commit: f87aec4585c3cf0853ba20637bb8c6bdd2689c46
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

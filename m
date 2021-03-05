@@ -2,97 +2,120 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E03A32E374
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Mar 2021 09:13:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8266432E406
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Mar 2021 09:57:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229609AbhCEINJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Mar 2021 03:13:09 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:40752 "EHLO
+        id S229489AbhCEI5A (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Mar 2021 03:57:00 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:36606 "EHLO
         userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbhCEINI (ORCPT
+        with ESMTP id S229629AbhCEI4t (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Mar 2021 03:13:08 -0500
+        Fri, 5 Mar 2021 03:56:49 -0500
 Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12585B3h065091;
-        Fri, 5 Mar 2021 08:13:01 GMT
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1258u5kP141273;
+        Fri, 5 Mar 2021 08:56:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=thJbeMQoSGAdNvh1/MCjpLoM4c4zEqtINa8N7nrM+eA=;
- b=h5AAj613kDkzssehxDBFqyYVa1Ef212bAwF3Xx5+hHYtebHiU+tM8yTk3wL9SZkYv86N
- 6zS9gitLUadS/zmL1RrLcSmcKBUhLN8CC/zn76BweQKgKrYFzh3jKI8eKGaSl5zyMmep
- BF1t0ud00oVU1rlIYqrk1NKIxfV+hfeSUdq6II6Yf3ToDfsEr8rR7yG4iAJCzI24+AwL
- h3HIDvRwxteAEEi4HSLc/oVGLLMjL5scCBwpR/0Y0XSW163/CopiuUTGJJ4zvJbP5r0v
- 3C1at/6cj5sG8S1C9a73k2Ddm1EomHXIiwOLC7pfAuS3im+s5wKPdyUEX6V5f/eQxb1M Yw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 36yeqn9jqr-1
+ bh=7XiaahJ3RtGt4i/nE+AUYMoGT8mHUC8BTFrb5jgsQ8A=;
+ b=ExQEiIjLFa0UnMZlCL2BEzAq4svoZ6mlaQohtcQhOEqhgdo1sRaTEzjOZYE4xUkQDDYZ
+ IrqiL+HYEgyF3/uBlayETjVaEvn6uh4t1VIov76MX6cOWiqhB3WbySMGO4k7VXKQh6kZ
+ pk/xYdzAMZbOIYpPsUfw9yUd83KjS48vTIqxsfj8iknT3cK1+ArFhm9WNwwLq7+8EAzP
+ dR2pOHX0Rq8k/4HdpREa5DaO72PXl9q6xZdi5DqX3YvNlaGR55jtHG/pRahdGLtHKAcH
+ cxZjhpQvvSJZTC+JEG8ZnbvvRMde9TgMM0IWAyCcaFInHny+QZsWj1k0D0esbpuQGyY/ qw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 36yeqn9p6w-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 05 Mar 2021 08:13:01 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12585CnQ008640;
-        Fri, 5 Mar 2021 08:12:59 GMT
+        Fri, 05 Mar 2021 08:56:43 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1258pBBK183509;
+        Fri, 5 Mar 2021 08:56:41 GMT
 Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 370003q0mf-1
+        by aserp3030.oracle.com with ESMTP id 36yynt07j9-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 05 Mar 2021 08:12:59 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 1258Cu7k024654;
-        Fri, 5 Mar 2021 08:12:57 GMT
+        Fri, 05 Mar 2021 08:56:41 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 1258uefc027025;
+        Fri, 5 Mar 2021 08:56:40 GMT
 Received: from mwanda (/102.36.221.92)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 05 Mar 2021 00:12:56 -0800
-Date:   Fri, 5 Mar 2021 11:12:49 +0300
+        with ESMTP ; Fri, 05 Mar 2021 00:56:39 -0800
+Date:   Fri, 5 Mar 2021 11:56:32 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Michael Straube <straube.linux@gmail.com>,
-        Simone Serra <serrazimone@gmail.com>,
-        Lourdes Pedrajas <lu@pplo.net>, devel@driverdev.osuosl.org,
-        kernel-janitors@vger.kernel.org, Lee Gibson <leegib@gmail.com>
-Subject: [PATCH] staging: rtl8192u: fix ->ssid overflow in r8192_wx_set_scan()
-Message-ID: <YEHoAWMOSZBUw91F@mwanda>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Soumyajit Deb <debsoumyajit100@gmail.com>,
+        Ivan Safonov <insafonov@gmail.com>,
+        Michael Straube <straube.linux@gmail.com>,
+        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] staging: rtl8188eu: fix potential memory corruption in
+ rtw_check_beacon_data()
+Message-ID: <YEHyQCrFZKTXyT7J@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Proofpoint-IMR: 1
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9913 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
- phishscore=0 bulkscore=0 mlxscore=0 spamscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103050038
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 spamscore=0
+ bulkscore=0 suspectscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103050043
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9913 signatures=668683
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 clxscore=1011
  priorityscore=1501 mlxlogscore=999 suspectscore=0 malwarescore=0
  impostorscore=0 bulkscore=0 adultscore=0 mlxscore=0 phishscore=0
  spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103050038
+ engine=8.12.0-2009150000 definitions=main-2103050043
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We need to cap len at IW_ESSID_MAX_SIZE (32) to avoid memory corruption.
-This can be controlled by the user via the ioctl.
+The "ie_len" is a value in the 1-255 range that comes from the user.  We
+have to cap it to ensure that it's not too large or it could lead to
+memory corruption.
 
-Fixes: 5f53d8ca3d5d ("Staging: add rtl8192SU wireless usb driver")
+Fixes: 9a7fe54ddc3a ("staging: r8188eu: Add source files for new driver - part 1")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/staging/rtl8192u/r8192U_wx.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/staging/rtl8188eu/core/rtw_ap.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/staging/rtl8192u/r8192U_wx.c b/drivers/staging/rtl8192u/r8192U_wx.c
-index 175bb8b15389..5211b2005763 100644
---- a/drivers/staging/rtl8192u/r8192U_wx.c
-+++ b/drivers/staging/rtl8192u/r8192U_wx.c
-@@ -331,8 +331,10 @@ static int r8192_wx_set_scan(struct net_device *dev, struct iw_request_info *a,
- 		struct iw_scan_req *req = (struct iw_scan_req *)b;
+diff --git a/drivers/staging/rtl8188eu/core/rtw_ap.c b/drivers/staging/rtl8188eu/core/rtw_ap.c
+index fa1e34a0d456..182bb944c9b3 100644
+--- a/drivers/staging/rtl8188eu/core/rtw_ap.c
++++ b/drivers/staging/rtl8188eu/core/rtw_ap.c
+@@ -791,6 +791,7 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
+ 	p = rtw_get_ie(ie + _BEACON_IE_OFFSET_, WLAN_EID_SSID, &ie_len,
+ 		       pbss_network->ie_length - _BEACON_IE_OFFSET_);
+ 	if (p && ie_len > 0) {
++		ie_len = min_t(int, ie_len, sizeof(pbss_network->ssid.ssid));
+ 		memset(&pbss_network->ssid, 0, sizeof(struct ndis_802_11_ssid));
+ 		memcpy(pbss_network->ssid.ssid, p + 2, ie_len);
+ 		pbss_network->ssid.ssid_length = ie_len;
+@@ -811,6 +812,7 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
+ 	p = rtw_get_ie(ie + _BEACON_IE_OFFSET_, WLAN_EID_SUPP_RATES, &ie_len,
+ 		       pbss_network->ie_length - _BEACON_IE_OFFSET_);
+ 	if (p) {
++		ie_len = min_t(int, ie_len, NDIS_802_11_LENGTH_RATES_EX);
+ 		memcpy(supportRate, p + 2, ie_len);
+ 		supportRateNum = ie_len;
+ 	}
+@@ -819,6 +821,8 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
+ 	p = rtw_get_ie(ie + _BEACON_IE_OFFSET_, WLAN_EID_EXT_SUPP_RATES,
+ 		       &ie_len, pbss_network->ie_length - _BEACON_IE_OFFSET_);
+ 	if (p) {
++		ie_len = min_t(int, ie_len,
++			       NDIS_802_11_LENGTH_RATES_EX - supportRateNum);
+ 		memcpy(supportRate + supportRateNum, p + 2, ie_len);
+ 		supportRateNum += ie_len;
+ 	}
+@@ -934,6 +938,7 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
  
- 		if (req->essid_len) {
--			ieee->current_network.ssid_len = req->essid_len;
--			memcpy(ieee->current_network.ssid, req->essid, req->essid_len);
-+			int len = min_t(int, req->essid_len, IW_ESSID_MAX_SIZE);
-+
-+			ieee->current_network.ssid_len = len;
-+			memcpy(ieee->current_network.ssid, req->essid, len);
- 		}
+ 		pht_cap->mcs.rx_mask[0] = 0xff;
+ 		pht_cap->mcs.rx_mask[1] = 0x0;
++		ie_len = min_t(int, ie_len, sizeof(pmlmepriv->htpriv.ht_cap));
+ 		memcpy(&pmlmepriv->htpriv.ht_cap, p + 2, ie_len);
  	}
  
 -- 

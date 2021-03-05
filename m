@@ -2,61 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BA8432DEFF
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Mar 2021 02:20:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8026732E02F
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Mar 2021 04:40:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229467AbhCEBT6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Mar 2021 20:19:58 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:13058 "EHLO
+        id S229521AbhCEDkm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Mar 2021 22:40:42 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:13473 "EHLO
         szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbhCEBT6 (ORCPT
+        with ESMTP id S229494AbhCEDkm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Mar 2021 20:19:58 -0500
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Ds8x31fxdzMjGY;
-        Fri,  5 Mar 2021 09:17:43 +0800 (CST)
-Received: from [10.136.110.154] (10.136.110.154) by smtp.huawei.com
- (10.3.19.209) with Microsoft SMTP Server (TLS) id 14.3.498.0; Fri, 5 Mar 2021
- 09:19:48 +0800
-Subject: Re: [f2fs-dev] [PATCH] f2fs: fix a redundant call to f2fs_balance_fs
- if an error occurs
-To:     Colin King <colin.king@canonical.com>,
-        Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
-        <linux-f2fs-devel@lists.sourceforge.net>
-CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20210304092118.2279879-1-colin.king@canonical.com>
-From:   Chao Yu <yuchao0@huawei.com>
-Message-ID: <a67cbd86-0e44-490a-95fa-cf300e005d2e@huawei.com>
-Date:   Fri, 5 Mar 2021 09:19:47 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        Thu, 4 Mar 2021 22:40:42 -0500
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4DsD4117h3zjTkV;
+        Fri,  5 Mar 2021 11:38:57 +0800 (CST)
+Received: from localhost.localdomain (10.175.102.38) by
+ DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
+ 14.3.498.0; Fri, 5 Mar 2021 11:40:31 +0800
+From:   'Wei Yongjun <weiyongjun1@huawei.com>
+To:     <weiyongjun1@huawei.com>, Felipe Balbi <balbi@kernel.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>
+CC:     <linux-usb@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-samsung-soc@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, "Hulk Robot" <hulkci@huawei.com>
+Subject: [PATCH -next] USB: gadget: udc: s3c2410_udc: fix return value check in s3c2410_udc_probe()
+Date:   Fri, 5 Mar 2021 03:49:27 +0000
+Message-ID: <20210305034927.3232386-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20210304092118.2279879-1-colin.king@canonical.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.136.110.154]
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.102.38]
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2021/3/4 17:21, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The  uninitialized variable dn.node_changed does not get set when a
-> call to f2fs_get_node_page fails.  This uninitialized value gets used
-> in the call to f2fs_balance_fs() that may or not may not balances
-> dirty node and dentry pages depending on the uninitialized state of
-> the variable. Fix this by only calling f2fs_balance_fs if err is
-> not set.
-> 
-> Thanks to Jaegeuk Kim for suggesting an appropriate fix.
-> 
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Fixes: 2a3407607028 ("f2fs: call f2fs_balance_fs only when node was changed")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+From: Wei Yongjun <weiyongjun1@huawei.com>
 
-Reviewed-by: Chao Yu <yuchao0@huawei.com>
+In case of error, the function devm_platform_ioremap_resource()
+returns ERR_PTR() and never returns NULL. The NULL test in the
+return value check should be replaced with IS_ERR().
 
-Thanks,
+Fixes: 188db4435ac6 ("usb: gadget: s3c: use platform resources")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/usb/gadget/udc/s3c2410_udc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/usb/gadget/udc/s3c2410_udc.c b/drivers/usb/gadget/udc/s3c2410_udc.c
+index f1ea51476add..1d3ebb07ccd4 100644
+--- a/drivers/usb/gadget/udc/s3c2410_udc.c
++++ b/drivers/usb/gadget/udc/s3c2410_udc.c
+@@ -1773,8 +1773,8 @@ static int s3c2410_udc_probe(struct platform_device *pdev)
+ 	udc_info = dev_get_platdata(&pdev->dev);
+ 
+ 	base_addr = devm_platform_ioremap_resource(pdev, 0);
+-	if (!base_addr) {
+-		retval = -ENOMEM;
++	if (IS_ERR(base_addr)) {
++		retval = PTR_ERR(base_addr);
+ 		goto err_mem;
+ 	}
+ 
+

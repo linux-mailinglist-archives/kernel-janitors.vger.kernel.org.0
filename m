@@ -2,82 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BFE832E0EB
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Mar 2021 05:59:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E384832E3AA
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Mar 2021 09:30:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229503AbhCEE7t (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Mar 2021 23:59:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53428 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbhCEE7s (ORCPT
+        id S229559AbhCEIaB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Mar 2021 03:30:01 -0500
+Received: from 10.mo7.mail-out.ovh.net ([178.33.250.56]:55008 "EHLO
+        10.mo7.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229558AbhCEI3c (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Mar 2021 23:59:48 -0500
-Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81C45C061574;
-        Thu,  4 Mar 2021 20:59:48 -0800 (PST)
-Received: by mail-ot1-x32c.google.com with SMTP id v12so624290ott.10;
-        Thu, 04 Mar 2021 20:59:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=g0Mk72avpHdhSJAjqBV5Yll3WvB1xqe8t3SVT3h8H5k=;
-        b=CI9w0x4SKtGImgBFfj3etYWLTG9vsxvaMEKVO9F8GmvkuYUUwkJyLXahEl/PpwnIXX
-         4orQ0SHxLHw0+CtH2+vJNdD3np6x0FAywYPKM1jiusFpC546N3cofuwUlLOM9kE84lYo
-         Sm01CW3imaRgyg4tN8HZExpfGfII5+itgs396aV88zF7D5dnHC20Kaels8rsA05eIvJL
-         ehSUBPHrO9v85hNGXlmVS6rzOpaU90fOcjdNsbiUBDL+SopPnNDkKKPUkD39fAf/ReOv
-         Sn3yv17JytDJ0bmDx3osG8r3vL4gCAXNrMD7zra1z4Fz0Ams2upy8kGO/eQ3Tcy4WJxa
-         GIIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=g0Mk72avpHdhSJAjqBV5Yll3WvB1xqe8t3SVT3h8H5k=;
-        b=SRtaDWik+JV4SsRQmUa3l4LZ7O0hjKcMPfDlg+chj/8ppO2lE11QUUSQsF6rpGpjXA
-         mzax3iVJG+kdYXt28Ddo6ScL1C0KAHLsgRvgsbujijur+xWPxv7kvWR7c6mdcU6ulY/S
-         cmxGDbmAYUxLW+ZSJtz5n17tv+z/JBJDhuMtbymxdYfQldTIg+pq+psTDQFz3SwcekyL
-         5uwjgeZGrACwnxTN4AApKANZ6z6TB7wez3H4E/HVMPokXRmnVZ0V1IK9h2jrXKPpRZkK
-         7RsGoLNOiHbfKHjz4u1wZP/CCKhsRP0w0Xm7V6oJbqy3MnmU8MQa+I5wbzhJOVm0D8pM
-         dJpw==
-X-Gm-Message-State: AOAM533B6U+zIvk/avikGNvFIV+zOsswm4s+laoGga9/tZQVVDSh8jWx
-        4jwnyAuScBgpdnScAuhsqVVL1e7NIEmumQ5eakw=
-X-Google-Smtp-Source: ABdhPJw9g001D7R/evptKBtMKwJyyDDxQePDW9srrI1add9OteIESjKLHzaOl6RFJ9mLGuVmNoOrcNNMMRCBhZST/Oc=
-X-Received: by 2002:a9d:6e01:: with SMTP id e1mr6552620otr.74.1614920387915;
- Thu, 04 Mar 2021 20:59:47 -0800 (PST)
-MIME-Version: 1.0
-References: <20210305034931.3237558-1-weiyongjun1@huawei.com>
-In-Reply-To: <20210305034931.3237558-1-weiyongjun1@huawei.com>
-From:   Sergio Paracuellos <sergio.paracuellos@gmail.com>
-Date:   Fri, 5 Mar 2021 05:59:36 +0100
-Message-ID: <CAMhs-H_0wPa+sFSs4hEx+52e3gMYm=xDVjOEnv2A6v6nSs-JUg@mail.gmail.com>
-Subject: Re: [PATCH -next] phy: ralink: phy-mt7621-pci: fix return value check
- in mt7621_pci_phy_probe()
-To:     "'Wei Yongjun" <weiyongjun1@huawei.com>
-Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-phy@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
+        Fri, 5 Mar 2021 03:29:32 -0500
+X-Greylist: delayed 4203 seconds by postgrey-1.27 at vger.kernel.org; Fri, 05 Mar 2021 03:29:32 EST
+Received: from player794.ha.ovh.net (unknown [10.108.16.108])
+        by mo7.mail-out.ovh.net (Postfix) with ESMTP id C568D18BC11
+        for <kernel-janitors@vger.kernel.org>; Fri,  5 Mar 2021 07:00:15 +0100 (CET)
+Received: from milecki.pl (ip-194-187-74-233.konfederacka.maverick.com.pl [194.187.74.233])
+        (Authenticated sender: rafal@milecki.pl)
+        by player794.ha.ovh.net (Postfix) with ESMTPSA id 7305E1892CCB8;
+        Fri,  5 Mar 2021 06:00:06 +0000 (UTC)
+Authentication-Results: garm.ovh; auth=pass (GARM-99G0034e6da37e-df57-45f4-80b0-8599f816782c,
+                    4F7D11A3904BD8E553EC742B87CBB6774FEDAA0F) smtp.auth=rafal@milecki.pl
+X-OVh-ClientIp: 194.187.74.233
+Subject: Re: [PATCH -next] mtd: parsers: ofpart: make symbol
+ 'bcm4908_partitions_quirks' static
+To:     'Wei Yongjun <weiyongjun1@huawei.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Boris Brezillon <bbrezillon@kernel.org>
+Cc:     linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+References: <20210304064600.3279138-1-weiyongjun1@huawei.com>
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
+Message-ID: <99ecfde1-c176-7454-c273-df46d3620015@milecki.pl>
+Date:   Fri, 5 Mar 2021 07:00:03 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
+MIME-Version: 1.0
+In-Reply-To: <20210304064600.3279138-1-weiyongjun1@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Ovh-Tracer-Id: 14478791329403997808
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledruddthedgkeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfesthejredttdefjeenucfhrhhomheptfgrfhgrlhcuofhilhgvtghkihcuoehrrghfrghlsehmihhlvggtkhhirdhplheqnecuggftrfgrthhtvghrnhepkeekgeefieeuhfdujeefgeektddujeekledvheehfeelfffhfeekjefhfeehuefhnecukfhppedtrddtrddtrddtpdduleegrddukeejrdejgedrvdeffeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejleegrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheprhgrfhgrlhesmhhilhgvtghkihdrphhlpdhrtghpthhtohepkhgvrhhnvghlqdhjrghnihhtohhrshesvhhgvghrrdhkvghrnhgvlhdrohhrgh
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Mar 5, 2021 at 4:40 AM 'Wei Yongjun <weiyongjun1@huawei.com> wrote:
->
+On 04.03.2021 07:46, 'Wei Yongjun wrote:
 > From: Wei Yongjun <weiyongjun1@huawei.com>
->
-> Fix the return value check which testing the wrong variable
-> in mt7621_pci_phy_probe().
->
-> Fixes: d87da32372a0 ("phy: ralink: Add PHY driver for MT7621 PCIe PHY")
+> 
+> The sparse tool complains as follows:
+> 
+> drivers/mtd/parsers/ofpart_core.c:25:32: warning:
+>   symbol 'bcm4908_partitions_quirks' was not declared. Should it be static?
+> 
+> This symbol is not used outside of ofpart_core.c, so this
+> commit marks it static.
+> 
+> Fixes: 457da931b608 ("mtd: parsers: ofpart: support BCM4908 fixed partitions")
 > Reported-by: Hulk Robot <hulkci@huawei.com>
 > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->  drivers/phy/ralink/phy-mt7621-pci.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Reviewed-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
+Looks good ofc, thanks.

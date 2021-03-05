@@ -2,68 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E384832E3AA
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Mar 2021 09:30:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6532B32E355
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Mar 2021 09:07:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229559AbhCEIaB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Mar 2021 03:30:01 -0500
-Received: from 10.mo7.mail-out.ovh.net ([178.33.250.56]:55008 "EHLO
-        10.mo7.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229558AbhCEI3c (ORCPT
+        id S229602AbhCEIHj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Mar 2021 03:07:39 -0500
+Received: from mout.kundenserver.de ([217.72.192.73]:42201 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229489AbhCEIH1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Mar 2021 03:29:32 -0500
-X-Greylist: delayed 4203 seconds by postgrey-1.27 at vger.kernel.org; Fri, 05 Mar 2021 03:29:32 EST
-Received: from player794.ha.ovh.net (unknown [10.108.16.108])
-        by mo7.mail-out.ovh.net (Postfix) with ESMTP id C568D18BC11
-        for <kernel-janitors@vger.kernel.org>; Fri,  5 Mar 2021 07:00:15 +0100 (CET)
-Received: from milecki.pl (ip-194-187-74-233.konfederacka.maverick.com.pl [194.187.74.233])
-        (Authenticated sender: rafal@milecki.pl)
-        by player794.ha.ovh.net (Postfix) with ESMTPSA id 7305E1892CCB8;
-        Fri,  5 Mar 2021 06:00:06 +0000 (UTC)
-Authentication-Results: garm.ovh; auth=pass (GARM-99G0034e6da37e-df57-45f4-80b0-8599f816782c,
-                    4F7D11A3904BD8E553EC742B87CBB6774FEDAA0F) smtp.auth=rafal@milecki.pl
-X-OVh-ClientIp: 194.187.74.233
-Subject: Re: [PATCH -next] mtd: parsers: ofpart: make symbol
- 'bcm4908_partitions_quirks' static
-To:     'Wei Yongjun <weiyongjun1@huawei.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Boris Brezillon <bbrezillon@kernel.org>
-Cc:     linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
-References: <20210304064600.3279138-1-weiyongjun1@huawei.com>
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
-Message-ID: <99ecfde1-c176-7454-c273-df46d3620015@milecki.pl>
-Date:   Fri, 5 Mar 2021 07:00:03 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+        Fri, 5 Mar 2021 03:07:27 -0500
+Received: from mail-ot1-f51.google.com ([209.85.210.51]) by
+ mrelayeu.kundenserver.de (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1N2E9Y-1lm63n2Iuc-013cng; Fri, 05 Mar 2021 09:07:25 +0100
+Received: by mail-ot1-f51.google.com with SMTP id a17so1005485oto.5;
+        Fri, 05 Mar 2021 00:07:25 -0800 (PST)
+X-Gm-Message-State: AOAM533vRXAxoUPaBgl0HS7R4QeB7HkjE4SSbsD5JQGn+Ai7Q32FV/Jr
+        VTKktjB1597AN30P4meFPhnnclGiSeaf6scfXj8=
+X-Google-Smtp-Source: ABdhPJxqYuCXgKHG79cARIlIIknf25ifduq2VjGAMPfck87tlTFpc5wPGypB2miMGioSDWeCxnxnQNvQKnonMZbh/Ag=
+X-Received: by 2002:a9d:7f11:: with SMTP id j17mr7135133otq.251.1614931644090;
+ Fri, 05 Mar 2021 00:07:24 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20210304064600.3279138-1-weiyongjun1@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 14478791329403997808
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledruddthedgkeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfesthejredttdefjeenucfhrhhomheptfgrfhgrlhcuofhilhgvtghkihcuoehrrghfrghlsehmihhlvggtkhhirdhplheqnecuggftrfgrthhtvghrnhepkeekgeefieeuhfdujeefgeektddujeekledvheehfeelfffhfeekjefhfeehuefhnecukfhppedtrddtrddtrddtpdduleegrddukeejrdejgedrvdeffeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejleegrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheprhgrfhgrlhesmhhilhgvtghkihdrphhlpdhrtghpthhtohepkhgvrhhnvghlqdhjrghnihhtohhrshesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+References: <20210305034927.3232386-1-weiyongjun1@huawei.com>
+In-Reply-To: <20210305034927.3232386-1-weiyongjun1@huawei.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Fri, 5 Mar 2021 09:07:07 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a23Ww39hxmhTCwgZUr1LWO1trj_Dijq1YXGyg0Z1mOCcQ@mail.gmail.com>
+Message-ID: <CAK8P3a23Ww39hxmhTCwgZUr1LWO1trj_Dijq1YXGyg0Z1mOCcQ@mail.gmail.com>
+Subject: Re: [PATCH -next] USB: gadget: udc: s3c2410_udc: fix return value
+ check in s3c2410_udc_probe()
+To:     "'Wei Yongjun" <weiyongjun1@huawei.com>
+Cc:     Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        USB list <linux-usb@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/SAMSUNG EXYNOS ARM ARCHITECTURES" 
+        <linux-samsung-soc@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:CHaEdIqKwG3T/zUOLoGwZ+zqo2NWAkLmBho1rTOPqdisV4PiNP+
+ p2BGL6Q3j4YElrJqtgJ0o+1tGRMu8oUgm/3q2ZwfdvGNdm1Je991tSuA6vtAXxLadkSn3+n
+ TDeIbKI8GghsJ8E+CASotghhBdxVV5DNk25IdsXCY0Gy7eMWszfT/87jIszIV5Q4ddxxJfr
+ Of4cRQmKPi1MOkGbYkZ+A==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:7k9th40rb8E=:MQtw6gUY57uOyLuH0qWkNF
+ dPl9Agm9R6lbXDEFuWukb4gGg2zYEOJCSJe4cNKq/9oB9N0y8i/o1OZi0TK+4sZT2al0ka9my
+ /nfWdxpRpiclWz/usb14gkbBtKnsqezHe1W44tMlE7a48LPokBpWeQz2Upr2pLslsujrWEEgz
+ AOJMqvujkTBkOluSxrVLw1Cu6IDTTAJq5wgFaY6b0+jOHs2gu0ZXzy/6JrCkWHYZWuOnOT8J+
+ 8KbfLEwdoy/9XaC//8J6RkWlqYTsSJwkDUduksZn0oX+C1AaXmgzq/dOl85KjEpiXLdb/3kWL
+ unlMUMg/TZKp9LCsVoqxxc6BtGOZXlT/G+zdhTa3o8/1zPaFV6xPodN8O8o4pCcAmXmOQGGsg
+ fKM21bYLumKTLw2F1tPcn3obW2HlES2Qay5peToR1P3NbZ4kOwCbk4Kg/tmrKTAYuxA7/CuXT
+ ynRj/JyD1Hh5oize37vVhh4m4LVla0yiomQwL1GyK1udOn2P5+YCHqaIQQLran5SDafm76VyV
+ M5Vjcp06TwEaplNVrcI8SgAfP1cFkgM6NwUTBBxrRQi
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 04.03.2021 07:46, 'Wei Yongjun wrote:
+On Fri, Mar 5, 2021 at 4:49 AM 'Wei Yongjun <weiyongjun1@huawei.com> wrote:
+>
 > From: Wei Yongjun <weiyongjun1@huawei.com>
-> 
-> The sparse tool complains as follows:
-> 
-> drivers/mtd/parsers/ofpart_core.c:25:32: warning:
->   symbol 'bcm4908_partitions_quirks' was not declared. Should it be static?
-> 
-> This symbol is not used outside of ofpart_core.c, so this
-> commit marks it static.
-> 
-> Fixes: 457da931b608 ("mtd: parsers: ofpart: support BCM4908 fixed partitions")
+>
+> In case of error, the function devm_platform_ioremap_resource()
+> returns ERR_PTR() and never returns NULL. The NULL test in the
+> return value check should be replaced with IS_ERR().
+>
+> Fixes: 188db4435ac6 ("usb: gadget: s3c: use platform resources")
 > Reported-by: Hulk Robot <hulkci@huawei.com>
 > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 
-Looks good ofc, thanks.
+Nice find, thanks for fixing it!
+
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>

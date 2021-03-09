@@ -2,95 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40214332A0A
-	for <lists+kernel-janitors@lfdr.de>; Tue,  9 Mar 2021 16:17:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7750332A65
+	for <lists+kernel-janitors@lfdr.de>; Tue,  9 Mar 2021 16:27:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231874AbhCIPQp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 9 Mar 2021 10:16:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40658 "EHLO
+        id S231946AbhCIP07 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 9 Mar 2021 10:26:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231918AbhCIPQb (ORCPT
+        with ESMTP id S231846AbhCIP0u (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 9 Mar 2021 10:16:31 -0500
-Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06D70C061760
-        for <kernel-janitors@vger.kernel.org>; Tue,  9 Mar 2021 07:16:31 -0800 (PST)
-Received: by mail-vs1-xe41.google.com with SMTP id b189so6970554vsd.0
-        for <kernel-janitors@vger.kernel.org>; Tue, 09 Mar 2021 07:16:30 -0800 (PST)
+        Tue, 9 Mar 2021 10:26:50 -0500
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FB88C06174A;
+        Tue,  9 Mar 2021 07:26:50 -0800 (PST)
+Received: by mail-lj1-x22e.google.com with SMTP id 2so21172578ljr.5;
+        Tue, 09 Mar 2021 07:26:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7Vrbe4gpVhb7cfcmpNanXi5E+OCzidx3VGMrGNR2bC4=;
-        b=iG+PEPmaHlHo7BIDTdfef5r88OuWpQOqhEH2qmezQYHakeueSZdtECnOxaNFPKT9CB
-         aLLijSjwuQVorDAEHnskHKoazheLbTgoFOH2IO0bywpBdkqxbvNhSp+AuzzkPltfZjkD
-         FjTTrNk9SO33wfLNvS9nByjMp72fepAXXy19dOfqtAsx4HxmPonpcVTJXrYVQmJxHxXa
-         AzJWFsWLVvJfVScuD99VDxmPz5IFH+JeT+BdI/5UjB5u3ljOPGeno4uGqlf/Z8N2nRtY
-         ROlA+uMiGucX8LIxOcsYJNKNu/TkjgiHO1C+jXYPHopFB15mBvJWDTUfIUXFYNAfd4q+
-         86Og==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=rFC6JX2geeI70fyZtdsl3qpdPvdXkbuAh4i2jTWjv1s=;
+        b=r5n2LJiAeojyOblPJVf02Wc3nAGV4oBPT5YVDFyVwrLoCwAmsX2M5JT2Fj5FXqGyHO
+         49rdQ7ddXulHm/VIR26i40uECtW9dkHi5pN0ygPhAHSiImm1BKNzSKJCphm4aXJYk+/A
+         OU+Ce4qFg0ZeyGgOTno65vs4Z32vipU9yUGPE1oxvkkjCeAo7bb/jUoAU74f1RD8dCw4
+         XvufXizwmbg2mfNsPrIJerKaONy7L4OwIG/yWgnq8eA25Ig/GJynwMz5ZXZH3inOUNYv
+         Lxjmps1xWSDp1iCLcsxC3iRWN9zLUE33LwBZVPOxu/2qnYcVZUGkoSQ3OH7EqsVSLiPO
+         tvyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7Vrbe4gpVhb7cfcmpNanXi5E+OCzidx3VGMrGNR2bC4=;
-        b=T/JrAkIzisFnZenUicRJoZGy0MYYg69SJSaqc1jQ+ESvdU6p21KSUXfyP9SFTZxZ3U
-         hW2V1OiBQKzvaKxIA/KB7wmWtj9pIpxeh8m3bFaVBWdkYOnoTrivI6IdQ5S035olOEVL
-         sWp9BMIiRV0kAb7d3I0nsci1+9QZ+Znt5uPpXeYmAEF3P1vWKqmALdFIe1A6JaVS3UWP
-         K+/33/8oJx26+zzZVjdZODPmWWEskL14BmvWcxbory0lgCOVAa68trwG0q87T5mv0g/A
-         rZob08eS1aAmxorDsDWDIPFf/Rap3A0upBqahUOGz5OHccplzDlilaHc9xtJnQhIyYRr
-         PpWQ==
-X-Gm-Message-State: AOAM531yRbf/XxXfTudSvG6Jwf/jvr7pR20IpV6FXnXVpl6TfmK9RJw6
-        KJwjxzTvi5SQCwnkXCWFoElgMYQll5irQnz662w=
-X-Google-Smtp-Source: ABdhPJy9BBpeWXWCzuTiulojyYdgac59jMaZMyVdwFl3oYPmplUKQv1r1LrJzyZzXExNPs2KOA/1mgAnINQBECvVh48=
-X-Received: by 2002:a67:2686:: with SMTP id m128mr15206115vsm.31.1615302990249;
- Tue, 09 Mar 2021 07:16:30 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=rFC6JX2geeI70fyZtdsl3qpdPvdXkbuAh4i2jTWjv1s=;
+        b=eYus24UMan3+gU+Fchq4xOcjsu2/sU0qGGHaoITUz4+PnCIAjGywwlN9VG4k8gp55D
+         E7ndM4i8kaXnx7bocQUbd712f0cDpmKGVGQtYntWqd0GtuZyirxXTKBkImpgSbdgkER9
+         uuvDwk007mE7zqK/KDZBnlLSt+muB/dUjOaLVtibEbQpygEoYJiSkfz2E1WItkYOfoZK
+         iGx39SfFSnJJJ9Ld23n8NvI65SUL4a4irDSXVDYpGuQgvJjDtADNZ+UVcsnudSaCjXzO
+         4VqmSTzcw68BE1lt0mVKczmdcYxv3txp8+s4JlUOsFMO+hN+hpbAmUxdsSNxvVPkpbDe
+         noLg==
+X-Gm-Message-State: AOAM531J0fbKopusUbleSBg2jLivLqYuTqMPsQ1RzYixjV7Q7HijF8hF
+        o98IMLQHfG4/vD74O4bnhfo=
+X-Google-Smtp-Source: ABdhPJzp48kyS6lakDiPeXkABIMcEFvpWehCfF7cx+K8mxcfh7ESPxIO281C8KNqeHZht8CUivIhyA==
+X-Received: by 2002:a2e:3907:: with SMTP id g7mr17948263lja.159.1615303608630;
+        Tue, 09 Mar 2021 07:26:48 -0800 (PST)
+Received: from [192.168.1.101] ([178.176.72.196])
+        by smtp.gmail.com with ESMTPSA id m1sm2043055ljg.111.2021.03.09.07.26.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Mar 2021 07:26:48 -0800 (PST)
+Subject: Re: [PATCH -next] usb: cdns3: imx: mark cdns_imx_resume as
+ __maybe_unused
+To:     'Wei Yongjun <weiyongjun1@huawei.com>,
+        Peter Chen <peter.chen@kernel.org>,
+        Pawel Laszczak <pawell@cadence.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Frank Li <frank.li@nxp.com>
+Cc:     linux-usb@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
+References: <20210309131457.1884112-1-weiyongjun1@huawei.com>
+From:   Sergei Shtylyov <sergei.shtylyov@gmail.com>
+Message-ID: <03c23018-f26d-0aa2-e319-efb2683d633d@gmail.com>
+Date:   Tue, 9 Mar 2021 18:26:45 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Received: by 2002:ab0:2e8f:0:0:0:0:0 with HTTP; Tue, 9 Mar 2021 07:16:29 -0800 (PST)
-Reply-To: ezbtg22@gmail.com
-From:   "Mrs.E.Glenn" <mrganuserge654@gmail.com>
-Date:   Tue, 9 Mar 2021 07:16:29 -0800
-Message-ID: <CAH16wSN04Q1+cGtUxisTrHBY3uKhmkpr-ckyqweDCj+psxNsgA@mail.gmail.com>
-Subject: From Mrs.E.Glenn
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210309131457.1884112-1-weiyongjun1@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
--- 
-Dear Beloved,
+Hello!
 
-I am Mrs Elizabet Glenn from Israel. I am a missionary but right now
-in a hospital bed in Israel. I am 59 years and childless; my husband
-is dead. I was diagnosed with terminal cancer. And my doctor just
-predicted that I have but very limited time to live due to damages in
-my system and as a result of that I decided to dispose my 10.5 million
-US dollars to a God-fearing one for the continuation of charitable
-work. This is why I located you.
+On 3/9/21 4:14 PM, 'Wei Yongjun wrote:
 
-My guess about you may not be accurate because I came across your
-contact at the humanitarian calendar event of the year but I believe
-in God who divinely directed me to you for this solemn proposal of
-charitable work.
+> From: Wei Yongjun <weiyongjun1@huawei.com>
+> 
+> The function cdns_imx_resume() may have no callers depending
+> on configuration, so it must be marked __maybe_unused to avoid
+> harmless warning:
+> 
+> drivers/usb/cdns3/cdns3-imx.c:378:12: warning:
+>  'cdns_imx_system_resume' defined but not used [-Wunused-function]
+>   378 | static int cdns_imx_system_resume(struct device *dev)
+>       |            ^~~~~~~~~~~~~~~~~~
 
-Therefore I wholeheartedly wish to bequeath my fortune to you as a
-God-fearing person for the continuation of charitable work anywhere
-around the world.
+   Looks like that warning was copied from another kernel, where this function
+was named differently?
 
-I shall be going in for a surgery operations soonest and desire this
-money to be transferred to you as I do not wish to leave this money in
-the bank because bankers might misuse it for their own interest after
-my death.
+> 
+> Fixes: 67982dfa59de ("usb: cdns3: imx: add power lost support for system resume")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  drivers/usb/cdns3/cdns3-imx.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/cdns3/cdns3-imx.c b/drivers/usb/cdns3/cdns3-imx.c
+> index 708b51cc5844..96fff823a594 100644
+> --- a/drivers/usb/cdns3/cdns3-imx.c
+> +++ b/drivers/usb/cdns3/cdns3-imx.c
+> @@ -346,7 +346,7 @@ static int cdns_imx_platform_suspend(struct device *dev,
+>  
+>  }
+>  
+> -static int cdns_imx_resume(struct device *dev)
+> +static int __maybe_unused cdns_imx_resume(struct device *dev)
+>  {
+>  	struct cdns_imx *data = dev_get_drvdata(dev);
+>  
 
-As soon as I receive your quick reply assuring me that you will
-utilize the money as I instructed you for the benefit of the less
-privilege, I shall give you more details and also instruct my bank to
-release the money to you for the charity project. I hope you receive
-this mail in good health.
-
-Please contact me on this E-mail (ezbtg22@gmail.com) because I don t
-know what will be my situation in next minute,
-
-I am waiting for your reply.
-
-Yours sincerely,
-Mrs Elizabet Glenn.
+MBR, Sergei

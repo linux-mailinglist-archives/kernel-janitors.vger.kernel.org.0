@@ -2,33 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAE40332617
+	by mail.lfdr.de (Postfix) with ESMTP id 48C74332616
 	for <lists+kernel-janitors@lfdr.de>; Tue,  9 Mar 2021 14:07:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231247AbhCINGs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        id S230394AbhCINGs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
         Tue, 9 Mar 2021 08:06:48 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32]:13892 "EHLO
-        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231131AbhCINGS (ORCPT
+Received: from szxga04-in.huawei.com ([45.249.212.190]:13588 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231211AbhCINGU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 9 Mar 2021 08:06:18 -0500
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4DvwR56S7pzkWgK;
-        Tue,  9 Mar 2021 21:04:49 +0800 (CST)
+        Tue, 9 Mar 2021 08:06:20 -0500
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4DvwQm2CpRz17HZC;
+        Tue,  9 Mar 2021 21:04:32 +0800 (CST)
 Received: from localhost.localdomain (10.175.102.38) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.498.0; Tue, 9 Mar 2021 21:06:10 +0800
+ DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
+ 14.3.498.0; Tue, 9 Mar 2021 21:06:11 +0800
 From:   'Wei Yongjun <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>, Oder Chiou <oder_chiou@realtek.com>,
-        "Liam Girdwood" <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        "Jaroslav Kysela" <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        Jack Yu <jack.yu@realtek.com>
-CC:     <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
+To:     <weiyongjun1@huawei.com>, Maximilian Luz <luzmaximilian@gmail.com>,
+        "Hans de Goede" <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>
+CC:     <platform-driver-x86@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] ASoC: rt715-sdca: Fix return value check in rt715_sdca_sdw_probe()
-Date:   Tue, 9 Mar 2021 13:14:58 +0000
-Message-ID: <20210309131458.1884899-1-weiyongjun1@huawei.com>
+Subject: [PATCH -next] platform/surface: aggregator_registry: Make symbol 'ssam_base_hub_group' static
+Date:   Tue, 9 Mar 2021 13:15:00 +0000
+Message-ID: <20210309131500.1885772-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -41,36 +39,32 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Wei Yongjun <weiyongjun1@huawei.com>
 
-In case of error, the function devm_regmap_init_sdw_mbq() and
-devm_regmap_init_sdw() returns ERR_PTR() not NULL. The NULL test
-in the return value check should be replaced with IS_ERR().
+The sparse tool complains as follows:
 
-Fixes: 393c52d2d109 ("ASoC: rt715-sdca: Add RT715 sdca vendor-specific driver")
+drivers/platform/surface/surface_aggregator_registry.c:355:30: warning:
+ symbol 'ssam_base_hub_group' was not declared. Should it be static?
+
+This symbol is not used outside of surface_aggregator_registry.c, so this
+commit marks it static.
+
+Fixes: 797e78564634 ("platform/surface: aggregator_registry: Add base device hub")
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- sound/soc/codecs/rt715-sdca-sdw.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../platform/surface/surface_aggregator_registry.c  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/rt715-sdca-sdw.c b/sound/soc/codecs/rt715-sdca-sdw.c
-index bcced85876b0..1350798406f0 100644
---- a/sound/soc/codecs/rt715-sdca-sdw.c
-+++ b/sound/soc/codecs/rt715-sdca-sdw.c
-@@ -184,12 +184,12 @@ static int rt715_sdca_sdw_probe(struct sdw_slave *slave,
+diff --git a/drivers/platform/surface/surface_aggregator_registry.c b/drivers/platform/surface/surface_aggregator_registry.c
+index cdb4a95af3e8..86cff5fce3cd 100644
+--- a/drivers/platform/surface/surface_aggregator_registry.c
++++ b/drivers/platform/surface/surface_aggregator_registry.c
+@@ -352,7 +352,7 @@ static struct attribute *ssam_base_hub_attrs[] = {
+ 	NULL,
+ };
  
- 	/* Regmap Initialization */
- 	mbq_regmap = devm_regmap_init_sdw_mbq(slave, &rt715_sdca_mbq_regmap);
--	if (!mbq_regmap)
--		return -EINVAL;
-+	if (IS_ERR(mbq_regmap))
-+		return PTR_ERR(mbq_regmap);
+-const struct attribute_group ssam_base_hub_group = {
++static const struct attribute_group ssam_base_hub_group = {
+ 	.attrs = ssam_base_hub_attrs,
+ };
  
- 	regmap = devm_regmap_init_sdw(slave, &rt715_sdca_regmap);
--	if (!regmap)
--		return -EINVAL;
-+	if (IS_ERR(regmap))
-+		return PTR_ERR(regmap);
- 
- 	return rt715_sdca_init(&slave->dev, mbq_regmap, regmap, slave);
- }
 

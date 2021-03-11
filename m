@@ -2,70 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A30B337363
-	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Mar 2021 14:07:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF6FE337541
+	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Mar 2021 15:17:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233310AbhCKNGw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 11 Mar 2021 08:06:52 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:13522 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233285AbhCKNGj (ORCPT
+        id S233332AbhCKOQ6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 11 Mar 2021 09:16:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56664 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233563AbhCKOQg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 11 Mar 2021 08:06:39 -0500
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Dx8KT6hwCzNlHg;
-        Thu, 11 Mar 2021 21:04:13 +0800 (CST)
-Received: from localhost.localdomain (10.175.102.38) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.498.0; Thu, 11 Mar 2021 21:06:21 +0800
-From:   'Wei Yongjun <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>, Manivannan Sadhasivam <mani@kernel.org>,
-        Cristian Ciocaltea <cristian.ciocaltea@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>
-CC:     <linux-actions@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] mfd: Make symbol 'atc260x_i2c_of_match' static
-Date:   Thu, 11 Mar 2021 13:15:07 +0000
-Message-ID: <20210311131507.1902008-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Thu, 11 Mar 2021 09:16:36 -0500
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4DF2C061760
+        for <kernel-janitors@vger.kernel.org>; Thu, 11 Mar 2021 06:16:35 -0800 (PST)
+Received: by mail-io1-xd2c.google.com with SMTP id a7so22010939iok.12
+        for <kernel-janitors@vger.kernel.org>; Thu, 11 Mar 2021 06:16:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Ei63gaWMLxEmNqdA5R8TWOwXizZ14K3nYqemAOmaLh0=;
+        b=BM20wCWVV1daEhIL7RR4tpSwAlnVVR0qilSyirp5e9d5AeGSONNUbOezG5g0sIl8N0
+         iKzmbfU7PYqFcVzmCPhyt34d/rn718kYBejBQEiEw+7Bhg4o/0zoWKFgeKs/T5SCDhz/
+         Y+CA+JkDYVgEckMgjA7ipLpf7vPQfokqtnX3M=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Ei63gaWMLxEmNqdA5R8TWOwXizZ14K3nYqemAOmaLh0=;
+        b=iCto9xXv7V8MNhGZZGqaWkv4egvDczYFvssU9mHq+tCW7SbcRp/UmN0hZQ2ax3rhlD
+         UglXA7qAQiyGXCJazHN1w46SFBAWPw2JfUxEHVuxW/EjQiXmy74ODnFK7vbE9EdJP42Z
+         AvvFdBalqTG/cG41aXClQWmbtL0kOegKK54sraXfgHTmF3aT4B3iV6cMGPtAbFPeB3cD
+         oHMc4/F3RZQtImOb8k+1YnFWnL7A42iqNJSUtlu0ZWHqWHyz0dAcbxKzEUSnkSXmGpAm
+         SwKwWVkmc46NySssouBeN+QSeKQvSGURJzNhkSD+PwZ5IT3AYY0+JY2OduTeq9/g3kT2
+         eBSA==
+X-Gm-Message-State: AOAM531KwJA8yxrDPcHBm/waFcyschmD4N26QHNB54LzL2gsqhX2lvaP
+        Dt43phb7jPzZqXmEYZUQhoNb0qwMZqU55g==
+X-Google-Smtp-Source: ABdhPJznZ+AHNcMJKPGfmI7E72r9ApIrvzDEbLZiFeHTaRZVBzc1h30T1+1JSTqagBoZh3uacL86SA==
+X-Received: by 2002:a02:cc1b:: with SMTP id n27mr3811358jap.106.1615472195170;
+        Thu, 11 Mar 2021 06:16:35 -0800 (PST)
+Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
+        by smtp.gmail.com with ESMTPSA id x6sm1429790ioh.19.2021.03.11.06.16.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Mar 2021 06:16:34 -0800 (PST)
+Subject: Re: [PATCH][next] usbip: Fix incorrect double assignment to
+ udc->ud.tcp_rx
+To:     Colin King <colin.king@canonical.com>,
+        Valentina Manea <valentina.manea.m@gmail.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Shuah Khan <skhan@linuxfoundation.org>
+References: <20210311104445.7811-1-colin.king@canonical.com>
+From:   Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <8862cf33-dc2b-1d62-d7ef-56f34c5b358d@linuxfoundation.org>
+Date:   Thu, 11 Mar 2021 07:16:33 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.102.38]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20210311104445.7811-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
+On 3/11/21 3:44 AM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently udc->ud.tcp_rx is being assigned twice, the second assignment
+> is incorrect, it should be to udc->ud.tcp_tx instead of rx. Fix this.
+> 
+> Addresses-Coverity: ("Unused value")
+> Fixes: 46613c9dfa96 ("usbip: fix vudc usbip_sockfd_store races leading to gpf")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>   drivers/usb/usbip/vudc_sysfs.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/usbip/vudc_sysfs.c b/drivers/usb/usbip/vudc_sysfs.c
+> index a3ec39fc6177..7383a543c6d1 100644
+> --- a/drivers/usb/usbip/vudc_sysfs.c
+> +++ b/drivers/usb/usbip/vudc_sysfs.c
+> @@ -174,7 +174,7 @@ static ssize_t usbip_sockfd_store(struct device *dev,
+>   
+>   		udc->ud.tcp_socket = socket;
+>   		udc->ud.tcp_rx = tcp_rx;
+> -		udc->ud.tcp_rx = tcp_tx;
+> +		udc->ud.tcp_tx = tcp_tx;
+>   		udc->ud.status = SDEV_ST_USED;
+>   
+>   		spin_unlock_irq(&udc->ud.lock);
+> 
 
-The sparse tool complains as follows:
+Thank you for finding and fixing this. This is my bad.
 
-drivers/mfd/atc260x-i2c.c:45:27: warning:
- symbol 'atc260x_i2c_of_match' was not declared. Should it be static?
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
 
-This symbol is not used outside of atc260x-i2c.c, so this
-commit marks it static.
+thanks,
+-- Shuah
 
-Fixes: f7cb7fe34db9 ("mfd: Add MFD driver for ATC260x PMICs")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/mfd/atc260x-i2c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/mfd/atc260x-i2c.c b/drivers/mfd/atc260x-i2c.c
-index 362005703367..5855efd09efc 100644
---- a/drivers/mfd/atc260x-i2c.c
-+++ b/drivers/mfd/atc260x-i2c.c
-@@ -42,7 +42,7 @@ static int atc260x_i2c_probe(struct i2c_client *client,
- 	return atc260x_device_probe(atc260x);
- }
- 
--const struct of_device_id atc260x_i2c_of_match[] = {
-+static const struct of_device_id atc260x_i2c_of_match[] = {
- 	{ .compatible = "actions,atc2603c", .data = (void *)ATC2603C },
- 	{ .compatible = "actions,atc2609a", .data = (void *)ATC2609A },
- 	{ }
 

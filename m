@@ -2,65 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABBEE3386E4
-	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Mar 2021 08:57:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BBEE33871A
+	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Mar 2021 09:12:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231933AbhCLH41 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 12 Mar 2021 02:56:27 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:13150 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231370AbhCLHzx (ORCPT
+        id S232184AbhCLIL5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 12 Mar 2021 03:11:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33700 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231983AbhCLILU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 12 Mar 2021 02:55:53 -0500
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4DxdNV13SGzmWWd;
-        Fri, 12 Mar 2021 15:53:30 +0800 (CST)
-Received: from localhost.localdomain (10.175.102.38) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.498.0; Fri, 12 Mar 2021 15:55:39 +0800
-From:   'Wei Yongjun <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>, Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Saravana Kannan <saravanak@google.com>
-CC:     <linux-gpio@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        "Hulk Robot" <hulkci@huawei.com>
-Subject: [PATCH -next] gpiolib: Fix error return code in gpiolib_dev_init()
-Date:   Fri, 12 Mar 2021 08:04:23 +0000
-Message-ID: <20210312080423.278094-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 12 Mar 2021 03:11:20 -0500
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6A31C061761
+        for <kernel-janitors@vger.kernel.org>; Fri, 12 Mar 2021 00:11:19 -0800 (PST)
+Received: by mail-ej1-x631.google.com with SMTP id k16so1496481ejx.1
+        for <kernel-janitors@vger.kernel.org>; Fri, 12 Mar 2021 00:11:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tessares-net.20150623.gappssmtp.com; s=20150623;
+        h=to:cc:references:from:subject:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=GSE8y8bIzwkaWbk//Q7yq5aLD9kknS5nbctb3k5BKZQ=;
+        b=i4RoYovqjn3gmv9OLHb902+P3Zv95u5vk4yHmh3+kjERn58bqd+uW4hVDRXGSgW4dp
+         tfxSBRUiSlkpWWCPYe/nNT6QzPCYedLCv6MXBlEBS31WfrhZsQUkkQ+ADrnbEB98uGFq
+         TaGkY6++ptJbn53XYZ8Pgzd2gsQowO+w7H8AjyIZvbEvKu+I0mURf3wSPwXBzVYHwLVS
+         O2H6HEoVg7ZI+dPi2rv9fDbH89e97Q2H6RPqMCe4JbjFFMFmMVjwntUY4+NTgABazju9
+         3dGMWgZRYmlc9SJIs/ATWjFITP6hit5wgFCrvxhy0tr0f9g8qvQSHvqJsy6xYGUAX31M
+         AmQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:cc:references:from:subject:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=GSE8y8bIzwkaWbk//Q7yq5aLD9kknS5nbctb3k5BKZQ=;
+        b=Z8JzdEilIhg38nsP8GV/FDT+FMhQpxMPEVWje2qk9CxKKdmKD47kNkJTmLdug31mP+
+         dMlynX7yUeILZcqNhvIXsRAal2iad7N2nBVWGgUNB1WKq4/6GTLeC14zkF7F8vfS4K8k
+         cR8aTDGpWeo8EckjESOM1GwFzakKn8sZhWHdQW3XkIOJLCcolAbSwks4HsjaG5MS/eSp
+         BylzY6qTH/2fm1J5MywJEOeI1I7pYhnzqid8O4MfQ4BQl6P9vk7W8U5gpK7kr3D+abQd
+         xYO00XgwajliVmAY4L/MecYQ7eJPFsYCIKmhnp/cYfz1PH++ejdCtnUgIZjOnE6MH9v6
+         kWBQ==
+X-Gm-Message-State: AOAM532s4luTFg4YqlY4npHz4MxHscx0f3PPA1wGuuzG1Cxk3VRTEiLb
+        Qk5dwuP18cxbaNqx2pnkHw+0OA==
+X-Google-Smtp-Source: ABdhPJzd7yIu2Mtt/wSmkKfgikCWLHiR0Orv+ZjRzmKUsayaFRB97LPU3kCBn3bvE/gHnjKGKH+uEA==
+X-Received: by 2002:a17:907:37a:: with SMTP id rs26mr7211492ejb.336.1615536678651;
+        Fri, 12 Mar 2021 00:11:18 -0800 (PST)
+Received: from tsr-lap-08.nix.tessares.net ([2a02:578:85b0:e00:76a2:a975:2529:ae9a])
+        by smtp.gmail.com with ESMTPSA id i10sm2407121ejv.106.2021.03.12.00.11.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Mar 2021 00:11:18 -0800 (PST)
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        mptcp@lists.01.org, kernel-janitors@vger.kernel.org,
+        Mat Martineau <mathew.j.martineau@linux.intel.com>,
+        Paolo Abeni <pabeni@redhat.com>
+References: <YEsbGCmx4Jh3fApi@mwanda>
+From:   Matthieu Baerts <matthieu.baerts@tessares.net>
+Subject: Re: [PATCH net] mptcp: fix bit MPTCP_PUSH_PENDING tests
+Message-ID: <00ef3b75-bc38-a55d-ddcb-cc100dc20e79@tessares.net>
+Date:   Fri, 12 Mar 2021 09:11:17 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.102.38]
-X-CFilter-Loop: Reflected
+In-Reply-To: <YEsbGCmx4Jh3fApi@mwanda>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
+Hi Dan,
 
-Fix to return a negative error code from the error handling
-case instead of 0, as done elsewhere in this function.
+On 12/03/2021 08:41, Dan Carpenter wrote:
+> The MPTCP_PUSH_PENDING define is 6 and these tests should be testing if
+> BIT(6) is set.
 
-Fixes: 4731210c09f5 ("gpiolib: Bind gpio_device to a driver to enable fw_devlink=on by default")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/gpio/gpiolib.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Good catch, indeed, BIT() macro is missing!
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index cee4333f8ac7..18086262dd48 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -4242,7 +4242,8 @@ static int __init gpiolib_dev_init(void)
- 		return ret;
- 	}
- 
--	if (driver_register(&gpio_stub_drv) < 0) {
-+	ret = driver_register(&gpio_stub_drv);
-+	if (ret < 0) {
- 		pr_err("gpiolib: could not register GPIO stub driver\n");
- 		bus_unregister(&gpio_bus_type);
- 		return ret;
+It was not detected by our tests suite because in -net, that's the only 
+flag that is set.
 
+But another patch for net-next is coming and another flag can be set as 
+well. What's funny is that this other flag is "9" which works well with 
+"6" because their bits are not overlapping :)
+Anyway, better with "BIT()" macro!
+
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+
+Cheers,
+Matt
+-- 
+Tessares | Belgium | Hybrid Access Solutions
+www.tessares.net

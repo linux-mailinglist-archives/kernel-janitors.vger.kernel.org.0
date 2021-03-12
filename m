@@ -2,96 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21FC33386B7
-	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Mar 2021 08:45:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E6C53386ED
+	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Mar 2021 08:57:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231752AbhCLHox (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 12 Mar 2021 02:44:53 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:58464 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231601AbhCLHoY (ORCPT
+        id S231792AbhCLH41 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 12 Mar 2021 02:56:27 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:13149 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231503AbhCLHzx (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 12 Mar 2021 02:44:24 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12C7cweJ099022;
-        Fri, 12 Mar 2021 07:44:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=UrF5Wu2v6ZmzUalazIBf+NIOF3QlofixQDihZKeBXm0=;
- b=WfpqwymqhRIUsw6dmPh36xHRa0E8+wOilkBQ2hMq+dxQQSm21yzbtYa3Bs7VkDf76uuf
- K9EdKPyTlxRWkiv9zRh35gfMx6TMwgP7EhD6Z8IKzKGWnNJllgoDH4HC351kRoP03TUp
- CwUwQGhEJZdi6B+7dd8F9mFZTCYIJMpnaT47DSIRF712WzWtrUTvdGgKOo1gtfvppS8O
- alkYsf8LfLNpv0E6VLUrom4RAC5ocmbI7WXAOfCxGbYz9RlWKzKnzQlX8w9f+HuI0DVr
- CbRxuq9HGuEoJTKgancvA/N0lqsftRu/kc9fWelpvsKAqqfeqEgCfoqEU/HBV37Iwpwn 0w== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 3741pms38p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 12 Mar 2021 07:44:19 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12C7fAgp131547;
-        Fri, 12 Mar 2021 07:44:17 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 374kgw5q42-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 12 Mar 2021 07:44:17 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 12C7iGnS017913;
-        Fri, 12 Mar 2021 07:44:16 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 12 Mar 2021 07:44:16 +0000
-Date:   Fri, 12 Mar 2021 10:44:08 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Doug Gilbert <dgilbert@interlog.com>
-Cc:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Hannes Reinecke <hare@suse.de>, linux-scsi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] scsi: sg: Fix a warning message
-Message-ID: <YEsbyEf3/+AunY34@mwanda>
+        Fri, 12 Mar 2021 02:55:53 -0500
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4DxdNV06BWzmWWb;
+        Fri, 12 Mar 2021 15:53:30 +0800 (CST)
+Received: from localhost.localdomain (10.175.102.38) by
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.498.0; Fri, 12 Mar 2021 15:55:36 +0800
+From:   'Wei Yongjun <weiyongjun1@huawei.com>
+To:     <weiyongjun1@huawei.com>, Ohad Ben-Cohen <ohad@wizery.com>,
+        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Peng Fan <peng.fan@nxp.com>
+CC:     <linux-remoteproc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] remoteproc: imx_rproc: fix return value check in imx_rproc_addr_init()
+Date:   Fri, 12 Mar 2021 08:04:20 +0000
+Message-ID: <20210312080420.277151-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-IMR: 1
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9920 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0
- malwarescore=0 bulkscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103120051
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9920 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 mlxlogscore=999
- adultscore=0 impostorscore=0 suspectscore=0 clxscore=1015 malwarescore=0
- priorityscore=1501 phishscore=0 spamscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2103120051
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.102.38]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The WARN_ONCE() macro takes a condition and a warning message as
-parameters.  This code accidentally left out the condition so it
-doesn't print a warning (just a stack trace).
+From: Wei Yongjun <weiyongjun1@huawei.com>
 
-Fixes: ddfb8cbdf699 ("scsi: sg: Rework scatter-gather handling")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+In case of error, the function devm_ioremap() returns NULL pointer
+not ERR_PTR(). The IS_ERR() test in the return value check should
+be replaced with NULL test.
+
+Fixes: ecadcc47492c ("remoteproc: imx_rproc: use devm_ioremap")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/scsi/sg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/remoteproc/imx_rproc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index 79f05afa4407..e261260c1b8b 100644
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -2525,7 +2525,7 @@ sg_rq_end_io_usercontext(struct work_struct *work)
- 	struct sg_fd *sfp;
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index 5ebb9f57d3e0..3ba4b6ba47aa 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -464,9 +464,9 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
  
- 	if (!srp) {
--		WARN_ONCE("%s: srp unexpectedly NULL\n", __func__);
-+		WARN_ONCE(1, "%s: srp unexpectedly NULL\n", __func__);
- 		return;
- 	}
- 	sfp = srp->parentfp;
--- 
-2.30.1
+ 		/* Not use resource version, because we might share region */
+ 		priv->mem[b].cpu_addr = devm_ioremap(&pdev->dev, res.start, resource_size(&res));
+-		if (IS_ERR(priv->mem[b].cpu_addr)) {
++		if (!priv->mem[b].cpu_addr) {
+ 			dev_err(dev, "failed to remap %pr\n", &res);
+-			err = PTR_ERR(priv->mem[b].cpu_addr);
++			err = -ENOMEM;
+ 			return err;
+ 		}
+ 		priv->mem[b].sys_addr = res.start;
 

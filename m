@@ -2,35 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E6C53386ED
-	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Mar 2021 08:57:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6227C3386EA
+	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Mar 2021 08:57:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231792AbhCLH41 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 12 Mar 2021 02:56:27 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:13149 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231503AbhCLHzx (ORCPT
+        id S231985AbhCLH42 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 12 Mar 2021 02:56:28 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:13882 "EHLO
+        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231679AbhCLH4B (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 12 Mar 2021 02:55:53 -0500
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4DxdNV06BWzmWWb;
-        Fri, 12 Mar 2021 15:53:30 +0800 (CST)
+        Fri, 12 Mar 2021 02:56:01 -0500
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4DxdP341wMz7kNl;
+        Fri, 12 Mar 2021 15:53:59 +0800 (CST)
 Received: from localhost.localdomain (10.175.102.38) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.498.0; Fri, 12 Mar 2021 15:55:36 +0800
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.498.0; Fri, 12 Mar 2021 15:55:37 +0800
 From:   'Wei Yongjun <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>, Ohad Ben-Cohen <ohad@wizery.com>,
-        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Peng Fan <peng.fan@nxp.com>
-CC:     <linux-remoteproc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] remoteproc: imx_rproc: fix return value check in imx_rproc_addr_init()
-Date:   Fri, 12 Mar 2021 08:04:20 +0000
-Message-ID: <20210312080420.277151-1-weiyongjun1@huawei.com>
+To:     <weiyongjun1@huawei.com>, Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Tuan Phan <tuanphan@os.amperecomputing.com>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] perf/arm_dmc620_pmu: Fix error return code in dmc620_pmu_device_probe()
+Date:   Fri, 12 Mar 2021 08:04:21 +0000
+Message-ID: <20210312080421.277562-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -43,31 +40,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Wei Yongjun <weiyongjun1@huawei.com>
 
-In case of error, the function devm_ioremap() returns NULL pointer
-not ERR_PTR(). The IS_ERR() test in the return value check should
-be replaced with NULL test.
+Fix to return negative error code -ENOMEM from the error handling
+case instead of 0, as done elsewhere in this function.
 
-Fixes: ecadcc47492c ("remoteproc: imx_rproc: use devm_ioremap")
+Fixes: 53c218da220c ("driver/perf: Add PMU driver for the ARM DMC-620 memory controller")
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/remoteproc/imx_rproc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/perf/arm_dmc620_pmu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 5ebb9f57d3e0..3ba4b6ba47aa 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -464,9 +464,9 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
+diff --git a/drivers/perf/arm_dmc620_pmu.c b/drivers/perf/arm_dmc620_pmu.c
+index 66ad5b3ece19..f2a85500258d 100644
+--- a/drivers/perf/arm_dmc620_pmu.c
++++ b/drivers/perf/arm_dmc620_pmu.c
+@@ -681,6 +681,7 @@ static int dmc620_pmu_device_probe(struct platform_device *pdev)
+ 	if (!name) {
+ 		dev_err(&pdev->dev,
+ 			  "Create name failed, PMU @%pa\n", &res->start);
++		ret = -ENOMEM;
+ 		goto out_teardown_dev;
+ 	}
  
- 		/* Not use resource version, because we might share region */
- 		priv->mem[b].cpu_addr = devm_ioremap(&pdev->dev, res.start, resource_size(&res));
--		if (IS_ERR(priv->mem[b].cpu_addr)) {
-+		if (!priv->mem[b].cpu_addr) {
- 			dev_err(dev, "failed to remap %pr\n", &res);
--			err = PTR_ERR(priv->mem[b].cpu_addr);
-+			err = -ENOMEM;
- 			return err;
- 		}
- 		priv->mem[b].sys_addr = res.start;
 

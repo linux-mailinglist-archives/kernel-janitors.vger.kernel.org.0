@@ -2,84 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20D1633A510
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Mar 2021 14:53:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D417533A542
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Mar 2021 16:03:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231809AbhCNNwU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 14 Mar 2021 09:52:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45452 "EHLO
+        id S229539AbhCNPCx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 14 Mar 2021 11:02:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232431AbhCNNwH (ORCPT
+        with ESMTP id S229870AbhCNPC3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 14 Mar 2021 09:52:07 -0400
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F07F4C061574
-        for <kernel-janitors@vger.kernel.org>; Sun, 14 Mar 2021 06:52:06 -0700 (PDT)
-Received: by mail-il1-x134.google.com with SMTP id r7so6997258ilb.0
-        for <kernel-janitors@vger.kernel.org>; Sun, 14 Mar 2021 06:52:06 -0700 (PDT)
+        Sun, 14 Mar 2021 11:02:29 -0400
+Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com [IPv6:2607:f8b0:4864:20::92b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86BC9C061574
+        for <kernel-janitors@vger.kernel.org>; Sun, 14 Mar 2021 08:02:29 -0700 (PDT)
+Received: by mail-ua1-x92b.google.com with SMTP id j4so3403071uan.1
+        for <kernel-janitors@vger.kernel.org>; Sun, 14 Mar 2021 08:02:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=M43xvaG2cUQp7fZwylnlMi5nKMzLnlLfv1CX2IFl1j8=;
-        b=nXgjy3u+wmxlzFkYripjWF4Jy+nqNa7ykGZPslM6667hfmLVtr6sbMxSE/dWJZP9Ut
-         cIGUaVv74fvxUCpcjAPTVa+WrrlJ9Vq+1IYhHUTc+Rn1ptwbmohQMm6lDaAQQDelWYMU
-         Wj6n/XBY5QlLTuqo1XoLyCgydZMsrl/LyAlBARVfydtdrUXGsBpkEancAE4gwbts5CFe
-         mV+1itI6+3C/SI9HUS5oP0y49v6xdcB3wthUMO9KmUTdM913zbhaeNhAxlVQnL8DQ7DZ
-         +nnxdodo0s+G2MSJYXjR2hn5Im10UlBEy190MKvn+ASDHSOYDYcrjiUYyk3dstgT0Ant
-         KX4w==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jZoF5w0xSMFMwfsBfAPJxb2gcM2CGk2gEsSPKVbYTMw=;
+        b=Au6BIn3h2lKmyDxMg/YGx4dqdn2JFrw1PYfPDLKwa8PyBFlUFeRx9irxX7SQaeVXSC
+         GsplBd3okY/Hoj9hHJ4S48iuUJtftEOi8Jf44qCy+qVRRYF2sP8rIKzC74wCSQD1I0mO
+         uXdFNlClM0pWVafVBKDjyUHC7JoJS3Y6cuCfEr5Ka2mlzXZi0v6MQzu1pDBRCBO6Zwv6
+         +oWZBfZ8NViYMEhX48ypA3eIEWgui1HJRoDDA2Zc5VAg2US0jgNtO2unrFzy5W+2RWGn
+         cjiIZZo42y4vIDHty8E602Xs2cITpjCYERGeiYMEP+XRLJzx9FeAApYfBTDj/cgdWq9W
+         lKqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=M43xvaG2cUQp7fZwylnlMi5nKMzLnlLfv1CX2IFl1j8=;
-        b=s3DfQ+HZngLNkf/OyXoV7XiZx0Ny5+4O3UQxO0Uc9u0r+aVUnS71XCKG0Eh5Ks9W2d
-         XdM/3eRsq2xW/Dei90ArM11F/OiutELPaZnTZfsMYRy9QlUknLR3ugLTJXyE2WFHjBYj
-         eXM0lMpihymq6BqCTF1YgWAes+UOUEq1ld9uC86MmiqwM0WXX1J4yS7dbqf7tDB/QpP8
-         cIS/KYuPsKXylMSG/zn5vOTYa64vGOzY4fI3MpfWeTVk2YhcSU0G6mFv3TBZhmomz73m
-         jdKigUE8DSJVB+QrqRhjvIe1qe3QZREKSxFSZwEHsmFXBDFOIfqaEaifK1rEGTBL2L4j
-         TXDg==
-X-Gm-Message-State: AOAM53257E40mLY4ouq3hcrGo4yS/kcD2BQv+XGmdZJhjgDpyGo9da/U
-        FaY9Z5IK9RD6kPnYsy/l1iNwxnWc7Od9gpK5b6D/dis099M=
-X-Google-Smtp-Source: ABdhPJwlu2n/RX/DkBp9/wKO1IJTQfNUkGNaMzU4IMIb+KEnXb7WK7mS8agNVW3cjyzOfeXia18dHQ2prLPFl0KTOAo=
-X-Received: by 2002:a05:6e02:156e:: with SMTP id k14mr8936360ilu.200.1615729926421;
- Sun, 14 Mar 2021 06:52:06 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAOc6etbXM7rCSovO0A0Ye+ZQ8=JUkNM_p=L_3HL2k9UASNfHkg@mail.gmail.com>
- <alpine.DEB.2.22.394.2103141018490.2986@hadrien>
-In-Reply-To: <alpine.DEB.2.22.394.2103141018490.2986@hadrien>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jZoF5w0xSMFMwfsBfAPJxb2gcM2CGk2gEsSPKVbYTMw=;
+        b=c5nFaCVAdQcZieue3ceSy8Mgq4Pf85WtSTNseeYAOws9EEP8QBIJm1/j0mrZ7H7aNo
+         fnQtmFqhfEqsiYNhkseY2mD/AbX+i+U6ebFoQ8PCLXnIdCT5nYZ2ge5kNa4Nqfotda/T
+         NeKZBbPPRaY3UT6EwMDL0Gaad5WWiom5+h144qGD7gxvCnVyixyj4gmD2ApNmL20zG+q
+         73gn8GVnEOJcyUH1RCBs8U0BZsom6RgdjEBq2te7IFCEf1N78qu+uNJ0wguG0HTA4zq3
+         mqthaPBFTpohCOtIDkdkC0kfMUyAy1vqcdWOmzAzJ7KdXbG3FTVfPvnW9BjY+DufhIu6
+         4urQ==
+X-Gm-Message-State: AOAM531yyOzKpQf079bUnswKebZTnATGmaoJ4zfgz7OJ2kPhSE7q05KB
+        Xz54p9VCZJ6rfRuFmBkXgdw=
+X-Google-Smtp-Source: ABdhPJze352Eg1BRNMHucAT82tOqwH94y/jsTL9P8ddNQNol5FHFh33cxyFg22RdLl3JqUqqy/MZ7w==
+X-Received: by 2002:a9f:3230:: with SMTP id x45mr3214004uad.23.1615734148558;
+        Sun, 14 Mar 2021 08:02:28 -0700 (PDT)
+Received: from linuxerio.localdomain ([186.32.194.42])
+        by smtp.gmail.com with ESMTPSA id 4sm583451vsl.19.2021.03.14.08.02.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Mar 2021 08:02:28 -0700 (PDT)
 From:   Edmundo Carmona Antoranz <eantoranz@gmail.com>
-Date:   Sun, 14 Mar 2021 07:51:54 -0600
-Message-ID: <CAOc6etYGTb0f1VoRrZ8r6q+3LYuAzm7S-85xRYnS0m-4SdqHPQ@mail.gmail.com>
-Subject: Re: Is it ok to propose more complex code changes?
-To:     Julia Lawall <julia.lawall@inria.fr>
-Cc:     kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+To:     gregkh@linuxfoundation.org, kernel-janitors@vger.kernel.org
+Cc:     Edmundo Carmona Antoranz <eantoranz@gmail.com>
+Subject: [PATCH -next 1/3] staging: vt6655: remove unused variable
+Date:   Sun, 14 Mar 2021 08:59:41 -0600
+Message-Id: <20210314145943.1933245-1-eantoranz@gmail.com>
+X-Mailer: git-send-email 2.30.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Mar 14, 2021 at 3:21 AM Julia Lawall <julia.lawall@inria.fr> wrote:
->
-> In principle, you can do whatever you like in staging.  If the maintainer
-> doesn't like your suggestion, they can reject it.  This looks not entirely
-> trivial, because the thing you want to abstract over is used once as a
-> variable and once for its address.  I guess you can pass in the address
-> and then dereference it, but you would have to check that that works ok
-> with ARRAY_SIZE, which is also a macro.  You would also need to understand
-> the code well enough to give this new function a resonable name.
->
-> julia
+Since its introduction in 5449c685a4b3 (Staging: Add pristine
+upstream vt6655 driver sources, 2009-04-25), the values
+stored in variable byData have never been read in the macro
+PCAvDelayByIO. By removing it, we are getting rid of a warning:
 
-Thanks! It's a great piece of advice.
+drivers/staging/vt6655/upc.h:45:16: warning: variable ‘byData’ set but not used [-Wunused-but-set-variable]
 
-Given that I am not much of a Pro C Developer, I took it up as a
-challenge modifying the code in question to use a macro and then a
-function. The macro attempt came up reasonably fast but when I tried
-switching into a function the ARRAY_SIZE became much of a nightmare...
-at least to me with my lacking c skills. But after a while of looking
-at the code in question eye to eye, I noticed that the channels and
-their size are already saved in the bands (lines 103-105, 110-112 in
-drivers/staging/vt6655/channel.c) and that made my life much
-simpler... and the resulting code is also simpler. I will give it a go
-at sending over the patch and let's see how it goes.
+Signed-off-by: Edmundo Carmona Antoranz <eantoranz@gmail.com>
+---
+ drivers/staging/vt6655/upc.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/staging/vt6655/upc.h b/drivers/staging/vt6655/upc.h
+index e086ec6e77f7..f00d0fd90003 100644
+--- a/drivers/staging/vt6655/upc.h
++++ b/drivers/staging/vt6655/upc.h
+@@ -42,14 +42,13 @@
+ 
+ #define PCAvDelayByIO(uDelayUnit)				\
+ do {								\
+-	unsigned char byData;					\
+ 	unsigned long ii;					\
+ 								\
+ 	if (uDelayUnit <= 50) {					\
+ 		udelay(uDelayUnit);				\
+ 	} else {						\
+ 		for (ii = 0; ii < (uDelayUnit); ii++)		\
+-			byData = inb(0x61);			\
++			inb(0x61);				\
+ 	}							\
+ } while (0)
+ 
+-- 
+2.30.1
+

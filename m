@@ -2,35 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CCB033AA3D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Mar 2021 05:06:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC38933AA65
+	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Mar 2021 05:28:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229548AbhCOEFq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 15 Mar 2021 00:05:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54138 "EHLO mail.kernel.org"
+        id S229708AbhCOE1Z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 15 Mar 2021 00:27:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55822 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229722AbhCOEFl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 15 Mar 2021 00:05:41 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 09D9264E3F;
-        Mon, 15 Mar 2021 04:05:38 +0000 (UTC)
+        id S229596AbhCOE1P (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 15 Mar 2021 00:27:15 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 729C364E07;
+        Mon, 15 Mar 2021 04:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1615781141;
-        bh=NP4gX/7kY+mDxqIuuLyrMr0pZfLGy0RRE6/sizVfms4=;
+        s=k20201202; t=1615782435;
+        bh=YxVCih2+45kiqJm7Jk94vb6LRaHawHoeKIg+0blEzps=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=o3Y7UQUZ/eWfoTaZNvFTr4Xlxn2IuWHlKBoJ62A6m6BljT6aedAKDvA+Pq65IS5+D
-         2L18FsDgWD0RsGXZlxb4QCbVeCs9QnZcbllKinIt0I1Elrt4UYy9BW6xUx+2aThgcU
-         1DbJyVUZUNsql8I3vMt+c7lBD/zuuNTV03HXGe58wjPpwbPXdvIWFOqgZTFwHFsx8f
-         7y9a73WHpFTpEKq4CrfQYH+mytW+J1y5T04PZH68GzXRMUj7cVF474tT1ZrpFbrOKd
-         SXt4dTAbt1fDoRulWckkmRK4espBo2TlvO2momk7bBPv4XBH8bedBViasTVLcCIlCf
-         /0ASQqVea+vOw==
-Date:   Mon, 15 Mar 2021 09:35:34 +0530
+        b=rLSpmBc40D3RAzbVTB3vSf9Fq8BJWf7nQpaxC7w3fPH+R/rPJMCNchWZESpumPaN3
+         oJTw05OoAAv1Xlg3jI6Y77qxIcOOjpXnaIAblhxJM64YJHVWgGfFEx4Ksqi117INxU
+         SqS+TOTiyqCQwLCGz433pfyVPPpFaJDFmNuOoaxhlCuBQDCQCCdn+FeJWFKljAP0qZ
+         shWalICwmkzzOVOL8ZdVjAiBV0Ws9LqoqJsgVGYKiMs6YVPvPbqWFgulARhJoqyIQW
+         EijwMLqF64KpdpFsox8o6ONAGgGum5waUZK4ltMnCvurlueM3C+pYg32M37dK0BB+G
+         0i9RgoqROwi/w==
+Date:   Mon, 15 Mar 2021 09:57:07 +0530
 From:   Manivannan Sadhasivam <mani@kernel.org>
 To:     Colin King <colin.king@canonical.com>
 Cc:     Jeffrey Hugo <jhugo@codeaurora.org>, linux-arm-msm@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH][next] bus: mhi: core: remove redundant initialization of
  variables state and ee
-Message-ID: <20210315040534.GA80095@thinkpad>
+Message-ID: <20210315042707.GB81300@thinkpad>
 References: <20210311111727.8433-1-colin.king@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -50,7 +50,7 @@ On Thu, Mar 11, 2021 at 11:17:27AM +0000, Colin King wrote:
 > Addresses-Coverity: ("Unused value")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Applied to mhi-next!
 
 Thanks,
 Mani

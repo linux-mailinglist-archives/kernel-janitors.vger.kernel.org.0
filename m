@@ -2,75 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDDB933BD69
-	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Mar 2021 15:37:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0824033C127
+	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Mar 2021 17:05:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236016AbhCOOfV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 15 Mar 2021 10:35:21 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:13616 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236226AbhCOOe4 (ORCPT
+        id S233757AbhCOQFW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 15 Mar 2021 12:05:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43830 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230480AbhCOQFD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 15 Mar 2021 10:34:56 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Dzf641P8kz17Lgh;
-        Mon, 15 Mar 2021 22:33:00 +0800 (CST)
-Received: from localhost.localdomain (10.175.102.38) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.498.0; Mon, 15 Mar 2021 22:34:45 +0800
-From:   'w00385741 <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>, Vladimir Oltean <olteanv@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Baowen Zheng <baowen.zheng@corigine.com>
-CC:     <netdev@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH net-next] net: dsa: sja1105: fix error return code in sja1105_cls_flower_add()
-Date:   Mon, 15 Mar 2021 14:43:23 +0000
-Message-ID: <20210315144323.4110640-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.102.38]
-X-CFilter-Loop: Reflected
+        Mon, 15 Mar 2021 12:05:03 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7020C06174A;
+        Mon, 15 Mar 2021 09:05:02 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id ci14so67003868ejc.7;
+        Mon, 15 Mar 2021 09:05:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=iTN15QOmjZC4ZxIPSp9uAnRcwTL7uX2dN8RBpC7no10=;
+        b=h5t2n2hctg+YpumjNtWRMx3N9tyn5e/T68EzWoBq+RMJ/qpov94ODOu+Kyqx/mME4K
+         pA7qA2aaihEtATr/I/NA3w6uR1ife8AOcEnFQC7F6vJexUjSzIcZ9DS0MsgUr5aOJF9N
+         N+z9QgO/06+zYJHNriysM0VHUAQkKcgFw75WpnLUPQ2jmbs1nH4KWvxE8Fqws2a+qLUa
+         g5YR7fg9iBq67CYiBPzv4AZwaJfeyx3aUDsT53ZDX7O970Yo5vRiRk5VBV5OS3E0W/uD
+         SvSnJjndDILJBHZMRJQklJOcpjTvcCaHT8jnTRplnZogm3TFlwx2Nc//x5gIdzIaWUWo
+         8/Vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=iTN15QOmjZC4ZxIPSp9uAnRcwTL7uX2dN8RBpC7no10=;
+        b=eIMwZacYTQ68dDlCCW/xBkDh3LFMsvZwXD2f/QZiwYO+1DEpU661YnNZfyKuJdfzyG
+         MmuQ5bU0WdLxmFxt1hW7CscElwkEWhGe//q8pjBJFCwar8TF2aIeQiIK5jcQVQO4lkJi
+         LGmq/BVv4kbsJBlPvUgHNKCdQQ+Yj1Hv3DXA12oGXLF8d+KE6oY8IkqrCuu5GS1d27yd
+         ICHqDA20J5M4IUcEi1uwsIgKtZ1PLA5Lo4pI98tp6xBtP858ve+mSi/BDpmEV671zocf
+         9okCHTFIPtCvKLax5w81NvbFUgQ4s2ZYz1dj7n9JUe9yRjfrAUapezo+tvQ3EUfpZv2u
+         mTHw==
+X-Gm-Message-State: AOAM533lwEIQl3HmlUBUo/4P3Xk0EVr4LnAbQFfhDyPesBsrh6xIsFRb
+        2hcHkke99Bup+Qe363aHyI8=
+X-Google-Smtp-Source: ABdhPJyip3DfIUvk4XF6M2+1Qr+fHdi8j4USy2CBep19ai87e4UOTyv1FytpAa+pg/thVRFyp6sCNQ==
+X-Received: by 2002:a17:907:3e8c:: with SMTP id hs12mr24546527ejc.105.1615824301533;
+        Mon, 15 Mar 2021 09:05:01 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2d28:c000:5c39:c910:15c8:a935])
+        by smtp.gmail.com with ESMTPSA id z17sm7748510eju.27.2021.03.15.09.05.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Mar 2021 09:05:01 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
+Cc:     Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+        Yu Chen <chenyu56@huawei.com>,
+        Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Joe Perches <joe@perches.com>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH 0/5] Rectify file references for dt-bindings in MAINTAINERS
+Date:   Mon, 15 Mar 2021 17:04:46 +0100
+Message-Id: <20210315160451.7469-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
+Hi Rob,
 
-The return value 'rc' maybe overwrite to 0 in the flow_action_for_each
-loop, the error code from the offload not support error handling will
-not set. This commit fix it to return -EOPNOTSUPP.
+here is a patch series that cleans up all file references for dt-bindings
+in MAINTAINERS. It applies cleanly on next-20210315.
 
-Fixes: 6a56e19902af ("flow_offload: reject configuration of packet-per-second policing in offload drivers")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/net/dsa/sja1105/sja1105_flower.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+With this patch series and another patch (already accepted elsewhere)
+[see Link], ./scripts/get_maintainers.pl --self-test=patterns reports no
+further warning on next-20210315.
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_flower.c b/drivers/net/dsa/sja1105/sja1105_flower.c
-index f78b767f86ee..973761132fc3 100644
---- a/drivers/net/dsa/sja1105/sja1105_flower.c
-+++ b/drivers/net/dsa/sja1105/sja1105_flower.c
-@@ -317,14 +317,13 @@ int sja1105_cls_flower_add(struct dsa_switch *ds, int port,
- 	if (rc)
- 		return rc;
- 
--	rc = -EOPNOTSUPP;
--
- 	flow_action_for_each(i, act, &rule->action) {
- 		switch (act->id) {
- 		case FLOW_ACTION_POLICE:
- 			if (act->police.rate_pkt_ps) {
- 				NL_SET_ERR_MSG_MOD(extack,
- 						   "QoS offload not support packets per second");
-+				rc = -EOPNOTSUPP;
- 				goto out;
- 			}
- 
+Could you pick this series for your devicetree bindings tree?
+
+No functional change, just cleaning up MAINTAINERS.
+
+Lukas
+
+Link: https://lore.kernel.org/lkml/20210208071619.3234-1-lukas.bulwahn@gmail.com/
+
+Lukas Bulwahn (5):
+  MAINTAINERS: rectify some references automatically
+  MAINTAINERS: rectify entry for ARM/TOSHIBA VISCONTI ARCHITECTURE
+  MAINTAINERS: rectify entry for HIKEY960 ONBOARD USB GPIO HUB DRIVER
+  MAINTAINERS: rectify entry for INTEL KEEM BAY DRM DRIVER
+  MAINTAINERS: rectify entries for dt-bindings
+
+ MAINTAINERS | 46 ++++++++++++++++++++++------------------------
+ 1 file changed, 22 insertions(+), 24 deletions(-)
+
+-- 
+2.17.1
 

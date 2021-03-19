@@ -2,35 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E048F34186E
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Mar 2021 10:33:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B199341870
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Mar 2021 10:33:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229931AbhCSJdE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 19 Mar 2021 05:33:04 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:14014 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229847AbhCSJck (ORCPT
+        id S229849AbhCSJdD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 19 Mar 2021 05:33:03 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:14097 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229990AbhCSJci (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 19 Mar 2021 05:32:40 -0400
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4F1zBn2fY2zPkgm;
-        Fri, 19 Mar 2021 17:30:09 +0800 (CST)
+        Fri, 19 Mar 2021 05:32:38 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4F1zCP3c0tz19Gf8;
+        Fri, 19 Mar 2021 17:30:41 +0800 (CST)
 Received: from localhost.localdomain (10.175.102.38) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.498.0; Fri, 19 Mar 2021 17:32:28 +0800
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.498.0; Fri, 19 Mar 2021 17:32:30 +0800
 From:   'w00385741 <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        "Mathieu Poirier" <mathieu.poirier@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Govind Singh <govinds@codeaurora.org>
-CC:     <linux-arm-msm@vger.kernel.org>,
-        <linux-remoteproc@vger.kernel.org>,
+To:     <weiyongjun1@huawei.com>, Oder Chiou <oder_chiou@realtek.com>,
+        "Liam Girdwood" <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        "Jaroslav Kysela" <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        Jack Yu <jack.yu@realtek.com>
+CC:     <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] remoteproc: qcom: wcss: Fix return value check in q6v5_wcss_init_mmio()
-Date:   Fri, 19 Mar 2021 09:41:00 +0000
-Message-ID: <20210319094100.4185044-1-weiyongjun1@huawei.com>
+Subject: [PATCH -next] ASoC: rt1019: make symbol 'rt1019_i2c_driver' static
+Date:   Fri, 19 Mar 2021 09:41:02 +0000
+Message-ID: <20210319094102.4185096-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -43,30 +41,32 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Wei Yongjun <weiyongjun1@huawei.com>
 
-In case of error, the function devm_ioremap() returns NULL pointer
-not ERR_PTR(). The IS_ERR() test in the return value check should
-be replaced with NULL test.
+The sparse tool complains as follows:
 
-Fixes: 0af65b9b915e ("remoteproc: qcom: wcss: Add non pas wcss Q6 support for QCS404")
+sound/soc/codecs/rt1019.c:927:19: warning:
+ symbol 'rt1019_i2c_driver' was not declared. Should it be static?
+
+This symbol is not used outside of rt1019.c, so this
+commit marks it static.
+
+Fixes: 7ec79d3850d0 ("ASoC: rt1019: add rt1019 amplifier driver")
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/remoteproc/qcom_q6v5_wcss.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/rt1019.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_wcss.c b/drivers/remoteproc/qcom_q6v5_wcss.c
-index 71ec1a451e35..6f7d940d4431 100644
---- a/drivers/remoteproc/qcom_q6v5_wcss.c
-+++ b/drivers/remoteproc/qcom_q6v5_wcss.c
-@@ -829,8 +829,8 @@ static int q6v5_wcss_init_mmio(struct q6v5_wcss *wcss,
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "qdsp6");
- 	wcss->reg_base = devm_ioremap(&pdev->dev, res->start,
- 				      resource_size(res));
--	if (IS_ERR(wcss->reg_base))
--		return PTR_ERR(wcss->reg_base);
-+	if (!wcss->reg_base)
-+		return -ENOMEM;
+diff --git a/sound/soc/codecs/rt1019.c b/sound/soc/codecs/rt1019.c
+index fb275686a00f..5138f028d9f2 100644
+--- a/sound/soc/codecs/rt1019.c
++++ b/sound/soc/codecs/rt1019.c
+@@ -924,7 +924,7 @@ static int rt1019_i2c_probe(struct i2c_client *i2c,
+ 		&soc_component_dev_rt1019, rt1019_dai, ARRAY_SIZE(rt1019_dai));
+ }
  
- 	if (wcss->version == WCSS_IPQ8074) {
- 		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "rmb");
+-struct i2c_driver rt1019_i2c_driver = {
++static struct i2c_driver rt1019_i2c_driver = {
+ 	.driver = {
+ 		.name = "rt1019",
+ 		.of_match_table = of_match_ptr(rt1019_of_match),
 

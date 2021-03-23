@@ -2,31 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B2B53460CD
-	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Mar 2021 15:01:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB898346134
+	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Mar 2021 15:16:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231969AbhCWOA7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Mar 2021 10:00:59 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:33453 "EHLO
+        id S232139AbhCWOQT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Mar 2021 10:16:19 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:34228 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231707AbhCWOAu (ORCPT
+        with ESMTP id S232228AbhCWOPo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Mar 2021 10:00:50 -0400
+        Tue, 23 Mar 2021 10:15:44 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1lOhaR-0006q8-SW; Tue, 23 Mar 2021 14:00:47 +0000
+        id 1lOhor-0008LE-Be; Tue, 23 Mar 2021 14:15:41 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sean Young <sean@mess.org>,
-        "Gustavo A . R . Silva" <gustavoars@kernel.org>,
-        "Daniel W . S . Almeida" <dwlsalmeida@gmail.com>,
-        Brad Love <brad@nextdimension.cc>, linux-media@vger.kernel.org
+To:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Lee Jones <lee.jones@linaro.org>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] media: dvb-frontends: Remove redundant error check on variable ret
-Date:   Tue, 23 Mar 2021 14:00:47 +0000
-Message-Id: <20210323140047.347955-1-colin.king@canonical.com>
+Subject: [PATCH][next] drm/amd/display/dc/calcs/dce_calcs: Fix allocation size for dceip and vbios
+Date:   Tue, 23 Mar 2021 14:15:41 +0000
+Message-Id: <20210323141541.348376-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,31 +40,35 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-An earlier commit removed a call to lgdt3306a_spectral_inversion and
-omitted to remove the error return check. The check on ret is now
-redundant and can be removed.
+Currently the allocations for dceip and vbios are based on the size of
+the pointer rather than the size of the data structures, causing heap
+issues. Fix this by using the correct allocation sizes.
 
-Addresses-Coverity: ("Logically dead code")
-Fixes: d4a3fa6652e3 ("media: dvb-frontends: lgdt3306a.c: remove dead code")
+Addresses-Coverity: ("Wrong size of argument")
+Fixes: a2a855772210 ("drm/amd/display/dc/calcs/dce_calcs: Remove some large variables from the stack")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/media/dvb-frontends/lgdt3306a.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/calcs/dce_calcs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/lgdt3306a.c b/drivers/media/dvb-frontends/lgdt3306a.c
-index 22d484487695..136b76cb4807 100644
---- a/drivers/media/dvb-frontends/lgdt3306a.c
-+++ b/drivers/media/dvb-frontends/lgdt3306a.c
-@@ -1017,9 +1017,6 @@ static int lgdt3306a_set_parameters(struct dvb_frontend *fe)
+diff --git a/drivers/gpu/drm/amd/display/dc/calcs/dce_calcs.c b/drivers/gpu/drm/amd/display/dc/calcs/dce_calcs.c
+index 556ecfabc8d2..1244fcb0f446 100644
+--- a/drivers/gpu/drm/amd/display/dc/calcs/dce_calcs.c
++++ b/drivers/gpu/drm/amd/display/dc/calcs/dce_calcs.c
+@@ -2051,11 +2051,11 @@ void bw_calcs_init(struct bw_calcs_dceip *bw_dceip,
  
- 	/* spectral_inversion defaults already set for VSB and QAM */
+ 	enum bw_calcs_version version = bw_calcs_version_from_asic_id(asic_id);
  
--	if (lg_chkerr(ret))
--		goto fail;
--
- 	ret = lgdt3306a_mpeg_mode(state, state->cfg->mpeg_mode);
- 	if (lg_chkerr(ret))
- 		goto fail;
+-	dceip = kzalloc(sizeof(dceip), GFP_KERNEL);
++	dceip = kzalloc(sizeof(*dceip), GFP_KERNEL);
+ 	if (!dceip)
+ 		return;
+ 
+-	vbios = kzalloc(sizeof(vbios), GFP_KERNEL);
++	vbios = kzalloc(sizeof(*vbios), GFP_KERNEL);
+ 	if (!vbios) {
+ 		kfree(dceip);
+ 		return;
 -- 
 2.30.2
 

@@ -2,88 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55D86347D61
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Mar 2021 17:12:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FE91347F4F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Mar 2021 18:26:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232944AbhCXQM1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Mar 2021 12:12:27 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:48748 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234228AbhCXQMK (ORCPT
+        id S237122AbhCXR0Y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Mar 2021 13:26:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60382 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236825AbhCXR0L (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Mar 2021 12:12:10 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1lP676-0006jy-Ok; Wed, 24 Mar 2021 16:12:08 +0000
-Subject: Re: [PATCH][next] staging: rtl8188eu: Fix null pointer dereference on
- free_netdev call
-To:     Martin Kaiser <martin@kaiser.cx>
-Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-staging@lists.linux.dev, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210324152135.254152-1-colin.king@canonical.com>
- <20210324161107.m7gbexp4e7e5vf77@viti.kaiser.cx>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <028e75cd-6229-6004-84bb-ca751346420d@canonical.com>
-Date:   Wed, 24 Mar 2021 16:12:08 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+        Wed, 24 Mar 2021 13:26:11 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D55F6C061763;
+        Wed, 24 Mar 2021 10:26:10 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id bx7so28535748edb.12;
+        Wed, 24 Mar 2021 10:26:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=KizuK1VUhVYZ48HlzjbMOXlUT2sfsfq66m33DGRHaDI=;
+        b=pTh311UJjSMALDPHdTIuQ2TAW4axDn3TxMJaqRD0M1BwPSq8SPmnuncRIrqbsboujF
+         JMpXF6lNo0Md2Mh/RvlfJ14OuRjR/IIsOXFD5G560slXerkaDQf7ULOdTl3S7WYM19XN
+         2PKbgBfDq/2voTg61Tivx9eTYi/U4pcreDTccTBCqqolQPigwPa+VdQmGXO05Ns/yveY
+         xD+u5e1pveYeIp1Pi+McEa3H/jgvSdWTjRS+fSgnCH07QkYYmNBI6xV1ECbn9+j13T3Q
+         CXKWBKfIQ1jSErkJYAWVioHIDHVlYGG3HkScsj901niA+MzKWk+1mqrEU7vICryk6sYV
+         szlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=KizuK1VUhVYZ48HlzjbMOXlUT2sfsfq66m33DGRHaDI=;
+        b=klIcFTqhNyofxRWT7JeinRL+8wm8xBluwhZurpfNQ2KY2AEhaRza9n29ADysPZY34Z
+         hSwycMHzQXksY8z0+NR1GArg4pif1c7oiKV4/xYTratkyidP3YSLfwuWYCi5DRlUMShC
+         x6SA3ihiSXkuuo+cvVTK6P1srGu386j/47T0GJ69iW2ZekokOXKPdiSXzc1Y3PDQDnG4
+         PZNGt+uZ5ceD7IMCHHAvryIUwwPQSwJ+TwTpIHtv5YGkslG/6VrCIK3z/lK3gyFg5tvL
+         HsmwI8VjIDY+ejUVhAGTSpFLbDMaui+Y2sQwOEsDGhjSmN9nHFHC0XlVptdbAjHWk6GE
+         AwMg==
+X-Gm-Message-State: AOAM531T+5s/HTP8s6KEozdsdpffyvGDTfsaHsr2ollel/IiFEb6pRif
+        CdB9+kDgh5x7DI9LWfWM9fE=
+X-Google-Smtp-Source: ABdhPJyuDpGmKn92QSjwWRLF+NDomum8mFJQOg1ryM/gi1/hMZKWQodOsaoxb7kNh64BWOjunHwNgQ==
+X-Received: by 2002:a05:6402:4242:: with SMTP id g2mr4589027edb.329.1616606769634;
+        Wed, 24 Mar 2021 10:26:09 -0700 (PDT)
+Received: from LEGION ([111.119.187.57])
+        by smtp.gmail.com with ESMTPSA id x1sm1233872eji.8.2021.03.24.10.26.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Mar 2021 10:26:09 -0700 (PDT)
+Date:   Wed, 24 Mar 2021 22:26:04 +0500
+From:   Muhammad Usama Anjum <musamaanjum@gmail.com>
+To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, colin.king@canonical.com,
+        dan.carpenter@oracle.com
+Cc:     musamaanjum@gmail.com, linux-kernel@vger.kernel.org
+Subject: [PATCH] ALSA: usb-audio: Fix missing return assignment
+Message-ID: <20210324172604.GA380592@LEGION>
 MIME-Version: 1.0
-In-Reply-To: <20210324161107.m7gbexp4e7e5vf77@viti.kaiser.cx>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 24/03/2021 16:11, Martin Kaiser wrote:
-> Hello Colin,
-> 
-> Thus wrote Colin King (colin.king@canonical.com):
-> 
->> From: Colin Ian King <colin.king@canonical.com>
-> 
->> An unregister_netdev call checks if pnetdev is null, hence a later
->> call to free_netdev can potentially be passing a null pointer, causing
->> a null pointer dereference. Avoid this by adding a null pointer check
->> on pnetdev before calling free_netdev.
-> 
->> Fixes: 1665c8fdffbb ("staging: rtl8188eu: use netdev routines for private data")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>  drivers/staging/rtl8188eu/os_dep/usb_intf.c | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
->> diff --git a/drivers/staging/rtl8188eu/os_dep/usb_intf.c b/drivers/staging/rtl8188eu/os_dep/usb_intf.c
->> index 518e9feb3f46..91a3d34a1050 100644
->> --- a/drivers/staging/rtl8188eu/os_dep/usb_intf.c
->> +++ b/drivers/staging/rtl8188eu/os_dep/usb_intf.c
->> @@ -446,7 +446,8 @@ static void rtw_usb_if1_deinit(struct adapter *if1)
->>  	pr_debug("+r871xu_dev_remove, hw_init_completed=%d\n",
->>  		 if1->hw_init_completed);
->>  	rtw_free_drv_sw(if1);
->> -	free_netdev(pnetdev);
->> +	if (pnetdev)
->> +		free_netdev(pnetdev);
->>  }
-> 
->>  static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
->> -- 
->> 2.30.2
-> 
-> you're right. I removed the NULL check that was part of rtw_free_netdev.
-> Sorry for the mistake and thanks for your fix.
+Return value of usb_driver_claim_interface should not be ignored.
+Instead it should be stored in err variable and returned from
+this function.
 
-Thank static analysis :-)
+Signed-off-by: Muhammad Usama Anjum <musamaanjum@gmail.com>
+---
+ sound/usb/quirks.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> 
-> Reviewed-by: Martin Kaiser <martin@kaiser.cx>
-> 
-> Best regards,
-> Martin
-> 
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index 9e5e37eff10e..dd32ceaef18a 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -427,10 +427,10 @@ static int create_autodetect_quirks(struct snd_usb_audio *chip,
+ 
+ 		err = create_autodetect_quirk(chip, iface, driver);
+ 		if (err >= 0)
+-			usb_driver_claim_interface(driver, iface, (void *)-1L);
++			err = usb_driver_claim_interface(driver, iface, (void *)-1L);
+ 	}
+ 
+-	return 0;
++	return err;
+ }
+ 
+ /*
+-- 
+2.25.1
 

@@ -2,77 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B71634877E
-	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Mar 2021 04:27:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 278D5348764
+	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Mar 2021 04:16:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232432AbhCYD07 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Mar 2021 23:26:59 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:14530 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232453AbhCYD0g (ORCPT
+        id S231656AbhCYDPs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Mar 2021 23:15:48 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:14889 "EHLO
+        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229908AbhCYDPr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Mar 2021 23:26:36 -0400
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4F5VnX6tWTzNqWj;
-        Thu, 25 Mar 2021 11:24:00 +0800 (CST)
-Received: from [10.174.177.149] (10.174.177.149) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.498.0; Thu, 25 Mar 2021 11:26:25 +0800
-Subject: Re: [PATCH -next] usb: typec: tipd: Remove duplicated include from
- core.c
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?Q?Guido_G=c3=bcnther?= <agx@sigxcpu.org>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        "Alexander A. Klimov" <grandmaster@al2klimov.de>,
-        Wei Yongjun <weiyongjun1@huawei.com>
-CC:     <linux-usb@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-References: <20210325031255.120479-1-miaoqinglang@huawei.com>
-From:   Qinglang Miao <miaoqinglang@huawei.com>
-Message-ID: <6b2a8913-e11f-c3e6-aef5-0263c3c5fef1@huawei.com>
-Date:   Thu, 25 Mar 2021 11:26:24 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Wed, 24 Mar 2021 23:15:47 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4F5VZ73ckYzkfWh;
+        Thu, 25 Mar 2021 11:14:07 +0800 (CST)
+Received: from localhost.localdomain (10.175.104.82) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.498.0; Thu, 25 Mar 2021 11:15:35 +0800
+From:   'Zheng Yongjun <zhengyongjun3@huawei.com>
+To:     <zhengyongjun3@huawei.com>, Ariel Elior <aelior@marvell.com>,
+        <GR-everest-linux-l2@marvell.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        "Daniel Borkmann" <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Andrii Nakryiko <andrii@kernel.org>
+CC:     <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH net-next] qede: remove unused including <linux/version.h>
+Date:   Thu, 25 Mar 2021 11:29:28 +0800
+Message-ID: <20210325032928.1550157-1-zhengyongjun3@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20210325031255.120479-1-miaoqinglang@huawei.com>
-Content-Type: text/plain; charset="gbk"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.149]
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.104.82]
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Sorry for the noise, I've send this same patch three times for stupid 
-reason.
+From: Zheng Yongjun <zhengyongjun3@huawei.com>
 
-Please ignore the following two.
+Remove including <linux/version.h> that don't need it.
 
-ÔÚ 2021/3/25 11:12, 'Qinglang Miao Ð´µÀ:
-> From: Qinglang Miao <miaoqinglang@huawei.com>
-> 
-> Remove duplicated include.
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
-> ---
->   drivers/usb/typec/tipd/core.c | 2 --
->   1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/tipd/core.c b/drivers/usb/typec/tipd/core.c
-> index d8212b15f6f9..938219bc1b4b 100644
-> --- a/drivers/usb/typec/tipd/core.c
-> +++ b/drivers/usb/typec/tipd/core.c
-> @@ -6,8 +6,6 @@
->    * Author: Heikki Krogerus <heikki.krogerus@linux.intel.com>
->    */
->   
-> -#include "tps6598x.h"
-> -
->   #include <linux/i2c.h>
->   #include <linux/acpi.h>
->   #include <linux/module.h>
-> 
-> .
-> 
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
+---
+ drivers/net/ethernet/qlogic/qede/qede_main.c | 1 -
+ 1 file changed, 1 deletion(-)
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_main.c b/drivers/net/ethernet/qlogic/qede/qede_main.c
+index 4d952036ba82..01ac1e93d27a 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_main.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_main.c
+@@ -7,7 +7,6 @@
+ #include <linux/crash_dump.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
+-#include <linux/version.h>
+ #include <linux/device.h>
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+

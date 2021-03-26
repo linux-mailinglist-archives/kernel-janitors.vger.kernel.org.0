@@ -2,58 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3ADE349FC3
-	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Mar 2021 03:26:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 934E734A052
+	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Mar 2021 04:43:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230501AbhCZCZe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 25 Mar 2021 22:25:34 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:14139 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231213AbhCZCZa (ORCPT
+        id S230298AbhCZDmz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 25 Mar 2021 23:42:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53120 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230109AbhCZDm0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 25 Mar 2021 22:25:30 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4F65NZ08gcznWp3;
-        Fri, 26 Mar 2021 10:22:54 +0800 (CST)
-Received: from localhost.localdomain (10.175.113.32) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.498.0; Fri, 26 Mar 2021 10:25:19 +0800
-From:   Qinglang Miao <miaoqinglang@huawei.com>
-To:     <miaoqinglang@huawei.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-CC:     <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] mm/page_alloc: remove duplicated include from page_alloc.c
-Date:   Fri, 26 Mar 2021 10:55:42 +0800
-Message-ID: <20210326025542.3565329-1-miaoqinglang@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Thu, 25 Mar 2021 23:42:26 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D992C06174A;
+        Thu, 25 Mar 2021 20:42:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=S3aM59LzwZv2lhTP9C0ITO0CQL7/3mTFFH7WMQjCEiU=; b=N4Z+WQ/0D63wmvnhgzwQTM+nmf
+        yHCwotlJqph2PP5rp2afCDzn0M0r/qd4LphT504V1vClIfCS42aw/ChtGSLtQR25PPTZpEVR7mBfV
+        xetgewEuFA0Z5yR0TWnadlD+i3Ge967HX8RMosXugO2B7130o39Lf5qyClEiLkQ6U1iSUDuQMdCXC
+        mLLRQqrqGboWT3pw409QtubI7+bLlxGCvzhZ/anulvSkLdnMQ6lN2jyqnfRAZQUkSCX8K5yLEaiaA
+        40nYIlasmrInug/FdILDGXfruXcYMGK657AdZcSd+VbxHYjywoAwWfEHTEe2I96ogXoE3/TFkC2O+
+        FyF0F/fg==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+        id 1lPdMO-00EEBG-Rh; Fri, 26 Mar 2021 03:42:10 +0000
+Date:   Fri, 26 Mar 2021 03:42:08 +0000
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Qinglang Miao <miaoqinglang@huawei.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Hulk Robot <hulkci@huawei.com>
+Subject: Re: [PATCH -next] mm/page_alloc: remove duplicated include from
+ page_alloc.c
+Message-ID: <20210326034208.GC1719932@casper.infradead.org>
+References: <20210326025542.3565329-1-miaoqinglang@huawei.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.32]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210326025542.3565329-1-miaoqinglang@huawei.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove duplicated include.
+On Fri, Mar 26, 2021 at 10:55:42AM +0800, Qinglang Miao wrote:
+> Remove duplicated include.
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
----
- mm/page_alloc.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index c53fe4fa10bf..e51826c87a0b 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -72,7 +72,6 @@
- #include <linux/padata.h>
- #include <linux/khugepaged.h>
- #include <linux/buffer_head.h>
--#include <linux/vmalloc.h>
- 
- #include <asm/sections.h>
- #include <asm/tlbflush.h>
-
+can't you make hulk robot do something useful, like untangle the
+mass of header includes?  For example, in -next, net/ipv4/tcp.c
+has a dependency on pagemap.h.  Why?

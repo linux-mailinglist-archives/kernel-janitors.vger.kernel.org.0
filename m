@@ -2,62 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4E2B34A152
-	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Mar 2021 07:00:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DB8934A1F1
+	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Mar 2021 07:39:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230003AbhCZGAT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 26 Mar 2021 02:00:19 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:14553 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229782AbhCZF7u (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 26 Mar 2021 01:59:50 -0400
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4F6B7t6l2xzNqYQ;
-        Fri, 26 Mar 2021 13:57:14 +0800 (CST)
-Received: from localhost.localdomain (10.175.104.82) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.498.0; Fri, 26 Mar 2021 13:59:42 +0800
-From:   Zheng Yongjun <zhengyongjun3@huawei.com>
-To:     <zhengyongjun3@huawei.com>,
-        James Schulman <james.schulman@cirrus.com>,
-        David Rhodes <david.rhodes@cirrus.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        "Takashi Iwai" <tiwai@suse.com>
-CC:     <alsa-devel@alsa-project.org>, <patches@opensource.cirrus.com>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] ASoC: cs42l42: Remove unused including <linux/version.h>
-Date:   Fri, 26 Mar 2021 14:13:35 +0800
-Message-ID: <20210326061335.3234571-1-zhengyongjun3@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        id S229812AbhCZGic (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 26 Mar 2021 02:38:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58690 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229768AbhCZGi1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 26 Mar 2021 02:38:27 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 379B361938;
+        Fri, 26 Mar 2021 06:38:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1616740707;
+        bh=b4FsOZb9T0I1VvM0VkzwvFa/450CGomGFrcQR6aOCe0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=WZLLr7NqfVbqb0ZDjHX4PIDNXB3ch9D5X4IHTu/f3TptsCWWmaePrr+4bBycWEw84
+         VNHHLapAkgL6scm11uTHrd/bv44M4j7cKGoTJpGxds0C1sI/JK1wYF3OM0K247qPKM
+         TC8YYm3e7gORUR3T4TWIYotz2xodMkC0MbspLsCg=
+Date:   Fri, 26 Mar 2021 07:38:23 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Zheng Yongjun <zhengyongjun3@huawei.com>
+Cc:     Andrey Konovalov <andreyknvl@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "Ahmed S. Darwish" <a.darwish@linutronix.de>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Allen Pais <allen.lkml@gmail.com>, linux-usb@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
+Subject: Re: [PATCH -next] usb: remove unused including <linux/version.h>
+Message-ID: <YF2BX7Ps9DcQe5tu@kroah.com>
+References: <20210326061326.3234377-1-zhengyongjun3@huawei.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.104.82]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210326061326.3234377-1-zhengyongjun3@huawei.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove including <linux/version.h> that don't need it.
+On Fri, Mar 26, 2021 at 02:13:26PM +0800, Zheng Yongjun wrote:
+> Remove including <linux/version.h> that don't need it.
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
+> ---
+>  drivers/usb/core/hcd.c | 1 -
+>  1 file changed, 1 deletion(-)
+> diff --git a/drivers/usb/core/hcd.c b/drivers/usb/core/hcd.c
+> index 3f0381344221..53bc93d6eb0c 100644
+> --- a/drivers/usb/core/hcd.c
+> +++ b/drivers/usb/core/hcd.c
+> @@ -11,7 +11,6 @@
+>  #include <linux/bcd.h>
+>  #include <linux/module.h>
+> -#include <linux/version.h>
+>  #include <linux/kernel.h>
+>  #include <linux/sched/task_stack.h>
+>  #include <linux/slab.h>
+> 
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
----
- sound/soc/codecs/cs42l42.c | 1 -
- 1 file changed, 1 deletion(-)
-diff --git a/sound/soc/codecs/cs42l42.c b/sound/soc/codecs/cs42l42.c
-index bf982e145e94..bd043f5d5d90 100644
---- a/sound/soc/codecs/cs42l42.c
-+++ b/sound/soc/codecs/cs42l42.c
-@@ -11,7 +11,6 @@
- #include <linux/module.h>
- #include <linux/moduleparam.h>
--#include <linux/version.h>
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/delay.h>
+Your tool is VERY broken.  Please stop sending patches that you
+obviously do not even test before submitting:
+	https://lore.kernel.org/r/1614733752-56541-1-git-send-email-tiantao6@hisilicon.com
 
+It's a sure way to make maintainers very grumpy.
+
+greg k-h

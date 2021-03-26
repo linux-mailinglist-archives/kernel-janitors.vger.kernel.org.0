@@ -2,88 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A673B34B23B
-	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Mar 2021 23:36:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 107EF34B263
+	for <lists+kernel-janitors@lfdr.de>; Sat, 27 Mar 2021 00:01:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230240AbhCZWgO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 26 Mar 2021 18:36:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43714 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229969AbhCZWgD (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 26 Mar 2021 18:36:03 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12B29C0613AA
-        for <kernel-janitors@vger.kernel.org>; Fri, 26 Mar 2021 15:36:03 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id w70so7255579oie.0
-        for <kernel-janitors@vger.kernel.org>; Fri, 26 Mar 2021 15:36:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=V+YQq+lRYtyspAeWFz7dCbPjCkePPwLJ57VTy7Kuxtk=;
-        b=qIMHDzuDTubNXuhrU6xHCxCvbxqu7ATigMzp+lc9TyY7I0EGNSfZDUpHqqp9RgY6e8
-         735RwKrNGOPyOXrnrsoGIslfXzRnNNq2AHARMNTqgpjR+olaRQ4UGnW3KZ2Smd8IkKhj
-         RNr2ytVsAN+kY+CfrD1gBBop35HMXwHkUyI7gmE/n1kgMLE0a6ORUkyDvD368gnUMtGt
-         gczb0q8lD+VUCfXa7oLX2gQalrnCbkuKAqq3CNfUYxTcf/Z/AwDQIVGm92EDYW55XDqu
-         pR4iTLkp51tqLrOLsc9eEVk8zjMOLF3lkX9LhKLxShXKK6qndKNdTdNBsX7jZHbqN/Ru
-         fkcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=V+YQq+lRYtyspAeWFz7dCbPjCkePPwLJ57VTy7Kuxtk=;
-        b=aCBoY5fTK1F1e6LQ4s/Ap5HYZXBjx+l2oUJI2Q2ejyq7rf6c9jXUzmLWX8swzMJ683
-         mQZfWbcEQCGj9dvzakaH2lGC5B48GqpqNblZXw/XOwXa00CEXVSXRe8g/Ut+XXcBfV+u
-         70o5Zdgw71GEarGDvXqbK6Z6HE8/+ie6OErGSfYIB/CL80wWEc/7gQyM/P+/0FCsuEvc
-         vL+gJx4IK4j3unp2tRr/facl0UJlKK6W0F1jYlVnQkXV1auW688F6Sx60OOUmcHJGLDF
-         8dTqwmubrFC7bcVHDjq06vDxd/44rsWiLTtdGzAsI1oH9OoBaZY/dXumFN4XgOEvzaKz
-         xQQg==
-X-Gm-Message-State: AOAM532glWIRzFcRmg+QFv6aD10PUkKvM+PZG7rNGwqlxXO6tZBRipTf
-        54cdsrseRE5IeaCUcLytmbGtnA==
-X-Google-Smtp-Source: ABdhPJxjMopEYEtM2GykXR356j28wVlSU9lYVJnDRhziFyqBi3YBvwLBWMdsh4kQd4UUre9/I3kZ2g==
-X-Received: by 2002:a05:6808:8da:: with SMTP id k26mr11285042oij.115.1616798162333;
-        Fri, 26 Mar 2021 15:36:02 -0700 (PDT)
-Received: from [192.168.1.30] ([207.135.233.147])
-        by smtp.gmail.com with ESMTPSA id f197sm2394307oob.38.2021.03.26.15.36.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Mar 2021 15:36:02 -0700 (PDT)
-Subject: Re: [PATCH 1/1] scripts/spelling.txt: add entries for recent
- discoveries
-To:     Tom Saeger <tom.saeger@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Colin Ian King <colin.king@canonical.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Joe Perches <joe@perches.com>
-References: <14c54ee47bf0e9aebfe71e97cefd11b2b8f0332f.1616784384.git.tom.saeger@oracle.com>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <49bafdef-b300-bd4a-c3b2-c672470e8922@kernel.dk>
-Date:   Fri, 26 Mar 2021 16:36:01 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S230294AbhCZXAj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 26 Mar 2021 19:00:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35304 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229986AbhCZXAN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 26 Mar 2021 19:00:13 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 9449461A21;
+        Fri, 26 Mar 2021 23:00:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1616799612;
+        bh=6WtEF5UlVkpKu1h/9A8YKlArvdpJ5cgCBFw+HVMUQFE=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=G4bH1F5506Eyg8ElIAcFrP2cylwjH+/EVw8bE3A90S8XCAFkieq71zGxslWUzvhd0
+         sqLMiouDHizpwmw3f8V4UGxoUDVPFzuMwrcPYxikMGPAYDfhACOvqS3EJ8YE9faCDS
+         Oc+YzhJhhaSvlWCAFSb0O14mqJRppiwloVsOzPAQHp69XHOkJxZkuPY4qPiuDsG/4g
+         thgpQRflFFWwoUQhmjyaBvG7DR5AIUYP2hjxtt/piu8sRnSViTBFrM2pRRDtztZwiN
+         5/4cSoEWwho+PDz7/3EfFIcsQ24vCvcC89ikC4BeNEv4fjshmR6VTuug3w0uPUxdle
+         cDZVo6l+muzww==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 77BFB60971;
+        Fri, 26 Mar 2021 23:00:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <14c54ee47bf0e9aebfe71e97cefd11b2b8f0332f.1616784384.git.tom.saeger@oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: ethernet: remove duplicated include
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <161679961248.14639.5462729926726566402.git-patchwork-notify@kernel.org>
+Date:   Fri, 26 Mar 2021 23:00:12 +0000
+References: <20210326024046.2800216-1-xujia39@huawei.com>
+In-Reply-To: <20210326024046.2800216-1-xujia39@huawei.com>
+To:     Xu Jia <xujia39@huawei.com>
+Cc:     nbd@nbd.name, sean.wang@mediatek.com, kuba@kernel.org,
+        matthias.bgg@gmail.com, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, hulkcommits@huawei.com
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 3/26/21 1:22 PM, Tom Saeger wrote:
-> @@ -1153,6 +1170,7 @@ quering||querying
->  queus||queues
->  randomally||randomly
->  raoming||roaming
-> +readded||read
->  reasearcher||researcher
->  reasearchers||researchers
->  reasearch||research
+Hello:
 
-davej brought up a good point that this one was actually re-added, which
-does make sense. So don't think that one should be added to the list.
+This patch was applied to netdev/net-next.git (refs/heads/master):
 
--- 
-Jens Axboe
+On Fri, 26 Mar 2021 10:40:46 +0800 you wrote:
+> Remove duplicated include from mtk_ppe_offload.c.
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Xu Jia <xujia39@huawei.com>
+> ---
+>  drivers/net/ethernet/mediatek/mtk_ppe_offload.c | 1 -
+>  1 file changed, 1 deletion(-)
+
+Here is the summary with links:
+  - [net-next] net: ethernet: remove duplicated include
+    https://git.kernel.org/netdev/net-next/c/aeab5cfbc8c7
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 

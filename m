@@ -2,45 +2,42 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 107EF34B263
-	for <lists+kernel-janitors@lfdr.de>; Sat, 27 Mar 2021 00:01:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F12DA34B261
+	for <lists+kernel-janitors@lfdr.de>; Sat, 27 Mar 2021 00:01:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230294AbhCZXAj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 26 Mar 2021 19:00:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35304 "EHLO mail.kernel.org"
+        id S230423AbhCZXAl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 26 Mar 2021 19:00:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35350 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229986AbhCZXAN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        id S230134AbhCZXAN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
         Fri, 26 Mar 2021 19:00:13 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 9449461A21;
+Received: by mail.kernel.org (Postfix) with ESMTPS id BA91D61A49;
         Fri, 26 Mar 2021 23:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
         s=k20201202; t=1616799612;
-        bh=6WtEF5UlVkpKu1h/9A8YKlArvdpJ5cgCBFw+HVMUQFE=;
+        bh=0bnB2HhWV1YHrVWqPsRTJGOesxJEv+VvQvRSHujYw7I=;
         h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=G4bH1F5506Eyg8ElIAcFrP2cylwjH+/EVw8bE3A90S8XCAFkieq71zGxslWUzvhd0
-         sqLMiouDHizpwmw3f8V4UGxoUDVPFzuMwrcPYxikMGPAYDfhACOvqS3EJ8YE9faCDS
-         Oc+YzhJhhaSvlWCAFSb0O14mqJRppiwloVsOzPAQHp69XHOkJxZkuPY4qPiuDsG/4g
-         thgpQRflFFWwoUQhmjyaBvG7DR5AIUYP2hjxtt/piu8sRnSViTBFrM2pRRDtztZwiN
-         5/4cSoEWwho+PDz7/3EfFIcsQ24vCvcC89ikC4BeNEv4fjshmR6VTuug3w0uPUxdle
-         cDZVo6l+muzww==
+        b=V53LaL9eEyRfWbK/KnRIpewVV1A7EvzcrFAceWkIU569MtVrvBQPJeSgQ4bip8nSa
+         aRq2LRpn4K1ydk3AaP60qovUWeXyObb9W4stmzjo++G0JGm4nrkHXKjtnVFmHjEsuq
+         trcBpRXRo/V0WZc8iqpYboSrTwFjlKvuye4mPv26yBmRcZU3SXTTxv9g8eOFv+G1KS
+         wrxYIrqbOtFosc+RbYlGnITeCJ7EQlxDv7eBLuBVYnj3NIcreQ6hFx9FOTZXNItzW8
+         Emg/Zq1Nf6L7P5m3fRRSSV8u+wGsG9/Gnkfv7aYr7hSh20UzVkPpcwPHSvpce3/ovu
+         5C9SXZfv/nakQ==
 Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 77BFB60971;
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 9CB5560986;
         Fri, 26 Mar 2021 23:00:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: ethernet: remove duplicated include
+Subject: Re: [PATCH net-next] farsync: use DEFINE_SPINLOCK() for spinlock
 From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <161679961248.14639.5462729926726566402.git-patchwork-notify@kernel.org>
+Message-Id: <161679961263.14639.18190519609786202394.git-patchwork-notify@kernel.org>
 Date:   Fri, 26 Mar 2021 23:00:12 +0000
-References: <20210326024046.2800216-1-xujia39@huawei.com>
-In-Reply-To: <20210326024046.2800216-1-xujia39@huawei.com>
-To:     Xu Jia <xujia39@huawei.com>
-Cc:     nbd@nbd.name, sean.wang@mediatek.com, kuba@kernel.org,
-        matthias.bgg@gmail.com, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, hulkcommits@huawei.com
+References: <20210326123138.159616-1-liujian56@huawei.com>
+In-Reply-To: <20210326123138.159616-1-liujian56@huawei.com>
+To:     'Liu Jian <liujian56@huawei.com>
+Cc:     kevin.curtis@farsite.co.uk, kuba@kernel.org,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -49,18 +46,20 @@ Hello:
 
 This patch was applied to netdev/net-next.git (refs/heads/master):
 
-On Fri, 26 Mar 2021 10:40:46 +0800 you wrote:
-> Remove duplicated include from mtk_ppe_offload.c.
+On Fri, 26 Mar 2021 20:31:38 +0800 you wrote:
+> From: Liu Jian <liujian56@huawei.com>
+> 
+> spinlock can be initialized automatically with DEFINE_SPINLOCK()
+> rather than explicitly calling spin_lock_init().
 > 
 > Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Xu Jia <xujia39@huawei.com>
-> ---
->  drivers/net/ethernet/mediatek/mtk_ppe_offload.c | 1 -
->  1 file changed, 1 deletion(-)
+> Signed-off-by: Liu Jian <liujian56@huawei.com>
+> 
+> [...]
 
 Here is the summary with links:
-  - [net-next] net: ethernet: remove duplicated include
-    https://git.kernel.org/netdev/net-next/c/aeab5cfbc8c7
+  - [net-next] farsync: use DEFINE_SPINLOCK() for spinlock
+    https://git.kernel.org/netdev/net-next/c/a1281601f88e
 
 You are awesome, thank you!
 --

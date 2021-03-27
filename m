@@ -2,61 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CF3F34B550
-	for <lists+kernel-janitors@lfdr.de>; Sat, 27 Mar 2021 09:00:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E17ED34B5C4
+	for <lists+kernel-janitors@lfdr.de>; Sat, 27 Mar 2021 10:53:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230420AbhC0IAM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 27 Mar 2021 04:00:12 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:15349 "EHLO
-        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230315AbhC0IAL (ORCPT
+        id S231459AbhC0JxH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 27 Mar 2021 05:53:07 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:15009 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231404AbhC0Jwr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 27 Mar 2021 04:00:11 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4F6rmt1fK3z93yw;
-        Sat, 27 Mar 2021 15:58:06 +0800 (CST)
-Received: from huawei.com (10.175.113.32) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.498.0; Sat, 27 Mar 2021
- 16:00:01 +0800
-From:   Shixin Liu <liushixin2@huawei.com>
-To:     Russell King <linux@armlinux.org.uk>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Shixin Liu <liushixin2@huawei.com>
-Subject: [PATCH] arm: kprobes: Make some symbols static
-Date:   Sat, 27 Mar 2021 16:30:21 +0800
-Message-ID: <20210327083021.1922640-1-liushixin2@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Sat, 27 Mar 2021 05:52:47 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4F6vG530tnzPvKd;
+        Sat, 27 Mar 2021 17:50:05 +0800 (CST)
+Received: from huawei.com (10.67.174.78) by DGGEMS401-HUB.china.huawei.com
+ (10.3.19.201) with Microsoft SMTP Server id 14.3.498.0; Sat, 27 Mar 2021
+ 17:52:29 +0800
+From:   Chen Lifu <chenlifu@huawei.com>
+To:     <chenlifu@huawei.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Zhang Qilong <zhangqilong3@huawei.com>
+CC:     <heying24@huawei.com>, <yuehaibing@huawei.com>,
+        <weiyongjun1@huawei.com>, <johnny.chenyi@huawei.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mips@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] MIPS: Alchemy: Use DEFINE_SPINLOCK() for spinlock
+Date:   Sat, 27 Mar 2021 17:52:25 +0800
+Message-ID: <20210327095225.104997-1-chenlifu@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.32]
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.174.78]
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-These two symbols are not used outside of test-core.c,
-so we can marks them static.
+From: Lifu Chen <chenlifu@huawei.com>
 
-Signed-off-by: Shixin Liu <liushixin2@huawei.com>
+spinlock can be initialized automatically with DEFINE_SPINLOCK()
+rather than explicitly calling spin_lock_init().
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Lifu Chen <chenlifu@huawei.com>
 ---
- arch/arm/probes/kprobes/test-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/alchemy/common/clock.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm/probes/kprobes/test-core.c b/arch/arm/probes/kprobes/test-core.c
-index c562832b8627..171c7076b89f 100644
---- a/arch/arm/probes/kprobes/test-core.c
-+++ b/arch/arm/probes/kprobes/test-core.c
-@@ -720,7 +720,7 @@ static const char coverage_register_lookup[16] = {
- 	[REG_TYPE_NOSPPCX]	= COVERAGE_ANY_REG | COVERAGE_SP,
- };
+diff --git a/arch/mips/alchemy/common/clock.c b/arch/mips/alchemy/common/clock.c
+index f0c830337104..c01be8c45271 100644
+--- a/arch/mips/alchemy/common/clock.c
++++ b/arch/mips/alchemy/common/clock.c
+@@ -111,7 +111,7 @@ static struct clk_aliastable {
+ /* access locks to SYS_FREQCTRL0/1 and SYS_CLKSRC registers */
+ static spinlock_t alchemy_clk_fg0_lock;
+ static spinlock_t alchemy_clk_fg1_lock;
+-static spinlock_t alchemy_clk_csrc_lock;
++static DEFINE_SPINLOCK(alchemy_clk_csrc_lock);
  
--unsigned coverage_start_registers(const struct decode_header *h)
-+static unsigned coverage_start_registers(const struct decode_header *h)
- {
- 	unsigned regs = 0;
- 	int i;
--- 
-2.25.1
+ /* CPU Core clock *****************************************************/
+ 
+@@ -996,7 +996,6 @@ static int __init alchemy_clk_setup_imux(int ctype)
+ 	if (!a)
+ 		return -ENOMEM;
+ 
+-	spin_lock_init(&alchemy_clk_csrc_lock);
+ 	ret = 0;
+ 
+ 	for (i = 0; i < 6; i++) {
 

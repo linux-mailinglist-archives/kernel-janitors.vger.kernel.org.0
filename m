@@ -2,72 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0539B34B5C7
-	for <lists+kernel-janitors@lfdr.de>; Sat, 27 Mar 2021 10:53:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEF4534B5D5
+	for <lists+kernel-janitors@lfdr.de>; Sat, 27 Mar 2021 10:57:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231192AbhC0JxI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 27 Mar 2021 05:53:08 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:15008 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231446AbhC0Jwt (ORCPT
+        id S231329AbhC0J44 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 27 Mar 2021 05:56:56 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:15074 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231420AbhC0J4k (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 27 Mar 2021 05:52:49 -0400
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4F6vG61mvszPvLw;
-        Sat, 27 Mar 2021 17:50:06 +0800 (CST)
-Received: from huawei.com (10.67.174.78) by DGGEMS403-HUB.china.huawei.com
- (10.3.19.203) with Microsoft SMTP Server id 14.3.498.0; Sat, 27 Mar 2021
- 17:52:32 +0800
-From:   Chen Lifu <chenlifu@huawei.com>
-To:     <chenlifu@huawei.com>, Russell King <linux@armlinux.org.uk>
-CC:     <heying24@huawei.com>, <yuehaibing@huawei.com>,
-        <weiyongjun1@huawei.com>, <johnny.chenyi@huawei.com>,
+        Sat, 27 Mar 2021 05:56:40 -0400
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4F6vMJ4QHWz1BH6C;
+        Sat, 27 Mar 2021 17:54:36 +0800 (CST)
+Received: from mdc.localdomain (10.175.104.57) by
+ DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
+ 14.3.498.0; Sat, 27 Mar 2021 17:56:28 +0800
+From:   Huang Guobin <huangguobin4@huawei.com>
+To:     <huangguobin4@huawei.com>, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        "Markus Elfring" <elfring@users.sourceforge.net>,
+        "David S. Miller" <davem@davemloft.net>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] i2c: gpio: use DEFINE_SPINLOCK() for spinlock
-Date:   Sat, 27 Mar 2021 17:52:28 +0800
-Message-ID: <20210327095228.105123-1-chenlifu@huawei.com>
-X-Mailer: git-send-email 2.17.1
+        <linux-mediatek@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] mt76: mt7615: remove redundant dev_err call in mt7622_wmac_probe()
+Date:   Sat, 27 Mar 2021 17:56:18 +0800
+Message-ID: <1616838978-6420-1-git-send-email-huangguobin4@huawei.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
 Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.174.78]
+X-Originating-IP: [10.175.104.57]
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Lifu Chen <chenlifu@huawei.com>
+From: Guobin Huang <huangguobin4@huawei.com>
 
-spinlock can be initialized automatically with DEFINE_SPINLOCK()
-rather than explicitly calling spin_lock_init().
+There is a error message within devm_ioremap_resource
+already, so remove the dev_err call to avoid redundant
+error message.
 
 Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Lifu Chen <chenlifu@huawei.com>
+Signed-off-by: Guobin Huang <huangguobin4@huawei.com>
 ---
- arch/arm/mach-sa1100/simpad.c | 4 +---
+ drivers/net/wireless/mediatek/mt76/mt7615/soc.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-sa1100/simpad.c b/arch/arm/mach-sa1100/simpad.c
-index c7fb9a73e4c5..c183432880d3 100644
---- a/arch/arm/mach-sa1100/simpad.c
-+++ b/arch/arm/mach-sa1100/simpad.c
-@@ -45,7 +45,7 @@
-  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/soc.c b/drivers/net/wireless/mediatek/mt76/mt7615/soc.c
+index 9aa5183c7a56..be9a69fe1b38 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/soc.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/soc.c
+@@ -40,10 +40,8 @@ static int mt7622_wmac_probe(struct platform_device *pdev)
+ 		return irq;
  
- static long cs3_shadow;
--static spinlock_t cs3_lock;
-+static DEFINE_SPINLOCK(cs3_lock);
- static struct gpio_chip cs3_gpio;
+ 	mem_base = devm_ioremap_resource(&pdev->dev, res);
+-	if (IS_ERR(mem_base)) {
+-		dev_err(&pdev->dev, "Failed to get memory resource\n");
++	if (IS_ERR(mem_base))
+ 		return PTR_ERR(mem_base);
+-	}
  
- long simpad_get_cs3_ro(void)
-@@ -379,8 +379,6 @@ static int __init simpad_init(void)
- {
- 	int ret;
- 
--	spin_lock_init(&cs3_lock);
--
- 	cs3_gpio.label = "simpad_cs3";
- 	cs3_gpio.base = SIMPAD_CS3_GPIO_BASE;
- 	cs3_gpio.ngpio = 24;
+ 	return mt7615_mmio_probe(&pdev->dev, mem_base, irq, mt7615e_reg_map);
+ }
 

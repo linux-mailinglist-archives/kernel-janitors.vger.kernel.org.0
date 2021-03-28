@@ -2,266 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F9A534BBA0
-	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Mar 2021 10:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56BA934BC57
+	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Mar 2021 14:34:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231216AbhC1IIp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 28 Mar 2021 04:08:45 -0400
-Received: from out05.smtpout.orange.fr ([193.252.22.214]:36693 "EHLO
-        out.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230280AbhC1II1 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 28 Mar 2021 04:08:27 -0400
-Received: from localhost.localdomain ([90.126.11.170])
-        by mwinf5d19 with ME
-        id lk8M2400E3g7mfN03k8NsB; Sun, 28 Mar 2021 10:08:24 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 28 Mar 2021 10:08:24 +0200
-X-ME-IP: 90.126.11.170
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
-        m.szyprowski@samsung.com, brad@nextdimension.cc,
-        vaibhavgupta40@gmail.com, daniel.lee.kruse@protonmail.com,
-        tglx@linutronix.de
-Cc:     linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] media: cx23885: switch from 'pci_' to 'dma_' API
-Date:   Sun, 28 Mar 2021 10:08:19 +0200
-Message-Id: <7870058f8c345153e53a9ceef1c49c1f313c3c3f.1616918733.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.27.0
+        id S230092AbhC1Mdo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 28 Mar 2021 08:33:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49752 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230437AbhC1MdB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 28 Mar 2021 08:33:01 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8EB066188B;
+        Sun, 28 Mar 2021 12:32:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1616934773;
+        bh=1tW6EgqS3GwDVKr8tt00RSBb137BBQAM9LEQ4HLlngY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nFKg8wiJWhDItAcrr89mIT9h+RLLL7khcM8WQdUADbmT0SzCeUkNZsoFmhLih3HHf
+         PUeN874b2vVtJqVpQYAmJRzINpkmwFYpy/YSaxyYz6XSG6lXBOKEfI0T3ewMVr3b2T
+         6k+/h3H60OVcrTK1cnRQPj72ArS47Ou29YP+NEEY=
+Date:   Sun, 28 Mar 2021 14:32:50 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Edmundo Carmona Antoranz <eantoranz@gmail.com>
+Cc:     marcocesati@gmail.com, dan.carpenter@oracle.com,
+        ross.schm.dev@gmail.com, fabioaiuto83@gmail.com,
+        linux-staging@lists.linux.dev, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next 1/6] staging: rtl8723bs: ieee80211: remove unused
+ variable
+Message-ID: <YGB3chK5o9+udlWt@kroah.com>
+References: <20210327001736.180881-1-eantoranz@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210327001736.180881-1-eantoranz@gmail.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The wrappers in include/linux/pci-dma-compat.h should go away.
+On Fri, Mar 26, 2021 at 06:17:31PM -0600, Edmundo Carmona Antoranz wrote:
+> sec_idx in rtw_get_sec_ie() is set to 0 and never changes value. Also,
+> it is only used for debugging messages. Therefore the variable is
+> removed and the debug messages are adjusted. Adjusting debug messages
+> forced style changes. Taking the opportunity to adjust indentation
+> of those sections of the code.
+> 
+> Removing this warning:
+> 
+> drivers/staging/rtl8723bs/core/rtw_ieee80211.c:657:15: warning: variable ‘sec_idx’ set but not used [-Wunused-but-set-variable]
+> 
+> Signed-off-by: Edmundo Carmona Antoranz <eantoranz@gmail.com>
+> ---
+>  .../staging/rtl8723bs/core/rtw_ieee80211.c    | 43 +++++++++++--------
+>  1 file changed, 25 insertions(+), 18 deletions(-)
+> 
+> diff --git a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
+> index cccbea555a32..ec065d924fbb 100644
+> --- a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
+> +++ b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
+> @@ -654,7 +654,7 @@ int rtw_get_wapi_ie(u8 *in_ie, uint in_len, u8 *wapi_ie, u16 *wapi_len)
+>  
+>  void rtw_get_sec_ie(u8 *in_ie, uint in_len, u8 *rsn_ie, u16 *rsn_len, u8 *wpa_ie, u16 *wpa_len)
+>  {
+> -	u8 authmode, sec_idx, i;
+> +	u8 authmode, i;
+>  	u8 wpa_oui[4] = {0x0, 0x50, 0xf2, 0x01};
+>  	uint	cnt;
+>  
+> @@ -662,37 +662,44 @@ void rtw_get_sec_ie(u8 *in_ie, uint in_len, u8 *rsn_ie, u16 *rsn_len, u8 *wpa_ie
+>  
+>  	cnt = (_TIMESTAMP_ + _BEACON_ITERVAL_ + _CAPABILITY_);
+>  
+> -	sec_idx = 0;
+> -
+>  	while (cnt < in_len) {
+>  		authmode = in_ie[cnt];
+>  
+>  		if ((authmode == WLAN_EID_VENDOR_SPECIFIC) && (!memcmp(&in_ie[cnt+2], &wpa_oui[0], 4))) {
+> -				RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("\n rtw_get_wpa_ie: sec_idx =%d in_ie[cnt+1]+2 =%d\n", sec_idx, in_ie[cnt+1]+2));
+> +			RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_,
+> +				 ("\n rtw_get_wpa_ie: in_ie[cnt+1]+2 =%d\n", in_ie[cnt + 1] + 2));
 
-The patch has been generated with the coccinelle script below and has been
-hand modified to replace GFP_ with a correct flag.
-It has been compile tested.
+These "RT_TRACE" things need to all be removed or use the real in-kernel
+api instead.  Please do not hide the problems with them by trying to
+clean them up.
 
-When memory is allocated in 'cx23885_risc_buffer()' GFP_KERNEL can be used
-because this function is only called from a vb2_ops buf_prepare function.
-The call chain is:
-  cx23885_video_qops.buf_prepare        (cx23885-video.c)
-    --> buffer_prepare                  (cx23885-video.c)
-      --> cx23885_risc_buffer
+thanks,
 
-When memory is allocated in 'cx23885_risc_databuffer()' GFP_KERNEL can be
-used because this function is only called from a function that already uses
-GFP_KERNEL or from a vb2_ops buf_prepare
-function.
-The call chains are:
-  snd_cx23885_hw_params                 (cx23885-alsa.c) --> use GFP_KERNEL
-    --> cx23885_risc_databuffer
-
-  cx23885_qops.buffer_prepare           (cx23885-417.c)
-     or
-  dvb_qops.buffer_prepare               (cx23885-dvb.c)
-    --> cx23885_buf_prepare
-      --> cx23885_risc_databuffer
-
-When memory is allocated in 'cx23885_risc_vbibuffer()' GFP_KERNEL can be
-used because this function is only called from a vb2_ops buf_prepare
-function.
-The call chains are:
-  cx23885_vbi_qops.buffer_prepare       (cx23885-vbi.c)
-    --> cx23885_risc_vbibuffer
-
-
-@@
-@@
--    PCI_DMA_BIDIRECTIONAL
-+    DMA_BIDIRECTIONAL
-
-@@
-@@
--    PCI_DMA_TODEVICE
-+    DMA_TO_DEVICE
-
-@@
-@@
--    PCI_DMA_FROMDEVICE
-+    DMA_FROM_DEVICE
-
-@@
-@@
--    PCI_DMA_NONE
-+    DMA_NONE
-
-@@
-expression e1, e2, e3;
-@@
--    pci_alloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3;
-@@
--    pci_zalloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_free_consistent(e1, e2, e3, e4)
-+    dma_free_coherent(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_single(e1, e2, e3, e4)
-+    dma_map_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_single(e1, e2, e3, e4)
-+    dma_unmap_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4, e5;
-@@
--    pci_map_page(e1, e2, e3, e4, e5)
-+    dma_map_page(&e1->dev, e2, e3, e4, e5)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_page(e1, e2, e3, e4)
-+    dma_unmap_page(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_sg(e1, e2, e3, e4)
-+    dma_map_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_sg(e1, e2, e3, e4)
-+    dma_unmap_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-+    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-+    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-+    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-+    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2;
-@@
--    pci_dma_mapping_error(e1, e2)
-+    dma_mapping_error(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_dma_mask(e1, e2)
-+    dma_set_mask(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_consistent_dma_mask(e1, e2)
-+    dma_set_coherent_mask(&e1->dev, e2)
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-If needed, see post from Christoph Hellwig on the kernel-janitors ML:
-   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
----
- drivers/media/pci/cx23885/cx23885-alsa.c |  2 +-
- drivers/media/pci/cx23885/cx23885-core.c | 13 ++++++++-----
- 2 files changed, 9 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/media/pci/cx23885/cx23885-alsa.c b/drivers/media/pci/cx23885/cx23885-alsa.c
-index 13689c5dd47f..ab14d35214aa 100644
---- a/drivers/media/pci/cx23885/cx23885-alsa.c
-+++ b/drivers/media/pci/cx23885/cx23885-alsa.c
-@@ -266,7 +266,7 @@ static int dsp_buffer_free(struct cx23885_audio_dev *chip)
- 	cx23885_alsa_dma_unmap(chip);
- 	cx23885_alsa_dma_free(chip->buf);
- 	risc = &chip->buf->risc;
--	pci_free_consistent(chip->pci, risc->size, risc->cpu, risc->dma);
-+	dma_free_coherent(&chip->pci->dev, risc->size, risc->cpu, risc->dma);
- 	kfree(chip->buf);
- 
- 	chip->buf = NULL;
-diff --git a/drivers/media/pci/cx23885/cx23885-core.c b/drivers/media/pci/cx23885/cx23885-core.c
-index d0ca260ecf70..f8f2ff3b00c3 100644
---- a/drivers/media/pci/cx23885/cx23885-core.c
-+++ b/drivers/media/pci/cx23885/cx23885-core.c
-@@ -1218,7 +1218,8 @@ int cx23885_risc_buffer(struct pci_dev *pci, struct cx23885_riscmem *risc,
- 		/ PAGE_SIZE + lines);
- 	instructions += 5;
- 	risc->size = instructions * 12;
--	risc->cpu = pci_alloc_consistent(pci, risc->size, &risc->dma);
-+	risc->cpu = dma_alloc_coherent(&pci->dev, risc->size, &risc->dma,
-+				       GFP_KERNEL);
- 	if (risc->cpu == NULL)
- 		return -ENOMEM;
- 
-@@ -1255,7 +1256,8 @@ int cx23885_risc_databuffer(struct pci_dev *pci,
- 	instructions += 4;
- 
- 	risc->size = instructions * 12;
--	risc->cpu = pci_alloc_consistent(pci, risc->size, &risc->dma);
-+	risc->cpu = dma_alloc_coherent(&pci->dev, risc->size, &risc->dma,
-+				       GFP_KERNEL);
- 	if (risc->cpu == NULL)
- 		return -ENOMEM;
- 
-@@ -1293,7 +1295,8 @@ int cx23885_risc_vbibuffer(struct pci_dev *pci, struct cx23885_riscmem *risc,
- 		/ PAGE_SIZE + lines);
- 	instructions += 5;
- 	risc->size = instructions * 12;
--	risc->cpu = pci_alloc_consistent(pci, risc->size, &risc->dma);
-+	risc->cpu = dma_alloc_coherent(&pci->dev, risc->size, &risc->dma,
-+				       GFP_KERNEL);
- 	if (risc->cpu == NULL)
- 		return -ENOMEM;
- 	/* write risc instructions */
-@@ -1322,7 +1325,7 @@ void cx23885_free_buffer(struct cx23885_dev *dev, struct cx23885_buffer *buf)
- {
- 	struct cx23885_riscmem *risc = &buf->risc;
- 
--	pci_free_consistent(dev->pci, risc->size, risc->cpu, risc->dma);
-+	dma_free_coherent(&dev->pci->dev, risc->size, risc->cpu, risc->dma);
- }
- 
- static void cx23885_tsport_reg_dump(struct cx23885_tsport *port)
-@@ -2159,7 +2162,7 @@ static int cx23885_initdev(struct pci_dev *pci_dev,
- 		(unsigned long long)pci_resource_start(pci_dev, 0));
- 
- 	pci_set_master(pci_dev);
--	err = pci_set_dma_mask(pci_dev, 0xffffffff);
-+	err = dma_set_mask(&pci_dev->dev, 0xffffffff);
- 	if (err) {
- 		pr_err("%s/0: Oops: no 32bit PCI DMA ???\n", dev->name);
- 		goto fail_ctrl;
--- 
-2.27.0
-
+greg k-h

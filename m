@@ -2,71 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A94D434F2CA
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Mar 2021 23:10:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F3D634F651
+	for <lists+kernel-janitors@lfdr.de>; Wed, 31 Mar 2021 03:44:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232622AbhC3VK1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 30 Mar 2021 17:10:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34702 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232589AbhC3VKJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 30 Mar 2021 17:10:09 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 7812F619CA;
-        Tue, 30 Mar 2021 21:10:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617138609;
-        bh=ofX2F6Yie2lWLeng2lkUxg6P511GpTQdjoE0D9zx0K0=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=dmL54/tCmFDoIONYyUxyuaJBU7S6C4XykNV5c2TcHBcnTnQrwW/djE+68xkzHWS2L
-         KRaia3CoV/0unH1qMkS1bfJnnuxySoy9XuXQcjJo/ZhJ19/ce2ao7izifKVZcc4BaU
-         klwOBsRICKNTuVBYMmxtPp42m5PSSg0bW/1QS3ZAjx52F3xABo3NLggxpDCT5Sw026
-         FB3GtM7yIO76Mqz06DabZ/ITiTj1KLiYEr490viQUvVVlzks2OQZ/YOChsn5xlblTj
-         xj+0FMl/fstqBUAfTX3ryABbrNjXhJEWnu+OayRDO3E8TMMCP8R+LgZowPrTcPzrDb
-         06ZKJFI43EVYQ==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 6D6A560A5B;
-        Tue, 30 Mar 2021 21:10:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S233144AbhCaBoA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 30 Mar 2021 21:44:00 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:15109 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230160AbhCaBna (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 30 Mar 2021 21:43:30 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4F98DL3NR9z19K7t;
+        Wed, 31 Mar 2021 09:41:22 +0800 (CST)
+Received: from ubuntu180.huawei.com (10.175.100.227) by
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.498.0; Wed, 31 Mar 2021 09:43:17 +0800
+From:   Tang Yizhou <tangyizhou@huawei.com>
+To:     <tangyizhou@huawei.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+        "John Allen" <john.allen@amd.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+CC:     <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] crypto: ccp - Use DEFINE_SPINLOCK() for spinlock
+Date:   Wed, 31 Mar 2021 10:00:55 +0800
+Message-ID: <20210331020055.4631-1-tangyizhou@huawei.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] bpf: remove redundant assignment of variable id
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <161713860944.23555.1260625590576994737.git-patchwork-notify@kernel.org>
-Date:   Tue, 30 Mar 2021 21:10:09 +0000
-References: <20210326194348.623782-1-colin.king@canonical.com>
-In-Reply-To: <20210326194348.623782-1-colin.king@canonical.com>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-        kafai@fb.com, songliubraving@fb.com, yhs@fb.com,
-        john.fastabend@gmail.com, kpsingh@kernel.org,
-        netdev@vger.kernel.org, bpf@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.100.227]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
+spinlock can be initialized automatically with DEFINE_SPINLOCK()
+rather than explicitly calling spin_lock_init().
 
-This patch was applied to bpf/bpf-next.git (refs/heads/master):
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Tang Yizhou <tangyizhou@huawei.com>
+---
+ drivers/crypto/ccp/ccp-crypto-main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-On Fri, 26 Mar 2021 19:43:48 +0000 you wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable id is being assigned a value that is never
-> read, the assignment is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> 
-> [...]
-
-Here is the summary with links:
-  - bpf: remove redundant assignment of variable id
-    https://git.kernel.org/bpf/bpf-next/c/235fc0e36d35
-
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+diff --git a/drivers/crypto/ccp/ccp-crypto-main.c b/drivers/crypto/ccp/ccp-crypto-main.c
+index 88275b4867ea..5976530c00a8 100644
+--- a/drivers/crypto/ccp/ccp-crypto-main.c
++++ b/drivers/crypto/ccp/ccp-crypto-main.c
+@@ -59,7 +59,7 @@ struct ccp_crypto_queue {
+ #define CCP_CRYPTO_MAX_QLEN	100
+ 
+ static struct ccp_crypto_queue req_queue;
+-static spinlock_t req_queue_lock;
++static DEFINE_SPINLOCK(req_queue_lock);
+ 
+ struct ccp_crypto_cmd {
+ 	struct list_head entry;
+@@ -410,7 +410,6 @@ static int ccp_crypto_init(void)
+ 		return ret;
+ 	}
+ 
+-	spin_lock_init(&req_queue_lock);
+ 	INIT_LIST_HEAD(&req_queue.cmds);
+ 	req_queue.backlog = &req_queue.cmds;
+ 	req_queue.cmd_count = 0;
 

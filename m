@@ -2,31 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B6D034F880
-	for <lists+kernel-janitors@lfdr.de>; Wed, 31 Mar 2021 08:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BCF034F887
+	for <lists+kernel-janitors@lfdr.de>; Wed, 31 Mar 2021 08:09:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233690AbhCaGGX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 31 Mar 2021 02:06:23 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:14651 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232805AbhCaGGJ (ORCPT
+        id S233744AbhCaGH4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 31 Mar 2021 02:07:56 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:15049 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233716AbhCaGG7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 31 Mar 2021 02:06:09 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4F9G2j1MWTznWg8;
-        Wed, 31 Mar 2021 14:03:25 +0800 (CST)
+        Wed, 31 Mar 2021 02:06:59 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4F9G3h69z6zNrXH;
+        Wed, 31 Mar 2021 14:04:16 +0800 (CST)
 Received: from DESKTOP-EFRLNPK.china.huawei.com (10.174.177.129) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.498.0; Wed, 31 Mar 2021 14:05:54 +0800
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.498.0; Wed, 31 Mar 2021 14:06:46 +0800
 From:   Qiheng Lin <linqiheng@huawei.com>
-To:     <linqiheng@huawei.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>
-CC:     <linux-media@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+To:     <linqiheng@huawei.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
+        "Haiyang Zhang" <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>
+CC:     <linux-hyperv@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
         "Hulk Robot" <hulkci@huawei.com>
-Subject: [PATCH -next] media: uvcvideo: Remove unused including <linux/version.h>
-Date:   Wed, 31 Mar 2021 14:05:54 +0800
-Message-ID: <20210331060554.2416-1-linqiheng@huawei.com>
+Subject: [PATCH -next] Drivers: hv: vmbus: Remove unused including <linux/version.h>
+Date:   Wed, 31 Mar 2021 14:06:46 +0800
+Message-ID: <20210331060646.2471-1-linqiheng@huawei.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="ISO-8859-1"
@@ -42,19 +43,19 @@ Remove including <linux/version.h> that don't need it.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Qiheng Lin <linqiheng@huawei.com>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 1 -
+ drivers/hv/hv.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 30ef2a3110f7..9f9473db53c6 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -16,7 +16,6 @@
- #include <linux/videodev2.h>
+diff --git a/drivers/hv/hv.c b/drivers/hv/hv.c
+index 917b29e873c5..3e6ff83adff4 100644
+--- a/drivers/hv/hv.c
++++ b/drivers/hv/hv.c
+@@ -13,7 +13,6 @@
+ #include <linux/slab.h>
  #include <linux/vmalloc.h>
- #include <linux/wait.h>
+ #include <linux/hyperv.h>
 -#include <linux/version.h>
- #include <asm/unaligned.h>
- 
- #include <media/v4l2-common.h>
+ #include <linux/random.h>
+ #include <linux/clockchips.h>
+ #include <linux/interrupt.h>
 

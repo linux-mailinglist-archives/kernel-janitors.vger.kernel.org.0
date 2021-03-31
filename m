@@ -2,83 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78F1D34FC14
-	for <lists+kernel-janitors@lfdr.de>; Wed, 31 Mar 2021 11:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96EF734FC17
+	for <lists+kernel-janitors@lfdr.de>; Wed, 31 Mar 2021 11:04:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230080AbhCaJDG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 31 Mar 2021 05:03:06 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:46244 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234405AbhCaJCx (ORCPT
+        id S234476AbhCaJDi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 31 Mar 2021 05:03:38 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:15121 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234471AbhCaJDg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 31 Mar 2021 05:02:53 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1lRWkV-0008Fh-Az; Wed, 31 Mar 2021 09:02:51 +0000
-Subject: Re: [PATCH -next] mips: remove unused variable 'prev_state'
-To:     Xu Jia <xujia39@huawei.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        WANG Xuerui <git@xen0n.name>,
-        Dmitry Safonov <0x7f454c46@gmail.com>,
-        Liangliang Huang <huanglllzu@gmail.com>,
-        Xingxing Su <suxingxing@loongson.cn>,
-        Huang Pei <huangpei@loongson.cn>
-Cc:     linux-mips@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <1617180898-36838-1-git-send-email-xujia39@huawei.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <38e7e7e0-117b-87d5-0d54-c637170a286b@canonical.com>
-Date:   Wed, 31 Mar 2021 10:02:50 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        Wed, 31 Mar 2021 05:03:36 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.60])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4F9L094QTlz1BFxn;
+        Wed, 31 Mar 2021 17:01:29 +0800 (CST)
+Received: from [10.67.100.236] (10.67.100.236) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.498.0; Wed, 31 Mar 2021 17:03:24 +0800
+Subject: Re: [PATCH -next] ARM: OMAP: Use DEFINE_SPINLOCK() for spinlock
+To:     Tony Lindgren <tony@atomide.com>
+CC:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Russell King <linux@armlinux.org.uk>, <heying24@huawei.com>,
+        <yuehaibing@huawei.com>, <weiyongjun1@huawei.com>,
+        <johnny.chenyi@huawei.com>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <20210327095227.105081-1-chenlifu@huawei.com>
+ <YGQPx5UMmHnFoJi+@atomide.com>
+From:   chenlifu <chenlifu@huawei.com>
+Message-ID: <32b58df3-7ff0-abf5-cff7-eaf35dffb292@huawei.com>
+Date:   Wed, 31 Mar 2021 17:03:24 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-In-Reply-To: <1617180898-36838-1-git-send-email-xujia39@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <YGQPx5UMmHnFoJi+@atomide.com>
+Content-Type: text/plain; charset="gbk"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.100.236]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 31/03/2021 09:54, Xu Jia wrote:
-> GCC reports the following warning with W=1:
-> 
-> arch/mips/kernel/traps.c:1593:17: warning:
->  variable 'prev_state' set but not used [-Wunused-but-set-variable]
->  1593 |  enum ctx_state prev_state;
->       |                 ^~~~~~~~~~
-> 
-> This variable is not used in function , this commit
-> remove it to fix the warning.
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Xu Jia <xujia39@huawei.com>
-> ---
->  arch/mips/kernel/traps.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-> index 808b8b61ded1..d1f23ddf0c8c 100644
-> --- a/arch/mips/kernel/traps.c
-> +++ b/arch/mips/kernel/traps.c
-> @@ -1590,10 +1590,8 @@ asmlinkage void do_watch(struct pt_regs *regs)
->  asmlinkage void do_mcheck(struct pt_regs *regs)
->  {
->  	int multi_match = regs->cp0_status & ST0_TS;
-> -	enum ctx_state prev_state;
->  	mm_segment_t old_fs = get_fs();
->  
-> -	prev_state = exception_enter();
 
-The call to exception_enter() is required for context tracking, so
-removing this call is not the correct solution.
-
-
->  	show_regs(regs);
->  
->  	if (multi_match) {
+ÔÚ 2021/3/31 13:59, Tony Lindgren Ð´µÀ:
+> * Chen Lifu <chenlifu@huawei.com> [210327 11:53]:
+>> From: Lifu Chen <chenlifu@huawei.com>
+>>
+>> spinlock can be initialized automatically with DEFINE_SPINLOCK()
+>> rather than explicitly calling spin_lock_init().
+> 
+> Thanks applying into omap-for-v5.13/soc.
+> 
+> Tony
+> .
 > 
 
+Thanks!
+
+---
+Chen Lifu

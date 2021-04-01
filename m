@@ -2,74 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EE71351A0F
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Apr 2021 20:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E47BE351C94
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Apr 2021 20:46:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235794AbhDAR56 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Apr 2021 13:57:58 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:16318 "EHLO
-        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236825AbhDARzW (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Apr 2021 13:55:22 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4FB3MS0z2cz9420;
-        Thu,  1 Apr 2021 21:05:40 +0800 (CST)
-Received: from huawei.com (10.175.112.125) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.498.0; Thu, 1 Apr 2021
- 21:07:42 +0800
-From:   Yongqiang Liu <liuyongqiang13@huawei.com>
-To:     <tony@atomide.com>, <linux@armlinux.org.uk>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] ARM: OMAP2+: Fix build warning when mmc_omap is not built
-Date:   Thu, 1 Apr 2021 13:15:33 +0000
-Message-ID: <20210401131533.998767-1-liuyongqiang13@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        id S237151AbhDASSt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Apr 2021 14:18:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45714 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238943AbhDASPC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 1 Apr 2021 14:15:02 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B31BA60201;
+        Thu,  1 Apr 2021 12:43:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1617281004;
+        bh=yyNunJJ9vwsjcwxSSeO7R2Ald/KrcIYbdhHs0SKoAUk=;
+        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+        b=H5lBHcDcEQ/UeUIXFUq8bHXhmJnBvHxi8mFODJ+iNXl0TnRJ0fE3ql4ndlyd5VtfU
+         pG5mTdIe5U70gOs+GnNa5pZgv5nlsVepeX1qFyt0KJzDFx1hBVnpy5oMLai10UyZHe
+         3znDisibKXJJ0u0ZJqasRrv3eXAGFFXFCvCfQBTttrI0Tm2hMkn6jH5xOsyeTKy3xa
+         G3C5PUJgyaexyaKL038miwgf6lWJzFlMKH4SBd+5AQpIJXSCBKNCoKYsld8E/qlKhl
+         mFPvuk/jfJH3OvHEJCCT1u5MdNZn4RmSDjxqsFnvVo6fyWu3r2Prh5GL8uc1GuAlc+
+         MNUs90Gh5EIuQ==
+Received: by mail-oi1-f178.google.com with SMTP id v25so1635453oic.5;
+        Thu, 01 Apr 2021 05:43:24 -0700 (PDT)
+X-Gm-Message-State: AOAM531JG9rXAVkjpGhfzvPha0aeAIKqTViR8TIHLKrN29U9nC33fvQk
+        F8N3NAgLtjb4iyenNXx+OHFN9IdrqbIVtiy1e1Y=
+X-Google-Smtp-Source: ABdhPJxlywyrnW420vopXXg00ijcwddFP7MuJght1M2waEhnEBEg1W9TknhKwiq/ATWSxcRr43Di3ijNtCjaGOkqopo=
+X-Received: by 2002:a05:6808:f12:: with SMTP id m18mr5526660oiw.62.1617281004013;
+ Thu, 01 Apr 2021 05:43:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.112.125]
-X-CFilter-Loop: Reflected
+Received: by 2002:ac9:5ed4:0:0:0:0:0 with HTTP; Thu, 1 Apr 2021 05:43:23 -0700 (PDT)
+In-Reply-To: <20210401115008.GS2088@kadam>
+References: <20210401113933.GA2828895@LEGION> <20210401115008.GS2088@kadam>
+From:   Namjae Jeon <linkinjeon@kernel.org>
+Date:   Thu, 1 Apr 2021 21:43:23 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd-ou4-jf7_8xa4jDQ_otyQ9ffKhwD7WZrmrna1P3b_W8Q@mail.gmail.com>
+Message-ID: <CAKYAXd-ou4-jf7_8xa4jDQ_otyQ9ffKhwD7WZrmrna1P3b_W8Q@mail.gmail.com>
+Subject: Re: [Linux-cifsd-devel] [PATCH] cifsd: use kfree to free memory
+ allocated by kzalloc
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Muhammad Usama Anjum <musamaanjum@gmail.com>,
+        COMMON INTERNET FILE SYSTEM SERVER 
+        <linux-cifs@vger.kernel.org>,
+        COMMON INTERNET FILE SYSTEM SERVER 
+        <linux-cifsd-devel@lists.sourceforge.net>,
+        kernel-janitors@vger.kernel.org,
+        open list <linux-kernel@vger.kernel.org>,
+        Steve French <sfrench@samba.org>, colin.king@canonical.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-GCC reports the following warning with W=1:
-
-arch/arm/mach-omap2/board-n8x0.c:325:19: warning:
-variable 'index' set but not used [-Wunused-but-set-variable]
-325 |  int bit, *openp, index;
-    |                   ^~~~~
-
-Fix this by moving CONFIG_MMC_OMAP to cover the rest codes
-in the n8x0_mmc_callback().
-
-Signed-off-by: Yongqiang Liu <liuyongqiang13@huawei.com>
----
- arch/arm/mach-omap2/board-n8x0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/mach-omap2/board-n8x0.c b/arch/arm/mach-omap2/board-n8x0.c
-index 418a61ecb827..5e86145db0e2 100644
---- a/arch/arm/mach-omap2/board-n8x0.c
-+++ b/arch/arm/mach-omap2/board-n8x0.c
-@@ -322,6 +322,7 @@ static int n8x0_mmc_get_cover_state(struct device *dev, int slot)
- 
- static void n8x0_mmc_callback(void *data, u8 card_mask)
- {
-+#ifdef CONFIG_MMC_OMAP
- 	int bit, *openp, index;
- 
- 	if (board_is_n800()) {
-@@ -339,7 +340,6 @@ static void n8x0_mmc_callback(void *data, u8 card_mask)
- 	else
- 		*openp = 0;
- 
--#ifdef CONFIG_MMC_OMAP
- 	omap_mmc_notify_cover_event(mmc_device, index, *openp);
- #else
- 	pr_warn("MMC: notify cover event not available\n");
--- 
-2.25.1
-
+2021-04-01 20:50 GMT+09:00, Dan Carpenter <dan.carpenter@oracle.com>:
+> On Thu, Apr 01, 2021 at 04:39:33PM +0500, Muhammad Usama Anjum wrote:
+>> kfree should be used to free memory allocated by kzalloc to avoid
+>> any overhead and for maintaining consistency.
+>>
+>> Fixes: 5dfeb6d945 ("cifsd: use kmalloc() for small allocations")
+>> Signed-off-by: Muhammad Usama Anjum <musamaanjum@gmail.com>
+>> ---
+>> This one place was left in earlier patch. I've already received
+>> responsse on that patch. I'm sending a separate patch.
+>>
+>>  fs/cifsd/transport_tcp.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/fs/cifsd/transport_tcp.c b/fs/cifsd/transport_tcp.c
+>> index 67163efcf472..040881893417 100644
+>> --- a/fs/cifsd/transport_tcp.c
+>> +++ b/fs/cifsd/transport_tcp.c
+>> @@ -551,7 +551,7 @@ void ksmbd_tcp_destroy(void)
+>>  	list_for_each_entry_safe(iface, tmp, &iface_list, entry) {
+>>  		list_del(&iface->entry);
+>>  		kfree(iface->name);
+>> -		ksmbd_free(iface);
+>> +		kfree(iface);
+>
+> We should just delete the ksmbd_free() function completely.
+Yes, I have added your review comment about this to my todo-list.
+I will do that.
+>
+> I think that cifsd is being re-written though so it might not be worth
+> it.
+Right.
+Thanks!
+>
+> regards,
+> dan carpenter
+>
+>
+> _______________________________________________
+> Linux-cifsd-devel mailing list
+> Linux-cifsd-devel@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/linux-cifsd-devel
+>

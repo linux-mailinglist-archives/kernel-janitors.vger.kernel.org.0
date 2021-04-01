@@ -2,75 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 590EC35203C
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Apr 2021 22:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 654B6352156
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Apr 2021 23:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235136AbhDAUDG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Apr 2021 16:03:06 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:45358 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234637AbhDAUDF (ORCPT
+        id S234409AbhDAVLf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Apr 2021 17:11:35 -0400
+Received: from p3plsmtpa11-08.prod.phx3.secureserver.net ([68.178.252.109]:35265
+        "EHLO p3plsmtpa11-08.prod.phx3.secureserver.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233710AbhDAVLf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Apr 2021 16:03:05 -0400
-Received: from mail-wr1-f70.google.com ([209.85.221.70])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <krzysztof.kozlowski@canonical.com>)
-        id 1lS1Zs-00055X-Kb
-        for kernel-janitors@vger.kernel.org; Thu, 01 Apr 2021 17:57:56 +0000
-Received: by mail-wr1-f70.google.com with SMTP id a15so3080228wrf.19
-        for <kernel-janitors@vger.kernel.org>; Thu, 01 Apr 2021 10:57:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=reVaJRYcfZ9SQGDKGvJMLjraCPqUETQ/gdCZ6pn2GEA=;
-        b=qrYp3z30+MdnN02l9noe+SAvYJQp0052lIPys1huDfXcIYnYb4kv/EeArhNfrUqRP+
-         wGuvHKv0esWBtg0zg3qAuZNhYThwfKcUp2os1ckC3oVVod7S2eO/pf0A47rzFiwr4+vJ
-         I7ZszSWfg7Sj8z2koAfqAysGwXoGjcTNFoRohp1lQEo/9LoOq9DYmXdaOTRN1ZqFtF/N
-         9PrApr/D3IotedEWwJP6ba7P5PCgtly0UUun1LbIRuQm4Twp57oWesVU8gaZly5WNMQN
-         tLyy7R0rdDRvlhZwDsQqg8FnmZ4V9DnrUH2pNsf8fYPBHwkq/wKqiR93MbpmYxeaY4Z/
-         S4/g==
-X-Gm-Message-State: AOAM530Y4CwGmy3dUtg7NKWzqYuE328TikNYp9SXhxYLYnHej0kXpnCc
-        HyIAkP72JLeaag8Tgv3ynbLxCLKMn6UBoOi6K3pKBzhQix9IciUPVxOXX9nE2Uwni3NeVysMvh/
-        drHrnCe730wqEj0O2TImw2tzTbzL0BgQYnSvQtWkwHmjQ4Q==
-X-Received: by 2002:adf:ba87:: with SMTP id p7mr11279726wrg.298.1617299876448;
-        Thu, 01 Apr 2021 10:57:56 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJw58DyZ+b1zm76scn0+xZLlYZsGMec7AwPe4uNl8XDWKzxgPyAShzE5AoParw/39EKDt1NO3A==
-X-Received: by 2002:adf:ba87:: with SMTP id p7mr11279721wrg.298.1617299876365;
-        Thu, 01 Apr 2021 10:57:56 -0700 (PDT)
-Received: from localhost.localdomain (xdsl-188-155-192-147.adslplus.ch. [188.155.192.147])
-        by smtp.gmail.com with ESMTPSA id l8sm11095443wrx.83.2021.04.01.10.57.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Apr 2021 10:57:55 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-To:     Qiheng Lin <linqiheng@huawei.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        linux-kernel@vger.kernel.org, Hulk Robot <hulkci@huawei.com>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] memory: fsl-corenet-cf: Remove redundant dev_err call in ccf_probe()
-Date:   Thu,  1 Apr 2021 19:57:54 +0200
-Message-Id: <161729985964.13281.7088965998639622367.b4-ty@canonical.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210331093244.3238-1-linqiheng@huawei.com>
-References: <20210331093244.3238-1-linqiheng@huawei.com>
+        Thu, 1 Apr 2021 17:11:35 -0400
+X-Greylist: delayed 438 seconds by postgrey-1.27 at vger.kernel.org; Thu, 01 Apr 2021 17:11:35 EDT
+Received: from [192.168.0.116] ([71.184.94.153])
+        by :SMTPAUTH: with ESMTPSA
+        id S4U2lEyTI8I0QS4U4l1juh; Thu, 01 Apr 2021 14:04:14 -0700
+X-CMAE-Analysis: v=2.4 cv=SeEyytdu c=1 sm=1 tr=0 ts=6066354e
+ a=vbvdVb1zh1xTTaY8rfQfKQ==:117 a=vbvdVb1zh1xTTaY8rfQfKQ==:17
+ a=IkcTkHD0fZMA:10 a=hGzw-44bAAAA:8 a=DWtuyDPq4Y-VP7XYPBwA:9 a=QEXdDO2ut3YA:10
+ a=HvKuF1_PTVFglORKqfwH:22
+X-SECURESERVER-ACCT: tom@talpey.com
+Subject: Re: [Linux-cifsd-devel] [PATCH] cifsd: use kfree to free memory
+ allocated by kzalloc
+To:     Namjae Jeon <linkinjeon@kernel.org>, Ralph Boehme <slow@samba.org>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        COMMON INTERNET FILE SYSTEM SERVER 
+        <linux-cifs@vger.kernel.org>,
+        COMMON INTERNET FILE SYSTEM SERVER 
+        <linux-cifsd-devel@lists.sourceforge.net>,
+        kernel-janitors@vger.kernel.org,
+        open list <linux-kernel@vger.kernel.org>,
+        Steve French <sfrench@samba.org>, colin.king@canonical.com,
+        Muhammad Usama Anjum <musamaanjum@gmail.com>
+References: <20210401113933.GA2828895@LEGION> <20210401115008.GS2088@kadam>
+ <CAKYAXd-ou4-jf7_8xa4jDQ_otyQ9ffKhwD7WZrmrna1P3b_W8Q@mail.gmail.com>
+ <ca1b9b0c-55f9-025d-558b-1b2b6c866d12@samba.org>
+ <CAKYAXd-ScM9i9Ln_FL8pWyEnPO_0n8t1BLH8MJ=b4NkqEbhZ=Q@mail.gmail.com>
+ <2b758812-f00b-9465-c24e-763912748809@samba.org>
+ <CAKYAXd_p1MrB2G25_p52OfppfSUcEWQEVxgJbBikAe3GZrJFhw@mail.gmail.com>
+From:   Tom Talpey <tom@talpey.com>
+Message-ID: <46e67316-58f3-435d-458c-11968499d4ee@talpey.com>
+Date:   Thu, 1 Apr 2021 17:04:07 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKYAXd_p1MrB2G25_p52OfppfSUcEWQEVxgJbBikAe3GZrJFhw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4xfCTebwSLG0O7CVyJx0MSZc8RdyOjwuZI/CluYpCmzCTBYDnswFAGGwB2pTKJ74GlIi9KJC0EnCvFsKN4kKsYIpgzKsfp3ssVCbRCmPFTnQUChE5x7Grk
+ 8HoUqTXT9frKqAA8BFTBaji1CzdTk/oAxgjAn9ZGDSrPECP+BmxbUaWoD/p5nkIcVHhp4zYWe8lU/pnMenMRn3h4GpQuHA36qrpU22xo6N9KuU2HxXgiQG+w
+ LUwvWCnYnh9lOSR2KJJMPUlxU7X1HB+MZ/vOdijkMkRwO9vpmeJ7cpqdza0x4Ou6Lvm+mYpiLQVgwJ/VW33kYq/sz59vkeV0O/E8aIS8bjTRd9Km4YyD+m50
+ 5Sav0aGJ5VNH3ubwid3KMjoQQ7NUn7/4s9uUPIhY7n1VE0VjDhjA3oKN4OC+LYxiFqp26/uy3BGY1+oqfyQ4AQCZtvOV7ga3Kuou6nltOYR7wrRR624SBJnM
+ RatNJKN2AOAGE8k43+EeqYasuGAAHQJpuSbZqdYHpRUDIb+vem7eLgF7UGk=
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 31 Mar 2021 17:32:44 +0800, Qiheng Lin wrote:
-> There is a error message within devm_ioremap_resource
-> already, so remove the dev_err call to avoid redundant
-> error message.
+On 4/1/2021 9:36 AM, Namjae Jeon wrote:
+> 2021-04-01 22:14 GMT+09:00, Ralph Boehme <slow@samba.org>:
+>> Am 4/1/21 um 2:59 PM schrieb Namjae Jeon:
+>>> 2021-04-01 21:50 GMT+09:00, Ralph Boehme <slow@samba.org>:
+>>>> fwiw, while at it what about renaming everything that still references
+>>>> "cifs" to "smb" ? This is not the 90's... :)
+>>> It is also used with the name "ksmbd". So function and variable prefix
+>>> are used with ksmbd.
+>>
+>> well, I was thinking of this:
+>>
+>>   > +++ b/fs/cifsd/...
+>>
+>> We should really stop using the name cifs for modern implementation of
+>> SMB{23} and the code should not be added as fs/cifsd/ to the kernel.
+> As I know, currently "cifs" is being used for the subdirectory name
+> for historical reasons and to avoid confusions, even though the CIFS
+> (SMB1) dialect is no longer recommended.
 
-Applied, thanks!
+I'm with Ralph. CIFS is history that we need to relegate to the past.
 
-[1/1] memory: fsl-corenet-cf: Remove redundant dev_err call in ccf_probe()
-      commit: b11a188aef6d19fe3ca505831d9c627ef683476f
+I also agree that wrappers around core memory allocators are to
+be avoided.
 
-Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Tom.

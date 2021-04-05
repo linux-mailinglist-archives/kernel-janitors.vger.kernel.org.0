@@ -2,68 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B61F6354108
-	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Apr 2021 12:37:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3AC5354286
+	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Apr 2021 16:02:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240774AbhDEKBA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 5 Apr 2021 06:01:00 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:14691 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232063AbhDEKA7 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 5 Apr 2021 06:00:59 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FDR1F0rd1znYks;
-        Mon,  5 Apr 2021 17:58:09 +0800 (CST)
-Received: from localhost.localdomain (10.175.104.82) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.498.0; Mon, 5 Apr 2021 18:00:43 +0800
-From:   Zheng Yongjun <zhengyongjun3@huawei.com>
-To:     <zhengyongjun3@huawei.com>, Coly Li <colyli@suse.de>,
+        id S235923AbhDEOCw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 5 Apr 2021 10:02:52 -0400
+Received: from mx2.suse.de ([195.135.220.15]:55324 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235903AbhDEOCw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 5 Apr 2021 10:02:52 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 3FE55B2DA;
+        Mon,  5 Apr 2021 14:02:45 +0000 (UTC)
+To:     Zheng Yongjun <zhengyongjun3@huawei.com>,
         Kent Overstreet <kent.overstreet@gmail.com>
-CC:     <linux-bcache@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        "Hulk Robot" <hulkci@huawei.com>
-Subject: [PATCH -next] bcache: use DEFINE_MUTEX() for mutex lock
-Date:   Mon, 5 Apr 2021 18:14:53 +0800
-Message-ID: <20210405101453.15096-1-zhengyongjun3@huawei.com>
-X-Mailer: git-send-email 2.25.1
+Cc:     linux-bcache@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Hulk Robot <hulkci@huawei.com>
+References: <20210405101453.15096-1-zhengyongjun3@huawei.com>
+From:   Coly Li <colyli@suse.de>
+Subject: Re: [PATCH -next] bcache: use DEFINE_MUTEX() for mutex lock
+Message-ID: <42c3e33d-c20e-0fdd-f316-5084e33f9a3b@suse.de>
+Date:   Mon, 5 Apr 2021 22:02:41 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.104.82]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20210405101453.15096-1-zhengyongjun3@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-mutex lock can be initialized automatically with DEFINE_MUTEX()
-rather than explicitly calling mutex_init().
+On 4/5/21 6:14 PM, Zheng Yongjun wrote:
+> mutex lock can be initialized automatically with DEFINE_MUTEX()
+> rather than explicitly calling mutex_init().
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
----
- drivers/md/bcache/super.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+NACK. This is not the first time people try to "fix" this location...
 
-diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
-index 78c08a8aece8..c124da6e646d 100644
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -41,7 +41,7 @@ static const char invalid_uuid[] = {
- };
- 
- static struct kobject *bcache_kobj;
--struct mutex bch_register_lock;
-+DEFINE_MUTEX(bch_register_lock);
- bool bcache_is_reboot;
- LIST_HEAD(bch_cache_sets);
- static LIST_HEAD(uncached_devices);
-@@ -2870,7 +2870,6 @@ static int __init bcache_init(void)
- 
- 	check_module_parameters();
- 
--	mutex_init(&bch_register_lock);
- 	init_waitqueue_head(&unregister_wait);
- 	register_reboot_notifier(&reboot);
- 
+Using DEFINE_MUTEX() does not gain anything for us, it will generate
+unnecessary extra size for the bcache.ko.
+ines.
+
+> ---
+>  drivers/md/bcache/super.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
+> index 78c08a8aece8..c124da6e646d 100644
+> --- a/drivers/md/bcache/super.c
+> +++ b/drivers/md/bcache/super.c
+> @@ -41,7 +41,7 @@ static const char invalid_uuid[] = {
+>  };
+>  
+>  static struct kobject *bcache_kobj;
+> -struct mutex bch_register_lock;
+
+
+Hmm, maybe if you compose a patch to add comments for bch_register_lock,
+for something like: Don't initialize global variable here. It might be
+helpful for noticing people not to fixing this in future.
+
+Thanks.
+
+Coly Li
+
+> +DEFINE_MUTEX(bch_register_lock);
+>  bool bcache_is_reboot;
+>  LIST_HEAD(bch_cache_sets);
+>  static LIST_HEAD(uncached_devices);
+> @@ -2870,7 +2870,6 @@ static int __init bcache_init(void)
+>  
+>  	check_module_parameters();
+>  
+> -	mutex_init(&bch_register_lock);
+>  	init_waitqueue_head(&unregister_wait);
+>  	register_reboot_notifier(&reboot);
+>  
+> 
 

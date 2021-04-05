@@ -2,62 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC58C3545B4
-	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Apr 2021 18:56:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D45003546DB
+	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Apr 2021 21:00:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232395AbhDEQ4a (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 5 Apr 2021 12:56:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44548 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232147AbhDEQ4a (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 5 Apr 2021 12:56:30 -0400
-Received: from viti.kaiser.cx (viti.kaiser.cx [IPv6:2a01:238:43fe:e600:cd0c:bd4a:7a3:8e9f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F677C061756;
-        Mon,  5 Apr 2021 09:56:23 -0700 (PDT)
-Received: from dslb-188-096-137-079.188.096.pools.vodafone-ip.de ([188.96.137.79] helo=martin-debian-2.paytec.ch)
-        by viti.kaiser.cx with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <martin@kaiser.cx>)
-        id 1lTSWO-0004zD-Kb; Mon, 05 Apr 2021 18:56:16 +0200
-From:   Martin Kaiser <martin@kaiser.cx>
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Fabio Aiuto <fabioaiuto83@gmail.com>,
-        linux-staging@lists.linux.dev, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Martin Kaiser <martin@kaiser.cx>
-Subject: [PATCH] staging: rtl8723bs: remove unused dvobj_priv members
-Date:   Mon,  5 Apr 2021 18:48:55 +0200
-Message-Id: <20210405164855.30264-1-martin@kaiser.cx>
-X-Mailer: git-send-email 2.20.1
+        id S235757AbhDETAU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 5 Apr 2021 15:00:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37382 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233944AbhDETAP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 5 Apr 2021 15:00:15 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id E657F61382;
+        Mon,  5 Apr 2021 19:00:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1617649208;
+        bh=QAYG2oDGH6IwESBp+z1+0d6mRJaFS4NTFWaTgUWc1l8=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=WiUH0apLyb7JKiEQU7DmYhjg+RGdXTtWJq18vZGlbhAIB1YJXn7CUZzkLbLzk5zx+
+         SU0OTuAVLGzGyw5/XdcKL0tmEXNAvMqDmNeOlduhmV8gFQ/ufQM6ikTtx5zjoJUGTf
+         0UMfHo5GEniiOcMX/sF4t9D5PDo1to/30V4cDGFds3QkY2eS6F4AYPWSXR7Y+WsJcm
+         B4KORIxA4ZGzWdWEdEnuwQDyu/2+ZyDcOjG5zzOfLDPv3EXMnkYnCOqDTfU7nr1QFH
+         Rv+GvfPuCKqVvdprr3mPw5uXO4gXiqwhLqAyu8pOUaCw2o51oP9NrZYno7tFotHMJC
+         K3Ps7TN3vJ2Ww==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id D630660A00;
+        Mon,  5 Apr 2021 19:00:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] sfc: Use 'skb_add_rx_frag()' instead of hand coding it
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <161764920887.15280.10929018264231653068.git-patchwork-notify@kernel.org>
+Date:   Mon, 05 Apr 2021 19:00:08 +0000
+References: <6fadc5ae05b05d9d8ab545e51ee3dcbdaa561393.1617529446.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <6fadc5ae05b05d9d8ab545e51ee3dcbdaa561393.1617529446.git.christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     ecree.xilinx@gmail.com, habetsm.xilinx@gmail.com,
+        davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-InterfaceNumber und NumInterfaces in struct dvobj_priv are not used.
+Hello:
 
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
----
- drivers/staging/rtl8723bs/include/drv_types.h | 4 ----
- 1 file changed, 4 deletions(-)
+This patch was applied to netdev/net-next.git (refs/heads/master):
 
-diff --git a/drivers/staging/rtl8723bs/include/drv_types.h b/drivers/staging/rtl8723bs/include/drv_types.h
-index a454a6390537..cec8d5ac0e2e 100644
---- a/drivers/staging/rtl8723bs/include/drv_types.h
-+++ b/drivers/staging/rtl8723bs/include/drv_types.h
-@@ -295,10 +295,6 @@ struct dvobj_priv {
- 	struct cam_ctl_t cam_ctl;
- 	struct cam_entry_cache cam_cache[TOTAL_CAM_ENTRY];
- 
--	/* For 92D, DMDP have 2 interface. */
--	u8 InterfaceNumber;
--	u8 NumInterfaces;
--
- 	/* In /Out Pipe information */
- 	int	RtInPipe[2];
- 	int	RtOutPipe[4];
--- 
-2.20.1
+On Sun,  4 Apr 2021 11:45:11 +0200 you wrote:
+> Some lines of code can be merged into an equivalent 'skb_add_rx_frag()'
+> call which is less verbose.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> UNTESTED. Compile tested only
+> 
+> [...]
+
+Here is the summary with links:
+  - sfc: Use 'skb_add_rx_frag()' instead of hand coding it
+    https://git.kernel.org/netdev/net-next/c/c438a801e0bb
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 

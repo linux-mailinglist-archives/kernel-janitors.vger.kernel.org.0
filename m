@@ -2,64 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 887893546DA
-	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Apr 2021 21:00:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0CA8354741
+	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Apr 2021 22:00:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235572AbhDETAT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 5 Apr 2021 15:00:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37386 "EHLO mail.kernel.org"
+        id S240306AbhDEUAS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 5 Apr 2021 16:00:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44230 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234586AbhDETAP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 5 Apr 2021 15:00:15 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id EC6686138A;
-        Mon,  5 Apr 2021 19:00:08 +0000 (UTC)
+        id S232726AbhDEUAQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 5 Apr 2021 16:00:16 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 9B8B261041;
+        Mon,  5 Apr 2021 20:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617649209;
-        bh=4O7mjTSpK7QNsAYztga00ulbQ4Td8MSNgvfS/mFXdic=;
+        s=k20201202; t=1617652809;
+        bh=5ZH+jTqVwO2mzTpSHW0hmmnk47NXBHM6PwZt0uj3Osw=;
         h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=NTU/fOruK+GFZ70DokETF5qV4WVp/X1A0legXqJSdQ80e7LjdybQO03QaJGNVpVYY
-         kWyy4oGEmrivA5sOWByuR0T6ngrEwRwm5zfvYiJ/zK4CYZOn6txqi2z42qrpF21DHq
-         UImpmTVkGx/+wtKTzWbx+2LI9QpHjEEWN+vCTIsiNgG7kJN1A2NhkvgbV9PnyxX+I/
-         UD5N1ECJzXinq1yAsvbpw7NI6jyVPmDAUzIv1yQ44YU4ZrNxPYXmEeivOwNMxk1tOz
-         gfSP501JqHZwEKMZ/y7Gj3C4y4Cfxgj5GoXyYw9UKuVDhhFD9hBSZ7WCV6xdSRWypC
-         8kcDLClLHwzGQ==
+        b=fhDWMEE1/a/p/EtmsUQvID9ZZi0M/NDckl3QxwjpNVMxgSPbXXhnP87hQ+BU27S1z
+         BTC9ytUOzcQaxuRLfQlwHy9kaOQcu+rG12mEvYWQQ/hChNEYzQBXdSG2gn9etUictj
+         PJgxDpMHlhiyz/g3YKxB9XKjcwQBzqqBDz2N3ylnzaRIHdULESqtpZhUJEDJfPffuP
+         4EmwrQeFZIVwaqbSeHnzGna2tV8CrLrC765+jPiqiA9tKW+3WMZHP56SoU22n8v5iA
+         ADObInvXelZLhfgHZE8mQox9Om7+QO8BC0dR7BiPKlGT1ylwfDZBD43UM+FMMwwDnY
+         tBnPxdgRITUVg==
 Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id E134560A38;
-        Mon,  5 Apr 2021 19:00:08 +0000 (UTC)
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 90FE160A19;
+        Mon,  5 Apr 2021 20:00:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: ag71xx: Slightly simplify 'ag71xx_rx_packets()'
+Subject: Re: [PATCH 1/2] qede: Remove a erroneous ++ in 'qede_rx_build_jumbo()'
 From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <161764920891.15280.12104715179440980483.git-patchwork-notify@kernel.org>
-Date:   Mon, 05 Apr 2021 19:00:08 +0000
-References: <7fadf8e80b7fea5e5bc8ce606f3aec8cd7bd60e8.1617517935.git.christophe.jaillet@wanadoo.fr>
-In-Reply-To: <7fadf8e80b7fea5e5bc8ce606f3aec8cd7bd60e8.1617517935.git.christophe.jaillet@wanadoo.fr>
+Message-Id: <161765280958.6353.3809782901793052721.git-patchwork-notify@kernel.org>
+Date:   Mon, 05 Apr 2021 20:00:09 +0000
+References: <1c27abb938a430e58bd644729597015b3414d4aa.1617540100.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <1c27abb938a430e58bd644729597015b3414d4aa.1617540100.git.christophe.jaillet@wanadoo.fr>
 To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     chris.snook@gmail.com, davem@davemloft.net, kuba@kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
+Cc:     aelior@marvell.com, GR-everest-linux-l2@marvell.com,
+        davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (refs/heads/master):
+This series was applied to netdev/net-next.git (refs/heads/master):
 
-On Sun,  4 Apr 2021 08:33:44 +0200 you wrote:
-> There is no need to use 'list_for_each_entry_safe' here, as nothing is
-> removed from the list in the 'for' loop.
-> Use 'list_for_each_entry' instead, it is slightly less verbose.
+On Sun,  4 Apr 2021 14:42:44 +0200 you wrote:
+> This ++ is confusing. It looks duplicated with the one already performed in
+> 'skb_fill_page_desc()'.
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->  drivers/net/ethernet/atheros/ag71xx.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> In fact, it is harmless. 'nr_frags' is written twice with the same value.
+> Once, because of the nr_frags++, and once because of the 'nr_frags = i + 1'
+> in 'skb_fill_page_desc()'.
+> 
+> [...]
 
 Here is the summary with links:
-  - net: ag71xx: Slightly simplify 'ag71xx_rx_packets()'
-    https://git.kernel.org/netdev/net-next/c/0282bc6ae86d
+  - [1/2] qede: Remove a erroneous ++ in 'qede_rx_build_jumbo()'
+    https://git.kernel.org/netdev/net-next/c/1ec3d02f9cdf
+  - [2/2] qede: Use 'skb_add_rx_frag()' instead of hand coding it
+    https://git.kernel.org/netdev/net-next/c/7190e9d8e131
 
 You are awesome, thank you!
 --

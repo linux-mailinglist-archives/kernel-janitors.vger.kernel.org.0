@@ -2,85 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2123353BCE
-	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Apr 2021 07:42:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AD35353BFD
+	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Apr 2021 07:52:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229867AbhDEFmH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 5 Apr 2021 01:42:07 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:35882 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbhDEFmH (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 5 Apr 2021 01:42:07 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1355eOaZ163506;
-        Mon, 5 Apr 2021 05:41:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=zhQnU1H76pQydnrWceIR1dWht8pjhp9lgvgfUU17rZk=;
- b=hZ9fg2d/jbfYDtygTwS0HxRummCv7YyDdEGHS9sJPJ6iOWnPoljWkhJfTREpSB1VVqfv
- uL/3ybgWf29gHyAMuuJYPXRdq6q9kUvGuAtg6lSSd1fhI2M60vEkG8K04FKdvoYDYRIm
- ACpClrhIP1zQjgBXgm2TxnJv6eNx4WaIT+uLLVM+TBQIY+tTzq+W3I4G40PVSLRtYBWr
- EtVJ8p9POF1rRS9UZcl1CG5wOp27EDTah+GulyZFm87SHXnhBSkIa2w/XXO2X1nWE8U2
- UI52QcwVc3igDwgUtTezbJl1CessEIfrIUv3cdryAkzMoYY4b2l+TFOdwnJR2umcD/GC AQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 37q3f2954j-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 05 Apr 2021 05:41:53 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1355Znge043085;
-        Mon, 5 Apr 2021 05:41:51 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 37qa3gmf31-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 05 Apr 2021 05:41:51 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 1355foCR013859;
-        Mon, 5 Apr 2021 05:41:50 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sun, 04 Apr 2021 22:41:49 -0700
-Date:   Mon, 5 Apr 2021 08:41:41 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Mark Bloch <mbloch@nvidia.com>
-Cc:     Leon Romanovsky <leon@kernel.org>,
-        Doug Ledford <dledford@redhat.com>,
+        id S231830AbhDEFwv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 5 Apr 2021 01:52:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35590 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231590AbhDEFwv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 5 Apr 2021 01:52:51 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A4F3961393;
+        Mon,  5 Apr 2021 05:52:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1617601965;
+        bh=1fySX/wpQNMOAvlx875E/VNopNCCqH+BRivsyhOXwi8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qnQVshEVT5SnOo+BZywVVWwoCHQDluQE77pqGDqBzLmPEa6kcO7LwFsBRtAeZo6vr
+         ezETajiFrIH9tslLPHyou0bOaLW9YmS1sYRvYmxFa2gog/MUympm/y4Apy1NFN0tlM
+         Ub84t/G97NlV4ljd+S49I938+XbD8/wSAVlGjTZfy6wIOj9Sm70e91lm0hOw8lsCks
+         bb+Gn3u7dXX4PX+9LFuUuGbQsdzihYPZempudREbedNeiFnaFshkXzg9tLNGG1CjWg
+         EIyhMio0U0qiPLiShl9KhG3nSFTcaGK2f0mR4FdWDjUEAguoitGwTL/lnRc0lhcttH
+         dVmxVI5u95PmQ==
+Date:   Mon, 5 Apr 2021 08:52:41 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Mark Bloch <mbloch@nvidia.com>, Doug Ledford <dledford@redhat.com>,
         Jason Gunthorpe <jgg@ziepe.ca>,
         Mark Bloch <markb@mellanox.com>, linux-rdma@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 Subject: Re: [PATCH] RDMA/addr: potential uninitialized variable in
  ib_nl_process_good_ip_rsep()
-Message-ID: <20210405054140.GY2065@kadam>
+Message-ID: <YGqlqQyhM5kpar9U@unreal>
 References: <YGcES6MsXGnh83qi@mwanda>
  <YGmWB4fT/8IFeiZf@unreal>
  <1b21be94-bf14-9e73-68a3-c503bb79f683@nvidia.com>
+ <20210405054140.GY2065@kadam>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1b21be94-bf14-9e73-68a3-c503bb79f683@nvidia.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-IMR: 1
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9944 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0
- malwarescore=0 mlxscore=0 spamscore=0 phishscore=0 adultscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104030000 definitions=main-2104050039
-X-Proofpoint-GUID: 4js-rib4bKev7qwXlr0Fk96v6RAhdNbd
-X-Proofpoint-ORIG-GUID: 4js-rib4bKev7qwXlr0Fk96v6RAhdNbd
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9944 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 suspectscore=0
- spamscore=0 impostorscore=0 mlxlogscore=999 malwarescore=0 adultscore=0
- lowpriorityscore=0 clxscore=1011 priorityscore=1501 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104030000
- definitions=main-2104050039
+In-Reply-To: <20210405054140.GY2065@kadam>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Could you send that and give me a reported-by?  I'm going AFK for a
-week.
+On Mon, Apr 05, 2021 at 08:41:41AM +0300, Dan Carpenter wrote:
+> Could you send that and give me a reported-by?  I'm going AFK for a
+> week.
 
-regards,
-dan carpenter
+Sure, we will handle it.
 
+Thanks for the report.
+
+> 
+> regards,
+> dan carpenter
+> 

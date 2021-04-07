@@ -2,34 +2,40 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1EFA3568A7
-	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Apr 2021 12:03:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB7523568B4
+	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Apr 2021 12:05:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346400AbhDGKDq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 7 Apr 2021 06:03:46 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:16378 "EHLO
-        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346384AbhDGKCc (ORCPT
+        id S1350553AbhDGKD5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 7 Apr 2021 06:03:57 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:16010 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1350497AbhDGKDN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 7 Apr 2021 06:02:32 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4FFfz22YkhzjYZ1;
-        Wed,  7 Apr 2021 18:00:30 +0800 (CST)
+        Wed, 7 Apr 2021 06:03:13 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FFfyk2k0DzPnwg;
+        Wed,  7 Apr 2021 18:00:14 +0800 (CST)
 Received: from localhost.localdomain (10.175.103.91) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.498.0; Wed, 7 Apr 2021 18:02:10 +0800
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.498.0; Wed, 7 Apr 2021 18:02:46 +0800
 From:   Wei Li <liwei391@huawei.com>
-To:     <huawei.libin@huawei.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>
-CC:     <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+To:     <huawei.libin@huawei.com>, Xinliang Liu <xinliang.liu@linaro.org>,
+        "Tian Tao" <tiantao6@hisilicon.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Maxime Ripard <maxime@cerno.tech>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Emil Velikov <emil.velikov@collabora.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        John Stultz <john.stultz@linaro.org>
+CC:     <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>,
         Wei Li <liwei391@huawei.com>
-Subject: [PATCH RESEND -next] mtd: rawnand: Remove redundant dev_err call in hisi_nfc_probe()
-Date:   Wed, 7 Apr 2021 18:05:26 +0800
-Message-ID: <20210407100526.3278741-1-liwei391@huawei.com>
+Subject: [PATCH RESEND -next] drm: kirin: Remove redundant dev_err call in ade_hw_ctx_alloc()
+Date:   Wed, 7 Apr 2021 18:06:10 +0800
+Message-ID: <20210407100610.3278802-1-liwei391@huawei.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -47,23 +53,23 @@ error message.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Wei Li <liwei391@huawei.com>
 ---
- drivers/mtd/nand/raw/hisi504_nand.c | 4 +---
+ drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/hisi504_nand.c b/drivers/mtd/nand/raw/hisi504_nand.c
-index 8b2122ce6ec3..78c4e05434e2 100644
---- a/drivers/mtd/nand/raw/hisi504_nand.c
-+++ b/drivers/mtd/nand/raw/hisi504_nand.c
-@@ -761,10 +761,8 @@ static int hisi_nfc_probe(struct platform_device *pdev)
+diff --git a/drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c b/drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c
+index 6dcf9ec05eec..78a792048c42 100644
+--- a/drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c
++++ b/drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c
+@@ -857,10 +857,8 @@ static void *ade_hw_ctx_alloc(struct platform_device *pdev,
  
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
- 	host->mmio = devm_ioremap_resource(dev, res);
--	if (IS_ERR(host->mmio)) {
--		dev_err(dev, "devm_ioremap_resource[1] fail\n");
-+	if (IS_ERR(host->mmio))
- 		return PTR_ERR(host->mmio);
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	ctx->base = devm_ioremap_resource(dev, res);
+-	if (IS_ERR(ctx->base)) {
+-		DRM_ERROR("failed to remap ade io base\n");
++	if (IS_ERR(ctx->base))
+ 		return ERR_PTR(-EIO);
 -	}
  
- 	mtd->name		= "hisi_nand";
- 	mtd->dev.parent         = &pdev->dev;
+ 	ctx->reset = devm_reset_control_get(dev, NULL);
+ 	if (IS_ERR(ctx->reset))
 

@@ -2,104 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27F4E35812D
-	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Apr 2021 12:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2758C35819B
+	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Apr 2021 13:20:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230395AbhDHKxm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 8 Apr 2021 06:53:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60776 "EHLO
+        id S231420AbhDHLUi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 8 Apr 2021 07:20:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229714AbhDHKxl (ORCPT
+        with ESMTP id S231344AbhDHLUh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 8 Apr 2021 06:53:41 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03055C061760
-        for <kernel-janitors@vger.kernel.org>; Thu,  8 Apr 2021 03:53:29 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id i18so1637924wrm.5
-        for <kernel-janitors@vger.kernel.org>; Thu, 08 Apr 2021 03:53:28 -0700 (PDT)
+        Thu, 8 Apr 2021 07:20:37 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 187E7C061761
+        for <kernel-janitors@vger.kernel.org>; Thu,  8 Apr 2021 04:20:23 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id j4-20020a05600c4104b029010c62bc1e20so1030468wmi.3
+        for <kernel-janitors@vger.kernel.org>; Thu, 08 Apr 2021 04:20:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=OBM1JnxONgzGFkr4ut7M8W7VWeQp4Tx5cMKl44jxVZg=;
-        b=W1ie1LtSsXfd8qNPqE0euaZd9TYiLWF93YdHLJFlk4dgw3QvqltUpZfwgk34WS1Rjl
-         eXkCtR4qHhLKkIXUOLz7q5SJnIQqelbTt04EH3VAKUvdDdHyxXfnv/n4LBo86MWCXTLF
-         E5Y9qJ1JwKzvm8qJ3gJUGUA5YBgk0zTHabC5Y=
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=p9/vcGnQMibF9rkDWZtUMCI7BNJHmwZHzupvVKqVu3E=;
+        b=YnHMsaO2s1KNWHEyZA+FBnXLbzo0kKMYlmU9l9iP1g4DGl7O4FRzWyFDCE5BWmlipe
+         byHjyxws/nm6+Um0woHg/dDHbRJEKezIUFT3iWU5a8w1PU2e7m+WM6pVFy2MfWlfxoAa
+         LoEdm8nFSDszG2vkXnarWkoZ7cVvGd0uGCunY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=OBM1JnxONgzGFkr4ut7M8W7VWeQp4Tx5cMKl44jxVZg=;
-        b=EMIwQlbKSroYeLm7k89wcRsBvQyOg4+cE12anHA7oYOw5DOtY54NoySocXJpZYQB+R
-         QN6deXcI10ojHzo17TqTeDEJS55KR9aHKIJW0zVvG/AGp3OkShkjak7uwRuCFgzYgjnZ
-         yxPYLs8+W/0qQYRdfNRD53oiOX6LbWTROH891tehkAvWGNzZo83EdHDqCzD9uiyf4sI8
-         3/55ZPobYcEApzSblaIEJMhXWB0fmvGSUG6kjPi+fq7hLKTDVBaqlP63OpJjh6HZq/2z
-         UTtptD8A2gI7J+fU3lU0hr2PbQLZfy26aSiQspkds3penid7pGhj+hOHkm8RcGCcTeRL
-         P7ng==
-X-Gm-Message-State: AOAM530qqs9stG8moW49+PD3CgeGibymB2VtjalQ/Arjkvq70Ftmk76r
-        lspG92IxNEF2mEpvLKzTx29UqQ==
-X-Google-Smtp-Source: ABdhPJzoX0pzx4X75LrEk1/KMhWdkeBcpuldBytOXUY2TkaaJgb7rmKP+Jqn1Okk/9gkt635bgOwUg==
-X-Received: by 2002:a5d:65ca:: with SMTP id e10mr10204998wrw.331.1617879207815;
-        Thu, 08 Apr 2021 03:53:27 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=p9/vcGnQMibF9rkDWZtUMCI7BNJHmwZHzupvVKqVu3E=;
+        b=EV2neR6F2p+QvAfNDMhi+tttd0Gj/R4eT82wyMdsCEWcu8dTWYGZcw8W+bnCcw77Gx
+         DoOQ3S/Ca8+z12TUlrv4AeknOkHToyV4UKhzg0sNrC5PKXCWfzxXUoZbBjPCjCQ9V9b9
+         jdB5UdxhmEVm0K0a7Z5k9qGs+8L21kROt1/YSO3l4P4/1P84V3Cumsi/PyPhk7B7rLFG
+         7LY9vRAB27zHLtzjohIX7UP+qLLknDOAVSxHods9k3vwk0QY38Sqv5uP8ncIszSRT+jz
+         xEcfHJdeFixC0auESKi8zgMpXpDqtWwxnl3jjPs/rxbugy5qYWfx4O9MPRl3KurhBk0d
+         +z9A==
+X-Gm-Message-State: AOAM533B7zwC8mFBQc37YoZqIUfHJV2tb6bpHlpfnr3QCDBrdInpbFLe
+        eH4WLFJTAhcvgj4RGdJaXIx3/A==
+X-Google-Smtp-Source: ABdhPJyGIebRl0LCNGA8cQnrb+fYGQT/Pf+/l14E/xAG36Cx4IwUC+NrIjreWsTLESHVxP3rRmlSCQ==
+X-Received: by 2002:a05:600c:4fd0:: with SMTP id o16mr7872267wmq.123.1617880821826;
+        Thu, 08 Apr 2021 04:20:21 -0700 (PDT)
 Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id z1sm28651471wrs.89.2021.04.08.03.53.26
+        by smtp.gmail.com with ESMTPSA id c16sm55234757wrs.81.2021.04.08.04.20.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Apr 2021 03:53:27 -0700 (PDT)
-Date:   Thu, 8 Apr 2021 12:53:25 +0200
+        Thu, 08 Apr 2021 04:20:21 -0700 (PDT)
+Date:   Thu, 8 Apr 2021 13:20:19 +0200
 From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Michal Simek <michal.simek@xilinx.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Hyun Kwon <hyun.kwon@xilinx.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+To:     Huang Guobin <huangguobin4@huawei.com>
+Cc:     Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] drm: xlnx: zynqmp: fix a memset in zynqmp_dp_train()
-Message-ID: <YG7gpWgz/AYIj+Hd@phenom.ffwll.local>
-References: <YGLwCBMotnrKZu6P@mwanda>
- <abae16c0-6d76-f78f-133c-0a0d54bc60a9@xilinx.com>
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] gma500: Use DEFINE_SPINLOCK() for spinlock
+Message-ID: <YG7m8z5n223DqDht@phenom.ffwll.local>
+Mail-Followup-To: Huang Guobin <huangguobin4@huawei.com>,
+        Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+        David Airlie <airlied@linux.ie>, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <1617710114-48071-1-git-send-email-huangguobin4@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <abae16c0-6d76-f78f-133c-0a0d54bc60a9@xilinx.com>
+In-Reply-To: <1617710114-48071-1-git-send-email-huangguobin4@huawei.com>
 X-Operating-System: Linux phenom 5.7.0-1-amd64 
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Apr 07, 2021 at 12:17:49PM +0200, Michal Simek wrote:
+On Tue, Apr 06, 2021 at 07:55:14PM +0800, Huang Guobin wrote:
+> From: Guobin Huang <huangguobin4@huawei.com>
 > 
+> spinlock can be initialized automatically with DEFINE_SPINLOCK()
+> rather than explicitly calling spin_lock_init().
 > 
-> On 3/30/21 11:31 AM, Dan Carpenter wrote:
-> > The dp->train_set[] for this driver is only two characters, not four so
-> > this memsets too much.  Fortunately, this ends up corrupting a struct
-> > hole and not anything important.
-> > 
-> > Fixes: d76271d22694 ("drm: xlnx: DRM/KMS driver for Xilinx ZynqMP DisplayPort Subsystem")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> >  drivers/gpu/drm/xlnx/zynqmp_dp.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/gpu/drm/xlnx/zynqmp_dp.c b/drivers/gpu/drm/xlnx/zynqmp_dp.c
-> > index 99158ee67d02..59d1fb017da0 100644
-> > --- a/drivers/gpu/drm/xlnx/zynqmp_dp.c
-> > +++ b/drivers/gpu/drm/xlnx/zynqmp_dp.c
-> > @@ -866,7 +866,7 @@ static int zynqmp_dp_train(struct zynqmp_dp *dp)
-> >  		return ret;
-> >  
-> >  	zynqmp_dp_write(dp, ZYNQMP_DP_SCRAMBLING_DISABLE, 1);
-> > -	memset(dp->train_set, 0, 4);
-> > +	memset(dp->train_set, 0, sizeof(dp->train_set));
-> >  	ret = zynqmp_dp_link_train_cr(dp);
-> >  	if (ret)
-> >  		return ret;
-> > 
-> 
-> Reviewed-by: Michal Simek <michal.simek@xilinx.com>
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Guobin Huang <huangguobin4@huawei.com>
 
-Stuffed into drm-misc-next, thanks.
+Applied to drm-misc-next, thanks for your patch.
 -Daniel
+
+> ---
+>  drivers/gpu/drm/gma500/power.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/gma500/power.c b/drivers/gpu/drm/gma500/power.c
+> index 56ef88237ef6..f07641dfa5a4 100644
+> --- a/drivers/gpu/drm/gma500/power.c
+> +++ b/drivers/gpu/drm/gma500/power.c
+> @@ -36,7 +36,7 @@
+>  #include <linux/pm_runtime.h>
+>  
+>  static struct mutex power_mutex;	/* Serialize power ops */
+> -static spinlock_t power_ctrl_lock;	/* Serialize power claim */
+> +static DEFINE_SPINLOCK(power_ctrl_lock);	/* Serialize power claim */
+>  
+>  /**
+>   *	gma_power_init		-	initialise power manager
+> @@ -55,7 +55,6 @@ void gma_power_init(struct drm_device *dev)
+>  	dev_priv->display_power = true;	/* We start active */
+>  	dev_priv->display_count = 0;	/* Currently no users */
+>  	dev_priv->suspended = false;	/* And not suspended */
+> -	spin_lock_init(&power_ctrl_lock);
+>  	mutex_init(&power_mutex);
+>  
+>  	if (dev_priv->ops->init_pm)
+> 
+
 -- 
 Daniel Vetter
 Software Engineer, Intel Corporation

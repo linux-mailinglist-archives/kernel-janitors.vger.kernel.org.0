@@ -2,94 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E73C73595D3
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Apr 2021 08:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72F30359694
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Apr 2021 09:41:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233495AbhDIGwU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Apr 2021 02:52:20 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:16496 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233335AbhDIGwT (ORCPT
+        id S231817AbhDIHlr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Apr 2021 03:41:47 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:44944 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229751AbhDIHlo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Apr 2021 02:52:19 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FGpcj16dFzPpGG;
-        Fri,  9 Apr 2021 14:48:37 +0800 (CST)
-Received: from [10.67.100.236] (10.67.100.236) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.498.0; Fri, 9 Apr 2021 14:51:21 +0800
-Subject: Re: [PATCH -next] ARM: spear: Fix build error with
- CONFIG_ARCH_SPEAR3XX
-To:     Viresh Kumar <viresh.kumar@linaro.org>
-CC:     Viresh Kumar <vireshk@kernel.org>,
-        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-References: <20210409015515.258653-1-chenlifu@huawei.com>
- <20210409040315.vc55eogaxs4zu4xb@vireshk-i7>
-From:   chenlifu <chenlifu@huawei.com>
-Message-ID: <f4285a1b-9da5-d86b-95ec-cc8513936cde@huawei.com>
-Date:   Fri, 9 Apr 2021 14:51:21 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+        Fri, 9 Apr 2021 03:41:44 -0400
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 1397axb0012005;
+        Fri, 9 Apr 2021 09:40:58 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=n06VPaXv/86nkAfO+Ew799xc9jm8nPwhGU0C5uayBqo=;
+ b=1RA8xsujC5lSSS18IpKAI7zlKhO5HqRRLX8P+prNVx+GAvyBdI36ADgSxKkowBZ2Q5xQ
+ jNxeqn6AOotH1CcVFV75WwUIuUql3AAfEoglVH5/7Z5on6nkoTD9yVnWizPzIcjqalxq
+ jNeX4ZfivWEJZSkZp0Ec/cX+Bw6y06TOr4FYQYXWI6kBJIUW4O+RIL/ed48ub4clXJrN
+ iQAzLEiyvgDsagp4p6osTuHJAefJ4fug62DNG3kEK+AGC8H3Ipb7dhe0kExRyapZErzA
+ N/c1iuY11Wxh35H+n1LPCDlldFVpGU/X0GxTGSPquR00mAowcyY21E3aU6NuVPcwC7Pp +A== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 37tj4d8a3x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 09 Apr 2021 09:40:58 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id BB76210002A;
+        Fri,  9 Apr 2021 09:40:56 +0200 (CEST)
+Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 584B721CA9E;
+        Fri,  9 Apr 2021 09:40:56 +0200 (CEST)
+Received: from lmecxl0889.lme.st.com (10.75.127.44) by SFHDAG2NODE3.st.com
+ (10.75.127.6) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 9 Apr
+ 2021 09:40:55 +0200
+Subject: Re: [PATCH -next] ASoC: sti: sti_uniperif: add missing
+ MODULE_DEVICE_TABLE
+To:     Chen Lifu <chenlifu@huawei.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+CC:     <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <20210409015953.259688-1-chenlifu@huawei.com>
+From:   Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
+Message-ID: <228beb65-2cd3-f2fe-92c8-5a4d3c0a4d33@foss.st.com>
+Date:   Fri, 9 Apr 2021 09:40:54 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20210409040315.vc55eogaxs4zu4xb@vireshk-i7>
-Content-Type: text/plain; charset="gbk"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.100.236]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20210409015953.259688-1-chenlifu@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.44]
+X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SFHDAG2NODE3.st.com
+ (10.75.127.6)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-04-09_04:2021-04-08,2021-04-09 signatures=0
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
-ÔÚ 2021/4/9 12:03, Viresh Kumar Ð´µÀ:
-> On 09-04-21, 09:55, Chen Lifu wrote:
->> commit 77f983a9df42 ("spi: pl022: Use GPIOs looked up by the core")
->> deleted 'struct pl022_ssp_controller' member 'num_chipselect'.
->> We get build error when CONFIG_ARCH_SPEAR3XX is set:
->> arch/arm/mach-spear/spear3xx.c:42:3: error: 'struct pl022_ssp_controller' has no member named 'num_chipselect'
->>     42 |  .num_chipselect = 2,
->>        |   ^~~~~~~~~~~~~~
->> arch/arm/mach-spear/spear3xx.c:42:20: warning: initialization of 'void *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
->>     42 |  .num_chipselect = 2,
->>        |                    ^
->>
->> Fix the issue by deleting the initialization of 'num_chipselect'
->> in spear3xx.c.
->>
->> Fixes: 77f983a9df42 ("spi: pl022: Use GPIOs looked up by the core")
->> Reported-by: Hulk Robot <hulkci@huawei.com>
->> Signed-off-by: Chen Lifu <chenlifu@huawei.com>
->> ---
->>   arch/arm/mach-spear/spear3xx.c | 10 ----------
->>   1 file changed, 10 deletions(-)
->>
->> diff --git a/arch/arm/mach-spear/spear3xx.c b/arch/arm/mach-spear/spear3xx.c
->> index 8537fcffe5a8..f83321d5e353 100644
->> --- a/arch/arm/mach-spear/spear3xx.c
->> +++ b/arch/arm/mach-spear/spear3xx.c
->> @@ -30,16 +30,6 @@ struct pl022_ssp_controller pl022_plat_data = {
->>   	.dma_filter = pl08x_filter_id,
->>   	.dma_tx_param = "ssp0_tx",
->>   	.dma_rx_param = "ssp0_rx",
->> -	/*
->> -	 * This is number of spi devices that can be connected to spi. There are
->> -	 * two type of chipselects on which slave devices can work. One is chip
->> -	 * select provided by spi masters other is controlled through external
->> -	 * gpio's. We can't use chipselect provided from spi master (because as
->> -	 * soon as FIFO becomes empty, CS is disabled and transfer ends). So
->> -	 * this number now depends on number of gpios available for spi. each
->> -	 * slave on each master requires a separate gpio pin.
->> -	 */
->> -	.num_chipselect = 2,
->>   };
-> 
-> A patch is already applied by Mark to fix this issue.
-> 
 
-Thanks.
+On 4/9/21 3:59 AM, Chen Lifu wrote:
+> This patch adds missing MODULE_DEVICE_TABLE definition which generates
+> correct modalias for automatic loading of this driver when it is built
+> as an external module.
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Chen Lifu <chenlifu@huawei.com>
 
----
-Chen Lifu
+Reviewed-by: Arnaud Pouliquen <arnaud.pouliquen@st.com>
+
+Thanks,
+Arnaud
+
+> ---
+>  sound/soc/sti/sti_uniperif.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/sound/soc/sti/sti_uniperif.c b/sound/soc/sti/sti_uniperif.c
+> index 67315d9b352d..e3561f00ed40 100644
+> --- a/sound/soc/sti/sti_uniperif.c
+> +++ b/sound/soc/sti/sti_uniperif.c
+> @@ -97,6 +97,7 @@ static const struct of_device_id snd_soc_sti_match[] = {
+>  	},
+>  	{},
+>  };
+> +MODULE_DEVICE_TABLE(of, snd_soc_sti_match);
+>  
+>  int  sti_uniperiph_reset(struct uniperif *uni)
+>  {
+> 

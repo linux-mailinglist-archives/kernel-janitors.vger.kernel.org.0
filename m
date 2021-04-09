@@ -2,65 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C94A3595AA
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Apr 2021 08:40:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91ED23595D1
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Apr 2021 08:52:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233423AbhDIGjy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Apr 2021 02:39:54 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:16856 "EHLO
-        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229715AbhDIGjy (ORCPT
+        id S233423AbhDIGwU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Apr 2021 02:52:20 -0400
+Received: from condef-02.nifty.com ([202.248.20.67]:59606 "EHLO
+        condef-02.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231540AbhDIGwS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Apr 2021 02:39:54 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4FGpMq2QRRz9xbW;
-        Fri,  9 Apr 2021 14:37:27 +0800 (CST)
-Received: from huawei.com (10.174.28.241) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.498.0; Fri, 9 Apr 2021
- 14:39:34 +0800
-From:   Bixuan Cui <cuibixuan@huawei.com>
-To:     <cuibixuan@huawei.com>, Michael Ellerman <mpe@ellerman.id.au>,
-        "Qinglang Miao" <miaoqinglang@huawei.com>,
-        Al Viro <viro@zeniv.linux.org.uk>
-CC:     <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] powerpc/powernv: make symbol 'mpipl_kobj' static
-Date:   Fri, 9 Apr 2021 14:38:55 +0800
-Message-ID: <20210409063855.57347-1-cuibixuan@huawei.com>
-X-Mailer: git-send-email 2.17.1
+        Fri, 9 Apr 2021 02:52:18 -0400
+Received: from conssluserg-02.nifty.com ([10.126.8.81])by condef-02.nifty.com with ESMTP id 1396lfaP032092;
+        Fri, 9 Apr 2021 15:47:41 +0900
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170]) (authenticated)
+        by conssluserg-02.nifty.com with ESMTP id 1396lOaH013190;
+        Fri, 9 Apr 2021 15:47:25 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com 1396lOaH013190
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1617950845;
+        bh=3qlAPQ+Wex7yCtbxYfgxiJvo2zY3a2uhCaoULi7lupU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=iqGtWaRY/N04oOQyWJA7bSLK7HDW/FC5VF20BuMgJ0Yyz6DkLDNHKFD2MhVmpmZY2
+         wYhRiZ8GR1M3FpWxnxNsr5PBGJx66A0wPY+kjB+AtlrajjaSLiKHXPtU8C6n/bMuRX
+         NgvN744mTsvR/hEWm3Tm1CunxaGm9F/C1Fc802U0bxDqYjwAska/rWgcz41mDHPGXl
+         XTDV+uz2MbefCe3t/N6Q5KWBOQzKs4n9A7deG2m5im71GlGHb7gwS8u52ADIiQdpkq
+         86a8XfPMTOMtYFxMnFq4EJ9rm+02rQGCeSRYNZ78Q+oRsK/8HlumKtiu18HAbWBqx4
+         6wQeFOXszQXEA==
+X-Nifty-SrcIP: [209.85.214.170]
+Received: by mail-pl1-f170.google.com with SMTP id g10so2260173plt.8;
+        Thu, 08 Apr 2021 23:47:25 -0700 (PDT)
+X-Gm-Message-State: AOAM531rkqYVGMZ/9VI67hqGLVcmKbOIByr7Y8B4uKN7WAE3QWdkdIyl
+        4Hic3j65fZ98yikYikRShnTTUIMW44kuLotT6Qg=
+X-Google-Smtp-Source: ABdhPJy9fFjnUC0a7uXsLzObtUuTxt83kTVyYgo+75uamccOxStRHsnBhz/UJNqTdyxhx6Am4H0+e9/oAwwpEEoVDuQ=
+X-Received: by 2002:a17:902:b589:b029:e6:2875:aa4c with SMTP id
+ a9-20020a170902b589b02900e62875aa4cmr11554274pls.71.1617950844298; Thu, 08
+ Apr 2021 23:47:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.28.241]
-X-CFilter-Loop: Reflected
+References: <20210407152457.497346-1-colin.king@canonical.com>
+In-Reply-To: <20210407152457.497346-1-colin.king@canonical.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Fri, 9 Apr 2021 15:46:47 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAT+JTg5QYYbYqCm+m11X7CF_ZWyYRA4eAtqeTEuHRqoyw@mail.gmail.com>
+Message-ID: <CAK7LNAT+JTg5QYYbYqCm+m11X7CF_ZWyYRA4eAtqeTEuHRqoyw@mail.gmail.com>
+Subject: Re: [PATCH] clk: uniphier: Fix potential infinite loop
+To:     Colin King <colin.king@canonical.com>
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The sparse tool complains as follows:
+On Thu, Apr 8, 2021 at 12:25 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The for-loop iterates with a u8 loop counter i and compares this
+> with the loop upper limit of num_parents that is an int type.
+> There is a potential infinite loop if num_parents is larger than
+> the u8 loop counter. Fix this by making the loop counter the same
+> type as num_parents.
+>
+> Addresses-Coverity: ("Infinite loop")
+> Fixes: 734d82f4a678 ("clk: uniphier: add core support code for UniPhier clock driver")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/clk/uniphier/clk-uniphier-mux.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/clk/uniphier/clk-uniphier-mux.c b/drivers/clk/uniphier/clk-uniphier-mux.c
+> index 462c84321b2d..ce219e0d2a85 100644
+> --- a/drivers/clk/uniphier/clk-uniphier-mux.c
+> +++ b/drivers/clk/uniphier/clk-uniphier-mux.c
+> @@ -34,7 +34,7 @@ static u8 uniphier_clk_mux_get_parent(struct clk_hw *hw)
+>         int num_parents = clk_hw_get_num_parents(hw);
+>         int ret;
+>         unsigned int val;
+> -       u8 i;
+> +       int i;
+>
+>         ret = regmap_read(mux->regmap, mux->reg, &val);
+>         if (ret)
+> --
+> 2.30.2
+>
 
-arch/powerpc/platforms/powernv/opal-core.c:74:16: warning:
- symbol 'mpipl_kobj' was not declared.
+clk_hw_get_num_parents() returns 'unsigned int', so
+I think 'num_parents' should also have been 'unsigned int'.
 
-This symbol is not used outside of opal-core.c, so marks it static.
+Maybe, the loop counter 'i' also should be 'unsigned int' then?
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Bixuan Cui <cuibixuan@huawei.com>
----
- arch/powerpc/platforms/powernv/opal-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-core.c b/arch/powerpc/platforms/powernv/opal-core.c
-index 0d9ba70f7251..5b9736bbc2aa 100644
---- a/arch/powerpc/platforms/powernv/opal-core.c
-+++ b/arch/powerpc/platforms/powernv/opal-core.c
-@@ -71,7 +71,7 @@ static LIST_HEAD(opalcore_list);
- static struct opalcore_config *oc_conf;
- static const struct opal_mpipl_fadump *opalc_metadata;
- static const struct opal_mpipl_fadump *opalc_cpu_metadata;
--struct kobject *mpipl_kobj;
-+static struct kobject *mpipl_kobj;
- 
- /*
-  * Set crashing CPU's signal to SIGUSR1. if the kernel is triggered
-
+-- 
+Best Regards
+Masahiro Yamada

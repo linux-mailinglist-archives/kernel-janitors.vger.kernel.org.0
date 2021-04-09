@@ -2,61 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EECA33598F5
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Apr 2021 11:15:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AB763599BF
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Apr 2021 11:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231956AbhDIJQI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Apr 2021 05:16:08 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:37111 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230181AbhDIJQI (ORCPT
+        id S232144AbhDIJrv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Apr 2021 05:47:51 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:16509 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231638AbhDIJru (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Apr 2021 05:16:08 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1lUnEh-0003Dt-TT; Fri, 09 Apr 2021 09:15:31 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] media: s2255drv: remove redundant assignment to variable field
-Date:   Fri,  9 Apr 2021 10:15:31 +0100
-Message-Id: <20210409091531.630379-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.30.2
+        Fri, 9 Apr 2021 05:47:50 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FGtX02Pv8zPpY6;
+        Fri,  9 Apr 2021 17:44:48 +0800 (CST)
+Received: from [10.174.178.48] (10.174.178.48) by smtp.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.498.0; Fri, 9 Apr 2021
+ 17:47:30 +0800
+Subject: Re: [PATCH -next] [POWERPC] Rename get_property to of_get_property:
+ use DEFINE_SPINLOCK() for spinlock
+To:     Ye Bin <yebin10@huawei.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>
+CC:     <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+References: <20210409095148.2294319-1-yebin10@huawei.com>
+From:   "weiyongjun (A)" <weiyongjun1@huawei.com>
+Message-ID: <4b0b16f3-bb06-3a90-5148-ea8302bb3a58@huawei.com>
+Date:   Fri, 9 Apr 2021 17:47:29 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20210409095148.2294319-1-yebin10@huawei.com>
+Content-Type: text/plain; charset="gbk"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.178.48]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Rename get_property to of_get_property: use DEFINE_SPINLOCK() for spinlock
 
-The variable 'field' is being assigned a value this is never read,
-it is being updated in all the following if/else combinations. The
-assignment is redundant and can be removed.
+~~~~~~~~~~~~~
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/media/usb/s2255/s2255drv.c | 2 --
- 1 file changed, 2 deletions(-)
+这是啥模块名？
 
-diff --git a/drivers/media/usb/s2255/s2255drv.c b/drivers/media/usb/s2255/s2255drv.c
-index 4af55e2478be..3b0e4ed75d99 100644
---- a/drivers/media/usb/s2255/s2255drv.c
-+++ b/drivers/media/usb/s2255/s2255drv.c
-@@ -767,8 +767,6 @@ static int vidioc_try_fmt_vid_cap(struct file *file, void *priv,
- 	if (fmt == NULL)
- 		return -EINVAL;
- 
--	field = f->fmt.pix.field;
--
- 	dprintk(vc->dev, 50, "%s NTSC: %d suggested width: %d, height: %d\n",
- 		__func__, is_ntsc, f->fmt.pix.width, f->fmt.pix.height);
- 	if (is_ntsc) {
--- 
-2.30.2
 
+在 2021/4/9 17:51, Ye Bin 写道:
+> spinlock can be initialized automatically with DEFINE_SPINLOCK()
+> rather than explicitly calling spin_lock_init().
+>
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Ye Bin <yebin10@huawei.com>
+> ---
+>   drivers/macintosh/via-pmu-led.c | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/drivers/macintosh/via-pmu-led.c b/drivers/macintosh/via-pmu-led.c
+> index ae067ab2373d..2502119cff42 100644
+> --- a/drivers/macintosh/via-pmu-led.c
+> +++ b/drivers/macintosh/via-pmu-led.c
+> @@ -27,7 +27,7 @@
+>   #include <linux/pmu.h>
+>   #include <asm/prom.h>
+>   
+> -static spinlock_t pmu_blink_lock;
+> +static DEFINE_SPINLOCK(pmu_blink_lock);
+>   static struct adb_request pmu_blink_req;
+>   /* -1: no change, 0: request off, 1: request on */
+>   static int requested_change;
+> @@ -105,8 +105,6 @@ static int __init via_pmu_led_init(void)
+>   		return -ENODEV;
+>   	}
+>   	of_node_put(dt);
+> -
+> -	spin_lock_init(&pmu_blink_lock);
+>   	/* no outstanding req */
+>   	pmu_blink_req.complete = 1;
+>   	pmu_blink_req.done = pmu_req_done;
+>

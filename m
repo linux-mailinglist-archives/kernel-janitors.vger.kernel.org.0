@@ -2,37 +2,43 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35F4E35A303
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Apr 2021 18:23:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5097535A313
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Apr 2021 18:24:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234136AbhDIQXh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Apr 2021 12:23:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59860 "EHLO mail.kernel.org"
+        id S234163AbhDIQYZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Apr 2021 12:24:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60222 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233577AbhDIQXg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Apr 2021 12:23:36 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0119D6108B;
-        Fri,  9 Apr 2021 16:23:22 +0000 (UTC)
+        id S234174AbhDIQX4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 9 Apr 2021 12:23:56 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D84E76105A;
+        Fri,  9 Apr 2021 16:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617985403;
-        bh=Of3ySWlR/2RwBK3RGmzzdyGN4qP9uOE2nJVqqN9CwlQ=;
+        s=k20201202; t=1617985423;
+        bh=4THxi9Gmmsw/c0HXapMxqrYnTfey6Tgb5ZUkkxV6TDM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EhsOttHYVP2nOm94c/vEgdfq3St5g0WfEBTRxsBoHwJMxwv8h/+soHzw8UoV25k/G
-         Jiiuw7Guiyf1rY7c1JR/LroQRB1Y5q8U6PDzf4M9ZBF6k/wlBlJJ6JY378yIk1dgxB
-         Pl7LNx/WzfxEx6Twb0OOWWSMXcQWUzRbFxjd+RpjEZu+gthilUT6zwvtZJ/69DXXTn
-         +ijrSkTFJ1a1ZLCTHr9bd3oHVbFaBAYZgkNfkKcj5r+y51QslvYc7Scif/ofU0LjNh
-         plyRBJPUzP4b6wHe8vITfhcBGshARvjkxmcr/m3oCXb1RLAbnpOaLCI7UYdOWusnjT
-         IoT1A0cJszq0w==
+        b=TLUeCRyZdfzv647wURLa1tjFWOIZKWjyYxO1B6yDLsuVKxrAcMP/XgZU4hQp7P6RH
+         yXLRVEMHYl3gSGLzyUcsC/ep5Z6JLPIPXI6X+kSPUnqPpmSm6HJ3eWdS0Bhx/AWfIE
+         AQraxEMtT7t7EQdq2PTdWyyXBHq+gWT47HPMdC93OnLNP6z5qEKPvx2bYHzf5rDuL4
+         FONIhcBtpwA1s+gCD/DXm6i1NzJNfWX7x3Qq4CQpblR1wDJArknmPKGJIyzRlR6b+2
+         0IVzV/rAogHr/j4UsBBjkBjJYXWELo/UT7d8LA035lhkKdLiv3MLbIIpIgElMVEsfa
+         uiuJRwkw05e1Q==
 From:   Mark Brown <broonie@kernel.org>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Mark Brown <broonie@kernel.org>, kernel-janitors@vger.kernel.org,
-        Hulk Robot <hulkci@huawei.com>, linux-spi@vger.kernel.org
-Subject: Re: [PATCH -next] spi: dln2: Fix reference leak to master
-Date:   Fri,  9 Apr 2021 17:22:41 +0100
-Message-Id: <161798356988.48466.14335938900773090714.b4-ty@kernel.org>
+To:     Jaroslav Kysela <perex@perex.cz>,
+        Banajit Goswami <bgoswami@codeaurora.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Ye Bin <yebin10@huawei.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Takashi Iwai <tiwai@suse.com>
+Cc:     Mark Brown <broonie@kernel.org>, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Hulk Robot <hulkci@huawei.com>
+Subject: Re: [PATCH -next] ASoC: wcd934x: constify static struct snd_soc_dai_ops
+Date:   Fri,  9 Apr 2021 17:22:48 +0100
+Message-Id: <161798344183.47643.7944011356113525244.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210409082955.2907950-1-weiyongjun1@huawei.com>
-References: <20210409082955.2907950-1-weiyongjun1@huawei.com>
+In-Reply-To: <20210408062648.803227-1-yebin10@huawei.com>
+References: <20210408062648.803227-1-yebin10@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -40,21 +46,19 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 9 Apr 2021 08:29:55 +0000, Wei Yongjun wrote:
-> Call spi_master_get() holds the reference count to master device, thus
-> we need an additional spi_master_put() call to reduce the reference
-> count, otherwise we will leak a reference to master.
-> 
-> This commit fix it by removing the unnecessary spi_master_get().
+On Thu, 8 Apr 2021 14:26:48 +0800, Ye Bin wrote:
+> The snd_soc_dai_ops structures is only stored in the ops field of a
+> snd_soc_dai_driver structure, so make the snd_soc_dai_ops structure
+> const to allow the compiler to put it in read-only memory.
 
 Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
 Thanks!
 
-[1/1] spi: dln2: Fix reference leak to master
-      commit: 9b844b087124c1538d05f40fda8a4fec75af55be
+[1/1] ASoC: wcd934x: constify static struct snd_soc_dai_ops
+      commit: e994cf82689465ddae2dfa9c9bc69616a0003649
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

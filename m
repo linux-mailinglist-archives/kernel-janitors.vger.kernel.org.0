@@ -2,64 +2,50 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8EDC3596A7
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Apr 2021 09:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92E263596C9
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Apr 2021 09:52:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232251AbhDIHoV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Apr 2021 03:44:21 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:15643 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229621AbhDIHoU (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Apr 2021 03:44:20 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FGqnW1xCxzpWr6;
-        Fri,  9 Apr 2021 15:41:19 +0800 (CST)
-Received: from huawei.com (10.175.127.227) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.498.0; Fri, 9 Apr 2021
- 15:43:59 +0800
-From:   Ye Bin <yebin10@huawei.com>
-To:     <yebin10@huawei.com>, Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-CC:     <linux-pm@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        id S232060AbhDIHw4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Apr 2021 03:52:56 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:52036 "EHLO fornost.hmeau.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232036AbhDIHwz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 9 Apr 2021 03:52:55 -0400
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.103.7])
+        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
+        id 1lUlwW-0006IZ-Cf; Fri, 09 Apr 2021 17:52:41 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 09 Apr 2021 17:52:40 +1000
+Date:   Fri, 9 Apr 2021 17:52:40 +1000
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Tang Yizhou <tangyizhou@huawei.com>
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
+        John Allen <john.allen@amd.com>, linux-crypto@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] thermal/drivers/hisi: Remove redundant dev_err call in hisi_thermal_probe()
-Date:   Fri, 9 Apr 2021 15:52:24 +0800
-Message-ID: <20210409075224.2109503-1-yebin10@huawei.com>
-X-Mailer: git-send-email 2.25.4
+Subject: Re: [PATCH -next] crypto: ccp - Use DEFINE_SPINLOCK() for spinlock
+Message-ID: <20210409075240.GF31447@gondor.apana.org.au>
+References: <20210331020055.4631-1-tangyizhou@huawei.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.127.227]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210331020055.4631-1-tangyizhou@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is a error message within devm_ioremap_resource
-already, so remove the dev_err call to avoid redundant
-error message.
+On Wed, Mar 31, 2021 at 10:00:55AM +0800, Tang Yizhou wrote:
+> spinlock can be initialized automatically with DEFINE_SPINLOCK()
+> rather than explicitly calling spin_lock_init().
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Tang Yizhou <tangyizhou@huawei.com>
+> ---
+>  drivers/crypto/ccp/ccp-crypto-main.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Ye Bin <yebin10@huawei.com>
----
- drivers/thermal/hisi_thermal.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/thermal/hisi_thermal.c b/drivers/thermal/hisi_thermal.c
-index d902db9f267f..9a21ac0ceb11 100644
---- a/drivers/thermal/hisi_thermal.c
-+++ b/drivers/thermal/hisi_thermal.c
-@@ -572,10 +572,8 @@ static int hisi_thermal_probe(struct platform_device *pdev)
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	data->regs = devm_ioremap_resource(dev, res);
--	if (IS_ERR(data->regs)) {
--		dev_err(dev, "failed to get io address\n");
-+	if (IS_ERR(data->regs))
- 		return PTR_ERR(data->regs);
--	}
- 
- 	ret = data->ops->probe(data);
- 	if (ret)
-
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

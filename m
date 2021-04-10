@@ -2,71 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A8E335ADB4
-	for <lists+kernel-janitors@lfdr.de>; Sat, 10 Apr 2021 15:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B711D35AE17
+	for <lists+kernel-janitors@lfdr.de>; Sat, 10 Apr 2021 16:20:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234536AbhDJNgo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 10 Apr 2021 09:36:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40654 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234392AbhDJNgo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 10 Apr 2021 09:36:44 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0CDB561028;
-        Sat, 10 Apr 2021 13:36:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1618061789;
-        bh=zE7oyEro2yopPuqtrMWUastuB5GsnGSa2kFwaliFI+g=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=XZd+dbEc2KjV7az/jFra6hv3ug19y69DHBRGAPNR9UyQl/dyjwxpj/iI5pjptgALN
-         XFdnJsIigrHm3zBy/aG9kzTH03yWB6M76S5pfMT0RZiCIzLBIeNkV8GyeU+fEExl90
-         17ohOMVlJDImnxysLOo9OKU5hOoSWJYqzdPzsmto=
-Date:   Sat, 10 Apr 2021 15:36:27 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Bryan Brattlof <hello@bryanbrattlof.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] staging: rtl8723bs: remove unnecessary goto jumps
-Message-ID: <YHGp2yd1b9E1JTFI@kroah.com>
-References: <20210410133212.422929-1-hello@bryanbrattlof.com>
+        id S234751AbhDJOUo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 10 Apr 2021 10:20:44 -0400
+Received: from mail-40136.protonmail.ch ([185.70.40.136]:51437 "EHLO
+        mail-40136.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234519AbhDJOUn (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 10 Apr 2021 10:20:43 -0400
+Date:   Sat, 10 Apr 2021 14:20:19 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bryanbrattlof.com;
+        s=protonmail3; t=1618064427;
+        bh=9IwoH2UcLoIb4zzjDMXjFYQvN8/nnZXjHg+Ev5D0vqQ=;
+        h=Date:To:From:Cc:Reply-To:Subject:From;
+        b=pB8VcD1Y+IhvvVvC99JSiSxDGrqsB+sQEkZEqu3DKpuoh1aj9v5atmGpAxgj854/A
+         /q2aen4oPcVSnFWudSbxZHOJiZYIouCfNv564UnIqAXQr4xA1DBDg30IkD0Z3o+u01
+         UDG3yY8a8eyxQ9Tfbawr5MN7jQz5Oprn1aDlPWRCwXYxquBjR9SV8jKRHzpIyt3tfa
+         gOQdtXognDu7MGUzPQI+ieD7xT4MyRwv2q9nQLqg20SUjiuFbBCWtBiCaHtK/tjtPu
+         i0QzHM6SnBzWgMP+tfUA1cyZmVya4KsQSQUhNhIMSuT0YivcjdHs6jZEJNthPBM+xX
+         dgX/AWLmf+HBQ==
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+From:   Bryan Brattlof <hello@bryanbrattlof.com>
+Cc:     linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Bryan Brattlof <hello@bryanbrattlof.com>
+Reply-To: Bryan Brattlof <hello@bryanbrattlof.com>
+Subject: [PATCH v2] staging: rtl8723bs: remove unnecessary goto jumps
+Message-ID: <20210410141945.424238-1-hello@bryanbrattlof.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210410133212.422929-1-hello@bryanbrattlof.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF shortcircuit=no
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
+        mailout.protonmail.ch
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Apr 10, 2021 at 01:33:09PM +0000, Bryan Brattlof wrote:
-> The next instruction for both 'goto exit' jump statements is to
-> execute the exit jump instructions regardless. We can safely
-> remove all jump statements from __init rtw_drv_entry()
-> 
-> Signed-off-by: Bryan Brattlof <hello@bryanbrattlof.com>
-> ---
->  drivers/staging/rtl8723bs/os_dep/sdio_intf.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/drivers/staging/rtl8723bs/os_dep/sdio_intf.c b/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
-> index 9fd926e1698f..84ac81d19746 100644
-> --- a/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
-> +++ b/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
-> @@ -517,13 +517,9 @@ static int __init rtw_drv_entry(void)
->  	if (ret != 0) {
->  		sdio_drvpriv.drv_registered = false;
->  		rtw_ndev_notifier_unregister();
-> -		goto exit;
->  	}
->  
-> -	goto exit;
-> -
-> -exit:
-> -	DBG_871X_LEVEL(_drv_always_, "module init ret =%d\n", ret);
-> +	DBG_870X_LEVEL(_drv_always_, "module init ret =%d\n", ret);
+The next instruction for both 'goto exit' jump statements is to
+execute the exit jump instructions regardless. We can safely
+remove all jump statements from __init rtw_drv_entry()
 
-Why did you change this line?
+Signed-off-by: Bryan Brattlof <hello@bryanbrattlof.com>
+---
+Changes from:
+  v1: removed unnecessary edit of DBG_871X_LEVEL
 
-thanks,
+ drivers/staging/rtl8723bs/os_dep/sdio_intf.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-greg k-h
+diff --git a/drivers/staging/rtl8723bs/os_dep/sdio_intf.c b/drivers/staging=
+/rtl8723bs/os_dep/sdio_intf.c
+index 9fd926e1698f..39b6d4b6dec4 100644
+--- a/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
++++ b/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
+@@ -517,12 +517,8 @@ static int __init rtw_drv_entry(void)
+ =09if (ret !=3D 0) {
+ =09=09sdio_drvpriv.drv_registered =3D false;
+ =09=09rtw_ndev_notifier_unregister();
+-=09=09goto exit;
+ =09}
+=20
+-=09goto exit;
+-
+-exit:
+ =09DBG_871X_LEVEL(_drv_always_, "module init ret =3D%d\n", ret);
+ =09return ret;
+ }
+@@ -540,6 +536,5 @@ static void __exit rtw_drv_halt(void)
+ =09DBG_871X_LEVEL(_drv_always_, "module exit success\n");
+ }
+=20
+-
+ module_init(rtw_drv_entry);
+ module_exit(rtw_drv_halt);
+--=20
+2.27.0
+
+

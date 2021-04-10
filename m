@@ -2,30 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C22A635AD17
-	for <lists+kernel-janitors@lfdr.de>; Sat, 10 Apr 2021 13:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C0DF35AD19
+	for <lists+kernel-janitors@lfdr.de>; Sat, 10 Apr 2021 13:55:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234392AbhDJLzS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 10 Apr 2021 07:55:18 -0400
-Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:24954 "EHLO
+        id S234587AbhDJL4A (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 10 Apr 2021 07:56:00 -0400
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:25676 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231279AbhDJLzS (ORCPT
+        with ESMTP id S234569AbhDJL4A (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 10 Apr 2021 07:55:18 -0400
+        Sat, 10 Apr 2021 07:56:00 -0400
 Received: from localhost.localdomain ([90.126.11.170])
         by mwinf5d50 with ME
-        id qzv02400F3g7mfN03zv1tB; Sat, 10 Apr 2021 13:55:02 +0200
+        id qzvk2400J3g7mfN03zvkwY; Sat, 10 Apr 2021 13:55:45 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 10 Apr 2021 13:55:02 +0200
+X-ME-Date: Sat, 10 Apr 2021 13:55:45 +0200
 X-ME-IP: 90.126.11.170
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Larry.Finger@lwfinger.net, gregkh@linuxfoundation.org
+To:     gregkh@linuxfoundation.org
 Cc:     linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Subject: [PATCH 1/3] staging: rtl8188eu: Use existing arc4 implementation
-Date:   Sat, 10 Apr 2021 13:54:59 +0200
+Date:   Sat, 10 Apr 2021 13:55:43 +0200
 Message-Id: <7e16c40d5baa007dca81a12b967a597ed00d8dd7.1618055514.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0

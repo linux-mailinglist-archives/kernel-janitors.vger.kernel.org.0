@@ -2,33 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC58E361BC8
-	for <lists+kernel-janitors@lfdr.de>; Fri, 16 Apr 2021 11:00:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBCF6361D59
+	for <lists+kernel-janitors@lfdr.de>; Fri, 16 Apr 2021 12:09:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240409AbhDPIfz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 16 Apr 2021 04:35:55 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:58395 "EHLO
+        id S238896AbhDPJrm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 16 Apr 2021 05:47:42 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:60368 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239471AbhDPIfz (ORCPT
+        with ESMTP id S232022AbhDPJrm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 16 Apr 2021 04:35:55 -0400
+        Fri, 16 Apr 2021 05:47:42 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1lXJwc-0004d5-Cb; Fri, 16 Apr 2021 08:35:18 +0000
+        id 1lXL4E-0001F6-51; Fri, 16 Apr 2021 09:47:14 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>
+To:     Adam Radford <aradford@gmail.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] sched/core: Add in additional const on preempt_modes array declaration
-Date:   Fri, 16 Apr 2021 09:35:18 +0100
-Message-Id: <20210416083518.2031981-1-colin.king@canonical.com>
+Subject: [PATCH] scsi: 3w-9xxx: Move * operator to clean up code style warning
+Date:   Fri, 16 Apr 2021 10:47:13 +0100
+Message-Id: <20210416094713.2033212-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,30 +36,27 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Checkpatch warnings that there is a missing const, fix this by adding it.
-Clean us up warning:
-
-"WARNING: static const char * array should probably be static
-const char * const"
+Checkpatch is warning that char* text sould be char *text to match
+the coding style. Fix this.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- kernel/sched/core.c | 2 +-
+ drivers/scsi/3w-9xxx.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 42c06fccade5..beaa6263f4c3 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -5472,7 +5472,7 @@ static ssize_t sched_dynamic_write(struct file *filp, const char __user *ubuf,
+diff --git a/drivers/scsi/3w-9xxx.h b/drivers/scsi/3w-9xxx.h
+index d3f479324527..30109ae96ce5 100644
+--- a/drivers/scsi/3w-9xxx.h
++++ b/drivers/scsi/3w-9xxx.h
+@@ -50,7 +50,7 @@
+ /* AEN string type */
+ typedef struct TAG_twa_message_type {
+ 	unsigned int   code;
+-	char*	       text;
++	char           *text;
+ } twa_message_type;
  
- static int sched_dynamic_show(struct seq_file *m, void *v)
- {
--	static const char * preempt_modes[] = {
-+	static const char * const preempt_modes[] = {
- 		"none", "voluntary", "full"
- 	};
- 	int i;
+ /* AEN strings */
 -- 
 2.30.2
 

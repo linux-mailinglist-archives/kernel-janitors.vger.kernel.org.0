@@ -2,32 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99497364E9B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Apr 2021 01:29:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C54C5364EC1
+	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Apr 2021 01:40:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231302AbhDSX3d (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 19 Apr 2021 19:29:33 -0400
-Received: from mo-csw1515.securemx.jp ([210.130.202.154]:42952 "EHLO
+        id S232527AbhDSXk4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 19 Apr 2021 19:40:56 -0400
+Received: from mo-csw1116.securemx.jp ([210.130.202.158]:36098 "EHLO
         mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229842AbhDSX3c (ORCPT
+        with ESMTP id S232484AbhDSXk4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 19 Apr 2021 19:29:32 -0400
-Received: by mo-csw.securemx.jp (mx-mo-csw1515) id 13JNSKma008066; Tue, 20 Apr 2021 08:28:20 +0900
-X-Iguazu-Qid: 34tre4erL1uXq8Lo6m
-X-Iguazu-QSIG: v=2; s=0; t=1618874900; q=34tre4erL1uXq8Lo6m; m=EC0wCzbTh/qdnd5+DAtK9Y6Bek2gq4A5/QgKBXv6o1E=
+        Mon, 19 Apr 2021 19:40:56 -0400
+Received: by mo-csw.securemx.jp (mx-mo-csw1116) id 13JNdlVM005625; Tue, 20 Apr 2021 08:39:47 +0900
+X-Iguazu-Qid: 2wHHhVLfD68WbBSrrf
+X-Iguazu-QSIG: v=2; s=0; t=1618875586; q=2wHHhVLfD68WbBSrrf; m=OpTumAytCPng2rPIF8zru+UG0PLMCzlcfWIBcmKYL68=
 Received: from imx2-a.toshiba.co.jp (imx2-a.toshiba.co.jp [106.186.93.35])
-        by relay.securemx.jp (mx-mr1510) id 13JNSIgK023852
+        by relay.securemx.jp (mx-mr1110) id 13JNdivT005802
         (version=TLSv1.2 cipher=AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 20 Apr 2021 08:28:18 +0900
+        Tue, 20 Apr 2021 08:39:44 +0900
 Received: from enc01.toshiba.co.jp (enc01.toshiba.co.jp [106.186.93.100])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by imx2-a.toshiba.co.jp (Postfix) with ESMTPS id 1C0A91000A3;
-        Tue, 20 Apr 2021 08:28:18 +0900 (JST)
+        by imx2-a.toshiba.co.jp (Postfix) with ESMTPS id 1E4FB1000B0;
+        Tue, 20 Apr 2021 08:39:44 +0900 (JST)
 Received: from hop001.toshiba.co.jp ([133.199.164.63])
-        by enc01.toshiba.co.jp  with ESMTP id 13JNSHw1015773;
-        Tue, 20 Apr 2021 08:28:17 +0900
-Date:   Tue, 20 Apr 2021 08:28:00 +0900
+        by enc01.toshiba.co.jp  with ESMTP id 13JNdhoP024180;
+        Tue, 20 Apr 2021 08:39:43 +0900
+Date:   Tue, 20 Apr 2021 08:39:07 +0900
 From:   Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
 To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
 Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
@@ -37,60 +37,56 @@ Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
         Joe Perches <joe@perches.com>,
         Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] MAINTAINERS: rectify entry for ARM/TOSHIBA VISCONTI
- ARCHITECTURE
+Subject: Re: [PATCH 2/3] MAINTAINERS: rectify entry for HIKEY960 ONBOARD USB
+ GPIO HUB DRIVER
 X-TSB-HOP: ON
-Message-ID: <20210419232800.cbcyjlyrqywkrqdt@toshiba.co.jp>
+Message-ID: <20210419233907.qaxgwlggm35fyklz@toshiba.co.jp>
 References: <20210419092609.3692-1-lukas.bulwahn@gmail.com>
- <20210419092609.3692-2-lukas.bulwahn@gmail.com>
+ <20210419092609.3692-3-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210419092609.3692-2-lukas.bulwahn@gmail.com>
+In-Reply-To: <20210419092609.3692-3-lukas.bulwahn@gmail.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Hi,
 
-Thanks for your patch.
-
-On Mon, Apr 19, 2021 at 11:26:07AM +0200, Lukas Bulwahn wrote:
-> Commit 836863a08c99 ("MAINTAINERS: Add information for Toshiba Visconti ARM
-> SoCs") refers to the non-existing file toshiba,tmpv7700-pinctrl.yaml in
-> ./Documentation/devicetree/bindings/pinctrl/. Commit 1825c1fe0057
-> ("pinctrl: Add DT bindings for Toshiba Visconti TMPV7700 SoC") originating
-> from the same patch series however adds the file
-> toshiba,visconti-pinctrl.yaml in that directory instead.
+On Mon, Apr 19, 2021 at 11:26:08AM +0200, Lukas Bulwahn wrote:
+> Commit 7a6ff4c4cbc3 ("misc: hisi_hikey_usb: Driver to support onboard USB
+> gpio hub on Hikey960") refers to the non-existing file
+> ./Documentation/devicetree/bindings/misc/hisilicon-hikey-usb.yaml, but this
+> commit's patch series does not add any related devicetree binding in misc.
 > 
-> So, refer to toshiba,visconti-pinctrl.yaml in the ARM/TOSHIBA VISCONTI
-> ARCHITECTURE section instead.
+> So, just drop this file reference in HIKEY960 ONBOARD USB GPIO HUB DRIVER.
 > 
 
-Could you add  Fixes: tag?
+Could you add Fixes: tag ?
+Please also add this to patch: "MAINTAINERS: rectify entry for INTEL KEEM BAY
+DRM DRIVER".
 
 > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-
-Acked-by: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
-
 > ---
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  MAINTAINERS | 1 -
+>  1 file changed, 1 deletion(-)
 > 
 > diff --git a/MAINTAINERS b/MAINTAINERS
-> index c54b8e4520d1..d31c8058b17f 100644
+> index d31c8058b17f..4f152717365c 100644
 > --- a/MAINTAINERS
 > +++ b/MAINTAINERS
-> @@ -2669,7 +2669,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/iwamatsu/linux-visconti.git
->  F:	Documentation/devicetree/bindings/arm/toshiba.yaml
->  F:	Documentation/devicetree/bindings/net/toshiba,visconti-dwmac.yaml
->  F:	Documentation/devicetree/bindings/gpio/toshiba,gpio-visconti.yaml
-> -F:	Documentation/devicetree/bindings/pinctrl/toshiba,tmpv7700-pinctrl.yaml
-> +F:	Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml
->  F:	Documentation/devicetree/bindings/watchdog/toshiba,visconti-wdt.yaml
->  F:	arch/arm64/boot/dts/toshiba/
->  F:	drivers/net/ethernet/stmicro/stmmac/dwmac-visconti.c
+> @@ -8239,7 +8239,6 @@ M:	John Stultz <john.stultz@linaro.org>
+>  L:	linux-kernel@vger.kernel.org
+>  S:	Maintained
+>  F:	drivers/misc/hisi_hikey_usb.c
+> -F:	Documentation/devicetree/bindings/misc/hisilicon-hikey-usb.yaml
+>  
+>  HISILICON PMU DRIVER
+>  M:	Shaokun Zhang <zhangshaokun@hisilicon.com>
 > -- 
 > 2.17.1
 > 
 > 
+
+Best regards,
+  Nobuhiro

@@ -2,29 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D0043639E5
-	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Apr 2021 06:04:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A95C3639EB
+	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Apr 2021 06:04:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237300AbhDSEEv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 19 Apr 2021 00:04:51 -0400
-Received: from ozlabs.org ([203.11.71.1]:54329 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233881AbhDSEEo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 19 Apr 2021 00:04:44 -0400
+        id S237427AbhDSEEy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 19 Apr 2021 00:04:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49614 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234090AbhDSEEs (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 19 Apr 2021 00:04:48 -0400
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E4D3C061760;
+        Sun, 18 Apr 2021 21:04:15 -0700 (PDT)
 Received: by ozlabs.org (Postfix, from userid 1034)
-        id 4FNtVQ0MPcz9vG3; Mon, 19 Apr 2021 14:04:13 +1000 (AEST)
+        id 4FNtVP1HGSz9vGp; Mon, 19 Apr 2021 14:04:13 +1000 (AEST)
 From:   Michael Ellerman <patch-notifications@ellerman.id.au>
 To:     Madhavan Srinivasan <maddy@linux.ibm.com>,
         Bixuan Cui <cuibixuan@huawei.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Kajol Jain <kjain@linux.ibm.com>,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+        "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 Cc:     kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210409090119.59444-1-cuibixuan@huawei.com>
-References: <20210409090119.59444-1-cuibixuan@huawei.com>
-Subject: Re: [PATCH -next] powerpc/perf: Make symbol 'isa207_pmu_format_attr' static
-Message-Id: <161880479814.1398509.6067179315782910479.b4-ty@ellerman.id.au>
+In-Reply-To: <20210409090124.59492-1-cuibixuan@huawei.com>
+References: <20210409090124.59492-1-cuibixuan@huawei.com>
+Subject: Re: [PATCH -next] powerpc/perf/hv-24x7: Make some symbols static
+Message-Id: <161880479840.1398509.5195313938984929332.b4-ty@ellerman.id.au>
 Date:   Mon, 19 Apr 2021 13:59:58 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -33,18 +37,25 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 9 Apr 2021 17:01:19 +0800, Bixuan Cui wrote:
+On Fri, 9 Apr 2021 17:01:24 +0800, Bixuan Cui wrote:
 > The sparse tool complains as follows:
 > 
-> arch/powerpc/perf/isa207-common.c:24:18: warning:
->  symbol 'isa207_pmu_format_attr' was not declared. Should it be static?
+> arch/powerpc/perf/hv-24x7.c:229:1: warning:
+>  symbol '__pcpu_scope_hv_24x7_txn_flags' was not declared. Should it be static?
+> arch/powerpc/perf/hv-24x7.c:230:1: warning:
+>  symbol '__pcpu_scope_hv_24x7_txn_err' was not declared. Should it be static?
+> arch/powerpc/perf/hv-24x7.c:236:1: warning:
+>  symbol '__pcpu_scope_hv_24x7_hw' was not declared. Should it be static?
+> arch/powerpc/perf/hv-24x7.c:244:1: warning:
+>  symbol '__pcpu_scope_hv_24x7_reqb' was not declared. Should it be static?
+> arch/powerpc/perf/hv-24x7.c:245:1: warning:
+>  symbol '__pcpu_scope_hv_24x7_resb' was not declared. Should it be static?
 > 
-> This symbol is not used outside of isa207-common.c, so this
-> commit marks it static.
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/perf: Make symbol 'isa207_pmu_format_attr' static
-      https://git.kernel.org/powerpc/c/107dadb046178173dea18e0a78ff8ea3cc27c213
+[1/1] powerpc/perf/hv-24x7: Make some symbols static
+      https://git.kernel.org/powerpc/c/cc331eee03eadd750af1fb957d020b3f24e5e056
 
 cheers

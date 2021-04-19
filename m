@@ -2,32 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57F7C3639E9
-	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Apr 2021 06:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19E953639E6
+	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Apr 2021 06:04:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237393AbhDSEEw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 19 Apr 2021 00:04:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49616 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234109AbhDSEEs (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 19 Apr 2021 00:04:48 -0400
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D7C8C06138E;
-        Sun, 18 Apr 2021 21:04:18 -0700 (PDT)
+        id S237381AbhDSEEv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 19 Apr 2021 00:04:51 -0400
+Received: from bilbo.ozlabs.org ([203.11.71.1]:42679 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233922AbhDSEEp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 19 Apr 2021 00:04:45 -0400
 Received: by ozlabs.org (Postfix, from userid 1034)
-        id 4FNtVR5nzHz9tl3; Mon, 19 Apr 2021 14:04:15 +1000 (AEST)
+        id 4FNtVR03sGz9vGs; Mon, 19 Apr 2021 14:04:14 +1000 (AEST)
 From:   Michael Ellerman <patch-notifications@ellerman.id.au>
-To:     Michael Ellerman <mpe@ellerman.id.au>,
-        Bixuan Cui <cuibixuan@huawei.com>,
-        Liu Shixin <liushixin2@huawei.com>
+To:     Al Viro <viro@zeniv.linux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Qinglang Miao <miaoqinglang@huawei.com>,
+        Bixuan Cui <cuibixuan@huawei.com>
 Cc:     kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210409090109.59347-1-cuibixuan@huawei.com>
-References: <20210409090109.59347-1-cuibixuan@huawei.com>
-Subject: Re: [PATCH -next] powerpc/pseries: Make symbol '__pcpu_scope_hcall_stats' static
-Message-Id: <161880479761.1398509.15398715314309643145.b4-ty@ellerman.id.au>
-Date:   Mon, 19 Apr 2021 13:59:57 +1000
+In-Reply-To: <20210409063855.57347-1-cuibixuan@huawei.com>
+References: <20210409063855.57347-1-cuibixuan@huawei.com>
+Subject: Re: [PATCH -next] powerpc/powernv: make symbol 'mpipl_kobj' static
+Message-Id: <161880479893.1398509.5196822029182381609.b4-ty@ellerman.id.au>
+Date:   Mon, 19 Apr 2021 13:59:58 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -35,18 +32,17 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 9 Apr 2021 17:01:09 +0800, Bixuan Cui wrote:
+On Fri, 9 Apr 2021 14:38:55 +0800, Bixuan Cui wrote:
 > The sparse tool complains as follows:
 > 
-> arch/powerpc/platforms/pseries/hvCall_inst.c:29:1: warning:
->  symbol '__pcpu_scope_hcall_stats' was not declared. Should it be static?
+> arch/powerpc/platforms/powernv/opal-core.c:74:16: warning:
+>  symbol 'mpipl_kobj' was not declared.
 > 
-> This symbol is not used outside of hvCall_inst.c, so this
-> commit marks it static.
+> This symbol is not used outside of opal-core.c, so marks it static.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/pseries: Make symbol '__pcpu_scope_hcall_stats' static
-      https://git.kernel.org/powerpc/c/193e4cd8ed9dd01092d01df7706a6b344c946af4
+[1/1] powerpc/powernv: make symbol 'mpipl_kobj' static
+      https://git.kernel.org/powerpc/c/ff0b4155ae9903539d1299a9a4c8717fb7eb6009
 
 cheers

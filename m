@@ -2,63 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E34B364D8D
-	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Apr 2021 00:14:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99497364E9B
+	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Apr 2021 01:29:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231310AbhDSWPV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 19 Apr 2021 18:15:21 -0400
-Received: from mbox.abcom.al ([217.73.143.249]:57994 "EHLO mbox.abcom.al"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231213AbhDSWPV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 19 Apr 2021 18:15:21 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mbox.abcom.al (Postfix) with ESMTP id 56C2D12D50C46;
-        Mon, 19 Apr 2021 23:19:55 +0200 (CEST)
-Received: from mbox.abcom.al ([127.0.0.1])
-        by localhost (mbox.abcom.al [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id NKkyBQhxKSss; Mon, 19 Apr 2021 23:19:55 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by mbox.abcom.al (Postfix) with ESMTP id 860DF12D46BEA;
-        Mon, 19 Apr 2021 23:19:50 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mbox.abcom.al 860DF12D46BEA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=abcom.al;
-        s=0F3BA0EE-D5D4-11E8-9596-F9115129F2F4; t=1618867190;
-        bh=BZv72htijiAiJQlxop8ucT2O5E8VQfLYZFZIV1NskB4=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=DNJtrR088guvGUmTr8PCZDUIvdi+5ZYbGBb/TIgHA0Clt6nQbYJdDm7D+1AMtqsNI
-         qj15MWcs6gJWietYdPnmm4+8DunWJMq1F9jE7TQFZ5jrq5qvw07TCWIqFfp5AJOuEK
-         PT0kdgaJwUdElLGhBN7Lgfft2QBPmiPr6GhsXqMaThBkl+r/24Gk8Nos4v7RbCSlkX
-         uiywU/vgzTxPX223xZxUGgmdgO2VQ7vo/XBIy26Fg09s9Lt8bvr6V21aRej/qwkehx
-         SlCXcaFsu2i30C0Ba6lALKPKzCp7VQudYg75IT4JIx6p66DaWm0PH2n91giK4uracU
-         kPdWKiBBf0CUw==
-X-Virus-Scanned: amavisd-new at mbox.abcom.al
-Received: from mbox.abcom.al ([127.0.0.1])
-        by localhost (mbox.abcom.al [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id W9KUOhnCQDi7; Mon, 19 Apr 2021 23:19:50 +0200 (CEST)
-Received: from [192.168.43.60] (unknown [105.4.5.77])
-        by mbox.abcom.al (Postfix) with ESMTPSA id B1D341218CEC0;
-        Mon, 19 Apr 2021 23:19:39 +0200 (CEST)
-Content-Type: text/plain; charset="utf-8"
+        id S231302AbhDSX3d (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 19 Apr 2021 19:29:33 -0400
+Received: from mo-csw1515.securemx.jp ([210.130.202.154]:42952 "EHLO
+        mo-csw.securemx.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229842AbhDSX3c (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 19 Apr 2021 19:29:32 -0400
+Received: by mo-csw.securemx.jp (mx-mo-csw1515) id 13JNSKma008066; Tue, 20 Apr 2021 08:28:20 +0900
+X-Iguazu-Qid: 34tre4erL1uXq8Lo6m
+X-Iguazu-QSIG: v=2; s=0; t=1618874900; q=34tre4erL1uXq8Lo6m; m=EC0wCzbTh/qdnd5+DAtK9Y6Bek2gq4A5/QgKBXv6o1E=
+Received: from imx2-a.toshiba.co.jp (imx2-a.toshiba.co.jp [106.186.93.35])
+        by relay.securemx.jp (mx-mr1510) id 13JNSIgK023852
+        (version=TLSv1.2 cipher=AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 20 Apr 2021 08:28:18 +0900
+Received: from enc01.toshiba.co.jp (enc01.toshiba.co.jp [106.186.93.100])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by imx2-a.toshiba.co.jp (Postfix) with ESMTPS id 1C0A91000A3;
+        Tue, 20 Apr 2021 08:28:18 +0900 (JST)
+Received: from hop001.toshiba.co.jp ([133.199.164.63])
+        by enc01.toshiba.co.jp  with ESMTP id 13JNSHw1015773;
+        Tue, 20 Apr 2021 08:28:17 +0900
+Date:   Tue, 20 Apr 2021 08:28:00 +0900
+From:   Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Yu Chen <chenyu56@huawei.com>,
+        Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Joe Perches <joe@perches.com>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] MAINTAINERS: rectify entry for ARM/TOSHIBA VISCONTI
+ ARCHITECTURE
+X-TSB-HOP: ON
+Message-ID: <20210419232800.cbcyjlyrqywkrqdt@toshiba.co.jp>
+References: <20210419092609.3692-1-lukas.bulwahn@gmail.com>
+ <20210419092609.3692-2-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?q?Hallo=2C_Sie_haben_eine_Spende_von_=E2=82=AC_2=2E000=2E000=2C00?=
-To:     Recipients <abashi@abcom.al>
-From:   <abashi@abcom.al>
-Date:   Mon, 19 Apr 2021 23:18:51 +0200
-Reply-To: tayebsouamidonationorg@gmail.com
-Message-Id: <20210419211939.B1D341218CEC0@mbox.abcom.al>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210419092609.3692-2-lukas.bulwahn@gmail.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-I'm Tayeb Souami, 55-year-old an elderly citizen of New Jersey, USA. I won =
-a $315.3 million jackpot, On behalf of my family and act of good will, we a=
-re donating to you and your family the sum of (=E2=82=AC 2,000,000.00 EUR) =
-I try to reach the public charity orphanages. Contribute to poverty reducti=
-on and ensure adequate health care for individuals. I also want you to inve=
-st part of this donation in public infrastructure to provide jobs for unemp=
-loyed citizens in your country.You can Watch me on youtube Claimed  https:/=
-/www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks I choose you because I believe in yo=
-u. I need your full cooperation regarding this donation. Please contact me =
-back here at my private email: tayebsouamidonationorg@gmail.com
+Hi,
+
+Thanks for your patch.
+
+On Mon, Apr 19, 2021 at 11:26:07AM +0200, Lukas Bulwahn wrote:
+> Commit 836863a08c99 ("MAINTAINERS: Add information for Toshiba Visconti ARM
+> SoCs") refers to the non-existing file toshiba,tmpv7700-pinctrl.yaml in
+> ./Documentation/devicetree/bindings/pinctrl/. Commit 1825c1fe0057
+> ("pinctrl: Add DT bindings for Toshiba Visconti TMPV7700 SoC") originating
+> from the same patch series however adds the file
+> toshiba,visconti-pinctrl.yaml in that directory instead.
+> 
+> So, refer to toshiba,visconti-pinctrl.yaml in the ARM/TOSHIBA VISCONTI
+> ARCHITECTURE section instead.
+> 
+
+Could you add  Fixes: tag?
+
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+
+Acked-by: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
+
+> ---
+>  MAINTAINERS | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index c54b8e4520d1..d31c8058b17f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2669,7 +2669,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/iwamatsu/linux-visconti.git
+>  F:	Documentation/devicetree/bindings/arm/toshiba.yaml
+>  F:	Documentation/devicetree/bindings/net/toshiba,visconti-dwmac.yaml
+>  F:	Documentation/devicetree/bindings/gpio/toshiba,gpio-visconti.yaml
+> -F:	Documentation/devicetree/bindings/pinctrl/toshiba,tmpv7700-pinctrl.yaml
+> +F:	Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml
+>  F:	Documentation/devicetree/bindings/watchdog/toshiba,visconti-wdt.yaml
+>  F:	arch/arm64/boot/dts/toshiba/
+>  F:	drivers/net/ethernet/stmicro/stmmac/dwmac-visconti.c
+> -- 
+> 2.17.1
+> 
+> 

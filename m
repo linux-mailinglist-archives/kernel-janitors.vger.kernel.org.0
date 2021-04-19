@@ -2,98 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B967F363868
-	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Apr 2021 01:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56F4C363901
+	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Apr 2021 03:15:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232484AbhDRXDu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 18 Apr 2021 19:03:50 -0400
-Received: from mail-pg1-f169.google.com ([209.85.215.169]:35633 "EHLO
-        mail-pg1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232023AbhDRXDt (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 18 Apr 2021 19:03:49 -0400
-Received: by mail-pg1-f169.google.com with SMTP id q10so22945835pgj.2;
-        Sun, 18 Apr 2021 16:03:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=2pbgAZAAd737lyZ5qqTUDuQSwoGEzsEQ6O218gt7uwI=;
-        b=YjovkHb+QCx1p5jumGPxRjxe0OqKooCOygebRQ4sJj0LfH9Wzp7HEy1sOP0MOOJZpK
-         oT+VMRzl6NKADB6n4mINpBh6RT2YaMvHqjcpMkCaliiSRrE/1aebzWJ4QGqd4ZpEbImn
-         DB9cbez3nIltUOZmzKzhvtxvUg44iWvwHzSbfEi/2aUxZ/NsTp8pt87UqYcAzj07caXA
-         3JoHwYNwy3ifVDMgzA2UUH3QWGpMUBDdbXJ5OXT9KJuNI09pwmD7XIhr469X4C+vnxJV
-         bLsPUbOB+uGD2h3WBMz2e7yT/RlGkmR623gA71RZH87tcU75duraOVtypEqel6g3iVGq
-         LTKA==
-X-Gm-Message-State: AOAM533IeM2/iO1OdSr62cE+9oAAf+q0gKG2Z04QW9ndMSpEkohrEy7k
-        BwrRacYzMpcpsrLsRXg95mIHZJ1TMmE=
-X-Google-Smtp-Source: ABdhPJxRmoJO9/4GzoOEqUZM8HagxnNbt11YNrkRwqcJHBDb+pk1VLXjxQHgzVOxzuGVuzE/LicX0g==
-X-Received: by 2002:a62:3246:0:b029:224:6c6f:b3f2 with SMTP id y67-20020a6232460000b02902246c6fb3f2mr17177062pfy.68.1618787000841;
-        Sun, 18 Apr 2021 16:03:20 -0700 (PDT)
-Received: from ?IPv6:2601:647:4000:d7:93db:a33:19a8:2126? ([2601:647:4000:d7:93db:a33:19a8:2126])
-        by smtp.gmail.com with ESMTPSA id t19sm5078216pgv.75.2021.04.18.16.03.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 18 Apr 2021 16:03:20 -0700 (PDT)
-Subject: Re: [PATCH 1/2] workqueue: Have 'alloc_workqueue()' like macros
- accept a format specifier
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>, tj@kernel.org,
-        jiangshanlai@gmail.com, saeedm@nvidia.com, leon@kernel.org,
-        davem@davemloft.net, kuba@kernel.org, Tejun Heo <tj@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <cover.1618780558.git.christophe.jaillet@wanadoo.fr>
- <ae88f6c2c613d17bc1a56692cfa4f960dbc723d2.1618780558.git.christophe.jaillet@wanadoo.fr>
-From:   Bart Van Assche <bvanassche@acm.org>
-Message-ID: <042f5fff-5faf-f3c5-0819-b8c8d766ede6@acm.org>
-Date:   Sun, 18 Apr 2021 16:03:18 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.1
+        id S236441AbhDSBPp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 18 Apr 2021 21:15:45 -0400
+Received: from mbox.abcom.al ([217.73.143.249]:53602 "EHLO mbox.abcom.al"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233117AbhDSBPp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 18 Apr 2021 21:15:45 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by mbox.abcom.al (Postfix) with ESMTP id B324C12391CF9;
+        Mon, 19 Apr 2021 02:39:30 +0200 (CEST)
+Received: from mbox.abcom.al ([127.0.0.1])
+        by localhost (mbox.abcom.al [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id U2qvZTF3tCRx; Mon, 19 Apr 2021 02:39:30 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by mbox.abcom.al (Postfix) with ESMTP id 4162511B6D839;
+        Mon, 19 Apr 2021 02:39:30 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mbox.abcom.al 4162511B6D839
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=abcom.al;
+        s=0F3BA0EE-D5D4-11E8-9596-F9115129F2F4; t=1618792770;
+        bh=p2Sn/5BeV1TeOpE0g2OnXyVNOPHFXRN2kak+hb1GY3o=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=dgbEc4PkWr5PLlZQRQQ8Apk27FlxQD7IHzl+EcCFaNJKlugT16wbD/ofMQbJ0bQwx
+         LmC8yhwqnNgGFufPgx3dku+AhDtS+OvgjIm0zHVevrf0vXr63YUObw/UInmECaGX16
+         0qZYd+urCpsNyT81kho66uJ65cem/tgtKl9ArzvjEm/4WnveB0CASQupIKhHd8nJ3y
+         +jeR91e/DA58Im1jdNYVuZuWAZ8LjbpnAThmzQhQgYFYfiEB2GrccOA8qBhPqLOPo+
+         rK0MUH8OpRQAh951Kyz2lx8JqudQzWKicUxwl0uUd5cgD0wJmE4t4QelFBm7OmA11h
+         N1Jzjj7ep8YLg==
+X-Virus-Scanned: amavisd-new at mbox.abcom.al
+Received: from mbox.abcom.al ([127.0.0.1])
+        by localhost (mbox.abcom.al [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 9ain12CPxVhD; Mon, 19 Apr 2021 02:39:30 +0200 (CEST)
+Received: from [192.168.43.60] (unknown [105.4.4.115])
+        by mbox.abcom.al (Postfix) with ESMTPSA id BBEAB123BEF2D;
+        Mon, 19 Apr 2021 02:39:22 +0200 (CEST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <ae88f6c2c613d17bc1a56692cfa4f960dbc723d2.1618780558.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Hallo=2C_Sie_haben_eine_Spende_von_=E2=82=AC_2=2E000=2E000=2C00?=
+To:     Recipients <abashi@abcom.al>
+From:   <abashi@abcom.al>
+Date:   Mon, 19 Apr 2021 02:38:46 +0200
+Reply-To: billlawrencedonationorg@yahoo.com
+Message-Id: <20210419003922.BBEAB123BEF2D@mbox.abcom.al>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 4/18/21 2:26 PM, Christophe JAILLET wrote:
-> Improve 'create_workqueue', 'create_freezable_workqueue' and
-> 'create_singlethread_workqueue' so that they accept a format
-> specifier and a variable number of arguments.
-> 
-> This will put these macros more in line with 'alloc_ordered_workqueue' and
-> the underlying 'alloc_workqueue()' function.
-> 
-> This will also allow further code simplification.
+Sehr geehrter Herr / Frau
+Ich gr=C3=BC=C3=9Fe Sie im Namen des Herrn. Diese Nachricht wird Ihnen als =
+Benachrichtigung gesendet, dass Sie ausgew=C3=A4hlt wurden, um von meinem W=
+ohlt=C3=A4tigkeitsprojekt zu profitieren, das darauf abzielt, Leben zu ber=
+=C3=BChren und denen zu helfen, die ich auf der ganzen Welt kann, wie Gott =
+mich gesegnet hat.
+Ich habe die Powerball-Lotterie in H=C3=B6he von 150 Millionen USD am 16. D=
+ezember 2019 gewonnen und ich habe mich freiwillig entschlossen, Ihnen eine=
+n Betrag von (2.000.000,00 =E2=82=AC) als Wohlt=C3=A4tigkeitsorganisation z=
+u spenden. Ich versuche, zuf=C3=A4llige Menschen aus verschiedenen Quellen =
+und Moden zu erreichen, um das Leben aus verschiedenen Quellen zu ber=C3=BC=
+hren Winkel. Deshalb erhalten Sie hier die Nachricht.
+Sie wurden als einer der gl=C3=BCcklichen Empf=C3=A4nger registriert, die 2=
+ Millionen Euro erhalten haben. Diese Spende wird Ihnen gegeben, damit Sie =
+Ihre pers=C3=B6nlichen Probleme versch=C3=A4rfen und uns zum gro=C3=9Fen Te=
+il gro=C3=9Fz=C3=BCgig dabei helfen k=C3=B6nnen, die weniger gl=C3=BCcklich=
+en Waisen und gemeinn=C3=BCtzigen Organisationen in Ihrem Land zu unterst=
+=C3=BCtzen Nachbarschaftslokalit=C3=A4t
+Zur =C3=9Cberpr=C3=BCfung: //www.powerball.com/winner-story/150-million-pow=
+erball-ticket-claimed
 
-Please Cc Tejun for workqueue changes since he maintains the workqueue code.
+Kontaktieren Sie mich erneut, um Spenden zu erhalten. E-Mail: billlawrenced=
+onationorg@yahoo.com
 
-> diff --git a/include/linux/workqueue.h b/include/linux/workqueue.h
-> index d15a7730ee18..145e756ff315 100644
-> --- a/include/linux/workqueue.h
-> +++ b/include/linux/workqueue.h
-> @@ -425,13 +425,13 @@ struct workqueue_struct *alloc_workqueue(const char *fmt,
->  	alloc_workqueue(fmt, WQ_UNBOUND | __WQ_ORDERED |		\
->  			__WQ_ORDERED_EXPLICIT | (flags), 1, ##args)
->  
-> -#define create_workqueue(name)						\
-> -	alloc_workqueue("%s", __WQ_LEGACY | WQ_MEM_RECLAIM, 1, (name))
-> -#define create_freezable_workqueue(name)				\
-> -	alloc_workqueue("%s", __WQ_LEGACY | WQ_FREEZABLE | WQ_UNBOUND |	\
-> -			WQ_MEM_RECLAIM, 1, (name))
-> -#define create_singlethread_workqueue(name)				\
-> -	alloc_ordered_workqueue("%s", __WQ_LEGACY | WQ_MEM_RECLAIM, name)
-> +#define create_workqueue(fmt, args...)					\
-> +	alloc_workqueue(fmt, __WQ_LEGACY | WQ_MEM_RECLAIM, 1, ##args)
-> +#define create_freezable_workqueue(fmt, args...)			\
-> +	alloc_workqueue(fmt, __WQ_LEGACY | WQ_FREEZABLE | WQ_UNBOUND |	\
-> +			WQ_MEM_RECLAIM, 1, ##args)
-> +#define create_singlethread_workqueue(fmt, args...)			\
-> +	alloc_ordered_workqueue(fmt, __WQ_LEGACY | WQ_MEM_RECLAIM, ##args)
->  
->  extern void destroy_workqueue(struct workqueue_struct *wq);
->  
-> 
-
+Vielen Dank, Bill Lawrence

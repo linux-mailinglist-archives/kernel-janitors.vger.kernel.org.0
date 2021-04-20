@@ -2,148 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 426BE364EBC
-	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Apr 2021 01:39:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 387AB365468
+	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Apr 2021 10:44:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231434AbhDSXkP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 19 Apr 2021 19:40:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54584 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229842AbhDSXkO (ORCPT
+        id S230491AbhDTIoq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 20 Apr 2021 04:44:46 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:60852 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229749AbhDTIoq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 19 Apr 2021 19:40:14 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99CF3C06174A;
-        Mon, 19 Apr 2021 16:39:42 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id z8so41355969ljm.12;
-        Mon, 19 Apr 2021 16:39:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=LfEpz0iSjiNDbPXawTwLPZzoSRuzzKGOxdOGebsOX3c=;
-        b=OZJ2dq2qJ5uj4GxBGsnYxJZ0yMig951/JM5Yx8zlFk5Ker01MAUc003nNQt+po7kRO
-         debCIwjD1HJqCkzEIVAWep2IarzX+nzs/P8lhCNblHpS5gnfmFx6G1GZgGC68AZ81gdf
-         9WKGDRkeQXEGZnmOA3EUTeCV/W2o5LqtaA0VCuUjQe+eKn8//52l2mBqHM/v1H5uIDCj
-         7egCMZbOs2OL9Kqt/H/cugtDgZKITs57StunHsMH5/LGyWUYQX1M35bAQQOMceldKpQT
-         HAkSumSoVHkp5sTZxIcGoUEXjFcjll1DqkSnrOFdG5QOCabCcWZI1QvFpd0xuZXa6YiT
-         u1Ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=LfEpz0iSjiNDbPXawTwLPZzoSRuzzKGOxdOGebsOX3c=;
-        b=EdQGrfy8zKahsJxlRQR1zlc7HMuWNZwIDEZVmXsoOk0XZSS5UjbJdULDK4cZk/SpTn
-         0stAWa/JNgDEIyLZ8RWm9nf5M173iDrsxj4hxABeW/gV/KBP5wJ8YMoXZWqo09jz8UhS
-         40bLdryrGe7Oe/7FDbaaG6sPUxJsPC20p/kbtj7rROzSKDmG9gPsZjDRR/rZy0LMdSC6
-         zQ/L2EAjIejdYuceOcDS0QcQB5XbBlHD4G7rr3Sf9TikfLnQLSqksOWUTR9McZGenY4y
-         sJRxIQA491Se0vxYJTtER/DP7kH/C5iO12OseCuNy5Nzv2dCmpzzzRICyUCxxPymlYeY
-         M7dw==
-X-Gm-Message-State: AOAM532KB7BVEEcKVduULUKVeLoDBi+o+GYbh+0lWh02Ys5ZAI9y8I0d
-        RYyTmLl2BLAi/ttdC96DzaWZmcxHNpto42iny04=
-X-Google-Smtp-Source: ABdhPJwBuUhwU7MDlAnuogmGpFmJLlcos+VhDPWVAgQqC+uDhcnnkQThfnFQxkMCz8S1PFN/Uc33qunbbsOd4idJ5vE=
-X-Received: by 2002:a2e:b8d2:: with SMTP id s18mr12849213ljp.148.1618875577658;
- Mon, 19 Apr 2021 16:39:37 -0700 (PDT)
+        Tue, 20 Apr 2021 04:44:46 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13K8JJqv175990;
+        Tue, 20 Apr 2021 08:44:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=vUXFWl3fpUuqSWOHe9zDl0mexS+RTbrEVv1eNGSk3i4=;
+ b=co5rixwnTNEul1efoP0KvaSOtc/dlB1psUa4EtTsNyLI6VYGCMBXbg7sV/p6tze0yyJ9
+ P11jKLfYWZut4+cK4ISQ76WslgHBHePql5xfY3G2qZ7lEiY09DVlMkDzoifSnqhoIsJA
+ 3f1gW84Aodlvh2yQLMAfrL9m+LJ0NK2msaUkOAvg2+DOtm+goVIJNWubpIsmRAajB5qB
+ yOWo94v3I31ds93gvqybTkreXBpvecSsZbnRi9vmKfF9JRRbzex/aTbPP55BQ3WCKGWI
+ IjnLByFpmvYPiVSxD4fWE4HDOy5exQp52E8fZrbJYT6Ofwue1pdIouwivXRmwGvJ9dOj Yw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 37yqmnebkp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 20 Apr 2021 08:44:11 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13K8bR1f138467;
+        Tue, 20 Apr 2021 08:44:11 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by aserp3030.oracle.com with ESMTP id 38098pv4w7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 20 Apr 2021 08:44:11 +0000
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 13K8iA7d163141;
+        Tue, 20 Apr 2021 08:44:10 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 38098pv4vm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 20 Apr 2021 08:44:10 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 13K8i99f015537;
+        Tue, 20 Apr 2021 08:44:09 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 20 Apr 2021 01:44:09 -0700
+Date:   Tue, 20 Apr 2021 11:44:02 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Maximilian Luz <luzmaximilian@gmail.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] platform/surface: aggregator: fix a bit test
+Message-ID: <YH6UUhJhGk3mk13b@mwanda>
 MIME-Version: 1.0
-References: <20210415152409.GA2286719@LEGION> <8735vp18su.fsf@suse.com>
-In-Reply-To: <8735vp18su.fsf@suse.com>
-From:   Steve French <smfrench@gmail.com>
-Date:   Mon, 19 Apr 2021 18:39:26 -0500
-Message-ID: <CAH2r5mtwMep4J1yu1jUUEp3+CmwhFuv2mJKqN1ViBkSxi-jGTg@mail.gmail.com>
-Subject: Re: [PATCH v2] cifs: remove unnecessary copies of tcon->crfid.fid
-To:     =?UTF-8?Q?Aur=C3=A9lien_Aptel?= <aaptel@suse.com>
-Cc:     Muhammad Usama Anjum <musamaanjum@gmail.com>,
-        Steve French <sfrench@samba.org>,
-        Ronnie Sahlberg <lsahlber@redhat.com>,
-        "open list:COMMON INTERNET FILE SYSTEM CLIENT (CIFS)" 
-        <linux-cifs@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Colin King <colin.king@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-ORIG-GUID: 4iCASsShEcj4h5YPyacErW9Ry97_fC_x
+X-Proofpoint-GUID: 4iCASsShEcj4h5YPyacErW9Ry97_fC_x
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9959 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 adultscore=0
+ impostorscore=0 spamscore=0 malwarescore=0 clxscore=1015
+ lowpriorityscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=999
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104200064
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-I changed the comment to
+The "funcs" variable is a u64.  If "func" is more than 31 then the
+BIT() shift will wrap instead of testing the high bits.
 
-+               /*
-+                * See commit 2f94a3125b87. Increment the refcount when we
-+                * get a lease for root, release it if lease break occurs
-+                */
+Fixes: c167b9c7e3d6 ("platform/surface: Add Surface Aggregator subsystem")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/platform/surface/aggregator/controller.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-and added Aurelien's Reviewed-by.  Let me know if you see any
-additional problems.
+diff --git a/drivers/platform/surface/aggregator/controller.c b/drivers/platform/surface/aggregator/controller.c
+index 00e38284885a..69e86cd599d3 100644
+--- a/drivers/platform/surface/aggregator/controller.c
++++ b/drivers/platform/surface/aggregator/controller.c
+@@ -1040,7 +1040,7 @@ static int ssam_dsm_load_u32(acpi_handle handle, u64 funcs, u64 func, u32 *ret)
+ 	union acpi_object *obj;
+ 	u64 val;
+ 
+-	if (!(funcs & BIT(func)))
++	if (!(funcs & BIT_ULL(func)))
+ 		return 0; /* Not supported, leave *ret at its default value */
+ 
+ 	obj = acpi_evaluate_dsm_typed(handle, &SSAM_SSH_DSM_GUID,
+-- 
+2.30.2
 
-On Sat, Apr 17, 2021 at 5:54 AM Aur=C3=A9lien Aptel <aaptel@suse.com> wrote=
-:
->
-> Hi,
->
-> This is better I think.
->
-> Muhammad Usama Anjum <musamaanjum@gmail.com> writes:
-> > @@ -894,6 +891,10 @@ int open_cached_dir(unsigned int xid, struct cifs_=
-tcon *tcon,
-> >
-> >       /* BB TBD check to see if oplock level check can be removed below=
- */
-> >       if (o_rsp->OplockLevel =3D=3D SMB2_OPLOCK_LEVEL_LEASE) {
-> > +             /*
-> > +              * caller expects this func to set the fid in crfid to va=
-lid
-> > +              * cached root, so increment the refcount.
-> > +              */
->
-> This comment is misleading. crfid variable doesn't exist anymore, and
-> the kref_get() here is because of this commit:
->
->     commit 2f94a3125b87
->     Author: Ronnie Sahlberg <lsahlber@redhat.com>
->     Date:   Thu Mar 28 11:20:02 2019 +1000
->
->         cifs: fix kref underflow in close_shroot()
->
->         [...]
-> -->     This extra get() is only used to hold the structure until we get =
-a lease
-> -->     break from the server at which point we will kref_put() it during=
- lease
-> -->     processing.
->         [...]
->
->
->
-> When we queue a lease break, we usually get() the cifsFileInfo, but if
-> that cifsFileInfo is backed by a cached_fid, the cached_fid isn't
-> bumped. That commit was probably a work around for that.
->
-> @Ronnie :
->
-> struct cached_fid is starting to look very much like struct
-> cifsFileInfo. I wonder why we couldn't use it, along with
-> find_writable_file()/find_readable_file() to handle the caching.
->
-> Alternatively, make cifsFileInfo use cached_fid (perhaps renaming it in
-> the process, I don't know)
->
-> Because I suspect a lot more issues will come up regarding cached_fid
-> refcount and cifsFileInfo refcount going out of sync otherwise.
->
-> Cheers,
-> --
-> Aur=C3=A9lien Aptel / SUSE Labs Samba Team
-> GPG: 1839 CB5F 9F5B FB9B AA97  8C99 03C8 A49B 521B D5D3
-> SUSE Software Solutions Germany GmbH, Maxfeldstr. 5, 90409 N=C3=BCrnberg,=
- DE
-> GF: Felix Imend=C3=B6rffer, Mary Higgins, Sri Rasiah HRB 247165 (AG M=C3=
-=BCnchen)
->
-
-
---=20
-Thanks,
-
-Steve

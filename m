@@ -2,29 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14CDD36571B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Apr 2021 13:06:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90D7F3657AB
+	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Apr 2021 13:38:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231651AbhDTLGz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 20 Apr 2021 07:06:55 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:37849 "EHLO
+        id S231200AbhDTLi4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 20 Apr 2021 07:38:56 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:39043 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231309AbhDTLGz (ORCPT
+        with ESMTP id S231561AbhDTLiv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 20 Apr 2021 07:06:55 -0400
+        Tue, 20 Apr 2021 07:38:51 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1lYoD0-0003FG-EF; Tue, 20 Apr 2021 11:06:22 +0000
+        id 1lYohu-0005Og-EL; Tue, 20 Apr 2021 11:38:18 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Felipe Balbi <balbi@kernel.org>,
+To:     Alan Stern <stern@rowland.harvard.edu>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org
+        linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] usb: gadget: net2272: remove redundant initialization of status
-Date:   Tue, 20 Apr 2021 12:06:22 +0100
-Message-Id: <20210420110622.377339-1-colin.king@canonical.com>
+Subject: [PATCH] usb: storage: datafab: remove redundant assignment of variable result
+Date:   Tue, 20 Apr 2021 12:38:18 +0100
+Message-Id: <20210420113818.378478-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,38 +35,27 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable status is being initialized with a value that is
-never read and it is being updated later with a new value.  The
-initialization is redundant and can be removed and move the
-declaration of status to the scope where it is used.
+The variable result is being assigned with a value that is
+never read, the assignment is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/usb/gadget/udc/net2272.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/storage/datafab.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/udc/net2272.c b/drivers/usb/gadget/udc/net2272.c
-index 23a735641c3d..89f479b78d80 100644
---- a/drivers/usb/gadget/udc/net2272.c
-+++ b/drivers/usb/gadget/udc/net2272.c
-@@ -539,7 +539,6 @@ net2272_read_fifo(struct net2272_ep *ep, struct net2272_request *req)
- 	int count;
- 	int tmp;
- 	int cleanup = 0;
--	int status = -1;
+diff --git a/drivers/usb/storage/datafab.c b/drivers/usb/storage/datafab.c
+index 588818483f4b..bcc4a2fad863 100644
+--- a/drivers/usb/storage/datafab.c
++++ b/drivers/usb/storage/datafab.c
+@@ -294,7 +294,6 @@ static int datafab_write_data(struct us_data *us,
+ 		if (reply[0] != 0x50 && reply[1] != 0) {
+ 			usb_stor_dbg(us, "Gah! write return code: %02x %02x\n",
+ 				     reply[0], reply[1]);
+-			result = USB_STOR_TRANSPORT_ERROR;
+ 			goto leave;
+ 		}
  
- 	dev_vdbg(ep->dev->dev, "read_fifo %s actual %d len %d\n",
- 		ep->ep.name, req->req.actual, req->req.length);
-@@ -591,6 +590,8 @@ net2272_read_fifo(struct net2272_ep *ep, struct net2272_request *req)
- 			}
- 
- 			if (!list_empty(&ep->queue)) {
-+				int status;
-+
- 				req = list_entry(ep->queue.next,
- 					struct net2272_request, queue);
- 				status = net2272_kick_dma(ep, req);
 -- 
 2.30.2
 

@@ -2,65 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5D8B366A74
-	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Apr 2021 14:09:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C735366CC6
+	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Apr 2021 15:27:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237096AbhDUMJb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 21 Apr 2021 08:09:31 -0400
-Received: from mga09.intel.com ([134.134.136.24]:5295 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234099AbhDUMJa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 21 Apr 2021 08:09:30 -0400
-IronPort-SDR: Oj5NOCIHA7N2FeWQSh4btIBCrKnJNxf70iZj3QaYwOBXciYs7VaHHNnAmt5cHAJH9WRdtBfYa5
- YVmjHkXTUafQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,9960"; a="195799981"
-X-IronPort-AV: E=Sophos;i="5.82,238,1613462400"; 
-   d="scan'208";a="195799981"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2021 05:08:57 -0700
-IronPort-SDR: uxWdUOa0RV10CsBmPi9G5BcBZAvOUImIe7CBIJkK1+U+hR/ocnnPL1/y+gNRaAQVQCRx/SWSpv
- aklvLv3mZPsA==
-X-IronPort-AV: E=Sophos;i="5.82,238,1613462400"; 
-   d="scan'208";a="391460305"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2021 05:08:55 -0700
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id 297AC203BC;
-        Wed, 21 Apr 2021 15:08:51 +0300 (EEST)
-Date:   Wed, 21 Apr 2021 15:08:51 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] media: omap3isp: drop graph mutex on error path
-Message-ID: <20210421120851.GC3@paasikivi.fi.intel.com>
-References: <YHV0WJWNQv5I6yqO@mwanda>
+        id S241644AbhDUN1u (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 21 Apr 2021 09:27:50 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:54476 "EHLO
+        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S238455AbhDUN1t (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 21 Apr 2021 09:27:49 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13LDCEw9005847;
+        Wed, 21 Apr 2021 13:15:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=FlzphcOCSgX+2k3rUk5ygmbE2dHWikxsYFYPqUAoI5A=;
+ b=vDAk9jhA93QJm/tDNOkTo9apIGr5dShybhB+BrCKFXqBJL86F6Gl+N9stG+JyVEMDCOi
+ sKmqXkx9QnkYcWXMLJ/5sBCOCoOU6FVdx8tKPOUuXDH1M/vnd/S4r3NmRIexi6SVpqwL
+ XYbwAucWPfh66eyIPDbZz//gmFF6pJdVIoYWBiToKA4IleZ+tthQwPDOStg6pGgJ75Mg
+ E2eA6tCy010xvN3MwyvfZ7nFXPtEtgL+Bd+SmKGD9mPx1wUdfkf6oejeBODEbYU/4tOB
+ +hWTurCU2xa6xeDdRachcbvTmWhU5r+h5Ll03v8SlyCU/NSXaTjO9/dq68lqd5Pb83nK gw== 
+Received: from oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by mx0b-00069f02.pphosted.com with ESMTP id 381bjn8pra-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 21 Apr 2021 13:15:02 +0000
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
+        by pps.podrdrct (8.16.0.36/8.16.0.36) with SMTP id 13LDF26f098309;
+        Wed, 21 Apr 2021 13:15:02 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by aserp3030.oracle.com with ESMTP id 38098rqhhq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 21 Apr 2021 13:15:02 +0000
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 13LDF1uk098159;
+        Wed, 21 Apr 2021 13:15:01 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 38098rqhdt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 21 Apr 2021 13:15:01 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 13LDEqlP015391;
+        Wed, 21 Apr 2021 13:14:52 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 21 Apr 2021 06:14:52 -0700
+Date:   Wed, 21 Apr 2021 16:14:40 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sean Wang <objelf@gmail.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH 1/3] mt76: mt7615: fix a precision vs width bug in printk
+Message-ID: <YIAlQKR3IpfKW5Sx@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YHV0WJWNQv5I6yqO@mwanda>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-GUID: IN-xhjViv_z8hvaYiIkNq2YIg1Cs348v
+X-Proofpoint-ORIG-GUID: IN-xhjViv_z8hvaYiIkNq2YIg1Cs348v
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
+Precision "%.*s" was intended instead of width "%*s".  The original code
+will print garbage from beyond the end of the skb->data.
 
-On Tue, Apr 13, 2021 at 01:37:12PM +0300, Dan Carpenter wrote:
-> Drop the "&isp->media_dev.graph_mutex" if media_entity_enum_init() fails.
-> 
-> Fixes: ba689d933361 ("media: omap3isp: Acquire graph mutex for graph traversal")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Fixes: d76d6c3ba2b0 ("mt76: mt7615: limit firmware log message printk to buffer length")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks for the fix.
-
-I got another patch here earlier to fix the same bug so I've taken that
-instead:
-
-<URL:https://patchwork.linuxtv.org/project/linux-media/patch/20210407143733.1608806-1-weiyongjun1@huawei.com/>
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 9b9f8d88e9bb..00b1b657cb21 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -424,7 +424,7 @@ mt7615_mcu_rx_log_message(struct mt7615_dev *dev, struct sk_buff *skb)
+ 		break;
+ 	}
+ 
+-	wiphy_info(mt76_hw(dev)->wiphy, "%s: %*s", type,
++	wiphy_info(mt76_hw(dev)->wiphy, "%s: %.*s", type,
+ 		   (int)(skb->len - sizeof(*rxd)), data);
+ }
+ 
 -- 
-Kind regards,
+2.30.2
 
-Sakari Ailus

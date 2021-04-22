@@ -2,65 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86FF73680BD
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Apr 2021 14:44:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EEC03680DC
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Apr 2021 14:52:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236001AbhDVMpb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Apr 2021 08:45:31 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:34939 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235791AbhDVMpa (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Apr 2021 08:45:30 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1lZYhQ-0007YJ-Ta; Thu, 22 Apr 2021 12:44:52 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Felix Kuehling <Felix.Kuehling@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/amdkfd: remove redundant initialization to variable r
-Date:   Thu, 22 Apr 2021 13:44:52 +0100
-Message-Id: <20210422124452.247714-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.30.2
+        id S236078AbhDVMwm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Apr 2021 08:52:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44842 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230005AbhDVMwl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 22 Apr 2021 08:52:41 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A373F613FB;
+        Thu, 22 Apr 2021 12:52:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1619095926;
+        bh=wEoT3jO7UtucRwy84ajbIOsrnCqay9RurD5+DQogCG0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=WVC5ePKKD0aujwWblA2ntnpXUKuFtkikz339I3cH2Qht8T6thqnRDvqE80Ouch6LR
+         GprUS3wq56xbWKHzAGhsTLqYVEzWOPWHSMcd70Nyr+cj3QIV/MbN0XBbFdq8Tj2PVk
+         D2zOPubRbL/594hxQ+0NyHmFIIbusZ1SR61ENlp5msOni1PGwgP7mad0x2iZj78tqM
+         Tk+nSFNZ3JZd5XXJhuTshwSXxRDlXDimVQt7MsGS38uOc6DKxVG3aoIYbnHReM9RUu
+         fllz7R+sreRiRrPH6LSJ9kqRxd5iucIBpChbXK3n8BA5hZ1U1+p3iHwORnooUoxF2v
+         FQomY+MfS1llQ==
+Received: from johan by xi.lan with local (Exim 4.93.0.4)
+        (envelope-from <johan@kernel.org>)
+        id 1lZYoW-0008L8-B9; Thu, 22 Apr 2021 14:52:12 +0200
+Date:   Thu, 22 Apr 2021 14:52:12 +0200
+From:   Johan Hovold <johan@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>, linux-serial@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] tty: serial: jsm: remove redundant assignments of
+ several variables
+Message-ID: <YIFxfH4MXc1ekn4f@hovoldconsulting.com>
+References: <20210422121115.246625-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210422121115.246625-1-colin.king@canonical.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Thu, Apr 22, 2021 at 01:11:15PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Several variables are being assigned with values that are never
+> read and being updated later with a new value. The initializations
+> are redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/tty/serial/jsm/jsm_cls.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/jsm/jsm_cls.c b/drivers/tty/serial/jsm/jsm_cls.c
+> index b507a2cec926..b58ea4344aaf 100644
+> --- a/drivers/tty/serial/jsm/jsm_cls.c
+> +++ b/drivers/tty/serial/jsm/jsm_cls.c
+> @@ -349,8 +349,8 @@ static void cls_assert_modem_signals(struct jsm_channel *ch)
+>  
+>  static void cls_copy_data_from_uart_to_queue(struct jsm_channel *ch)
+>  {
+> -	int qleft = 0;
+> -	u8 linestatus = 0;
+> +	int qleft;
+> +	u8 linestatus;
+>  	u8 error_mask = 0;
+>  	u16 head;
+>  	u16 tail;
+> @@ -365,8 +365,6 @@ static void cls_copy_data_from_uart_to_queue(struct jsm_channel *ch)
+>  	head = ch->ch_r_head & RQUEUEMASK;
+>  	tail = ch->ch_r_tail & RQUEUEMASK;
+>  
+> -	/* Get our cached LSR */
+> -	linestatus = ch->ch_cached_lsr;
+>  	ch->ch_cached_lsr = 0;
 
-The variable r is being initialized with a value that is never read
-and it is being updated later with a new value. The initialization is
-redundant and can be removed.
+Why leave this assignment in? Looks like this was all copy-pasta, but
+this assignment makes even less sense now that you remove the comment
+and load.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-index d44a46eb00d6..a66b67083d83 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-@@ -303,7 +303,7 @@ svm_migrate_copy_to_vram(struct amdgpu_device *adev, struct svm_range *prange,
- 	uint64_t vram_addr;
- 	uint64_t offset;
- 	uint64_t i, j;
--	int r = -ENOMEM;
-+	int r;
- 
- 	pr_debug("svms 0x%p [0x%lx 0x%lx]\n", prange->svms, prange->start,
- 		 prange->last);
--- 
-2.30.2
-
+Johan

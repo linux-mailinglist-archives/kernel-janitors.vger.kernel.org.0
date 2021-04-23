@@ -2,56 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FC08368C97
-	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Apr 2021 07:23:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37032368D1D
+	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Apr 2021 08:25:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240787AbhDWFXT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 23 Apr 2021 01:23:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57186 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240893AbhDWFWr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 23 Apr 2021 01:22:47 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 27D2F613F2;
-        Fri, 23 Apr 2021 05:22:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1619155331;
-        bh=S3JpOgn6FIm3exd4PQwKuZYVoyMN28l3xivITClBiZQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Wchw0zc/khLqUDC7eGf3Y6Ozsy/2BLvhOZG6/pXHDoNJjGvlhXSqJ+aMck8o86TYL
-         PNO6ALH364vXaCbAQXtwP+bn+ZR5VWF8DF0pLyDLhBZBkoAXlwKEiAFOcuoX8MHaF+
-         yzB0hVENsbubuAT2PsJex++wb9awsWXn32MCxkio=
-Date:   Fri, 23 Apr 2021 07:22:05 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] soc: qcom-geni-se: remove redundant initialization to
- variable line
-Message-ID: <YIJZfcU1Qm9dsCjJ@kroah.com>
-References: <20210422125810.248166-1-colin.king@canonical.com>
+        id S236955AbhDWGZe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 23 Apr 2021 02:25:34 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:41085 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236919AbhDWGZd (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 23 Apr 2021 02:25:33 -0400
+Received: from localhost.localdomain ([86.243.172.93])
+        by mwinf5d49 with ME
+        id w6Qu2400721Fzsu036Quj9; Fri, 23 Apr 2021 08:24:55 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 23 Apr 2021 08:24:55 +0200
+X-ME-IP: 86.243.172.93
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     mturquette@baylibre.com, sboyd@kernel.org,
+        gregory.clement@bootlin.com, thomas.petazzoni@free-electrons.com
+Cc:     linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH 0/4] clk: mvebu: Fix some error handling paths + do some clean-up
+Date:   Fri, 23 Apr 2021 08:24:52 +0200
+Message-Id: <cover.1619157996.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210422125810.248166-1-colin.king@canonical.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Apr 22, 2021 at 01:58:10PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable line being initialized with a value that is never read
-> and it is being updated later with a new value. The initialization is
-> redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/tty/serial/qcom_geni_serial.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+This serie fixes some (unlikely) error handlings paths.
 
-Your subject line is odd, this is not a "SOC" driver :(
+The 4th patch is completely speculative. When I compile-tested the changes,
+I had to remove this line in order for it to compile.
+As it works fine (at least for me) without it, I wonder if it is needed at all.
+
+
+Also, I wonder if the drivers in drivers/clk/mvebu are used by anyone.
+In order to compile-test the changes, I also had to change the 'bool' in Kconfig
+by 'bool "blah"'. Without this change, it was not possible to set
+CONFIG_MVEBU_CLK_CPU required by Makefile.
+
+I don't know if I did something wrong, if it is an issue only on my environment
+or if something got broken at some time in the build chain but it looks
+spurious.
+
+If I'm right and that these drivers never compile and no-one noticed it,
+maybe removing them is better than fixing some unlikely issues and style.
+If these drivers should stay, Kconfig may need some love from someone.
+
+Christophe JAILLET (4):
+  clk: mvebu: Fix a memory leak in an error handling path
+  clk: mvebu: Fix a another memory leak in an error handling path
+  clk: mvebu: Fix a checkpatch warning
+  clk: mvebu: Remove an unneeded include
+
+ drivers/clk/mvebu/clk-cpu.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
+
+-- 
+2.27.0
 

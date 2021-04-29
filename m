@@ -2,65 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF2A836E25A
-	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Apr 2021 02:07:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C67D536E27E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Apr 2021 02:18:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231437AbhD2AGs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 28 Apr 2021 20:06:48 -0400
-Received: from h2.fbrelay.privateemail.com ([131.153.2.43]:39596 "EHLO
-        h2.fbrelay.privateemail.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229474AbhD2AGr (ORCPT
+        id S231161AbhD2AQm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 28 Apr 2021 20:16:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50578 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229488AbhD2AQl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 28 Apr 2021 20:06:47 -0400
-Received: from MTA-14-4.privateemail.com (mta-14.privateemail.com [198.54.118.205])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by h1.fbrelay.privateemail.com (Postfix) with ESMTPS id 892A6800E4;
-        Wed, 28 Apr 2021 20:06:00 -0400 (EDT)
-Received: from mta-14.privateemail.com (localhost [127.0.0.1])
-        by mta-14.privateemail.com (Postfix) with ESMTP id 9E89180064;
-        Wed, 28 Apr 2021 20:05:58 -0400 (EDT)
-Received: from hal-station.. (unknown [10.20.151.226])
-        by mta-14.privateemail.com (Postfix) with ESMTPA id D33FE80061;
-        Wed, 28 Apr 2021 20:05:57 -0400 (EDT)
-From:   Hamza Mahfooz <someguy@effective-light.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-input@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Hamza Mahfooz <someguy@effective-light.com>
-Subject: [PATCH] hid: remove the unnecessary redefinition of a macro
-Date:   Wed, 28 Apr 2021 20:05:14 -0400
-Message-Id: <20210429000514.11650-1-someguy@effective-light.com>
-X-Mailer: git-send-email 2.31.1
+        Wed, 28 Apr 2021 20:16:41 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FFCBC06138C
+        for <kernel-janitors@vger.kernel.org>; Wed, 28 Apr 2021 17:15:55 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id h20so33797931plr.4
+        for <kernel-janitors@vger.kernel.org>; Wed, 28 Apr 2021 17:15:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=TvDH0Ufqq951p1SmGaor3zZZi0JBju1aRHwGT5Ex+6c=;
+        b=GqYMawZVTZNTIXib6cL5XHr5AMnjfw529Sg/NzKJcJP9D5xvI3YHAeJmFSvuc2ZQmL
+         nWpsHIMc5FFn/kVU2NK11GVIRQOH/6xBeJU0hVBrWnhUdBIKsrEA+HxRvwyHlCtwLGzT
+         7ZOMIYHDzo22c+ifvxtJ5teg0ihRHYSsik1bqXqeXXAy6zGwJQSi6IRCX6G/8UXlvV+5
+         xhRSIPu0YCRD4xyFfzt669eLDi85vrCEAspheYBjITadHlVV0KqBWVzdoxXj87pzJzhM
+         BX6/7XmVRRnFFahZanMLeCJ2v6wOvYw+q4jRp3pIPCbP7H/mRaKromZPtvWSSq3Ki7oF
+         LgLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=TvDH0Ufqq951p1SmGaor3zZZi0JBju1aRHwGT5Ex+6c=;
+        b=l0y4Hy6fWb+djWSaW07cM9wKSpZHn3D579cT2/dwIj5jpH0oG+qvD4EH6tnDmohLf7
+         IVqSIwF3xH5r3ra7Jwf2Tt0Kv7qPPkrs+0R8TzYIl90wIQf3gb0hGOTU8u4fX9Ym1rOp
+         yT9BaWd1SChcm+12khE8eN7wYQoqqB52wZ7ccMN/jBRIs1rUZnQ/ZXlIfaXpif0hKqaj
+         nrF+IT5XXy9GxIq7volB05hpD29eMBZJHnxZWpjBKrx+nU7hSlAwaYYSr/XLUzfdU+N/
+         inZg39pyWz2ceDkxtntwYWAfp1MqvBHo6xMMcwwF17/5TXaGOKkG15c85BeAC5Xsc024
+         byPQ==
+X-Gm-Message-State: AOAM531yhN20UanAMl0J6jmGUTkNw/Vj7A0uzX2E6Hn5wAoZgUrmKPhP
+        q9F0nb41yIUPZeXe2crW7HG570Z3+v4bbsSuhRk=
+X-Google-Smtp-Source: ABdhPJzv/JSZ1zxO7xSSfzdpHXSyuhjOrd/RVirGajjRgE5+aTow/23YKLUiqqfEUdmLXbTdOjA9UlokLd3Hz8i0/8o=
+X-Received: by 2002:a17:90a:ab02:: with SMTP id m2mr6586730pjq.234.1619655355113;
+ Wed, 28 Apr 2021 17:15:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+Received: by 2002:a05:7300:6426:b029:19:764e:b00a with HTTP; Wed, 28 Apr 2021
+ 17:15:54 -0700 (PDT)
+Reply-To: bwalysam@gmail.com
+From:   Mr Kingsley Obiora <maryclove123@gmail.com>
+Date:   Thu, 29 Apr 2021 01:15:54 +0100
+Message-ID: <CAFBdPmdRCbdm0Nb-OghRgA2npfUEtAnr2yb_qbgJLwY2WS2_qQ@mail.gmail.com>
+Subject: Hello From Dr Kingsley Obiora
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-USB_VENDOR_ID_CORSAIR is defined twice in the same file with the same
-value.
+Dear Sir,
 
-Signed-off-by: Hamza Mahfooz <someguy@effective-light.com>
----
- drivers/hid/hid-ids.h | 2 --
- 1 file changed, 2 deletions(-)
+After our meeting held today based on your funds, the management want
+to bring to your notice that we are making a special arrangement to
+bring your said fund by cash through diplomatic Immunity to your
+country home. Further details of this arrangement will be given to you
+once you acknowledged this idea.
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 67fd8a2f5aba..ce8b3c0ef45c 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -298,8 +298,6 @@
- 
- #define USB_VENDOR_ID_CORSAIR		0x1b1c
- #define USB_DEVICE_ID_CORSAIR_K90	0x1b02
--
--#define USB_VENDOR_ID_CORSAIR           0x1b1c
- #define USB_DEVICE_ID_CORSAIR_K70R      0x1b09
- #define USB_DEVICE_ID_CORSAIR_K95RGB    0x1b11
- #define USB_DEVICE_ID_CORSAIR_M65RGB    0x1b12
--- 
-2.31.1
-
+Waiting for your soonest response.
+Kingsley Obiora

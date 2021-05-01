@@ -2,22 +2,22 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 088C5370712
-	for <lists+kernel-janitors@lfdr.de>; Sat,  1 May 2021 13:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5859370785
+	for <lists+kernel-janitors@lfdr.de>; Sat,  1 May 2021 16:16:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231975AbhEALws (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 1 May 2021 07:52:48 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:46578 "EHLO
+        id S230522AbhEAORR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 1 May 2021 10:17:17 -0400
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:60905 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231937AbhEALws (ORCPT
+        with ESMTP id S230250AbhEAORR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 1 May 2021 07:52:48 -0400
+        Sat, 1 May 2021 10:17:17 -0400
 Received: from localhost.localdomain ([86.243.172.93])
-        by mwinf5d12 with ME
-        id zPrv2400321Fzsu03PrvnW; Sat, 01 May 2021 13:51:57 +0200
+        by mwinf5d06 with ME
+        id zSGP2400S21Fzsu03SGQKS; Sat, 01 May 2021 16:16:25 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 01 May 2021 13:51:57 +0200
+X-ME-Date: Sat, 01 May 2021 16:16:25 +0200
 X-ME-IP: 86.243.172.93
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 To:     thierry.reding@gmail.com, sam@ravnborg.org, airlied@linux.ie,
@@ -25,9 +25,9 @@ To:     thierry.reding@gmail.com, sam@ravnborg.org, airlied@linux.ie,
 Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] drm/panel: leadtek: Fix an error handling path
-Date:   Sat,  1 May 2021 13:51:54 +0200
-Message-Id: <588e8b4519487f6d33419c4b0fa7f8ea1b26cb58.1619869792.git.christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] drm/panel: xinpeng: Fix an error handling path
+Date:   Sat,  1 May 2021 16:16:22 +0200
+Message-Id: <6e3a8cb3956fe94f1259c13053fddb378e7d0d82.1619878508.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -40,19 +40,19 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 So add the missing assignment.
 
-Fixes: 6ea4383b9214 ("drm/panel: add panel driver for Leadtek LTK050H3146W")
+Fixes: d1479d028af2 ("drm/panel: add panel driver for Xinpeng XPP055C272 panels")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/gpu/drm/panel/panel-leadtek-ltk050h3146w.c | 2 +-
+ drivers/gpu/drm/panel/panel-xinpeng-xpp055c272.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-leadtek-ltk050h3146w.c b/drivers/gpu/drm/panel/panel-leadtek-ltk050h3146w.c
-index ed0d5f959037..6044703df1a7 100644
---- a/drivers/gpu/drm/panel/panel-leadtek-ltk050h3146w.c
-+++ b/drivers/gpu/drm/panel/panel-leadtek-ltk050h3146w.c
-@@ -450,7 +450,7 @@ static int ltk050h3146w_unprepare(struct drm_panel *panel)
- 		return ret;
- 	}
+diff --git a/drivers/gpu/drm/panel/panel-xinpeng-xpp055c272.c b/drivers/gpu/drm/panel/panel-xinpeng-xpp055c272.c
+index 55172d63a922..4e51303153af 100644
+--- a/drivers/gpu/drm/panel/panel-xinpeng-xpp055c272.c
++++ b/drivers/gpu/drm/panel/panel-xinpeng-xpp055c272.c
+@@ -151,7 +151,7 @@ static int xpp055c272_unprepare(struct drm_panel *panel)
+ 	if (ret < 0)
+ 		dev_err(ctx->dev, "failed to set display off: %d\n", ret);
  
 -	mipi_dsi_dcs_enter_sleep_mode(dsi);
 +	ret = mipi_dsi_dcs_enter_sleep_mode(dsi);

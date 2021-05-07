@@ -2,47 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33643376272
-	for <lists+kernel-janitors@lfdr.de>; Fri,  7 May 2021 10:59:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B1293762CF
+	for <lists+kernel-janitors@lfdr.de>; Fri,  7 May 2021 11:27:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236487AbhEGJAP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 7 May 2021 05:00:15 -0400
-Received: from foss.arm.com ([217.140.110.172]:50330 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235546AbhEGJAP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 7 May 2021 05:00:15 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B198D106F;
-        Fri,  7 May 2021 01:59:15 -0700 (PDT)
-Received: from bogus (unknown [10.57.33.10])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 359DD3F718;
-        Fri,  7 May 2021 01:59:14 -0700 (PDT)
-Date:   Fri, 7 May 2021 09:59:11 +0100
-From:   Sudeep Holla <sudeep.holla@arm.com>
+        id S236152AbhEGJ22 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 7 May 2021 05:28:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46018 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236023AbhEGJ22 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 7 May 2021 05:28:28 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7C3CC061574
+        for <kernel-janitors@vger.kernel.org>; Fri,  7 May 2021 02:27:28 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mtr@pengutronix.de>)
+        id 1lewlP-00023a-JO; Fri, 07 May 2021 11:27:15 +0200
+Received: from mtr by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <mtr@pengutronix.de>)
+        id 1lewlN-0007ID-SU; Fri, 07 May 2021 11:27:13 +0200
+Date:   Fri, 7 May 2021 11:27:13 +0200
+From:   Michael Tretter <m.tretter@pengutronix.de>
 To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     cristian.marussi@arm.com, rjw@rjwysocki.net,
-        viresh.kumar@linaro.org, nicola.mazzucato@arm.com,
-        linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] cpufreq: scmi: Fix an error message
-Message-ID: <20210507085911.yqdwutmn5rev7xdv@bogus>
-References: <b0c09698216af60d97bfd30b55bad89dc0f70112.1620328067.git.christophe.jaillet@wanadoo.fr>
+Cc:     mturquette@baylibre.com, sboyd@kernel.org, michal.simek@xilinx.com,
+        quanyang.wang@windriver.com, rajan.vaja@xilinx.com,
+        jolly.shah@xilinx.com, tejasp@xilinx.com,
+        shubhrajyoti.datta@xilinx.com, linux-clk@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH] clk: zynqmp: pll: Remove some dead code
+Message-ID: <20210507092713.GM29775@pengutronix.de>
+References: <71a9fed5f762a71248b8ac73c0a15af82f3ce1e2.1619867987.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <b0c09698216af60d97bfd30b55bad89dc0f70112.1620328067.git.christophe.jaillet@wanadoo.fr>
-User-Agent: NeoMutt/20171215
+In-Reply-To: <71a9fed5f762a71248b8ac73c0a15af82f3ce1e2.1619867987.git.christophe.jaillet@wanadoo.fr>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 11:22:09 up 78 days, 12:46, 97 users,  load average: 0.07, 0.08,
+ 0.09
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: mtr@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, May 06, 2021 at 09:09:48PM +0200, Christophe JAILLET wrote:
-> 'ret' is known to be 0 here.
-> The last error code is stored in 'nr_opp', so use it in the error message.
->
+On Sat, 01 May 2021 13:24:32 +0200, Christophe JAILLET wrote:
+> 'clk_hw_set_rate_range()' does not return any error code and 'ret' is
+> known to be 0 at this point, so this message can never be displayed.
+> 
+> Remove it.
+> 
+> Fixes: 3fde0e16d016 ("drivers: clk: Add ZynqMP clock driver")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Reviewed-by: Michael Tretter <m.tretter@pengutronix.de>
 
---
-Regards,
-Sudeep
+> ---
+> HOWEVER, the message is about 'clk_set_rate_range()', not
+> 'clk_hw_set_rate_range()'. So the message is maybe correct and the
+> 'xxx_rate_range()' function incorrect.
+
+Thanks. The function is correct, as this is a clock provider and should use
+the clk_hw. Removing the message is correct.
+
+Michael
+
+> ---
+>  drivers/clk/zynqmp/pll.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/clk/zynqmp/pll.c b/drivers/clk/zynqmp/pll.c
+> index abe6afbf3407..af11e9400058 100644
+> --- a/drivers/clk/zynqmp/pll.c
+> +++ b/drivers/clk/zynqmp/pll.c
+> @@ -331,8 +331,6 @@ struct clk_hw *zynqmp_clk_register_pll(const char *name, u32 clk_id,
+>  	}
+>  
+>  	clk_hw_set_rate_range(hw, PS_PLL_VCO_MIN, PS_PLL_VCO_MAX);
+> -	if (ret < 0)
+> -		pr_err("%s:ERROR clk_set_rate_range failed %d\n", name, ret);
+>  
+>  	return hw;
+>  }
+> -- 
+> 2.30.2
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> 

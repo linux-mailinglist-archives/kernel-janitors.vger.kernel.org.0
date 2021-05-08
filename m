@@ -2,28 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56DF1376E32
-	for <lists+kernel-janitors@lfdr.de>; Sat,  8 May 2021 03:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 897C2376E34
+	for <lists+kernel-janitors@lfdr.de>; Sat,  8 May 2021 03:51:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230370AbhEHBwm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 7 May 2021 21:52:42 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:18011 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230351AbhEHBwl (ORCPT
+        id S230351AbhEHBwr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 7 May 2021 21:52:47 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:18368 "EHLO
+        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230140AbhEHBwq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 7 May 2021 21:52:41 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FcVZs5F7YzQjpc;
-        Sat,  8 May 2021 09:48:21 +0800 (CST)
-Received: from huawei.com (10.174.28.241) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.498.0; Sat, 8 May 2021
- 09:51:31 +0800
+        Fri, 7 May 2021 21:52:46 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
+        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4FcVcK0TS7zlbwn;
+        Sat,  8 May 2021 09:49:37 +0800 (CST)
+Received: from huawei.com (10.174.28.241) by DGGEMS413-HUB.china.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.498.0; Sat, 8 May 2021
+ 09:51:34 +0800
 From:   Bixuan Cui <cuibixuan@huawei.com>
-To:     <cuibixuan@huawei.com>, Linus Walleij <linus.walleij@linaro.org>
-CC:     <linux-gpio@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] pinctrl: equilibrium: Add missing MODULE_DEVICE_TABLE
-Date:   Sat, 8 May 2021 11:15:02 +0800
-Message-ID: <20210508031502.53637-1-cuibixuan@huawei.com>
+To:     <cuibixuan@huawei.com>, Tero Kristo <kristo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Tony Luck <tony.luck@intel.com>
+CC:     <linux-edac@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] EDAC: ti: Add missing MODULE_DEVICE_TABLE
+Date:   Sat, 8 May 2021 11:15:06 +0800
+Message-ID: <20210508031506.53687-1-cuibixuan@huawei.com>
 X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="ISO-8859-1"
@@ -41,19 +44,19 @@ as an external module.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Bixuan Cui <cuibixuan@huawei.com>
 ---
- drivers/pinctrl/pinctrl-equilibrium.c | 1 +
+ drivers/edac/ti_edac.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pinctrl/pinctrl-equilibrium.c b/drivers/pinctrl/pinctrl-equilibrium.c
-index a194d8089b6f..38cc20fa9d5a 100644
---- a/drivers/pinctrl/pinctrl-equilibrium.c
-+++ b/drivers/pinctrl/pinctrl-equilibrium.c
-@@ -939,6 +939,7 @@ static const struct of_device_id eqbr_pinctrl_dt_match[] = {
- 	{ .compatible = "intel,lgm-io" },
- 	{}
+diff --git a/drivers/edac/ti_edac.c b/drivers/edac/ti_edac.c
+index e7eae20f83d1..169f96e51c29 100644
+--- a/drivers/edac/ti_edac.c
++++ b/drivers/edac/ti_edac.c
+@@ -197,6 +197,7 @@ static const struct of_device_id ti_edac_of_match[] = {
+ 	{ .compatible = "ti,emif-dra7xx", .data = (void *)EMIF_TYPE_DRA7 },
+ 	{},
  };
-+MODULE_DEVICE_TABLE(of, eqbr_pinctrl_dt_match);
++MODULE_DEVICE_TABLE(of, ti_edac_of_match);
  
- static struct platform_driver eqbr_pinctrl_driver = {
- 	.probe	= eqbr_pinctrl_probe,
+ static int _emif_get_id(struct device_node *node)
+ {
 

@@ -2,64 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D0FF376E35
-	for <lists+kernel-janitors@lfdr.de>; Sat,  8 May 2021 03:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22610376FC2
+	for <lists+kernel-janitors@lfdr.de>; Sat,  8 May 2021 07:38:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230360AbhEHBwt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 7 May 2021 21:52:49 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:17476 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230352AbhEHBwt (ORCPT
+        id S230347AbhEHFjc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 8 May 2021 01:39:32 -0400
+Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:19384 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230096AbhEHFjb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 7 May 2021 21:52:49 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FcVbp6gYjzkX0T;
-        Sat,  8 May 2021 09:49:10 +0800 (CST)
-Received: from huawei.com (10.174.28.241) by DGGEMS414-HUB.china.huawei.com
- (10.3.19.214) with Microsoft SMTP Server id 14.3.498.0; Sat, 8 May 2021
- 09:51:41 +0800
-From:   Bixuan Cui <cuibixuan@huawei.com>
-To:     <cuibixuan@huawei.com>, Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        "Ye Bin" <yebin10@huawei.com>
-CC:     <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] ASoC: codecs: lpass-tx-macro: add missing MODULE_DEVICE_TABLE
-Date:   Sat, 8 May 2021 11:15:12 +0800
-Message-ID: <20210508031512.53783-1-cuibixuan@huawei.com>
-X-Mailer: git-send-email 2.17.1
+        Sat, 8 May 2021 01:39:31 -0400
+Received: from localhost.localdomain ([86.243.172.93])
+        by mwinf5d66 with ME
+        id 25eQ2500321Fzsu035eQMR; Sat, 08 May 2021 07:38:28 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 08 May 2021 07:38:28 +0200
+X-ME-IP: 86.243.172.93
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     davem@davemloft.net, kuba@kernel.org, andrew@lunn.ch,
+        michael@walle.cc, w-kwok2@ti.com, m-karicheri2@ti.com
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] net: netcp: Fix an error message
+Date:   Sat,  8 May 2021 07:38:22 +0200
+Message-Id: <1a0db6d47ee2efb03c725948613f8a0167ce1439.1620452171.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.28.241]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This patch adds missing MODULE_DEVICE_TABLE definition which generates
-correct modalias for automatic loading of this driver when it is built
-as an external module.
+'ret' is known to be 0 here.
+The expected error code is stored in 'tx_pipe->dma_queue', so use it
+instead.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Bixuan Cui <cuibixuan@huawei.com>
+While at it, switch from %d to %pe which is more user friendly.
+
+Fixes: 84640e27f230 ("net: netcp: Add Keystone NetCP core ethernet driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- sound/soc/codecs/lpass-tx-macro.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/ti/netcp_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/lpass-tx-macro.c b/sound/soc/codecs/lpass-tx-macro.c
-index acd2fbc0ca7c..27a0d5defd27 100644
---- a/sound/soc/codecs/lpass-tx-macro.c
-+++ b/sound/soc/codecs/lpass-tx-macro.c
-@@ -1846,6 +1846,7 @@ static const struct of_device_id tx_macro_dt_match[] = {
- 	{ .compatible = "qcom,sm8250-lpass-tx-macro" },
- 	{ }
- };
-+MODULE_DEVICE_TABLE(of, tx_macro_dt_match);
- static struct platform_driver tx_macro_driver = {
- 	.driver = {
- 		.name = "tx_macro",
+diff --git a/drivers/net/ethernet/ti/netcp_core.c b/drivers/net/ethernet/ti/netcp_core.c
+index 9030e619e543..97942b0e3897 100644
+--- a/drivers/net/ethernet/ti/netcp_core.c
++++ b/drivers/net/ethernet/ti/netcp_core.c
+@@ -1350,8 +1350,8 @@ int netcp_txpipe_open(struct netcp_tx_pipe *tx_pipe)
+ 	tx_pipe->dma_queue = knav_queue_open(name, tx_pipe->dma_queue_id,
+ 					     KNAV_QUEUE_SHARED);
+ 	if (IS_ERR(tx_pipe->dma_queue)) {
+-		dev_err(dev, "Could not open DMA queue for channel \"%s\": %d\n",
+-			name, ret);
++		dev_err(dev, "Could not open DMA queue for channel \"%s\": %pe\n",
++			name, tx_pipe->dma_queue);
+ 		ret = PTR_ERR(tx_pipe->dma_queue);
+ 		goto err;
+ 	}
+-- 
+2.30.2
 

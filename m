@@ -2,29 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07A2C376E37
-	for <lists+kernel-janitors@lfdr.de>; Sat,  8 May 2021 03:51:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D0FF376E35
+	for <lists+kernel-janitors@lfdr.de>; Sat,  8 May 2021 03:51:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230385AbhEHBwv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 7 May 2021 21:52:51 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:18369 "EHLO
-        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230140AbhEHBwu (ORCPT
+        id S230360AbhEHBwt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 7 May 2021 21:52:49 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:17476 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230352AbhEHBwt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 7 May 2021 21:52:50 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4FcVcN3NCfzlbwn;
-        Sat,  8 May 2021 09:49:40 +0800 (CST)
-Received: from huawei.com (10.174.28.241) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.498.0; Sat, 8 May 2021
- 09:51:38 +0800
+        Fri, 7 May 2021 21:52:49 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FcVbp6gYjzkX0T;
+        Sat,  8 May 2021 09:49:10 +0800 (CST)
+Received: from huawei.com (10.174.28.241) by DGGEMS414-HUB.china.huawei.com
+ (10.3.19.214) with Microsoft SMTP Server id 14.3.498.0; Sat, 8 May 2021
+ 09:51:41 +0800
 From:   Bixuan Cui <cuibixuan@huawei.com>
-To:     <cuibixuan@huawei.com>, Alessandro Zummo <a.zummo@towertech.it>,
-        "Alexandre Belloni" <alexandre.belloni@bootlin.com>
-CC:     <linux-rtc@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] rtc: mxc_v2: add missing MODULE_DEVICE_TABLE
-Date:   Sat, 8 May 2021 11:15:09 +0800
-Message-ID: <20210508031509.53735-1-cuibixuan@huawei.com>
+To:     <cuibixuan@huawei.com>, Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        "Ye Bin" <yebin10@huawei.com>
+CC:     <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] ASoC: codecs: lpass-tx-macro: add missing MODULE_DEVICE_TABLE
+Date:   Sat, 8 May 2021 11:15:12 +0800
+Message-ID: <20210508031512.53783-1-cuibixuan@huawei.com>
 X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="ISO-8859-1"
@@ -42,19 +47,19 @@ as an external module.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Bixuan Cui <cuibixuan@huawei.com>
 ---
- drivers/rtc/rtc-mxc_v2.c | 1 +
+ sound/soc/codecs/lpass-tx-macro.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/rtc/rtc-mxc_v2.c b/drivers/rtc/rtc-mxc_v2.c
-index a577a74aaf75..5e0383401629 100644
---- a/drivers/rtc/rtc-mxc_v2.c
-+++ b/drivers/rtc/rtc-mxc_v2.c
-@@ -372,6 +372,7 @@ static const struct of_device_id mxc_ids[] = {
- 	{ .compatible = "fsl,imx53-rtc", },
- 	{}
+diff --git a/sound/soc/codecs/lpass-tx-macro.c b/sound/soc/codecs/lpass-tx-macro.c
+index acd2fbc0ca7c..27a0d5defd27 100644
+--- a/sound/soc/codecs/lpass-tx-macro.c
++++ b/sound/soc/codecs/lpass-tx-macro.c
+@@ -1846,6 +1846,7 @@ static const struct of_device_id tx_macro_dt_match[] = {
+ 	{ .compatible = "qcom,sm8250-lpass-tx-macro" },
+ 	{ }
  };
-+MODULE_DEVICE_TABLE(of, mxc_ids);
- 
- static struct platform_driver mxc_rtc_driver = {
++MODULE_DEVICE_TABLE(of, tx_macro_dt_match);
+ static struct platform_driver tx_macro_driver = {
  	.driver = {
+ 		.name = "tx_macro",
 

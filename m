@@ -2,30 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A7883775D4
-	for <lists+kernel-janitors@lfdr.de>; Sun,  9 May 2021 09:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92FEE3775E2
+	for <lists+kernel-janitors@lfdr.de>; Sun,  9 May 2021 10:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229640AbhEIHya (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 9 May 2021 03:54:30 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:20329 "EHLO
+        id S229662AbhEII3X (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 9 May 2021 04:29:23 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:29592 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229585AbhEIHy1 (ORCPT
+        with ESMTP id S229616AbhEII3X (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 9 May 2021 03:54:27 -0400
+        Sun, 9 May 2021 04:29:23 -0400
 Received: from localhost.localdomain ([86.243.172.93])
         by mwinf5d86 with ME
-        id 2XtN2500C21Fzsu03XtNRd; Sun, 09 May 2021 09:53:23 +0200
+        id 2YUJ2500S21Fzsu03YUKfS; Sun, 09 May 2021 10:28:19 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 09 May 2021 09:53:23 +0200
+X-ME-Date: Sun, 09 May 2021 10:28:19 +0200
 X-ME-IP: 86.243.172.93
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     brandon@ifup.org, hjk@linutronix.de, gregkh@linuxfoundation.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+To:     gregkh@linuxfoundation.org, hjk@linutronix.de,
+        jirislaby@kernel.org, lee.jones@linaro.org
+Cc:     linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] uio: uio_aec: Use pci_iounmap instead of iounmap
-Date:   Sun,  9 May 2021 09:53:21 +0200
-Message-Id: <f6b2a09a45658e8ef552aa34f0b8615dc1c35838.1620546705.git.christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] tty: serial: 8250: serial_cs: Fix a memory leak in error handling path
+Date:   Sun,  9 May 2021 10:28:18 +0200
+Message-Id: <562910a450cb86db7c2c4a4328a60e53ef95f504.1620548790.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -33,30 +35,50 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'pci_iomap()' is used in the probe and 'pci_iounmap()' in the error
-handling path of the probe.
-So keep things consistent and use 'pci_iounmap()' also in the remove
+In the probe function, if the final 'serial_config()' fails, 'info' is
+leaking.
+
+Use 'devm_kzalloc' instead to fix the leak and simplify the .remove
 function.
 
-Fixes: 1bafeb378e91 ("uio: add the uio_aec driver")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/uio/uio_aec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I've not been able to find a Fixes tag. All I know is that it is old!
+---
+ drivers/tty/serial/8250/serial_cs.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/uio/uio_aec.c b/drivers/uio/uio_aec.c
-index 32357f8a92b5..64eafd59e6e7 100644
---- a/drivers/uio/uio_aec.c
-+++ b/drivers/uio/uio_aec.c
-@@ -133,7 +133,7 @@ static void remove(struct pci_dev *pdev)
- 	uio_unregister_device(info);
- 	pci_release_regions(pdev);
- 	pci_disable_device(pdev);
--	iounmap(info->priv);
-+	pci_iounmap(pdev, info->priv);
+diff --git a/drivers/tty/serial/8250/serial_cs.c b/drivers/tty/serial/8250/serial_cs.c
+index 63ea9c4da3d5..d18c98e0d0b0 100644
+--- a/drivers/tty/serial/8250/serial_cs.c
++++ b/drivers/tty/serial/8250/serial_cs.c
+@@ -310,7 +310,7 @@ static int serial_probe(struct pcmcia_device *link)
+ 	dev_dbg(&link->dev, "serial_attach()\n");
+ 
+ 	/* Create new serial device */
+-	info = kzalloc(sizeof(*info), GFP_KERNEL);
++	info = devm_kzalloc(&link->dev, sizeof(*info), GFP_KERNEL);
+ 	if (!info)
+ 		return -ENOMEM;
+ 	info->p_dev = link;
+@@ -325,17 +325,12 @@ static int serial_probe(struct pcmcia_device *link)
+ 
+ static void serial_detach(struct pcmcia_device *link)
+ {
+-	struct serial_info *info = link->priv;
+-
+ 	dev_dbg(&link->dev, "serial_detach\n");
+ 
+ 	/*
+ 	 * Ensure that the ports have been released.
+ 	 */
+ 	serial_remove(link);
+-
+-	/* free bits */
+-	kfree(info);
  }
  
- static struct pci_driver pci_driver = {
+ /*====================================================================*/
 -- 
 2.30.2
 

@@ -2,97 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61ABF37CF7B
-	for <lists+kernel-janitors@lfdr.de>; Wed, 12 May 2021 19:32:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5078F37EE54
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 May 2021 00:58:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233612AbhELRN4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 12 May 2021 13:13:56 -0400
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:40279 "EHLO
-        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233495AbhELQz5 (ORCPT
+        id S236789AbhELVk5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 12 May 2021 17:40:57 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:39607 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1384183AbhELT5W (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 12 May 2021 12:55:57 -0400
-Received: from localhost (lfbn-lyo-1-1676-55.w90-65.abo.wanadoo.fr [90.65.108.55])
-        (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 6487B24000C;
-        Wed, 12 May 2021 16:54:42 +0000 (UTC)
-Date:   Wed, 12 May 2021 18:54:42 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     Edmundo Carmona Antoranz <eantoranz@gmail.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        cw00.choi@samsung.com, b.zolnierkie@samsung.com,
-        a.zummo@towertech.it, linux-rtc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] rtc: max77686: Remove some dead code
-Message-ID: <YJwIUm/UPsIwVkaA@piout.net>
-References: <a6b23ee8d3ea78f62d3fda0b53aa273718f14c6d.1620452523.git.christophe.jaillet@wanadoo.fr>
- <CAOc6etaUPtJqoH9DBDE72nDW7s7iEZHnaJRpKx9zFow02WOZig@mail.gmail.com>
- <9f34ebcd-0c17-cd7f-eb08-52c6c3dc7b03@wanadoo.fr>
- <CAOc6etYwTvVPnoB3BQfuQEikvsCwSs9AqBWnLFrs9zQ0pJGp1A@mail.gmail.com>
- <YJhO0cEqpbJAdv7s@piout.net>
- <219efcc7-ca05-a7d1-5943-d34a42f0d49f@canonical.com>
- <YJv+mMRcOuTJxLuk@piout.net>
- <9b48e433-4e0b-7334-028d-d700e0cdbff0@canonical.com>
+        Wed, 12 May 2021 15:57:22 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <colin.king@canonical.com>)
+        id 1lguxl-00041H-P0; Wed, 12 May 2021 19:56:09 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     VMware Graphics <linux-graphics-maintainer@vmware.com>,
+        Roland Scheidegger <sroland@vmware.com>,
+        Zack Rusin <zackr@vmware.com>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/vmwgfx: Fix memory leak of object fifo on error return
+Date:   Wed, 12 May 2021 20:56:09 +0100
+Message-Id: <20210512195609.298326-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9b48e433-4e0b-7334-028d-d700e0cdbff0@canonical.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 12/05/2021 12:24:26-0400, Krzysztof Kozlowski wrote:
-> On 12/05/2021 12:13, Alexandre Belloni wrote:
-> > On 10/05/2021 08:20:52-0400, Krzysztof Kozlowski wrote:
-> >> On 09/05/2021 17:06, Alexandre Belloni wrote:
-> >>> On 08/05/2021 18:06:03-0600, Edmundo Carmona Antoranz wrote:
-> >>>> On Sat, May 8, 2021 at 10:59 AM Christophe JAILLET
-> >>>> <christophe.jaillet@wanadoo.fr> wrote:
-> >>>>>
-> >>>>>>
-> >>>>>> Following the recent conversations, I think it might make sense to do
-> >>>>>> dev_err(&pdev->dev, "Failed to register RTC device: %pe\n", info->rtc_dev);
-> >>>>>>
-> >>>>>> Is that right?
-> >>>>>>
-> >>>>>
-> >>>>> Yes, it is right, but it should be done in another patch.
-> >>>>>
-> >>>>> Would you like to give it a try?
-> >>>>>
-> >>>> Sure, I'll have the patch ready to send it when I see yours on next.
-> >>>
-> >>> Does it make sense to print anything at all? Who would use the output?
-> >>> Is anyone actually going to read it?
-> >>
-> >> If the RTC core does not print the message, it should be
-> >> dev_err_probe().  However the first is recently preferred - RTC core
-> >> should do it for all drivers.  I find such error messages useful - helps
-> >> easily spotting regressions via dmesg -l err.
-> >>
-> > 
-> > The only error path that will not print a message by default (it is
-> > dev_dbg) is when rtc-ops is NULL which I don't expect would regress
-> > anyway.
-> 
-> Then the message in the driver is useless and could be removed.
-> 
-> > A better way to remove the dead code would be to switch to
-> > devm_rtc_allocate_device/devm_rtc_register_device. And even better would
-> > be to take that opportunity to set range_min and range_max ;)
-> > 
-> 
-> The driver already uses devm_rtc_device_register() so I think I don't
-> follow that part.
+From: Colin Ian King <colin.king@canonical.com>
 
-devm_rtc_device_register is different from devm_rtc_register_device.
+In the case where fifo->static_buffer fails to be allocated the
+error return path neglects to kfree the fifo object. Fix this by
+adding in the missing kfree.
 
-> 
-> Best regards,
-> Krzysztof
+Addresses-Coverity: ("Resource leak")
+Fixes: 2cd80dbd3551 ("drm/vmwgfx: Add basic support for SVGA3")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/vmwgfx/vmwgfx_cmd.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_cmd.c b/drivers/gpu/drm/vmwgfx/vmwgfx_cmd.c
+index 027d7d504e78..e5fa210f589e 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_cmd.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_cmd.c
+@@ -107,8 +107,10 @@ struct vmw_fifo_state *vmw_fifo_create(struct vmw_private *dev_priv)
+ 	fifo = kzalloc(sizeof(*fifo), GFP_KERNEL);
+ 	fifo->static_buffer_size = VMWGFX_FIFO_STATIC_SIZE;
+ 	fifo->static_buffer = vmalloc(fifo->static_buffer_size);
+-	if (unlikely(fifo->static_buffer == NULL))
++	if (unlikely(fifo->static_buffer == NULL)) {
++		kfree(fifo);
+ 		return ERR_PTR(-ENOMEM);
++	}
+ 
+ 	fifo->dynamic_buffer = NULL;
+ 	fifo->reserved_size = 0;
 -- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.30.2
+

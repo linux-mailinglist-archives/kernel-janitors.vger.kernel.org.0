@@ -2,118 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 941D437CF26
-	for <lists+kernel-janitors@lfdr.de>; Wed, 12 May 2021 19:31:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D5A737CF7E
+	for <lists+kernel-janitors@lfdr.de>; Wed, 12 May 2021 19:32:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241895AbhELRJE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 12 May 2021 13:09:04 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:34806 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240861AbhELQZr (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 12 May 2021 12:25:47 -0400
-Received: from mail-vs1-f71.google.com ([209.85.217.71])
-        by youngberry.canonical.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <krzysztof.kozlowski@canonical.com>)
-        id 1lgrf4-0006L0-SD
-        for kernel-janitors@vger.kernel.org; Wed, 12 May 2021 16:24:38 +0000
-Received: by mail-vs1-f71.google.com with SMTP id g28-20020a67d49c0000b0290226baf5716bso11380009vsj.12
-        for <kernel-janitors@vger.kernel.org>; Wed, 12 May 2021 09:24:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=tCtdc0pje3aRjWOj2CAvfE8ROanzD/s4FkZcrRj+uXQ=;
-        b=CgkrMKeX9ToRmyZYlChjTUHIOBE0tzlLsVzd5xhmtemwI6+Gd6adE2JACvfvkagZDp
-         UaLCwGdMZqr9wVD+KPEKLhjB5XaoFCEr/9fSLIzvrz7R9Tg+OnF72/GpvPYDr8A+r0gS
-         UcykCmHNE6aezFodks3RQZg/+1adDyA9pfmHdMhq77sCvF5FAFUUyahLPqKPCDmIDlfd
-         MtzdrfwxSo8Moqo1zAHsRDVG/yF1eNbEi+9lzsLyHK6wB2JqLgH1jiNhk8VRe/O/tn1w
-         gM3jK1XpnFwifxgge6mxeG17Qc3kjfH7iGkdyMF9Oa00jQHbHOtnj2wC5Bg0WlR9DNYo
-         tfKg==
-X-Gm-Message-State: AOAM531EfOgQEaI1xZcGfNOb3a5D9YpAWcywcFtrIC6Nmb5MuXoF/l0T
-        6FF0AsOAnwGXMyaN3j8hnezG443SeZ3zL1x7H8xQI2AdqICEMo0hR5VTjW6WqtB3wdGEhrFZCMX
-        oC6VM3fxe7rbfrCOIAjbDWq9enC8xXj5+iDTcWhs30efuvA==
-X-Received: by 2002:a67:edd0:: with SMTP id e16mr32113486vsp.4.1620836674099;
-        Wed, 12 May 2021 09:24:34 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzzCIIi7dj9wOhAkajl84mMy9AVmrPa/aYZpWXOGRIFFKYx9xsHaIs2QUJBfiCdoQCk58vghQ==
-X-Received: by 2002:a67:edd0:: with SMTP id e16mr32113027vsp.4.1620836670303;
-        Wed, 12 May 2021 09:24:30 -0700 (PDT)
-Received: from [192.168.1.4] ([45.237.48.2])
-        by smtp.gmail.com with ESMTPSA id s17sm33710vkk.50.2021.05.12.09.24.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 May 2021 09:24:28 -0700 (PDT)
-Subject: Re: [PATCH] rtc: max77686: Remove some dead code
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     Edmundo Carmona Antoranz <eantoranz@gmail.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        cw00.choi@samsung.com, b.zolnierkie@samsung.com,
-        a.zummo@towertech.it, linux-rtc@vger.kernel.org,
+        id S231405AbhELRNz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 12 May 2021 13:13:55 -0400
+Received: from gofer.mess.org ([88.97.38.141]:38857 "EHLO gofer.mess.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237228AbhELQiC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 12 May 2021 12:38:02 -0400
+Received: by gofer.mess.org (Postfix, from userid 1000)
+        id 695A3C6387; Wed, 12 May 2021 17:36:51 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mess.org; s=2020;
+        t=1620837411; bh=zc9wSP/5PcWYTdlf6TKylEppKxg8dlAf3sV4hJ2wvG4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=X36RAd/uNzLbxW7hP2mmhN6Z+JtKLXOu9Q5uoJyKBRRsLPO3oYIXb5hIK6IpAWleJ
+         7z21F7uio3/LgI73Fns+nydzX285A/DmSDwjV4yVQ5HE+Sf54wOskamBNcumZ9CLWC
+         9u1Yy5+uYFtMhf5Dzy4Mu9iQZ/Yn6BRtWF2uSBLDjBlBzTM8rPCRqCMUa3eThLXah3
+         +HXQ01IysGuE0Wlxb0r7SWuKrxfea4NxbuknOSEkZHGE+12Qf8p3SquiUozL4yNYVu
+         jJcR2SD+qp0s5nc8/Y6smZPEh+DdhawUaJNMnHx8XMC4W+TNS0/GMzoP4UVUCSz7Vr
+         XaEj7YucoHuLg==
+Date:   Wed, 12 May 2021 17:36:51 +0100
+From:   Sean Young <sean@mess.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     mchehab@kernel.org, linux-media@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <a6b23ee8d3ea78f62d3fda0b53aa273718f14c6d.1620452523.git.christophe.jaillet@wanadoo.fr>
- <CAOc6etaUPtJqoH9DBDE72nDW7s7iEZHnaJRpKx9zFow02WOZig@mail.gmail.com>
- <9f34ebcd-0c17-cd7f-eb08-52c6c3dc7b03@wanadoo.fr>
- <CAOc6etYwTvVPnoB3BQfuQEikvsCwSs9AqBWnLFrs9zQ0pJGp1A@mail.gmail.com>
- <YJhO0cEqpbJAdv7s@piout.net>
- <219efcc7-ca05-a7d1-5943-d34a42f0d49f@canonical.com>
- <YJv+mMRcOuTJxLuk@piout.net>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Message-ID: <9b48e433-4e0b-7334-028d-d700e0cdbff0@canonical.com>
-Date:   Wed, 12 May 2021 12:24:26 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+Subject: Re: [PATCH] media: rc: i2c: Fix an error message
+Message-ID: <20210512163651.GA5987@gofer.mess.org>
+References: <179fb4cda2b79904fc9cf1d7d8e61153e30fae6b.1620279452.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-In-Reply-To: <YJv+mMRcOuTJxLuk@piout.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <179fb4cda2b79904fc9cf1d7d8e61153e30fae6b.1620279452.git.christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 12/05/2021 12:13, Alexandre Belloni wrote:
-> On 10/05/2021 08:20:52-0400, Krzysztof Kozlowski wrote:
->> On 09/05/2021 17:06, Alexandre Belloni wrote:
->>> On 08/05/2021 18:06:03-0600, Edmundo Carmona Antoranz wrote:
->>>> On Sat, May 8, 2021 at 10:59 AM Christophe JAILLET
->>>> <christophe.jaillet@wanadoo.fr> wrote:
->>>>>
->>>>>>
->>>>>> Following the recent conversations, I think it might make sense to do
->>>>>> dev_err(&pdev->dev, "Failed to register RTC device: %pe\n", info->rtc_dev);
->>>>>>
->>>>>> Is that right?
->>>>>>
->>>>>
->>>>> Yes, it is right, but it should be done in another patch.
->>>>>
->>>>> Would you like to give it a try?
->>>>>
->>>> Sure, I'll have the patch ready to send it when I see yours on next.
->>>
->>> Does it make sense to print anything at all? Who would use the output?
->>> Is anyone actually going to read it?
->>
->> If the RTC core does not print the message, it should be
->> dev_err_probe().  However the first is recently preferred - RTC core
->> should do it for all drivers.  I find such error messages useful - helps
->> easily spotting regressions via dmesg -l err.
->>
+On Thu, May 06, 2021 at 07:38:56AM +0200, Christophe JAILLET wrote:
+> 'ret' is known to be 1 here. In fact 'i' is expected instead.
+> Store the return value of 'i2c_master_recv()' in 'ret' so that the error
+> message print the correct error code.
+
+Nice catch, applied!
+
+Thanks
+Sean
+
 > 
-> The only error path that will not print a message by default (it is
-> dev_dbg) is when rtc-ops is NULL which I don't expect would regress
-> anyway.
-
-Then the message in the driver is useless and could be removed.
-
-> A better way to remove the dead code would be to switch to
-> devm_rtc_allocate_device/devm_rtc_register_device. And even better would
-> be to take that opportunity to set range_min and range_max ;)
+> Fixes: acaa34bf06e9 ('media: rc: implement zilog transmitter")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  drivers/media/i2c/ir-kbd-i2c.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-
-The driver already uses devm_rtc_device_register() so I think I don't
-follow that part.
-
-Best regards,
-Krzysztof
+> diff --git a/drivers/media/i2c/ir-kbd-i2c.c b/drivers/media/i2c/ir-kbd-i2c.c
+> index e8119ad0bc71..92376592455e 100644
+> --- a/drivers/media/i2c/ir-kbd-i2c.c
+> +++ b/drivers/media/i2c/ir-kbd-i2c.c
+> @@ -678,8 +678,8 @@ static int zilog_tx(struct rc_dev *rcdev, unsigned int *txbuf,
+>  		goto out_unlock;
+>  	}
+>  
+> -	i = i2c_master_recv(ir->tx_c, buf, 1);
+> -	if (i != 1) {
+> +	ret = i2c_master_recv(ir->tx_c, buf, 1);
+> +	if (ret != 1) {
+>  		dev_err(&ir->rc->dev, "i2c_master_recv failed with %d\n", ret);
+>  		ret = -EIO;
+>  		goto out_unlock;
+> -- 
+> 2.30.2

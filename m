@@ -2,55 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AD0637F6AA
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 May 2021 13:26:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A627837F6ED
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 May 2021 13:40:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233113AbhEML1r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 May 2021 07:27:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41394 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232340AbhEML1l (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 13 May 2021 07:27:41 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6BD71613DE;
-        Thu, 13 May 2021 11:26:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1620905190;
-        bh=eXSAetXGIYK5LnUNOnxaqqmbAirQeIHFyQvJIrjRgRE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=yWCKSgOoKhNC2z+tE0cB2g0gLWejzEQKbWtzsAfkIMOUfUxZFLPqT2MDVCVdEVyBb
-         Q5Cf16R02c7tz92SIgd+t+5SmtcRB6kaJwmyoZSNuSzMqNpvsgXnP+A2x1cmQCcIhn
-         LHfdx9pHG4ul35SzCczpUGZMS3nd2JgJRSKqMjI4=
-Date:   Thu, 13 May 2021 13:26:28 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Ruiqi Gong <gongruiqi1@huawei.com>
-Cc:     Wang Weiyang <wangweiyang2@huawei.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] drivers/base/node.c: make CACHE_ATTR define static
- DEVICE_ATTR_RO
-Message-ID: <YJ0M5HcXIQQFOTEq@kroah.com>
-References: <20210513110716.25791-1-gongruiqi1@huawei.com>
+        id S232892AbhEMLlS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 May 2021 07:41:18 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:32836 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232449AbhEMLlQ (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 13 May 2021 07:41:16 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <colin.king@canonical.com>)
+        id 1lh9h7-0007eb-Ko; Thu, 13 May 2021 11:39:57 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        ocfs2-devel@oss.oracle.com
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ocfs2: remove redundant assignment to pointer queue
+Date:   Thu, 13 May 2021 12:39:57 +0100
+Message-Id: <20210513113957.57539-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210513110716.25791-1-gongruiqi1@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, May 13, 2021 at 07:07:16PM +0800, Ruiqi Gong wrote:
-> The Sparse tool reports as follows:
-> 
-> drivers/base/node.c:239:1: warning:
->  symbol 'dev_attr_line_size' was not declared. Should it be static?
-> drivers/base/node.c:240:1: warning:
->  symbol 'dev_attr_indexing' was not declared. Should it be static?
-> 
-> These symbols (and several others) are defined by DEVICE_ATTR_RO(name) in
-> CACHE_ATTR(name, fmt), and all of them are not used outside of node.c. So let's
-> mark DEVICE_ATTR_RO(name) static to solve these complains from Sparse.
+From: Colin Ian King <colin.king@canonical.com>
 
-Why not fix them all at once?  Why only one here?
+The pointer queue is being initialized with a value that is never read
+and it is being updated later with a new value. The initialization is
+redundant and can be removed.
 
-thanks,
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ fs/ocfs2/dlm/dlmmaster.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-greg k-h
+diff --git a/fs/ocfs2/dlm/dlmmaster.c b/fs/ocfs2/dlm/dlmmaster.c
+index 4960a6de768d..9b88219febb5 100644
+--- a/fs/ocfs2/dlm/dlmmaster.c
++++ b/fs/ocfs2/dlm/dlmmaster.c
+@@ -2977,7 +2977,7 @@ static u8 dlm_pick_migration_target(struct dlm_ctxt *dlm,
+ 				    struct dlm_lock_resource *res)
+ {
+ 	enum dlm_lockres_list idx;
+-	struct list_head *queue = &res->granted;
++	struct list_head *queue;
+ 	struct dlm_lock *lock;
+ 	int noderef;
+ 	u8 nodenum = O2NM_MAX_NODES;
+-- 
+2.30.2
+

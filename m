@@ -2,71 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43DD73803A6
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 May 2021 08:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA38A3803CB
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 May 2021 08:51:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232035AbhENGbp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 May 2021 02:31:45 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:2595 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230059AbhENGbp (ORCPT
+        id S232719AbhENGwt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 May 2021 02:52:49 -0400
+Received: from mail-ed1-f51.google.com ([209.85.208.51]:36696 "EHLO
+        mail-ed1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232658AbhENGws (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 May 2021 02:31:45 -0400
-Received: from dggems702-chm.china.huawei.com (unknown [172.30.72.58])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FhJVb3FnZzkWM4;
-        Fri, 14 May 2021 14:27:51 +0800 (CST)
-Received: from dggeml759-chm.china.huawei.com (10.1.199.138) by
- dggems702-chm.china.huawei.com (10.3.19.179) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Fri, 14 May 2021 14:30:32 +0800
-Received: from localhost.localdomain (10.175.102.38) by
- dggeml759-chm.china.huawei.com (10.1.199.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Fri, 14 May 2021 14:30:32 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>, Jeff Layton <jlayton@kernel.org>,
-        Ilya Dryomov <idryomov@gmail.com>
-CC:     <ceph-devel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        "Hulk Robot" <hulkci@huawei.com>
-Subject: [PATCH -next] ceph: make symbol 'ceph_netfs_read_ops' static
-Date:   Fri, 14 May 2021 06:39:53 +0000
-Message-ID: <20210514063953.3242049-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 14 May 2021 02:52:48 -0400
+Received: by mail-ed1-f51.google.com with SMTP id df21so6307951edb.3;
+        Thu, 13 May 2021 23:51:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=1gymq95orR5zgtyh8ZSQwnKyiuFehw+cpEXmsD2CDf0=;
+        b=t0xDpaM3hgrBCsyaGCbYjw+h0FAHJrQxUNA88xXyxu+5rB2kyeg7sxVDIi4NiBithH
+         3ijxA4yIO4inE48xinlj93tSemvRw9159ek6kgaxZtKnydapr0B8LDvVUsXuZgk1TXtT
+         teMtQ77rA5gjYspm5/ustHxm0MiFYwMLgHFHqyxPzvf/7Cr4aUuot6j42a1dJXwikr6W
+         IEAjwgBDIP4nRyK4IpToRucI5LK0lsK4E0xafkEhPPNkumgovUKLToPaZL+EmymgHzMp
+         cI06IlMCmCyv9Tjwc0FJa3Pi4mvtJ2NHezwdkqMxhCDidPc2EpUzOBK3LHyRmubS4qyE
+         nHPg==
+X-Gm-Message-State: AOAM530YbfaGhYcJJ52VFphIgcc7P5f1GVGUubMlnW3M8gnHXcgCOrxP
+        TBp/mzhK2Rhv8Jpgoa+jh0Swaju9DnA=
+X-Google-Smtp-Source: ABdhPJyXdXGiv6DhZlc+bTWc7aWFBeNON8OPqZ/xYuVote/cTk5V2YYOcY9zrJu9GcLmFBF3eNPthw==
+X-Received: by 2002:a05:6402:5244:: with SMTP id t4mr37013244edd.228.1620975091508;
+        Thu, 13 May 2021 23:51:31 -0700 (PDT)
+Received: from ?IPv6:2a0b:e7c0:0:107::70f? ([2a0b:e7c0:0:107::70f])
+        by smtp.gmail.com with ESMTPSA id o3sm3948253edr.84.2021.05.13.23.51.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 May 2021 23:51:30 -0700 (PDT)
+Subject: Re: [PATCH] tty: pty: remove redundant initialization of variable fd
+To:     Colin King <colin.king@canonical.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210513221833.137672-1-colin.king@canonical.com>
+From:   Jiri Slaby <jirislaby@kernel.org>
+Message-ID: <2f6c2e1e-770b-aade-cdcc-aa4010c36d5e@kernel.org>
+Date:   Fri, 14 May 2021 08:51:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.102.38]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggeml759-chm.china.huawei.com (10.1.199.138)
-X-CFilter-Loop: Reflected
+In-Reply-To: <20210513221833.137672-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The sparse tool complains as follows:
+On 14. 05. 21, 0:18, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable fd is being initialized with a value that is never
+> read, it is being updated later on. The assignment is redundant and
+> can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-fs/ceph/addr.c:316:37: warning:
- symbol 'ceph_netfs_read_ops' was not declared. Should it be static?
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
 
-This symbol is not used outside of addr.c, so marks it static.
+> ---
+>   drivers/tty/pty.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/tty/pty.c b/drivers/tty/pty.c
+> index 9b5d4ae5d8f2..2251330e7e00 100644
+> --- a/drivers/tty/pty.c
+> +++ b/drivers/tty/pty.c
+> @@ -626,7 +626,7 @@ static struct cdev ptmx_cdev;
+>    */
+>   int ptm_open_peer(struct file *master, struct tty_struct *tty, int flags)
+>   {
+> -	int fd = -1;
+> +	int fd;
+>   	struct file *filp;
+>   	int retval = -EINVAL;
+>   	struct path path;
+> 
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- fs/ceph/addr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index c1570fada3d8..5dfd18d84a3b 100644
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -313,7 +313,7 @@ static void ceph_readahead_cleanup(struct address_space *mapping, void *priv)
- 		ceph_put_cap_refs(ci, got);
- }
- 
--const struct netfs_read_request_ops ceph_netfs_read_ops = {
-+static const struct netfs_read_request_ops ceph_netfs_read_ops = {
- 	.init_rreq		= ceph_init_rreq,
- 	.is_cache_enabled	= ceph_is_cache_enabled,
- 	.begin_cache_operation	= ceph_begin_cache_operation,
-
+-- 
+js
+suse labs

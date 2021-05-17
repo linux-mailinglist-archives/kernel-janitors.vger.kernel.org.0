@@ -2,118 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F523386B7C
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 May 2021 22:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56E78386BD5
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 May 2021 23:00:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243575AbhEQUgX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 May 2021 16:36:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38768 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244107AbhEQUgT (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 May 2021 16:36:19 -0400
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E39F6C061760;
-        Mon, 17 May 2021 13:35:02 -0700 (PDT)
-Received: by mail-qk1-x734.google.com with SMTP id f18so7165124qko.7;
-        Mon, 17 May 2021 13:35:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=DlOHftoPJAIDqKYNCpELpr/+FFDFNrEUZOzIYh/N+48=;
-        b=rtcsyO1W8VOUY1C18xZXuZz/zP8WtUobARoeoZdlZec45I1rXS3WffE18Jy9jid5rQ
-         htRk6NnESSmOrq68Gi1VHN8xSsG3GPYlV9s+cKiH5tbGzfR4o0FPAimWIPL1YHwKavTY
-         x7gvAfzWn+OGFjMP8gOunkWFcWdNZ5qVvTThwuc+C0ErmU6+znc+DlwuXdKxH4V9KDtI
-         gIDWeHJb2z+g591SUwbT3zUo3FAqJZhIMVDJCydm1ifXdH4RjNoSeAdL7pi7Bjj9zUP2
-         kxNRWZvEQzeP3q5h62+2bVDl8GaLolBRUcn9oWTEhg+QWO7eTviZ3qkp9T//PYOg/IIE
-         Fokg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=DlOHftoPJAIDqKYNCpELpr/+FFDFNrEUZOzIYh/N+48=;
-        b=OteomjTGGKRQsaJmuGDgxcULTVcxldI1xDs+xFKleA19ZDEk3SVFJlfASTX7d/gL5E
-         A4MHUxvqssXCj8J7UhKDEXg3spIPVr0l+C7Ar2U2po3t1biWpnKo2wLQJZ+Z/sDG6RaK
-         EBeRaCKMH3ZFoVite2USpiF/p+bfXOF3idF2gxkDwxwGXEO1isVdkPgRoyXP8rwtuCMy
-         b6U+oOmlfheAR/WcpeprGqU+J6buB36isvJ9DPPlAIcQM+/K/Nk9oXoUOLK0oOvqFrWN
-         k6EwN3/u85kIcTAG6C4+SVLR4ucZGXNmkA7qLYZFTiUwwqpxelzOMTKX76HMLtFDN6ru
-         BANg==
-X-Gm-Message-State: AOAM532NPlUoRztCNtUDuJMid8HHWOnC4IvMbEjo0fav4HpoB7moSDGZ
-        dPhnt/Sgu1L8VfukiibDChp1SJAyboQ=
-X-Google-Smtp-Source: ABdhPJwaUoYh1yhVa/qGVHhw4JI9qg07hFPkZgk72IrqdmZ2uHt9b4sIurfMRPYybylgJ7pUEdTwzA==
-X-Received: by 2002:a05:620a:13a6:: with SMTP id m6mr1778169qki.370.1621283702237;
-        Mon, 17 May 2021 13:35:02 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id j29sm11046651qtv.6.2021.05.17.13.35.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 May 2021 13:35:01 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Mon, 17 May 2021 13:35:00 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Martin Kaiser <martin@kaiser.cx>
-Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        linux-staging@lists.linux.dev, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 6/6] staging: rtl8188eu: use safe iterator in
- rtw_free_xmitframe_queue
-Message-ID: <20210517203500.GF3620180@roeck-us.net>
-References: <20210516160613.30489-1-martin@kaiser.cx>
- <20210517201826.25150-1-martin@kaiser.cx>
- <20210517201826.25150-6-martin@kaiser.cx>
+        id S244593AbhEQVB2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 May 2021 17:01:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48084 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233271AbhEQVB0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 17 May 2021 17:01:26 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id E9AE46124C;
+        Mon, 17 May 2021 21:00:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1621285210;
+        bh=IUIMTh5PmCOGu2WUTJ5DT1tr2IfldLFFqWohzm4vPNI=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=S9qSXeLpiFhhjzlTWLNjJ/td/3qPI2f18QP46RXLYCCm/X9zZDZjxF0m7J/M3FQTD
+         +HtVroRQOkhm/DjRjtgEQwQKSAseugYrMOIJcYpmQdjJJInZWi4KyhyzRJw5H0mJwU
+         6bRO03YrHnwjX0uvzOOyhASL5Bm8Wu09V7PEab7MuEkhz0yxXCgPmYBoAEzTnkv71d
+         Qdgkdg6VveJrybl9QYIGnlcUk757hdDXedkmPA8S77lkyx1iXYJOrhx37Ttat4MBiG
+         A5AkvyjKp+5UQzu2MWRukBSs5b60911dBjsc36CQ1nnTKuIHGzpP+Mz3O7p7dx+v4w
+         l2cFldxgISmyQ==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id DF2B460A35;
+        Mon, 17 May 2021 21:00:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210517201826.25150-6-martin@kaiser.cx>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 net] net: hso: check for allocation failure in
+ hso_create_bulk_serial_device()
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <162128520990.2358.2101615152759777465.git-patchwork-notify@kernel.org>
+Date:   Mon, 17 May 2021 21:00:09 +0000
+References: <YJ6IMH7jI9QFdGIX@mwanda>
+In-Reply-To: <YJ6IMH7jI9QFdGIX@mwanda>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     davem@davemloft.net, johan@kernel.org, kuba@kernel.org,
+        oneukum@suse.com, mail@anirudhrb.com, zhengyongjun3@huawei.com,
+        geert@linux-m68k.org, kernel@esmil.dk, rkovhaev@gmail.com,
+        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, May 17, 2021 at 10:18:26PM +0200, Martin Kaiser wrote:
-> Use list_for_each_entry_safe, we may delete list items while iterating
-> over the list.
-> 
-> Fixes: 23017c8842d2 ("staging: rtl8188eu: Use list iterators and helpers")
-> Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Hello:
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+This patch was applied to netdev/net.git (refs/heads/master):
 
-> ---
-> v2:
->  - use list_for_each_entry_safe
+On Fri, 14 May 2021 17:24:48 +0300 you wrote:
+> In current kernels, small allocations never actually fail so this
+> patch shouldn't affect runtime.
 > 
->  drivers/staging/rtl8188eu/core/rtw_xmit.c | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
+> Originally this error handling code written with the idea that if
+> the "serial->tiocmget" allocation failed, then we would continue
+> operating instead of bailing out early.  But in later years we added
+> an unchecked dereference on the next line.
 > 
-> diff --git a/drivers/staging/rtl8188eu/core/rtw_xmit.c b/drivers/staging/rtl8188eu/core/rtw_xmit.c
-> index 3763d188b892..dcc29a74612d 100644
-> --- a/drivers/staging/rtl8188eu/core/rtw_xmit.c
-> +++ b/drivers/staging/rtl8188eu/core/rtw_xmit.c
-> @@ -1329,17 +1329,15 @@ s32 rtw_free_xmitframe(struct xmit_priv *pxmitpriv, struct xmit_frame *pxmitfram
->  
->  void rtw_free_xmitframe_queue(struct xmit_priv *pxmitpriv, struct __queue *pframequeue)
->  {
-> -	struct list_head *plist, *phead;
-> -	struct	xmit_frame	*pxmitframe;
-> +	struct list_head *phead;
-> +	struct	xmit_frame	*pxmitframe, *temp;
->  
->  	spin_lock_bh(&pframequeue->lock);
->  
->  	phead = get_list_head(pframequeue);
-> -	list_for_each(plist, phead) {
-> -		pxmitframe = list_entry(plist, struct xmit_frame, list);
-> -
-> +	list_for_each_entry_safe(pxmitframe, temp, phead, list)
->  		rtw_free_xmitframe(pxmitpriv, pxmitframe);
-> -	}
-> +
->  	spin_unlock_bh(&pframequeue->lock);
->  }
->  
-> -- 
-> 2.20.1
-> 
+> [...]
+
+Here is the summary with links:
+  - [v2,net] net: hso: check for allocation failure in hso_create_bulk_serial_device()
+    https://git.kernel.org/netdev/net/c/31db0dbd7244
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+

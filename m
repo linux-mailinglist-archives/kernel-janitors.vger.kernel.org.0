@@ -2,276 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90C8C386B92
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 May 2021 22:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 689EE386B67
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 May 2021 22:32:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244107AbhEQUr2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 May 2021 16:47:28 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:55061
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229962AbhEQUr0 (ORCPT
+        id S239363AbhEQUdZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 May 2021 16:33:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38096 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234249AbhEQUdY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 May 2021 16:47:26 -0400
-IronPort-HdrOrdr: =?us-ascii?q?A9a23=3ADDX/CK6zpIQM/dBgXwPXwNHXdLJyesId70hD?=
- =?us-ascii?q?6qm+c3Fom6uj5qOTdZsguiMc5Ax7ZJhCo7C90de7L080nKQdibX5Vo3PYOCJgg?=
- =?us-ascii?q?GVxflZjLff/w=3D=3D?=
-X-IronPort-AV: E=Sophos;i="5.82,307,1613430000"; 
-   d="scan'208";a="381672824"
-Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-SHA; 17 May 2021 22:46:07 +0200
-From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Julia Lawall <Julia.Lawall@inria.fr>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc:     kernel-janitors@vger.kernel.org,
-        Gilles Muller <Gilles.Muller@inria.fr>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Michal Marek <michal.lkml@markovi.net>, cocci@systeme.lip6.fr,
-        linux-kernel@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Johan Hovold <johan@kernel.org>,
-        Zhang Qilong <zhangqilong3@huawei.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH v6] coccinelle: api: semantic patch to use pm_runtime_resume_and_get
-Date:   Mon, 17 May 2021 21:38:10 +0200
-Message-Id: <20210517193810.2793785-1-Julia.Lawall@inria.fr>
-X-Mailer: git-send-email 2.25.1
+        Mon, 17 May 2021 16:33:24 -0400
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8853C061573;
+        Mon, 17 May 2021 13:32:07 -0700 (PDT)
+Received: by mail-qk1-x735.google.com with SMTP id q10so7162631qkc.5;
+        Mon, 17 May 2021 13:32:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=7tDiRnux3uGojDgUk7bh9AMoMEuxHuA0volg/VGIBr0=;
+        b=nIvO8kJuEVhhjIGB6QynAKHZyarbmO5+pCfkGFoGSJBdQfIAupRkIAfiVCPEmuAF08
+         MEvsG/Z7Oe3h9O744TVcz6XaOYpmc9V13jO2p0i8ueT3hBLfXDPuMnDWgRFFoPb9uhn6
+         MxuNLFBMFZXkbdndqoD5VqDNxDIj8EF4ed1TDnFHwvLLytX1wxm0pnXTgbyAIKhrKfzv
+         6cXZ7buvJDCzT76JNWKC4Uy3JGsPckpCiC4zztLvtTlWFiOz8Psz1nT7QJVGbsTWgu7q
+         iVM4gMoRKEIR2mBA5VRfgjFE0ngrxfNypVDXFIGJCZHyEyo2EMQAXSNjHABH5QQHoeIh
+         Aj7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=7tDiRnux3uGojDgUk7bh9AMoMEuxHuA0volg/VGIBr0=;
+        b=LWKrNUBMioz6pNPzAx8sM5pDJHDu/GaWm5IWe+lS6D8CvZPNbY3qhiEPpWpMVXqaZR
+         HrFw1LeVUcM4lK+hUGd20D0biFeSUsSNsw9FIGKTCY35AIlfD3Zwi8Jip4OJGpSR6J6U
+         Dif8d9n/+LDyh/xWLSdNwR8HkdfIF6ug61VzZk6m8F4PnVY+iXiZpo+6aHpbAWXY6VHJ
+         W7VxW89GxqRjHReqaxCxBusL3fREIUObxKgIskMcVTCy/UVnROdSFkfYnRUiyG48tYC0
+         xrtCD6S/df9+tDz09pvQpd4xPQXkLZnwJP+8OH6wnClF9x2OU+QLNG2lrqoj8pcyE1QN
+         8BdA==
+X-Gm-Message-State: AOAM531iiNZiyge3p30UTYkPOTpV/foQND8SAGrzjUihV2fklDI1E8dl
+        /gb9Cd9VKRPcvPnPABIVX1Q=
+X-Google-Smtp-Source: ABdhPJywC7gR3ZD4k1krxuHzwmwfJc2ESji7ZOfPZX6VhrU8S+kfVJeD5EdVbnzLZVLZh2lQZVx09w==
+X-Received: by 2002:a37:a604:: with SMTP id p4mr1686927qke.215.1621283527185;
+        Mon, 17 May 2021 13:32:07 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id j6sm11273426qti.4.2021.05.17.13.32.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 May 2021 13:32:06 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Mon, 17 May 2021 13:32:05 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Martin Kaiser <martin@kaiser.cx>
+Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        linux-staging@lists.linux.dev, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/6] staging: rtl8188eu: use safe iterator in
+ rtw_free_all_stainfo
+Message-ID: <20210517203205.GB3620180@roeck-us.net>
+References: <20210516160613.30489-1-martin@kaiser.cx>
+ <20210517201826.25150-1-martin@kaiser.cx>
+ <20210517201826.25150-2-martin@kaiser.cx>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210517201826.25150-2-martin@kaiser.cx>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-pm_runtime_get_sync keeps a reference count on failure, which can lead
-to leaks.  pm_runtime_resume_and_get drops the reference count in the
-failure case.  This rule very conservatively follows the definition of
-pm_runtime_resume_and_get to address the cases where the reference
-count is unlikely to be needed in the failure case.  Specifically, the
-change is only done when pm_runtime_get_sync is followed immediately
-by an if and when the branch of the if is immediately a call to
-pm_runtime_put_noidle (like in the definition of
-pm_runtime_resume_and_get) or something that is likely a print
-statement followed by a pm_runtime_put_noidle call.
+On Mon, May 17, 2021 at 10:18:22PM +0200, Martin Kaiser wrote:
+> This is another case where we may remove list entries while we iterate over
+> the list. Use list_for_each_entry_safe to avoid an endless loop.
+> 
+> Fixes: 23017c8842d2 ("staging: rtl8188eu: Use list iterators and helpers")
+> Signed-off-by: Martin Kaiser <martin@kaiser.cx>
 
-The change is furthermore only done when the ret variable is only used
-in a ret < 0 test and possibly in the associated branch.  No change is
-made if ret is used in the else branch (the rule bad) or after the if.
-This is because pm_runtime_resume_and_get only returns 0 (success) or
-a negative value (failure), while pm_runtime_get_sync may also return
-1 in the success case.  Thus more attention is required to make the
-change in a case where a 1 value might be observed.
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 
-The patch case appears somewhat more complicated than the others,
-because it aolso deals with the cases where {}s need to be removed.
-
-pm_runtime_resume_and_get was introduced in
-commit dd8088d5a896 ("PM: runtime: Add pm_runtime_resume_and_get to
-deal with usage counter")
-
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
----
-v6: don't touch code that reuses the value of ret, as suggested by Mauro Carvalho Chehab
-v5: print a message with the new function name, as suggested by Markus Elfring
-v4: s/pm_runtime_resume_and_get/pm_runtime_put_noidle/ as noted by John Hovold
-v3: add the people who signed off on commit dd8088d5a896, expand the log message
-v2: better keyword
-
- scripts/coccinelle/api/pm_runtime_resume_and_get.cocci |  185 +++++++++++++++++
- 1 file changed, 185 insertions(+)
-
-diff --git a/scripts/coccinelle/api/pm_runtime_resume_and_get.cocci b/scripts/coccinelle/api/pm_runtime_resume_and_get.cocci
-new file mode 100644
-index 000000000000..b5abb3783d3d
---- /dev/null
-+++ b/scripts/coccinelle/api/pm_runtime_resume_and_get.cocci
-@@ -0,0 +1,185 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+///
-+/// Use pm_runtime_resume_and_get.
-+/// pm_runtime_get_sync keeps a reference count on failure,
-+/// which can lead to leaks.  pm_runtime_resume_and_get
-+/// drops the reference count in the failure case.
-+/// This rule addresses the cases where the reference count
-+/// is unlikely to be needed in the failure case.
-+///
-+// Confidence: High
-+// Copyright: (C) 2021 Julia Lawall, Inria
-+// URL: https://coccinelle.gitlabpages.inria.fr/website
-+// Options: --include-headers --no-includes
-+// Keywords: pm_runtime_get_sync
-+
-+virtual patch
-+virtual context
-+virtual org
-+virtual report
-+
-+@bad exists@
-+expression ret;
-+statement S1;
-+position p;
-+@@
-+
-+ ret = pm_runtime_get_sync(...);
-+ if@p (ret < 0) S1
-+ else {<+... ret ...+>}
-+
-+@r0 depends on patch && !context && !org && !report@
-+expression ret,e,e1;
-+@@
-+
-+-     ret = pm_runtime_get_sync(e);
-++     ret = pm_runtime_resume_and_get(e);
-+-     if (ret < 0)
-+-             pm_runtime_put_noidle(e);
-+      ... when != ret
-+?     ret = e1
-+
-+@r1 depends on patch && !context && !org && !report@
-+expression ret,e,e1;
-+statement S1,S2;
-+position p != bad.p;
-+@@
-+
-+-     ret = pm_runtime_get_sync(e);
-++     ret = pm_runtime_resume_and_get(e);
-+      if@p (ret < 0)
-+-     {
-+-             pm_runtime_put_noidle(e);
-+	      S1
-+-     }
-+      else S2
-+      ... when != ret
-+?     ret = e1
-+
-+@r2 depends on patch && !context && !org && !report@
-+expression ret,e,e1;
-+statement S;
-+position p != bad.p;
-+@@
-+
-+-     ret = pm_runtime_get_sync(e);
-++     ret = pm_runtime_resume_and_get(e);
-+      if@p (ret < 0) {
-+-             pm_runtime_put_noidle(e);
-+	      ...
-+      } else S
-+      ... when != ret
-+?     ret = e1
-+
-+@r3 depends on patch && !context && !org && !report@
-+expression ret,e,e1;
-+identifier f;
-+constant char[] c;
-+position p != bad.p;
-+statement S;
-+@@
-+
-+-     ret = pm_runtime_get_sync(e);
-++     ret = pm_runtime_resume_and_get(e);
-+      if@p (ret < 0)
-+-     {
-+              f(...,c,...);
-+-             pm_runtime_put_noidle(e);
-+-     }
-+      else S
-+      ... when != ret
-+?     ret = e1
-+
-+@r4 depends on patch && !context && !org && !report@
-+expression ret,e,e1;
-+identifier f;
-+constant char[] c;
-+position p != bad.p;
-+statement S;
-+@@
-+
-+-     ret = pm_runtime_get_sync(e);
-++     ret = pm_runtime_resume_and_get(e);
-+      if@p (ret < 0) {
-+              f(...,c,...);
-+-             pm_runtime_put_noidle(e);
-+	      ...
-+      } else S
-+      ... when != ret
-+?     ret = e1
-+
-+// ----------------------------------------------------------------------------
-+
-+@r2_context depends on !patch && (context || org || report)@
-+statement S;
-+expression e, ret, e1;
-+position j0, j1;
-+position p != bad.p;
-+@@
-+
-+*     ret@j0 = pm_runtime_get_sync(e);
-+      if@p (ret < 0) {
-+*             pm_runtime_put_noidle@j1(e);
-+	      ...
-+      } else S
-+      ... when != ret
-+          when forall
-+?     ret = e1
-+
-+@r3_context depends on !patch && (context || org || report)@
-+identifier f;
-+statement S;
-+constant char []c;
-+expression e, ret, e1;
-+position j0, j1;
-+position p != bad.p;
-+@@
-+
-+*     ret@j0 = pm_runtime_get_sync(e);
-+      if@p (ret < 0) {
-+              f(...,c,...);
-+*             pm_runtime_put_noidle@j1(e);
-+	      ...
-+      } else S
-+      ... when != ret
-+          when forall
-+?     ret = e1
-+
-+// ----------------------------------------------------------------------------
-+
-+@script:python r2_org depends on org@
-+j0 << r2_context.j0;
-+j1 << r2_context.j1;
-+@@
-+
-+msg = "WARNING: opportunity for pm_runtime_resume_and_get"
-+coccilib.org.print_todo(j0[0], msg)
-+coccilib.org.print_link(j1[0], "")
-+
-+@script:python r3_org depends on org@
-+j0 << r3_context.j0;
-+j1 << r3_context.j1;
-+@@
-+
-+msg = "WARNING: opportunity for pm_runtime_resume_and_get"
-+coccilib.org.print_todo(j0[0], msg)
-+coccilib.org.print_link(j1[0], "")
-+
-+// ----------------------------------------------------------------------------
-+
-+@script:python r2_report depends on report@
-+j0 << r2_context.j0;
-+j1 << r2_context.j1;
-+@@
-+
-+msg = "WARNING: opportunity for pm_runtime_resume_and_get on line %s." % (j0[0].line)
-+coccilib.report.print_report(j0[0], msg)
-+
-+@script:python r3_report depends on report@
-+j0 << r3_context.j0;
-+j1 << r3_context.j1;
-+@@
-+
-+msg = "WARNING: opportunity for pm_runtime_resume_and_get on %s." % (j0[0].line)
-+coccilib.report.print_report(j0[0], msg)
-+
-
+> ---
+> v2:
+>  - use list_for_each_entry_safe
+> 
+> Without this patch, unloading the module goes into an endless loop
+> sometimes.
+> 
+>  drivers/staging/rtl8188eu/core/rtw_sta_mgt.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/staging/rtl8188eu/core/rtw_sta_mgt.c b/drivers/staging/rtl8188eu/core/rtw_sta_mgt.c
+> index 7941ca0397ed..5af7af5f5a5a 100644
+> --- a/drivers/staging/rtl8188eu/core/rtw_sta_mgt.c
+> +++ b/drivers/staging/rtl8188eu/core/rtw_sta_mgt.c
+> @@ -379,9 +379,9 @@ u32 rtw_free_stainfo(struct adapter *padapter, struct sta_info *psta)
+>  /*  free all stainfo which in sta_hash[all] */
+>  void rtw_free_all_stainfo(struct adapter *padapter)
+>  {
+> -	struct list_head *plist, *phead;
+> +	struct list_head *phead;
+>  	s32 index;
+> -	struct sta_info *psta = NULL;
+> +	struct sta_info *psta, *temp;
+>  	struct sta_priv *pstapriv = &padapter->stapriv;
+>  	struct sta_info *pbcmc_stainfo = rtw_get_bcmc_stainfo(padapter);
+>  
+> @@ -392,9 +392,7 @@ void rtw_free_all_stainfo(struct adapter *padapter)
+>  
+>  	for (index = 0; index < NUM_STA; index++) {
+>  		phead = &pstapriv->sta_hash[index];
+> -		list_for_each(plist, phead) {
+> -			psta = list_entry(plist, struct sta_info, hash_list);
+> -
+> +		list_for_each_entry_safe(psta, temp, phead, hash_list) {
+>  			if (pbcmc_stainfo != psta)
+>  				rtw_free_stainfo(padapter, psta);
+>  		}
+> -- 
+> 2.20.1
+> 

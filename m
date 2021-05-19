@@ -2,92 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0999388FE4
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 May 2021 16:07:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66A9D38908D
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 May 2021 16:18:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353857AbhESOJE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 May 2021 10:09:04 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:3426 "EHLO
-        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353893AbhESOI7 (ORCPT
+        id S1345928AbhESOT2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 May 2021 10:19:28 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:55496 "EHLO
+        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1354080AbhESOSb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 May 2021 10:08:59 -0400
-Received: from dggems705-chm.china.huawei.com (unknown [172.30.72.58])
-        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4FlZPb1jYpzCtkL;
-        Wed, 19 May 2021 22:04:51 +0800 (CST)
-Received: from dggeml759-chm.china.huawei.com (10.1.199.138) by
- dggems705-chm.china.huawei.com (10.3.19.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Wed, 19 May 2021 22:07:36 +0800
-Received: from localhost.localdomain (10.175.102.38) by
- dggeml759-chm.china.huawei.com (10.1.199.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Wed, 19 May 2021 22:07:35 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>, Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thara Gopinath <thara.gopinath@linaro.org>
-CC:     <linux-crypto@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        "Hulk Robot" <hulkci@huawei.com>
-Subject: [PATCH -next] crypto: qce - Fix some error handling path
-Date:   Wed, 19 May 2021 14:16:50 +0000
-Message-ID: <20210519141650.3059054-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Wed, 19 May 2021 10:18:31 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 14JEAuqv032331;
+        Wed, 19 May 2021 14:17:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2020-01-29; bh=ttNoL6vgSqzxpKKnbEpf/kAYwaiUjRWRovcI3xZDGdE=;
+ b=0GdMpxmsosE0EL3MAhz7ajiIk6idjGHJUCgE4mKUSGgcUy9blt2nYhGfEBuSBvEMx8/g
+ i9hHiUW6KUxbvn4YfuYE+WB+Gr5Vzy+3lclh3RX/Jwp+q8APzZyyksPYjxM3xSmKMs8d
+ zwuaFddWJQG4cLsjr7+4SXl1Sz+0wgnY7FiWOn4JYZw8HbJFXhpd6rWBCCjm70w8oI3/
+ jsWib6SNVGJjSce9YALqWa/xzqugGdPP6gyQJJxVDoxMJgkv5Mgj79E7m1Gmh4GP3zpv
+ 4G7R6ONYB4KYLJOCNqHLMS8elG3Zln3sWpKn9Ug+bte1RCc/lBKCR3jUW8lE3/sRBeUd qw== 
+Received: from oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by mx0b-00069f02.pphosted.com with ESMTP id 38kh0h95sv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 May 2021 14:17:01 +0000
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
+        by pps.podrdrct (8.16.0.36/8.16.0.36) with SMTP id 14JEBnqs181104;
+        Wed, 19 May 2021 14:17:01 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by aserp3030.oracle.com with ESMTP id 38meeg5mx4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 May 2021 14:17:01 +0000
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 14JEGm2q000820;
+        Wed, 19 May 2021 14:17:00 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 38meeg5mwm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 May 2021 14:17:00 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 14JEGwpG030507;
+        Wed, 19 May 2021 14:16:58 GMT
+Received: from mwanda (/41.212.42.34)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 19 May 2021 07:16:57 -0700
+Date:   Wed, 19 May 2021 17:16:50 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Somya Anand <somyaanand214@gmail.com>
+Cc:     Alex Dewar <alex.dewar90@gmail.com>,
+        Sean Behan <codebam@riseup.net>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        linux-staging@lists.linux.dev, kernel-janitors@vger.kernel.org
+Subject: [PATCH] staging: emxx_udc: fix loop in _nbu2ss_nuke()
+Message-ID: <YKUd0sDyjm/lkJfJ@mwanda>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.102.38]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggeml759-chm.china.huawei.com (10.1.199.138)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210518082855.GB32682@kadam>
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-GUID: l8gXSyTnNlChFqyjx9ZduCya7AJHYhzx
+X-Proofpoint-ORIG-GUID: l8gXSyTnNlChFqyjx9ZduCya7AJHYhzx
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return negative error code from the error handling
-cases instead of 0.
+The _nbu2ss_ep_done() function calls:
 
-Fixes: 9363efb4181c ("crypto: qce - Add support for AEAD algorithms")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+	list_del_init(&req->queue);
+
+which means that the loop will never exit.
+
+Fixes: ca3d253eb967 ("Staging: emxx_udc: Iterate list using list_for_each_entry")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/crypto/qce/aead.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/staging/emxx_udc/emxx_udc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/qce/aead.c b/drivers/crypto/qce/aead.c
-index 6d06a19b48e4..d47f4171ad83 100644
---- a/drivers/crypto/qce/aead.c
-+++ b/drivers/crypto/qce/aead.c
-@@ -280,8 +280,10 @@ qce_aead_ccm_prepare_buf_assoclen(struct aead_request *req)
+diff --git a/drivers/staging/emxx_udc/emxx_udc.c b/drivers/staging/emxx_udc/emxx_udc.c
+index 741147a4f0fe..ecc5c9da9027 100644
+--- a/drivers/staging/emxx_udc/emxx_udc.c
++++ b/drivers/staging/emxx_udc/emxx_udc.c
+@@ -2064,7 +2064,7 @@ static int _nbu2ss_nuke(struct nbu2ss_udc *udc,
+ 			struct nbu2ss_ep *ep,
+ 			int status)
+ {
+-	struct nbu2ss_req *req;
++	struct nbu2ss_req *req, *n;
  
- 	if (diff_dst) {
- 		sg = qce_aead_prepare_dst_buf(req);
--		if (IS_ERR(sg))
-+		if (IS_ERR(sg)) {
-+			ret = PTR_ERR(sg);
- 			goto err_free;
-+		}
- 	} else {
- 		if (IS_ENCRYPT(rctx->flags))
- 			rctx->dst_nents = rctx->src_nents + 1;
-@@ -448,13 +450,17 @@ qce_aead_async_req_handle(struct crypto_async_request *async_req)
- 	if (ret)
- 		return ret;
- 	dst_nents = dma_map_sg(qce->dev, rctx->dst_sg, rctx->dst_nents, dir_dst);
--	if (dst_nents < 0)
-+	if (dst_nents < 0) {
-+		ret = dst_nents;
- 		goto error_free;
-+	}
+ 	/* Endpoint Disable */
+ 	_nbu2ss_epn_exit(udc, ep);
+@@ -2076,7 +2076,7 @@ static int _nbu2ss_nuke(struct nbu2ss_udc *udc,
+ 		return 0;
  
- 	if (diff_dst) {
- 		src_nents = dma_map_sg(qce->dev, rctx->src_sg, rctx->src_nents, dir_src);
--		if (src_nents < 0)
-+		if (src_nents < 0) {
-+			ret = src_nents;
- 			goto error_unmap_dst;
-+		}
- 	} else {
- 		if (IS_CCM(rctx->flags) && IS_DECRYPT(rctx->flags))
- 			src_nents = dst_nents;
+ 	/* called with irqs blocked */
+-	list_for_each_entry(req, &ep->queue, queue) {
++	list_for_each_entry_safe(req, n, &ep->queue, queue) {
+ 		_nbu2ss_ep_done(ep, req, status);
+ 	}
+ 
+-- 
+2.30.2
 

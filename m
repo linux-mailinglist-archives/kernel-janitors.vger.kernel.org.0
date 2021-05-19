@@ -2,67 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57063388FE9
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 May 2021 16:07:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3643389091
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 May 2021 16:18:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353873AbhESOJK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 May 2021 10:09:10 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:3427 "EHLO
-        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353892AbhESOJE (ORCPT
+        id S1347357AbhESOT4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 May 2021 10:19:56 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:37556 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1354066AbhESOTz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 May 2021 10:09:04 -0400
-Received: from dggems706-chm.china.huawei.com (unknown [172.30.72.60])
-        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4FlZPh4n5KzCtt3;
-        Wed, 19 May 2021 22:04:56 +0800 (CST)
-Received: from dggeml759-chm.china.huawei.com (10.1.199.138) by
- dggems706-chm.china.huawei.com (10.3.19.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Wed, 19 May 2021 22:07:43 +0800
-Received: from localhost.localdomain (10.175.102.38) by
- dggeml759-chm.china.huawei.com (10.1.199.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Wed, 19 May 2021 22:07:42 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>, Gao Xiang <xiang@kernel.org>,
-        Chao Yu <chao@kernel.org>
-CC:     <linux-erofs@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] erofs: fix error return code in erofs_read_superblock()
-Date:   Wed, 19 May 2021 14:16:57 +0000
-Message-ID: <20210519141657.3062715-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Wed, 19 May 2021 10:19:55 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 14JEF9S0101727;
+        Wed, 19 May 2021 14:18:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2020-01-29; bh=3N0UDr8fp/rROWpaUFSOnbPEWFC1lCojv6j2aMf4zHY=;
+ b=IffCIAR0qn7rYRPWwUZlSa5i7x5lpIzo+wqkYYxxq5NSLm1Ft0UfJ9L1kYk6HqeJmNjE
+ WVhCX3+28DAYd8060//bo79+PIi5ZnxoWRjWPIrHdOL0B1mMzXM82I0XMN9507w9w1Rx
+ tA4BUePtbhxBJxRRquqESAmef1zBkiw3thanHaxjSWArg73eJl03k/jSQpRmnwXCndl1
+ mn1u9bkBCayc4GKOH09AjU2RD9l9JP0ddEeQmjLAkchVhcC1qNA15Q/0cx5L2WfBQSPl
+ szGWiN8yNqrbm/TiTiFEkh8Sjia/Qf4R5QbBAS1vZsw1MqvO50Bi5b4C3i/7ZW5AqG5z aQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 38j6xnhnxe-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 May 2021 14:18:15 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 14JEC4xK028409;
+        Wed, 19 May 2021 14:18:14 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by aserp3020.oracle.com with ESMTP id 38mecjb8qm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 May 2021 14:18:14 +0000
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 14JEFewt070836;
+        Wed, 19 May 2021 14:18:14 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 38mecjb8np-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 May 2021 14:18:14 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 14JEIBxX031464;
+        Wed, 19 May 2021 14:18:12 GMT
+Received: from mwanda (/41.212.42.34)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 19 May 2021 07:18:10 -0700
+Date:   Wed, 19 May 2021 17:17:45 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Evgeniy Polyakov <zbr@ioremap.net>
+Cc:     Greg Kroah-Hartman <gregkh@suse.de>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] w1: fix loop in w1_fini()
+Message-ID: <YKUeCfjQqt5NuSta@mwanda>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.102.38]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggeml759-chm.china.huawei.com (10.1.199.138)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210518082855.GB32682@kadam>
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-GUID: A5jfNBGAkI2EWzceDpCJO9nvvs7mwSYj
+X-Proofpoint-ORIG-GUID: A5jfNBGAkI2EWzceDpCJO9nvvs7mwSYj
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9988 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 mlxscore=0
+ mlxlogscore=936 adultscore=0 malwarescore=0 priorityscore=1501
+ phishscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1011
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2105190089
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'ret' will be overwritten to 0 if erofs_sb_has_sb_chksum() return true,
-thus 0 will return in some error handling cases. Fix to return negative
-error code -EINVAL instead of 0.
+The __w1_remove_master_device() function calls:
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+	list_del(&dev->w1_master_entry);
+
+So presumably this can cause an endless loop.
+
+Fixes: 7785925dd8e0 ("[PATCH] w1: cleanups.")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- fs/erofs/super.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/w1/w1.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/erofs/super.c b/fs/erofs/super.c
-index bbf3bbd908e0..22991d22af5a 100644
---- a/fs/erofs/super.c
-+++ b/fs/erofs/super.c
-@@ -285,6 +285,7 @@ static int erofs_read_superblock(struct super_block *sb)
- 			goto out;
- 	}
+diff --git a/drivers/w1/w1.c b/drivers/w1/w1.c
+index f2ae2e563dc5..8b2d82959ded 100644
+--- a/drivers/w1/w1.c
++++ b/drivers/w1/w1.c
+@@ -1259,10 +1259,10 @@ static int __init w1_init(void)
  
-+	ret = -EINVAL;
- 	blkszbits = dsb->blkszbits;
- 	/* 9(512 bytes) + LOG_SECTORS_PER_BLOCK == LOG_BLOCK_SIZE */
- 	if (blkszbits != LOG_BLOCK_SIZE) {
+ static void __exit w1_fini(void)
+ {
+-	struct w1_master *dev;
++	struct w1_master *dev, *n;
+ 
+ 	/* Set netlink removal messages and some cleanup */
+-	list_for_each_entry(dev, &w1_masters, w1_master_entry)
++	list_for_each_entry_safe(dev, n, &w1_masters, w1_master_entry)
+ 		__w1_remove_master_device(dev);
+ 
+ 	w1_fini_netlink();
+-- 
+2.30.2
 

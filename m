@@ -2,65 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E0C6388E40
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 May 2021 14:39:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12946389080
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 May 2021 16:16:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353428AbhESMkg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 May 2021 08:40:36 -0400
-Received: from lpdvacalvio01.broadcom.com ([192.19.229.182]:33680 "EHLO
-        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1353419AbhESMkf (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 May 2021 08:40:35 -0400
-Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
-        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id D722624706;
-        Wed, 19 May 2021 05:39:15 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com D722624706
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1621427955;
-        bh=rmuK/K3fBffMGY9dTheEJuib9VCu9Gy25cLus+IJUug=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=VgS533qm3C1EqyRmsV7B0Xs4p19KcSWkZBffW6Cf6caYrMtmogkGbUjQEqgK1PVEt
-         +jL87cedxnr6z/qWPoqa0LOepb56Zuy8L3Apu/OkLEy1ZMMpX0PlmDpbuGrfuHYcEQ
-         elsFfUk4kEEG4P58APWaL33j8OpRbgJUTXNcmUr0=
-Received: from [10.230.42.155] (unknown [10.230.42.155])
-        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 6F0051874BE;
-        Wed, 19 May 2021 05:39:11 -0700 (PDT)
-Subject: Re: [PATCH] brcmsmac: mac80211_if: Fix a resource leak in an error
- handling path
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, chi-hsien.lin@infineon.com,
-        wright.feng@infineon.com, chung-hsien.hsu@infineon.com,
-        davem@davemloft.net, kvalo@codeaurora.org, kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <8fbc171a1a493b38db5a6f0873c6021fca026a6c.1620852921.git.christophe.jaillet@wanadoo.fr>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <3b96aa02-869c-4663-1c63-759d058b8744@broadcom.com>
-Date:   Wed, 19 May 2021 14:39:08 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S1347300AbhESORx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 May 2021 10:17:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41456 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1354213AbhESOQa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 19 May 2021 10:16:30 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A7381613AA;
+        Wed, 19 May 2021 14:15:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1621433710;
+        bh=ThtU2KVb061FESXUqP9mzeYpSF2o2toGVNDSpucGG1Y=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=sngsqF22KolnPOyLHETglroYOIvZA0VvHpL3bZaBnS48Ix/VgkftHickLfiro7c4N
+         8RUIodIc+syR4XcIDEWoCQJGnr1ftbKnd9q3kHbd03qTbYr1C2Svt8jRhyS8zjBg3b
+         C07o2vvOe26c1mxp6Z+zaeZlw9kKJsmM38HJO1tgQMnNC9udbgu1d57P0X3XJ7Gvxb
+         rx3+Ud/vNx6j9XonRyWBkeDpy0B5x817hXI61fz23tq/s+5la632ZjXcxYuisS4mWi
+         7tf9V/GV9FZJ8+qodB2Fyyo6vV8LtpRfduOW/+y7rxl7ZSUJRO/vzVxod4/KdXmYz3
+         5gXS8LeADH1AQ==
+Date:   Wed, 19 May 2021 19:45:01 +0530
+From:   Manivannan Sadhasivam <mani@kernel.org>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
+Subject: Re: [PATCH net-next] net: qrtr: ns: Fix error return code in
+ qrtr_ns_init()
+Message-ID: <20210519141501.GA119648@thinkpad>
+References: <20210519141621.3044684-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <8fbc171a1a493b38db5a6f0873c6021fca026a6c.1620852921.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210519141621.3044684-1-weiyongjun1@huawei.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Wed, May 19, 2021 at 02:16:21PM +0000, Wei Yongjun wrote:
+> Fix to return a negative error code -ENOMEM from the error handling
+> case instead of 0, as done elsewhere in this function.
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-On 12-05-2021 22:58, Christophe JAILLET wrote:
-> If 'brcms_attach()' fails, we must undo the previous 'ieee80211_alloc_hw()'
-> as already done in the remove function.
+Thanks,
+Mani
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > ---
->   .../wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c    | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
+>  net/qrtr/ns.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+> index 8d00dfe8139e..1990d496fcfc 100644
+> --- a/net/qrtr/ns.c
+> +++ b/net/qrtr/ns.c
+> @@ -775,8 +775,10 @@ int qrtr_ns_init(void)
+>  	}
+>  
+>  	qrtr_ns.workqueue = alloc_workqueue("qrtr_ns_handler", WQ_UNBOUND, 1);
+> -	if (!qrtr_ns.workqueue)
+> +	if (!qrtr_ns.workqueue) {
+> +		ret = -ENOMEM;
+>  		goto err_sock;
+> +	}
+>  
+>  	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns_data_ready;
+>  
+> 

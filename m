@@ -2,78 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26CE338908F
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 May 2021 16:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEE613890B4
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 May 2021 16:20:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241022AbhESOTv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 May 2021 10:19:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44130 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1347357AbhESOT3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 May 2021 10:19:29 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 84FA461244;
-        Wed, 19 May 2021 14:18:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621433889;
-        bh=0pvunetzygNqY35KHnnR9Jx2D12exeL0Npca5/mUUOg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bgigDgU9etIAgCNfP0yys107j8RkZ/rYbGLc+9nAKo/TdLpvxeq14yOM+zHdORoVB
-         AF2gy0O6MnEkA+WXCb8d5WAxDiP0ipTq/gjwjo2vGVrm/pUkPDDO8KSZrDcNbvRHJ/
-         BDvBRZDCzrcdLc6mD5O/X1cbpmuWCGUsPSDSJaBB+/hNojnzwRHw31wWfSM9xUuH5Y
-         H3Q3NtEZL65rwR+EhAvFGnn58Sj4dWuhOXfG653SovAE6XStdm7UC2jNtH/ZjRU/zF
-         2blWFcAGvoH4BlBWvn7u4ujlQvi1IMRfHNI08/9LROtnq14BeaRJ47ajAMsdsFzhUN
-         y57g0RBE25bgA==
-Date:   Wed, 19 May 2021 19:48:01 +0530
-From:   Manivannan Sadhasivam <mani@kernel.org>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH net-next] net: qrtr: ns: Fix error return code in
- qrtr_ns_init()
-Message-ID: <20210519141801.GB119648@thinkpad>
-References: <20210519141621.3044684-1-weiyongjun1@huawei.com>
+        id S242456AbhESOWG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 May 2021 10:22:06 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:38642 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241909AbhESOWG (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 19 May 2021 10:22:06 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 14JEFO1d101869;
+        Wed, 19 May 2021 14:20:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2020-01-29; bh=NWXJTdpag0NA3Z5nBPPluFxqdVryRh9BEHtOH6qDsdw=;
+ b=MZHROyt0Bb1+DBlsr2p1DXCUw8+PO3qHUFz5V9FIy2hSTU8BealhEaWVSdXQydQivnC7
+ vtHvV8mqwP6M3mcvuIPoLEZ8Q/L1pfBQmOGkU8DyFhtWXhqzANRXLybIrHBSdfMmv101
+ HERBOJdB7NgY8YOCwfSpHndzxMEyF1Tdf7f70WpAat5/xW097tQtZthD7OeHj+JoNxRp
+ /+OiczBQShqrMUWi70if2HwnzFnLTJtFeahif20bUIAxrb54yLy+IYaVAQBLh71YmR6x
+ Kdpp5xV/tS9OiwCRtgmuzaKZohKHiEcV1RxDaGUbqYCx9NuEdaDAzUSp0G0ZSpNRczN8 Kw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 38j6xnhp6g-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 May 2021 14:20:38 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 14JEEYMm026477;
+        Wed, 19 May 2021 14:20:38 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by userp3020.oracle.com with ESMTP id 38n490r567-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 May 2021 14:20:38 +0000
+Received: from userp3020.oracle.com (userp3020.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 14JEKbKF038131;
+        Wed, 19 May 2021 14:20:37 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 38n490r55y-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 May 2021 14:20:37 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 14JEKaX2006668;
+        Wed, 19 May 2021 14:20:36 GMT
+Received: from mwanda (/41.212.42.34)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 19 May 2021 14:20:35 +0000
+Date:   Wed, 19 May 2021 17:20:27 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        Dan Williams <dan.j.williams@intel.com>
+Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Jacek Danecki <jacek.danecki@intel.com>,
+        James Bottomley <JBottomley@parallels.com>,
+        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] scsi: libsas: use _safe() loop in sas_resume_port()
+Message-ID: <YKUeq6gwfGcvvhty@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210519141621.3044684-1-weiyongjun1@huawei.com>
+In-Reply-To: <20210518082855.GB32682@kadam>
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-GUID: eiWzx_JHoZsIUKMcKgdqTGrepn9ltPPr
+X-Proofpoint-ORIG-GUID: eiWzx_JHoZsIUKMcKgdqTGrepn9ltPPr
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9988 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 mlxscore=0
+ mlxlogscore=999 adultscore=0 malwarescore=0 priorityscore=1501
+ phishscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1011
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2105190089
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, May 19, 2021 at 02:16:21PM +0000, Wei Yongjun wrote:
-> Fix to return a negative error code -ENOMEM from the error handling
-> case instead of 0, as done elsewhere in this function.
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+If sas_notify_lldd_dev_found() fails then this code calls:
 
-You might want to add Fixes tag:
+	sas_unregister_dev(port, dev);
 
-Fixes: c6e08d6251f3 ("net: qrtr: Allocate workqueue before kernel_bind")
+which removes "dev", our list iterator, from the list.  This could
+lead to an endless loop.  We need to use list_for_each_entry_safe().
 
-Thanks,
-Mani
+Fixes: 303694eeee5e ("[SCSI] libsas: suspend / resume support")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/scsi/libsas/sas_port.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> ---
->  net/qrtr/ns.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-> index 8d00dfe8139e..1990d496fcfc 100644
-> --- a/net/qrtr/ns.c
-> +++ b/net/qrtr/ns.c
-> @@ -775,8 +775,10 @@ int qrtr_ns_init(void)
->  	}
->  
->  	qrtr_ns.workqueue = alloc_workqueue("qrtr_ns_handler", WQ_UNBOUND, 1);
-> -	if (!qrtr_ns.workqueue)
-> +	if (!qrtr_ns.workqueue) {
-> +		ret = -ENOMEM;
->  		goto err_sock;
-> +	}
->  
->  	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns_data_ready;
->  
-> 
+diff --git a/drivers/scsi/libsas/sas_port.c b/drivers/scsi/libsas/sas_port.c
+index 19cf418928fa..e3d03d744713 100644
+--- a/drivers/scsi/libsas/sas_port.c
++++ b/drivers/scsi/libsas/sas_port.c
+@@ -25,7 +25,7 @@ static bool phy_is_wideport_member(struct asd_sas_port *port, struct asd_sas_phy
+ 
+ static void sas_resume_port(struct asd_sas_phy *phy)
+ {
+-	struct domain_device *dev;
++	struct domain_device *dev, *n;
+ 	struct asd_sas_port *port = phy->port;
+ 	struct sas_ha_struct *sas_ha = phy->ha;
+ 	struct sas_internal *si = to_sas_internal(sas_ha->core.shost->transportt);
+@@ -44,7 +44,7 @@ static void sas_resume_port(struct asd_sas_phy *phy)
+ 	 * 1/ presume every device came back
+ 	 * 2/ force the next revalidation to check all expander phys
+ 	 */
+-	list_for_each_entry(dev, &port->dev_list, dev_list_node) {
++	list_for_each_entry_safe(dev, n, &port->dev_list, dev_list_node) {
+ 		int i, rc;
+ 
+ 		rc = sas_notify_lldd_dev_found(dev);
+-- 
+2.30.2
+

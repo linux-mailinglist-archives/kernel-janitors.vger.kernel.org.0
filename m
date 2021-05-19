@@ -2,45 +2,44 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB8073897C6
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 May 2021 22:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E37C43897C3
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 May 2021 22:20:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229976AbhESUVh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        id S229724AbhESUVh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
         Wed, 19 May 2021 16:21:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51632 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:51618 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229625AbhESUVf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        id S229565AbhESUVf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
         Wed, 19 May 2021 16:21:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 6D4AB613B5;
+Received: by mail.kernel.org (Postfix) with ESMTPS id 52EE26135F;
         Wed, 19 May 2021 20:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
         s=k20201202; t=1621455615;
-        bh=8g5eYBivg5IznIEAFIca9LAGXET2r1Xl8EQ+5RN/FhA=;
+        bh=bLfZ6T+0eeJALV2fgqEgxwkeDQvQ35QAOv8EHlCuLis=;
         h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=i6WjeXJ388iTn/zg3rN2ijLNAtEWXG93n2+Bn+H9aSGmm8EZNE1CSj4wjb/PoY+8y
-         H2kEiSOV8vcM3dYVjGza6F2ByKt77V8tSGDsHZvFkrA+3p+zXVDEXXadfMRiF0EOXx
-         r9BbuC4JtGeLkacJraOJGDIJMRI4kDl9sp4YzX6j58UtjE8p7YK2Rb/jmbvmrvfU5G
-         broYV/aEK9RoGOcCsc//1YK4E+UxDTBI1Mz7xClU4wtxwCmpuVQRXa5RKNDWFfHOnw
-         CoOePdJpt4xghGgpua6sZEc50zl+oRfLNAKs9+BYynYuPTE8IG79UH29j3szw1JH1x
-         3cPiWE3B/0wNg==
+        b=ZM0qvfH2F+J15M1VR0gwmRf5Ya1rVk7hlqb6C97NtEbUZos14f8N3POZvcUTWE6lS
+         i0ynzL5Gf4A8YeMWnYa0cXEYqvMXzgMF3Z95rY7FtiABCRJ4biePO2/YXzTbztyKOQ
+         ZrAiKhL24v3f9/ry5cCgmaeenB7bDJ+hfN0mBlCVZqN0lapY9Rm4PkDa7iUyeYs9Vs
+         KXIP91sSZPRvD+6s0RECDO832nXhd8psPrikDW9A9VCRx5R/YGnD7ihEgfHcImRcKH
+         TIGexv6ZnavRT9YPXvrgybSCbi6eATlXBxK1fy5kGj3sDfmadtgb3vbz+yBimL/e0Z
+         JOl07riBTRFAA==
 Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 60C0A60CD2;
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 4D32F60A0D;
         Wed, 19 May 2021 20:20:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] net: qrtr: ns: Fix error return code in
- qrtr_ns_init()
+Subject: Re: [PATCH net-next] net: ethernet: ixp4xx: Fix return value check in
+ ixp4xx_eth_probe()
 From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <162145561539.14289.12444383566241954680.git-patchwork-notify@kernel.org>
+Message-Id: <162145561531.14289.9199299011458304917.git-patchwork-notify@kernel.org>
 Date:   Wed, 19 May 2021 20:20:15 +0000
-References: <20210519155852.2878479-1-weiyongjun1@huawei.com>
-In-Reply-To: <20210519155852.2878479-1-weiyongjun1@huawei.com>
+References: <20210519141627.3047264-1-weiyongjun1@huawei.com>
+In-Reply-To: <20210519141627.3047264-1-weiyongjun1@huawei.com>
 To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     mani@kernel.org, davem@davemloft.net, kuba@kernel.org,
-        linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, hulkci@huawei.com,
-        manivannan.sadhasivam@linaro.org
+Cc:     khalasa@piap.pl, davem@davemloft.net, kuba@kernel.org,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        hulkci@huawei.com
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -49,20 +48,19 @@ Hello:
 
 This patch was applied to netdev/net-next.git (refs/heads/master):
 
-On Wed, 19 May 2021 15:58:52 +0000 you wrote:
-> Fix to return a negative error code -ENOMEM from the error handling
-> case instead of 0, as done elsewhere in this function.
+On Wed, 19 May 2021 14:16:27 +0000 you wrote:
+> In case of error, the function mdiobus_get_phy() returns NULL
+> pointer not ERR_PTR(). The IS_ERR() test in the return value
+> check should be replaced with NULL test.
 > 
-> Fixes: c6e08d6251f3 ("net: qrtr: Allocate workqueue before kernel_bind")
 > Reported-by: Hulk Robot <hulkci@huawei.com>
 > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2] net: qrtr: ns: Fix error return code in qrtr_ns_init()
-    https://git.kernel.org/netdev/net-next/c/a49e72b3bda7
+  - [net-next] net: ethernet: ixp4xx: Fix return value check in ixp4xx_eth_probe()
+    https://git.kernel.org/netdev/net-next/c/20e76d3d044d
 
 You are awesome, thank you!
 --

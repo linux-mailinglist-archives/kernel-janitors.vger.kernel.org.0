@@ -2,76 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D099D3892F7
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 May 2021 17:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB8073897C6
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 May 2021 22:20:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354975AbhESPvC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 May 2021 11:51:02 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:4753 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233708AbhESPvA (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 May 2021 11:51:00 -0400
-Received: from dggems705-chm.china.huawei.com (unknown [172.30.72.58])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FlcfR6sgMzpfcM;
-        Wed, 19 May 2021 23:46:07 +0800 (CST)
-Received: from dggeml759-chm.china.huawei.com (10.1.199.138) by
- dggems705-chm.china.huawei.com (10.3.19.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Wed, 19 May 2021 23:49:37 +0800
-Received: from localhost.localdomain (10.175.102.38) by
- dggeml759-chm.china.huawei.com (10.1.199.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Wed, 19 May 2021 23:49:37 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>, Manivannan Sadhasivam <mani@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-CC:     <linux-arm-msm@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>,
-        "Manivannan Sadhasivam" <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH net-next v2] net: qrtr: ns: Fix error return code in qrtr_ns_init()
-Date:   Wed, 19 May 2021 15:58:52 +0000
-Message-ID: <20210519155852.2878479-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        id S229976AbhESUVh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 May 2021 16:21:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51632 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229625AbhESUVf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 19 May 2021 16:21:35 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 6D4AB613B5;
+        Wed, 19 May 2021 20:20:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1621455615;
+        bh=8g5eYBivg5IznIEAFIca9LAGXET2r1Xl8EQ+5RN/FhA=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=i6WjeXJ388iTn/zg3rN2ijLNAtEWXG93n2+Bn+H9aSGmm8EZNE1CSj4wjb/PoY+8y
+         H2kEiSOV8vcM3dYVjGza6F2ByKt77V8tSGDsHZvFkrA+3p+zXVDEXXadfMRiF0EOXx
+         r9BbuC4JtGeLkacJraOJGDIJMRI4kDl9sp4YzX6j58UtjE8p7YK2Rb/jmbvmrvfU5G
+         broYV/aEK9RoGOcCsc//1YK4E+UxDTBI1Mz7xClU4wtxwCmpuVQRXa5RKNDWFfHOnw
+         CoOePdJpt4xghGgpua6sZEc50zl+oRfLNAKs9+BYynYuPTE8IG79UH29j3szw1JH1x
+         3cPiWE3B/0wNg==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 60C0A60CD2;
+        Wed, 19 May 2021 20:20:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.102.38]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggeml759-chm.china.huawei.com (10.1.199.138)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2] net: qrtr: ns: Fix error return code in
+ qrtr_ns_init()
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <162145561539.14289.12444383566241954680.git-patchwork-notify@kernel.org>
+Date:   Wed, 19 May 2021 20:20:15 +0000
+References: <20210519155852.2878479-1-weiyongjun1@huawei.com>
+In-Reply-To: <20210519155852.2878479-1-weiyongjun1@huawei.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     mani@kernel.org, davem@davemloft.net, kuba@kernel.org,
+        linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, hulkci@huawei.com,
+        manivannan.sadhasivam@linaro.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return a negative error code -ENOMEM from the error handling
-case instead of 0, as done elsewhere in this function.
+Hello:
 
-Fixes: c6e08d6251f3 ("net: qrtr: Allocate workqueue before kernel_bind")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
-v1 -> v2: add fixes tag and reviewed-by
----
- net/qrtr/ns.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+This patch was applied to netdev/net-next.git (refs/heads/master):
 
-diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-index 8d00dfe8139e..1990d496fcfc 100644
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -775,8 +775,10 @@ int qrtr_ns_init(void)
- 	}
- 
- 	qrtr_ns.workqueue = alloc_workqueue("qrtr_ns_handler", WQ_UNBOUND, 1);
--	if (!qrtr_ns.workqueue)
-+	if (!qrtr_ns.workqueue) {
-+		ret = -ENOMEM;
- 		goto err_sock;
-+	}
- 
- 	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns_data_ready;
- 
+On Wed, 19 May 2021 15:58:52 +0000 you wrote:
+> Fix to return a negative error code -ENOMEM from the error handling
+> case instead of 0, as done elsewhere in this function.
+> 
+> Fixes: c6e08d6251f3 ("net: qrtr: Allocate workqueue before kernel_bind")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v2] net: qrtr: ns: Fix error return code in qrtr_ns_init()
+    https://git.kernel.org/netdev/net-next/c/a49e72b3bda7
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 

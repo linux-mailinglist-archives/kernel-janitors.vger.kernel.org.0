@@ -2,69 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E37C43897C3
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 May 2021 22:20:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86457389833
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 May 2021 22:47:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229724AbhESUVh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 May 2021 16:21:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51618 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229565AbhESUVf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 May 2021 16:21:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 52EE26135F;
-        Wed, 19 May 2021 20:20:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621455615;
-        bh=bLfZ6T+0eeJALV2fgqEgxwkeDQvQ35QAOv8EHlCuLis=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=ZM0qvfH2F+J15M1VR0gwmRf5Ya1rVk7hlqb6C97NtEbUZos14f8N3POZvcUTWE6lS
-         i0ynzL5Gf4A8YeMWnYa0cXEYqvMXzgMF3Z95rY7FtiABCRJ4biePO2/YXzTbztyKOQ
-         ZrAiKhL24v3f9/ry5cCgmaeenB7bDJ+hfN0mBlCVZqN0lapY9Rm4PkDa7iUyeYs9Vs
-         KXIP91sSZPRvD+6s0RECDO832nXhd8psPrikDW9A9VCRx5R/YGnD7ihEgfHcImRcKH
-         TIGexv6ZnavRT9YPXvrgybSCbi6eATlXBxK1fy5kGj3sDfmadtgb3vbz+yBimL/e0Z
-         JOl07riBTRFAA==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 4D32F60A0D;
-        Wed, 19 May 2021 20:20:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S229478AbhESUs2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 May 2021 16:48:28 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:46407 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229437AbhESUs2 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 19 May 2021 16:48:28 -0400
+Received: from localhost.localdomain ([86.243.172.93])
+        by mwinf5d81 with ME
+        id 6kn32500A21Fzsu03kn3Bq; Wed, 19 May 2021 22:47:05 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 19 May 2021 22:47:05 +0200
+X-ME-IP: 86.243.172.93
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     anitha.chrisanthus@intel.com, edmund.j.dea@intel.com,
+        airlied@linux.ie, daniel@ffwll.ch, sam@ravnborg.org
+Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] drm/kmb: Fix an error handling path
+Date:   Wed, 19 May 2021 22:47:02 +0200
+Message-Id: <ce19f0d78174b0674dc963d134fbdec222250e84.1621457119.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: ethernet: ixp4xx: Fix return value check in
- ixp4xx_eth_probe()
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <162145561531.14289.9199299011458304917.git-patchwork-notify@kernel.org>
-Date:   Wed, 19 May 2021 20:20:15 +0000
-References: <20210519141627.3047264-1-weiyongjun1@huawei.com>
-In-Reply-To: <20210519141627.3047264-1-weiyongjun1@huawei.com>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     khalasa@piap.pl, davem@davemloft.net, kuba@kernel.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        hulkci@huawei.com
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
+If 'platform_get_irq()' fails, it is spurious to call
+'of_reserved_mem_device_release()' in the error handling path, because
+'of_reserved_mem_device_init() has not been called yet.
 
-This patch was applied to netdev/net-next.git (refs/heads/master):
+Moreover, a previous 'kmb_initialize_clocks()' is unbalanced by a
+corresponding 'kmb_display_clk_disable()' call, has already done in the
+remove function.
 
-On Wed, 19 May 2021 14:16:27 +0000 you wrote:
-> In case of error, the function mdiobus_get_phy() returns NULL
-> pointer not ERR_PTR(). The IS_ERR() test in the return value
-> check should be replaced with NULL test.
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> 
-> [...]
+It is likely that 'kmb_display_clk_disable()' is expected in the error
+handling path, instead of 'kmb_display_clk_disable()'.
 
-Here is the summary with links:
-  - [net-next] net: ethernet: ixp4xx: Fix return value check in ixp4xx_eth_probe()
-    https://git.kernel.org/netdev/net-next/c/20e76d3d044d
 
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Also, it is spurious to return directly if 'of_reserved_mem_device_init()'
+fails.
+Goto the error handling path instead to free some resources.
 
+Fixes: 7f7b96a8a0a1 ("drm/kmb: Add support for KeemBay Display")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/gpu/drm/kmb/kmb_drv.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/gpu/drm/kmb/kmb_drv.c b/drivers/gpu/drm/kmb/kmb_drv.c
+index f64e06e1067d..b41b8789fe57 100644
+--- a/drivers/gpu/drm/kmb/kmb_drv.c
++++ b/drivers/gpu/drm/kmb/kmb_drv.c
+@@ -138,13 +138,13 @@ static int kmb_hw_init(struct drm_device *drm, unsigned long flags)
+ 	irq_lcd = platform_get_irq(pdev, 0);
+ 	if (irq_lcd < 0) {
+ 		drm_err(&kmb->drm, "irq_lcd not found");
+-		goto setup_fail;
++		goto disable_clk_err;
+ 	}
+ 
+ 	/* Get the optional framebuffer memory resource */
+ 	ret = of_reserved_mem_device_init(drm->dev);
+ 	if (ret && ret != -ENODEV)
+-		return ret;
++		goto disable_clk_err;
+ 
+ 	spin_lock_init(&kmb->irq_lock);
+ 
+@@ -152,8 +152,8 @@ static int kmb_hw_init(struct drm_device *drm, unsigned long flags)
+ 
+ 	return 0;
+ 
+- setup_fail:
+-	of_reserved_mem_device_release(drm->dev);
++ disable_clk_err:
++	kmb_display_clk_disable(kmb);
+ 
+ 	return ret;
+ }
+-- 
+2.30.2
 

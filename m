@@ -2,84 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5BA738B00F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 20 May 2021 15:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7818F38B015
+	for <lists+kernel-janitors@lfdr.de>; Thu, 20 May 2021 15:33:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240011AbhETNen (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 May 2021 09:34:43 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:4561 "EHLO
+        id S241702AbhETNeo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 20 May 2021 09:34:44 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:4562 "EHLO
         szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239925AbhETNeT (ORCPT
+        with ESMTP id S240022AbhETNeV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 May 2021 09:34:19 -0400
-Received: from dggems704-chm.china.huawei.com (unknown [172.30.72.59])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Fm9b62GRQzqThy;
-        Thu, 20 May 2021 21:30:10 +0800 (CST)
+        Thu, 20 May 2021 09:34:21 -0400
+Received: from dggems701-chm.china.huawei.com (unknown [172.30.72.60])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Fm9b73BJVzqTnk;
+        Thu, 20 May 2021 21:30:11 +0800 (CST)
 Received: from dggeml759-chm.china.huawei.com (10.1.199.138) by
- dggems704-chm.china.huawei.com (10.3.19.181) with Microsoft SMTP Server
+ dggems701-chm.china.huawei.com (10.3.19.178) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Thu, 20 May 2021 21:32:57 +0800
+ 15.1.2176.2; Thu, 20 May 2021 21:32:58 +0800
 Received: from localhost.localdomain (10.175.102.38) by
  dggeml759-chm.china.huawei.com (10.1.199.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Thu, 20 May 2021 21:32:56 +0800
+ 15.1.2176.2; Thu, 20 May 2021 21:32:57 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>, Loic Poulain <loic.poulain@linaro.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Masahiro Yamada <masahiroy@kernel.org>
-CC:     <linux-usb@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] usb: cdc-wdm: fix build error when CONFIG_WWAN_CORE is not set
-Date:   Thu, 20 May 2021 13:42:10 +0000
-Message-ID: <20210520134210.1667580-1-weiyongjun1@huawei.com>
+To:     <weiyongjun1@huawei.com>, Namjae Jeon <namjae.jeon@samsung.com>,
+        "Sergey Senozhatsky" <sergey.senozhatsky@gmail.com>,
+        Steve French <sfrench@samba.org>,
+        Hyunchul Lee <hyc.lee@gmail.com>
+CC:     <linux-cifs@vger.kernel.org>,
+        <linux-cifsd-devel@lists.sourceforge.net>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] cifsd: fix build error without CONFIG_OID_REGISTRY
+Date:   Thu, 20 May 2021 13:42:11 +0000
+Message-ID: <20210520134211.1667806-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7BIT
 X-Originating-IP: [10.175.102.38]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  dggeml759-chm.china.huawei.com (10.1.199.138)
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix build error when CONFIG_WWAN_CORE is not set:
+Fix build error when CONFIG_OID_REGISTRY is not set:
 
-x86_64-linux-gnu-ld: drivers/usb/class/cdc-wdm.o: in function `wdm_disconnect':
-cdc-wdm.c:(.text+0xb2a): undefined reference to `wwan_remove_port'
-x86_64-linux-gnu-ld: drivers/usb/class/cdc-wdm.o: in function `wdm_in_callback':
-cdc-wdm.c:(.text+0xf23): undefined reference to `wwan_port_rx'
-x86_64-linux-gnu-ld: drivers/usb/class/cdc-wdm.o: in function `wdm_wwan_port_stop':
-cdc-wdm.c:(.text+0x127d): undefined reference to `wwan_port_get_drvdata'
-x86_64-linux-gnu-ld: drivers/usb/class/cdc-wdm.o: in function `wdm_wwan_port_tx':
-cdc-wdm.c:(.text+0x12d9): undefined reference to `wwan_port_get_drvdata'
-x86_64-linux-gnu-ld: cdc-wdm.c:(.text+0x13c1): undefined reference to `wwan_port_txoff'
-x86_64-linux-gnu-ld: drivers/usb/class/cdc-wdm.o: in function `wdm_wwan_port_start':
-cdc-wdm.c:(.text+0x13e0): undefined reference to `wwan_port_get_drvdata'
-x86_64-linux-gnu-ld: cdc-wdm.c:(.text+0x1431): undefined reference to `wwan_port_txon'
-x86_64-linux-gnu-ld: drivers/usb/class/cdc-wdm.o: in function `wdm_wwan_port_tx_complete':
-cdc-wdm.c:(.text+0x14a4): undefined reference to `wwan_port_txon'
-x86_64-linux-gnu-ld: drivers/usb/class/cdc-wdm.o: in function `wdm_create.cold':
-cdc-wdm.c:(.text.unlikely+0x209): undefined reference to `wwan_create_port'
+mips-linux-gnu-ld: fs/cifsd/asn1.o: in function `gssapi_this_mech':
+asn1.c:(.text+0xaa0): undefined reference to `sprint_oid'
+mips-linux-gnu-ld: fs/cifsd/asn1.o: in function `neg_token_init_mech_type':
+asn1.c:(.text+0xbec): undefined reference to `sprint_oid'
 
-Fixes: cac6fb015f71 ("usb: class: cdc-wdm: WWAN framework integration")
+Fixes: fad4161b5cd0 ("cifsd: decoding gss token using lib/asn1_decoder.c")
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/usb/class/Kconfig | 1 +
+ fs/cifsd/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/class/Kconfig b/drivers/usb/class/Kconfig
-index d3f5162bd67e..7e502c046031 100644
---- a/drivers/usb/class/Kconfig
-+++ b/drivers/usb/class/Kconfig
-@@ -30,6 +30,7 @@ config USB_PRINTER
- 
- config USB_WDM
- 	tristate "USB Wireless Device Management support"
-+	depends on WWAN_CORE
+diff --git a/fs/cifsd/Kconfig b/fs/cifsd/Kconfig
+index 5316b1035fbe..e6448b04f46e 100644
+--- a/fs/cifsd/Kconfig
++++ b/fs/cifsd/Kconfig
+@@ -18,6 +18,7 @@ config SMB_SERVER
+ 	select CRYPTO_CCM
+ 	select CRYPTO_GCM
+ 	select ASN1
++	select OID_REGISTRY
+ 	default n
  	help
- 	  This driver supports the WMC Device Management functionality
- 	  of cell phones compliant to the CDC WMC specification. You can use
+ 	  Choose Y here if you want to allow SMB3 compliant clients
 

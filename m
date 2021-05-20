@@ -2,94 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EF1A389CEC
-	for <lists+kernel-janitors@lfdr.de>; Thu, 20 May 2021 07:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3007B389CFF
+	for <lists+kernel-janitors@lfdr.de>; Thu, 20 May 2021 07:17:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230008AbhETFKl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 May 2021 01:10:41 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32]:39236 "EHLO
-        mx0a-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229498AbhETFKk (ORCPT
+        id S230036AbhETFSu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 20 May 2021 01:18:50 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:60334 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229526AbhETFSu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 May 2021 01:10:40 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 14K58HhZ029793;
-        Thu, 20 May 2021 05:08:35 GMT
+        Thu, 20 May 2021 01:18:50 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 14K5ERxU181362;
+        Thu, 20 May 2021 05:17:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=3LKNlWa84mNtlc0IzsZuszOG3F3MflC9kl6rzzQfwaw=;
- b=zTP0SEmlB1Kz/rWlk+Gu03/Az2jePnS5icE7VOxbbmii0lK2AqbxPe4riIeU4GEPqGWA
- yPH3Mcn2z7ArpQ2/vMuyQN+SFn2MZi83amGLZcLB//ckl7zQP3dYOK8fn2whU7/WHj3z
- 5d7HbO41+KFpLNqjNIoly1WZnUtp2JxRp36ZfhuEVL2QeaOEB9MGn50NNuGbd9b8We2H
- Q53UcjPzxVlDUhEPldqxvNjPPDXS6opFFRx/zYhMuzpD1PtMaetg1wU7V80uSq0XaHWz
- tDFcUhCkfzMRiKBw86314L4SdFgXQzVPxIcyyC0Nm+o2ydeptd3hbBuk9v5MQ5rY0MKP 6w== 
-Received: from oracle.com (userp3030.oracle.com [156.151.31.80])
-        by mx0b-00069f02.pphosted.com with ESMTP id 38n4utr9wg-1
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=kXAbVmzY2Vr39sZ8jzpcxrD3siazfk5ugcT2ZXVs+xY=;
+ b=l2w2Wtz1tsBdBO+hQm5g8FGgCD0GgtuIs1XGEsVpqR2QhPCrV/M4SoeHUYhhRnC6C2xT
+ kKUMY44iWxn3GqCV8icxNc/As946Qtusby46gM2dC8knPQMSV7van8H+HZ61yLhAvAZj
+ NHBGZ2VAL3AC2UeBUtOQw+o7GfzcgvuJKpnlZTb/0tHPr07klrT9YEGwsflD/r/pjXlG
+ ZEr3CDZGoiRR2i1dbfUKN0lc2Mg6AjnlACM2GqDX69Fr9sFqKcOab6m6hehthsF4+xOK
+ WHcOCKFZrH2x0d31PT4a47J02uAR8itzY5Cmqlbl3K5ZjaP09LkIDYSZwjtdy3megRcc Ww== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2130.oracle.com with ESMTP id 38j3tbkjqb-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 20 May 2021 05:08:35 +0000
-Received: from userp3030.oracle.com (userp3030.oracle.com [127.0.0.1])
-        by pps.podrdrct (8.16.0.36/8.16.0.36) with SMTP id 14K58Y1x031103;
-        Thu, 20 May 2021 05:08:34 GMT
+        Thu, 20 May 2021 05:17:27 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 14K5G4L2054464;
+        Thu, 20 May 2021 05:17:27 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-        by userp3030.oracle.com with ESMTP id 38megm3kha-1
+        by aserp3020.oracle.com with ESMTP id 38mecm8c1g-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 20 May 2021 05:08:34 +0000
-Received: from userp3030.oracle.com (userp3030.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 14K57KqD029097;
-        Thu, 20 May 2021 05:08:33 GMT
+        Thu, 20 May 2021 05:17:27 +0000
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 14K5GvSl059925;
+        Thu, 20 May 2021 05:17:26 GMT
 Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 38megm3kh3-1
+        by aserp3020.oracle.com with ESMTP id 38mecm8c10-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 20 May 2021 05:08:33 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 14K58WCi014142;
-        Thu, 20 May 2021 05:08:32 GMT
-Received: from mwanda (/10.175.161.110)
+        Thu, 20 May 2021 05:17:26 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 14K5HMlB019306;
+        Thu, 20 May 2021 05:17:22 GMT
+Received: from kadam (/41.212.42.34)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 19 May 2021 22:08:31 -0700
-Date:   Thu, 20 May 2021 08:08:24 +0300
+        with ESMTP ; Wed, 19 May 2021 22:17:22 -0700
+Date:   Thu, 20 May 2021 08:17:15 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     James Schulman <james.schulman@cirrus.com>
-Cc:     David Rhodes <david.rhodes@cirrus.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Paul Handrigan <Paul.Handrigan@cirrus.com>,
-        alsa-devel@alsa-project.org, patches@opensource.cirrus.com,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] ASoC: cs35l33: fix an error code in probe()
-Message-ID: <YKXuyGEzhPT35R3G@mwanda>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     jejb@linux.ibm.com, martin.petersen@oracle.com,
+        James.Bottomley@SteelEye.com, linux-scsi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] scsi: sni_53c710: Fix a resource leak in an error
+ handling path
+Message-ID: <20210520051715.GZ1955@kadam>
+References: <5a97774020847f6b63e161197254d15ef1d786ea.1621485792.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-GUID: yKP14-Zssevux8KcCheFgEk2dAdWjhbC
-X-Proofpoint-ORIG-GUID: yKP14-Zssevux8KcCheFgEk2dAdWjhbC
+In-Reply-To: <5a97774020847f6b63e161197254d15ef1d786ea.1621485792.git.christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-ORIG-GUID: B7-_USFOj86VOVhwwljGs6TeAHKeqzGZ
+X-Proofpoint-GUID: B7-_USFOj86VOVhwwljGs6TeAHKeqzGZ
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9989 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 malwarescore=0
+ spamscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=999 mlxscore=0
+ impostorscore=0 adultscore=0 clxscore=1011 phishscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
+ definitions=main-2105200042
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This error path returns zero (success) but it should return -EINVAL.
+On Thu, May 20, 2021 at 06:44:25AM +0200, Christophe JAILLET wrote:
+> After a successful 'NCR_700_detect()' call, 'NCR_700_release()' must be
+> called to release some DMA related resources, as already done in the
+> remove function.
+> 
+> Fixes: c27d85f3f3c5 ("[SCSI] SNI RM 53c710 driver")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Fixes: 3333cb7187b9 ("ASoC: cs35l33: Initial commit of the cs35l33 CODEC driver.")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- sound/soc/codecs/cs35l33.c | 1 +
- 1 file changed, 1 insertion(+)
+Good catch.
 
-diff --git a/sound/soc/codecs/cs35l33.c b/sound/soc/codecs/cs35l33.c
-index 6f6b3c0c88b7..2a6f5e46d031 100644
---- a/sound/soc/codecs/cs35l33.c
-+++ b/sound/soc/codecs/cs35l33.c
-@@ -1202,6 +1202,7 @@ static int cs35l33_i2c_probe(struct i2c_client *i2c_client,
- 		dev_err(&i2c_client->dev,
- 			"CS35L33 Device ID (%X). Expected ID %X\n",
- 			devid, CS35L33_CHIP_ID);
-+		ret = -EINVAL;
- 		goto err_enable;
- 	}
- 
--- 
-2.30.2
+Reveiwed-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+regards,
+dan carpenter
 

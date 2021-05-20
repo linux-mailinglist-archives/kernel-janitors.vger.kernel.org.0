@@ -2,97 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6055838B579
-	for <lists+kernel-janitors@lfdr.de>; Thu, 20 May 2021 19:50:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF8A038B63F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 20 May 2021 20:43:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235364AbhETRva (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 May 2021 13:51:30 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:43618 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235305AbhETRva (ORCPT
+        id S235712AbhETSov (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 20 May 2021 14:44:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57070 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232681AbhETSov (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 May 2021 13:51:30 -0400
-Received: from [192.168.1.18] ([86.243.172.93])
-        by mwinf5d10 with ME
-        id 75q52500B21Fzsu035q6DT; Thu, 20 May 2021 19:50:07 +0200
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 20 May 2021 19:50:07 +0200
-X-ME-IP: 86.243.172.93
-Subject: Re: [PATCH] scsi: sni_53c710: Fix a resource leak in an error
- handling path
-To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:     jejb@linux.ibm.com, martin.petersen@oracle.com,
-        James.Bottomley@SteelEye.com, linux-scsi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <5a97774020847f6b63e161197254d15ef1d786ea.1621485792.git.christophe.jaillet@wanadoo.fr>
- <20210520150641.GA22843@alpha.franken.de>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <37ec6fe9-170f-c282-465e-6ae7d69e623e@wanadoo.fr>
-Date:   Thu, 20 May 2021 19:50:05 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.2
+        Thu, 20 May 2021 14:44:51 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F847C061574;
+        Thu, 20 May 2021 11:43:29 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: evelikov)
+        with ESMTPSA id 1650F1F4215F
+Date:   Thu, 20 May 2021 19:43:22 +0100
+From:   Emil Velikov <emil.velikov@collabora.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Ezequiel Garcia <ezequiel@collabora.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org,
+        linux-staging@lists.linux.dev, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] media: hantro: test the correct variable in probe()
+Message-ID: <YKatymPzAtKxpSOY@arch-x1c3>
+References: <YKaIKXOcDb0nXguP@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20210520150641.GA22843@alpha.franken.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YKaIKXOcDb0nXguP@mwanda>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 20/05/2021 à 17:06, Thomas Bogendoerfer a écrit :
-> On Thu, May 20, 2021 at 06:44:25AM +0200, Christophe JAILLET wrote:
->> After a successful 'NCR_700_detect()' call, 'NCR_700_release()' must be
->> called to release some DMA related resources, as already done in the
->> remove function.
->>
->> Fixes: c27d85f3f3c5 ("[SCSI] SNI RM 53c710 driver")
->> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->> ---
->>   drivers/scsi/sni_53c710.c | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/drivers/scsi/sni_53c710.c b/drivers/scsi/sni_53c710.c
->> index 678651b9b4dd..f6d60d542207 100644
->> --- a/drivers/scsi/sni_53c710.c
->> +++ b/drivers/scsi/sni_53c710.c
->> @@ -98,6 +98,7 @@ static int snirm710_probe(struct platform_device *dev)
->>   
->>    out_put_host:
->>   	scsi_host_put(host);
->> +	NCR_700_release(host);
+Hi Dan,
+
+Thank you for the patch.
+
+On 2021/05/20, Dan Carpenter wrote:
+> This should be testing "vpu->clocks[0].clk" instead of "vpu->clocks".
 > 
-> shouldn't this done before the scsi_host_put() to avoid a use after free ?
+> Fixes: eb4cacdfb998 ("media: hantro: add fallback handling for single irq/clk")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-I did it this way because remove function are:
-    scsi_remove_host
-    NCR_700_release
+Reviewed-by: Emil Velikov <emil.velikov@collabora.com>
 
-The other reason was to free resources in the reverse order than allocation.
-But this logic does'nt work in all cases.
-
-> lasi700.c has the same problem.
-
-and a400t.c and bvme6000_scsi.c and mvme16x_scsi.c and sim710.c and 
-zorro7xx.c.
-That is to say all drivers that use NCR_700_detect().
-
-That is why I'm unsure with my patch. It is unusual to have ALL users 
-wrong. It is more likely that I missed something and that the code is 
-correct.
-
-I also don't fully understand why we use 'scsi_host_put' in some place 
-and 'scsi_remove_host' in remove functions.
-Referenced managed resources sometimes have the needed mechanism to 
-automagically release some resource.
-
-> And it looks like NCR_700_detect() will leak
-> dma memory, if scsi_host_alloc() failed.
-
-Agreed. And same if scsi_add_host fails at the end of the function.
-
-> 
-> Thomas.
-> 
-
+-Emil

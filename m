@@ -2,157 +2,177 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15DAC38D3A9
-	for <lists+kernel-janitors@lfdr.de>; Sat, 22 May 2021 06:41:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36C3338D3FC
+	for <lists+kernel-janitors@lfdr.de>; Sat, 22 May 2021 08:45:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231351AbhEVEnN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 22 May 2021 00:43:13 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:50502 "EHLO
-        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230058AbhEVEnM (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 22 May 2021 00:43:12 -0400
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 14M4dG7Z002711;
-        Sat, 22 May 2021 04:41:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=corp-2020-01-29;
- bh=MsgfUp2H25dI6Z4rLOhC1tM/3eyxXK73sBo9lKyc63w=;
- b=BRkj2VVrVI5TYQaLIqjJ5XjPjnu1/XerkoUYfuWoUuS7KRlXAfpynd4URao9W+4fVLtY
- WS8NRl8AtR4KBjQq0vnP36DgUc3+8C8rvg+wW3K0p1Hg4eRfPEYZiLtZRV7h4+66IcJz
- fEzxmegS8Hz405cAIB0BX8Du1Dlmz3t5uQLslmkDuLnoHesKDA6Rj9pevsRFrofMg2iK
- Dlc/pHz9VR+1NQaaSQJ+s94DM3XwFNCXX5Rwg/Ft9Fti9BD3d/UcOsrzDlyiETHez1lX
- X4F+7xGBN4wDFVEpMBbwBqLFTkdZxQ/tRE4Zkl09PyFlgqbQ3LOXnF7b1OhPMNoCEnBK bg== 
-Received: from oracle.com (userp3030.oracle.com [156.151.31.80])
-        by mx0b-00069f02.pphosted.com with ESMTP id 38psjs00qv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 22 May 2021 04:41:46 +0000
-Received: from userp3030.oracle.com (userp3030.oracle.com [127.0.0.1])
-        by pps.podrdrct (8.16.0.36/8.16.0.36) with SMTP id 14M4fjnD080034;
-        Sat, 22 May 2021 04:41:45 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2108.outbound.protection.outlook.com [104.47.55.108])
-        by userp3030.oracle.com with ESMTP id 38pq2rp5mr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 22 May 2021 04:41:45 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oDfzNF83Zz/CFqk57W7NiWyd7r+02ruWvz9iGn4uqICcKVyiOSuyJLI63Eu+/GBCsq6jQUWjpsbeR79BDnsnaO2Hj0dJd4IN/4Yy6fTBA9JRYl2Kx0fTLlGQw6x41cjMwaAI7OJaZ6k+kNT+LjSJhOYQCKuVHwNnVF1ifFLwVLnIWwGALLgSISNxTjU9qwwnlqStPjzVMONOUl1JSoWrUhJsl1XG6lmXEsmLqd5mlK1nCDmJPFPuEnihCEOEqIOLnuZrfbMA4ABBce2J+Onr5ZTHuLCZ8IWegQLd4iSwhyRVi4QlLf1zc/9EfWZLsjssv8YD+MmiWAKu8j41uRoRCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MsgfUp2H25dI6Z4rLOhC1tM/3eyxXK73sBo9lKyc63w=;
- b=PuymXDP6cIp7Ou7WlT2erqGEoy8Ffeg7F0v2lT2izXBC10JBPHWJ4pVgl8W2246EMIY9+3xFHQ5Qh0L5quvm7TBbqGghdhMsXQABj/1rWVA+ETFNOi4Z81tduz1aT7oQPbcYskD1Cz4YX/yiZLIhvP6ow48PHeXX659j+Smo8Oec4GwDFfSWyy73ETOcS/uO/C3x/7gta9SnfzlfSbaQa5corfgxqO36hc6L9Rhq2iocg0JhmLNIR7iqcYu75FcjZmS6zYACm/uWb4gSozVisgDrk+0r4DSxdtDHppIdx57jtcWXU9TbmNUE9RKeKTNzx8eRQphui8TfroLN7MDdgA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MsgfUp2H25dI6Z4rLOhC1tM/3eyxXK73sBo9lKyc63w=;
- b=tbrAWcQ3c2SCzANTSxtKEHWck6SYHken9BjpF6NuRd2I3Hl5vB0IJoSN6gJQoxWDJVn7vyeXBePJeWPfyZUB47Asrt2jpIjbGluQNoZY589cNs+Dq/HNZUA6kXO6v0yY65yO5gG6EH6Zi52zXJPTuR+ELTjK8qBwENZ9SdicTlM=
-Authentication-Results: linux.ibm.com; dkim=none (message not signed)
- header.d=none;linux.ibm.com; dmarc=none action=none header.from=oracle.com;
-Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
- by PH0PR10MB5481.namprd10.prod.outlook.com (2603:10b6:510:ea::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4129.25; Sat, 22 May
- 2021 04:41:43 +0000
-Received: from PH0PR10MB4759.namprd10.prod.outlook.com
- ([fe80::4c61:9532:4af0:8796]) by PH0PR10MB4759.namprd10.prod.outlook.com
- ([fe80::4c61:9532:4af0:8796%7]) with mapi id 15.20.4150.023; Sat, 22 May 2021
- 04:41:43 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Nigel Christian <nigel.l.christian@gmail.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] scsi: be2iscsi: Remove redundant initialization
-Date:   Sat, 22 May 2021 00:41:34 -0400
-Message-Id: <162165846772.5888.12654307876380553286.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <YJ2mMHNqAgTNVVj+@fedora>
-References: <YJ2mMHNqAgTNVVj+@fedora>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [138.3.201.9]
-X-ClientProxiedBy: SA0PR11CA0019.namprd11.prod.outlook.com
- (2603:10b6:806:d3::24) To PH0PR10MB4759.namprd10.prod.outlook.com
- (2603:10b6:510:3d::12)
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from ca-mkp.mkp.ca.oracle.com (138.3.201.9) by SA0PR11CA0019.namprd11.prod.outlook.com (2603:10b6:806:d3::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4129.33 via Frontend Transport; Sat, 22 May 2021 04:41:42 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e79142bb-1374-4341-4bba-08d91cdbe60d
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5481:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <PH0PR10MB548175BB71C8BF3F5331A2068E289@PH0PR10MB5481.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4303;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ZIxUR1+FfXyKCauPbXMb69s0tYj/6JNc0XGaKXEmJc7221TDaPksrdummYQeR2nCdKReohCVauy1/4PnQsVmdZ1RIHcp33u9vEaiVn1x/68IIzO/0fklXcgoOjcZPq1q2FOkMN1N1ADnXUS/gDEWdEi6FQjrWQDEPJuXNNDIHxB/PCoSQSYxv0G1NbDRXLGXcyT7oO8Mn5CN7t3QJL2zfCJhn6CGo7tQgCS9dC7e66SHZQ/LWszKtJq5G4YTjtsgaUlzMfykni8V73qtrXeYbTN5wBVtqq8AfnFSCYZxeJNBoIHeifa9uypENKRC7ozR0BmjCzXF86WSwbvAWl08ezOFH3CO+jBSSeL+U++Hp6ZMPRbDJDn8Rh8czS5a69mF6l0MXxGeFq0DIstDJsT9lF65gBbDn1GEfZGx0VjrriJcGzoQl8PRpAvw9rRQNcsA7fJsDziRPVRoUzaWH72p2iT8JDVbuaRqtU0jtQFFrAoDav5GpUZbPgLc6eIkyK/BHKmQDwxHaABZuLVPMFfMxd3ALIzxJW+UPOOvAJDrjrScXGTwYZQrzHnEJTSnPGWdcvPphdKyKyvwfv/Ld7fUq6ek0NNIrSxMqP1vfyUjIQCkCT/q8S1VOQVEjlTcx6K0Swb7gOR20uOJE6JppR7x+8jV+ZadOUHNSHrn7iiBXEWGtKMAKDbuK+dJXFC2hPvaMFQHjWfnhjC5SVJQu5tyNJlpp9qZXWEnPFa3GcK9bJKgkLNJK3UiNZqrntmvqePHncWP61K2LBS3GV2cx9o1Zg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(39860400002)(376002)(366004)(346002)(136003)(396003)(6486002)(6666004)(52116002)(956004)(4744005)(7696005)(66476007)(16526019)(316002)(186003)(8676002)(38100700002)(38350700002)(66556008)(66946007)(8936002)(110136005)(5660300002)(2906002)(26005)(103116003)(478600001)(966005)(2616005)(86362001)(36756003)(4326008);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?K1FyUG5hd1dDVlVFbnVtZWtZUmtHYmhHallBOXBENmNzb0Q3blFyUnNwdVRr?=
- =?utf-8?B?MURFeEtKUW1BTEZRa0JieW5jK1Y4QzFlNExSWnl1V0lJY1Ayc3FkdW9kZ05C?=
- =?utf-8?B?N2hCN1JiMTVlbzAyNHphb0JPWjl0UXFlcmozUENORzNxOHUyN29PMzVpY0Ey?=
- =?utf-8?B?b3NGTkhaaXJ4aWNQNklWQlB5U1pUUnlvNm45OFpQNk02bWE5N0RCUE5abFR1?=
- =?utf-8?B?SzcxWkc1NlZPVnhUZnpiRzhaRWl3SS9saWhSSm1HTHVNYVU0WkJkdzE2R0ox?=
- =?utf-8?B?WEMxTWVTdDZsTFNZd3JTVHdaNmh3WFBiUXVsYWtqYTdhc0hZR3FtSXZKWllj?=
- =?utf-8?B?bFlneU1IVllvRENUTFEvaDNZRlR6NzdiWC9rUnI4MFQ0aVNwRWFKUmMvY0cr?=
- =?utf-8?B?OUowOENQZXBxcVdpdy9oK09WUHRNWm5nNFdDRjFXK0xUMTJjVU9KWkRLVDN4?=
- =?utf-8?B?UUo0bFp5NXBDSHFzaTR5ZS9JalFSK0ttckdzZFpqQlBZVmRWdzM3MTBUaHhY?=
- =?utf-8?B?UFNTTllGYVdkTjdFNlhERllSdzJOL0NmdWF6QVJEdWUvNnBTTmhQWlJJaHNH?=
- =?utf-8?B?OTNsbS9Ud2JHb0JaKzU1dnhsblpCY2JDclJ3S0tHSGpvbC9JREhvMGI1VmdS?=
- =?utf-8?B?dmZmcTFpVEJ3cDNkTWFGcXB3c0FQYXZGaWcya2FZbnBlZGNCSit6cWFRVEhK?=
- =?utf-8?B?bXZkaEZjN01oS0xUbUpaNHA0eFVwNkZrM1hOT0ZSNUg1UFNUcHlIYUY4RkFZ?=
- =?utf-8?B?Y0E3U2pGVFdET09tRlBiSTZUMkNRenRuZ3kzdHBlbTVUdmdtZW5tQmE5ZzZt?=
- =?utf-8?B?ZUg1THNEdUVWV3lwMjdaVEpJeEc1dkNUYkpDOERZelA0TTg4Q2lSYmtKWFNS?=
- =?utf-8?B?MnZ0Ym9NOTFUaFA3eHJyOG5ZaUc4T1NHSEpGS2VlUVZwSjFjUkVOM3dUc2RF?=
- =?utf-8?B?SWh2ZFRKc0JySnNOeUMwbTdZUCsxWGw0aW9wUGtEWFNFMUNWSnFHdmswM1Rj?=
- =?utf-8?B?Qzd5c0NZa1NMWG5tMExwdkNrcVNCWEd4TkxHaE9HMHhTRVJKUGg3WWpQUFFs?=
- =?utf-8?B?QjdLaTdFQzFMTzl5b25GSElidXYrdThnckZYa0hGQjl6NmxaWWJEb3g3di9W?=
- =?utf-8?B?c29ndVl6NmhwSmliWEVaWWpDR1duYWVqMU1oN1cxUFZIUUgreXhWWTRQNkda?=
- =?utf-8?B?ZnF6dHcwL0ZxUUg1Wk1iR3Q3Y1VONTNBM2sveE5Rb2Njd1ZrQjVFbjRXTncv?=
- =?utf-8?B?clluK0RjTENNOFVzMDVndEJNdnZvbjduTVhtTFFBTENkMURlUnVoN2wvY0tM?=
- =?utf-8?B?VEVscWJSWUsyZ0cwVzJTMEFoSVNLQSttaHhpZzYxOFBubXg0OURZbEd3Zm43?=
- =?utf-8?B?aXFBM0Ntd3JkZnVwcWJORTFLYkZNanRlYnFxVUJsMzVDbU5Ybk96bk5HSkhQ?=
- =?utf-8?B?RGErN3ZNK3A0dkV2QnZ6cnVWaGR4b2tiRmt6SlpsM2V0d2dGVmpaZHFSM3ZD?=
- =?utf-8?B?M201bnRteW1hN0JyWERxMGdJNUxjRHBoQ2ZtNVdSRXQvdnI4a25MVHZtVkpm?=
- =?utf-8?B?ZS9ScWlnWFQwNzhBSWdOb0V6RmlKaUFmeXY1T3pwdkhBVGk0NlFyeWY2ajJU?=
- =?utf-8?B?bksxTmFVemh4U2hTaVJRQmxrZnBBZFRCNmtVTUdYK3o2TkZJUFJpQ093SjNk?=
- =?utf-8?B?SWJXZlNnbktieTNva3p1V3E1bzZ2WGVmR3FFTjRENEFxNHdqc1lvWE5GeUYw?=
- =?utf-8?Q?XnkBicUHmalx6Ih7c6nByS6QVhmy418ZyDD35Bt?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e79142bb-1374-4341-4bba-08d91cdbe60d
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2021 04:41:43.4345
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ATm2cJJWLdWfntx6iRVtrYR3L571puQDqAp70dGPOC6EatUJ1xY9ihBIXvPmqXW1kAnUuLdEoGcEyH9t1ELbJ1eqNw/tGxn6MQc9l86LW+g=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB5481
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9991 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0 spamscore=0
- adultscore=0 bulkscore=0 mlxlogscore=956 suspectscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2105220026
-X-Proofpoint-GUID: rdDox0nsnBTuo5G7HESBgSf_vee6iuiK
-X-Proofpoint-ORIG-GUID: rdDox0nsnBTuo5G7HESBgSf_vee6iuiK
+        id S229988AbhEVGq7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 22 May 2021 02:46:59 -0400
+Received: from mx2.suse.de ([195.135.220.15]:42126 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229689AbhEVGq6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 22 May 2021 02:46:58 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1621665933; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=stNMbmkfr0H4CTD2K3KTiK4y5A/GN2rVn4bUsldoZ4c=;
+        b=QDYzRUelPV6yLoPdmLyrdsVyYAOAd57fVYU3rKX9lyCzcDZ0HYWNCmaGklBiADgs2xzqo1
+        57H2nb8a8lu7ZPb0Otcwjdk9NMviR892T8IUJ25IfbXF9HtuzzBKtRGSFzOmDBghyh+MlI
+        wvMdIiRrc5amtV+j+bj6sN8qmcfAEec=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1621665933;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=stNMbmkfr0H4CTD2K3KTiK4y5A/GN2rVn4bUsldoZ4c=;
+        b=eJQJNScSiAtI7hyaN5vliE9YnjF8RIC+wg9VLkVURHz0TPNfUXfrt8Eg3PNi4T++uqeA6c
+        WMz2/+FtpcY4EIDA==
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id E85F4AAFD;
+        Sat, 22 May 2021 06:45:32 +0000 (UTC)
+Date:   Sat, 22 May 2021 08:45:32 +0200
+Message-ID: <s5him3bfer7.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Cc:     Colin King <colin.king@canonical.com>,
+        Clemens Ladisch <clemens@ladisch.de>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] ALSA: firewire-lib: Fix uninitialized variable err issue
+In-Reply-To: <20210521222146.GA10202@workstation>
+References: <20210520083424.6685-1-colin.king@canonical.com>
+        <s5hh7ixh9qn.wl-tiwai@suse.de>
+        <20210520130409.GA170303@workstation>
+        <20210521222146.GA10202@workstation>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
+ FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
+ (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 13 May 2021 17:20:32 -0500, Nigel Christian wrote:
+On Sat, 22 May 2021 00:21:46 +0200,
+Takashi Sakamoto wrote:
+> 
+> Hi,
+> 
+> On Thu, May 20, 2021 at 10:04:09PM +0900, Takashi Sakamoto wrote:
+> > Hi,
+> > 
+> > On Thu, May 20, 2021 at 02:26:24PM +0200, Takashi Iwai wrote:
+> > > On Thu, 20 May 2021 10:34:24 +0200,
+> > > Colin King wrote:
+> > > > 
+> > > > From: Colin Ian King <colin.king@canonical.com>
+> > > > 
+> > > > Currently in the case where the payload_length is less than the
+> > > > cip_header_size the error return variable err is not being set
+> > > > and function parse_ir_ctx_header can return an uninitialized
+> > > > error return value. Fix this by setting err to zero.
+> > > > 
+> > > > Addresses-Coverity: ("Uninitialized scalar variable")
+> > > > Fixes: c09010eeb373 ("ALSA: firewire-lib: handle the case that empty isochronous packet payload for CIP")
+> > > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > > 
+> > > Just a bikeshed, IMO, it'd be more proper to initialize err at the
+> > > beginning than setting 0 at every branch, e.g.
+> > > 
+> > > --- a/sound/firewire/amdtp-stream.c
+> > > +++ b/sound/firewire/amdtp-stream.c
+> > > @@ -652,7 +652,7 @@ static int parse_ir_ctx_header(struct amdtp_stream *s, unsigned int cycle,
+> > >  	unsigned int payload_length;
+> > >  	const __be32 *cip_header;
+> > >  	unsigned int cip_header_size;
+> > > -	int err;
+> > > +	int err = 0;
+> > >  
+> > >  	payload_length = be32_to_cpu(ctx_header[0]) >> ISO_DATA_LENGTH_SHIFT;
+> > >  
+> > > @@ -683,7 +683,6 @@ static int parse_ir_ctx_header(struct amdtp_stream *s, unsigned int cycle,
+> > >  		}
+> > >  	} else {
+> > >  		cip_header = NULL;
+> > > -		err = 0;
+> > >  		*data_blocks = payload_length / sizeof(__be32) / s->data_block_quadlets;
+> > >  		*syt = 0;
+> > 
+> > Thanks for the patches.
+> > 
+> > The error check is just done for the case to process CIP header, thus we
+> > can put the auto variable into the branch.
+> > 
+> > ======== 8< --------
+> > From 3fcca0062297e937c665f1c8e3a117e1187f4115 Mon Sep 17 00:00:00 2001
+> > From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+> > Date: Thu, 20 May 2021 21:59:50 +0900
+> > Subject: [PATCH] ALSA: firewire-lib: Fix uninitialized variable err issue
+> > 
+> > The check of error is just done for the case that CIP header is available.
+> > 
+> > This commit moves auto variable into the branch to process CIP header.
+> > 
+> > Addresses-Coverity: ("Uninitialized scalar variable")
+> > Fixes: c09010eeb373 ("ALSA: firewire-lib: handle the case that empty isochronous packet payload for CIP")
+> > Suggested-by: Colin Ian King <colin.king@canonical.com>
+> > Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+> > ---
+> >  sound/firewire/amdtp-stream.c | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/sound/firewire/amdtp-stream.c b/sound/firewire/amdtp-stream.c
+> > index 37c8de8a..11ae4e88 100644
+> > --- a/sound/firewire/amdtp-stream.c
+> > +++ b/sound/firewire/amdtp-stream.c
+> > @@ -748,7 +748,6 @@ static int parse_ir_ctx_header(struct amdtp_stream *s, unsigned int cycle,
+> >  	unsigned int payload_length;
+> >  	const __be32 *cip_header;
+> >  	unsigned int cip_header_size;
+> > -	int err;
+> >  
+> >  	payload_length = be32_to_cpu(ctx_header[0]) >> ISO_DATA_LENGTH_SHIFT;
+> >  
+> > @@ -766,6 +765,8 @@ static int parse_ir_ctx_header(struct amdtp_stream *s, unsigned int cycle,
+> >  
+> >  	if (cip_header_size > 0) {
+> >  		if (payload_length >= cip_header_size) {
+> > +			int err;
+> > +
+> >  			cip_header = ctx_header + IR_CTX_HEADER_DEFAULT_QUADLETS;
+> >  			err = check_cip_header(s, cip_header, payload_length - cip_header_size,
+> >  					       data_blocks, data_block_counter, syt);
+> > @@ -779,7 +780,6 @@ static int parse_ir_ctx_header(struct amdtp_stream *s, unsigned int cycle,
+> >  		}
+> >  	} else {
+> >  		cip_header = NULL;
+> > -		err = 0;
+> >  		*data_blocks = payload_length / sizeof(__be32) / s->data_block_quadlets;
+> >  		*syt = 0;
+> >  
+> > @@ -790,7 +790,7 @@ static int parse_ir_ctx_header(struct amdtp_stream *s, unsigned int cycle,
+> >  	trace_amdtp_packet(s, cycle, cip_header, payload_length, *data_blocks,
+> >  			   *data_block_counter, packet_index, index);
+> >  
+> > -	return err;
+> > +	return 0;
+> >  }
+> >  
+> >  // In CYCLE_TIMER register of IEEE 1394, 7 bits are used to represent second. On
+> > -- 
+> > 2.27.0
+> > ======== 8< --------
+> 
+> Thanks for applying the patch but the commit in your tree includes
+> duplicated From/Data/Subject lines and causes failure of git-am for the
+> patch simply generated by git-am. Is it possible for you to modify
+> history of your for-next branch with enough correction?
 
-> The nested for loop variables i and j in beiscsi_free_mem() are
-> initialized twice. The values outside of the loops are redundant
-> and can be removed.
+My bad, now corrected.
 
-Applied to 5.14/scsi-queue, thanks!
 
-[1/1] scsi: be2iscsi: Remove redundant initialization
-      https://git.kernel.org/mkp/scsi/c/0edca4fc633c
+thanks,
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Takashi

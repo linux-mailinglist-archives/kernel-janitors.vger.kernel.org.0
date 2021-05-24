@@ -2,126 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0D1038E75E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 May 2021 15:25:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D13CD38E7C0
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 May 2021 15:36:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232859AbhEXN0c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 May 2021 09:26:32 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:5759 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232885AbhEXN0a (ORCPT
+        id S232830AbhEXNh5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 May 2021 09:37:57 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3651 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232401AbhEXNh5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 May 2021 09:26:30 -0400
-Received: from dggems702-chm.china.huawei.com (unknown [172.30.72.58])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FpdC91vxczml0H;
-        Mon, 24 May 2021 21:21:25 +0800 (CST)
+        Mon, 24 May 2021 09:37:57 -0400
+Received: from dggems706-chm.china.huawei.com (unknown [172.30.72.58])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FpdSM5pW1zNypK;
+        Mon, 24 May 2021 21:32:51 +0800 (CST)
 Received: from dggeml759-chm.china.huawei.com (10.1.199.138) by
- dggems702-chm.china.huawei.com (10.3.19.179) with Microsoft SMTP Server
+ dggems706-chm.china.huawei.com (10.3.19.183) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Mon, 24 May 2021 21:25:00 +0800
-Received: from localhost.localdomain (10.175.102.38) by
+ 15.1.2176.2; Mon, 24 May 2021 21:36:27 +0800
+Received: from [10.174.178.165] (10.174.178.165) by
  dggeml759-chm.china.huawei.com (10.1.199.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Mon, 24 May 2021 21:24:59 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
-        "Timur Tabi" <timur@kernel.org>,
-        Nicolin Chen <nicoleotsuka@gmail.com>,
-        Xiubo Li <Xiubo.Lee@gmail.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>
-CC:     <alsa-devel@alsa-project.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] ASoC: imx-card: Make some symbols static
-Date:   Mon, 24 May 2021 13:35:53 +0000
-Message-ID: <20210524133553.2366502-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+ 15.1.2176.2; Mon, 24 May 2021 21:36:26 +0800
+Subject: Re: [PATCH -next] media: staging: tegra-vde: Fix error return code in
+ tegra_vde_probe()
+To:     Dmitry Osipenko <digetx@gmail.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        "Philipp Zabel" <p.zabel@pengutronix.de>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
+CC:     <linux-media@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+        <linux-staging@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+        <linaro-mm-sig@lists.linaro.org>,
+        <kernel-janitors@vger.kernel.org>, "Hulk Robot" <hulkci@huawei.com>
+References: <20210524133550.2363884-1-weiyongjun1@huawei.com>
+ <db911ac9-2d08-ae30-03ea-dfb7db964441@gmail.com>
+ <1e05ad22-c4d8-c443-5377-7cd9db024cb9@gmail.com>
+From:   "weiyongjun (A)" <weiyongjun1@huawei.com>
+Message-ID: <20768acd-2ab5-2e7e-263d-d3176268412e@huawei.com>
+Date:   Mon, 24 May 2021 21:36:26 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.102.38]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+In-Reply-To: <1e05ad22-c4d8-c443-5377-7cd9db024cb9@gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.178.165]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
  dggeml759-chm.china.huawei.com (10.1.199.138)
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The sparse tool complains as follows:
 
-sound/soc/fsl/imx-card.c:121:27: warning:
- symbol 'ak4458_fs_mul' was not declared. Should it be static?
-sound/soc/fsl/imx-card.c:138:31: warning:
- symbol 'ak4458_tdm_fs_mul' was not declared. Should it be static?
-sound/soc/fsl/imx-card.c:149:27: warning:
- symbol 'ak4497_fs_mul' was not declared. Should it be static?
-sound/soc/fsl/imx-card.c:166:27: warning:
- symbol 'ak5558_fs_mul' was not declared. Should it be static?
-sound/soc/fsl/imx-card.c:180:31: warning:
- symbol 'ak5558_tdm_fs_mul' was not declared. Should it be static?
+> 24.05.2021 16:27, Dmitry Osipenko пишет:
+>> 24.05.2021 16:35, Wei Yongjun пишет:
+>>> Fix to return a negative error code from the error handling
+>>> case instead of 0, as done elsewhere in this function.
+>>>
+>>> Fixes: dc8276b78917 ("staging: media: tegra-vde: use pm_runtime_resume_and_get()")
+>>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>>> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+>>> ---
+>>>   drivers/staging/media/tegra-vde/vde.c | 3 ++-
+>>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/staging/media/tegra-vde/vde.c b/drivers/staging/media/tegra-vde/vde.c
+>>> index e025b69776f2..321d14ba2e56 100644
+>>> --- a/drivers/staging/media/tegra-vde/vde.c
+>>> +++ b/drivers/staging/media/tegra-vde/vde.c
+>>> @@ -1071,7 +1071,8 @@ static int tegra_vde_probe(struct platform_device *pdev)
+>>>   	 * power-cycle it in order to put hardware into a predictable lower
+>>>   	 * power state.
+>>>   	 */
+>>> -	if (pm_runtime_resume_and_get(dev) < 0)
+>>> +	err = pm_runtime_resume_and_get(dev);
+>>> +	if (err < 0)
+>>>   		goto err_pm_runtime;
+>>>   
+>>>   	pm_runtime_put(dev);
+>>>
+>> pm_runtime_resume_and_get() doesn't return positive values, the previous
+>> variant was okay.
+>>
+>> You should also version your patches and add changelog.
+>>
+> Ah, sorry. The other patch is from Yang Yingliang.
 
-Those symbols are not used outside of imx-card.c, so marks
-them static.
 
-Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- sound/soc/fsl/imx-card.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Sorry, it is my bad. I missed that patch.
 
-diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index ab424735bbfe..58fd0639a069 100644
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -118,7 +118,7 @@ struct imx_card_data {
- 	u32 asrc_format;
- };
- 
--struct imx_akcodec_fs_mul ak4458_fs_mul[] = {
-+static struct imx_akcodec_fs_mul ak4458_fs_mul[] = {
- 	/* Normal, < 32kHz */
- 	{ .rmin = 8000,   .rmax = 24000,  .wmin = 1024, .wmax = 1024, },
- 	/* Normal, 32kHz */
-@@ -135,7 +135,7 @@ struct imx_akcodec_fs_mul ak4458_fs_mul[] = {
- 	{ .rmin = 705600, .rmax = 768000, .wmin = 16,   .wmax = 64,   },
- };
- 
--struct imx_akcodec_tdm_fs_mul ak4458_tdm_fs_mul[] = {
-+static struct imx_akcodec_tdm_fs_mul ak4458_tdm_fs_mul[] = {
- 	/*
- 	 * Table 13	- Audio Interface Format
- 	 * For TDM mode, MCLK should is set to
-@@ -146,7 +146,7 @@ struct imx_akcodec_tdm_fs_mul ak4458_tdm_fs_mul[] = {
- 	{ .min = 512,	.max = 512,	.mul = 1024  }, /* TDM512 */
- };
- 
--struct imx_akcodec_fs_mul ak4497_fs_mul[] = {
-+static struct imx_akcodec_fs_mul ak4497_fs_mul[] = {
- 	/**
- 	 * Table 7      - mapping multiplier and speed mode
- 	 * Tables 8 & 9 - mapping speed mode and LRCK fs
-@@ -163,7 +163,7 @@ struct imx_akcodec_fs_mul ak4497_fs_mul[] = {
-  * Auto MCLK selection based on LRCK for Normal Mode
-  * (Table 4 from datasheet)
-  */
--struct imx_akcodec_fs_mul ak5558_fs_mul[] = {
-+static struct imx_akcodec_fs_mul ak5558_fs_mul[] = {
- 	{ .rmin = 8000,   .rmax = 32000,  .wmin = 1024, .wmax = 1024, },
- 	{ .rmin = 44100,  .rmax = 48000,  .wmin = 512,  .wmax = 512, },
- 	{ .rmin = 88200,  .rmax = 96000,  .wmin = 256,  .wmax = 256, },
-@@ -177,7 +177,7 @@ struct imx_akcodec_fs_mul ak5558_fs_mul[] = {
-  * because of SAI we also add the restriction: MCLK >= 2 * BCLK
-  * (Table 9 from datasheet)
-  */
--struct imx_akcodec_tdm_fs_mul ak5558_tdm_fs_mul[] = {
-+static struct imx_akcodec_tdm_fs_mul ak5558_tdm_fs_mul[] = {
- 	{ .min = 128,	.max = 128,	.mul = 256 },
- 	{ .min = 256,	.max = 256,	.mul = 512 },
- 	{ .min = 512,	.max = 512,	.mul = 1024 },
+
+Regards,
+
+Wei Yongjun
 

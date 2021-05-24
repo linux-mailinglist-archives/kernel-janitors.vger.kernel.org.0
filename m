@@ -2,76 +2,133 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84BFE38E76A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 May 2021 15:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7287138E833
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 May 2021 16:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232874AbhEXN1m (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 May 2021 09:27:42 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:3983 "EHLO
-        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232456AbhEXN1k (ORCPT
+        id S232946AbhEXOCF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 May 2021 10:02:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54488 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232902AbhEXOCD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 May 2021 09:27:40 -0400
-Received: from dggems701-chm.china.huawei.com (unknown [172.30.72.58])
-        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4FpdFz37lFzmZ3L;
-        Mon, 24 May 2021 21:23:51 +0800 (CST)
-Received: from dggeml759-chm.china.huawei.com (10.1.199.138) by
- dggems701-chm.china.huawei.com (10.3.19.178) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Mon, 24 May 2021 21:26:10 +0800
-Received: from localhost.localdomain (10.175.102.38) by
- dggeml759-chm.china.huawei.com (10.1.199.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Mon, 24 May 2021 21:26:10 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>,
-        Badhri Jagan Sridharan <badhri@google.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     <linux-usb@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] usb: typec: tcpci: Make symbol 'tcpci_apply_rc' static
-Date:   Mon, 24 May 2021 13:37:04 +0000
-Message-ID: <20210524133704.2432555-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Mon, 24 May 2021 10:02:03 -0400
+Received: from mail-ua1-x936.google.com (mail-ua1-x936.google.com [IPv6:2607:f8b0:4864:20::936])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 521B1C06138B
+        for <kernel-janitors@vger.kernel.org>; Mon, 24 May 2021 07:00:34 -0700 (PDT)
+Received: by mail-ua1-x936.google.com with SMTP id 105so9353316uak.8
+        for <kernel-janitors@vger.kernel.org>; Mon, 24 May 2021 07:00:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bhZvYF2rrfsZa6Xf7+GPLv45uKVXrZPOlQNANCKECQI=;
+        b=QFwnDovX8FbineGyWDzBEnowUBB99r0szO6EctLouJ+VM2LiCGRhsvhsWGG63bQ38u
+         L8737OQdQqtbmzB2DOFHbAMHFz4mbgFynB6Hr6LEPzS2NlZebCoksFMUbpIrF5cEwx7B
+         T/9TaMS4c84GbC8mE2fvp1gao9RKc70VhhCRbiSPgOwHjT4x4MyLQ3y1AeJYjQvkEDI3
+         hTtFD7vvnj9PNncgtHBXpOzlA5KQG9P4JKmzwSe61ZYFSHnEWhrel6yZkKW/kbqSnTbg
+         QZOdLzAcRz1zB3xj9RzYvlmwEpHqCOREpVzye076+kpjJ8eDCQmKr6UsQZJa1pqzWEHI
+         lPEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bhZvYF2rrfsZa6Xf7+GPLv45uKVXrZPOlQNANCKECQI=;
+        b=kP1ftb+tc39N3n1zz1kgW+RtKrm8MQa0roiBO3O5UcMJMfeelRWSg0O4VvCn3LJ9/e
+         Es8bH2ybXGA2kS0C3h1onIUTUSdwIP4yr90mGkJBKeV3I028BnfveI3+EfuVXy7EPsT6
+         9cRLmIVZsXdhaBaV6KVXdjucOzb/VOvGaQGGGP7JI44loFtMeLXjN654rCsmLeo9wNzr
+         bBhjRGtNV8wQ45L4xSXv3nlIS9klvTftLY2IxSAu44opL567VQEqo+CATl2FZvb8Y8C3
+         IGeqZk3oUqi0UA0K7UVeQER4jlMqtsyDbhUQGFrcnJ0vrQAuqTOrSw/6XG/0X7R0MziA
+         giNA==
+X-Gm-Message-State: AOAM531a+S4zAW3Ty9SJaVdJj10ImEO/SgD0lESqqir2NUh6W4rWEHcn
+        99D6xN8G/E2DR2U2g+o4gkXpdKFzT3DHr5BDd8jM/A==
+X-Google-Smtp-Source: ABdhPJyTkuNIXW/4VTeu46rTAPJNrdcFFBw/FDfMkyZ8gV3dDP2TWej1nRS1wo4Y1zZF3ITB+QVUCzn16nazwshQD3Y=
+X-Received: by 2002:a9f:24b4:: with SMTP id 49mr12816796uar.100.1621864832999;
+ Mon, 24 May 2021 07:00:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.102.38]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggeml759-chm.china.huawei.com (10.1.199.138)
-X-CFilter-Loop: Reflected
+References: <d05074c11962a046ff9c2f457c240432ca8a7194.1621600443.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <d05074c11962a046ff9c2f457c240432ca8a7194.1621600443.git.christophe.jaillet@wanadoo.fr>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 24 May 2021 15:59:56 +0200
+Message-ID: <CAPDyKFrS3wdYs3AQtjZEOsLzNvxgy1n3EfxZ+a8w8J8rH8kQ-w@mail.gmail.com>
+Subject: Re: [PATCH] mmc: mxs-mmc: Disable the 'reg_vmmc' regulator when needed
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Chris Ball <cjb@laptop.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The sparse tool complains as follows:
+On Fri, 21 May 2021 at 14:36, Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
+>
+> The 'reg_vmmc' regulator is never disabled. Neither in the error handling
+> of the probe, nor in the remove function.
+>
+> Add a managed action to do the required clean-up before a 'regulator_put()'
+> call.
+>
+> Fixes: 4dc5a79f1350 ("mmc: mxs-mmc: enable regulator for mmc slot")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  drivers/mmc/host/mxs-mmc.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+>
+> diff --git a/drivers/mmc/host/mxs-mmc.c b/drivers/mmc/host/mxs-mmc.c
+> index 947581de7860..b043d53dd728 100644
+> --- a/drivers/mmc/host/mxs-mmc.c
+> +++ b/drivers/mmc/host/mxs-mmc.c
+> @@ -552,6 +552,13 @@ static const struct of_device_id mxs_mmc_dt_ids[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, mxs_mmc_dt_ids);
+>
+> +static void regulator_disable_action(void *_data)
+> +{
+> +       struct regulator *regulator = _data;
+> +
+> +       regulator_disable(regulator);
+> +}
+> +
+>  static int mxs_mmc_probe(struct platform_device *pdev)
+>  {
+>         struct device_node *np = pdev->dev.of_node;
+> @@ -591,6 +598,10 @@ static int mxs_mmc_probe(struct platform_device *pdev)
+>                                 "Failed to enable vmmc regulator: %d\n", ret);
+>                         goto out_mmc_free;
+>                 }
+> +               ret = devm_add_action_or_reset(&pdev->dev,
+> +                                       regulator_disable_action, reg_vmmc);
+> +               if (ret)
+> +                       goto out_mmc_free;
 
-drivers/usb/typec/tcpm/tcpci.c:118:5: warning:
- symbol 'tcpci_apply_rc' was not declared. Should it be static?
+Even if this improves the behaviour, there is a standardized way for
+how we deal with regulators for mmc.
 
-This symbol is not used outside of tcpci.c, so marks it static.
+1. Call mmc_regulator_get_supply() during probe to fetch the optional
+regulator. If a regulator is found a corresponding OCR mask, in
+host->ocr_avail is assigned.
 
-Fixes: 7257fbc7c598 ("usb: typec: tcpci: Implement callback for apply_rc")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/usb/typec/tcpm/tcpci.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+2. In the ->set_ios() callback, invoke mmc_regulator_set_ocr(). This
+will also set the correct voltage-level and turn on/off the regulator,
+depending on the requested OCR/voltage-level.
 
-diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-index 34b5095cc84f..22862345d1ab 100644
---- a/drivers/usb/typec/tcpm/tcpci.c
-+++ b/drivers/usb/typec/tcpm/tcpci.c
-@@ -115,7 +115,8 @@ static int tcpci_set_cc(struct tcpc_dev *tcpc, enum typec_cc_status cc)
- 	return 0;
- }
- 
--int tcpci_apply_rc(struct tcpc_dev *tcpc, enum typec_cc_status cc, enum typec_cc_polarity polarity)
-+static int tcpci_apply_rc(struct tcpc_dev *tcpc, enum typec_cc_status cc,
-+			  enum typec_cc_polarity polarity)
- {
- 	struct tcpci *tcpci = tcpc_to_tcpci(tcpc);
- 	unsigned int reg;
+>         }
+>
+>         ssp->clk = devm_clk_get(&pdev->dev, NULL);
+> --
+> 2.30.2
+>
 
+Kind regards
+Uffe

@@ -2,74 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5259B38E81F
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 May 2021 15:54:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D98038F2C2
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 May 2021 20:12:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232885AbhEXN4N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 May 2021 09:56:13 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:3986 "EHLO
-        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232409AbhEXN4N (ORCPT
+        id S233603AbhEXSNr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 May 2021 14:13:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55104 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232789AbhEXSNr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 May 2021 09:56:13 -0400
-Received: from dggems704-chm.china.huawei.com (unknown [172.30.72.59])
-        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4Fpdtv4MkGzmZx5;
-        Mon, 24 May 2021 21:52:23 +0800 (CST)
-Received: from dggeml759-chm.china.huawei.com (10.1.199.138) by
- dggems704-chm.china.huawei.com (10.3.19.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Mon, 24 May 2021 21:54:43 +0800
-Received: from localhost.localdomain (10.175.102.38) by
- dggeml759-chm.china.huawei.com (10.1.199.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Mon, 24 May 2021 21:54:42 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-CC:     <linux-iio@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] iio: dummy: Fix build error when CONFIG_IIO_TRIGGERED_BUFFER is not set
-Date:   Mon, 24 May 2021 14:05:36 +0000
-Message-ID: <20210524140536.116224-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Mon, 24 May 2021 14:13:47 -0400
+Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E30EFC061574;
+        Mon, 24 May 2021 11:12:17 -0700 (PDT)
+Received: by mail-oo1-xc33.google.com with SMTP id o66-20020a4a44450000b029020d44dea886so6543564ooa.5;
+        Mon, 24 May 2021 11:12:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+9I9jlaYCJwm7GMK8vCa+XPnOfqmkJZLcMPH2lbyCHI=;
+        b=nzCpeBr7dDnoasU9Kv35bQBN1pMvKkUb21yqjebcNR2NJdUbJQcfCM/tzozKsoET/0
+         uRTBHjIf65/dksUaZ6hQKSniPIUhnWbn84k8THLUecpHq6CvZeJnM6xyXqcZWRd2kKeG
+         FPbHQEbOwZN+EoTMnq7lEWNmenmgzpzKltRDQ8yy3W/c7yn1FE4h8VKbIQfGAzUGzL4K
+         ZyMvbhSOIKL1tn1GKT39I0eYmVguLX3dG458TVDrp96RUjLhWnFoYWhQ35Ubl4nsPzRL
+         CdIWHCDVaqLD9QJuY1LhiLLmgnjCL8jG22j2BF5VIGNAoPfGswRu1a7C35eWEDZSwxWr
+         UbZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+9I9jlaYCJwm7GMK8vCa+XPnOfqmkJZLcMPH2lbyCHI=;
+        b=C4TVg7lZv85JIK3Z68lU5tXdifH4ajyAkjwXq2HTuJgtqB3lyFjyQpdxCACOnNvSNu
+         u1U26ofBK6JjwtZYY/HvT7Vm/jqkuSIq5Y3kFs5bPcZwVr0chuZt1HvwWTmVgvvLEAuf
+         GNmuEEWeQWVa/abtjdpLsRPvjJuxguOABpU0qfBgxcJYOaLzLOJzx58RI9+fG1iIZYMe
+         A+8TRvhrAYiMyJ4L/UccDBdbzjqUOc/6OLzODtpr7PcM7zuZfwbBkn6KQZ8zYO517Gp3
+         cjlkOB7RkZZefxVK/MtW3E5Diom/ro+dn8ccH2HcWegRnuHO6V4beSKHRR+J5dcmFUj0
+         kRlQ==
+X-Gm-Message-State: AOAM5330TRxXS50UDnB/9ZJPA9FgdxgRk8M/dSaDP4U33QbM3fG2+iIE
+        Mt3T1hr8TjpKR0pg+++eEfcxe5ZwSzg4wN1oex0=
+X-Google-Smtp-Source: ABdhPJzhVFLRxGfoyzWVJh3tF9KW/NhQHanjStmXRL3+N/qojxCqMzyXV6pZNW3TG8IVKGKFaI7lHeuVsvrsYP+dFK0=
+X-Received: by 2002:a4a:d085:: with SMTP id i5mr19301783oor.61.1621879937282;
+ Mon, 24 May 2021 11:12:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.102.38]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggeml759-chm.china.huawei.com (10.1.199.138)
-X-CFilter-Loop: Reflected
+References: <20210524133548.2361943-1-weiyongjun1@huawei.com>
+In-Reply-To: <20210524133548.2361943-1-weiyongjun1@huawei.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Mon, 24 May 2021 14:12:06 -0400
+Message-ID: <CADnq5_Os1fKouKSkfmmiWgjLxkX3FQ1Ny5Wcno7VQcheG4-26Q@mail.gmail.com>
+Subject: Re: [PATCH -next] drm/amdgpu: fix error return code in amdgpu_acpi_init()
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Prike Liang <Prike.Liang@amd.com>,
+        Lijo Lazar <lijo.lazar@amd.com>,
+        Rajneesh Bhardwaj <rajneesh.bhardwaj@amd.com>,
+        Ye Bin <yebin10@huawei.com>, Likun Gao <Likun.Gao@amd.com>,
+        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
+        Hulk Robot <hulkci@huawei.com>,
+        kernel-janitors@vger.kernel.org,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Gcc reports build error when CONFIG_IIO_TRIGGERED_BUFFER is not set:
+On Mon, May 24, 2021 at 9:25 AM Wei Yongjun <weiyongjun1@huawei.com> wrote:
+>
+> Fix to return a negative error code from the error handling
+> case instead of 0, as done elsewhere in this function.
 
-riscv64-linux-gnu-ld: drivers/iio/dummy/iio_simple_dummy_buffer.o: in function `iio_simple_dummy_configure_buffer':
-iio_simple_dummy_buffer.c:(.text+0x2b0): undefined reference to `iio_triggered_buffer_setup_ext'
-riscv64-linux-gnu-ld: drivers/iio/dummy/iio_simple_dummy_buffer.o: in function `.L0 ':
-iio_simple_dummy_buffer.c:(.text+0x2fc): undefined reference to `iio_triggered_buffer_cleanup'
+I don't see any other cases in this function where we return an error.
+It could arguably be made a void.  All of these APCI methods are
+optional.
 
-Fix it by select IIO_TRIGGERED_BUFFER for config IIO_SIMPLE_DUMMY_BUFFER.
+Alex
 
-Fixes: 738f6ba11800 ("iio: dummy: iio_simple_dummy_buffer: use triggered buffer core calls")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/iio/dummy/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/iio/dummy/Kconfig b/drivers/iio/dummy/Kconfig
-index 5c5c2f8c55f3..1f46cb9e51b7 100644
---- a/drivers/iio/dummy/Kconfig
-+++ b/drivers/iio/dummy/Kconfig
-@@ -34,6 +34,7 @@ config IIO_SIMPLE_DUMMY_BUFFER
- 	select IIO_BUFFER
- 	select IIO_TRIGGER
- 	select IIO_KFIFO_BUF
-+	select IIO_TRIGGERED_BUFFER
- 	help
- 	  Add buffered data capture to the simple dummy driver.
- 
-
+>
+> Fixes: 77bf762f8b30 ("drm/amdgpu/acpi: unify ATCS handling (v3)")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+> index 49563ff87f1a..9564690b21b4 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+> @@ -895,12 +895,15 @@ int amdgpu_acpi_init(struct amdgpu_device *adev)
+>  atcs:
+>         /* Probe for ATCS, and initialize it if found */
+>         atcs_handle = amdgpu_atcs_probe_handle(handle);
+> -       if (!atcs_handle)
+> +       if (!atcs_handle) {
+> +               ret = -ENODEV;
+>                 goto out;
+> +       }
+>
+>         atcs = kzalloc(sizeof(*atcs), GFP_KERNEL);
+>         if (!atcs) {
+>                 DRM_WARN("Not enough memory to initialize ATCS\n");
+> +               ret = -ENOMEM;
+>                 goto out;
+>         }
+>         atcs->handle = atcs_handle;
+>

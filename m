@@ -2,29 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8211B391902
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 May 2021 15:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6687A39197A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 May 2021 16:05:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232488AbhEZNmP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 May 2021 09:42:15 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:58368 "EHLO
+        id S233770AbhEZOGi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 May 2021 10:06:38 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59108 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231319AbhEZNmO (ORCPT
+        with ESMTP id S233890AbhEZOGh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 May 2021 09:42:14 -0400
+        Wed, 26 May 2021 10:06:37 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         (Exim 4.93)
         (envelope-from <colin.king@canonical.com>)
-        id 1lltm3-0004tv-N3; Wed, 26 May 2021 13:40:39 +0000
+        id 1llu9b-0006g0-Hg; Wed, 26 May 2021 14:04:59 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Christine Caulfield <ccaulfie@redhat.com>,
-        David Teigland <teigland@redhat.com>,
-        Alexander Aring <aahringo@redhat.com>, cluster-devel@redhat.com
+To:     Ben Skeggs <bskeggs@redhat.com>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Alistair Popple <apopple@nvidia.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] fs: dlm: Fix memory leak of object mh
-Date:   Wed, 26 May 2021 14:40:39 +0100
-Message-Id: <20210526134039.3448305-1-colin.king@canonical.com>
+Subject: [PATCH][next] nouveau/svm: Fix missing failure check on call to make_device_exclusive_range
+Date:   Wed, 26 May 2021 15:04:59 +0100
+Message-Id: <20210526140459.3749959-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,28 +38,35 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is an error return path that is not kfree'ing mh after
-it has been successfully allocates.  Fix this by free'ing it.
+The call to make_device_exclusive_range can potentially fail leaving
+pointer page not initialized that leads to an uninitialized pointer
+read issue. Fix this by adding a check to see if the call failed and
+returning the error code.
 
-Addresses-Coverity: ("Resource leak")
-Fixes: a070a91cf140 ("fs: dlm: add more midcomms hooks")
+Addresses-Coverity: ("Uninitialized pointer read")
+Fixes: c620bba9828c ("nouveau/svm: implement atomic SVM access")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- fs/dlm/rcom.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/nouveau/nouveau_svm.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/dlm/rcom.c b/fs/dlm/rcom.c
-index 085f21966c72..19298edc1573 100644
---- a/fs/dlm/rcom.c
-+++ b/fs/dlm/rcom.c
-@@ -393,6 +393,7 @@ static void receive_rcom_lookup(struct dlm_ls *ls, struct dlm_rcom *rc_in)
- 	if (rc_in->rc_id == 0xFFFFFFFF) {
- 		log_error(ls, "receive_rcom_lookup dump from %d", nodeid);
- 		dlm_dump_rsb_name(ls, rc_in->rc_buf, len);
-+		kfree(mh);
- 		return;
- 	}
+diff --git a/drivers/gpu/drm/nouveau/nouveau_svm.c b/drivers/gpu/drm/nouveau/nouveau_svm.c
+index 84726a89e665..b913b4907088 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_svm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_svm.c
+@@ -609,8 +609,10 @@ static int nouveau_atomic_range_fault(struct nouveau_svmm *svmm,
  
+ 		notifier_seq = mmu_interval_read_begin(&notifier->notifier);
+ 		mmap_read_lock(mm);
+-		make_device_exclusive_range(mm, start, start + PAGE_SIZE,
+-					    &page, drm->dev);
++		ret = make_device_exclusive_range(mm, start, start + PAGE_SIZE,
++						  &page, drm->dev);
++		if (ret < 0)
++			goto out;
+ 		mmap_read_unlock(mm);
+ 		if (!page) {
+ 			ret = -EINVAL;
 -- 
 2.31.1
 

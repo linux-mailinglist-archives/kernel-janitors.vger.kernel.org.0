@@ -2,76 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31985391D6A
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 May 2021 18:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24C16391D84
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 May 2021 19:05:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233700AbhEZRAX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 May 2021 13:00:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45598 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233648AbhEZRAX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 May 2021 13:00:23 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 87650613E1;
-        Wed, 26 May 2021 16:58:49 +0000 (UTC)
-Date:   Wed, 26 May 2021 18:00:18 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        <linux-iio@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH -next] iio: dummy: Fix build error when
- CONFIG_IIO_TRIGGERED_BUFFER is not set
-Message-ID: <20210526180018.66ac9989@jic23-huawei>
-In-Reply-To: <20210524140536.116224-1-weiyongjun1@huawei.com>
-References: <20210524140536.116224-1-weiyongjun1@huawei.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S233997AbhEZRHT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 May 2021 13:07:19 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:36104 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233929AbhEZRHS (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 26 May 2021 13:07:18 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <colin.king@canonical.com>)
+        id 1llwyK-0002II-Td; Wed, 26 May 2021 17:05:33 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ralph Campbell <rcampbell@nvidia.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][V2][next] mm: selftests: fix potential integer overflow on shift of a int
+Date:   Wed, 26 May 2021 18:05:30 +0100
+Message-Id: <20210526170530.3766167-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 24 May 2021 14:05:36 +0000
-Wei Yongjun <weiyongjun1@huawei.com> wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> Gcc reports build error when CONFIG_IIO_TRIGGERED_BUFFER is not set:
-> 
-> riscv64-linux-gnu-ld: drivers/iio/dummy/iio_simple_dummy_buffer.o: in function `iio_simple_dummy_configure_buffer':
-> iio_simple_dummy_buffer.c:(.text+0x2b0): undefined reference to `iio_triggered_buffer_setup_ext'
-> riscv64-linux-gnu-ld: drivers/iio/dummy/iio_simple_dummy_buffer.o: in function `.L0 ':
-> iio_simple_dummy_buffer.c:(.text+0x2fc): undefined reference to `iio_triggered_buffer_cleanup'
-> 
-> Fix it by select IIO_TRIGGERED_BUFFER for config IIO_SIMPLE_DUMMY_BUFFER.
-> 
-> Fixes: 738f6ba11800 ("iio: dummy: iio_simple_dummy_buffer: use triggered buffer core calls")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+The left shift of the int mapped is evaluated using 32 bit arithmetic
+and then assigned to an unsigned long. In the case where mapped is
+0x80000 when PAGE_SHIFT is 12 will lead to the upper bits being
+sign extended in the unsigned long. Larger values can lead to an
+int overflow. Avoid this by making mapped an unsigned long.
 
-Thanks,
+Addresses-Coverity: ("Uninitentional integer overflow")
+Fixes: 8b2a105c3794 ("mm: selftests for exclusive device memory")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
 
-Applied to the fixes-togreg branch of iio.git.
+V2: Make mapped an unsigned long rather than casting it to unsigned long
 
-Jonathan
+---
+ lib/test_hmm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> ---
->  drivers/iio/dummy/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/iio/dummy/Kconfig b/drivers/iio/dummy/Kconfig
-> index 5c5c2f8c55f3..1f46cb9e51b7 100644
-> --- a/drivers/iio/dummy/Kconfig
-> +++ b/drivers/iio/dummy/Kconfig
-> @@ -34,6 +34,7 @@ config IIO_SIMPLE_DUMMY_BUFFER
->  	select IIO_BUFFER
->  	select IIO_TRIGGER
->  	select IIO_KFIFO_BUF
-> +	select IIO_TRIGGERED_BUFFER
->  	help
->  	  Add buffered data capture to the simple dummy driver.
->  
-> 
+diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+index 74d69f87691e..8c55c4723692 100644
+--- a/lib/test_hmm.c
++++ b/lib/test_hmm.c
+@@ -733,7 +733,8 @@ static int dmirror_exclusive(struct dmirror *dmirror,
+ 
+ 	mmap_read_lock(mm);
+ 	for (addr = start; addr < end; addr = next) {
+-		int i, mapped;
++		unsigned long mapped;
++		int i;
+ 
+ 		if (end < addr + (ARRAY_SIZE(pages) << PAGE_SHIFT))
+ 			next = end;
+-- 
+2.31.1
 

@@ -2,95 +2,129 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 445AD3931A4
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 May 2021 17:03:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97CDC393264
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 May 2021 17:24:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236718AbhE0PEq convert rfc822-to-8bit (ORCPT
+        id S235833AbhE0P0a convert rfc822-to-8bit (ORCPT
         <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 May 2021 11:04:46 -0400
-Received: from relay11.mail.gandi.net ([217.70.178.231]:54615 "EHLO
-        relay11.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231419AbhE0PEp (ORCPT
+        Thu, 27 May 2021 11:26:30 -0400
+Received: from coyote.holtmann.net ([212.227.132.17]:37543 "EHLO
+        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235017AbhE0P03 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 May 2021 11:04:45 -0400
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay11.mail.gandi.net (Postfix) with ESMTPSA id D2B14100007;
-        Thu, 27 May 2021 15:03:10 +0000 (UTC)
-Date:   Thu, 27 May 2021 17:03:09 +0200
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-mtd@lists.infradead.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] mtd: rawnand: ensure return variable is
- initialized
-Message-ID: <20210527170309.4d99bc31@xps13>
-In-Reply-To: <20210527145048.795954-1-colin.king@canonical.com>
-References: <20210527145048.795954-1-colin.king@canonical.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+        Thu, 27 May 2021 11:26:29 -0400
+X-Greylist: delayed 350 seconds by postgrey-1.27 at vger.kernel.org; Thu, 27 May 2021 11:26:29 EDT
+Received: from smtpclient.apple (p4fefc9d6.dip0.t-ipconnect.de [79.239.201.214])
+        by mail.holtmann.org (Postfix) with ESMTPSA id A64ECCED34;
+        Thu, 27 May 2021 17:27:01 +0200 (CEST)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.100.0.2.22\))
+Subject: Re: [PATCH] Bluetooth: hci_intel: prevent reads beyond the end of
+ skb->data
+From:   Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <YK+Yo6c1UuiACSZA@mwanda>
+Date:   Thu, 27 May 2021 17:19:04 +0200
+Cc:     Loic Poulain <loic.poulain@intel.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        linux-bluetooth@vger.kernel.org, kernel-janitors@vger.kernel.org
 Content-Transfer-Encoding: 8BIT
+Message-Id: <ED41E619-3AC3-41B4-AC59-004ED6446537@holtmann.org>
+References: <YK+Yo6c1UuiACSZA@mwanda>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+X-Mailer: Apple Mail (2.3654.100.0.2.22)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Colin,
+Hi Dan,
 
-Colin King <colin.king@canonical.com> wrote on Thu, 27 May 2021
-15:50:48 +0100:
-
-> From: Colin Ian King <colin.king@canonical.com>
+> There doesn't appear to be any checks to ensure that skb->data is large
+> enough in these functions.  For most of these, if we specify a header
+> length, then h4_recv_buf() will ensure that all packets are at least the
+> minimum length.  The intel_recv_lpm() function needs an additional
+> check for LPM_OP_TX_NOTIFY packets.
 > 
-> Currently there are corner cases where spec_times is NULL and
-> chip->parameters.onfi or when best_mode is zero where ret is
+> Fixes: ca93cee5a56e ("Bluetooth: hci_uart: Add basic support for Intel Lightning Peak devices")
+> 
+> No signed-off-by because I can't test this and just wanted to collect
+> feedback.  This is part of a static checker warning because someone
+> reported the hci_event.c read overflows to security@kernel.org.  This
+> stuff is quite complicated for static checkers of course and I don't
+> understand all the rules yet.  Right now I have about 2000 warnings
+> that look like this:
+> 
+> drivers/bluetooth/hci_intel.c:877 intel_recv_event() warn: assignment assumes 'skb->len' is '2' bytes
+> drivers/bluetooth/hci_intel.c:922 intel_recv_lpm() warn: assignment assumes 'skb->len' is '2' bytes
+> drivers/bluetooth/hci_intel.c:1028 intel_dequeue() warn: assignment assumes 'skb->len' is '3' bytes
 
-                       ^
-something is missing here, the sentence is not clear
+I think it will be hard to find people with this hardware. LnP devices are rare, but maybe someone will speak up here.
 
-> not assigned a value and an uninitialized return value can be
-> returned. Fix this by ensuring ret is initialized to -EINVAL.
-
-I don't see how this situation can happen.
-
-In both cases, no matter the value of best_mode, the for loop will
-always execute at least one time (mode 0) so ret will be populated.
-
-Maybe the robot does not know that best_mode cannot be negative and
-should be defined unsigned, but the current patch is invalid.
-
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Fixes: 9d3194bf2aef ("mtd: rawnand: Allow SDR timings to be nacked")
-> Fixes: a9ecc8c814e9 ("mtd: rawnand: Choose the best timings, NV-DDR included")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> 
+> I think there should be a different additional static checker warning
+> for h4_recv_pkt structs like in this patch if you fail to specify a
+> .hlen value?
+> 
+> regards,
+> dan carpenter
 > ---
->  drivers/mtd/nand/raw/nand_base.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> drivers/bluetooth/hci_intel.c | 10 +++++-----
+> 1 file changed, 5 insertions(+), 5 deletions(-)
 > 
-> diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-> index 57a583149cc0..18db742f650c 100644
-> --- a/drivers/mtd/nand/raw/nand_base.c
-> +++ b/drivers/mtd/nand/raw/nand_base.c
-> @@ -926,7 +926,7 @@ int nand_choose_best_sdr_timings(struct nand_chip *chip,
->  				 struct nand_sdr_timings *spec_timings)
->  {
->  	const struct nand_controller_ops *ops = chip->controller->ops;
-> -	int best_mode = 0, mode, ret;
-> +	int best_mode = 0, mode, ret = -EINVAL;
->  
->  	iface->type = NAND_SDR_IFACE;
->  
-> @@ -977,7 +977,7 @@ int nand_choose_best_nvddr_timings(struct nand_chip *chip,
->  				   struct nand_nvddr_timings *spec_timings)
->  {
->  	const struct nand_controller_ops *ops = chip->controller->ops;
-> -	int best_mode = 0, mode, ret;
-> +	int best_mode = 0, mode, ret = 0;
->  
->  	iface->type = NAND_NVDDR_IFACE;
->  
+> diff --git a/drivers/bluetooth/hci_intel.c b/drivers/bluetooth/hci_intel.c
+> index 7249b91d9b91..3e4bccacad9b 100644
+> --- a/drivers/bluetooth/hci_intel.c
+> +++ b/drivers/bluetooth/hci_intel.c
+> @@ -925,7 +925,7 @@ static int intel_recv_lpm(struct hci_dev *hdev, struct sk_buff *skb)
+> 
+> 	switch (lpm->opcode) {
+> 	case LPM_OP_TX_NOTIFY:
+> -		if (lpm->dlen < 1) {
+> +		if (lpm->dlen < 1 || skb->len < struct_size(lpm, data, 1)) {
+> 			bt_dev_err(hu->hdev, "Invalid LPM notification packet");
+> 			break;
+> 		}
 
-Thanks,
-Miquèl
+This change looks fine to me and I would accept a patch for it.
+
+> @@ -959,10 +959,10 @@ static int intel_recv_lpm(struct hci_dev *hdev, struct sk_buff *skb)
+> 	.maxlen = HCI_LPM_MAX_SIZE
+> 
+> static const struct h4_recv_pkt intel_recv_pkts[] = {
+> -	{ H4_RECV_ACL,    .recv = hci_recv_frame   },
+> -	{ H4_RECV_SCO,    .recv = hci_recv_frame   },
+> -	{ H4_RECV_EVENT,  .recv = intel_recv_event },
+> -	{ INTEL_RECV_LPM, .recv = intel_recv_lpm   },
+> +	{ H4_RECV_ACL,    .recv = hci_recv_frame, .hlen = sizeof(struct bt_skb_cb) },
+> +	{ H4_RECV_SCO,    .recv = hci_recv_frame, .hlen = sizeof(struct bt_skb_cb) },
+> +	{ H4_RECV_EVENT,  .recv = intel_recv_event, .hlen = sizeof(struct hci_event_hdr) },
+> +	{ INTEL_RECV_LPM, .recv = intel_recv_lpm, .hlen = sizeof(struct hci_lpm_pkt) },
+
+This part I do not understand, all the H4_RECV_* and even INTEL_RECV_* provide the hlen. So I have no idea what your change is doing here. And the two for H4_RECV_{ACL,SCO} are actually wrong. In case you wonder this is how they are defined:
+
+#define H4_RECV_ACL \
+        .type = HCI_ACLDATA_PKT, \
+        .hlen = HCI_ACL_HDR_SIZE, \
+        .loff = 2, \
+        .lsize = 2, \
+        .maxlen = HCI_MAX_FRAME_SIZE \
+
+#define H4_RECV_SCO \
+        .type = HCI_SCODATA_PKT, \
+        .hlen = HCI_SCO_HDR_SIZE, \
+        .loff = 2, \
+        .lsize = 1, \
+        .maxlen = HCI_MAX_SCO_SIZE
+
+#define H4_RECV_EVENT \
+        .type = HCI_EVENT_PKT, \
+        .hlen = HCI_EVENT_HDR_SIZE, \
+        .loff = 1, \
+        .lsize = 1, \
+        .maxlen = HCI_MAX_EVENT_SIZE
+
+Regards
+
+Marcel
+

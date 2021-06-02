@@ -2,54 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5791397D15
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Jun 2021 01:34:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D247C397D7B
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Jun 2021 02:10:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235180AbhFAXgP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 1 Jun 2021 19:36:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49854 "EHLO mail.kernel.org"
+        id S235307AbhFBALv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 1 Jun 2021 20:11:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56034 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234766AbhFAXgP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 1 Jun 2021 19:36:15 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id AF4FE613AD;
-        Tue,  1 Jun 2021 23:34:32 +0000 (UTC)
+        id S235257AbhFBALu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 1 Jun 2021 20:11:50 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 24D64613D0;
+        Wed,  2 Jun 2021 00:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622590472;
-        bh=3N9Ow6RjNZiK6n6O0U9afn11SS+zfLMQUpx7lSRKRcw=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=i1Tu1RIxkip2sYDnBwJ8JuCYXzA9Dlso/mo0yiLaOD3ufgDzcs8ihTzQGnIy07uKk
-         GRFNiRDTzZMRJrtJldsgnqd94JVk2I2+sSbICEn/fDya7bKMZ0DWA0qqAWkJpSsmNR
-         C1SsrPbLz+uhcaiUzxITY0rkGRFWJARG12/L/e2M56bw7VWDy/4CczFaKXBvSMdeqz
-         H1PX/kJX5NTNplvEKEGrMk4aO91SlsdDpUxd11l71sKeMR9g0hgCB3fgvbkScoPl9X
-         afDpGlhTUcuX0gzfQVP6wXCK6QBw/xnLlDnHpxI8C8M0VtCr0TJF4Lr902CvVVC+iC
-         GWumhpyVBjMwA==
+        s=k20201202; t=1622592608;
+        bh=DijD4BsDF0b2eVVKw56svSWUO3/dPAhH+pwePeLp5lk=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=T+w+SAbs9tgddpm2R+7h+AUayHJ+goDG/Xgp6b7GMLqcQGX9giwKu3DfaCUQ/l81Q
+         QU52nGFF/r2/+zX3ThT3NRZm3kAWvnLGwWBaYy8CT1upGtnVLDiMaawON7wXXNHjCG
+         wPMQqkYUfdAfXtWbu5kFgGmUev2TCvRjkNUm7SiG5XMHHqsaXtfKjb/lHuzePMiwb6
+         8Ai8UfRNGNUpsEpoJ8qpDEsz1WWrqkllzSYbPNN5brq412gsvLx5hFKCjrsjLdAjQB
+         FiHf9IW36jE2I503wYHz0c+OpicWyqijCCryLlv7wYZT2bUkdiyPcnZMgGPINLgIpI
+         zVNWq1oX2C7fg==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 1B2F060CD2;
+        Wed,  2 Jun 2021 00:10:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <YJotlJBJ1CVAgvMT@mwanda>
-References: <YJotlJBJ1CVAgvMT@mwanda>
-Subject: Re: [PATCH] clk: qcom: cleanup some dev_err_probe() calls
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-To:     Andy Gross <agross@kernel.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Date:   Tue, 01 Jun 2021 16:34:31 -0700
-Message-ID: <162259047131.4130789.3552758881567534695@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2] NFC: microread: Remove redundant assignment to variable
+ err
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <162259260810.22595.4210179382569417389.git-patchwork-notify@kernel.org>
+Date:   Wed, 02 Jun 2021 00:10:08 +0000
+References: <YLY3pSMrpbQxIJxO@fedora>
+In-Reply-To: <YLY3pSMrpbQxIJxO@fedora>
+To:     Nigel Christian <nigel.l.christian@gmail.com>
+Cc:     krzysztof.kozlowski@canonical.com, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Dan Carpenter (2021-05-11 00:09:08)
-> The dev_err_probe() function prints an error message if the error
-> code is not -EPROBE_DEFER.  If we know the error code in is -ENODEV
-> then there is no reason to check.  Conversely, we do not need to
-> check for -EPROBE_DEFER before calling.
->=20
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
+Hello:
 
-Applied to clk-next with some manual effort
+This patch was applied to netdev/net-next.git (refs/heads/master):
+
+On Tue, 1 Jun 2021 09:35:33 -0400 you wrote:
+> In the case MICROREAD_CB_TYPE_READER_ALL clang reports a dead code
+> warning. The error code assigned to variable err is already passed
+> to async_cb(). The assignment is redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Nigel Christian <nigel.l.christian@gmail.com>
+> 
+> [...]
+
+Here is the summary with links:
+  - [v2] NFC: microread: Remove redundant assignment to variable err
+    https://git.kernel.org/netdev/net-next/c/e5432cc71ab6
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+

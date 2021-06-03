@@ -2,98 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5251439A12B
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Jun 2021 14:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5291D39A11A
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Jun 2021 14:34:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230010AbhFCMhP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Jun 2021 08:37:15 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:45586 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230207AbhFCMhP (ORCPT
+        id S230128AbhFCMg2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Jun 2021 08:36:28 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:37125 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230255AbhFCMg1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Jun 2021 08:37:15 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 153CU84S018983;
-        Thu, 3 Jun 2021 12:34:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=7YYlwYQghMPQ5VcvVwzn3a1GY+ZK8stZyV1/KnbW7kA=;
- b=sINnHuHWf0Ba0tj/x7wzWd1wn870tGyEHS7H9TmL9kxPnx3X/5zRCOuy6GngpoRBr34v
- NmCX4yH0FYMbA7SAPG646A6qKFxG9Ab3FOdoW5USQLy+cneHyWUObGXHQFQU5Dw1GT/L
- eEox9m1fWru3yKyefv6ft+k7Vv6J4+W0j4a4fvMlqG0qj+yEvMz6hKQvE/MCHncgQeAK
- P+9UE9e6zc1VjgV4may9Gmy1tCvf2LzvKXixPOHoT9l8OliUaikhQCMsrRW2dWhUbfPc
- xvFxiBt4LWjY8UjNuj58rD9kLSjWTwilpwLoKeVWAgC84mRytjyig+HDSOb8b/YAitku 7A== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 38ud1sk734-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 03 Jun 2021 12:34:19 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 153CUodu146314;
-        Thu, 3 Jun 2021 12:34:18 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by aserp3030.oracle.com with ESMTP id 38ubneu0a6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 03 Jun 2021 12:34:18 +0000
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 153CYH5r151945;
-        Thu, 3 Jun 2021 12:34:17 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 38ubneu09y-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 03 Jun 2021 12:34:17 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 153CYHuQ005634;
-        Thu, 3 Jun 2021 12:34:17 GMT
-Received: from mwanda (/10.175.206.145)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 03 Jun 2021 05:34:16 -0700
-Date:   Thu, 3 Jun 2021 15:34:12 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     David Howells <dhowells@redhat.com>
-Cc:     Marc Dionne <marc.dionne@auristor.com>,
-        linux-afs@lists.infradead.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] afs: Fix an IS_ERR() vs NULL check
-Message-ID: <YLjMRKX40pTrJvgf@mwanda>
+        Thu, 3 Jun 2021 08:36:27 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <colin.king@canonical.com>)
+        id 1lomYa-0002Qk-AQ; Thu, 03 Jun 2021 12:34:40 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Felix Kuehling <Felix.Kuehling@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Xinhui.Pan@amd.com, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/amdgpu: remove redundant assignment of variable k
+Date:   Thu,  3 Jun 2021 13:34:40 +0100
+Message-Id: <20210603123440.83936-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-ORIG-GUID: uN86AkJlawDhgicIXXzHr9OMnGmGxGPW
-X-Proofpoint-GUID: uN86AkJlawDhgicIXXzHr9OMnGmGxGPW
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=10003 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 priorityscore=1501
- suspectscore=0 phishscore=0 lowpriorityscore=0 mlxlogscore=999
- malwarescore=0 clxscore=1011 spamscore=0 impostorscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106030085
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The proc_symlink() function returns NULL on error, it doesn't return
-error pointers.
+From: Colin Ian King <colin.king@canonical.com>
 
-Fixes: 5b86d4ff5dce ("afs: Implement network namespacing")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+The variable k is being assigned a value that is never read, the
+assignment is redundant and can be removed.
+
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- fs/afs/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/afs/main.c b/fs/afs/main.c
-index b2975256dadb..179004b15566 100644
---- a/fs/afs/main.c
-+++ b/fs/afs/main.c
-@@ -203,8 +203,8 @@ static int __init afs_init(void)
- 		goto error_fs;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+index 2a7bed66d50b..f545dc1248b8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -278,7 +278,7 @@ static int amdgpu_amdkfd_remove_eviction_fence(struct amdgpu_bo *bo,
+ 	write_seqcount_end(&resv->seq);
  
- 	afs_proc_symlink = proc_symlink("fs/afs", NULL, "../self/net/afs");
--	if (IS_ERR(afs_proc_symlink)) {
--		ret = PTR_ERR(afs_proc_symlink);
-+	if (!afs_proc_symlink) {
-+		ret = -ENOMEM;
- 		goto error_proc;
- 	}
+ 	/* Drop the references to the removed fences or move them to ef_list */
+-	for (i = j, k = 0; i < old->shared_count; ++i) {
++	for (i = j; i < old->shared_count; ++i) {
+ 		struct dma_fence *f;
  
+ 		f = rcu_dereference_protected(new->shared[i],
 -- 
-2.30.2
+2.31.1
 

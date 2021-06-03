@@ -2,42 +2,43 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 221EF39AE0E
-	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Jun 2021 00:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8B1739AE28
+	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Jun 2021 00:40:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231222AbhFCWbx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Jun 2021 18:31:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49590 "EHLO mail.kernel.org"
+        id S229764AbhFCWlw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Jun 2021 18:41:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46958 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231185AbhFCWbx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Jun 2021 18:31:53 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id D09FC61412;
-        Thu,  3 Jun 2021 22:30:07 +0000 (UTC)
+        id S229695AbhFCWlv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 3 Jun 2021 18:41:51 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 1087361402;
+        Thu,  3 Jun 2021 22:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622759407;
-        bh=vwEK4zy2QrRV8Apha+U4pwZeSrz1wq6/gqrv2kdatkA=;
+        s=k20201202; t=1622760006;
+        bh=4r+KaXf9HhPfPuJ3L0A6ucBPg67H8QvheAAx7CS+HS0=;
         h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=U4jYwB3u8WQRL4cm3qJHyFb7ZhryG5vtrZ1u8vaRuwgYpxDdi+s8xxBo6JcDU5h8k
-         MiZaCpa6iq9JAOk/BNl5rTTbHIktaBF0OklMb9GRqgzn3IEHASUJb3FNcBd+0S6X8Q
-         BIM0+VNDZjNH6arnbIDHyFKT2SehVI6gtFCbH54fypux2w3toocCB3WAnilmlKQ9LL
-         7ehzYz5itv1fSMjXCWiA1VV0GfbsSLrc9O2JKjmAbtqfquUI9O1LXbePuOiICBfHyq
-         bAzyPs4YvZj/gsYf2nWHB8rMDdqOe2heVC9kYbW+A8sTs9Lfnm+Qq0Be5gwoFbzXb1
-         ycMDQHzzNgkTQ==
+        b=tJqr86vh3Q3ZL/yQkDKIIVUuXi0nnWG/CMD7GIg8k4YQXl0RCXGUgB3Lb9KrA6WVn
+         mYvTFZ7qiewnTrZNsGRd9JlMCC5nctShVFq8EZKHcIc25ZgCfA1i8tveWc0LDaeKnv
+         Y7ziWe0hV358zYkif8B5csGj7pznhIlzPkgs34FDfuHRwQS8v7auIftpqXTLFpyI3B
+         3bYVYjDQY7/qMY+xqURwc5V7lBVpTN2iCtMWosKU0axxH008KhSlPAIT/zDL4MY9IP
+         Gwlw+oycaYPOI9GLiMvqYiAoo5BFE90Kr9Uxj0jOsh9ILnjP1LYLIWWXMcJIijpBYJ
+         MHClJ0aZhQDWg==
 Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id C470C60BFB;
-        Thu,  3 Jun 2021 22:30:07 +0000 (UTC)
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 030DA60A6F;
+        Thu,  3 Jun 2021 22:40:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] bonding: remove redundant initialization of variable ret
+Subject: Re: [PATCH][next] netdevsim: Fix unsigned being compared to less than
+ zero
 From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <162275940779.8870.16351209876886223050.git-patchwork-notify@kernel.org>
-Date:   Thu, 03 Jun 2021 22:30:07 +0000
-References: <20210603131904.85093-1-colin.king@canonical.com>
-In-Reply-To: <20210603131904.85093-1-colin.king@canonical.com>
+Message-Id: <162276000600.13062.15630996018975105780.git-patchwork-notify@kernel.org>
+Date:   Thu, 03 Jun 2021 22:40:06 +0000
+References: <20210603215657.154776-1-colin.king@canonical.com>
+In-Reply-To: <20210603215657.154776-1-colin.king@canonical.com>
 To:     Colin King <colin.king@canonical.com>
-Cc:     j.vosburgh@gmail.com, vfalico@gmail.com, andy@greyhouse.net,
-        davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
+Cc:     kuba@kernel.org, davem@davemloft.net, dlinkin@nvidia.com,
+        yuvalav@nvidia.com, jiri@nvidia.com, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -47,21 +48,21 @@ Hello:
 
 This patch was applied to netdev/net-next.git (refs/heads/master):
 
-On Thu,  3 Jun 2021 14:19:04 +0100 you wrote:
+On Thu,  3 Jun 2021 22:56:57 +0100 you wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> The variable ret is being initialized with a value that is never read,
-> it is being updated later on.  The assignment is redundant and can be
-> removed.
+> The comparison of len < 0 is always false because len is a size_t. Fix
+> this by making len a ssize_t instead.
 > 
-> Addresses-Coverity: ("Unused value")
+> Addresses-Coverity: ("Unsigned compared against 0")
+> Fixes: d395381909a3 ("netdevsim: Add max_vfs to bus_dev")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - bonding: remove redundant initialization of variable ret
-    https://git.kernel.org/netdev/net-next/c/92e1b57c3865
+  - [next] netdevsim: Fix unsigned being compared to less than zero
+    https://git.kernel.org/netdev/net-next/c/ebbf5fcb94a7
 
 You are awesome, thank you!
 --

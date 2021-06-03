@@ -2,101 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13D9839A109
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Jun 2021 14:33:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5251439A12B
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Jun 2021 14:35:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230131AbhFCMfZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Jun 2021 08:35:25 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:36970 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229876AbhFCMfZ (ORCPT
+        id S230010AbhFCMhP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Jun 2021 08:37:15 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:45586 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230207AbhFCMhP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Jun 2021 08:35:25 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 153CTqjg087342;
-        Thu, 3 Jun 2021 12:33:29 GMT
+        Thu, 3 Jun 2021 08:37:15 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 153CU84S018983;
+        Thu, 3 Jun 2021 12:34:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=CRZFMbyx19c1QOGGnQpd37A/VpMdtJ+R8Bilo8dGm+Y=;
- b=H3fXxf+TO+aUmFMGq4sz5VgkdpdFu63lp9PcNR2iCZnNwGZTbBtrqidsi6CucTICHpz2
- U/VQvYOkKuW+6ly/8R9WILhgD/yHdEWkn9uh25fsGYmUERCqvm+aJ0oX8PoviF3ZCe4/
- l0fgLVU2YLBA9UmHu6utFhBywRlX/260ITsU0Ux6PsdhUtD9RBoIFZwYUbv5awRzSBRa
- gYfMA9Vl/hX+pzVhXRdZLOdxDNqk3d5xOz1wLC3djqbH7X8s01M+ksRLXR8FH2u6/NeB
- r3Auoq2GAiXwZ5DrEM6MuEJ5B31nzjzOE75ApofcZcJGnTyb8gxDx9ED4Nsi3qidBFDj lQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2130.oracle.com with ESMTP id 38ub4cu91v-1
+ bh=7YYlwYQghMPQ5VcvVwzn3a1GY+ZK8stZyV1/KnbW7kA=;
+ b=sINnHuHWf0Ba0tj/x7wzWd1wn870tGyEHS7H9TmL9kxPnx3X/5zRCOuy6GngpoRBr34v
+ NmCX4yH0FYMbA7SAPG646A6qKFxG9Ab3FOdoW5USQLy+cneHyWUObGXHQFQU5Dw1GT/L
+ eEox9m1fWru3yKyefv6ft+k7Vv6J4+W0j4a4fvMlqG0qj+yEvMz6hKQvE/MCHncgQeAK
+ P+9UE9e6zc1VjgV4may9Gmy1tCvf2LzvKXixPOHoT9l8OliUaikhQCMsrRW2dWhUbfPc
+ xvFxiBt4LWjY8UjNuj58rD9kLSjWTwilpwLoKeVWAgC84mRytjyig+HDSOb8b/YAitku 7A== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 38ud1sk734-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 03 Jun 2021 12:33:29 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 153CVog6114804;
-        Thu, 3 Jun 2021 12:33:29 GMT
+        Thu, 03 Jun 2021 12:34:19 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 153CUodu146314;
+        Thu, 3 Jun 2021 12:34:18 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-        by aserp3020.oracle.com with ESMTP id 38udeevqyx-1
+        by aserp3030.oracle.com with ESMTP id 38ubneu0a6-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 03 Jun 2021 12:33:29 +0000
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 153CXSEo126200;
-        Thu, 3 Jun 2021 12:33:28 GMT
+        Thu, 03 Jun 2021 12:34:18 +0000
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 153CYH5r151945;
+        Thu, 3 Jun 2021 12:34:17 GMT
 Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 38udeevqyc-1
+        by aserp3030.oracle.com with ESMTP id 38ubneu09y-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 03 Jun 2021 12:33:28 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 153CXRas005136;
-        Thu, 3 Jun 2021 12:33:27 GMT
+        Thu, 03 Jun 2021 12:34:17 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 153CYHuQ005634;
+        Thu, 3 Jun 2021 12:34:17 GMT
 Received: from mwanda (/10.175.206.145)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 03 Jun 2021 12:33:26 +0000
-Date:   Thu, 3 Jun 2021 15:33:20 +0300
+        with ESMTP ; Thu, 03 Jun 2021 05:34:16 -0700
+Date:   Thu, 3 Jun 2021 15:34:12 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Hannes Reinecke <hare@suse.de>
-Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        "Ewan D. Milne" <emilne@redhat.com>,
-        Martin Wilck <mwilck@suse.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        John Pittman <jpittman@redhat.com>, linux-scsi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] scsi: scsi_dh_alua: signedness bug in alua_rtpg()
-Message-ID: <YLjMEAFNxOas1mIp@mwanda>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Marc Dionne <marc.dionne@auristor.com>,
+        linux-afs@lists.infradead.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] afs: Fix an IS_ERR() vs NULL check
+Message-ID: <YLjMRKX40pTrJvgf@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
-X-Proofpoint-GUID: QCc7S_t-e9hwrMWsyOYyNgBv8Q6Nkan5
-X-Proofpoint-ORIG-GUID: QCc7S_t-e9hwrMWsyOYyNgBv8Q6Nkan5
+X-Proofpoint-ORIG-GUID: uN86AkJlawDhgicIXXzHr9OMnGmGxGPW
+X-Proofpoint-GUID: uN86AkJlawDhgicIXXzHr9OMnGmGxGPW
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=10003 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 mlxscore=0
- mlxlogscore=999 malwarescore=0 bulkscore=0 phishscore=0 lowpriorityscore=0
- clxscore=1011 impostorscore=0 adultscore=0 suspectscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2106030085
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 priorityscore=1501
+ suspectscore=0 phishscore=0 lowpriorityscore=0 mlxlogscore=999
+ malwarescore=0 clxscore=1011 spamscore=0 impostorscore=0 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2106030085
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "retval" variable needs to be signed for the error handling to work.
+The proc_symlink() function returns NULL on error, it doesn't return
+error pointers.
 
-Fixes: 7e26e3ea0287 ("scsi: scsi_dh_alua: Check for negative result value")
+Fixes: 5b86d4ff5dce ("afs: Implement network namespacing")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/scsi/device_handler/scsi_dh_alua.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/afs/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/device_handler/scsi_dh_alua.c b/drivers/scsi/device_handler/scsi_dh_alua.c
-index 7baee18ebd03..37d06f993b76 100644
---- a/drivers/scsi/device_handler/scsi_dh_alua.c
-+++ b/drivers/scsi/device_handler/scsi_dh_alua.c
-@@ -518,7 +518,8 @@ static int alua_rtpg(struct scsi_device *sdev, struct alua_port_group *pg)
- 	int len, k, off, bufflen = ALUA_RTPG_SIZE;
- 	int group_id_old, state_old, pref_old, valid_states_old;
- 	unsigned char *desc, *buff;
--	unsigned err, retval;
-+	unsigned err;
-+	int retval;
- 	unsigned int tpg_desc_tbl_off;
- 	unsigned char orig_transition_tmo;
- 	unsigned long flags;
+diff --git a/fs/afs/main.c b/fs/afs/main.c
+index b2975256dadb..179004b15566 100644
+--- a/fs/afs/main.c
++++ b/fs/afs/main.c
+@@ -203,8 +203,8 @@ static int __init afs_init(void)
+ 		goto error_fs;
+ 
+ 	afs_proc_symlink = proc_symlink("fs/afs", NULL, "../self/net/afs");
+-	if (IS_ERR(afs_proc_symlink)) {
+-		ret = PTR_ERR(afs_proc_symlink);
++	if (!afs_proc_symlink) {
++		ret = -ENOMEM;
+ 		goto error_proc;
+ 	}
+ 
 -- 
 2.30.2
 

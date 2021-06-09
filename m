@@ -2,32 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D44B13A1BD8
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Jun 2021 19:33:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9572F3A1C07
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Jun 2021 19:44:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231381AbhFIRfK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Jun 2021 13:35:10 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50150 "EHLO
+        id S231670AbhFIRpw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Jun 2021 13:45:52 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50323 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230413AbhFIRfJ (ORCPT
+        with ESMTP id S231633AbhFIRpw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Jun 2021 13:35:09 -0400
+        Wed, 9 Jun 2021 13:45:52 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         (Exim 4.93)
         (envelope-from <colin.king@canonical.com>)
-        id 1lr24m-00016g-8P; Wed, 09 Jun 2021 17:33:12 +0000
+        id 1lr2F8-0001xW-2a; Wed, 09 Jun 2021 17:43:54 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org
+To:     Vladimir Oltean <olteanv@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ACPI: scan: ensure ret is initialized to avoid garbage being returned
-Date:   Wed,  9 Jun 2021 18:33:12 +0100
-Message-Id: <20210609173312.298414-1-colin.king@canonical.com>
+Subject: [PATCH][next] net: dsa: sja1105: Fix assigned yet unused return code rc
+Date:   Wed,  9 Jun 2021 18:43:53 +0100
+Message-Id: <20210609174353.298731-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -38,30 +37,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-In the unlikely event that there are no callback calls made then ret
-will be returned as an uninitialized value. Clean up static analysis
-warnings by ensuring ret is initialized.
+The return code variable rc is being set to return error values in two
+places in sja1105_mdiobus_base_tx_register and yet it is not being
+returned, the function always returns 0 instead. Fix this by replacing
+the return 0 with the return code rc.
 
-Addresses-Coverity: ("Uninitialized scalar variable")
-Fixes: a9e10e587304 ("ACPI: scan: Extend acpi_walk_dep_device_list()")
+Addresses-Coverity: ("Unused value")
+Fixes: 5a8f09748ee7 ("net: dsa: sja1105: register the MDIO buses for 100base-T1 and 100base-TX")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/acpi/scan.c | 2 +-
+ drivers/net/dsa/sja1105/sja1105_mdio.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index c3067e8bfc47..0945d952f0fc 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -2151,7 +2151,7 @@ int acpi_walk_dep_device_list(acpi_handle handle,
- 			      void *data)
- {
- 	struct acpi_dep_data *dep, *tmp;
--	int ret;
-+	int ret = 0;
+diff --git a/drivers/net/dsa/sja1105/sja1105_mdio.c b/drivers/net/dsa/sja1105/sja1105_mdio.c
+index 8dfd06318b23..08517c70cb48 100644
+--- a/drivers/net/dsa/sja1105/sja1105_mdio.c
++++ b/drivers/net/dsa/sja1105/sja1105_mdio.c
+@@ -171,7 +171,7 @@ static int sja1105_mdiobus_base_tx_register(struct sja1105_private *priv,
+ out_put_np:
+ 	of_node_put(np);
  
- 	mutex_lock(&acpi_dep_list_lock);
- 	list_for_each_entry_safe(dep, tmp, &acpi_dep_list, node) {
+-	return 0;
++	return rc;
+ }
+ 
+ static void sja1105_mdiobus_base_tx_unregister(struct sja1105_private *priv)
 -- 
 2.31.1
 

@@ -2,78 +2,145 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDEFC3A1618
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Jun 2021 15:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA45C3A1727
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Jun 2021 16:24:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236809AbhFINvj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Jun 2021 09:51:39 -0400
-Received: from mail-ej1-f53.google.com ([209.85.218.53]:44973 "EHLO
-        mail-ej1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236782AbhFINvf (ORCPT
+        id S237846AbhFIO0O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Jun 2021 10:26:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:57578 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237997AbhFIO0E (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Jun 2021 09:51:35 -0400
-Received: by mail-ej1-f53.google.com with SMTP id c10so38598579eja.11;
-        Wed, 09 Jun 2021 06:49:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=oX2BbZy3phYMqo60pEOB/Bur67OS3OOGNSyTUQXA+oc=;
-        b=ljbF8cqutd9zcNe/8N9uNdzCv1sGxkJl7gZuKTyTnjuVEcgYIMtu3nY1Bn1SapkRfk
-         bb9/ZKVn4nJQtTSq8boBuql5SQWL3l4C/B3uLWryV5nbui9yOSO9nygBZn+IUZ37wtOL
-         S5XAb7dlavaypyVyPJ7spBiKm26yvxUOAlZPfSr3Ld6oyeMf1tmjudoIk6NZrQG7TGp7
-         dkiTIeLiG4PLxJ+833JanpdsWyc7wW2RNuhu6Hti86cKMdQjCOWboXIpKM3hkiACXFUG
-         dtFgKbakjCZhoWhFYBlLJsRLJo6yu5Gsd45wET3IuoucpRd8+FMXLuhk0fSBKEz8nYw3
-         iTGA==
+        Wed, 9 Jun 2021 10:26:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1623248649;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RctbnkCJ0hkm48G2SuISc1IfcoEWeO6UvDG8UIpRugQ=;
+        b=QbvgEtNg2M11M9UcOcWxJA54kTaSBwTs9xxAbx5b+sXOHpQYDNFOHDtXiUkVPGYTCQr1qE
+        AXa9wqa7z4L5g8o9+jq9QN2xIBLtsiSCtPSszbfLhZjgnxG7WZNAO/qrJrUS/T9HuKvRHe
+        lr3QvcMmQpIAlJMitgp2oj24K/wfBd0=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-220-9RvYbXo8Psuu3h9SIGnhtg-1; Wed, 09 Jun 2021 10:24:07 -0400
+X-MC-Unique: 9RvYbXo8Psuu3h9SIGnhtg-1
+Received: by mail-ed1-f71.google.com with SMTP id df3-20020a05640230a3b029039179c0f290so10766564edb.13
+        for <kernel-janitors@vger.kernel.org>; Wed, 09 Jun 2021 07:24:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=oX2BbZy3phYMqo60pEOB/Bur67OS3OOGNSyTUQXA+oc=;
-        b=I6TflRyEZIAuXUGkVFkN2zhqzt5SXrmwzmsxriaeboHMw2D9HRvYPn20JNwz/RVgiQ
-         sqr5WbCqklw/w1pxqPBQbfsFlYKV3uQenELv7scMpW0azjLwNsF8yFYTDm4K5SuEsTGs
-         B5QgsyPP1tO2yQywYxmR+1JQN3GC5zissgcF637hBJWKsRJol0EJXq+II/Qyu3Mvbh58
-         mCaQPSssvgKedOt/eMaldlmge/V78oysPT/Q/Ooo7uy+LPoLjD8X1E6suMzjQ2JMEDYr
-         Y4xnXKPJJc/p1zUtLKTky8FXhW5GIk16wiT1z8P7PscopQajsUWmXZ92m/qddCYBNaZh
-         Zjtw==
-X-Gm-Message-State: AOAM5314mR+gsKJSGxtPuywMozeP1R2SCUjxzPVT6MotdVfrLeHO1PC3
-        2kjxOZp6/9cM6Tfngi1zYq59jl9ZihI=
-X-Google-Smtp-Source: ABdhPJyMwwbOcfo89A/O2Eb9/HAKAKRttQNL/3ifDPyTpfWPclouYGW6FyblNrkJHlClS7tbU+DBjg==
-X-Received: by 2002:a17:907:948c:: with SMTP id dm12mr29007706ejc.484.1623246511379;
-        Wed, 09 Jun 2021 06:48:31 -0700 (PDT)
-Received: from skbuf ([188.26.52.84])
-        by smtp.gmail.com with ESMTPSA id lb23sm1157772ejb.73.2021.06.09.06.48.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Jun 2021 06:48:30 -0700 (PDT)
-Date:   Wed, 9 Jun 2021 16:48:29 +0300
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Yang Yingliang <yangyingliang@huawei.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 2/2 net-next] net: dsa: qca8k: check the correct variable
- in qca8k_set_mac_eee()
-Message-ID: <20210609134829.jill2lt7s2asq4cw@skbuf>
-References: <YMCPTLkZumD3Vv/X@mwanda>
- <YMCPf8lVosAYayXo@mwanda>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=RctbnkCJ0hkm48G2SuISc1IfcoEWeO6UvDG8UIpRugQ=;
+        b=ThroXQ3VDzw/tjFc/yUecsFbQtz8WsJkasUKYMp0rYbwzTrbEouRCFZucRqSNfnos1
+         kBL+vPpEvlnpSvg6HgK0AFZxue9DnWdD5ZedUmPbiSTsZUtLm53556dIUvIDbIlWRMno
+         tSDwOWNc7QJRd6bcNvVeAiJ3Q+E3HTdE6FvJa/IfwMxOAVYjjf7R3vLJcPi0AJ06lk/U
+         HItEb+lC+LNmcNjrQizVC0L2HkkkTjtPRhhxjftFmfPkR1V6onp+1pTHSDJQiNNE6rLb
+         yaKANbw5C1eh/NtjXYtOp7EDGQglq1kTPbMM15Zaur3cyO3RvR/+SW0Wh65oh3D6RiX2
+         eiEA==
+X-Gm-Message-State: AOAM532erqm4z6oKtyoqjFjQpGvbybzlrGIabG6esgBUz0cjeDjXy5t/
+        F31uxn7DnzHG0TAIVFkpKdSK07QehL/5tyVaiVRR0FnwMnNby/lV9qJh1XZMwnxj9tz72UEKGn+
+        VV0SoBoihAsOSF5knLdpOgw+SpNSZ
+X-Received: by 2002:a17:906:5947:: with SMTP id g7mr105713ejr.351.1623248646520;
+        Wed, 09 Jun 2021 07:24:06 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJx1a1ZSnpCGddbbiL3MnOdj7UHS4rfq0Y3xTdakZNWCOgKTUC0MmDC0Ku9SWerLR/cY++x1LA==
+X-Received: by 2002:a17:906:5947:: with SMTP id g7mr105702ejr.351.1623248646367;
+        Wed, 09 Jun 2021 07:24:06 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id au11sm1217249ejc.88.2021.06.09.07.24.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Jun 2021 07:24:06 -0700 (PDT)
+Subject: Re: [PATCH -next v2] platform/surface: aggregator: Use list_move_tail
+ instead of list_del/list_add_tail in ssh_request_layer.c
+To:     Baokun Li <libaokun1@huawei.com>, linux-kernel@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Mark Gross <mgross@linux.intel.com>
+Cc:     weiyongjun1@huawei.com, yuehaibing@huawei.com,
+        yangjihong1@huawei.com, yukuai3@huawei.com,
+        platform-driver-x86@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
+References: <20210609072638.1358174-1-libaokun1@huawei.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <ebe9e952-9938-adfd-7f52-658aec2cd466@redhat.com>
+Date:   Wed, 9 Jun 2021 16:24:05 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YMCPf8lVosAYayXo@mwanda>
+In-Reply-To: <20210609072638.1358174-1-libaokun1@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jun 09, 2021 at 12:53:03PM +0300, Dan Carpenter wrote:
-> This code check "reg" but "ret" was intended so the error handling will
-> never trigger.
-> 
-> Fixes: 7c9896e37807 ("net: dsa: qca8k: check return value of read functions correctly")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
+Hi,
 
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+On 6/9/21 9:26 AM, Baokun Li wrote:
+> Using list_move_tail() instead of list_del() + list_add_tail() in ssh_request_layer.c.
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+
+Thank you for your patch, I've applied this patch to my review-hans 
+branch:
+https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
+
+Note it will show up in my review-hans branch once I've pushed my
+local branch there, which might take a while.
+
+Once I've run some tests on this branch the patches there will be
+added to the platform-drivers-x86/for-next branch and eventually
+will be included in the pdx86 pull-request to Linus for the next
+merge-window.
+
+Regards,
+
+Hans
+
+> ---
+> V1->V2:
+> 	CC mailist
+> 
+>  .../surface/aggregator/ssh_request_layer.c | 10 +++-------
+>  1 file changed, 3 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/platform/surface/aggregator/ssh_request_layer.c b/drivers/platform/surface/aggregator/ssh_request_layer.c
+> index 52a83a8fcf82..fec2d7af2646 100644
+> --- a/drivers/platform/surface/aggregator/ssh_request_layer.c
+> +++ b/drivers/platform/surface/aggregator/ssh_request_layer.c
+> @@ -863,9 +863,7 @@ static void ssh_rtl_timeout_reap(struct work_struct *work)
+>  		clear_bit(SSH_REQUEST_SF_PENDING_BIT, &r->state);
+>  
+>  		atomic_dec(&rtl->pending.count);
+> -		list_del(&r->node);
+> -
+> -		list_add_tail(&r->node, &claimed);
+> +		list_move_tail(&r->node, &claimed);
+>  	}
+>  	spin_unlock(&rtl->pending.lock);
+>  
+> @@ -1204,8 +1202,7 @@ void ssh_rtl_shutdown(struct ssh_rtl *rtl)
+>  		smp_mb__before_atomic();
+>  		clear_bit(SSH_REQUEST_SF_QUEUED_BIT, &r->state);
+>  
+> -		list_del(&r->node);
+> -		list_add_tail(&r->node, &claimed);
+> +		list_move_tail(&r->node, &claimed);
+>  	}
+>  	spin_unlock(&rtl->queue.lock);
+>  
+> @@ -1238,8 +1235,7 @@ void ssh_rtl_shutdown(struct ssh_rtl *rtl)
+>  			smp_mb__before_atomic();
+>  			clear_bit(SSH_REQUEST_SF_PENDING_BIT, &r->state);
+>  
+> -			list_del(&r->node);
+> -			list_add_tail(&r->node, &claimed);
+> +			list_move_tail(&r->node, &claimed);
+>  		}
+>  		spin_unlock(&rtl->pending.lock);
+>  	}
+> 
+

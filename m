@@ -2,74 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 445E23A09F2
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Jun 2021 04:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7472D3A0CF3
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Jun 2021 09:00:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232565AbhFICXD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 8 Jun 2021 22:23:03 -0400
-Received: from mail-ed1-f42.google.com ([209.85.208.42]:37462 "EHLO
-        mail-ed1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230306AbhFICXD (ORCPT
+        id S236854AbhFIHC3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Jun 2021 03:02:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:50652 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236861AbhFIHC2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 8 Jun 2021 22:23:03 -0400
-Received: by mail-ed1-f42.google.com with SMTP id b11so26865183edy.4
-        for <kernel-janitors@vger.kernel.org>; Tue, 08 Jun 2021 19:21:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0Y1FSEobOe8xalX9xjuNlZS8PBOfMBLSbk/7QTP+PmY=;
-        b=iz2geq+gCBJR3+ViNyaPYvhILn4edEjWx7CTSYlzvWUeIO1YMal+71yIGRGidjTN7q
-         GJB1qOWVvO6oZyI40Hmq5EoKqtmvMMfjF2YNoSHfT24XOn+IbR7A1G70dp6/+kIXUfBe
-         nxvSi+o/peNnCCOSo2hgo6s9u6n6/b1FJJwM+ba16m5heHFW/1S7xcjFTHo6brGsP3y/
-         lni6vJKXCa6YLNaQcAyaxBkpQr5ZTGjRmI0p/A4VrjW6FRomgaOJvk1tv2JT27HwcW02
-         S/RHKpAYZUQFhpauBKN1DfbJSEvp3RWOtX229+cRzPlES72QBq2FVSnCled77EW8C8rX
-         hlKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0Y1FSEobOe8xalX9xjuNlZS8PBOfMBLSbk/7QTP+PmY=;
-        b=rxDhI0f8r4pYafSCQC7GNoYI1Lk2CtrEfsptYGZSR0NALFJlPuvapV6CsZjnyqZJwe
-         yxkKyY5ssKCN3pBKWhwJOVUItqNbsI7b5zYx8SJGoTy7Tm4cwHavhE6DNwe+52xYOIqq
-         7GebIkZdBXvDV9Bwaf5tuk1eU1trGpm/Dt25hiYChVaWmO4xqSFV5wpqH/MVeDaOsVdG
-         guuBqeEEKkCkYhlel1lPR9R5pF8PSKnm1j52LJ86h6ndgHN6tvxq7lworZUdoNC5xYqS
-         Sa9NaNW+LJrBszljH2JSdKn8rtAX/KXX8pV32gAbOX3fX4Nxj1AgghKOdqjmSlnzY2Pf
-         0mhg==
-X-Gm-Message-State: AOAM531bAuofpc3L+uA4CQ+2d9b2xk4DvvpuJKFxzT4PdOwmn8x72Dhc
-        PXg4jJzp6tLSUxv062Po+2Vpq3Z6ygnFR2kWw9cz
-X-Google-Smtp-Source: ABdhPJwvgyH7PZtXzJ1DdgVwdgA0sHZzXneK81NkEzOR+ec3Iiw+5MfM1yjqs6r5lfCPLmJTFqYK2Ouz89eiw9lKPJU=
-X-Received: by 2002:a05:6402:348f:: with SMTP id v15mr16558137edc.135.1623205201671;
- Tue, 08 Jun 2021 19:20:01 -0700 (PDT)
+        Wed, 9 Jun 2021 03:02:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1623222034;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=6hIZj5McJwNKEs212yGJXp2y36I81CvD5+PXaLps0Hg=;
+        b=hRbZuTkkWBX16lKIMugF7H5LhBYUx11LxvJ65IdaYYYX/nEvIIfL+N43q+MitRc+hSsJzK
+        PsCVBFOCRo9m/ZdKB6aJAs76KJYfEfHHe4wpE8pTPBZ7aK/bzuqLWbLr4nGWBztX5jiHuv
+        uPSvXe7O9CHs7I5TLEzNtOTYtr/ZuUo=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-331-xQCyc86KPvisvcAPrxDywg-1; Wed, 09 Jun 2021 03:00:30 -0400
+X-MC-Unique: xQCyc86KPvisvcAPrxDywg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DEB8A8042A6;
+        Wed,  9 Jun 2021 07:00:28 +0000 (UTC)
+Received: from sirius.home.kraxel.org (ovpn-113-69.ams2.redhat.com [10.36.113.69])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 111C419C45;
+        Wed,  9 Jun 2021 07:00:25 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+        id 7770C18003B6; Wed,  9 Jun 2021 09:00:23 +0200 (CEST)
+Date:   Wed, 9 Jun 2021 09:00:23 +0200
+From:   Gerd Hoffmann <kraxel@redhat.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Dave Airlie <airlied@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
+        Alon Levy <alevy@redhat.com>,
+        virtualization@lists.linux-foundation.org,
+        spice-devel@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm: qxl: ensure surf.data is ininitialized
+Message-ID: <20210609070023.zp53qaopkbx2ol3a@sirius.home.kraxel.org>
+References: <20210608161313.161922-1-colin.king@canonical.com>
 MIME-Version: 1.0
-References: <20210608031150.2821712-1-libaokun1@huawei.com>
-In-Reply-To: <20210608031150.2821712-1-libaokun1@huawei.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Tue, 8 Jun 2021 22:19:50 -0400
-Message-ID: <CAHC9VhRF-tvaye00Ck-i6OqjmxCUnn8HfdwMTYAm316i=kGd3A@mail.gmail.com>
-Subject: Re: [PATCH -next] audit: Use list_move instead of list_del/list_add
-To:     Baokun Li <libaokun1@huawei.com>
-Cc:     linux-kernel@vger.kernel.org, Eric Paris <eparis@redhat.com>,
-        weiyongjun1@huawei.com, yuehaibing@huawei.com,
-        yangjihong1@huawei.com, yukuai3@huawei.com, linux-audit@redhat.com,
-        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210608161313.161922-1-colin.king@canonical.com>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jun 7, 2021 at 11:03 PM Baokun Li <libaokun1@huawei.com> wrote:
->
-> Using list_move() instead of list_del() + list_add().
->
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> ---
->  kernel/audit_tree.c | 12 ++++--------
->  1 file changed, 4 insertions(+), 8 deletions(-)
+On Tue, Jun 08, 2021 at 05:13:13PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The object surf is not fully initialized and the uninitialized
+> field surf.data is being copied by the call to qxl_bo_create
+> via the call to qxl_gem_object_create. Set surf.data to zero
+> to ensure garbage data from the stack is not being copied.
+> 
+> Addresses-Coverity: ("Uninitialized scalar variable")
+> Fixes: f64122c1f6ad ("drm: add new QXL driver. (v1.4)")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Merged into audit/next, thank you.
+Pushed to drm-misc-next.
 
--- 
-paul moore
-www.paul-moore.com
+thanks,
+  Gerd
+

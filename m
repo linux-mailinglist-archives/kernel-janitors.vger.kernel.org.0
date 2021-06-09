@@ -2,54 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 181DC3A114A
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Jun 2021 12:50:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 927B03A115D
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Jun 2021 12:50:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237843AbhFIKkI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Jun 2021 06:40:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43370 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237622AbhFIKkH (ORCPT
+        id S239012AbhFIKmU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Jun 2021 06:42:20 -0400
+Received: from mail-ot1-f50.google.com ([209.85.210.50]:33508 "EHLO
+        mail-ot1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236503AbhFIKmS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Jun 2021 06:40:07 -0400
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AA70C061574
-        for <kernel-janitors@vger.kernel.org>; Wed,  9 Jun 2021 03:37:59 -0700 (PDT)
-Received: by mail-ot1-x32f.google.com with SMTP id 69-20020a9d0a4b0000b02902ed42f141e1so23488367otg.2
-        for <kernel-janitors@vger.kernel.org>; Wed, 09 Jun 2021 03:37:59 -0700 (PDT)
+        Wed, 9 Jun 2021 06:42:18 -0400
+Received: by mail-ot1-f50.google.com with SMTP id o17-20020a9d76510000b02903eabfc221a9so9738756otl.0
+        for <kernel-janitors@vger.kernel.org>; Wed, 09 Jun 2021 03:40:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=fFi8//Jkb3RjJoIz0ovgttmGp4ert/bfI3tH5gBS+JA=;
-        b=HTFEHnSHFsYKfVW1wqDi57e7qrpPUal/hvNWcDIRtAH/q2dAFf8DOpB+nesCqsqfVg
-         axa8WOhGXfeHS3jKcNdt9D+3Kez7irZItUsFB9RfWkvqkeBo7+/gTNW8KA6zVqtyTWIo
-         +qo4IsfYRni6fvIAWLaHuWJXh2T2H1raPEaoPVvPLM3DZ0GLCT3MBjncplaRzzq2K135
-         WQdCxwz5Asm0WMGH0FD0zqPSHnvXOS8Lpdm+lEzY4rWsRNlLKcsNtyl5neUkGwWsGxSW
-         A6hHbaKUfH7UdgFWBXh6n08LTJpUjh6t5hJ30DjiGD5cAXhOYFWHmYQteA6XNc2MMe4N
-         gi1Q==
+        bh=KqX35mCyxhWCPmImmyUXFJ6q/RCRNm/UJq3q6VtoIW0=;
+        b=L3bUf/YNw4EiSAx+NN0M/nD53ZmJuIViEpNAZe5oi/7bko+QO31e9HaJFXR6TYYaEF
+         0O6e4xkoum+yHa2sfj8I3PIsOsNnM916tu1XLYJvEk9tQ4btu2GH723pIthIyxxPaL9W
+         Cs8an+Y5kQjE4urVDLUujhgj/Nh2YlbAG05if+nhZvJ74ypXtiPl61yzvIJaZ6qEPHnV
+         AFeegMWfCCPGl/CMzJJ9esSEPEibqRx1eaal76CBVioJR+QcnDzRBsOWaMj4HcUZfV3z
+         uGwTnVkKLf/+ppYiF3P1szB3mskDV8xP3T1r83Cel/o6WeduauQ9EsA3mRP4Ap6tgy1Z
+         OelQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
          :references:mime-version:content-disposition:in-reply-to;
-        bh=fFi8//Jkb3RjJoIz0ovgttmGp4ert/bfI3tH5gBS+JA=;
-        b=q2zKz26isIWiRj7CQO1SZxZXOmNqK+ECG454yOhRBhn4HhD3l3NHXQqZskLzaN6nfz
-         mC5x4CRhgNOHyAonqgiWfNbyEFZiepw6AdOYinmTwwJI9VcPTmPpqIiWASUUgZlMcXeB
-         vP8yu602TWWanLytOhRdOrWxscmVyungyX5Gat3hR+rT4uKAcELUI+TVhX9X4gsdWuy2
-         eORMjV185ErMmxUNjta5sTBIkvjmBU4l6z0j2J1+ZqEKZvX0nUsoPW2Pg1hE8vkVrfNL
-         5FGeJ2ydtPGmJs6l5O7xe9saS4M8BPoXd0Os1MQVRWQNsG3nL134vY+ijl/3+yhNpKKW
-         rYTA==
-X-Gm-Message-State: AOAM532+oFB2ZeAAAf6CNlUOYNeeif1QEnz6EIiw1knD2R/08wxEdywy
-        MRSCBSWmBGLa/4JXCaADHC8=
-X-Google-Smtp-Source: ABdhPJzFyNWuqMRUMtqhGq43VKU6r0meNlR5eNDrG70/UvmV8Al20SqXvqOURHzZmHBQq6pzZVYlDA==
-X-Received: by 2002:a9d:405:: with SMTP id 5mr23003438otc.9.1623235078909;
-        Wed, 09 Jun 2021 03:37:58 -0700 (PDT)
+        bh=KqX35mCyxhWCPmImmyUXFJ6q/RCRNm/UJq3q6VtoIW0=;
+        b=c/tmtco+pvJvOefuCgHpX/0FEm61nRjTnbfSzZLugyo+ZSbNKkMRoKjvBCG5ulBVST
+         /eL+0cZ7RFvlGrwvJYuARV+3EZ+hbio0Io8Dd8SOK1oUGn+9vKECuPCVS3wT9UX5md+x
+         Pu0gcoVhq2JqPcobT/mJGmKt/14J9c8wLo8iXxHKcUfMig7nTcAPjBmL5MXPQKa75n61
+         Jb5JAW0G8Zl5QEYQDnrzvci+EZhsDz35+jIEvv4uujMTMpmKzpMp56UP7NP15S1V9Mk1
+         VfnL2lbnjbGQBbotb+EBODeWNaKU3gTLTuTPEEww1Ix2alVSB2FrZ+9VTWwd/3hcS4qr
+         vbcA==
+X-Gm-Message-State: AOAM533TDTa6T0+e4VPV0qQRx5Fq06l8M9oxBMpyP4yvnMpsh481cq80
+        gCwXeXLiwvkPAIKReQI40hA=
+X-Google-Smtp-Source: ABdhPJw8b40nDyS0v6IDdycCWF4GVsok+GQSLMhcq1O4mflqt4iAfwBQ5f6wuLkaeNGiYG3aUBqawA==
+X-Received: by 2002:a05:6830:3089:: with SMTP id f9mr12607717ots.276.1623235164401;
+        Wed, 09 Jun 2021 03:39:24 -0700 (PDT)
 Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id f25sm1368327oto.26.2021.06.09.03.37.58
+        by smtp.gmail.com with ESMTPSA id t26sm3754255oth.14.2021.06.09.03.39.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Jun 2021 03:37:58 -0700 (PDT)
+        Wed, 09 Jun 2021 03:39:23 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 9 Jun 2021 03:37:57 -0700
+Date:   Wed, 9 Jun 2021 03:39:22 -0700
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
 Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
@@ -58,66 +55,60 @@ Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
         Romain Perier <romain.perier@gmail.com>,
         Allen Pais <apais@linux.microsoft.com>,
         linux-staging@lists.linux.dev, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 6/7] staging: rtl8188eu: use safe iterator in
- rtl8188eu_xmitframe_complete()
-Message-ID: <20210609103757.GF3727184@roeck-us.net>
+Subject: Re: [PATCH 7/7] staging: rtl8188eu: delete some dead code
+Message-ID: <20210609103922.GG3727184@roeck-us.net>
 References: <YL5iX3Exc0HVYrsi@mwanda>
- <YL5i8W7BNla2DlrW@mwanda>
+ <YL5jFF9ldj0W9P1f@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YL5i8W7BNla2DlrW@mwanda>
+In-Reply-To: <YL5jFF9ldj0W9P1f@mwanda>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jun 07, 2021 at 09:18:25PM +0300, Dan Carpenter wrote:
-> This loop calls rtw_free_xmitframe(pxmitpriv, pxmitframe) which removes
-> "pxmitframe" (our list iterator) from the list.  So to prevent a forever
-> loop we need to use a safe list iterator.
+On Mon, Jun 07, 2021 at 09:19:00PM +0300, Dan Carpenter wrote:
+> Calling rtw_free_xmitframe() with a NULL "pxmitframe" parameter is a
+> no-op.  It appears that originally this code was part of a loop but it
+> was already dead code by the time that the driver was merged into the
+> kernel.
 > 
-> Fixes: 23017c8842d2 ("staging: rtl8188eu: Use list iterators and helpers")
+> Fixes: 7bc88639ad36 ("staging: r8188eu: Add files for new driver - part 17")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-
 > ---
->  drivers/staging/rtl8188eu/hal/rtl8188eu_xmit.c | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
+>  drivers/staging/rtl8188eu/hal/rtl8188eu_xmit.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
 > 
 > diff --git a/drivers/staging/rtl8188eu/hal/rtl8188eu_xmit.c b/drivers/staging/rtl8188eu/hal/rtl8188eu_xmit.c
-> index 10a8dcc6ca95..19055a1a92c1 100644
+> index 19055a1a92c1..d82dd22f2903 100644
 > --- a/drivers/staging/rtl8188eu/hal/rtl8188eu_xmit.c
 > +++ b/drivers/staging/rtl8188eu/hal/rtl8188eu_xmit.c
-> @@ -414,6 +414,7 @@ bool rtl8188eu_xmitframe_complete(struct adapter *adapt,
+> @@ -413,8 +413,7 @@ static u32 xmitframe_need_length(struct xmit_frame *pxmitframe)
+>  bool rtl8188eu_xmitframe_complete(struct adapter *adapt,
 >  				  struct xmit_priv *pxmitpriv)
 >  {
->  	struct xmit_frame *pxmitframe = NULL;
-> +	struct xmit_frame *n;
+> -	struct xmit_frame *pxmitframe = NULL;
+> -	struct xmit_frame *n;
+> +	struct xmit_frame *pxmitframe, *n;
 >  	struct xmit_frame *pfirstframe = NULL;
 >  	struct xmit_buf *pxmitbuf;
 >  
-> @@ -422,7 +423,7 @@ bool rtl8188eu_xmitframe_complete(struct adapter *adapt,
->  	struct sta_info *psta = NULL;
->  	struct tx_servq *ptxservq = NULL;
+> @@ -443,8 +442,6 @@ bool rtl8188eu_xmitframe_complete(struct adapter *adapt,
+>  		return false;
 >  
-> -	struct list_head *xmitframe_plist = NULL, *xmitframe_phead = NULL;
-> +	struct list_head *xmitframe_phead = NULL;
->  
->  	u32 pbuf;	/*  next pkt address */
->  	u32 pbuf_tail;	/*  last pkt tail */
-> @@ -507,10 +508,7 @@ bool rtl8188eu_xmitframe_complete(struct adapter *adapt,
->  	spin_lock_bh(&pxmitpriv->lock);
->  
->  	xmitframe_phead = get_list_head(&ptxservq->sta_pending);
-> -	list_for_each(xmitframe_plist, xmitframe_phead) {
-> -		pxmitframe = list_entry(xmitframe_plist, struct xmit_frame,
-> -					list);
+>  	/* 3 1. pick up first frame */
+
+Comment could be removed as well. Otherwise,
+
+Thanks a lot for taking care of this, and sorry again for the mess I created.
+
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+
+> -	rtw_free_xmitframe(pxmitpriv, pxmitframe);
 > -
-> +	list_for_each_entry_safe(pxmitframe, n, xmitframe_phead, list) {
->  		pxmitframe->agg_num = 0; /*  not first frame of aggregation */
->  		pxmitframe->pkt_offset = 0; /*  not first frame of aggregation, no need to reserve offset */
->  
+>  	pxmitframe = rtw_dequeue_xframe(pxmitpriv, pxmitpriv->hwxmits, pxmitpriv->hwxmit_entry);
+>  	if (!pxmitframe) {
+>  		/*  no more xmit frame, release xmit buffer */
 > -- 
 > 2.30.2
 > 

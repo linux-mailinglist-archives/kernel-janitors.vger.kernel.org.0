@@ -2,79 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36A7D3A16E0
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Jun 2021 16:14:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 251FE3A1803
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Jun 2021 16:54:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237710AbhFIOQh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Jun 2021 10:16:37 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188]:3928 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237645AbhFIOQg (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Jun 2021 10:16:36 -0400
-Received: from dggeml759-chm.china.huawei.com (unknown [172.30.72.54])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4G0TYc6tJDz6vyG;
-        Wed,  9 Jun 2021 22:11:32 +0800 (CST)
-Received: from localhost.localdomain (10.175.102.38) by
- dggeml759-chm.china.huawei.com (10.1.199.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Wed, 9 Jun 2021 22:14:36 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>, Netanel Belgazal <netanel@amazon.com>,
-        Arthur Kiyanovski <akiyano@amazon.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Shay Agroskin <shayagr@amazon.com>,
-        Sameeh Jubran <sameehj@amazon.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-CC:     <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH net-next] net: ena: make symbol 'ena_alloc_map_page' static
-Date:   Wed, 9 Jun 2021 14:25:06 +0000
-Message-ID: <20210609142506.1621773-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        id S234466AbhFIO4D (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Jun 2021 10:56:03 -0400
+Received: from mga01.intel.com ([192.55.52.88]:35631 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230239AbhFIO4D (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 9 Jun 2021 10:56:03 -0400
+IronPort-SDR: x+PTooIsecnKJsRsal4AwMbx5ntyZfve1n5T8YQr2GHk1KEDkaIWyHCBnpC+s3c71vxRWU/WdH
+ K904Q0isS+Yg==
+X-IronPort-AV: E=McAfee;i="6200,9189,10010"; a="226457692"
+X-IronPort-AV: E=Sophos;i="5.83,261,1616482800"; 
+   d="scan'208";a="226457692"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2021 07:54:08 -0700
+IronPort-SDR: lqZE0eQv+v5lrVzBazQmDGO0q9nm+JbbXoTZ+SGwgEuL7AVOjWtaR/GnyU2eqMyfDGIIUsXcQy
+ fqDscxUFbdbQ==
+X-IronPort-AV: E=Sophos;i="5.83,261,1616482800"; 
+   d="scan'208";a="449968541"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2021 07:54:06 -0700
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id 7FC5020116;
+        Wed,  9 Jun 2021 17:54:04 +0300 (EEST)
+Date:   Wed, 9 Jun 2021 17:54:04 +0300
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] media: atomisp: remove redundant initialization of
+ variable ret
+Message-ID: <20210609145404.GI3@paasikivi.fi.intel.com>
+References: <20210609121408.186239-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.102.38]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggeml759-chm.china.huawei.com (10.1.199.138)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210609121408.186239-1-colin.king@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The sparse tool complains as follows:
+On Wed, Jun 09, 2021 at 01:14:08PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable ret is being initialized with a value that is never read,
+> it is being updated later on. The assignment is redundant and can be
+> removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-drivers/net/ethernet/amazon/ena/ena_netdev.c:978:13: warning:
- symbol 'ena_alloc_map_page' was not declared. Should it be static?
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-This symbol is not used outside of ena_netdev.c, so marks it static.
-
-Fixes: 947c54c395cb ("net: ena: Use dev_alloc() in RX buffer allocation")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/net/ethernet/amazon/ena/ena_netdev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-index cd6ea59c543c..3bb0e66b2c7e 100644
---- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-@@ -975,7 +975,8 @@ static void ena_free_all_io_rx_resources(struct ena_adapter *adapter)
- 		ena_free_rx_resources(adapter, i);
- }
- 
--struct page *ena_alloc_map_page(struct ena_ring *rx_ring, dma_addr_t *dma)
-+static struct page *ena_alloc_map_page(struct ena_ring *rx_ring,
-+				       dma_addr_t *dma)
- {
- 	struct page *page;
- 
-
+-- 
+Sakari Ailus

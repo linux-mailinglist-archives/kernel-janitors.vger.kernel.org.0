@@ -2,98 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38BBC3A2900
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Jun 2021 12:06:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE6073A29AE
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Jun 2021 12:56:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230060AbhFJKIb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 10 Jun 2021 06:08:31 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:41594 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229910AbhFJKIa (ORCPT
+        id S230117AbhFJK6c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 10 Jun 2021 06:58:32 -0400
+Received: from mail.chalver.com.ec ([186.3.12.10]:48704 "EHLO
+        mail.chalver.com.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230033AbhFJK63 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 10 Jun 2021 06:08:30 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 15AA6SiT109779;
-        Thu, 10 Jun 2021 10:06:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=he5sUlsgcL67RQiw/vAJSwJ3WuJOhKch0yOfO5TTFX4=;
- b=xvDkS68zB5VG9wmZ+5HvFRSihYNt+9w9TD+nCIpbEvnY7Nd+P/WvLsEI9vpmTw9+VEvr
- xnIIeezYh///3bBgtWh7AVVRwGvQrBHbFnGC4reh6YpgvVWtTXD7lumIhNd/7oxTicYj
- Bq6zEXwMT1LzF1+QdRcVV4825JNgwyACkh35qCSE8hQrvkILfTHY8rNAHzxS62rIgTNU
- TjIfjjYsSe9eqsRrVLVQD692Q0onlx8F/B9yWosgk9cBLrcH7Q6UX3gwSkwLvbkD6+s1
- eTquo98XyRsjt1eWZUsEQGB/5uuFZx+1A5iFv4CYFp9UveSI/keLKMLkdFipmAx3yT8/ uA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 3900psbkag-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 10 Jun 2021 10:06:28 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 15AA5AGf011139;
-        Thu, 10 Jun 2021 10:06:27 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by userp3020.oracle.com with ESMTP id 390k1su91v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 10 Jun 2021 10:06:27 +0000
-Received: from userp3020.oracle.com (userp3020.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 15AA6Rrk013068;
-        Thu, 10 Jun 2021 10:06:27 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 390k1su91h-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 10 Jun 2021 10:06:27 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 15AA6P3j018803;
-        Thu, 10 Jun 2021 10:06:25 GMT
-Received: from mwanda (/41.212.42.34)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 10 Jun 2021 03:06:25 -0700
-Date:   Thu, 10 Jun 2021 13:06:17 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jay Fang <f.fangjian@huawei.com>
-Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] spi: hisi-kunpeng: Delete some dead code
-Message-ID: <YMHkGcroJwaBd1av@mwanda>
+        Thu, 10 Jun 2021 06:58:29 -0400
+Received: from mail.chalver.com.ec (localhost.localdomain [127.0.0.1])
+        by mail.chalver.com.ec (Postfix) with ESMTPS id ECFFD1F27CDC;
+        Thu, 10 Jun 2021 04:25:44 -0500 (ECT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.chalver.com.ec (Postfix) with ESMTP id EE51B1F252CE;
+        Thu, 10 Jun 2021 03:18:57 -0500 (ECT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.chalver.com.ec EE51B1F252CE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chalver.com.ec;
+        s=E2A417BC-DDA7-11E6-85F6-38495636B764; t=1623313138;
+        bh=PxMh0SAMbBGlctefOH2OhvTlJNlHw25bONEEE7Ldp0I=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=RYPZW/P8QVpjrW/2zNbbMMJaGzy/OJ4W06IeEnoe1QVUraQTTFRtnxRy2lT/yhQBl
+         tqo+fJfyyumyb0x+GcjLlhNcPzDpEd8dmFbnnJB8OBrotNYzA/zO3HMg3/ac5Yf/Dn
+         YLkiMl47V1C6obC4GfI8tpvF119D8C8xYShWBJ2kx96dUttnW0P056zFMUPkob5BLE
+         nHzAbjP+e3iljTLJajrWpe6rBT9sE78/NlRVBxFZKeE4j/E6kWYh6GyVmLDC0qWc6g
+         g5jqNyT2Auv6ii+ml/8ObRqlBRKllNgB1B5W7mYvXQFTb/fBsGyLEEpfejhn/uhOIv
+         wbhok9YfjfCqg==
+X-Virus-Scanned: amavisd-new at chalver.com.ec
+Received: from mail.chalver.com.ec ([127.0.0.1])
+        by localhost (mail.chalver.com.ec [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id Rs8ApyZ0SRoX; Thu, 10 Jun 2021 03:18:57 -0500 (ECT)
+Received: from cris-PC.wifi (unknown [105.9.120.116])
+        by mail.chalver.com.ec (Postfix) with ESMTPSA id DD8521F2529B;
+        Thu, 10 Jun 2021 03:18:47 -0500 (ECT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-GUID: RbEYhwkmzzGu1kDrtuhqomo8PuRCZUKh
-X-Proofpoint-ORIG-GUID: RbEYhwkmzzGu1kDrtuhqomo8PuRCZUKh
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=10010 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 clxscore=1011
- bulkscore=0 spamscore=0 mlxscore=0 adultscore=0 malwarescore=0
- phishscore=0 suspectscore=0 lowpriorityscore=0 mlxlogscore=999
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106100066
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
+To:     Recipients <mpaucar@chalver.com.ec>
+From:   ''Tayeb souami'' <mpaucar@chalver.com.ec>
+Date:   Thu, 10 Jun 2021 10:26:01 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20210610081847.DD8521F2529B@mail.chalver.com.ec>
+X-Laboratorios-Chalver-MailScanner-Information: Please contact the ISP for more information
+X-Laboratorios-Chalver-MailScanner-ID: DD8521F2529B.A07F6
+X-Laboratorios-Chalver-MailScanner: Not scanned: please contact your Internet E-Mail Service Provider for details
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The debugfs_create_dir() function returns error pointers, it doesn't
-return NULL.  But debugfs functions aren't supposed to be checked in
-normal circumstancers where the driver doesn't dereference the pointer
-itself.
 
-Fixes: 2b2142f247eb ("spi: hisi-kunpeng: Add debugfs support")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/spi/spi-hisi-kunpeng.c | 2 --
- 1 file changed, 2 deletions(-)
+Lieber Freund,
 
-diff --git a/drivers/spi/spi-hisi-kunpeng.c b/drivers/spi/spi-hisi-kunpeng.c
-index 58b823a16fc4..875f337a7836 100644
---- a/drivers/spi/spi-hisi-kunpeng.c
-+++ b/drivers/spi/spi-hisi-kunpeng.c
-@@ -167,8 +167,6 @@ static int hisi_spi_debugfs_init(struct hisi_spi *hs)
- 
- 	snprintf(name, 32, "hisi_spi%d", hs->bus_num);
- 	hs->debugfs = debugfs_create_dir(name, NULL);
--	if (!hs->debugfs)
--		return -ENOMEM;
- 
- 	hs->regset.regs = hisi_spi_regs;
- 	hs->regset.nregs = ARRAY_SIZE(hisi_spi_regs);
--- 
-2.30.2
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der =
+Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zu=
+f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
+il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
+meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
+und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
+Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
+ spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen, sehen Sie bitte meine Y=
+ou Tube Seite unten.
 
+UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
+
+
+
+Das ist dein Spendencode: [TS530342018]
+
+
+
+Antworten Sie mit dem SPENDE-CODE an diese
+
+E-Mail:Tayebsouam.spende@gmail.com
+
+
+Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
+
+Gr=C3=BC=C3=9Fe
+Herr Tayeb Souami

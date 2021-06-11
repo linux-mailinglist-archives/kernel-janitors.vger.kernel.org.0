@@ -2,30 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFF7D3A4351
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Jun 2021 15:50:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 703DB3A470B
+	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Jun 2021 18:52:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230460AbhFKNwa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Jun 2021 09:52:30 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59665 "EHLO
+        id S230356AbhFKQy2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Jun 2021 12:54:28 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:36552 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbhFKNwa (ORCPT
+        with ESMTP id S229777AbhFKQy2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Jun 2021 09:52:30 -0400
+        Fri, 11 Jun 2021 12:54:28 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         (Exim 4.93)
         (envelope-from <colin.king@canonical.com>)
-        id 1lrhYG-00074P-Qe; Fri, 11 Jun 2021 13:50:24 +0000
+        id 1lrkOP-0004zC-1F; Fri, 11 Jun 2021 16:52:25 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     David Woodhouse <dwmw2@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        iommu@lists.linux-foundation.org
+To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        alsa-devel@alsa-project.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] iommu/vt-d: Fix dereference of pointer info before it is null checked
-Date:   Fri, 11 Jun 2021 14:50:24 +0100
-Message-Id: <20210611135024.32781-1-colin.king@canonical.com>
+Subject: [PATCH][next] ALSA: i2c: tea6330t: Remove redundant initialization of variable err
+Date:   Fri, 11 Jun 2021 17:52:23 +0100
+Message-Id: <20210611165223.38983-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,38 +34,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The assignment of iommu from info->iommu occurs before info is null checked
-hence leading to a potential null pointer dereference issue. Fix this by
-assigning iommu and checking if iommu is null after null checking info.
+The variable err is being initialized with a value that is never read,
+it is being updated later on. The assignment is redundant and can be
+removed.
 
-Addresses-Coverity: ("Dereference before null check")
-Fixes: 4c82b88696ac ("iommu/vt-d: Allocate/register iopf queue for sva devices")
+Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/iommu/intel/iommu.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ sound/i2c/tea6330t.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index bd93c7ec879e..76a58b8ad6c3 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -5329,10 +5329,14 @@ static int intel_iommu_disable_auxd(struct device *dev)
- static int intel_iommu_enable_sva(struct device *dev)
- {
- 	struct device_domain_info *info = get_domain_info(dev);
--	struct intel_iommu *iommu = info->iommu;
-+	struct intel_iommu *iommu;
- 	int ret;
+diff --git a/sound/i2c/tea6330t.c b/sound/i2c/tea6330t.c
+index 742d0f724375..037d6293f728 100644
+--- a/sound/i2c/tea6330t.c
++++ b/sound/i2c/tea6330t.c
+@@ -284,7 +284,7 @@ int snd_tea6330t_update_mixer(struct snd_card *card,
+ 	struct tea6330t *tea;
+ 	const struct snd_kcontrol_new *knew;
+ 	unsigned int idx;
+-	int err = -ENOMEM;
++	int err;
+ 	u8 default_treble, default_bass;
+ 	unsigned char bytes[7];
  
--	if (!info || !iommu || dmar_disabled)
-+	if (!info || dmar_disabled)
-+		return -EINVAL;
-+
-+	iommu = info->iommu;
-+	if (!iommu)
- 		return -EINVAL;
- 
- 	if (!(iommu->flags & VTD_FLAG_SVM_CAPABLE))
 -- 
 2.31.1
 

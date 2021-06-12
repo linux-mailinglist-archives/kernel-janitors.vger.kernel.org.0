@@ -2,33 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A694C3A4EDE
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Jun 2021 14:37:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E42E3A4EF0
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Jun 2021 14:53:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231434AbhFLMj4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 12 Jun 2021 08:39:56 -0400
-Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:38119 "EHLO
+        id S231218AbhFLMzP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 12 Jun 2021 08:55:15 -0400
+Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:46658 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231420AbhFLMjw (ORCPT
+        with ESMTP id S231158AbhFLMzP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 12 Jun 2021 08:39:52 -0400
+        Sat, 12 Jun 2021 08:55:15 -0400
 Received: from localhost.localdomain ([86.243.172.93])
         by mwinf5d43 with ME
-        id GCdp2500621Fzsu03CdpjX; Sat, 12 Jun 2021 14:37:51 +0200
+        id GCtE2500421Fzsu03CtESd; Sat, 12 Jun 2021 14:53:14 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 12 Jun 2021 14:37:51 +0200
+X-ME-Date: Sat, 12 Jun 2021 14:53:14 +0200
 X-ME-IP: 86.243.172.93
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     shshaikh@marvell.com, manishc@marvell.com,
+To:     manishc@marvell.com, rahulv@marvell.com,
         GR-Linux-NIC-Dev@marvell.com, davem@davemloft.net, kuba@kernel.org,
-        amit.salecha@qlogic.com, sucheta.chakraborty@qlogic.com
+        amit.salecha@qlogic.com
 Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] qlcnic: Fix an error handling path in 'qlcnic_probe()'
-Date:   Sat, 12 Jun 2021 14:37:46 +0200
-Message-Id: <2b582e7e0f777ad2a04f9d0568045bee1483a27f.1623501317.git.christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] netxen_nic: Fix an error handling path in 'netxen_nic_probe()'
+Date:   Sat, 12 Jun 2021 14:53:12 +0200
+Message-Id: <bb27f74af33b2b5eb238598fbd8aaafa51ccb50c.1623502316.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -40,21 +40,22 @@ If an error occurs after a 'pci_enable_pcie_error_reporting()' call, it
 must be undone by a corresponding 'pci_disable_pcie_error_reporting()'
 call, as already done in the remove function.
 
-Fixes: 451724c821c1 ("qlcnic: aer support")
+Fixes: e87ad5539343 ("netxen: support pci error handlers")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/qlogic/netxen/netxen_nic_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-index 8966f1bcda77..918220ad0d53 100644
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-@@ -2690,6 +2690,7 @@ qlcnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	kfree(ahw);
+diff --git a/drivers/net/ethernet/qlogic/netxen/netxen_nic_main.c b/drivers/net/ethernet/qlogic/netxen/netxen_nic_main.c
+index 7e6bac85495d..344ea1143454 100644
+--- a/drivers/net/ethernet/qlogic/netxen/netxen_nic_main.c
++++ b/drivers/net/ethernet/qlogic/netxen/netxen_nic_main.c
+@@ -1602,6 +1602,8 @@ netxen_nic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	free_netdev(netdev);
  
  err_out_free_res:
-+	pci_disable_pcie_error_reporting(pdev);
++	if (NX_IS_REVISION_P3(pdev->revision))
++		pci_disable_pcie_error_reporting(pdev);
  	pci_release_regions(pdev);
  
  err_out_disable_pdev:

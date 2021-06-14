@@ -2,65 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C7773A6974
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Jun 2021 16:58:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C8223A6EC6
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Jun 2021 21:21:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233179AbhFNPAe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Jun 2021 11:00:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34454 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232919AbhFNPAe (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Jun 2021 11:00:34 -0400
-Received: from viti.kaiser.cx (viti.kaiser.cx [IPv6:2a01:238:43fe:e600:cd0c:bd4a:7a3:8e9f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 124A0C061574;
-        Mon, 14 Jun 2021 07:58:31 -0700 (PDT)
-Received: from martin by viti.kaiser.cx with local (Exim 4.89)
-        (envelope-from <martin@viti.kaiser.cx>)
-        id 1lso2g-0004Fk-R4; Mon, 14 Jun 2021 16:58:22 +0200
-Date:   Mon, 14 Jun 2021 16:58:22 +0200
-From:   Martin Kaiser <martin@kaiser.cx>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-staging@lists.linux.dev, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/6] staging: rtl8188eu: remove RT_TRACE and DBG_88E
- prints from usb_intf.c
-Message-ID: <20210614145822.c3dk3e7p44ypglk7@viti.kaiser.cx>
-References: <20210612180019.20387-1-martin@kaiser.cx>
- <20210612180019.20387-6-martin@kaiser.cx>
- <20210614113439.GM1955@kadam>
+        id S234325AbhFNTWJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Jun 2021 15:22:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39840 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234229AbhFNTWH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 14 Jun 2021 15:22:07 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 594FA61356;
+        Mon, 14 Jun 2021 19:20:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1623698404;
+        bh=w9nkzA0FtqkCBvZlJQPMHx5/VmZeYLcstDHH7eQrsB0=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=GyhO/vk0V1FTnJSRYdweY+GnfUoT9PtRSNZ1FlU+mT4VnaBNI2AmPdbi4D3l9RSaO
+         RsKwrZ3ovzk5SXcaMuKyx/HaAsDHDLLKLRUMSzOe22/mJIX5wzYUuaTxhdXIByK//V
+         jlhdVmCCAxpYrqggYcKsQJbpw50UmiEtFEAQ8Eu5K7kqxseJkL4yxoZtfVLr4mbISn
+         Max0b8MiJ6VUXbYY0zzhpAtBeR8PVpAAv+FD8Uy9Tpp26Fsutb2+IUemu9NO1EauGy
+         W5o4xqOX99bG8Tkfb8MJbNyLm5ZxPfKevA3noGYfqi0Xh5uwEZgfaBD3f2SEzIHEEX
+         oLIaVNfIAkUtw==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 4CFC360977;
+        Mon, 14 Jun 2021 19:20:04 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210614113439.GM1955@kadam>
-User-Agent: NeoMutt/20170113 (1.7.2)
-Sender: Martin Kaiser <martin@viti.kaiser.cx>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] qlcnic: Fix an error handling path in 'qlcnic_probe()'
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <162369840431.27454.11306229186572767869.git-patchwork-notify@kernel.org>
+Date:   Mon, 14 Jun 2021 19:20:04 +0000
+References: <2b582e7e0f777ad2a04f9d0568045bee1483a27f.1623501317.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <2b582e7e0f777ad2a04f9d0568045bee1483a27f.1623501317.git.christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     shshaikh@marvell.com, manishc@marvell.com,
+        GR-Linux-NIC-Dev@marvell.com, davem@davemloft.net, kuba@kernel.org,
+        amit.salecha@qlogic.com, sucheta.chakraborty@qlogic.com,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Thus wrote Dan Carpenter (dan.carpenter@oracle.com):
+Hello:
 
-> On Sat, Jun 12, 2021 at 08:00:19PM +0200, Martin Kaiser wrote:
-> > These prints are disabled by default.
+This patch was applied to netdev/net.git (refs/heads/master):
+
+On Sat, 12 Jun 2021 14:37:46 +0200 you wrote:
+> If an error occurs after a 'pci_enable_pcie_error_reporting()' call, it
+> must be undone by a corresponding 'pci_disable_pcie_error_reporting()'
+> call, as already done in the remove function.
+> 
+> Fixes: 451724c821c1 ("qlcnic: aer support")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> 
+> [...]
+
+Here is the summary with links:
+  - qlcnic: Fix an error handling path in 'qlcnic_probe()'
+    https://git.kernel.org/netdev/net/c/cb3376604a67
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-> Not, just by default.  There is literally no way to enable them.
-
-> > Replace the print after dev_alloc_name with proper error handling.
-
-
-> Ugh...  :(  This part really needs to be done first and in a separate
-> patch.  You can delete the RT_TRACE() from that one call site since it's
-> on the same line but the subject of the patch needs to say something
-> like "check for allocation failure".  It can't be "remove RT_TRACE and
-> DBG_88E prints".
-
-ok, understood. I'll split this in two (and fix it, I forgot a
-semicolon).
-
-Thanks,
-
-   Martin

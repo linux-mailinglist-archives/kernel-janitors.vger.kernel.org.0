@@ -2,115 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50DC63A5F96
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Jun 2021 11:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33FE23A64FD
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Jun 2021 13:30:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232730AbhFNKAx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Jun 2021 06:00:53 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32]:45996 "EHLO
-        mx0a-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232685AbhFNKAw (ORCPT
+        id S235688AbhFNLb4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Jun 2021 07:31:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42986 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236059AbhFNL3o (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Jun 2021 06:00:52 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 15E9ufCa030757;
-        Mon, 14 Jun 2021 09:58:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2020-01-29; bh=6MD8tacwh74riZ/X3RtHjFNFVvKl9HiTPBKAYwFYGoQ=;
- b=sGtAutBvAzuVBATfTwn+IYN7XonS5KSqV2jYiGcpdijNeJj3woQxtNTM0HpiqoDO583p
- PdWX+vlBKF8Q7+T06opwO1rj6rWIuTPRgnJhQpyD5Hl8lJr+9vC4ZRf9UQo3bVwAmHh+
- pDtNY1GeDq/Ef+4vuQLV2KyuY/LgEP6rsEQVK5brnfEJiXtSlkZDxVTGOhTtHpXyCP3E
- zGCGxm/dYcfe6JdcCJ4+8UAmsG5ph5fJiFqEpzuADenpy8VYbQKI8BtuXdSpVkvScHGN
- gmfZdqbrb1RaLO4+LMJzsxDpJwAliUsfJjS8kjn8Fk9KnK11L7qW7cZ9X4DBaAcBMz5D 5g== 
-Received: from oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by mx0b-00069f02.pphosted.com with ESMTP id 395y1kr3cb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 14 Jun 2021 09:58:47 +0000
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
-        by pps.podrdrct (8.16.0.36/8.16.0.36) with SMTP id 15E9wkhb011117;
-        Mon, 14 Jun 2021 09:58:46 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by aserp3030.oracle.com with ESMTP id 3959cj4krd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 14 Jun 2021 09:58:46 +0000
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 15E9tjwq196437;
-        Mon, 14 Jun 2021 09:58:45 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 3959cj4kqp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 14 Jun 2021 09:58:45 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 15E9wiDG029713;
-        Mon, 14 Jun 2021 09:58:44 GMT
-Received: from mwanda (/41.212.42.34)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 14 Jun 2021 09:58:43 +0000
-Date:   Mon, 14 Jun 2021 12:58:36 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Won Kang <wkang77@gmail.com>
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-staging@lists.linux.dev, kernel-janitors@vger.kernel.org
-Subject: [PATCH 2/2] staging: gdm724x: check for overflow in
- gdm_lte_netif_rx()
-Message-ID: <YMcoTPsCYlhh2TQo@mwanda>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YMcnl4zCwGWGDVMG@mwanda>
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-ORIG-GUID: OABA-4KIw-aOwYecM5BbwWkpjnXX7mdq
-X-Proofpoint-GUID: OABA-4KIw-aOwYecM5BbwWkpjnXX7mdq
+        Mon, 14 Jun 2021 07:29:44 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3820C0611FA;
+        Mon, 14 Jun 2021 04:24:00 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id l18-20020a1ced120000b029014c1adff1edso12776846wmh.4;
+        Mon, 14 Jun 2021 04:24:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=KkYDjNEVEUYWRsNoTrKu5VhSupn5YZcqZPCCTeGuQLE=;
+        b=SB4A5QIKc6qUAIZ+jcYTcKSADf/lridtue5zfa/P6SM+1kOjyKfrklP91/CMSjRNzR
+         FynuIjnZPCci+QQn0SK0sShi1pWnLXkGAklnpAScfFmbnL/wQZfGWIyGq4Dw8f8oHJ1Y
+         CZB0XafCi4mOGZuv54cunVkatH4ZfMZZXyJp1gn3p/+xATYw99s4o3zf/2YsdxtsJoI8
+         rIdIGGw7EhlfR283JEt8yLGA9ljL3qnfpXl5MnpEuMvTjV5ZnYqjXUTcZFNDwFQpUpqh
+         XtE/V6bBXuZarkV06b81erWIbPuo9t/nIuFPuk4SY8R1NzlrrCk5GnJ0/eNFtpCYznqi
+         SPOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=KkYDjNEVEUYWRsNoTrKu5VhSupn5YZcqZPCCTeGuQLE=;
+        b=dCPrTEA7U7y+FijX6SOTFjeF0BZdrSR1OBhU/m8/wqOAUo3dMQgxKN2yMTtsshN8Gf
+         IfW/EUKAIik2vXGXRnQY8m8M2WKhu0ZhSBCpg8lD1AgGF8HZlOSbYqf2/Rp5VsMJSOz7
+         pbkI7MqFI0n+h9ysFlubTXPXu2SThj136Bg/oMfYQnnOuxw9ArQhfTq9jP93onS00Jcc
+         VL5qSKyvryLZwY7p4hNvkjBsslFHefgpB8GZ9uy02uoz2oJOodicAyV7MSkLOQ0kLlyj
+         OgqwvPmMFMRpWefLztq5FXHl2z9dGBniveMZ0yueF8JOkXiOTeR5N/HG3Wa52TW//vVM
+         4l9Q==
+X-Gm-Message-State: AOAM531bV8MokqAO57BXxTsZxzHwxlY10V53ReIAEZRgps4oCIh8KE/F
+        JB8YY0+sA3P80o3+XVSb2/E=
+X-Google-Smtp-Source: ABdhPJwMRKNNvHww700Fm13czmA35T1evBYSuPXN6rQDjEwkAhz/muPptE2GB5DfPED68EPgBqHnvw==
+X-Received: by 2002:a1c:7c13:: with SMTP id x19mr32257413wmc.96.1623669839413;
+        Mon, 14 Jun 2021 04:23:59 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2d62:e800:a8e7:80e:6e34:237d])
+        by smtp.gmail.com with ESMTPSA id w13sm17269485wrc.31.2021.06.14.04.23.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Jun 2021 04:23:58 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
+Cc:     Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+        Yu Chen <chenyu56@huawei.com>,
+        Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Joe Perches <joe@perches.com>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH v2 0/3] Rectify file references for dt-bindings in MAINTAINERS
+Date:   Mon, 14 Jun 2021 13:23:46 +0200
+Message-Id: <20210614112349.26108-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This code assumes that "len" is at least 62 bytes, but we need a check
-to prevent a read overflow.
+Hi Rob,
 
-Fixes: 61e121047645 ("staging: gdm7240: adding LTE USB driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-There is a different place that does:
+here is a patch series that cleans up some file references for dt-bindings
+in MAINTAINERS. It applies cleanly on next-20210611.
 
-	ip_version = buf[0] >> 4;
+This is a v2 of the still relevant patches from the first submission
+of the patch series (see Links) send out 2021-03-15 and resent on 2021-04-19.
 
-Which assumes that "len" is one.  I think that should be checked in the
-caller...  I didn't add a check here because I think it's the wrong
-place but then I didn't add a check in the caller because I wasn't able
-to test it.  I'm not really that worried about reading one element
-beyond the end of the buffer.  If we get extremely unlucky it could
-result in a crash...  Hopefully we will remember to look at this again
-before moving this code out of staging.
 
-#TODO:
+Could you pick this series for your devicetree bindings tree?
 
- drivers/staging/gdm724x/gdm_lte.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+No functional change, just cleaning up MAINTAINERS.
 
-diff --git a/drivers/staging/gdm724x/gdm_lte.c b/drivers/staging/gdm724x/gdm_lte.c
-index a41af7aa74ec..bd5f87433404 100644
---- a/drivers/staging/gdm724x/gdm_lte.c
-+++ b/drivers/staging/gdm724x/gdm_lte.c
-@@ -611,10 +611,12 @@ static void gdm_lte_netif_rx(struct net_device *dev, char *buf,
- 						  * bytes (99,130,83,99 dec)
- 						  */
- 			} __packed;
--			void *addr = buf + sizeof(struct iphdr) +
--				sizeof(struct udphdr) +
--				offsetof(struct dhcp_packet, chaddr);
--			ether_addr_copy(nic->dest_mac_addr, addr);
-+			int offset = sizeof(struct iphdr) +
-+				     sizeof(struct udphdr) +
-+				     offsetof(struct dhcp_packet, chaddr);
-+			if (offset + ETH_ALEN > len)
-+				return;
-+			ether_addr_copy(nic->dest_mac_addr, buf + offset);
- 		}
- 	}
- 
+Lukas
+
+Link: https://lore.kernel.org/lkml/20210315160451.7469-1-lukas.bulwahn@gmail.com/
+Link: https://lore.kernel.org/lkml/20210419092609.3692-1-lukas.bulwahn@gmail.com/
+
+Adjustment from original to resend version:
+  - drop subsumed patches
+
+Adjustment to resend version:
+  - add Fixes-tags as requested by Nobuhiro Iwamatsu
+
+Lukas Bulwahn (3):
+  MAINTAINERS: rectify entry for ARM/TOSHIBA VISCONTI ARCHITECTURE
+  MAINTAINERS: rectify entry for HIKEY960 ONBOARD USB GPIO HUB DRIVER
+  MAINTAINERS: rectify entry for INTEL KEEM BAY DRM DRIVER
+
+ MAINTAINERS | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
 -- 
-2.30.2
+2.17.1
 

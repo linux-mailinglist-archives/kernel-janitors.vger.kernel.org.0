@@ -2,92 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BABCC3AA771
-	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Jun 2021 01:27:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6F2A3AA920
+	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Jun 2021 04:46:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234581AbhFPXaD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Jun 2021 19:30:03 -0400
-Received: from mga06.intel.com ([134.134.136.31]:30915 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234508AbhFPXaD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Jun 2021 19:30:03 -0400
-IronPort-SDR: 9Fl8ijXuZvj1oEDZcUZ+JKxEr5QmhhgIVu9MjzrjBWBbzjTQDlIvmAr0lSZmZrgUCXgNgD0Jh5
- XB9iCLay9VcA==
-X-IronPort-AV: E=McAfee;i="6200,9189,10017"; a="267420483"
-X-IronPort-AV: E=Sophos;i="5.83,278,1616482800"; 
-   d="scan'208";a="267420483"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2021 16:27:53 -0700
-IronPort-SDR: c/uhERQyM+sCgOUqZHbGxAylMWWwjSLqhn+8dqVDprMkHlPe6u7GA6VFA4cVP64YtyRNR/QyBq
- +DtCdxpl9d1A==
-X-IronPort-AV: E=Sophos;i="5.83,278,1616482800"; 
-   d="scan'208";a="479269628"
-Received: from jekeller-mobl1.amr.corp.intel.com (HELO [10.209.42.204]) ([10.209.42.204])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2021 16:27:52 -0700
-Subject: Re: [PATCH][next] ice: remove redundant continue statement in a
- for-loop
-To:     Colin King <colin.king@canonical.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210615142847.60161-1-colin.king@canonical.com>
-From:   Jacob Keller <jacob.e.keller@intel.com>
-Organization: Intel Corporation
-Message-ID: <2a347503-9879-0a13-555b-a007acfdec3c@intel.com>
-Date:   Wed, 16 Jun 2021 16:27:50 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S230436AbhFQCsp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Jun 2021 22:48:45 -0400
+Received: from [122.15.141.162] ([122.15.141.162]:54522 "EHLO
+        UPCDCDAMX02.upcl.org" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S230267AbhFQCsp (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 16 Jun 2021 22:48:45 -0400
+X-Greylist: delayed 8243 seconds by postgrey-1.27 at vger.kernel.org; Wed, 16 Jun 2021 22:48:44 EDT
+Received: from UPCDCDAMX02.upcl.org (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 374AB12EC8;
+        Thu, 17 Jun 2021 01:58:15 +0530 (IST)
+Received: from UPCDCDAMX02.upcl.org (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 657E613060;
+        Thu, 17 Jun 2021 01:58:01 +0530 (IST)
+Received: from User (unknown [210.212.82.37])
+        by UPCDCDAMX02.upcl.org (Postfix) with SMTP;
+        Thu, 17 Jun 2021 01:58:01 +0530 (IST)
+Reply-To: <josechoondak@gmail.com>
+From:   "Jose Choondak" <info@infotools.in>
+Subject: Re: Contact Me It Very Urgent.
+Date:   Wed, 16 Jun 2021 20:29:22 -0000
 MIME-Version: 1.0
-In-Reply-To: <20210615142847.60161-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain;
+        charset="Windows-1251"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20210616202801.657E613060@UPCDCDAMX02.upcl.org>
+To:     undisclosed-recipients:;
+X-TM-AS-GCONF: 00
+X-TM-AS-Product-Ver: IMSVA-9.1.0.1960-8.6.0.1013-26224.002
+X-TM-AS-Result: No-0.514-5.0-31-10
+X-imss-scan-details: No-0.514-5.0-31-10
+X-TMASE-Version: IMSVA-9.1.0.1960-8.6.1013-26224.002
+X-TMASE-Result: 10-0.513600-10.000000
+X-TMASE-MatchedRID: awbNJYK2QqboJ7ZHxnJI6/6CJzEkJBKD1QKnkgzg6vZ5bx7TGUAszssw
+        rEghLf6dKEGVr0q/O26tNOiSGUvwKTqV8jNP9SD8myiLZetSf8nJ4y0wP1A6AMoI4RYd3wmQ2Kw
+        OXdq4UsPOTw7jcM4POhmwh28tOMvYijr74ISIXwSw0gNx7o/VtOd2r66ykP1T5ovesN7TVeoqoi
+        2h7laWfD9BWL7GG0LsKrauXd3MZDVNsuP/5lMQK6JZimiGoG/MpIyVsI8WTnxJN04+08rPXv8Z8
+        RZsK5EEvvz+1V+xcgseXBB206GQ9uVUzO4EpVyvomJVoMP9vKE6yfYFZPVRaA==
+X-IMSS-DKIM-White-List: No
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-12:0,22:0,33:0,34:0-0
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On 6/15/2021 7:28 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The continue statement in the for-loop is redundant. Re-work the hw_lock
-> check to remove it.
-> 
-> Addresses-Coverity: ("Continue has no effect")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
-
-Yep, that logic makes more sense.
-
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-
->  drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-> index 267312fad59a..3eca0e4eab0b 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-> @@ -410,13 +410,11 @@ bool ice_ptp_lock(struct ice_hw *hw)
->  	for (i = 0; i < MAX_TRIES; i++) {
->  		hw_lock = rd32(hw, PFTSYN_SEM + (PFTSYN_SEM_BYTES * hw->pf_id));
->  		hw_lock = hw_lock & PFTSYN_SEM_BUSY_M;
-> -		if (hw_lock) {
-> -			/* Somebody is holding the lock */
-> -			usleep_range(10000, 20000);
-> -			continue;
-> -		} else {
-> +		if (!hw_lock)
->  			break;
-> -		}
-> +
-> +		/* Somebody is holding the lock */
-> +		usleep_range(10000, 20000);
->  	}
->  
->  	return !hw_lock;
-> 
+please respond to me, if you are still alive.

@@ -2,29 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64BF13A9B6F
-	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Jun 2021 15:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 178DE3A9BA6
+	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Jun 2021 15:08:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233176AbhFPNFJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Jun 2021 09:05:09 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:38871 "EHLO
+        id S233257AbhFPNKG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Jun 2021 09:10:06 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:38992 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232223AbhFPNFI (ORCPT
+        with ESMTP id S232842AbhFPNKF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Jun 2021 09:05:08 -0400
+        Wed, 16 Jun 2021 09:10:05 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         (Exim 4.93)
         (envelope-from <colin.king@canonical.com>)
-        id 1ltVC6-0002IQ-K6; Wed, 16 Jun 2021 13:02:58 +0000
+        id 1ltVGw-0002ir-1o; Wed, 16 Jun 2021 13:07:58 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jiri Pirko <jiri@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
+To:     Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        linux-bluetooth@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mlxsw: spectrum_router: remove redundant continue statement
-Date:   Wed, 16 Jun 2021 14:02:58 +0100
-Message-Id: <20210616130258.9779-1-colin.king@canonical.com>
+Subject: [PATCH] Bluetooth: btmrvl: remove redundant continue statement
+Date:   Wed, 16 Jun 2021 14:07:57 +0100
+Message-Id: <20210616130757.10084-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,27 +36,30 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The continue statement at the end of a for-loop has no effect,
+The continue statement in the for-loop has no effect,
 remove it.
 
 Addresses-Coverity: ("Continue has no effect")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/bluetooth/btmrvl_sdio.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-index bc47ed766878..7e221ef01437 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-@@ -5407,7 +5407,6 @@ mlxsw_sp_rt6_nexthop(struct mlxsw_sp_nexthop_group *nh_grp,
- 		    ipv6_addr_equal((const struct in6_addr *) &nh->gw_addr,
- 				    &rt->fib6_nh->fib_nh_gw6))
- 			return nh;
--		continue;
- 	}
+diff --git a/drivers/bluetooth/btmrvl_sdio.c b/drivers/bluetooth/btmrvl_sdio.c
+index 33d58b30c5ac..cddd350beba3 100644
+--- a/drivers/bluetooth/btmrvl_sdio.c
++++ b/drivers/bluetooth/btmrvl_sdio.c
+@@ -1461,9 +1461,7 @@ static void btmrvl_sdio_coredump(struct device *dev)
+ 					BT_ERR("Allocated buffer not enough");
+ 			}
  
- 	return NULL;
+-			if (stat != RDWR_STATUS_DONE) {
+-				continue;
+-			} else {
++			if (stat == RDWR_STATUS_DONE) {
+ 				BT_INFO("%s done: size=0x%tx",
+ 					entry->mem_name,
+ 					dbg_ptr - entry->mem_ptr);
 -- 
 2.31.1
 

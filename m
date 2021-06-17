@@ -2,89 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8850C3AB51F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Jun 2021 15:46:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24AA53AB52C
+	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Jun 2021 15:50:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232494AbhFQNsL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 17 Jun 2021 09:48:11 -0400
-Received: from mail-vs1-f48.google.com ([209.85.217.48]:44839 "EHLO
-        mail-vs1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231510AbhFQNsL (ORCPT
+        id S232622AbhFQNwb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 17 Jun 2021 09:52:31 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50034 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231299AbhFQNwb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 17 Jun 2021 09:48:11 -0400
-Received: by mail-vs1-f48.google.com with SMTP id x13so3012413vsf.11;
-        Thu, 17 Jun 2021 06:46:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=d84Gq/yVf/MqrPW3CvNRxxLF/yfxRWhECTrNMNwlkFg=;
-        b=QwRtOUR8bTv41rKi3MC9yvoKb8sEBnkyThLVtou1//AiSLxPMHhneRRHnknHGcleBQ
-         om8tNx61pPZYMG6xHNxSVbfqC4o0+2lK2UPcBJCww7evQD5TCteC4zSiLbR/rOkAaM3G
-         wJ0Pp+1DbeyMiJfPClZdEUsd4fms/s3isdW8aDikiWEbjuyZ1ZACnKLHJftsvKXq9ti/
-         FMnHkyA6VIAhMN6lyQ5S/ZLqt0giz/dCpD+TBBD4BX1YSQO1hTFYyiuRIwTp3dUvEGKv
-         ZAQPbgjZUN+JrsJUIg4ck69Jb19UYbmfFF+RnGxRAFGJT1BN3xKXgzWivcfycJN+LeR5
-         YQ5w==
-X-Gm-Message-State: AOAM532OSmcgWd9K/HzykZm5RV/SGT4LgUT2Ad+qGLUgCvXtCyiFaEap
-        +Ptdhdw0nzb1LeG41EElvAyfs/LAzrZi7mJyVok=
-X-Google-Smtp-Source: ABdhPJyT4ut7DJ4qi05g9Fadh67VNF0phrojXnPxHLsQp3dJV7apiyseHhPdUDmO+5wYsON0wXfI5iVmIvOPx0rfUGM=
-X-Received: by 2002:a05:6102:2011:: with SMTP id p17mr4690894vsr.40.1623937561805;
- Thu, 17 Jun 2021 06:46:01 -0700 (PDT)
+        Thu, 17 Jun 2021 09:52:31 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ltsPU-0007a3-GA; Thu, 17 Jun 2021 13:50:20 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-pm@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] opp: remove redundant continue statement
+Date:   Thu, 17 Jun 2021 14:50:20 +0100
+Message-Id: <20210617135020.16415-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <YMtQN++uwH41TAg0@mwanda>
-In-Reply-To: <YMtQN++uwH41TAg0@mwanda>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 17 Jun 2021 15:45:50 +0200
-Message-ID: <CAMuHMdUfMSPa2Oh1s+V=QR+XLv2tVYoJt2sjwdNZeobE76AZwg@mail.gmail.com>
-Subject: Re: [PATCH] clk: renesas: fix a double free on error
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
+From: Colin Ian King <colin.king@canonical.com>
 
-On Thu, Jun 17, 2021 at 3:38 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> The "clock" pointer is allocated with devm_kzalloc() so freeing it
-> here will lead to a double free.
->
-> Fixes: ef3c613ccd68 ("clk: renesas: Add CPG core wrapper for RZ/G2L SoC")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+The continue statement at the end of a for-loop has no effect,
+remove it.
 
-Thanks for your patch!
+Addresses-Coverity: ("Continue has no effect")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/opp/of.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-While the double free is unlikely to happen (the error is not
-propagated upstream, and the driver cannot be unloaded), kernel
-test robot reported two of these errors.  The other one is at line 202.
-Care to fix that as well?
+diff --git a/drivers/opp/of.c b/drivers/opp/of.c
+index 9573facce53a..d298e38aaf7e 100644
+--- a/drivers/opp/of.c
++++ b/drivers/opp/of.c
+@@ -197,10 +197,8 @@ static void _opp_table_alloc_required_tables(struct opp_table *opp_table,
+ 		required_opp_tables[i] = _find_table_of_opp_np(required_np);
+ 		of_node_put(required_np);
+ 
+-		if (IS_ERR(required_opp_tables[i])) {
++		if (IS_ERR(required_opp_tables[i]))
+ 			lazy = true;
+-			continue;
+-		}
+ 	}
+ 
+ 	/* Let's do the linking later on */
+-- 
+2.31.1
 
-> --- a/drivers/clk/renesas/renesas-rzg2l-cpg.c
-> +++ b/drivers/clk/renesas/renesas-rzg2l-cpg.c
-> @@ -473,7 +473,6 @@ rzg2l_cpg_register_mod_clk(const struct rzg2l_mod_clk *mod,
->  fail:
->         dev_err(dev, "Failed to register %s clock %s: %ld\n", "module",
->                 mod->name, PTR_ERR(clk));
-> -       kfree(clock);
->  }
-
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

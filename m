@@ -2,137 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F30A73AB28A
-	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Jun 2021 13:27:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C38603AB2E2
+	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Jun 2021 13:43:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231927AbhFQL3v (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 17 Jun 2021 07:29:51 -0400
-Received: from szxga03-in.huawei.com ([45.249.212.189]:7353 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229783AbhFQL3u (ORCPT
+        id S232414AbhFQLp5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 17 Jun 2021 07:45:57 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:44213 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231386AbhFQLp4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 17 Jun 2021 07:29:50 -0400
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.57])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4G5KSD64XCz6y79;
-        Thu, 17 Jun 2021 19:23:40 +0800 (CST)
-Received: from dggpeml500020.china.huawei.com (7.185.36.88) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Thu, 17 Jun 2021 19:27:41 +0800
-Received: from huawei.com (10.175.127.227) by dggpeml500020.china.huawei.com
- (7.185.36.88) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Thu, 17 Jun
- 2021 19:27:40 +0800
-From:   Baokun Li <libaokun1@huawei.com>
-To:     <libaokun1@huawei.com>, Steve French <sfrench@samba.org>
-CC:     <linux-cifs@vger.kernel.org>, <samba-technical@lists.samba.org>,
-        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] cifs: convert list_for_each to entry variant in cifs_debug.c
-Date:   Thu, 17 Jun 2021 19:36:40 +0800
-Message-ID: <20210617113640.4141487-1-libaokun1@huawei.com>
+        Thu, 17 Jun 2021 07:45:56 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ltqR2-0002gS-4l; Thu, 17 Jun 2021 11:43:48 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] scsi: target/iscsi: remove redundant continue statement
+Date:   Thu, 17 Jun 2021 12:43:47 +0100
+Message-Id: <20210617114347.10247-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.127.227]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpeml500020.china.huawei.com (7.185.36.88)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-convert list_for_each() to list_for_each_entry() where
-applicable.
+From: Colin Ian King <colin.king@canonical.com>
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
+The continue statement at the end of a loop has no effect,
+remove it.
+
+Addresses-Coverity: ("Continue has no effect")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- fs/cifs/cifs_debug.c | 24 +++++++-----------------
- 1 file changed, 7 insertions(+), 17 deletions(-)
+ drivers/target/iscsi/iscsi_target_erl1.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/cifs/cifs_debug.c b/fs/cifs/cifs_debug.c
-index 68e8e5b27841..8857ac7e7a14 100644
---- a/fs/cifs/cifs_debug.c
-+++ b/fs/cifs/cifs_debug.c
-@@ -50,7 +50,6 @@ void cifs_dump_detail(void *buf, struct TCP_Server_Info *server)
- void cifs_dump_mids(struct TCP_Server_Info *server)
- {
- #ifdef CONFIG_CIFS_DEBUG2
--	struct list_head *tmp;
- 	struct mid_q_entry *mid_entry;
+diff --git a/drivers/target/iscsi/iscsi_target_erl1.c b/drivers/target/iscsi/iscsi_target_erl1.c
+index cd670cb9b8fb..0dd52f484fec 100644
+--- a/drivers/target/iscsi/iscsi_target_erl1.c
++++ b/drivers/target/iscsi/iscsi_target_erl1.c
+@@ -871,8 +871,6 @@ int iscsit_execute_ooo_cmdsns(struct iscsi_session *sess)
  
- 	if (server == NULL)
-@@ -58,8 +57,7 @@ void cifs_dump_mids(struct TCP_Server_Info *server)
- 
- 	cifs_dbg(VFS, "Dump pending requests:\n");
- 	spin_lock(&GlobalMid_Lock);
--	list_for_each(tmp, &server->pending_mid_q) {
--		mid_entry = list_entry(tmp, struct mid_q_entry, qhead);
-+	list_for_each_entry(mid_entry, &server->pending_mid_q, qhead) {
- 		cifs_dbg(VFS, "State: %d Cmd: %d Pid: %d Cbdata: %p Mid %llu\n",
- 			 mid_entry->mid_state,
- 			 le16_to_cpu(mid_entry->command),
-@@ -168,7 +166,7 @@ cifs_dump_iface(struct seq_file *m, struct cifs_server_iface *iface)
- 
- static int cifs_debug_files_proc_show(struct seq_file *m, void *v)
- {
--	struct list_head *stmp, *tmp, *tmp1, *tmp2;
-+	struct list_head *tmp, *tmp1, *tmp2;
- 	struct TCP_Server_Info *server;
- 	struct cifs_ses *ses;
- 	struct cifs_tcon *tcon;
-@@ -183,9 +181,7 @@ static int cifs_debug_files_proc_show(struct seq_file *m, void *v)
- 	seq_printf(m, " <filename>\n");
- #endif /* CIFS_DEBUG2 */
- 	spin_lock(&cifs_tcp_ses_lock);
--	list_for_each(stmp, &cifs_tcp_ses_list) {
--		server = list_entry(stmp, struct TCP_Server_Info,
--				    tcp_ses_list);
-+	list_for_each_entry(server, &cifs_tcp_ses_list, tcp_ses_list) {
- 		list_for_each(tmp, &server->smb_ses_list) {
- 			ses = list_entry(tmp, struct cifs_ses, smb_ses_list);
- 			list_for_each(tmp1, &ses->tcon_list) {
-@@ -220,7 +216,7 @@ static int cifs_debug_files_proc_show(struct seq_file *m, void *v)
- 
- static int cifs_debug_data_proc_show(struct seq_file *m, void *v)
- {
--	struct list_head *tmp1, *tmp2, *tmp3;
-+	struct list_head *tmp2, *tmp3;
- 	struct mid_q_entry *mid_entry;
- 	struct TCP_Server_Info *server;
- 	struct cifs_ses *ses;
-@@ -278,11 +274,7 @@ static int cifs_debug_data_proc_show(struct seq_file *m, void *v)
- 
- 	c = 0;
- 	spin_lock(&cifs_tcp_ses_lock);
--	list_for_each(tmp1, &cifs_tcp_ses_list) {
--		server = list_entry(tmp1, struct TCP_Server_Info,
--				    tcp_ses_list);
+ 		if (iscsit_execute_cmd(cmd, 1) < 0)
+ 			return -1;
 -
--		/* channel info will be printed as a part of sessions below */
-+	list_for_each_entry(server, &cifs_tcp_ses_list, tcp_ses_list) {
- 		if (server->is_channel)
- 			continue;
+-		continue;
+ 	}
  
-@@ -563,7 +555,7 @@ static int cifs_stats_proc_show(struct seq_file *m, void *v)
- #ifdef CONFIG_CIFS_STATS2
- 	int j;
- #endif /* STATS2 */
--	struct list_head *tmp1, *tmp2, *tmp3;
-+	struct list_head *tmp2, *tmp3;
- 	struct TCP_Server_Info *server;
- 	struct cifs_ses *ses;
- 	struct cifs_tcon *tcon;
-@@ -594,9 +586,7 @@ static int cifs_stats_proc_show(struct seq_file *m, void *v)
- 
- 	i = 0;
- 	spin_lock(&cifs_tcp_ses_lock);
--	list_for_each(tmp1, &cifs_tcp_ses_list) {
--		server = list_entry(tmp1, struct TCP_Server_Info,
--				    tcp_ses_list);
-+	list_for_each_entry(server, &cifs_tcp_ses_list, tcp_ses_list) {
- 		seq_printf(m, "\nMax requests in flight: %d", server->max_in_flight);
- #ifdef CONFIG_CIFS_STATS2
- 		seq_puts(m, "\nTotal time spent processing by command. Time ");
+ 	return ooo_count;
+-- 
+2.31.1
 

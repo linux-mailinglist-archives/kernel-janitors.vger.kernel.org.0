@@ -2,58 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CCA83AAE4B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Jun 2021 10:01:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43F113AAE84
+	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Jun 2021 10:13:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230038AbhFQIDP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 17 Jun 2021 04:03:15 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:50724 "EHLO deadmen.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229716AbhFQIDK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 17 Jun 2021 04:03:10 -0400
-Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
-        by deadmen.hmeau.com with esmtp (Exim 4.92 #5 (Debian))
-        id 1ltmxP-0003hM-8f; Thu, 17 Jun 2021 16:00:59 +0800
-Received: from herbert by gondobar with local (Exim 4.92)
-        (envelope-from <herbert@gondor.apana.org.au>)
-        id 1ltmxJ-0002md-OH; Thu, 17 Jun 2021 16:00:53 +0800
-Date:   Thu, 17 Jun 2021 16:00:53 +0800
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Baokun Li <libaokun1@huawei.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        John Allen <john.allen@amd.com>,
-        "David S. Miller" <davem@davemloft.net>, weiyongjun1@huawei.com,
-        yuehaibing@huawei.com, yangjihong1@huawei.com, yukuai3@huawei.com,
-        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH -next v2] crypto: ccp - Use list_move_tail instead of
- list_del/list_add_tail in ccp-dmaengine.c
-Message-ID: <20210617080053.GB10662@gondor.apana.org.au>
-References: <20210609071526.1338089-1-libaokun1@huawei.com>
+        id S230283AbhFQIPV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 17 Jun 2021 04:15:21 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:38575 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229842AbhFQIPV (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 17 Jun 2021 04:15:21 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ltn9E-0000tN-Ox; Thu, 17 Jun 2021 08:13:12 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: light: si1145: remove redundant continue statement
+Date:   Thu, 17 Jun 2021 09:13:12 +0100
+Message-Id: <20210617081312.151746-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210609071526.1338089-1-libaokun1@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jun 09, 2021 at 03:15:26PM +0800, Baokun Li wrote:
-> Using list_move_tail() instead of list_del() + list_add_tail() in ccp-dmaengine.c.
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> ---
-> V1->V2:
-> 	CC mailist
-> 
->  drivers/crypto/ccp/ccp-dmaengine.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+From: Colin Ian King <colin.king@canonical.com>
 
-Patch applied.  Thanks.
+The continue statement at the end of a for-loop has no effect,
+remove it.
+
+Addresses-Coverity: ("Continue has no effect")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/iio/light/si1145.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/iio/light/si1145.c b/drivers/iio/light/si1145.c
+index e2abad48b9f4..e8f6cdf26f22 100644
+--- a/drivers/iio/light/si1145.c
++++ b/drivers/iio/light/si1145.c
+@@ -220,7 +220,6 @@ static int __si1145_command_reset(struct si1145_data *data)
+ 			return -ETIMEDOUT;
+ 		}
+ 		msleep(SI1145_COMMAND_MINSLEEP_MS);
+-		continue;
+ 	}
+ }
+ 
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.31.1
+

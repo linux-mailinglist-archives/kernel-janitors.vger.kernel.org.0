@@ -2,70 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ECCB13AA901
-	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Jun 2021 04:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D74B63AA904
+	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Jun 2021 04:38:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230312AbhFQCk1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Jun 2021 22:40:27 -0400
-Received: from szxga08-in.huawei.com ([45.249.212.255]:7311 "EHLO
-        szxga08-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230103AbhFQCk1 (ORCPT
+        id S230438AbhFQCk2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Jun 2021 22:40:28 -0400
+Received: from szxga03-in.huawei.com ([45.249.212.189]:7337 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230208AbhFQCk1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
         Wed, 16 Jun 2021 22:40:27 -0400
-Received: from dggeml759-chm.china.huawei.com (unknown [172.30.72.57])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4G55hC6gltz1BNMk;
-        Thu, 17 Jun 2021 10:33:15 +0800 (CST)
+Received: from dggeml759-chm.china.huawei.com (unknown [172.30.72.54])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4G55jR1RLQz6y4r;
+        Thu, 17 Jun 2021 10:34:19 +0800 (CST)
 Received: from localhost.localdomain (10.175.102.38) by
  dggeml759-chm.china.huawei.com (10.1.199.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Thu, 17 Jun 2021 10:38:17 +0800
+ 15.1.2176.2; Thu, 17 Jun 2021 10:38:18 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>, James Smart <jsmart2021@gmail.com>,
-        James Smart <james.smart@broadcom.com>,
-        Ram Vegesna <ram.vegesna@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Daniel Wagner <dwagner@suse.de>, Hannes Reinecke <hare@suse.de>
-CC:     <linux-scsi@vger.kernel.org>, <target-devel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] scsi: elx: efct: Fix error handling in efct_hw_init()
-Date:   Thu, 17 Jun 2021 02:48:37 +0000
-Message-ID: <20210617024837.1023069-1-weiyongjun1@huawei.com>
+To:     <weiyongjun1@huawei.com>,
+        Alistair Francis <alistair@alistair23.me>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] regulator: sy7636a: Add terminate entry for platform_device_id tables
+Date:   Thu, 17 Jun 2021 02:48:38 +0000
+Message-ID: <20210617024838.1023794-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7BIT
 X-Originating-IP: [10.175.102.38]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
  dggeml759-chm.china.huawei.com (10.1.199.138)
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return negative error code -ENOMEM from the error handling
-case instead of 0, also fix typo in error message.
+Make sure platform_device_id tables are NULL terminated.
 
-Fixes: 4df84e846624 ("scsi: elx: efct: Driver initialization routines")
+Fixes: 8c485bedfb78 ("regulator: sy7636a: Initial commit")
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/scsi/elx/efct/efct_hw.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/regulator/sy7636a-regulator.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/elx/efct/efct_hw.c b/drivers/scsi/elx/efct/efct_hw.c
-index ce4736c41564..6324683f9e8e 100644
---- a/drivers/scsi/elx/efct/efct_hw.c
-+++ b/drivers/scsi/elx/efct/efct_hw.c
-@@ -1044,8 +1044,8 @@ efct_hw_init(struct efct_hw *hw)
- 	 */
- 	hw->wq_reqtag_pool = efct_hw_reqtag_pool_alloc(hw);
- 	if (!hw->wq_reqtag_pool) {
--		efc_log_err(hw->os, "efct_hw_reqtag_init failed %d\n", rc);
--		return rc;
-+		efc_log_err(hw->os, "efct_hw_reqtag_pool_alloc failed\n");
-+		return -ENOMEM;
- 	}
+diff --git a/drivers/regulator/sy7636a-regulator.c b/drivers/regulator/sy7636a-regulator.c
+index c384c2b6ac46..672b7055131d 100644
+--- a/drivers/regulator/sy7636a-regulator.c
++++ b/drivers/regulator/sy7636a-regulator.c
+@@ -110,6 +110,7 @@ static int sy7636a_regulator_probe(struct platform_device *pdev)
  
- 	rc = efct_hw_setup_io(hw);
+ static const struct platform_device_id sy7636a_regulator_id_table[] = {
+ 	{ "sy7636a-regulator", },
++	{},
+ };
+ MODULE_DEVICE_TABLE(platform, sy7636a_regulator_id_table);
+ 
 

@@ -2,44 +2,42 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B17CD3AF628
-	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Jun 2021 21:30:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0D5E3AF627
+	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Jun 2021 21:30:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231518AbhFUTcU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        id S231481AbhFUTcU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
         Mon, 21 Jun 2021 15:32:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52562 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:52566 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231232AbhFUTcU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        id S231241AbhFUTcU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
         Mon, 21 Jun 2021 15:32:20 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 8AA7A6124B;
+Received: by mail.kernel.org (Postfix) with ESMTPS id 920516135A;
         Mon, 21 Jun 2021 19:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
         s=k20201202; t=1624303805;
-        bh=FHds1gTMCs52LtRg3T1vS3H2PX31kq86sX1BDl9Hd2Y=;
+        bh=sRn980rAY7YHKmboo5WdEUsaHvywLVtJadvruAzKVv4=;
         h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=W/5D42jppMAUt6guwGkkT2cDE7x89xDJRS3NngrahybYEOrnUXJI+NYaNqks0oEPe
-         82YOFn/ehQeeDJ2KNmsDxeJD+dH5XsCO8sRUaBeNSVJcFBMXPEaU7QY2KOSXFnODzY
-         qf40nvUoZeofaVm3VjZC83mMx9O1gsVn6aJkVqfA4E3FmI/WBCXwIv3e8Aw0hncFMK
-         g5kB8TS9ek1Hkw7VO4k2NwgL/cHm+St4JibNN3faZOGTVt3Fzt4QgPC6rjWcBBoQCA
-         UnOafI0xEWk9MjaAdDBE88JBt//0/3P4vl3xGo2fT0g4TR/CIW9p2mWUzFllRg7dcq
-         GeoroJpLO//yg==
+        b=sQiR1zYlGxJ61F3qD4/ArVmkDqVdVswsvLdlyz9KjLKhShopif9ZvNDejGVpFVZ6t
+         BkcFQYJx1eQmSmJsOkyXhkueItKVbudpkfy2hP70jV+AzuVkbjagmlRwJ3KCXyTkR2
+         KbYnp/E86f24gsckMNhS1g+Tiq/tTsjrCixyX9J4uaG+EKxQzuxN061to57BusRuEo
+         ot081M7MiNvrWmH+CHlFQ9wfbAKu136d9mtvhrA06VnevGygtKLFiR/O/JMS/X5vJk
+         RGR/jpaENFgvl5byuaFfTTUSarDbqcxc9ZJJBZHXOV/wtemVwRAJIv3HxI1QdrvVkl
+         3eFHobz/ZXDdg==
 Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 7B9BA609E3;
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 859EF60A37;
         Mon, 21 Jun 2021 19:30:05 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] nfp: flower-ct: check for error in
- nfp_fl_ct_offload_nft_flow()
+Subject: Re: [PATCH net-next] net: qualcomm: rmnet: fix two pointer math bugs
 From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <162430380550.11970.15653260321035331562.git-patchwork-notify@kernel.org>
+Message-Id: <162430380554.11970.17234328038547135962.git-patchwork-notify@kernel.org>
 Date:   Mon, 21 Jun 2021 19:30:05 +0000
-References: <YM321r7Enw8sGj0X@mwanda>
-In-Reply-To: <YM321r7Enw8sGj0X@mwanda>
+References: <YM32lkJIJdSgpR87@mwanda>
+In-Reply-To: <YM32lkJIJdSgpR87@mwanda>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     simon.horman@corigine.com, louis.peens@corigine.com,
-        kuba@kernel.org, davem@davemloft.net, yinjun.zhang@corigine.com,
-        oss-drivers@corigine.com, netdev@vger.kernel.org,
+Cc:     subashab@codeaurora.org, stranche@codeaurora.org,
+        davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -49,19 +47,19 @@ Hello:
 
 This patch was applied to netdev/net-next.git (refs/heads/master):
 
-On Sat, 19 Jun 2021 16:53:26 +0300 you wrote:
-> The nfp_fl_ct_add_flow() function can fail so we need to check for
-> failure.
+On Sat, 19 Jun 2021 16:52:22 +0300 you wrote:
+> We recently changed these two pointers from void pointers to struct
+> pointers and it breaks the pointer math so now the "txphdr" points
+> beyond the end of the buffer.
 > 
-> Fixes: 95255017e0a8 ("nfp: flower-ct: add nft flows to nft list")
+> Fixes: 56a967c4f7e5 ("net: qualcomm: rmnet: Remove some unneeded casts")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/net/ethernet/netronome/nfp/flower/conntrack.c | 2 ++
->  1 file changed, 2 insertions(+)
+> 
+> [...]
 
 Here is the summary with links:
-  - [net-next] nfp: flower-ct: check for error in nfp_fl_ct_offload_nft_flow()
-    https://git.kernel.org/netdev/net-next/c/43c9a8111680
+  - [net-next] net: qualcomm: rmnet: fix two pointer math bugs
+    https://git.kernel.org/netdev/net-next/c/753ba09aa3ea
 
 You are awesome, thank you!
 --

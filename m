@@ -2,38 +2,43 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D55FD3B226A
-	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Jun 2021 23:25:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E65D13B2242
+	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Jun 2021 23:13:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229864AbhFWV1X (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 23 Jun 2021 17:27:23 -0400
-Received: from ciao.gmane.io ([116.202.254.214]:57266 "EHLO ciao.gmane.io"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229755AbhFWV1X (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 23 Jun 2021 17:27:23 -0400
-X-Greylist: delayed 301 seconds by postgrey-1.27 at vger.kernel.org; Wed, 23 Jun 2021 17:27:23 EDT
-Received: from list by ciao.gmane.io with local (Exim 4.92)
-        (envelope-from <glkj-kernel-janitors-2@m.gmane-mx.org>)
-        id 1lwAHy-00012l-IS
-        for kernel-janitors@vger.kernel.org; Wed, 23 Jun 2021 23:20:02 +0200
-X-Injected-Via-Gmane: http://gmane.org/
-To:     kernel-janitors@vger.kernel.org
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+        id S229800AbhFWVQK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 23 Jun 2021 17:16:10 -0400
+Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:40875 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229688AbhFWVQJ (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 23 Jun 2021 17:16:09 -0400
+Received: from [192.168.1.18] ([86.243.172.93])
+        by mwinf5d90 with ME
+        id LlDn2500Q21Fzsu03lDnbG; Wed, 23 Jun 2021 23:13:49 +0200
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 23 Jun 2021 23:13:49 +0200
+X-ME-IP: 86.243.172.93
 Subject: Re: [PATCH] ASoC: da7219: Fix an out-of-bound read in an error
  handling path
-Date:   Wed, 23 Jun 2021 23:13:46 +0200
-Message-ID: <8e0d461a-c633-0162-b9e6-c2166bc013fe@wanadoo.fr>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     alsa-devel@alsa-project.org, support.opensource@diasemi.com,
+        lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, tiwai@suse.com,
+        broonie@kernel.org, Adam.Thomson.Opensource@diasemi.com
+Newsgroups: gmane.linux.alsa.devel,gmane.linux.kernel,gmane.linux.kernel.janitors
 References: <4fdde55198294a07f04933f7cef937fcb654c901.1624425670.git.christophe.jaillet@wanadoo.fr>
  <20210623094655.GB2116@kadam>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <8e0d461a-c633-0162-b9e6-c2166bc013fe@wanadoo.fr>
+Date:   Wed, 23 Jun 2021 23:13:46 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
-Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org
+MIME-Version: 1.0
 In-Reply-To: <20210623094655.GB2116@kadam>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -111,5 +116,4 @@ CJ
 > dan carpenter
 > 
 > 
-
 

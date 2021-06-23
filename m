@@ -2,67 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11CF43B1DC6
-	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Jun 2021 17:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAEC73B1E55
+	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Jun 2021 18:09:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231394AbhFWPr0 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 23 Jun 2021 11:47:26 -0400
-Received: from [183.90.58.236] ([183.90.58.236]:40640 "EHLO ns1.zackeruz.tk"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231185AbhFWPrX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 23 Jun 2021 11:47:23 -0400
-Received: from johnlewis.com (unknown [192.168.20.1])
-        by ns1.zackeruz.tk (Postfix) with ESMTPSA id 521E084601A
-        for <kernel-janitors@vger.kernel.org>; Wed, 23 Jun 2021 23:45:03 +0800 (+08)
-Reply-To: robert_turner@johnlewis-trading.com,
-          pippawicks.sales@johnlewis-trading.com
-From:   John Lewis & Partnersip <robert.turner107@johnlewis.com>
-To:     kernel-janitors@vger.kernel.org
-Subject: 6/23/2021 Product Inquiry 
-Date:   23 Jun 2021 15:45:02 +0000
-Message-ID: <20210623094114.03A7290EC684942E@johnlewis.com>
+        id S230283AbhFWQL5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 23 Jun 2021 12:11:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50724 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230015AbhFWQLy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 23 Jun 2021 12:11:54 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 71143611CB;
+        Wed, 23 Jun 2021 16:09:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1624464577;
+        bh=ndUQ3TYporJmT1LvwXbbjxKXfjQvidrtfBX+LWqpbcI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=QnXyq/fdrKkwRtwrcDwVhE/MXeqT+5wI76qD6FVtPDA0U1ZlZmgaZNhrjeqbKzEVG
+         tsiBFAxiVi0UpvwgU+mDMJ/IRq7Mo7t4e6IyOGEJzVYMW2lZ1Fu2eT2upduF4dN9Ne
+         nk6YXxh8ka+ZjC1w0oOx80YwsdNwyjHmj6B11xtnmVoiaqWQliUliyB/9QBeQCV5ff
+         j/lrK/K7bNyXLfXqfbtgKOiK1s3Cmf1raCuzPbqBEiDTLVqc86NRufIZMyf4QhN/aL
+         uuJZY4j11K/EJo7wV5pgAXkFTOwEkJcNFY4g1MyTPbU1Mj8uGA9sv65oDB1U0S9jLe
+         q6Wwdfu7K9dUg==
+From:   Mark Brown <broonie@kernel.org>
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        linux-power@fi.rohmeurope.com,
+        Colin King <colin.king@canonical.com>
+Cc:     Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH][next] regulator: bd9576: Fix uninitializes variable may_have_irqs
+Date:   Wed, 23 Jun 2021 17:08:54 +0100
+Message-Id: <162446430310.55481.3940596483000012413.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210622144730.22821-1-colin.king@canonical.com>
+References: <20210622144730.22821-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dear kernel-janitors
+On Tue, 22 Jun 2021 15:47:30 +0100, Colin King wrote:
+> The boolean variable may_have_irqs is not ininitialized and is
+> only being set to true in the case where chip is ROHM_CHIP_TYPE_BD9576.
+> Fix this by ininitialized may_have_irqs to false.
 
-The famous brand John Lewis Partnership, is UK's largest multi-
-channel retailer with over 126 shops and multiple expansion in 
-Africa furnished by European/Asian/American products. We are 
-sourcing new products to attract new customers and also retain 
-our existing ones, create new partnerships with companies dealing 
-with different kinds of goods globally.
+Applied to
 
-Your company's products are of interest to our market as we have 
-an amazing market for your products.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
 
-Provide us your current catalog through email to review more. We 
-hope to be able to order with you and start a long-term friendly,
-respectable and solid business partnership. Please we would 
-appreciate it if you could send us your stock availability via 
-email if any.
+Thanks!
 
-Our payment terms are 15 days net in Europe, 30 days Net in UK 
-and 30 days net in Asia/USA as we operate with over 5297 
-suppliers around the globe for the past 50 years now. For 
-immediate response Send your reply to robert_turner@johnlewis-
-trading.com for us to be able to 
-treat with care and urgency.
+[1/1] regulator: bd9576: Fix uninitializes variable may_have_irqs
+      commit: ddf275b219ab22bc07c14ac88c290694089dced0
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Best Regards
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Rob Turner
-Head Of Procurement Operations
-John Lewis & Partners.
-robert_turner@johnlewis-trading.com
-Tel: +44-7451-274090
-WhatsApp: +447497483925
-www.johnlewis.com
-REGISTERED OFFICE: 171 VICTORIA STREET, LONDON SW1E 5NN 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

@@ -2,63 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 001E43B343A
-	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Jun 2021 18:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A48C53B34DA
+	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Jun 2021 19:34:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229928AbhFXQ7G (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 24 Jun 2021 12:59:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49914 "EHLO
+        id S232174AbhFXRhL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 24 Jun 2021 13:37:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232131AbhFXQ7F (ORCPT
+        with ESMTP id S229721AbhFXRhK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 24 Jun 2021 12:59:05 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48201C061574
-        for <kernel-janitors@vger.kernel.org>; Thu, 24 Jun 2021 09:56:45 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id x20so1901910ljc.5
-        for <kernel-janitors@vger.kernel.org>; Thu, 24 Jun 2021 09:56:45 -0700 (PDT)
+        Thu, 24 Jun 2021 13:37:10 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DF60C061574;
+        Thu, 24 Jun 2021 10:34:51 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id mj3so3336498ejb.4;
+        Thu, 24 Jun 2021 10:34:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
-         :subject:to;
-        bh=ANhbTggsY3NFhRZExKMwUmb3VzJqye8XLvWVXSvNBkQ=;
-        b=g0k0h+YCj3cp/zX8mnyCXZV2dt07GS3sXPx2dws/fxIUzHddyUrEMU+HNrNvNR19zc
-         3CY/PDFRjRgbx8m4O0ekdMib7tw+ytIWLiIeeNtZL1nqGayxK9yR2fv6P6l6zUasvy2L
-         aur2UL509OQI3fSJ6vMrC57X6abLO75+gtBmuhA4yQkuQ+UFKBio8M0iIqLzCbXqhjPT
-         ZGcbNpzm2faw2xFneeE79uxu+wDyP5yfhge1QTZWiPvRmFc8nxjAKHrXdHlRrP+3nKG/
-         mqI4GVdgHLm4zkn/tI4vGt9Mikw3syVzdAZbXyrlGrY7yAK9yPDB1eu95rOnhCWuJLII
-         QXzg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+1dHCIjVGu+VUQzg64ApXX1v4ulkFxMzGJoEo7mlEN8=;
+        b=AARHRFZK4+BCpIFSAR4Ai01+dvIC2tHWRomTVTb1qj8A98A4rj7a7RL0a1YxshGXjS
+         ylJERtxccirnh2JtFVERSbZqjqFkZv151h58DU7fxtNvk1ymxTwBWWxeK4CRSorRYFX3
+         ZH3KmSFqkl+0HpUw+VOEJPP+aZsXVDgdooZjimavAs28OTJ+5nW7jqV+w2VtbIyI875S
+         JDEA8jR5UG1z465hHft34VuKxHIYrEfwcZwk6JTrJ/qGaWKaRZPXFasqE5z8e2nzzQMG
+         uXVmd7OVicFr2VZlaFpLatGxVSRkMPTjImm4rK45atjpd8bgjoYlhpjMHni+J2lrE74m
+         44vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:in-reply-to:references
-         :from:date:message-id:subject:to;
-        bh=ANhbTggsY3NFhRZExKMwUmb3VzJqye8XLvWVXSvNBkQ=;
-        b=TsDRkh6PXMZwxZZCkY91mYpZgTMrKu1gSNlVwEmFDe+4YzwaqQrxtAPdVqkceag1sd
-         oV2ICjHA489fwwgyjX2a9WmEKafkxdsBIXQPfzMGLeLlB6MDzKpRAf0/it4EuZ8NI+JR
-         6n3SMNHZx7CU7+gJGzVpxqTNa7k80B7ncptF1FTqLScJcjUNSsJIvBwr4A2YVil9v6a7
-         ZHhrP87PpZP3gJODgHQxLNMprl7xnzYKWKnPMsv0ScqEs39uc79MuMcLAeFAASRT5WZR
-         FEnI/WLgMx4FqJuWThfdjhrNqerFs+Un+KU2fUGBoCAmCJd4XKkVfwdCkJW6akGftWZT
-         4LJQ==
-X-Gm-Message-State: AOAM531ZDI2S8HCY/YmjfZZQ1zZI2YoO9l3Pd25xbBXH4mgHk82bKz1L
-        ej9LCaKEemdmWFfWqAzcTyFzvUPZc5Ms3j4tDg==
-X-Google-Smtp-Source: ABdhPJxtAeiLBlruPCcwrLWmkgSknroXKBCjRThGop7cTgXiJ23TI7C+8hcBG/dKKXLuIsXyJEOJde04Br+NtuZhkd8=
-X-Received: by 2002:a2e:878a:: with SMTP id n10mr1978757lji.433.1624553803692;
- Thu, 24 Jun 2021 09:56:43 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+1dHCIjVGu+VUQzg64ApXX1v4ulkFxMzGJoEo7mlEN8=;
+        b=YULjqUZyxxazIk8p+0A/+qIXMwMwKdDJDfAPBrh+IUiB2lRqcaJOulpFqach9816zQ
+         qIxoKUoZqcWZ4UTgEGMV00HJim2I1YbCuaC0+BLJfA9wvl4ax3b8SBiWvHT1WlCA4T2W
+         0KMl0wrGO3DFi0KjjSwv2EajNCT4HiKQRWVxIE3Y1e+c7AYTIq3cyFtj83vmINI+kHNr
+         oY9ZDRkRpJpCJwUcARgwWqvHLoM6yoQLtR75oK6KAWjj0bJ9cSADENQaLWpybz3QWptx
+         FJVLdOrVOqtfJ9nuiLYwhwqKLeEYuGehzVeYaebXyIWMfGy9YEM93Su726nTWFOuh7JF
+         Dd0w==
+X-Gm-Message-State: AOAM533cPMkcaPFR4UUePffJVONIA7m2J+YNUB8EwzUclj7lPbdoZxqb
+        TB9tzfCVyW9KOqG8Eeb5HB5pMjynjP5nsK3jCOM=
+X-Google-Smtp-Source: ABdhPJwtErtzq1+hHcQMB5rM9v6vcBduXUsJyHaoWqc3HwRhLcDrty3aCQ7bdHIlsFcpiQypqmQkzot764eK+TZffv8=
+X-Received: by 2002:a17:906:3d3:: with SMTP id c19mr6297403eja.202.1624556090041;
+ Thu, 24 Jun 2021 10:34:50 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6520:45c7:b029:fc:1b2e:6ed with HTTP; Thu, 24 Jun 2021
- 09:56:42 -0700 (PDT)
-Reply-To: tutywoolgar021@gmail.com
-In-Reply-To: <CAOtQu3ATbDy715U2aOMdjpkYb7gH6PN06ros=ZEGQR40PD2WKg@mail.gmail.com>
-References: <CAOtQu3ATbDy715U2aOMdjpkYb7gH6PN06ros=ZEGQR40PD2WKg@mail.gmail.com>
-From:   tuty woolgar <baringsolim@gmail.com>
-Date:   Thu, 24 Jun 2021 16:56:42 +0000
-Message-ID: <CAOtQu3DzzU-_+h8UXFDPYqSFKNg5sLG2DgH+XT2i4SzySUGFkw@mail.gmail.com>
-Subject: greetings,
-To:     undisclosed-recipients:;
+References: <20210621100519.10257-1-colin.king@canonical.com>
+In-Reply-To: <20210621100519.10257-1-colin.king@canonical.com>
+From:   Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Date:   Fri, 25 Jun 2021 02:34:38 +0900
+Message-ID: <CAKFNMomw60BGObwF2ZOFriFwPnEk5hFZgC-5vJwJjPnrW3RyPw@mail.gmail.com>
+Subject: Re: [PATCH] nilfs2: remove redundant continue statement in a while-loop
+To:     Colin King <colin.king@canonical.com>
+Cc:     linux-nilfs <linux-nilfs@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-My greetings to you my friend i hope you are fine and good please respond
-back to me thanks,
+Thank you.  This change is correct also in view of the expected
+behavior of the function
+(it really is unnecessary).
+I will send this to upstream.
+
+Regards,
+Ryusuke Konishi
+
+On Mon, Jun 21, 2021 at 7:05 PM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The continue statement at the end of the while-loop is redundant,
+> remove it.
+>
+> Addresses-Coverity: ("Continue has no effect")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  fs/nilfs2/btree.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+> index f42ab57201e7..ab9ec073330f 100644
+> --- a/fs/nilfs2/btree.c
+> +++ b/fs/nilfs2/btree.c
+> @@ -738,7 +738,6 @@ static int nilfs_btree_lookup_contig(const struct nilfs_bmap *btree,
+>                         if (ptr2 != ptr + cnt || ++cnt == maxblocks)
+>                                 goto end;
+>                         index++;
+> -                       continue;
+>                 }
+>                 if (level == maxlevel)
+>                         break;
+> --
+> 2.31.1
+>

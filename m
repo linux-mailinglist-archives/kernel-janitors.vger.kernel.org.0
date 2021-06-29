@@ -2,86 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DEEA3B70B5
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Jun 2021 12:30:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C7553B70D1
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Jun 2021 12:37:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233037AbhF2KcZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Jun 2021 06:32:25 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:34477 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232772AbhF2KcY (ORCPT
+        id S233125AbhF2KkU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Jun 2021 06:40:20 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([185.58.85.151]:35666 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232985AbhF2KkT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Jun 2021 06:32:24 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <colin.king@canonical.com>)
-        id 1lyB08-0000Lx-BV; Tue, 29 Jun 2021 10:29:56 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] clk: lmk04832: Fix spelling mistakes in dev_err messages and comments
-Date:   Tue, 29 Jun 2021 11:29:56 +0100
-Message-Id: <20210629102956.17901-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.31.1
+        Tue, 29 Jun 2021 06:40:19 -0400
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-276-Ynsqbt41MGGLMnUmWg75qQ-1; Tue, 29 Jun 2021 11:37:49 +0100
+X-MC-Unique: Ynsqbt41MGGLMnUmWg75qQ-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Tue, 29 Jun
+ 2021 11:37:48 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.018; Tue, 29 Jun 2021 11:37:48 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Andreas Fink' <afink@list.fink.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+CC:     Vlad Yasevich <vyasevich@gmail.com>,
+        Xin Long <lucien.xin@gmail.com>,
+        "Neil Horman" <nhorman@tuxdriver.com>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        "linux-sctp@vger.kernel.org" <linux-sctp@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: RE: [PATCH net] sctp: prevent info leak in sctp_make_heartbeat()
+Thread-Topic: [PATCH net] sctp: prevent info leak in sctp_make_heartbeat()
+Thread-Index: AQHXbMDx0xuH4caApku27XGH6SriJKsqyrWg
+Date:   Tue, 29 Jun 2021 10:37:48 +0000
+Message-ID: <c76a03be72ae4dfc9b6a65d418d699e2@AcuMS.aculab.com>
+References: <YNrXoNAiQama8Us8@mwanda>
+ <886e4daf-c239-c1ce-da52-4b4684449908@list.fink.org>
+In-Reply-To: <886e4daf-c239-c1ce-da52-4b4684449908@list.fink.org>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
-
-There are handful of spelling mistakes in two dev_err error messages
-and comments. Fix them.
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/clk/clk-lmk04832.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/clk/clk-lmk04832.c b/drivers/clk/clk-lmk04832.c
-index 0cd76e626c3d..274c1004e938 100644
---- a/drivers/clk/clk-lmk04832.c
-+++ b/drivers/clk/clk-lmk04832.c
-@@ -519,7 +519,7 @@ static long lmk04832_vco_round_rate(struct clk_hw *hw, unsigned long rate,
- 
- 	vco_rate = lmk04832_calc_pll2_params(*prate, rate, &n, &p, &r);
- 	if (vco_rate < 0) {
--		dev_err(lmk->dev, "PLL2 parmeters out of range\n");
-+		dev_err(lmk->dev, "PLL2 parameters out of range\n");
- 		return vco_rate;
- 	}
- 
-@@ -550,7 +550,7 @@ static int lmk04832_vco_set_rate(struct clk_hw *hw, unsigned long rate,
- 
- 	vco_rate = lmk04832_calc_pll2_params(prate, rate, &n, &p, &r);
- 	if (vco_rate < 0) {
--		dev_err(lmk->dev, "failed to determine PLL2 parmeters\n");
-+		dev_err(lmk->dev, "failed to determine PLL2 parameters\n");
- 		return vco_rate;
- 	}
- 
-@@ -573,7 +573,7 @@ static int lmk04832_vco_set_rate(struct clk_hw *hw, unsigned long rate,
- 
- 	/*
- 	 * PLL2_N registers must be programmed after other PLL2 dividers are
--	 * programed to ensure proper VCO frequency calibration
-+	 * programmed to ensure proper VCO frequency calibration
- 	 */
- 	ret = regmap_write(lmk->regmap, LMK04832_REG_PLL2_N_0,
- 			   FIELD_GET(0x030000, n));
-@@ -1120,7 +1120,7 @@ static int lmk04832_dclk_set_rate(struct clk_hw *hw, unsigned long rate,
- 		return -EINVAL;
- 	}
- 
--	/* Enable Duty Cycle Corretion */
-+	/* Enable Duty Cycle Correction */
- 	if (dclk_div == 1) {
- 		ret = regmap_update_bits(lmk->regmap,
- 					 LMK04832_REG_CLKOUT_CTRL3(dclk->id),
--- 
-2.31.1
+PiA+IC0Jc3RydWN0IHNjdHBfc2VuZGVyX2hiX2luZm8gaGJpbmZvOw0KPiA+ICsJc3RydWN0IHNj
+dHBfc2VuZGVyX2hiX2luZm8gaGJpbmZvID0ge307DQoNCj4gRG9lcyB0aGF0IGdjYyBleHRlbnNp
+b24gd29yayB3aXRoIGFsbCBjb21waWxlcnMsIGVzcGVjaWFsbHkgY2xhbmc/DQoNCj4gPiBTbyB0
+aGF0J3MgbmljZSwgYmVjYXVzZSBhZGRpbmcgbWVtc2V0KClzIHRvIHplcm8gZXZlcnl3aGVyZSB3
+YXMgdWdseS4NCg0KVGhlICdyZWFsIGZ1bicgKHRtKSBzdGFydHMgd2hlbiB0aGUgYml0IHBhdHRl
+cm4gZm9yIHRoZSBOVUxMDQpwb2ludGVyIGlzbid0ICdhbGwgemVyb3MnLg0KVXNpbmcgbWVtc2V0
+KCkgaXMgdGhlbiBicm9rZW4gLSBJIHN1c3BlY3QgdGhlIGNvbXBpbGVyIGlzDQpleHBlY3RlZCB0
+byBpbml0aWFsaXNlIHBvaW50ZXJzIHRvIHRoZSBjb3JyZWN0IE5VTEwgcGF0dGVybi4NCg0KTm90
+IHRoYXQgSSB0aGluayBhbnlvbmUgc2FuZSB3b3VsZCBjb25zaWRlciB0cnlpbmcgdG8gY29tcGls
+ZQ0KYW55ICdub3JtYWwnIEMgY29kZSBmb3Igc3VjaCBhIHN5c3RlbS4NCg0KT1RPSCBpdCBpcyBw
+cm9iYWJseSB3aHkgY2xhbmcgaXMgYmxlYXRpbmcgYWJvdXQgKGludCkoKGNoYXIgKikwICsgNCkN
+CmJlaW5nIHVuZGVmaW5lZCBiZWhhdmlvdXIuDQoNCglEYXZpZA0KDQotDQpSZWdpc3RlcmVkIEFk
+ZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywg
+TUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo=
 

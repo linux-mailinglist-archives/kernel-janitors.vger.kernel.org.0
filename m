@@ -2,28 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC39B3B9F85
-	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Jul 2021 13:11:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D664A3B9FC7
+	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Jul 2021 13:27:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231700AbhGBLOX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 2 Jul 2021 07:14:23 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:58442 "EHLO
+        id S231857AbhGBL37 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 2 Jul 2021 07:29:59 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:58721 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230424AbhGBLOX (ORCPT
+        with ESMTP id S231145AbhGBL36 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 2 Jul 2021 07:14:23 -0400
+        Fri, 2 Jul 2021 07:29:58 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         (Exim 4.93)
         (envelope-from <colin.king@canonical.com>)
-        id 1lzH5J-0002z5-UC; Fri, 02 Jul 2021 11:11:50 +0000
+        id 1lzHKK-0003x3-Lf; Fri, 02 Jul 2021 11:27:20 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     tim@cyberelk.net, Jens Axboe <axboe@kernel.dk>,
-        linux-block@vger.kernel.org
+To:     Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] paride: remove redudant space character check
-Date:   Fri,  2 Jul 2021 12:11:49 +0100
-Message-Id: <20210702111149.15517-1-colin.king@canonical.com>
+Subject: [PATCH] iavf: remove redundant null check on key
+Date:   Fri,  2 Jul 2021 12:27:20 +0100
+Message-Id: <20210702112720.16006-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -34,28 +36,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The check for variable l being a space character is always false, l can
-never be a space character. The check is redundant and can be removed.
+The null check on pointer key has already been performed at the
+start of the function and this leads to a return of -EOPNOTSUPP.
+The second null check on key is therefore always false, it is
+redundant and can be removed.
 
 Addresses-Coverity: ("Logically dead code")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/block/paride/pg.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf_ethtool.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/block/paride/pg.c b/drivers/block/paride/pg.c
-index 3b5882bfb736..2f7aa8521395 100644
---- a/drivers/block/paride/pg.c
-+++ b/drivers/block/paride/pg.c
-@@ -429,8 +429,6 @@ static void xs(char *buf, char *targ, int len)
- 		if (c != ' ' && c != l)
- 			l = *targ++ = c;
- 	}
--	if (l == ' ')
--		targ--;
- 	*targ = '\0';
- }
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
+index af43fbd8cb75..70193d8d54ed 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
+@@ -1873,8 +1873,7 @@ static int iavf_set_rxfh(struct net_device *netdev, const u32 *indir,
+ 	if (!indir)
+ 		return 0;
  
+-	if (key)
+-		memcpy(adapter->rss_key, key, adapter->rss_key_size);
++	memcpy(adapter->rss_key, key, adapter->rss_key_size);
+ 
+ 	/* Each 32 bits pointed by 'indir' is stored with a lut entry */
+ 	for (i = 0; i < adapter->rss_lut_size; i++)
 -- 
 2.31.1
 

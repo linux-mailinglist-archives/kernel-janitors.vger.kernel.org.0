@@ -2,27 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4A013BAC97
-	for <lists+kernel-janitors@lfdr.de>; Sun,  4 Jul 2021 11:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A02DD3BAC9F
+	for <lists+kernel-janitors@lfdr.de>; Sun,  4 Jul 2021 11:57:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229530AbhGDJyn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 4 Jul 2021 05:54:43 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:53447 "EHLO
+        id S229535AbhGDJ7j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 4 Jul 2021 05:59:39 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53480 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbhGDJyn (ORCPT
+        with ESMTP id S229476AbhGDJ7j (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 4 Jul 2021 05:54:43 -0400
+        Sun, 4 Jul 2021 05:59:39 -0400
 Received: from cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net ([80.193.200.194] helo=localhost)
         by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         (Exim 4.93)
         (envelope-from <colin.king@canonical.com>)
-        id 1lzynH-0007V2-7K; Sun, 04 Jul 2021 09:52:07 +0000
+        id 1lzys2-0007m9-Ml; Sun, 04 Jul 2021 09:57:02 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-input@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] arch: Kconfig: Fix spelling mistake "seperate" -> "separate"
-Date:   Sun,  4 Jul 2021 10:52:07 +0100
-Message-Id: <20210704095207.37342-1-colin.king@canonical.com>
+Subject: [PATCH] Input: Fix spelling mistake in Kconfig "Modul" -> "Module"
+Date:   Sun,  4 Jul 2021 10:57:02 +0100
+Message-Id: <20210704095702.37567-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -33,26 +34,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Threre is a spelling mistake in the Kconfig text. Fix it.
+There is a spelling mistake in the Kconfig text. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- arch/Kconfig | 2 +-
+ drivers/input/touchscreen/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 0459b4882124..8dfcc72db29d 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -914,7 +914,7 @@ config HAVE_SOFTIRQ_ON_OWN_STACK
- 	bool
- 	help
- 	  Architecture provides a function to run __do_softirq() on a
--	  seperate stack.
-+	  separate stack.
+diff --git a/drivers/input/touchscreen/Kconfig b/drivers/input/touchscreen/Kconfig
+index ad454cd2855a..d4e74738c5a8 100644
+--- a/drivers/input/touchscreen/Kconfig
++++ b/drivers/input/touchscreen/Kconfig
+@@ -932,7 +932,7 @@ config TOUCHSCREEN_USB_COMPOSITE
+ 	  - JASTEC USB Touch Controller/DigiTech DTR-02U
+ 	  - Zytronic controllers
+ 	  - Elo TouchSystems 2700 IntelliTouch
+-	  - EasyTouch USB Touch Controller from Data Modul
++	  - EasyTouch USB Touch Controller from Data Module
+ 	  - e2i (Mimo monitors)
  
- config PGTABLE_LEVELS
- 	int
+ 	  Have a look at <http://linux.chapter7.ch/touchkit/> for
 -- 
 2.31.1
 

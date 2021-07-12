@@ -2,57 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC10C3C3DE2
-	for <lists+kernel-janitors@lfdr.de>; Sun, 11 Jul 2021 18:13:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F2AF3C4119
+	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Jul 2021 03:46:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232490AbhGKQQe convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 11 Jul 2021 12:16:34 -0400
-Received: from mail.07d05.mspz7.gob.ec ([186.46.59.139]:59294 "EHLO
-        mail.07d05.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229688AbhGKQQe (ORCPT
+        id S229818AbhGLBtn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 11 Jul 2021 21:49:43 -0400
+Received: from out30-132.freemail.mail.aliyun.com ([115.124.30.132]:53105 "EHLO
+        out30-132.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229812AbhGLBtm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 11 Jul 2021 12:16:34 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mail.07d05.mspz7.gob.ec (Postfix) with ESMTP id EFD821845DAD;
-        Sun, 11 Jul 2021 09:50:43 -0500 (-05)
-Received: from mail.07d05.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.07d05.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id UjXmH1Lq6TH8; Sun, 11 Jul 2021 09:50:43 -0500 (-05)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.07d05.mspz7.gob.ec (Postfix) with ESMTP id 9D4CD184653F;
-        Sun, 11 Jul 2021 09:50:43 -0500 (-05)
-X-Virus-Scanned: amavisd-new at 07d05.mspz7.gob.ec
-Received: from mail.07d05.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.07d05.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id Zy1T1rxuLzeW; Sun, 11 Jul 2021 09:50:43 -0500 (-05)
-Received: from cris-PC.wifi (unknown [105.9.79.139])
-        by mail.07d05.mspz7.gob.ec (Postfix) with ESMTPSA id B6482184652C;
-        Sun, 11 Jul 2021 09:50:35 -0500 (-05)
-Content-Type: text/plain; charset="iso-8859-1"
+        Sun, 11 Jul 2021 21:49:42 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0UfQgodm_1626054412;
+Received: from B-D1K7ML85-0059.local(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0UfQgodm_1626054412)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 12 Jul 2021 09:46:53 +0800
+Subject: Re: [PATCH] ocfs2: remove an unnecessary condition
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Mark Fasheh <mark@fasheh.com>, Larry Chen <lchen@suse.com>,
+        akpm <akpm@linux-foundation.org>
+Cc:     Joel Becker <jlbec@evilplan.org>, ocfs2-devel@oss.oracle.com,
+        kernel-janitors@vger.kernel.org
+References: <YOcItgIXtisi3MaO@mwanda>
+From:   Joseph Qi <joseph.qi@linux.alibaba.com>
+Message-ID: <132a151e-3a09-5583-279c-748702752eba@linux.alibaba.com>
+Date:   Mon, 12 Jul 2021 09:46:52 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: spende von 2,000,000 euro
-To:     Recipients <maria.coronel@07d05.mspz7.gob.ec>
-From:   ''Tayeb souami'' <maria.coronel@07d05.mspz7.gob.ec>
-Date:   Sun, 11 Jul 2021 16:50:23 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20210711145035.B6482184652C@mail.07d05.mspz7.gob.ec>
+In-Reply-To: <YOcItgIXtisi3MaO@mwanda>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hallo mein lieber Freund
-Mein Name ist Tayeb Souami aus New Jersey in Amerika und ich habe den America Lottery Jackpot von 315 Millionen Euro gewonnen. Ich habe mich entschlossen, die Summe von 2.000.000 Euro an fünf glückliche Personen zu spenden, und Sie wurden als einer der Begünstigten ausgewählt. Bitte klicken Sie auf diesen Link, um mehr über meinen Gewinn zu erfahren.
 
 
-UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
+On 7/8/21 10:16 PM, Dan Carpenter wrote:
+> The case where "tmp_oh" is NULL is handled at the start of the function.
+> At this point we know it's non-NULL so this will always return 1.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Bitte kontaktieren Sie mich über diese E-Mail:Tayebsouam.spende@gmail.com
-
-
-Ich hoffe, Sie und Ihre Familie glücklich zu machen.
-
-Grüße
-Herr Tayeb Souami
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+> ---
+>  fs/ocfs2/dlmglue.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/ocfs2/dlmglue.c b/fs/ocfs2/dlmglue.c
+> index 48fd369c29a4..33fbdc823278 100644
+> --- a/fs/ocfs2/dlmglue.c
+> +++ b/fs/ocfs2/dlmglue.c
+> @@ -2721,7 +2721,7 @@ int ocfs2_inode_lock_tracker(struct inode *inode,
+>  			return status;
+>  		}
+>  	}
+> -	return tmp_oh ? 1 : 0;
+> +	return 1;
+>  }
+>  
+>  void ocfs2_inode_unlock_tracker(struct inode *inode,
+> 

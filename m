@@ -2,68 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B1EA3C9AC5
-	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Jul 2021 10:42:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6B663C9F00
+	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Jul 2021 14:57:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236148AbhGOIpD convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 15 Jul 2021 04:45:03 -0400
-Received: from ps11.myhostcenter.com ([64.6.248.4]:59087 "EHLO
-        ps11.myhostcenter.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229620AbhGOIpD (ORCPT
+        id S231224AbhGONAH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 15 Jul 2021 09:00:07 -0400
+Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:60116
+        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229679AbhGONAH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 15 Jul 2021 04:45:03 -0400
-X-Greylist: delayed 669 seconds by postgrey-1.27 at vger.kernel.org; Thu, 15 Jul 2021 04:45:03 EDT
-Received: (qmail 6270 invoked from network); 15 Jul 2021 04:30:49 -0400
-Received: from ec2-35-156-104-175.eu-central-1.compute.amazonaws.com (HELO johnlewis.com) (35.156.104.175)
-  by cafglobal.com with (DHE-RSA-AES256-SHA encrypted) SMTP; 15 Jul 2021 04:30:49 -0400
-Reply-To: robert_turner@johnlewis-trades.com,
-          pippawicks.sales@johnlewis-trades.com
-From:   John Lewis & Partners <robert.turner01@johnlewis.com>
-To:     kernel-janitors@vger.kernel.org
-Subject: Order Inquiry. (JL) 7/15/2021.
-Date:   15 Jul 2021 08:31:00 +0000
-Message-ID: <20210715082825.82BAD852EAEC2A01@johnlewis.com>
+        Thu, 15 Jul 2021 09:00:07 -0400
+Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id D87E3409F4;
+        Thu, 15 Jul 2021 12:57:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1626353832;
+        bh=XqK+vx8ysu2dR1xpNfi0uOpzCmJBmn4R/mwkNVGPQrY=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
+        b=KQq+r3AASoEClQVDGdeTH/Bua3fewcvARM7YLnlQw7dWvHB0nHgap+GrPmjK3BOQi
+         fsrrhuR0CP9yy8Ykhi5UHXqlLWx5yIjMUrt5kyS6SC/wgBjBsh15tNjh+tJ3Wwyue7
+         LE9xQzChcZXyK5e23wcxIc7IznMpf5DeWH6qWt1OAhKKMzz61fYa+WAfBh7vefbtgb
+         YUsOqItmsQkpFK+zBlgND6MJ4o8Kjd0K2xS8b8Snzu1Cc0OxryEeOpE0oUxsp+V9uX
+         HDKg/izKaFHLFJU5gtKe6iD/rpjliOIodSiOQ7FaCGidVKS+8JyQxD/WoffA3N7TYa
+         pCyiNp/JopPBw==
+From:   Colin King <colin.king@canonical.com>
+To:     Ilya Leoshkevich <iii@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@kernel.org>,
+        Michael Holzheu <holzheu@linux.vnet.ibm.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        netdev@vger.kernel.org, bpf@vger.kernel.org,
+        linux-s390@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] s390/bpf: perform r1 range checking before accessing jit->seen_reg[r1]
+Date:   Thu, 15 Jul 2021 13:57:12 +0100
+Message-Id: <20210715125712.24690-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dear kernel-janitors
+From: Colin Ian King <colin.king@canonical.com>
 
-The famous brand John Lewis Partnership, is UK's largest multi-
-channel retailer with over 126 shops and multiple expansion in 
-Africa furnished by European/Asian/American products. We are
-sourcing new products to attract new customers and also retain 
-our existing ones, create new partnerships with companies dealing 
-with different kinds of goods globally.
+Currently array jit->seen_reg[r1] is being accessed before the range
+checking of index r1. The range changing on r1 should be performed
+first since it will avoid any potential out-of-range accesses on the
+array seen_reg[] and also it is more optimal to perform checks on
+r1 before fetching data from the array.  Fix this by swapping the
+order of the checks before the array access.
 
-Your company's products are of interest to our market as we have 
-an amazing market for your products.
+Fixes: 054623105728 ("s390/bpf: Add s390x eBPF JIT compiler backend")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ arch/s390/net/bpf_jit_comp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Provide us your current catalog through email to review more. We 
-hope to be able to order with you and start a long-term friendly, 
-respectable and solid business partnership. Please we would
-appreciate it if you could send us your stock availability via 
-email if any.
+diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
+index 63cae0476bb4..2ae419f5115a 100644
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -112,7 +112,7 @@ static inline void reg_set_seen(struct bpf_jit *jit, u32 b1)
+ {
+ 	u32 r1 = reg2hex[b1];
+ 
+-	if (!jit->seen_reg[r1] && r1 >= 6 && r1 <= 15)
++	if (r1 >= 6 && r1 <= 15 && !jit->seen_reg[r1])
+ 		jit->seen_reg[r1] = 1;
+ }
+ 
+-- 
+2.31.1
 
-Our payment terms are 15 days net in Europe, 30 days Net in UK 
-and 30 days net in Asia/USA as we operate with over 5297 
-suppliers around the globe for the past 50 years now. For
-immediate response Send your reply to "robert_turner@johnlewis-
-trades.com" for us to be able to treat with care and urgency.
-
-
-Best Regards
-
-Rob Turner
-Head Of Procurement Operations
-John Lewis & Partners.
-robert_turner@johnlewis-trades.com
-Tel: +44-7451-274090
-WhatsApp: +447497483925
-www.johnlewis.com
-REGISTERED OFFICE: 171 VICTORIA STREET, LONDON SW1E 5NN 

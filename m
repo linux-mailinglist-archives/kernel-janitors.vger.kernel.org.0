@@ -2,69 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F6363CBB81
-	for <lists+kernel-janitors@lfdr.de>; Fri, 16 Jul 2021 20:00:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C92BE3CBC5F
+	for <lists+kernel-janitors@lfdr.de>; Fri, 16 Jul 2021 21:22:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230415AbhGPSDA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 16 Jul 2021 14:03:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45676 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229462AbhGPSC7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 16 Jul 2021 14:02:59 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 8AB6D60FE7;
-        Fri, 16 Jul 2021 18:00:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626458404;
-        bh=HR0EPu4I4fAtF+CH9meyfNw4H8tGQn+xG98MPHGMjio=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=meNyz9C58E0I8utMVyNbYBUcYW5FstgDc8Ka7dGCyjqBuBXJKEJ+hMJL7Eh7NIfZb
-         fogRpI95K1dylhd5yCbsGdHMuDCxo+mc6wRjPI59AwIIs+JbMKZDxP4QGLLUn+I8H8
-         hR3A7gUyMahx14tNI+uAoK8fUBS20N2wN/oT7zFhIcJNPshqDiArc5Si0Kb/KS1IMX
-         yE+hD6q/OoXzCk3MEKa4pWRTRl6j57Rvr/X2KHE3poZB7jndq29KkNw+wZaC3xEfy6
-         M/cEiopoaCpFGCsAEOef9gMMgqDvwOxpMAQsA7ud4RTMjGJTGblfJrx017aHkT53YY
-         ZXgRYkoPSii8w==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 7BEB26097A;
-        Fri, 16 Jul 2021 18:00:04 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S232518AbhGPTZm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 16 Jul 2021 15:25:42 -0400
+Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:47586 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232207AbhGPTZl (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 16 Jul 2021 15:25:41 -0400
+Received: from [192.168.1.18] ([86.243.172.93])
+        by mwinf5d84 with ME
+        id VvNj2500921Fzsu03vNjpQ; Fri, 16 Jul 2021 21:22:44 +0200
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 16 Jul 2021 21:22:44 +0200
+X-ME-IP: 86.243.172.93
+Subject: Re: [PATCH AUTOSEL 4.9 17/18] scsi: be2iscsi: Fix some missing space
+ in some messages
+To:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org,
+        Kernel Janitors <kernel-janitors@vger.kernel.org>
+References: <20210714194806.55962-1-sashal@kernel.org>
+ <20210714194806.55962-17-sashal@kernel.org>
+From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <615a1135-bbb0-0384-8499-716f26fba08a@wanadoo.fr>
+Date:   Fri, 16 Jul 2021 21:22:43 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
+In-Reply-To: <20210714194806.55962-17-sashal@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: switchdev: Simplify 'mlxsw_sp_mc_write_mdb_entry()'
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <162645840450.5805.1190880775942278823.git-patchwork-notify@kernel.org>
-Date:   Fri, 16 Jul 2021 18:00:04 +0000
-References: <fbc480268644caf24aef68a3b893bdaef71d7306.1626251484.git.christophe.jaillet@wanadoo.fr>
-In-Reply-To: <fbc480268644caf24aef68a3b893bdaef71d7306.1626251484.git.christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     jiri@nvidia.com, idosch@nvidia.com, davem@davemloft.net,
-        kuba@kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Content-Language: en-US
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
 
-This patch was applied to netdev/net-next.git (refs/heads/master):
+Le 14/07/2021 à 21:48, Sasha Levin a écrit :
+> From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>
+> [ Upstream commit c7fa2c855e892721bafafdf6393342c000e0ef77 ]
+>
+> Fix a few style issues reported by checkpatch.pl:
+>
+>   - Avoid duplicated word in comment.
+>
+>   - Add missing space in messages.
+>
+>   - Unneeded continuation line character.
+>
+>   - Unneeded extra spaces.
+>
+>   - Unneeded log message after memory allocation failure.
+>
+> Link: https://lore.kernel.org/r/8cb62f0eb96ec7ce7a73fe97cb4490dd5121ecff.1623482155.git.christophe.jaillet@wanadoo.fr
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-On Wed, 14 Jul 2021 10:32:33 +0200 you wrote:
-> Use 'bitmap_alloc()/bitmap_free()' instead of hand-writing it.
-> This makes the code less verbose.
-> 
-> Also, use 'bitmap_alloc()' instead of 'bitmap_zalloc()' because the bitmap
-> is fully overridden by a 'bitmap_copy()' call just after its allocation.
-> 
-> While at it, remove an extra and unneeded space.
-> 
-> [...]
+Hi,
 
-Here is the summary with links:
-  - net: switchdev: Simplify 'mlxsw_sp_mc_write_mdb_entry()'
-    https://git.kernel.org/netdev/net-next/c/a99f030b2488
+I always appreciate to have some patches backported, but in this 
+particular case, I wonder what is the rational to backport up to 4.9 
+some checkpatch warning about log message?
 
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Keeping code aligned to ease other future backport?
+
+I thought that the rule for backport was that it needed to fix a real 
+issue (and sometimes a real 'potential' issue)
+
+CJ
 
 

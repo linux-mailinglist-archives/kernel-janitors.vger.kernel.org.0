@@ -2,78 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 351053CCCCE
-	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Jul 2021 05:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13C333CD144
+	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Jul 2021 11:56:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234435AbhGSDsa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 18 Jul 2021 23:48:30 -0400
-Received: from phobos.denx.de ([85.214.62.61]:45916 "EHLO phobos.denx.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234345AbhGSDs3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 18 Jul 2021 23:48:29 -0400
-Received: from [192.168.1.107] (fibhost-66-234-106.fibernet.hu [85.66.234.106])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+        id S235466AbhGSJPB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 19 Jul 2021 05:15:01 -0400
+Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:44148
+        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231928AbhGSJPB (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 19 Jul 2021 05:15:01 -0400
+Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        (Authenticated sender: hs@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id 1F7278033E;
-        Mon, 19 Jul 2021 05:45:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1626666329;
-        bh=ajhJrL/O5jCDrfjMHFqj2/38Xg58vxi40OeuMTyIfZk=;
-        h=Reply-To:Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=TFYRpjE1p4t17tlIXF8AMWwwbjVIhh9YcFRahD5rbmFWA89dT6SGL8n7B4JY0EAM4
-         7dvfXA6kMv5ZC3hNCQru0HTYdqQyYTuIAtrlrOsj7da79zOxkHXuX2Cy+A3bjx59t3
-         G7R2wdhagN6jUhD+YnVo+UBAI4Ck80VG0zDDYAIIjdyN44oD4ZfvQtndujB429UfeB
-         TYtyPlSLmgJqH1/ZJYwczYzApNFudjtXWM1lM9ZrhHx55itwiS+AgJfh05LWgWkPSH
-         lvVjtpn4/mxZoPruFEEBig2965TWva+56F0mSoS+cCwiSq9qAVsEIQjCUpG/8P/UoN
-         o4UAqvcs6TePg==
-Reply-To: hs@denx.de
-Subject: Re: [PATCH] mtd: devices: mchp48l640: Fix memory leak on cmd
-To:     Colin King <colin.king@canonical.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-mtd@lists.infradead.org
+        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 913D940333;
+        Mon, 19 Jul 2021 09:55:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1626688533;
+        bh=NeHvk9CH9MzNaHMMnngpGmg0816fMoabsjV9w7Sujo0=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
+        b=L0DAiBLGaexsMDOLjcAxv5HUFc5vJ6tef9lciZSKNT2fJYWcCTsNlj2JI/ON2X+W9
+         SGudH1exrM9v7V27hYzs6ORXdVaKcua97w3i/RfwHuOAGPCtDiHJ0lb8e+Dspe6WQV
+         W1S/j8Ka7J8VbIVkeMcOdP3tDDd2gKjr3vyi1OgXq8S8fjWKiaXsI4uDiwBUfzWVoj
+         gYFoQi8Q7BLeBxy+98reKgyOkwdasIh8ssgsL8gyiuudkjO36jvkbk+7mlPN4R1K3L
+         YnNm3Fc6ZEeVJzY5zlP+TR7NvkkBfKD5ylXVo/FynF6WWPf/JLOdilJSIsPNDjAdPs
+         0kZSWwCWmEn0g==
+From:   Colin King <colin.king@canonical.com>
+To:     Al Cooper <alcooperx@gmail.com>, Jiri Slaby <jirislaby@kernel.org>,
+        linux-serial@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210712145214.101377-1-colin.king@canonical.com>
-From:   Heiko Schocher <hs@denx.de>
-Message-ID: <807e8798-e64f-0026-90c3-eda8825b6828@denx.de>
-Date:   Mon, 19 Jul 2021 05:45:32 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+Subject: [PATCH] serial: 8250_bcm7271: use NULL to initialized a null pointer
+Date:   Mon, 19 Jul 2021 10:55:33 +0100
+Message-Id: <20210719095533.14017-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <20210712145214.101377-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.2 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello Colin,
+From: Colin Ian King <colin.king@canonical.com>
 
-On 12.07.21 16:52, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The allocation for cmd is not being kfree'd on the return leading to
-> a memory leak. Fix this by kfree'ing it.
-> 
-> Addresses-Coverity: ("Resource leak")
-> Fixes: 88d125026753 ("mtd: devices: add support for microchip 48l640 EERAM")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/mtd/devices/mchp48l640.c | 1 +
->  1 file changed, 1 insertion(+)
+Pointer membase is currently being in initialized with zero rather
+than NULL. Fix this.
 
-Good catch, thanks!
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/tty/serial/8250/8250_bcm7271.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Heiko Schocher <hs@denx.de>
-
-bye,
-Heiko
+diff --git a/drivers/tty/serial/8250/8250_bcm7271.c b/drivers/tty/serial/8250/8250_bcm7271.c
+index 725a450058f8..7f656fac503f 100644
+--- a/drivers/tty/serial/8250/8250_bcm7271.c
++++ b/drivers/tty/serial/8250/8250_bcm7271.c
+@@ -941,7 +941,7 @@ static int brcmuart_probe(struct platform_device *pdev)
+ 	struct clk *baud_mux_clk;
+ 	struct uart_8250_port up;
+ 	struct resource *irq;
+-	void __iomem *membase = 0;
++	void __iomem *membase = NULL;
+ 	resource_size_t mapbase = 0;
+ 	u32 clk_rate = 0;
+ 	int ret;
 -- 
-DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: +49-8142-66989-52   Fax: +49-8142-66989-80   Email: hs@denx.de
+2.31.1
+

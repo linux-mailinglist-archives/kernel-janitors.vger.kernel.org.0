@@ -2,95 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 625AC3D0018
-	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Jul 2021 19:22:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 885333D0819
+	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Jul 2021 07:11:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231452AbhGTQl3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 20 Jul 2021 12:41:29 -0400
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:34700
-        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231200AbhGTQl2 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 20 Jul 2021 12:41:28 -0400
-Received: from [10.172.193.212] (1.general.cking.uk.vpn [10.172.193.212])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 23D074190E;
-        Tue, 20 Jul 2021 17:21:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1626801724;
-        bh=Ip6Rp0Zs3Mz+GD26okTHK+imxxzHuHxOc8fIEFOc4VU=;
-        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-         In-Reply-To:Content-Type;
-        b=qScOn4nb8aSvqu7e39vzfQCcFAAGDIImMmDPIv1XezgPp3zSe/XpnH7/ffhAv1Jwf
-         xmZvXGulHZl/qPFifyuVJcS80UJ8i16uib5DfGWXq7khB2bvC/c4kZ4qZz/gbOSxyN
-         /4tmxEmRXjAdGyLSEpRpSJwi4ROJ/SQHccjTBgQ8K2mr3aEvWTGb2n/lSsMxR0ky8G
-         FpmmIci5cr0hQPQ7HEifnDkUacOEnkU49G6ws/uAXh26nLU54stl72joaWAXiuBe5d
-         arg/igK+mRoun/O6mgUQLZabPax14b8yZNLqKPI4agVof5hSqRrISSHez+77q3qjVm
-         iUEmrLfwcFNsw==
-Subject: Re: [PATCH] atm: idt77252: clean up trigraph warning on ??) string
-To:     Nathan Chancellor <nathan@kernel.org>,
-        Chas Williams <3chas3@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        clang-built-linux@googlegroups.com
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210720124813.59331-1-colin.king@canonical.com>
- <fd4f465b-86bd-129d-c6d9-e802b7c4815e@kernel.org>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <5dc1f201-791e-3ca6-0b2d-49c270e572cf@canonical.com>
-Date:   Tue, 20 Jul 2021 18:21:55 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        id S232934AbhGUEbN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 21 Jul 2021 00:31:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46112 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232512AbhGUEaw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 21 Jul 2021 00:30:52 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5348A60FE7;
+        Wed, 21 Jul 2021 05:11:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1626844290;
+        bh=pHR2j/1bWtegDLobNbANc0THMPZSOJdmsO6JZSbVrvE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=J6vKnKOXleULywJpU2/cJo1wUEgINlSqz+X3/vhpRUHMVbyrFw8cAF3eniYRXbIcX
+         ooVQAQ55DDXEUPMEKxCHncH47HJpZo3LpJQpF0TrM5Sb141gYAaF/+QFDahjfp0mZz
+         xWTweK9B+tqUcrVYS8qC7qpXQJtWaQfl6jlh0Jr0O+YmBUtCAWchWXaJANZYtP2QEI
+         F5jIJgjo4+c46dT4gm4LwFuF7d2WGx8Zh0SLzrlvLwAG7uIaWs2PcxGNg+ZwhnOY1V
+         ie0CclnW/SbXKuPyrN9hX5r3ohW2zh1bYuw69p7Uv6iwduEMdA/VS59vT/E89YVMUA
+         4oRawwzvbkmHQ==
+Date:   Wed, 21 Jul 2021 08:11:26 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     mustafa.ismail@intel.com, shiraz.saleem@intel.com,
+        dledford@redhat.com, jgg@ziepe.ca, linux-rdma@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] RDMA/irdma: Improve the way 'cqp_request' structures are
+ cleaned when they are recycled
+Message-ID: <YPesftdeBpzJUhMZ@unreal>
+References: <7f93f2a2c2fd18ddfeb99339d175b85ffd1c6398.1626713915.git.christophe.jaillet@wanadoo.fr>
+ <YPbALA/P5+NsC7MO@unreal>
+ <629bc34e-ef41-9af6-9ed7-71865251a62c@wanadoo.fr>
 MIME-Version: 1.0
-In-Reply-To: <fd4f465b-86bd-129d-c6d9-e802b7c4815e@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <629bc34e-ef41-9af6-9ed7-71865251a62c@wanadoo.fr>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 20/07/2021 18:17, Nathan Chancellor wrote:
-> On 7/20/2021 5:48 AM, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> The character sequence ??) is a trigraph and causes the following
->> clang warning:
->>
->> drivers/atm/idt77252.c:3544:35: warning: trigraph ignored [-Wtrigraphs]
->>
->> Clean this by replacing it with single ?.
->>
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On Tue, Jul 20, 2021 at 03:05:55PM +0200, Christophe JAILLET wrote:
+> Le 20/07/2021 � 14:23, Leon Romanovsky a �crit�:
+> > On Mon, Jul 19, 2021 at 07:02:15PM +0200, Christophe JAILLET wrote:
+> > > A set of IRDMA_CQP_SW_SQSIZE_2048 (i.e. 2048) 'cqp_request' are
+> > > pre-allocated and zeroed in 'irdma_create_cqp()' (hw.c).  These
+> > > structures are managed with the 'cqp->cqp_avail_reqs' list which keeps
+> > > track of available entries.
+> > > 
+> > > In 'irdma_free_cqp_request()' (utils.c), when an entry is recycled and goes
+> > > back to the 'cqp_avail_reqs' list, some fields are reseted.
+> > > 
+> > > However, one of these fields, 'compl_info', is initialized within
+> > > 'irdma_alloc_and_get_cqp_request()'.
+> > > 
+> > > Move the corresponding memset to 'irdma_free_cqp_request()' so that the
+> > > clean-up is done in only one place. This makes the logic more easy to
+> > > understand.
+> > 
+> > I'm not so sure. The function irdma_alloc_and_get_cqp_request() returns
+> > prepared cqp_request and all users expect that it will returned cleaned
+> > one. The reliance on some other place to clear part of the structure is
+> > prone to errors.
 > 
-> This looks good to me but I am curious how you say this warning in the
-> first place since the main Makefile disables this unconditionally. Did
-> you just pass -Wtrigraphs via KCFLAGS or something similar?
+> Ok, so maybe, moving:
+> 	cqp_request->request_done = false;
+> 	cqp_request->callback_fcn = NULL;
+> 	cqp_request->waiting = false;
+> from 'irdma_free_cqp_request()' to 'irdma_alloc_and_get_cqp_request()' to
+> make explicit what is reseted makes more sense?
 
-I used W=1
+I think so, but it requires double check that these cleared values are
+not used after irdma_free_cqp_request().
 
-> 
-> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-> 
->> ---
->>   drivers/atm/idt77252.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
->> index 9e4bd751db79..81ce81a75fc6 100644
->> --- a/drivers/atm/idt77252.c
->> +++ b/drivers/atm/idt77252.c
->> @@ -3536,7 +3536,7 @@ static int idt77252_preset(struct idt77252_dev
->> *card)
->>           return -1;
->>       }
->>       if (!(pci_command & PCI_COMMAND_IO)) {
->> -        printk("%s: PCI_COMMAND: %04x (???)\n",
->> +        printk("%s: PCI_COMMAND: %04x (?)\n",
->>                  card->name, pci_command);
->>           deinit_card(card);
->>           return (-1);
->>
+This is another reason why clearing fields after _free_ routine is
+mostly wrong. It hides errors when data is accessed after release.
 
+Thanks

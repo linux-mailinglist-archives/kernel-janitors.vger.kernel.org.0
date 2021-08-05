@@ -2,113 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19D053E14B1
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Aug 2021 14:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28E703E14E5
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Aug 2021 14:40:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241330AbhHEM1p (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Aug 2021 08:27:45 -0400
-Received: from smtprelay0078.hostedemail.com ([216.40.44.78]:33292 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S232651AbhHEM1p (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Aug 2021 08:27:45 -0400
-Received: from omf15.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 63CA8182CED34;
-        Thu,  5 Aug 2021 12:27:30 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf15.hostedemail.com (Postfix) with ESMTPA id 41D76C4198;
-        Thu,  5 Aug 2021 12:27:29 +0000 (UTC)
-Message-ID: <117021b44dc9ba570a0f48736d14a267a8701d0a.camel@perches.com>
-Subject: Re: [PATCH] checkpatch: prefer = {} initializations to = {0}
-From:   Joe Perches <joe@perches.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Andy Whitcroft <apw@canonical.com>
-Cc:     Dwaipayan Ray <dwaipayanray1@gmail.com>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Date:   Thu, 05 Aug 2021 05:27:27 -0700
-In-Reply-To: <20210805104353.GD26417@kili>
-References: <20210805104353.GD26417@kili>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.40.0-1 
+        id S241420AbhHEMkU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Aug 2021 08:40:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56700 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240239AbhHEMkU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 5 Aug 2021 08:40:20 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 4161461132;
+        Thu,  5 Aug 2021 12:40:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1628167206;
+        bh=ADpxBt6oVgoGxWYom3C0Sco4vqfS6lH69mv3genZHKs=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=ojuGc8EVftD25TXgKTt+5Cx+3HFgMDuT7h4HbJurYbKMB+rq3ymptG5dCDWpot5oP
+         aSPf2omEsh6uJwS6sUD9V9pplZibiEBg6VgSPBmE9o705eV0R8fsbiQrbuEciQqFqp
+         NQRJZ6slDt/Ntoh2sBOANJwpESrOKUWM5SmKn4CgWOcP+K5zfddqsFVLja0/QYCxDB
+         LaUiMTuxqXvnwSO7oNN0+iofz7PDk5EnPCDth3tyzVd6+GPtXmu+rvpQBDnu5LGMeq
+         ZuvlNhBbZZ0vTMJlTS3SAAM78mH/pbrqmY618g3bBvmWHNRo++/UHUzwzxHnktQ0ch
+         Zba3o46vQeetA==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 32C9A60A72;
+        Thu,  5 Aug 2021 12:40:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspamout03
-X-Rspamd-Queue-Id: 41D76C4198
-X-Spam-Status: No, score=1.60
-X-Stat-Signature: 19jra4oyxb396bdarmmie9t11pmu9bat
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1/VnOD3R1k9CkP2tisGCaPwq765oheBGSk=
-X-HE-Tag: 1628166449-838849
+Subject: Re: [PATCH net] bnx2x: fix an error code in bnx2x_nic_load()
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <162816720620.10114.11424792100720509562.git-patchwork-notify@kernel.org>
+Date:   Thu, 05 Aug 2021 12:40:06 +0000
+References: <20210805103826.GB26417@kili>
+In-Reply-To: <20210805103826.GB26417@kili>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     aelior@marvell.com, skalluru@marvell.com,
+        GR-everest-linux-l2@marvell.com, eilong@broadcom.com,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 2021-08-05 at 13:43 +0300, Dan Carpenter wrote:
-> The "= {};" style empty struct initializer is preferred over = {0}.
-> It avoids the situation where the first struct member is a pointer and
-> that generates a Sparse warning about assigning using zero instead of
-> NULL.  Also it's just nicer to look at.
+Hello:
+
+This patch was applied to netdev/net.git (refs/heads/master):
+
+On Thu, 5 Aug 2021 13:38:26 +0300 you wrote:
+> Set the error code if bnx2x_alloc_fw_stats_mem() fails.  The current
+> code returns success.
 > 
-> Some people complain that {} is less portable but the kernel has
-> different portability requirements from userspace so this is not a
-> issue that we care about.
-[]
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-[]
-> @@ -4029,6 +4029,12 @@ sub process {
->  			     "Using $1 is unnecessary\n" . $herecurr);
->  		}
-> 
-> +# prefer = {}; to = {0};
-> +		if ($line =~ /= \{ *0 *\}/) {
+> Fixes: ad5afc89365e ("bnx2x: Separate VF and PF logic")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-Have you done a grep and looked at this pattern's actual use in the kernel?
-I rather doubt it.
+Here is the summary with links:
+  - [net] bnx2x: fix an error code in bnx2x_nic_load()
+    https://git.kernel.org/netdev/net/c/fb653827c758
 
-> +			WARN("ZERO_INITIALIZER",
-> +			     "= {} is preferred over = {0}\n" . $herecurr);
-> +		}
-> +
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-To be much more specific to the actual desired match as stated in
-the possible commit log, this should probably be something like:
-
-	if (defined($stat) &&
-	    $stat =~ /^\+\s+$Declare\s*$Ident\s*=\s*\{\s*0\s*\}\s*;/) {
-
-and maybe it should be a --strict CHK and not WARN.
-
-And I generally avoid using "we" in a commit message.
-
-Maybe something like:
----
- scripts/checkpatch.pl | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 461d4221e4a4a..e3d4aa5f86c46 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -6911,6 +6911,21 @@ sub process {
- 			     "externs should be avoided in .c files\n" .  $herecurr);
- 		}
- 
-+# check for non-global single initializers with '= {0};', prefer '= {};'
-+# there is already a GLOBAL_INITIALIZERS test so avoid those too with /^\+\s+/
-+		if (defined($stat) &&
-+		    $stat =~ /^\+\s+$Declare\s*$Ident\s*(=\s*\{\s*0\s*\}\s*);/) {
-+			my $match = $1;
-+			my $cnt = statement_rawlines($stat);
-+			my $herectx = get_stat_here($linenr, $cnt, $here);
-+			if (WARN("ZERO_INITIALIZER",
-+				 "Prefer '= {}' over '$match'\n" . $herectx) &&
-+			    $fix &&
-+			    $cnt == 1) {	# can only --fix single line statements
-+				$fixed[$fixlinenr] =~ s/\s*=\s*\{\s*0\s*\}\s*;/ = {};/;
-+			}
-+		}
-+
- # check for function declarations that have arguments without identifier names
- 		if (defined $stat &&
- 		    $stat =~ /^.\s*(?:extern\s+)?$Type\s*(?:$Ident|\(\s*\*\s*$Ident\s*\))\s*\(\s*([^{]+)\s*\)\s*;/s &&
 

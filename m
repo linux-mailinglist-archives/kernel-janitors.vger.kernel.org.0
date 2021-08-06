@@ -2,78 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CEF83E294F
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Aug 2021 13:16:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C0493E29BE
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Aug 2021 13:33:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245405AbhHFLQf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Aug 2021 07:16:35 -0400
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:45056
-        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S245386AbhHFLQd (ORCPT
+        id S245558AbhHFLdd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Aug 2021 07:33:33 -0400
+Received: from relay.smtp-ext.broadcom.com ([192.19.166.231]:41038 "EHLO
+        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S245540AbhHFLdc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Aug 2021 07:16:33 -0400
-Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id BDD7940643;
-        Fri,  6 Aug 2021 11:16:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1628248575;
-        bh=K45ys8L4xpEH11ycYMqx65JY8D/NZO6D2I6izRFfqSQ=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
-        b=DbKJ6NXpyHS7Z4kymvh06e4xGVUc+/yPsDHdsRSaREBxhB5LfgLdaySs9Zac5BW5/
-         kLdpE6Kwrz5uvGe89Jf3/Ry+408QWbOwV6Ege7VV3eIDafjhbLxE0rmQ4ugs4szmTL
-         miRxov5oY6+OXPwIYiNzvnIVtwYz4UtxRnMJaTyH67Jt35xgrrxZmHVehuixp2ZksD
-         9qQLnC/2y3cNmiNkaPKMM3Lmt8Qt4HpZ0j47N89c2GmciAvbcaud5LD8LZ/tnOX7gX
-         8IMQpWYyJTqGa7QDQ36otWa1Uef5zOCWVbZH/01lJ8ySqNd0qFoMxkRTn2gPMeINvM
-         P2b7yDENeoZNQ==
-From:   Colin King <colin.king@canonical.com>
-To:     Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Xinhui.Pan@amd.com, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Jun Lei <Jun.Lei@amd.com>,
-        Jimmy Kizito <Jimmy.Kizito@amd.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/amd/display: Remove redundant initialization of variable eng_id
-Date:   Fri,  6 Aug 2021 12:16:15 +0100
-Message-Id: <20210806111615.11803-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.31.1
+        Fri, 6 Aug 2021 07:33:32 -0400
+X-Greylist: delayed 598 seconds by postgrey-1.27 at vger.kernel.org; Fri, 06 Aug 2021 07:33:32 EDT
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id F0C167FFA;
+        Fri,  6 Aug 2021 04:23:17 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com F0C167FFA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1628248998;
+        bh=Jr1JdI9/CVhnPEppjM4hGw5lZqvxFIHWJWTGtlGgjvw=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=FeFEiAVkrPA13FeM5iTdS5lcG1xWHt+sLhfpLXqlgpjL4ZAfnE+vWXrXoXK3sH6C7
+         u4ilFNKmqTAiSoh9RJfvgEB2DIZRjlcoOpp8iMO6lHOf9AjDiiUeiWkMyFZbFfVsz2
+         lRd2H1k1I/ifAY+8HwhbUAnV6Rs2tmziYhS2SFL0=
+Received: from [10.230.42.155] (unknown [10.230.42.155])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 068E31874BD;
+        Fri,  6 Aug 2021 04:23:11 -0700 (PDT)
+Subject: Re: [PATCH][next] brcmfmac: firmware: Fix uninitialized variable ret
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Colin King <colin.king@canonical.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev <netdev@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
+References: <20210803150904.80119-1-colin.king@canonical.com>
+ <CACRpkdZ5u-C8uH2pCr1689v_ndyzqevDDksXvtPYv=FfD=x_xg@mail.gmail.com>
+ <875ywkc80d.fsf@codeaurora.org>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <96709926-30c6-457e-3e80-eb7ad6e9d778@broadcom.com>
+Date:   Fri, 6 Aug 2021 13:23:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <875ywkc80d.fsf@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 05-08-2021 15:53, Kalle Valo wrote:
+> Linus Walleij <linus.walleij@linaro.org> writes:
+> 
+>> On Tue, Aug 3, 2021 at 5:09 PM Colin King <colin.king@canonical.com> wrote:
+>>
+>>> From: Colin Ian King <colin.king@canonical.com>
+>>>
+>>> Currently the variable ret is uninitialized and is only set if
+>>> the pointer alt_path is non-null. Fix this by ininitializing ret
+>>> to zero.
+>>>
+>>> Addresses-Coverity: ("Uninitialized scalar variable")
+>>> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
+>>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>>
+>> Nice catch!
+>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> 
+> I assume this will be fixed by Linus' patch "brcmfmac: firmware: Fix
+> firmware loading" and I should drop Colin's patch, correct?
 
-The variable eng_id is being initialized with a value that is never
-read, it is being re-assigned on the next statment. The assignment
-is redundant and can be removed.
+That would be my assumption as well, but not sure when he will submit 
+another revision of it. You probably know what to do ;-)
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/amd/display/dc/core/dc_link_enc_cfg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_link_enc_cfg.c b/drivers/gpu/drm/amd/display/dc/core/dc_link_enc_cfg.c
-index 1a89d565c92e..de80a9ea4cfa 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_link_enc_cfg.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_link_enc_cfg.c
-@@ -305,7 +305,7 @@ struct link_encoder *link_enc_cfg_get_next_avail_link_enc(
- 	const struct dc_state *state)
- {
- 	struct link_encoder *link_enc = NULL;
--	enum engine_id eng_id = ENGINE_ID_UNKNOWN;
-+	enum engine_id eng_id;
- 
- 	eng_id = find_first_avail_link_enc(dc->ctx, state);
- 	if (eng_id != ENGINE_ID_UNKNOWN)
--- 
-2.31.1
-
+Regards,
+Arend

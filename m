@@ -2,71 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1C763E2CB1
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Aug 2021 16:34:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 583193E2CDE
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Aug 2021 16:43:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240655AbhHFOfB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Aug 2021 10:35:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60390 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240338AbhHFOe7 (ORCPT
+        id S241199AbhHFOnX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Aug 2021 10:43:23 -0400
+Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:41306
+        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S238046AbhHFOnX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Aug 2021 10:34:59 -0400
-Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0A45C0613CF
-        for <kernel-janitors@vger.kernel.org>; Fri,  6 Aug 2021 07:34:43 -0700 (PDT)
-Received: by mail-il1-x12c.google.com with SMTP id x7so9114968ilh.10
-        for <kernel-janitors@vger.kernel.org>; Fri, 06 Aug 2021 07:34:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/oMubRmlLM5EZ/UdY6Fj3wsfS2kyoMzN9ASXgZ3xneY=;
-        b=WwtirH+AN5QEGc+PsYDg7GPmicCeAO3NPEqhZC74A3+cGIN9TIFUSUQWVdp/dEeJ0X
-         ++0akNbjsW/3xJMMbrUcWsaDb/Yt8FhArvnBGhYYupKONjpXh07T85TTJ6z/R14UeK25
-         VfrKT4PbBRG9FpAA5mPltqAa33Oy6oNBbUHIMXxZ8Pb8DDymDVISOJ0z/+FU283l+PC4
-         CL/S0Mt/1jGAvk934eTBfkPJMYFqxNe9DmuvxRe6nTQgDgkYbQOxTC8k7gZ9Je0QkKHX
-         pj04+ieraICgLCEIDsM+PSxXHeP7MukFzwmFuXJEWjT/gtCn4i9C831/d3PQ2UrLasbD
-         Q6dQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/oMubRmlLM5EZ/UdY6Fj3wsfS2kyoMzN9ASXgZ3xneY=;
-        b=ct8uYSZpey4PkfSzZffy7CAife7wQiW4qKNeTy0hzVvbSuJPArCblT/SjUBvQcfoda
-         SBgs2EWFuWSG/O1E6uwinAPOIhJ/VCQHPgnymsdA7/GsQZ+eeeM++HxDOjOE2qRM0e/W
-         jEWSZWeBDSY0DveHLjaJr4k0tc58oH3HgVkcgcu51KU6VUYKXtgpdnNybfDJfXuS34kc
-         vZkEAL+8o+3TmWycuGbNbnUiUIcDAPfZ3bcv5S4kYbyY83TKGSpcIpGuVrocuXJNf3jg
-         JnwSk2v67oZ/57p+jYHn1dCl+d81sr+ZcYYqmP6IxOvfsxeow52wnWIu3ond/aMqob5z
-         YRfQ==
-X-Gm-Message-State: AOAM530iFsEF4z+twUtRbA5sI0stIZWahmgFL5POPo1rtFXj8lfdzLGC
-        tSZj9st7NY1bV/suVUVpadShPfuVaNil6vgVD5E=
-X-Google-Smtp-Source: ABdhPJxp5ET5L2YTA3wanMtEqCHLczOyx36yHFnFg6UZI0mLKFWZaADmnk+VVmvj6+SDnpgqRgA+ZQp8fhbmG7dX2Io=
-X-Received: by 2002:a92:d088:: with SMTP id h8mr67865ilh.165.1628260482824;
- Fri, 06 Aug 2021 07:34:42 -0700 (PDT)
+        Fri, 6 Aug 2021 10:43:23 -0400
+Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id C2DDB40660;
+        Fri,  6 Aug 2021 14:43:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1628260981;
+        bh=4FcsXIKOCTXdkCXO47xOoDczDuk4vb+/L+ksQUFW4os=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
+        b=cDWY6Pqb2XPx2YyXcpAFYQn209DWyKMhg+ZrWWHmKOduA7dp0NNrcRBxWaXSAN3xc
+         yxqDw9t5xjQsXaqwFjDNI+esMm8xTWI5PR6D/uLJf1X6BwwX+T5GHd8+NsuqMBZ2W8
+         UuZI+GAadjQZ1tGbeHdCFJXSrHiHB5JM3KK6auGQD8m18VWkusOqUYklT64DM4lPCw
+         1k65CkR+SuDDU/HAzPF1dzeDoihLh4TCaiAYJtuuNCK7+jKqv1LioTRcZQPQWDb7jC
+         rg5Twvo8GFVmXYHnvGd41oZ69N7FaYHDiXK1VwTer19PhFrS5nNhy/+9Ax1ydwrWlq
+         jWpx9EvGvThLg==
+From:   Colin King <colin.king@canonical.com>
+To:     Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Daejun Park <daejun7.park@samsung.com>,
+        linux-scsi@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] scsi: ufs: Fix unsigned int compared with less than zero
+Date:   Fri,  6 Aug 2021 15:43:01 +0100
+Message-Id: <20210806144301.19864-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Received: by 2002:a02:6384:0:0:0:0:0 with HTTP; Fri, 6 Aug 2021 07:34:42 -0700 (PDT)
-Reply-To: mrmaxwellwatford@gmail.com
-From:   "Mr.Maxwell Watford" <matinmiller89@gmail.com>
-Date:   Fri, 6 Aug 2021 14:34:42 +0000
-Message-ID: <CABQ=EucNt8T50SyY_xMhf4eA-+FY+vTpH5-ztzQHBLq2ww-40w@mail.gmail.com>
-Subject: i need your reply
-To:     matinmiller89@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Greetings,
+From: Colin Ian King <colin.king@canonical.com>
 
-We are writing to you from Ecowas Finance Controller Office Lome Togo,
-because we have received a file from the Ministry of Finance Lome-
-Togo, concerning an Inherited Fund bearing your name on it, And after
-our verifications, we found out that the funds belong to you.
+Variable tag is currently and unsigned int and is being compared to
+less than zero, this check is always false. Fix this by making tag
+an int.
 
-It has been awarded and I will like to guide you to claim the funds.
-Please contact me at my private email address
-(mrmaxwellwatford@gmail.com) for more information and directive
+Addresses-Coverity: ("Macro compares unsigned to 0")
+Fixes: 4728ab4a8e64 ("scsi: ufs: Remove ufshcd_valid_tag()")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/scsi/ufs/ufshcd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I am looking forward to your urgent reply,
-Best regards
-Mr Maxwell Watford
+diff --git a/drivers/scsi/ufs/ufshcd.c b/drivers/scsi/ufs/ufshcd.c
+index 47a5085f16a9..21378682cb4f 100644
+--- a/drivers/scsi/ufs/ufshcd.c
++++ b/drivers/scsi/ufs/ufshcd.c
+@@ -6976,7 +6976,7 @@ static int ufshcd_abort(struct scsi_cmnd *cmd)
+ {
+ 	struct Scsi_Host *host = cmd->device->host;
+ 	struct ufs_hba *hba = shost_priv(host);
+-	unsigned int tag = cmd->request->tag;
++	int tag = cmd->request->tag;
+ 	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
+ 	unsigned long flags;
+ 	int err = FAILED;
+-- 
+2.31.1
+

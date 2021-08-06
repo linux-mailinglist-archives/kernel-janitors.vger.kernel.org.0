@@ -2,98 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 372FE3E298C
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Aug 2021 13:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8F7D3E2A2B
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Aug 2021 13:56:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245444AbhHFL2t (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Aug 2021 07:28:49 -0400
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:46186
-        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S245371AbhHFL2r (ORCPT
+        id S243267AbhHFL4r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Aug 2021 07:56:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51784 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229578AbhHFL4q (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Aug 2021 07:28:47 -0400
-Received: from [10.172.193.212] (1.general.cking.uk.vpn [10.172.193.212])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id E19764065E;
-        Fri,  6 Aug 2021 11:28:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1628249310;
-        bh=TSF6syblnU+wYbj7noZ2K9gDs7lGPeoRUp1P79rvg7w=;
-        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-         In-Reply-To:Content-Type;
-        b=rLiwQ60cBvjSxqmgY/q8PBEs0eDonpUuvxGqCCCANYZehYbTN9nocTlIWu+cqPZWI
-         YTsM2PGBM3zHpkilwfjZO9I8p541EoD0un7uVZ+8p4MKCKQ7bnXRRZhGQLoEemGe8y
-         9uG2WQ8T3KexgkMcDWKnnYShk+tGaRJ5Fx2gpLISt/gxQc0uJ/iVVjt5yWweVhbYFG
-         MJB9VzYli3lZGZS6wFsz0FOZ5GzLg0ZX5ySAOZPYUtl1a7nuVcpYyPaqwRZVvzhTWl
-         TwILdGJJqxDIlYzxNoTB7MLOM6k4X94hMYwV0BtkXgtBcH6dFEbjn2sM1vnsl2IJbJ
-         XIxZwueXEFquw==
-Subject: Re: [PATCH][next] brcmfmac: firmware: Fix uninitialized variable ret
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev <netdev@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-References: <20210803150904.80119-1-colin.king@canonical.com>
- <CACRpkdZ5u-C8uH2pCr1689v_ndyzqevDDksXvtPYv=FfD=x_xg@mail.gmail.com>
- <875ywkc80d.fsf@codeaurora.org>
- <96709926-30c6-457e-3e80-eb7ad6e9d778@broadcom.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <b2034ac5-0080-a2fb-32ef-61ad50dfd248@canonical.com>
-Date:   Fri, 6 Aug 2021 12:28:29 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
-MIME-Version: 1.0
-In-Reply-To: <96709926-30c6-457e-3e80-eb7ad6e9d778@broadcom.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Fri, 6 Aug 2021 07:56:46 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5399FC061798;
+        Fri,  6 Aug 2021 04:56:29 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id m28-20020a05600c3b1cb02902b5a8c22575so5727632wms.0;
+        Fri, 06 Aug 2021 04:56:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=xxcVP1unxQRf/ma4cBAw6r/5ynUOn9I8kcb6t03qdg8=;
+        b=KmpYP3BE+cpz+pElv0OWJBLzo3/xIuvq6uh/veRCW2SSq0AcAWTQVgRa9UU3JVcDpo
+         KPP9//VsYE8H7VHboJOQ6KzAVunWP8/1tGbsWCSk5v0IOl0Yy2lWfp+/y4PdkrYrGO04
+         PCUpVVNBag26yTzqCaIRcMjafZS5PtD/2WIJahUaewAf5Uu/OeAGdpGlXvTTSrmhc0SB
+         Vg7a29cY5yIVTqtwxWKveg/UrfoUVsZjvz2p1kf0ITrj4Z9Dgo/5cIkw7uIDGUYgfuFb
+         M/X9acr4R2leiRKc9InK6ryWne5pZyghXK0ehd0nBd8iTeHk9Ad7oj40MIvIabLmwa0E
+         0pBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=xxcVP1unxQRf/ma4cBAw6r/5ynUOn9I8kcb6t03qdg8=;
+        b=i4gnRwoXDhyzH0U80UGsQ5HSheqIwJ7mxCRmty9uJTXGHWrqxQjlhMVUYr3fF2KxNc
+         H/4FOnhSzuhJASUmrR21wPZDLWkvXAztDY24vN/ppyFa5qPMCn2Jpa82af/W4VJxflpx
+         yops00GV8QbT+r3P2qEHFAHiS00qr7Qpzqwd0YuxB7/CaGw6r7z+K0rnZ8aQ6+MXz2Yz
+         XJWIIE18b1ZpfPe6Q5wRtT0pzFURwR6mj9k23/GGRvWtkt4mJjSnEV+hsXJT93BJ8yCG
+         R0mePq/pXFeQQXOYot/Yfw6DWt5e4GXUay+j2UIt+zrIAJHm3Y0S0/VNMlPXUMDVVUn0
+         y+Cg==
+X-Gm-Message-State: AOAM531nUPC99plZggKSZx4refxeVnDkVk7oMxb9xvQQ1R96Psm3xnwP
+        W4uhTKRx/XMtow2xjzt9/h7M1kJPPQc=
+X-Google-Smtp-Source: ABdhPJz3R2vkklO+frfNX6r8aHKE/hIze3yPOvVFk5GPsQnq76HPSuv7pbeeg5nYhh+efbUjTnfXOA==
+X-Received: by 2002:a05:600c:4f49:: with SMTP id m9mr17814809wmq.82.1628250987602;
+        Fri, 06 Aug 2021 04:56:27 -0700 (PDT)
+Received: from felia.fritz.box ([2001:16b8:2dc9:8d00:2198:3536:ca51:cd82])
+        by smtp.gmail.com with ESMTPSA id b20sm9195179wmj.48.2021.08.06.04.56.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Aug 2021 04:56:27 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Nicholas Piggin <npiggin@gmail.com>
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        Babu Moger <babu.moger@oracle.com>,
+        Don Zickus <dzickus@redhat.com>, linux-kbuild@vger.kernel.org,
+        Randy Dunlap <rdunlap@infradead.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] Kconfig.debug: drop selecting non-existing HARDLOCKUP_DETECTOR_ARCH
+Date:   Fri,  6 Aug 2021 13:56:18 +0200
+Message-Id: <20210806115618.22088-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 06/08/2021 12:23, Arend van Spriel wrote:
-> On 05-08-2021 15:53, Kalle Valo wrote:
->> Linus Walleij <linus.walleij@linaro.org> writes:
->>
->>> On Tue, Aug 3, 2021 at 5:09 PM Colin King <colin.king@canonical.com>
->>> wrote:
->>>
->>>> From: Colin Ian King <colin.king@canonical.com>
->>>>
->>>> Currently the variable ret is uninitialized and is only set if
->>>> the pointer alt_path is non-null. Fix this by ininitializing ret
->>>> to zero.
->>>>
->>>> Addresses-Coverity: ("Uninitialized scalar variable")
->>>> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware
->>>> binaries")
->>>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->>>
->>> Nice catch!
->>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
->>
->> I assume this will be fixed by Linus' patch "brcmfmac: firmware: Fix
->> firmware loading" and I should drop Colin's patch, correct?
-> 
-> That would be my assumption as well, but not sure when he will submit
-> another revision of it. You probably know what to do ;-)
+Commit 05a4a9527931 ("kernel/watchdog: split up config options") adds a
+new config HARDLOCKUP_DETECTOR, which selects the non-existing config
+HARDLOCKUP_DETECTOR_ARCH.
 
-I'd prefer my patch to be dropped in preference to Linus' fix.
+Hence, ./scripts/checkkconfigsymbols.py warns:
 
-> 
-> Regards,
-> Arend
+HARDLOCKUP_DETECTOR_ARCH
+Referencing files: lib/Kconfig.debug
+
+Simply drop selecting the non-existing HARDLOCKUP_DETECTOR_ARCH.
+
+Fixes: 05a4a9527931 ("kernel/watchdog: split up config options")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+Nicholas, please review and ack.
+
+Andrew, please pick this quick cleanup once Nicholas has acked it.
+
+ lib/Kconfig.debug | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 090fb54ecff1..b6b951b0ed46 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1061,7 +1061,6 @@ config HARDLOCKUP_DETECTOR
+ 	depends on HAVE_HARDLOCKUP_DETECTOR_PERF || HAVE_HARDLOCKUP_DETECTOR_ARCH
+ 	select LOCKUP_DETECTOR
+ 	select HARDLOCKUP_DETECTOR_PERF if HAVE_HARDLOCKUP_DETECTOR_PERF
+-	select HARDLOCKUP_DETECTOR_ARCH if HAVE_HARDLOCKUP_DETECTOR_ARCH
+ 	help
+ 	  Say Y here to enable the kernel to act as a watchdog to detect
+ 	  hard lockups.
+-- 
+2.17.1
 

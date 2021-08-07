@@ -2,79 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FAA93E3290
-	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Aug 2021 03:18:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 160A93E34A1
+	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Aug 2021 12:10:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229935AbhHGBSd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Aug 2021 21:18:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51934 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229749AbhHGBSc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Aug 2021 21:18:32 -0400
-Received: from oasis.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4B81461186;
-        Sat,  7 Aug 2021 01:18:15 +0000 (UTC)
-Date:   Fri, 6 Aug 2021 21:18:08 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Ingo Molnar <mingo@redhat.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Jiri Kosina <jikos@kernel.org>, live-patching@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Miroslav Benes <mbenes@suse.cz>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] tracing: define needed config DYNAMIC_FTRACE_WITH_ARGS
-Message-ID: <20210806211808.6d927880@oasis.local.home>
-In-Reply-To: <20210806195027.16808-1-lukas.bulwahn@gmail.com>
-References: <20210806195027.16808-1-lukas.bulwahn@gmail.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S231755AbhHGKKx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 7 Aug 2021 06:10:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36374 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231738AbhHGKKx (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 7 Aug 2021 06:10:53 -0400
+Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30447C0613CF
+        for <kernel-janitors@vger.kernel.org>; Sat,  7 Aug 2021 03:10:34 -0700 (PDT)
+Received: by mail-qv1-xf2e.google.com with SMTP id bl13so546401qvb.5
+        for <kernel-janitors@vger.kernel.org>; Sat, 07 Aug 2021 03:10:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=aiYv+ghkj1wcr5KlnL1ML71lfnXzfmxAeT1E5sMi1Qw=;
+        b=jTHBiGCU/bCUn/kwiLkPiusOhwsRPz3mONsnVu+LgSvzxuzS+jRhAOD7WkwVCEUv6U
+         RhnzI9sziDLUvrvR7QMhZf0NhxG+5NsG53F/qspEmh3vKKMO7oh89RR9zZ8EoKG0jK3i
+         w4DbHl0iBe59oBWiUl8prgn1Sb5bAAHrxSr7BIVHaR7ha5j8e7ggm8XT8BHNwd71EhSR
+         OY6asQAKj3tG81V2YVRY+zHk8ouPAt4pHQdmYXaWSEG4tFbZbQOJM2M2Ih1yEW7l0/sB
+         dAhpGnWyuj/19+YnMz0QsCjMnJ+71BAfnvbCCQvhBA+y9w2bk022efq6QaesE0OLwI1a
+         J3YQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=aiYv+ghkj1wcr5KlnL1ML71lfnXzfmxAeT1E5sMi1Qw=;
+        b=VOI/4rTyG6qnCLGkfu6/q+wD9a9Xk67y8ebzY8HdBcxd+hGbxDwWD0TTligilQdqEV
+         98ClAO9Uf6/apoMXRntzL3OC084NdixqDnaXhCGFnOYfd/9GGuFw0p1YyUeCuXQEhiaR
+         D04Gf6A7iVk1hC1V+hROQ0gatYZZzKxUfen3jO9wNnFPvL3o9WVbN9QiuUyTDPhUxNmx
+         FvktMPgCwBINIiYRfiGOWeNvXZ8TbJfUdBcd9Rknw99tiF69uqVNoE6H1fTdtr/89dmu
+         roXnbxAl8VTgken7TJCH8yoDka9b8cRvFDWpPUlNy5kVMwo2zrcWF6OE67kNb3UZkriu
+         WnzQ==
+X-Gm-Message-State: AOAM531agbZCscPc4Tu9o5hN23ghxSThU1Jt5lauQafYLT9+spMs59o1
+        D71qM0lUsFsZuVdWXsna60fOheXyC1DJPhqu050=
+X-Google-Smtp-Source: ABdhPJxtvSNxGJk+H1OIrj+Av5/SKfWkzJlvqvePnvnkh0PdKpVazFsbpe7gNDLa1VLHpI/kO9TzgjcnvEsdq7uL45c=
+X-Received: by 2002:a05:6214:d1:: with SMTP id f17mr4072414qvs.12.1628331033428;
+ Sat, 07 Aug 2021 03:10:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:622a:112:0:0:0:0 with HTTP; Sat, 7 Aug 2021 03:10:33
+ -0700 (PDT)
+Reply-To: ssaar0101@gmail.com
+From:   Medinat Sherrif <do348911@gmail.com>
+Date:   Sat, 7 Aug 2021 10:10:33 +0000
+Message-ID: <CA+WgU6qr4MHO=XQT9Ev7mfMGqY+1XKa-VFu8t-dgseCEbMZhzQ@mail.gmail.com>
+Subject: Good morning,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri,  6 Aug 2021 21:50:27 +0200
-Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+Greetings from here.
 
-> Commit 2860cd8a2353 ("livepatch: Use the default ftrace_ops instead of
-> REGS when ARGS is available") intends to enable config LIVEPATCH when
-> ftrace with ARGS is available. However, the chain of configs to enable
-> LIVEPATCH is incomplete, as HAVE_DYNAMIC_FTRACE_WITH_ARGS is available,
-> but the definition of DYNAMIC_FTRACE_WITH_ARGS, combining DYNAMIC_FTRACE
-> and HAVE_DYNAMIC_FTRACE_WITH_ARGS, needed to enable LIVEPATCH, is missing
-> in the commit.
-> 
-> Fortunately, ./scripts/checkkconfigsymbols.py detects this and warns:
-> 
-> DYNAMIC_FTRACE_WITH_ARGS
-> Referencing files: kernel/livepatch/Kconfig
-> 
-> So, define the config DYNAMIC_FTRACE_WITH_ARGS analogously to the already
-> existing similar configs, DYNAMIC_FTRACE_WITH_REGS and
-> DYNAMIC_FTRACE_WITH_DIRECT_CALLS, in ./kernel/trace/Kconfig to connect the
-> chain of configs.
-> 
-> Fixes: 2860cd8a2353 ("livepatch: Use the default ftrace_ops instead of REGS when ARGS is available")
-> Cc: <stable@vger.kernel.org> # 5.10.x
+My name is Medinat. M  Sherrif, I have something very confidential to
+discuss with you in my next mail. Reply to me with your private email
+address for confidential discussion.
 
-FYI, we don't add # 5.10.x anymore. The Fixes tag above is what
-determines where it gets backported to.
-
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
-> 
-> Steven, thanks for the quick response; please pick this quick config fix.
-
-I placed it in my queue to go into the 5.14-rc cycle.
-
-Since this affects live kernel patching, can I get a Tested-by from one
-of the live kernel patching  folks?
-
-Thanks!
-
--- Steve
+Best Regards.
+Medinat. M  Sherrif,

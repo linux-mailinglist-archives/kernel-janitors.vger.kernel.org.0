@@ -2,68 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD7B03EBE9B
-	for <lists+kernel-janitors@lfdr.de>; Sat, 14 Aug 2021 01:15:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F9D23EBEC6
+	for <lists+kernel-janitors@lfdr.de>; Sat, 14 Aug 2021 01:34:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235469AbhHMXQR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Aug 2021 19:16:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44888 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235029AbhHMXQR (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Aug 2021 19:16:17 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FCE8C061756;
-        Fri, 13 Aug 2021 16:15:49 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id r6so15323333wrt.4;
-        Fri, 13 Aug 2021 16:15:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=5NTJSky9UX3JbuB9riY3wCYfXDpCwy2c7hzO0kF4AHA=;
-        b=JOjzpG/zA1y9avpPcioDJ59t50WCA9YqeAyrPsGqrbcjAgs6WjqQjZsSbBfhcg28BN
-         iMpFEGbKgNaKKqQaTS8BNn8Pnq+tJsK47O6NoMrqasXLEidyZjOPKVWmlfKLERTmm4xi
-         AgeQ22I2Dga1RlSesblIgmoZJnNktvkNElolkPP29j/h2pI9t8nNtTKWgKRuo+RZxnW7
-         49ld3nMKP2pbtErRw5wht4EelW3LT4t1Isc8y3Gj//2jh6A0zqzKrUr5O+mZbyuJyani
-         Sp8evuS/6oJKhhuJb1trPvftofFch73kFGYjz1xvKGzWfKGcifeky3OJHEeU7ABOo4mX
-         J6hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=5NTJSky9UX3JbuB9riY3wCYfXDpCwy2c7hzO0kF4AHA=;
-        b=ua53hRxkMWh7mOLcb15kPfEmu1JG7WJJULGH7hc9cO3g5rKZy/72NKzRCZK5otdnOO
-         +u/BvjNZQEKxFsw7Cz+hpkXVcdKrxLO5z72j1u/QY1JIMIys+rGu2dEKN16lewRMJJOG
-         nmMw2HS07EBe10l9oeFF2ts55LcgbKgSGHKyEx2MRfnOF3Q/kJr1iGIpzaV7QnQxXkmD
-         fUZ6BORNrDq22b9bQdjsYRqs9wHKRryQmr3tV82f+QsrPAwbaBnznTystNr0jgcsgl4H
-         mEcNCO8mdWfCU2cf4SrbqS6ScAvhVEhz7zuKqxY4XtwsgggjrsJi4BQXa5/4J7jM1jXi
-         JFhw==
-X-Gm-Message-State: AOAM533LgxVS3BEqFC+9qwGRSoHu0T11nObHC5Qeg/SgBEsPUZr69dzD
-        rBm44WpzxkX1HxOT7RYdCFc=
-X-Google-Smtp-Source: ABdhPJwjdiFUvwcJXeXHWXHFi5VnQXBzwv9L7OxbfIDD9WoXxPvJAp24yqv2b3eM58q0WPFDSCIQZQ==
-X-Received: by 2002:adf:e588:: with SMTP id l8mr5585744wrm.16.1628896548233;
-        Fri, 13 Aug 2021 16:15:48 -0700 (PDT)
-Received: from [192.168.1.70] ([102.64.163.193])
-        by smtp.gmail.com with ESMTPSA id a18sm2566962wmg.43.2021.08.13.16.15.43
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Fri, 13 Aug 2021 16:15:47 -0700 (PDT)
-Message-ID: <6116fd23.1c69fb81.4edbd.f5e9@mx.google.com>
-From:   Vanina curth <akoelekouevidjin95@gmail.com>
-X-Google-Original-From: Vanina  curth
-Content-Type: text/plain; charset="iso-8859-1"
+        id S235794AbhHMXeg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Aug 2021 19:34:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34780 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235776AbhHMXef (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 13 Aug 2021 19:34:35 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 26340610EA;
+        Fri, 13 Aug 2021 23:34:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1628897648;
+        bh=tKafd6vECbPEMazy83H7Z+3j1QWPve7a1WWuqNbDzxI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=aCwww65gyLPOi0lL60q9Q20jxDYE5yRFH8FCYxrOB+CyLc/NNHeYRQuTracAG+2FM
+         JT5uGGtEFVBiRKuofJL2vFmjUqfLlGEeudCNNxw+JKD/ffTZUuRpUNgd2IQYZhlm41
+         Dtr8hWLcpmswR86swRtuBlWTZnKDc3AFewZJ5uq4idaW6pigsGXRa2uBMPSi2BYcNy
+         Z5SEjsVVz2mdd4SUvpwr+YQYlePXnxqe+1Xu/fDVOdCFY56pPyBqupnuJ2Tlj+W9Wk
+         jMWHkHTlglAXSPTU8Vl7oPQwcdXEecYUlnT7YzfsqltJWQH7i9NGyeK6RDD0vtiNOf
+         cppP63hYMSsRg==
+Date:   Fri, 13 Aug 2021 16:34:07 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        Madalin Bucur <madalin.bucur@nxp.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] Kconfig symbol clean-up on net
+Message-ID: <20210813163407.3bde8d47@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20210812083806.28434-1-lukas.bulwahn@gmail.com>
+References: <20210812083806.28434-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Dear
-To:     Recipients <Vanina@vger.kernel.org>
-Date:   Fri, 13 Aug 2021 23:15:30 +0000
-Reply-To: curtisvani9008@gmail.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-How are you? I'm Vanina. I'm interested to know you and I would like to kno=
-w more about you and establish relationship with you. i will wait for your =
-response. thank you.
+On Thu, 12 Aug 2021 10:38:03 +0200 Lukas Bulwahn wrote:
+> The script ./scripts/checkkconfigsymbols.py warns on invalid references to
+> Kconfig symbols (often, minor typos, name confusions or outdated references).
+> 
+> This patch series addresses all issues reported by
+> ./scripts/checkkconfigsymbols.py in ./net/ and ./drivers/net/ for Kconfig
+> and Makefile files. Issues in the Kconfig and Makefile files indicate some
+> shortcomings in the overall build definitions, and often are true actionable
+> issues to address.
+> 
+> These issues can be identified and filtered by:
+> 
+>   ./scripts/checkkconfigsymbols.py \
+>   | grep -E "(drivers/)?net/.*(Kconfig|Makefile)" -B 1 -A 1
+> 
+> After applying this patch series on linux-next (next-20210811), the command
+> above yields no further issues to address.
+
+FWIW there's also:
+
+arch/arm/configs/ixp4xx_defconfig:79:CONFIG_IPX=m

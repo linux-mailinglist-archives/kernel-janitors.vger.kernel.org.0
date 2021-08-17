@@ -2,62 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 398503EE8C3
-	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Aug 2021 10:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 415063EE8D2
+	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Aug 2021 10:48:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239465AbhHQImj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 17 Aug 2021 04:42:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60978 "EHLO
+        id S239136AbhHQIst (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 17 Aug 2021 04:48:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239475AbhHQImh (ORCPT
+        with ESMTP id S234880AbhHQIst (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 17 Aug 2021 04:42:37 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDECCC0613CF;
-        Tue, 17 Aug 2021 01:42:03 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id 79-20020a1c0452000000b002e6cf79e572so1293472wme.1;
-        Tue, 17 Aug 2021 01:42:03 -0700 (PDT)
+        Tue, 17 Aug 2021 04:48:49 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76A18C061764;
+        Tue, 17 Aug 2021 01:48:16 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id q10so27448930wro.2;
+        Tue, 17 Aug 2021 01:48:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=8qalcxJZSAoenJ2mSdG7qlNEBuHFgwiIsTwgVJuQxk0=;
-        b=ht8yRhloawgIJiHlAISbi+RuwDm/dDfdDMeo57txgPIodpCpr5bxw1+irSjmlqsdYL
-         9Srw7AqXvkPNAYLXJMThjIH6LN9cyFUJC8XDl2x0Uo6mN1w5fmxjvcrckYwG/R1h0Hcv
-         ziIVnXo58gNhu/HbPH3ve7kcZslOBkKftdyHd+EOQOV1U/9wdnWPgSdWijxBRVMRzao2
-         2rchP0+aVpA/IWSLv4YeLovGGlry6HYyxcFuFNcLW+TFPiURZCB7p4T+uub65uKgaYSr
-         HoiC61f0M/A1jDRrKpSeQAi4uLBgOV7EszocmWCBvsb0lzQtjWiPnbIl9PaG+AeglhUW
-         Gmsw==
+        bh=UvsOH8jtQe+4Kanh6E/MrBCjFWLS1TOh5zSyYH4PboQ=;
+        b=LbR8LaJuOhBakcLFAAFQ2PSM/njYxfneXxDeDQYlanx3FENXuAF6gIa2xv7Wo1X2c2
+         R9OvMZUC5T3QXMdttlxfunjDSmS0SpioQKYCVIkhzwtq3u4dP8lMsia9ZL9A8x0102Nr
+         oim0c7sOWji/ztnYQeIzF18NgS9SkJtTLWsAqYrJd22trjBcZtNyJplcdFZrXqv/OkX3
+         HVgg4pi0RVbrICIsacxYUOjtNVCTWRfOdE53LABlXoMXTYZav5Cu1iN/mahqaUmtJ27E
+         4a9/JyDuXPfQWqt3DUcIe9xwZTDPxR+b2hNiao1jTATo1UFeXqaApMu09Tz5Nryua+eK
+         7/dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=8qalcxJZSAoenJ2mSdG7qlNEBuHFgwiIsTwgVJuQxk0=;
-        b=eiEMvVtoHhRBTx1ZDReIq7mM6czeuNUxmlDpCGMlOrfKbd+U7OXUTjzMp9HJKJuATF
-         sZYFaDh0BlElbKMR4tzehH6FE0cuy4pm4cNt20ZY+yTeuS8FOWFe6lDUGmZBUYhFPToF
-         SaI1JvTVk1QQAGhmZbAe1FstKj/YEwi7Ik1jCxG6mgp/y3+99ByxIl5zHVE0q/EOjNFj
-         crKVAFb8qRJUSAWHGQCnk8YkWgR0sWAvyXnwndC8tyLB6CTbxj4CLFJ54vpjd5pXW2W1
-         yzwbR6kfUaMZSENCIOit5faMJ1awayY4IHaKfLwMN8VP9/zqy7BKdwVwJy5cqwINDkv8
-         kxnQ==
-X-Gm-Message-State: AOAM531FVhciAYaY5YHZYW9HsiMhMMW1w5G8BPr7RF6xPGdkaWuULaSD
-        fk1U1HCh6NcHnjUIlI1w8lU=
-X-Google-Smtp-Source: ABdhPJyZKkIE+C84W/G4rSFiKHZjSSJjbiSqkmFeJcz2qchGApyeiFuGu9f6Rjs+C/BRMBzyTlgRcQ==
-X-Received: by 2002:a05:600c:a08:: with SMTP id z8mr2123242wmp.52.1629189722426;
-        Tue, 17 Aug 2021 01:42:02 -0700 (PDT)
+        bh=UvsOH8jtQe+4Kanh6E/MrBCjFWLS1TOh5zSyYH4PboQ=;
+        b=N8e7XF24i6EK9S2VSQU/j6jNf5gmsPaZd2Ynp7Z78NSY/O5w6CpBXkI3ThqP8xsQGN
+         fNIgL4maG5A5DG4hAMX0Kzil1SbpZJj0LjvrZ1EjJpDjNs4xnN/jILsA/gAx0Vcu5V7Q
+         6aoNQeyfyJQtziZQnoZWFLwnAdLbq1jaNW5aU30827A7/aCTMydzaQMBPx7rtq/+2oVt
+         yPnn/9D7otfghAaxD/w/AoHZDkxK4pbeAc602jgiU3+gXStajPTHTs09v5t2iVTJnaeE
+         UDFRK8zHfL6mH96vbKLybc3fKJoCQp7d5HwB0X+8HeE9ZJgx6qM3p7TgRRRkHh/t6K0D
+         8qIg==
+X-Gm-Message-State: AOAM532aCkSg33iCcXRhPIjp3ptl2hBkyN3E1/t5khJMzRVlwd2NCJSt
+        g+iv+VfQxWroXfK9sO6OEMo=
+X-Google-Smtp-Source: ABdhPJy2o8VurqIMFUNktoLextNJhp00f0HEhzkQIq8R2VbnLDV0HaQAeUr+eat2ZRGeJzfbzYVdIw==
+X-Received: by 2002:adf:f741:: with SMTP id z1mr2597669wrp.201.1629190095036;
+        Tue, 17 Aug 2021 01:48:15 -0700 (PDT)
 Received: from localhost.localdomain (arl-84-90-178-246.netvisao.pt. [84.90.178.246])
-        by smtp.gmail.com with ESMTPSA id o125sm1378907wme.15.2021.08.17.01.42.01
+        by smtp.gmail.com with ESMTPSA id o14sm1302899wms.2.2021.08.17.01.48.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Aug 2021 01:42:02 -0700 (PDT)
+        Tue, 17 Aug 2021 01:48:14 -0700 (PDT)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Mustafa Ismail <mustafa.ismail@intel.com>,
-        Shiraz Saleem <shiraz.saleem@intel.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] rdma: irdma: Rectify selection in config INFINIBAND_IRDMA
-Date:   Tue, 17 Aug 2021 10:41:58 +0200
-Message-Id: <20210817084158.10095-1-lukas.bulwahn@gmail.com>
+Subject: [PATCH] hwmon: remove amd_energy driver in Makefile
+Date:   Tue, 17 Aug 2021 10:48:11 +0200
+Message-Id: <20210817084811.10673-1-lukas.bulwahn@gmail.com>
 X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -65,32 +64,34 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In Kconfig, references to other config do not use the prefix "CONFIG_".
+Commit 9049572fb145 ("hwmon: Remove amd_energy driver") removes the driver,
+but misses to adjust the Makefile.
 
-Commit fa0cf568fd76 ("RDMA/irdma: Add irdma Kconfig/Makefile and remove
-i40iw") selects config CONFIG_AUXILIARY_BUS in config INFINIBAND_IRDMA,
-but intended to select config AUXILIARY_BUS.
+Hence, ./scripts/checkkconfigsymbols.py warns:
 
-Rectify this selection in config INFINIBAND_IRDMA.
+SENSORS_AMD_ENERGY
+Referencing files: drivers/hwmon/Makefile
 
+Remove the missing piece of this driver removal.
+
+Fixes: 9049572fb145 ("hwmon: Remove amd_energy driver")
 Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
- drivers/infiniband/hw/irdma/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/irdma/Kconfig b/drivers/infiniband/hw/irdma/Kconfig
-index dab88286d549..b6f9c41bca51 100644
---- a/drivers/infiniband/hw/irdma/Kconfig
-+++ b/drivers/infiniband/hw/irdma/Kconfig
-@@ -6,7 +6,7 @@ config INFINIBAND_IRDMA
- 	depends on PCI
- 	depends on ICE && I40E
- 	select GENERIC_ALLOCATOR
--	select CONFIG_AUXILIARY_BUS
-+	select AUXILIARY_BUS
- 	help
- 	  This is an Intel(R) Ethernet Protocol Driver for RDMA driver
- 	  that support E810 (iWARP/RoCE) and X722 (iWARP) network devices.
+diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
+index 53a8f4b500b8..4b33421746c0 100644
+--- a/drivers/hwmon/Makefile
++++ b/drivers/hwmon/Makefile
+@@ -45,7 +45,6 @@ obj-$(CONFIG_SENSORS_ADT7462)	+= adt7462.o
+ obj-$(CONFIG_SENSORS_ADT7470)	+= adt7470.o
+ obj-$(CONFIG_SENSORS_ADT7475)	+= adt7475.o
+ obj-$(CONFIG_SENSORS_AHT10)	+= aht10.o
+-obj-$(CONFIG_SENSORS_AMD_ENERGY) += amd_energy.o
+ obj-$(CONFIG_SENSORS_APPLESMC)	+= applesmc.o
+ obj-$(CONFIG_SENSORS_ARM_SCMI)	+= scmi-hwmon.o
+ obj-$(CONFIG_SENSORS_ARM_SCPI)	+= scpi-hwmon.o
 -- 
 2.26.2
 

@@ -2,61 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1239B3EE738
-	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Aug 2021 09:28:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 943793EE7EC
+	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Aug 2021 10:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238631AbhHQH3V (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 17 Aug 2021 03:29:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43752 "EHLO
+        id S234906AbhHQIB7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 17 Aug 2021 04:01:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238619AbhHQH3V (ORCPT
+        with ESMTP id S234446AbhHQIB7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 17 Aug 2021 03:29:21 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F768C061796;
-        Tue, 17 Aug 2021 00:28:48 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id x12so27108837wrr.11;
-        Tue, 17 Aug 2021 00:28:48 -0700 (PDT)
+        Tue, 17 Aug 2021 04:01:59 -0400
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93792C061764;
+        Tue, 17 Aug 2021 01:01:26 -0700 (PDT)
+Received: by mail-wm1-x32c.google.com with SMTP id w24so5349774wmi.5;
+        Tue, 17 Aug 2021 01:01:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=7j8rw4Ujz5x983gg53sxPnn1dxlWsFVFzGa4/yW9Tik=;
-        b=CSdlKeGJARJ0qiBtgTglHjTG9kwi9s3KxhYFZtXyfN6xyGs1x3IrTkDrhAKhuSE8KW
-         JKHhi0PHMbtSiHakmEuxtwv78dfmukEWX8ibj7DEkQhbYztyxqAp152tBSG0zD2kTX61
-         uO2zjc430kURV5KZky2VCeuNOPCeyJY/f/GVNY+jZVqTgSGTK38B6s7hpUzw2fQKUjbv
-         rcdW8wM2hSGABUvXRjfSBS/r24Ev07DKSDQzCJTwVdZpQGAvvKYOrOTIBPKxFsTeJPlG
-         buI6BO++8SRohvy6iMR36FSqacv86RDa97syWD/IZ+ioN1wpQAXbtg8vHRheJB/IORoF
-         /S4w==
+        bh=aS9xpuWQ7cV7oWrmqXRiXydvlbggR6/xVxVxKlldG2A=;
+        b=pFGPUp4kSUKg9FmnRTvYONtxyYCteiKQTidHOzpn6LqXrk11oui65PlZuQC4jl/Dzl
+         PrNpKd4BU67Z6DxDXkgX57sL+CKNq9qSW2+zjc7cp8PnUu4GwFgmDO9Qz8pkLu9phyMp
+         uvNs1jsf0CtBqtDfAyRf3cRQZPOn3eVyG651vGQU6f/uIAjiD3eQM6PVeBz25mPkvw5+
+         pZOpH6bBwBIa0vwwAGR3P22uFXGExi300wrmkYwzK7m4OsGMb/4/EpWGa3XVhVUlGAzN
+         wFqfnet19/msSI7mAdGBzwTSFmXCH8m9tTq5/PxYTsFUxPdIQyWJzsDDjZ3CN4Gbhk0d
+         6z3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=7j8rw4Ujz5x983gg53sxPnn1dxlWsFVFzGa4/yW9Tik=;
-        b=j9Hl/dFbxGzGHHzFoRovXxdfasO5mJ2ATWhwn79KoMsmnx7Xb10HebuHlaZPKDRvZ2
-         v4m3ay0hTGvdEWIgZtwG0ugW/4TpZy/VmQMwinDWjBJ6RfMuHtedamNi9oUZvxVRgefJ
-         VyHn/F3UdQFt0tluoe+9g9S2sJS8vFLmoPa/iN1Lg/uejAyyhHKxyPvKdwTsr89NZXBn
-         FgSSbxK4rQbQUGDrq5YlC6Cw6e+uAi1vFcKl9Fa25v2rnvK+b5kRypvolSjvP+q/H9gc
-         uZRS9ZuEH6Ysyw2tI4UhNe80ssC3wdpoytpzNP589+32Gh2kni5tCwy832MyMHIVknsb
-         5PpQ==
-X-Gm-Message-State: AOAM5305OHWClejXrGDF/XL3d1tCZFJj5vczrarQn4kScsmj+laHVGOs
-        4lGvWtUoJ4oryAr48h9KtZfYPgwTfhg=
-X-Google-Smtp-Source: ABdhPJwLhN7zuVO8nILdK/mXM7xXpdii13sReyRkHuFWrY5iA8AesN/joQtjmMiqIW4DOj13DJPiMw==
-X-Received: by 2002:a5d:54ca:: with SMTP id x10mr2239553wrv.101.1629185326889;
-        Tue, 17 Aug 2021 00:28:46 -0700 (PDT)
+        bh=aS9xpuWQ7cV7oWrmqXRiXydvlbggR6/xVxVxKlldG2A=;
+        b=IxNBTSJL745ZYhRrUquYZRrwdvTciFgnmvbfBClv8iK2kcVBgQh3VyrD7tLim0v6BQ
+         9dUGW5AtLRVQBjR/ft5sVwvtFk+cJRdOWWO0Rh+zkqw8y4/LNg9+Dv81k1toTqlxhKQN
+         F5xAyWha9NkpLul9i1lsIIdiLbD7epeNbqD4cAmsq3QWo4feXLLk8uLEo6I7xSVVUXS5
+         gkH1xZmgJuo1ePainegMPaAZr2bOjTlipjnWAbxyqYdqcTk8EDrIsLxyg8HiA8t7Z7TX
+         saaipieeekLsPZ962Y+FpdkQjOuSBoXfgYpiAeItkYBHtdhs0KRyVkXY+/iTlTVWhaDE
+         2FVw==
+X-Gm-Message-State: AOAM532UOsLUEgAGkgqUxUQO3YS1czLuoFBYRQniJffdyXU9/OOyAb+K
+        LT76MvJpNUWBnxrur5YCxu4=
+X-Google-Smtp-Source: ABdhPJxLlkljaDHAjvjfXeQNfMj5qQ/PYZEDlt79p5gmmxYTpHZSjdIMfwaeazfI5FPMDkOEK3Kwiw==
+X-Received: by 2002:a05:600c:4e87:: with SMTP id f7mr2053403wmq.42.1629187285139;
+        Tue, 17 Aug 2021 01:01:25 -0700 (PDT)
 Received: from localhost.localdomain (arl-84-90-178-246.netvisao.pt. [84.90.178.246])
-        by smtp.gmail.com with ESMTPSA id i8sm1175056wma.7.2021.08.17.00.28.45
+        by smtp.gmail.com with ESMTPSA id n3sm1269212wmi.0.2021.08.17.01.01.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Aug 2021 00:28:46 -0700 (PDT)
+        Tue, 17 Aug 2021 01:01:24 -0700 (PDT)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-input@vger.kernel.org
-Cc:     Arnd Bergmann <arnd@arndb.de>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
+To:     Fabio Estevam <festevam@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        linux-gpio@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] input: remove dead CSR Prima2 PWRC driver
-Date:   Tue, 17 Aug 2021 09:28:42 +0200
-Message-Id: <20210817072842.8640-1-lukas.bulwahn@gmail.com>
+Subject: [PATCH] gpio: remove the obsolete MX35 3DS BOARD MC9S08DZ60 GPIO functions
+Date:   Tue, 17 Aug 2021 10:01:18 +0200
+Message-Id: <20210817080118.9201-1-lukas.bulwahn@gmail.com>
 X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -64,266 +66,174 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit f3a732843acc ("ARM: remove sirf prima2/atlas platforms") removes
-the config ARCH_SIRF in ./arch/arm/mach-prima2/Kconfig.
+Commit e1324ece2af4 ("ARM: imx: Remove i.MX35 board files") removes the
+config MACH_MX35_3DS in arch/arm/mach-imx/Kconfig.
 
-Hence, since then, the corresponding CSR Prima2 PWRC Driver is dead code.
-Remove this dead driver.
+Hence, since then, the MX35 3DS BOARD MC9S08DZ60 GPIO functions are dead
+code as its config GPIO_MC9S08DZ60 depends on the config MACH_MX35_3DS.
+
+Luckily, ./scripts/checkkconfigsymbols.py warns on non-existing configs:
+
+MACH_MX35_3DS
+Referencing files: drivers/gpio/Kconfig
+
+Remove the obsolete MX35 3DS BOARD MC9S08DZ60 GPIO functions.
 
 Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
- drivers/input/misc/Kconfig         |  10 --
- drivers/input/misc/Makefile        |   1 -
- drivers/input/misc/sirfsoc-onkey.c | 207 -----------------------------
- 3 files changed, 218 deletions(-)
- delete mode 100644 drivers/input/misc/sirfsoc-onkey.c
+ drivers/gpio/Kconfig           |   6 --
+ drivers/gpio/Makefile          |   1 -
+ drivers/gpio/gpio-mc9s08dz60.c | 112 ---------------------------------
+ 3 files changed, 119 deletions(-)
+ delete mode 100644 drivers/gpio/gpio-mc9s08dz60.c
 
-diff --git a/drivers/input/misc/Kconfig b/drivers/input/misc/Kconfig
-index ae01507b7afd..dd5227cf8696 100644
---- a/drivers/input/misc/Kconfig
-+++ b/drivers/input/misc/Kconfig
-@@ -799,16 +799,6 @@ config INPUT_XEN_KBDDEV_FRONTEND
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called xen-kbdfront.
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index fab571016adf..9a494cab5dbf 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -1010,12 +1010,6 @@ config GPIO_MAX732X_IRQ
+ 	  Say yes here to enable the max732x to be used as an interrupt
+ 	  controller. It requires the driver to be built in the kernel.
  
--config INPUT_SIRFSOC_ONKEY
--	tristate "CSR SiRFSoC power on/off/suspend key support"
--	depends on ARCH_SIRF && OF
--	default y
+-config GPIO_MC9S08DZ60
+-	bool "MX35 3DS BOARD MC9S08DZ60 GPIO functions"
+-	depends on I2C=y && MACH_MX35_3DS
 -	help
--	  Say Y here if you want to support for the SiRFSoC power on/off/suspend key
--	  in Linux, after you press the onkey, system will suspend.
+-	  Select this to enable the MC9S08DZ60 GPIO driver
 -
--	  If unsure, say N.
--
- config INPUT_IDEAPAD_SLIDEBAR
- 	tristate "IdeaPad Laptop Slidebar"
- 	depends on INPUT
-diff --git a/drivers/input/misc/Makefile b/drivers/input/misc/Makefile
-index 2a0943507467..b92c53a6b5ae 100644
---- a/drivers/input/misc/Makefile
-+++ b/drivers/input/misc/Makefile
-@@ -73,7 +73,6 @@ obj-$(CONFIG_INPUT_GPIO_ROTARY_ENCODER)	+= rotary_encoder.o
- obj-$(CONFIG_INPUT_RK805_PWRKEY)	+= rk805-pwrkey.o
- obj-$(CONFIG_INPUT_SC27XX_VIBRA)	+= sc27xx-vibra.o
- obj-$(CONFIG_INPUT_SGI_BTNS)		+= sgi_btns.o
--obj-$(CONFIG_INPUT_SIRFSOC_ONKEY)	+= sirfsoc-onkey.o
- obj-$(CONFIG_INPUT_SOC_BUTTON_ARRAY)	+= soc_button_array.o
- obj-$(CONFIG_INPUT_SPARCSPKR)		+= sparcspkr.o
- obj-$(CONFIG_INPUT_STPMIC1_ONKEY)  	+= stpmic1_onkey.o
-diff --git a/drivers/input/misc/sirfsoc-onkey.c b/drivers/input/misc/sirfsoc-onkey.c
+ config GPIO_PCA953X
+ 	tristate "PCA95[357]x, PCA9698, TCA64xx, and MAX7310 I/O ports"
+ 	select REGMAP_I2C
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index 32a32659866a..7856222ae855 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -92,7 +92,6 @@ obj-$(CONFIG_GPIO_MAX77620)		+= gpio-max77620.o
+ obj-$(CONFIG_GPIO_MAX77650)		+= gpio-max77650.o
+ obj-$(CONFIG_GPIO_MB86S7X)		+= gpio-mb86s7x.o
+ obj-$(CONFIG_GPIO_MC33880)		+= gpio-mc33880.o
+-obj-$(CONFIG_GPIO_MC9S08DZ60)		+= gpio-mc9s08dz60.o
+ obj-$(CONFIG_GPIO_MENZ127)		+= gpio-menz127.o
+ obj-$(CONFIG_GPIO_MERRIFIELD)		+= gpio-merrifield.o
+ obj-$(CONFIG_GPIO_ML_IOH)		+= gpio-ml-ioh.o
+diff --git a/drivers/gpio/gpio-mc9s08dz60.c b/drivers/gpio/gpio-mc9s08dz60.c
 deleted file mode 100644
-index 7982bf8fb839..000000000000
---- a/drivers/input/misc/sirfsoc-onkey.c
+index a9f17cebd5ed..000000000000
+--- a/drivers/gpio/gpio-mc9s08dz60.c
 +++ /dev/null
-@@ -1,207 +0,0 @@
+@@ -1,112 +0,0 @@
 -// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
-- * Power key driver for SiRF PrimaII
+- * Copyright 2009-2012 Freescale Semiconductor, Inc. All Rights Reserved.
 - *
-- * Copyright (c) 2013 - 2014 Cambridge Silicon Radio Limited, a CSR plc group
-- * company.
+- * Author: Wu Guoxing <b39297@freescale.com>
 - */
 -
--#include <linux/module.h>
--#include <linux/interrupt.h>
--#include <linux/delay.h>
--#include <linux/platform_device.h>
--#include <linux/input.h>
--#include <linux/rtc/sirfsoc_rtciobrg.h>
--#include <linux/of.h>
--#include <linux/workqueue.h>
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-#include <linux/slab.h>
+-#include <linux/i2c.h>
+-#include <linux/gpio/driver.h>
 -
--struct sirfsoc_pwrc_drvdata {
--	u32			pwrc_base;
--	struct input_dev	*input;
--	struct delayed_work	work;
+-#define GPIO_GROUP_NUM 2
+-#define GPIO_NUM_PER_GROUP 8
+-#define GPIO_NUM (GPIO_GROUP_NUM*GPIO_NUM_PER_GROUP)
+-
+-struct mc9s08dz60 {
+-	struct i2c_client *client;
+-	struct gpio_chip chip;
 -};
 -
--#define PWRC_ON_KEY_BIT			(1 << 0)
--
--#define PWRC_INT_STATUS			0xc
--#define PWRC_INT_MASK			0x10
--#define PWRC_PIN_STATUS			0x14
--#define PWRC_KEY_DETECT_UP_TIME		20	/* ms*/
--
--static int sirfsoc_pwrc_is_on_key_down(struct sirfsoc_pwrc_drvdata *pwrcdrv)
+-static void mc9s_gpio_to_reg_and_bit(int offset, u8 *reg, u8 *bit)
 -{
--	u32 state = sirfsoc_rtc_iobrg_readl(pwrcdrv->pwrc_base +
--							PWRC_PIN_STATUS);
--	return !(state & PWRC_ON_KEY_BIT); /* ON_KEY is active low */
+-	*reg = 0x20 + offset / GPIO_NUM_PER_GROUP;
+-	*bit = offset % GPIO_NUM_PER_GROUP;
 -}
 -
--static void sirfsoc_pwrc_report_event(struct work_struct *work)
+-static int mc9s08dz60_get_value(struct gpio_chip *gc, unsigned offset)
 -{
--	struct sirfsoc_pwrc_drvdata *pwrcdrv =
--		container_of(work, struct sirfsoc_pwrc_drvdata, work.work);
+-	u8 reg, bit;
+-	s32 value;
+-	struct mc9s08dz60 *mc9s = gpiochip_get_data(gc);
 -
--	if (sirfsoc_pwrc_is_on_key_down(pwrcdrv)) {
--		schedule_delayed_work(&pwrcdrv->work,
--			msecs_to_jiffies(PWRC_KEY_DETECT_UP_TIME));
--	} else {
--		input_event(pwrcdrv->input, EV_KEY, KEY_POWER, 0);
--		input_sync(pwrcdrv->input);
--	}
+-	mc9s_gpio_to_reg_and_bit(offset, &reg, &bit);
+-	value = i2c_smbus_read_byte_data(mc9s->client, reg);
+-
+-	return (value >= 0) ? (value >> bit) & 0x1 : 0;
 -}
 -
--static irqreturn_t sirfsoc_pwrc_isr(int irq, void *dev_id)
+-static int mc9s08dz60_set(struct mc9s08dz60 *mc9s, unsigned offset, int val)
 -{
--	struct sirfsoc_pwrc_drvdata *pwrcdrv = dev_id;
--	u32 int_status;
+-	u8 reg, bit;
+-	s32 value;
 -
--	int_status = sirfsoc_rtc_iobrg_readl(pwrcdrv->pwrc_base +
--							PWRC_INT_STATUS);
--	sirfsoc_rtc_iobrg_writel(int_status & ~PWRC_ON_KEY_BIT,
--				 pwrcdrv->pwrc_base + PWRC_INT_STATUS);
+-	mc9s_gpio_to_reg_and_bit(offset, &reg, &bit);
+-	value = i2c_smbus_read_byte_data(mc9s->client, reg);
+-	if (value >= 0) {
+-		if (val)
+-			value |= 1 << bit;
+-		else
+-			value &= ~(1 << bit);
 -
--	input_event(pwrcdrv->input, EV_KEY, KEY_POWER, 1);
--	input_sync(pwrcdrv->input);
--	schedule_delayed_work(&pwrcdrv->work,
--			      msecs_to_jiffies(PWRC_KEY_DETECT_UP_TIME));
+-		return i2c_smbus_write_byte_data(mc9s->client, reg, value);
+-	} else
+-		return value;
 -
--	return IRQ_HANDLED;
 -}
 -
--static void sirfsoc_pwrc_toggle_interrupts(struct sirfsoc_pwrc_drvdata *pwrcdrv,
--					   bool enable)
--{
--	u32 int_mask;
 -
--	int_mask = sirfsoc_rtc_iobrg_readl(pwrcdrv->pwrc_base + PWRC_INT_MASK);
--	if (enable)
--		int_mask |= PWRC_ON_KEY_BIT;
--	else
--		int_mask &= ~PWRC_ON_KEY_BIT;
--	sirfsoc_rtc_iobrg_writel(int_mask, pwrcdrv->pwrc_base + PWRC_INT_MASK);
+-static void mc9s08dz60_set_value(struct gpio_chip *gc, unsigned offset, int val)
+-{
+-	struct mc9s08dz60 *mc9s = gpiochip_get_data(gc);
+-
+-	mc9s08dz60_set(mc9s, offset, val);
 -}
 -
--static int sirfsoc_pwrc_open(struct input_dev *input)
+-static int mc9s08dz60_direction_output(struct gpio_chip *gc,
+-				       unsigned offset, int val)
 -{
--	struct sirfsoc_pwrc_drvdata *pwrcdrv = input_get_drvdata(input);
+-	struct mc9s08dz60 *mc9s = gpiochip_get_data(gc);
 -
--	sirfsoc_pwrc_toggle_interrupts(pwrcdrv, true);
--
--	return 0;
+-	return mc9s08dz60_set(mc9s, offset, val);
 -}
 -
--static void sirfsoc_pwrc_close(struct input_dev *input)
+-static int mc9s08dz60_probe(struct i2c_client *client,
+-			    const struct i2c_device_id *id)
 -{
--	struct sirfsoc_pwrc_drvdata *pwrcdrv = input_get_drvdata(input);
+-	struct mc9s08dz60 *mc9s;
 -
--	sirfsoc_pwrc_toggle_interrupts(pwrcdrv, false);
--	cancel_delayed_work_sync(&pwrcdrv->work);
+-	mc9s = devm_kzalloc(&client->dev, sizeof(*mc9s), GFP_KERNEL);
+-	if (!mc9s)
+-		return -ENOMEM;
+-
+-	mc9s->chip.label = client->name;
+-	mc9s->chip.base = -1;
+-	mc9s->chip.parent = &client->dev;
+-	mc9s->chip.owner = THIS_MODULE;
+-	mc9s->chip.ngpio = GPIO_NUM;
+-	mc9s->chip.can_sleep = true;
+-	mc9s->chip.get = mc9s08dz60_get_value;
+-	mc9s->chip.set = mc9s08dz60_set_value;
+-	mc9s->chip.direction_output = mc9s08dz60_direction_output;
+-	mc9s->client = client;
+-	i2c_set_clientdata(client, mc9s);
+-
+-	return devm_gpiochip_add_data(&client->dev, &mc9s->chip, mc9s);
 -}
 -
--static const struct of_device_id sirfsoc_pwrc_of_match[] = {
--	{ .compatible = "sirf,prima2-pwrc" },
+-static const struct i2c_device_id mc9s08dz60_id[] = {
+-	{"mc9s08dz60", 0},
 -	{},
 -};
--MODULE_DEVICE_TABLE(of, sirfsoc_pwrc_of_match);
 -
--static int sirfsoc_pwrc_probe(struct platform_device *pdev)
--{
--	struct device_node *np = pdev->dev.of_node;
--	struct sirfsoc_pwrc_drvdata *pwrcdrv;
--	int irq;
--	int error;
--
--	pwrcdrv = devm_kzalloc(&pdev->dev, sizeof(struct sirfsoc_pwrc_drvdata),
--			       GFP_KERNEL);
--	if (!pwrcdrv) {
--		dev_info(&pdev->dev, "Not enough memory for the device data\n");
--		return -ENOMEM;
--	}
--
--	/*
--	 * We can't use of_iomap because pwrc is not mapped in memory,
--	 * the so-called base address is only offset in rtciobrg
--	 */
--	error = of_property_read_u32(np, "reg", &pwrcdrv->pwrc_base);
--	if (error) {
--		dev_err(&pdev->dev,
--			"unable to find base address of pwrc node in dtb\n");
--		return error;
--	}
--
--	pwrcdrv->input = devm_input_allocate_device(&pdev->dev);
--	if (!pwrcdrv->input)
--		return -ENOMEM;
--
--	pwrcdrv->input->name = "sirfsoc pwrckey";
--	pwrcdrv->input->phys = "pwrc/input0";
--	pwrcdrv->input->evbit[0] = BIT_MASK(EV_KEY);
--	input_set_capability(pwrcdrv->input, EV_KEY, KEY_POWER);
--
--	INIT_DELAYED_WORK(&pwrcdrv->work, sirfsoc_pwrc_report_event);
--
--	pwrcdrv->input->open = sirfsoc_pwrc_open;
--	pwrcdrv->input->close = sirfsoc_pwrc_close;
--
--	input_set_drvdata(pwrcdrv->input, pwrcdrv);
--
--	/* Make sure the device is quiesced */
--	sirfsoc_pwrc_toggle_interrupts(pwrcdrv, false);
--
--	irq = platform_get_irq(pdev, 0);
--	error = devm_request_irq(&pdev->dev, irq,
--				 sirfsoc_pwrc_isr, 0,
--				 "sirfsoc_pwrc_int", pwrcdrv);
--	if (error) {
--		dev_err(&pdev->dev, "unable to claim irq %d, error: %d\n",
--			irq, error);
--		return error;
--	}
--
--	error = input_register_device(pwrcdrv->input);
--	if (error) {
--		dev_err(&pdev->dev,
--			"unable to register input device, error: %d\n",
--			error);
--		return error;
--	}
--
--	dev_set_drvdata(&pdev->dev, pwrcdrv);
--	device_init_wakeup(&pdev->dev, 1);
--
--	return 0;
--}
--
--static int __maybe_unused sirfsoc_pwrc_resume(struct device *dev)
--{
--	struct sirfsoc_pwrc_drvdata *pwrcdrv = dev_get_drvdata(dev);
--	struct input_dev *input = pwrcdrv->input;
--
--	/*
--	 * Do not mask pwrc interrupt as we want pwrc work as a wakeup source
--	 * if users touch X_ONKEY_B, see arch/arm/mach-prima2/pm.c
--	 */
--	mutex_lock(&input->mutex);
--	if (input_device_enabled(input))
--		sirfsoc_pwrc_toggle_interrupts(pwrcdrv, true);
--	mutex_unlock(&input->mutex);
--
--	return 0;
--}
--
--static SIMPLE_DEV_PM_OPS(sirfsoc_pwrc_pm_ops, NULL, sirfsoc_pwrc_resume);
--
--static struct platform_driver sirfsoc_pwrc_driver = {
--	.probe		= sirfsoc_pwrc_probe,
--	.driver		= {
--		.name	= "sirfsoc-pwrc",
--		.pm	= &sirfsoc_pwrc_pm_ops,
--		.of_match_table = sirfsoc_pwrc_of_match,
--	}
+-static struct i2c_driver mc9s08dz60_i2c_driver = {
+-	.driver = {
+-		.name = "mc9s08dz60",
+-	},
+-	.probe = mc9s08dz60_probe,
+-	.id_table = mc9s08dz60_id,
 -};
--
--module_platform_driver(sirfsoc_pwrc_driver);
--
--MODULE_LICENSE("GPL v2");
--MODULE_AUTHOR("Binghua Duan <Binghua.Duan@csr.com>, Xianglong Du <Xianglong.Du@csr.com>");
--MODULE_DESCRIPTION("CSR Prima2 PWRC Driver");
--MODULE_ALIAS("platform:sirfsoc-pwrc");
+-builtin_i2c_driver(mc9s08dz60_i2c_driver);
 -- 
 2.26.2
 

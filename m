@@ -2,67 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 429D43F48F4
-	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Aug 2021 12:50:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 525DB3F493F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Aug 2021 13:01:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234997AbhHWKus (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 23 Aug 2021 06:50:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56482 "EHLO mail.kernel.org"
+        id S236521AbhHWLBh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 Aug 2021 07:01:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58502 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236198AbhHWKur (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 23 Aug 2021 06:50:47 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 8D3D16138B;
-        Mon, 23 Aug 2021 10:50:05 +0000 (UTC)
+        id S236274AbhHWLAu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 23 Aug 2021 07:00:50 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id DF223613AB;
+        Mon, 23 Aug 2021 11:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629715805;
-        bh=+NZm6SwBfuOmiLXrfx1E0+0v6lXO50bdoG+42+61gNE=;
+        s=k20201202; t=1629716407;
+        bh=MzSwV0lTBk4i1KqT3TrHU4iVl4GKTIU7ZXH1YvSTZeo=;
         h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=moRS2eYBgIO1QS2aOLtcfpxRLXaup2DvbdAphg4r7kj6QWouNEy10z/qHJw1EoAgc
-         Bz6Xii10+JGvpscfpWDhHSVUGaj+s/eJ5VBpz3g/xyLakjlNfOCCK7klyIcBuEGkZo
-         PoLDTVXjA9oj1H0c+BMiLYNHSqq85+/UAA2hJBySHYYacndCMEPXUuzBkfAmz3gbKO
-         sm+RDX4oavjQni/KDU0yay6ef8JB/59sMDoggd4Hwt7LsovZKN9Zld1KHvjxWm1pX5
-         UwWrAJn9GLHHJSK4aXMaxrc3wFTw6kie+JB9xUoYLR3pQwkgH/ESJMbYZQ7qDe1ZWe
-         pNW42EAmEj3GQ==
+        b=WxVX5YlfC3+vF2iWCUAQ4SWwzmMLs7HfQzg5JI9HEz5d51EpVMvLL5fpxVYX5qp/Z
+         Q/y/IQ6fiTjXI1wNSQa03YmLtW6MhsHb0EW/uVhZRJAmn4igHXgtJDIRBtxDIxUWv8
+         x3GDDkd0NU34XhlmZi22mfe7GAm2a8YdluER0rDYuMlQRsHAWrYdP518Pe4jz8Ze4J
+         ShtKGgHgzZhpYnEQWgyE4to19InCTr7eQGbEmiZXypsYFKopxgTprfKK5vpB+n/MfT
+         ZQnLirjgU5GVoQ3BKEbL6SDtLMiftveM7LaEfAmbkUsXJCcx8x+713A3/ga6pK79Lb
+         cJMbCOtWH53aw==
 Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 7D49060075;
-        Mon, 23 Aug 2021 10:50:05 +0000 (UTC)
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id D6063609E6;
+        Mon, 23 Aug 2021 11:00:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] xgene-v2: Fix a resource leak in the error handling path of
- 'xge_probe()'
+Subject: Re: [PATCH] net: atlantic: switch from 'pci_' to 'dma_' API
 From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <162971580550.31139.11625637788314697314.git-patchwork-notify@kernel.org>
-Date:   Mon, 23 Aug 2021 10:50:05 +0000
-References: <ea7a73e68cd33652850b5392303b417693575dc4.1629531259.git.christophe.jaillet@wanadoo.fr>
-In-Reply-To: <ea7a73e68cd33652850b5392303b417693575dc4.1629531259.git.christophe.jaillet@wanadoo.fr>
+Message-Id: <162971640787.3591.426575431897714096.git-patchwork-notify@kernel.org>
+Date:   Mon, 23 Aug 2021 11:00:07 +0000
+References: <b263cad7a606091efb10392a81ee45f294f16bab.1629611296.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <b263cad7a606091efb10392a81ee45f294f16bab.1629611296.git.christophe.jaillet@wanadoo.fr>
 To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     iyappan@os.amperecomputing.com, keyur@os.amperecomputing.com,
-        davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Cc:     irusskikh@marvell.com, davem@davemloft.net, kuba@kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (refs/heads/master):
+This patch was applied to netdev/net-next.git (refs/heads/master):
 
-On Sat, 21 Aug 2021 09:35:23 +0200 you wrote:
-> A successful 'xge_mdio_config()' call should be balanced by a corresponding
-> 'xge_mdio_remove()' call in the error handling path of the probe, as
-> already done in the remove function.
+On Sun, 22 Aug 2021 07:49:42 +0200 you wrote:
+> The wrappers in include/linux/pci-dma-compat.h should go away.
 > 
-> Update the error handling path accordingly.
+> The patch has been generated with the coccinelle script below.
 > 
-> Fixes: ea8ab16ab225 ("drivers: net: xgene-v2: Add MDIO support")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> It has been hand modified to use 'dma_set_mask_and_coherent()' instead of
+> 'pci_set_dma_mask()/pci_set_consistent_dma_mask()' when applicable.
+> This is less verbose.
 > 
 > [...]
 
 Here is the summary with links:
-  - xgene-v2: Fix a resource leak in the error handling path of 'xge_probe()'
-    https://git.kernel.org/netdev/net/c/5ed74b03eb4d
+  - net: atlantic: switch from 'pci_' to 'dma_' API
+    https://git.kernel.org/netdev/net-next/c/3852e54e6736
 
 You are awesome, thank you!
 --

@@ -2,41 +2,40 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0C053F86CF
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Aug 2021 13:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1B2D3F86E2
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Aug 2021 14:01:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242323AbhHZL6J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Aug 2021 07:58:09 -0400
-Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120]:38038
-        "EHLO smtp-relay-canonical-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236119AbhHZL6C (ORCPT
+        id S242403AbhHZMB5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Aug 2021 08:01:57 -0400
+Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:53182
+        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S242147AbhHZMB4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Aug 2021 07:58:02 -0400
+        Thu, 26 Aug 2021 08:01:56 -0400
 Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 87F6B3F0A4;
-        Thu, 26 Aug 2021 11:57:14 +0000 (UTC)
+        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 726BA3F0FE;
+        Thu, 26 Aug 2021 12:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1629979034;
-        bh=a3acIGJr3hQUfONLqqFcyO2uTusRuVEX83eJahhUr4w=;
+        s=20210705; t=1629979268;
+        bh=KnpgV2xTLsJXZFsLZiu4Yqmo2tltx6SvFXsrlXiHOnQ=;
         h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
-        b=Xr8aA242snZrTfuqtdWETW3Qx3QZrtlG4rNaE8HLy1qdAOWirh125tp+QwrqWBpny
-         Uxkr4nAxX5RAMKZgYDkOXrFgm1Q6B32LoMGb4pa04YNfcQbsHGiu9wbg/Fvu/iOPis
-         lFKSzqdFha4ToN1NyWDZTEyBLBrdXOPpAbL3hkMu0bJMnCweaLx6ztI2luCaNUaAIL
-         zmAQ/qMGMe0L4DDS5np1uNVz/UKuovjG9e3jM52oxjr29sFs6vbRcKm76t69UB72Iq
-         nYjkx7G3KbPtgDnqsIIs7kZHEBVcqlViWahtvXUepJRMC6JWMYi2sc9qlbYXd5V1VU
-         xMLvFs7TxjWEA==
+        b=kAjjLih9ZUaZ76EW+l4wJzEVvc0322mL3oyLbr6ZuG9kHQ9r4jUnYEAEBkvpZJcA+
+         +86JI0HdnLBU9zwP8JIiYuPts0cHcYn8VmrAe+l+6AjxtXppeDP21Sa3HvYvQso6sx
+         rciF/QWEGfmcIH4inZ81kExJraW+M5WvGRHidZMFuidDPxLgqQiZFLVVkgpbxMRHmm
+         iWQZWvofIrADLAUTLSFTIJ4JDeW21D51Nl+JVMJNSwTLIJp1w/oBP3tTfv3AHJzC2c
+         sCKh6wvpvUbb7enNdmDbIoCxrhxDFpdgNpqpEmNx+Fh5KrZwH4zrB4ReRYhUWEgewV
+         dfB75zvy7j+Bw==
 From:   Colin King <colin.king@canonical.com>
-To:     Jens Axboe <axboe@kernel.dk>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org
+To:     Raju Rangoju <rajur@chelsio.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] scsi: core: Fix spelling mistake "does'nt" -> "doesn't"
-Date:   Thu, 26 Aug 2021 12:57:14 +0100
-Message-Id: <20210826115714.11844-1-colin.king@canonical.com>
+Subject: [PATCH] cxgb4: clip_tbl: Fix spelling mistake "wont" -> "won't"
+Date:   Thu, 26 Aug 2021 13:01:08 +0100
+Message-Id: <20210826120108.12185-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -47,26 +46,35 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in a literal string. Fix it.
+There are spelling mistakes in dev_err and dev_info messages. Fix them.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/scsi/sr_ioctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/chelsio/cxgb4/clip_tbl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/sr_ioctl.c b/drivers/scsi/sr_ioctl.c
-index 79d9aa2df528..ddd00efc4882 100644
---- a/drivers/scsi/sr_ioctl.c
-+++ b/drivers/scsi/sr_ioctl.c
-@@ -523,7 +523,7 @@ static int sr_read_sector(Scsi_CD *cd, int lba, int blksize, unsigned char *dest
- 			return rc;
- 		cd->readcd_known = 0;
- 		sr_printk(KERN_INFO, cd,
--			  "CDROM does'nt support READ CD (0xbe) command\n");
-+			  "CDROM doesn't support READ CD (0xbe) command\n");
- 		/* fall & retry the other way */
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/clip_tbl.c b/drivers/net/ethernet/chelsio/cxgb4/clip_tbl.c
+index 163efab27e9b..5060d3998889 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/clip_tbl.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/clip_tbl.c
+@@ -120,7 +120,7 @@ int cxgb4_clip_get(const struct net_device *dev, const u32 *lip, u8 v6)
+ 				write_unlock_bh(&ctbl->lock);
+ 				dev_err(adap->pdev_dev,
+ 					"CLIP FW cmd failed with error %d, "
+-					"Connections using %pI6c wont be "
++					"Connections using %pI6c won't be "
+ 					"offloaded",
+ 					ret, ce->addr6.sin6_addr.s6_addr);
+ 				return ret;
+@@ -133,7 +133,7 @@ int cxgb4_clip_get(const struct net_device *dev, const u32 *lip, u8 v6)
+ 	} else {
+ 		write_unlock_bh(&ctbl->lock);
+ 		dev_info(adap->pdev_dev, "CLIP table overflow, "
+-			 "Connections using %pI6c wont be offloaded",
++			 "Connections using %pI6c won't be offloaded",
+ 			 (void *)lip);
+ 		return -ENOMEM;
  	}
- 	/* ... if this fails, we switch the blocksize using MODE SELECT */
 -- 
 2.32.0
 

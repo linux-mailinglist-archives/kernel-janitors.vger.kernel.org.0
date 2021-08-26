@@ -2,83 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B9053F89C4
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Aug 2021 16:07:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50F683F89EE
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Aug 2021 16:16:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232691AbhHZOIO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Aug 2021 10:08:14 -0400
-Received: from mga17.intel.com ([192.55.52.151]:51930 "EHLO mga17.intel.com"
+        id S242842AbhHZORL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Aug 2021 10:17:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38826 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229451AbhHZOIM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Aug 2021 10:08:12 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10088"; a="197986110"
-X-IronPort-AV: E=Sophos;i="5.84,353,1620716400"; 
-   d="scan'208";a="197986110"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2021 07:06:44 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.84,353,1620716400"; 
-   d="scan'208";a="598493298"
-Received: from kuha.fi.intel.com ([10.237.72.162])
-  by fmsmga001.fm.intel.com with SMTP; 26 Aug 2021 07:06:41 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 26 Aug 2021 17:06:40 +0300
-Date:   Thu, 26 Aug 2021 17:06:40 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        id S242840AbhHZORK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 26 Aug 2021 10:17:10 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A4D4260E78;
+        Thu, 26 Aug 2021 14:16:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629987383;
+        bh=Id9hdMS4ZVRLE8sX6tHUAZFHZyYA74j1rQP2S76OPIs=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=h3hLyQPwalKZygt/4rARZPh/L7wWvt3/aLK27jxsyYNxuZ3pe/n4X0J3cF4UWEEMW
+         Pu7M3vDvPlvzJEwXitSWmyUJfECA7ej52IPb8x2XXL2+4GAEM2t7H5md29y4lFz5uu
+         kik/jTyhhV3+nHwQULaNcssBhRN7DaDHbrJ3wv8gno7FUicqk1D3N5un125cStujUj
+         F/cseX3ayQDm2fKaz+WY1PFapnBPus01BocUdoAtTD1g3wyc61wC9yzMtoBANnpkX+
+         6qwQBeTiVoArdogg0Iu0JnV+/sIKUiig9bb1q9Jl+FkeAlHn+UnCULPNNJnfGDnRoJ
+         Aoqfzfw+EDUHQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     linux-arm-kernel@lists.infradead.org, alsa-devel@alsa-project.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Colin King <colin.king@canonical.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        linux-mediatek@lists.infradead.org
+Cc:     Mark Brown <broonie@kernel.org>, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] usb: typec: tcpm: Fix spelling mistake "atleast" -> "at
- least"
-Message-ID: <YSef8I5zsn6S5ebe@kuha.fi.intel.com>
-References: <20210826123959.14838-1-colin.king@canonical.com>
+Subject: Re: [PATCH][next] ASoC: mediatek: mt8195: Fix spelling mistake "bitwiedh" -> "bitwidth"
+Date:   Thu, 26 Aug 2021 15:15:45 +0100
+Message-Id: <162998707936.5647.1881702741528479360.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210826112611.10356-1-colin.king@canonical.com>
+References: <20210826112611.10356-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210826123959.14838-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Aug 26, 2021 at 01:39:59PM +0100, Colin King wrote:
+On Thu, 26 Aug 2021 12:26:11 +0100, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> There are spelling mistakes in a comment and a literal string.
-> Fix them.
+> There is a spelling mistake in a dev_dbg message. Fix it.
 > 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 049f4c61ee82..b981fc39fa3c 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -278,7 +278,7 @@ struct pd_mode_data {
->   * @req_max_curr: Requested max current of the port partner
->   * @req_out_volt: Requested output voltage to the port partner
->   * @req_op_curr: Requested operating current to the port partner
-> - * @supported: Parter has atleast one APDO hence supports PPS
-> + * @supported: Parter has at least one APDO hence supports PPS
->   * @active: PPS mode is active
->   */
->  struct pd_pps_data {
-> @@ -2050,7 +2050,7 @@ enum pdo_err {
->  
->  static const char * const pdo_err_msg[] = {
->  	[PDO_ERR_NO_VSAFE5V] =
-> -	" err: source/sink caps should atleast have vSafe5V",
-> +	" err: source/sink caps should at least have vSafe5V",
->  	[PDO_ERR_VSAFE5V_NOT_FIRST] =
->  	" err: vSafe5V Fixed Supply Object Shall always be the first object",
->  	[PDO_ERR_PDO_TYPE_NOT_IN_ORDER] =
-> -- 
-> 2.32.0
+> 
+> 
+> [...]
 
--- 
-heikki
+Applied to
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: mediatek: mt8195: Fix spelling mistake "bitwiedh" -> "bitwidth"
+      commit: 11a08e05079a9328023d236b82bd7981bcde0852
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

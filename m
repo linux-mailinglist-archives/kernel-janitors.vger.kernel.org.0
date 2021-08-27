@@ -2,37 +2,41 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E7433F99E6
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Aug 2021 15:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D5DE3F9A2C
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Aug 2021 15:32:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245431AbhH0NXn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Aug 2021 09:23:43 -0400
-Received: from ozlabs.org ([203.11.71.1]:41477 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S245341AbhH0NXd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Aug 2021 09:23:33 -0400
+        id S245286AbhH0N3c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Aug 2021 09:29:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34930 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245350AbhH0N3U (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 27 Aug 2021 09:29:20 -0400
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CA5AC061757;
+        Fri, 27 Aug 2021 06:28:31 -0700 (PDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gx0kp4HDfz9tjx;
-        Fri, 27 Aug 2021 23:22:42 +1000 (AEST)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gx0sS3ky9z9s1l;
+        Fri, 27 Aug 2021 23:28:28 +1000 (AEST)
 From:   Michael Ellerman <patch-notifications@ellerman.id.au>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        linuxppc-dev@lists.ozlabs.org, Michael Neuling <mikey@neuling.org>,
-        kvm-ppc@vger.kernel.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+To:     Michael Neuling <mikey@neuling.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Paul Mackerras <paulus@ozlabs.org>, kvm-ppc@vger.kernel.org,
         Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@ozlabs.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     kernel-janitors@vger.kernel.org, stable@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linux-kernel@vger.kernel.org
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linuxppc-dev@lists.ozlabs.org
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
 In-Reply-To: <20210819113954.17515-1-lukas.bulwahn@gmail.com>
 References: <20210819113954.17515-1-lukas.bulwahn@gmail.com>
 Subject: Re: [PATCH v2 0/2] Kconfig symbol fixes on powerpc
-Message-Id: <163007014161.52768.9837791663447874626.b4-ty@ellerman.id.au>
-Date:   Fri, 27 Aug 2021 23:15:41 +1000
+Message-Id: <163007088913.57684.694810119971696811.b4-ty@ellerman.id.au>
+Date:   Fri, 27 Aug 2021 23:28:09 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,9 +55,9 @@ On Thu, 19 Aug 2021 13:39:52 +0200, Lukas Bulwahn wrote:
 > 
 > [...]
 
-Patch 1 applied to powerpc/next.
+Patch 2 applied to powerpc/fixes.
 
-[1/2] powerpc: kvm: remove obsolete and unneeded select
-      https://git.kernel.org/powerpc/c/c26d4c5d4f0df7207da3975458261927f9305465
+[2/2] powerpc: rectify selection to ARCH_ENABLE_SPLIT_PMD_PTLOCK
+      https://git.kernel.org/powerpc/c/310d2e83cb9b7f1e7232319880e3fcb57592fa10
 
 cheers

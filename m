@@ -2,76 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0B563FAD4F
-	for <lists+kernel-janitors@lfdr.de>; Sun, 29 Aug 2021 18:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81C903FAD67
+	for <lists+kernel-janitors@lfdr.de>; Sun, 29 Aug 2021 19:23:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235846AbhH2Q7k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 29 Aug 2021 12:59:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54740 "EHLO mail.kernel.org"
+        id S235664AbhH2RMN convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 29 Aug 2021 13:12:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58642 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229467AbhH2Q7j (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 29 Aug 2021 12:59:39 -0400
+        id S229706AbhH2RMN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 29 Aug 2021 13:12:13 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BC74760698;
-        Sun, 29 Aug 2021 16:58:43 +0000 (UTC)
-Date:   Sun, 29 Aug 2021 18:01:58 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 4D90060F38;
+        Sun, 29 Aug 2021 17:11:17 +0000 (UTC)
+Date:   Sun, 29 Aug 2021 18:14:31 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Colin King <colin.king@canonical.com>,
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH][next] iio: adc: Fix -EBUSY timeout error return
-Message-ID: <20210829180136.58a11601@jic23-huawei>
-In-Reply-To: <CA+V-a8ugKC8z2=0usUca4eYFLTHEorxdtmdmbE5vXZDo_Ob5vA@mail.gmail.com>
-References: <20210817172111.495897-1-colin.king@canonical.com>
-        <OSZPR01MB7019DD199CB1B9A4521A3C28AAFF9@OSZPR01MB7019.jpnprd01.prod.outlook.com>
-        <CAHp75VdWFTi4oSWG45NunJwpe=LdMhAMEAEJh21ML2QXszgS+A@mail.gmail.com>
-        <CA+V-a8ugKC8z2=0usUca4eYFLTHEorxdtmdmbE5vXZDo_Ob5vA@mail.gmail.com>
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        angelo.compagnucci@gmail.com,
+        linux-iio <linux-iio@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: adc128s052: Fix the error handling path of
+ 'adc128_probe()'
+Message-ID: <20210829181431.67a52d36@jic23-huawei>
+In-Reply-To: <f33069f0-601b-4bbb-3766-026f7a161912@wanadoo.fr>
+References: <85189f1cfcf6f5f7b42d8730966f2a074b07b5f5.1629542160.git.christophe.jaillet@wanadoo.fr>
+        <CA+U=DsoTdb3b+LJEtUagKr=LmK8E2M_2yhtNDENKsczqGaUPYA@mail.gmail.com>
+        <f33069f0-601b-4bbb-3766-026f7a161912@wanadoo.fr>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 19 Aug 2021 18:39:02 +0100
-"Lad, Prabhakar" <prabhakar.csengg@gmail.com> wrote:
+On Tue, 24 Aug 2021 21:45:38 +0200
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-> On Thu, Aug 19, 2021 at 6:21 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> >
-> > On Wed, Aug 18, 2021 at 6:51 PM Prabhakar Mahadev Lad
-> > <prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
-> >  
-> > > with the subject changed to above: Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>  
-> >  
-> Again with the above fixed:
-> Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> 
-> > Always put your tags in a single tag per single line. This will allow
-> > tools to catch them up automatically.
-> >  
-> My bad, fixed that now.
+> Le 23/08/2021 à 08:42, Alexandru Ardelean a écrit :
+> > On Sat, Aug 21, 2021 at 1:43 PM Christophe JAILLET
+> > <christophe.jaillet@wanadoo.fr> wrote:  
+> >>
+> >> A successful 'regulator_enable()' call should be balanced by a
+> >> corresponding 'regulator_disable()' call in the error handling path of the
+> >> probe, as already done in the remove function.
+> >>
+> >> Update the error handling path accordingly.  
+> > 
+> > Good catch.
+> > For the fix:
+> > 
+> > Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
 
-Tweaked patch name as suggested and applied to the fixes-togreg branch of iio.git
-
-Too late to sneak this in pre merge window, so I'll do it after rc1.
+Applied and marked for stable.
 
 Thanks,
+> > 
+> > If you want, you can also send a conversion to
+> > devm_iio_device_register() for this driver.
+> > And also move the regulator_disable() on a devm_add_action_or_reset() callback.
+> > Maybe, that's already part of your plan. If so, apologies for the noise :)
+> >   
+> 
+> Hi,
+> 
+> I hadn't planned another step but I can send a follow-up patch for that.
+> 
+> CJ
+
+Note I'll have to sit on that one until this patch is upstream which will be a few weeks
+(perhaps a month) given timing.
 
 Jonathan
-
-> 
-> Cheers,
-> Prabhakar
-

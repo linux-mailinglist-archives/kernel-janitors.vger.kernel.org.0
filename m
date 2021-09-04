@@ -2,74 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60194400B85
-	for <lists+kernel-janitors@lfdr.de>; Sat,  4 Sep 2021 15:47:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 465F1400B48
+	for <lists+kernel-janitors@lfdr.de>; Sat,  4 Sep 2021 14:10:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231165AbhIDNsp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 4 Sep 2021 09:48:45 -0400
-Received: from mail.repatriados.gov.py ([168.90.176.63]:16763 "EHLO
-        mail.repatriados.gov.py" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229765AbhIDNso (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 4 Sep 2021 09:48:44 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mail.repatriados.gov.py (Postfix) with ESMTP id C690D208BD6;
-        Fri,  3 Sep 2021 22:56:58 -0400 (-04)
-Received: from mail.repatriados.gov.py ([127.0.0.1])
-        by localhost (mail.repatriados.gov.py [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id IQBaUMqlEC0t; Fri,  3 Sep 2021 22:56:58 -0400 (-04)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.repatriados.gov.py (Postfix) with ESMTP id 1DDA56C9D8;
-        Wed,  1 Sep 2021 02:17:07 -0400 (-04)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.repatriados.gov.py 1DDA56C9D8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=repatriados.gov.py;
-        s=66AB3A4C-4957-11E8-AF15-073A956E488A; t=1630477030;
-        bh=re+Bi7IjhFEavKutGVOnSLzHkgr9hnVuewhYSbG4AUw=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=ZedoxzweVWRIa0lgpNzZXGdb0Tfzzlbi+zRA24UKC8uOSuKjlFIcITplQjhVVDF/I
-         pdOyJeO3k5PzpQjP9nLMbox9BSDjgljgYmw33i2Ad+FPt60idKvMkPUl2aZrV7UQNz
-         Fj/oDy3MYJOwV8ZvJ1o0chN8MCHPyOoPsijGWweBh5KV5+vYQ3L4fEibLO0G6dpMOe
-         Dc8g+8HI8Zx9QWA/QItvSZ8GSN+K2Zh8hgn0nksyqiJ5SEV7aIt70dT65zlAPjv+zY
-         irdfwI9YzX0GqbRePwI42J+SuBLPN1qerjyMFJQexbs2kAU/G1zynAkFyDPWa9pr+4
-         hfUym2F8yk3aQ==
-X-Virus-Scanned: amavisd-new at repatriados.gov.py
-Received: from mail.repatriados.gov.py ([127.0.0.1])
-        by localhost (mail.repatriados.gov.py [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id kwI778eAa40c; Wed,  1 Sep 2021 02:17:06 -0400 (-04)
-Received: from cris-PC.www.huaweimobilewifi.com (unknown [105.4.4.195])
-        by mail.repatriados.gov.py (Postfix) with ESMTPSA id 1D7AF6634D;
-        Tue, 31 Aug 2021 22:44:48 -0400 (-04)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S236132AbhIDMLH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 4 Sep 2021 08:11:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44444 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234198AbhIDMLH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 4 Sep 2021 08:11:07 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id CB96861056;
+        Sat,  4 Sep 2021 12:10:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630757405;
+        bh=/VFOJSeSZrSvxsBdyRd/+3bUuYlEWW2sfz8PdUhiDec=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=kHi/XRz7M0GeHNRu5MHVZ2I7K3fNZO5JdX0XN0CDTiplDYGlCw180DkELIWcut6DT
+         GU0cpU9t/iMm+Z7Eoxp4EK7WPIHXwomHui+Uci7UeRojk1bQKQKUWlFZKUtxgnh6SK
+         DBVjtNult17zGgHsxsiBQHKkiguZRK1xzHrMJC2qs2XffMFDOjvCty+UWqt8+YVOBD
+         3jxUUBd3fPChOuznhnPOm9no7MSD7A+s4Q+8MmG2JXdtvuk34NHdb+FzDuRefC/3gN
+         UhPSJ7O9ZgulG3rQxtgiHhROkNbBacHexopJJxm5JkWSi1uAKMJ/dTGPeTwTFv9egY
+         XeAEx7NYAfmSQ==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id BF92E60A17;
+        Sat,  4 Sep 2021 12:10:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Euro?=
-To:     Recipients <mdominguez@repatriados.gov.py>
-From:   ''Charles jackon'' <mdominguez@repatriados.gov.py>
-Date:   Wed, 01 Sep 2021 04:45:20 +0200
-Reply-To: charlesjacksonjr001@gmail.com
-Message-Id: <20210901024449.1D7AF6634D@mail.repatriados.gov.py>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 1/2] octeontx2-af: Add a 'rvu_free_bitmap()' function
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <163075740577.14004.1501295822330235080.git-patchwork-notify@kernel.org>
+Date:   Sat, 04 Sep 2021 12:10:05 +0000
+References: <37f3e7e21a1c0f29244b807e5b995b2abeec6c3e.1630738450.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <37f3e7e21a1c0f29244b807e5b995b2abeec6c3e.1630738450.git.christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     sgoutham@marvell.com, lcherian@marvell.com, gakula@marvell.com,
+        jerinj@marvell.com, hkelam@marvell.com, sbhatta@marvell.com,
+        davem@davemloft.net, kuba@kernel.org, skori@marvell.com,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hallo
+Hello:
 
-Ich bin Charles W. Jackson aus North Carolina, Vereinigte Staaten von Ameri=
-ka, und ich bin der Gewinner des Mega-Millionen-Jackpots von 344 Millionen =
-US-Dollar. Ich spende die Summe von 2.000.000 Millionen Euro als Teil der H=
-ilfsgelder f=FCr das Corona-Virus.
+This series was applied to netdev/net.git (refs/heads/master):
 
-Dies ist Ihr Spendencode: [CJ530342019]
+On Sat,  4 Sep 2021 09:34:41 +0200 you wrote:
+> In order to match 'rvu_alloc_bitmap()', add a 'rvu_free_bitmap()' function
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 5 +++++
+>  drivers/net/ethernet/marvell/octeontx2/af/rvu.h | 1 +
+>  2 files changed, 6 insertions(+)
 
-www.youtube.com/watch?v=3DBSr8myiLPMQ
+Here is the summary with links:
+  - [1/2] octeontx2-af: Add a 'rvu_free_bitmap()' function
+    https://git.kernel.org/netdev/net/c/d863ca67bb6e
+  - [2/2] octeontx2-af: Fix some memory leaks in the error handling path of 'cgx_lmac_init()'
+    https://git.kernel.org/netdev/net/c/ecbd690b52dc
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-Bitte antworten Sie auf diese E-Mail mit dem SPENDERCODE:
-
-charlesjacksonjr001@gmail.com
-
-Ich hoffe, dass Sie und Ihre Familie dies durchkommen
-
-
-Herr Charles Jackson

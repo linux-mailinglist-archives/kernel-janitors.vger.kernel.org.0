@@ -2,86 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB5A340C837
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Sep 2021 17:22:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AC3A40CBEE
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Sep 2021 19:49:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238278AbhIOPYK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 Sep 2021 11:24:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35806 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238147AbhIOPYG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 Sep 2021 11:24:06 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D3738611C6;
-        Wed, 15 Sep 2021 15:22:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631719367;
-        bh=wfCrkPF9uiip+dMt9hQgVwVQGgywxVqYrYAQt4PemHc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uS+lULv9jwBDnz23rHC++bq3uxzQPTAOTeaM7Hvgi2cgl/5P9k5vGozDCXPjHhLvF
-         oIz+FfbTEOYlfUYzuXXYMDgcsAjpfUilNTPlG+MSHOoZZ+b1rtIbWFKOsVG1NNUd8Y
-         gEOtXaFuEIIZf5MkKeo5BFSAHDFcrgIg5joODAAQrPlLrkFplB/4YysjMa2ZRHnhdM
-         Fy1hIRyMsYXW0WH3sI9tLTVismpNYEDDU6+V45+XLoy3ebV9KsZwmjdcZS6kFzGgAF
-         LXG3QnezUEE6r9R6YvVr20JIZNWznKObj2yiW7xQ9fYWz5Nz0a0AWTzdi2xNDSfe6e
-         JiRsmbq6kp6NQ==
-From:   Mark Brown <broonie@kernel.org>
-To:     Takashi Iwai <tiwai@suse.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        alsa-devel@alsa-project.org, Colin King <colin.king@canonical.com>,
-        linux-mediatek@lists.infradead.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        linux-arm-kernel@lists.infradead.org
-Cc:     Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] ASoC: mediatek: mt8195: make array adda_dai_list static const
-Date:   Wed, 15 Sep 2021 16:21:47 +0100
-Message-Id: <163171901943.9674.10990878164291138218.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210915105027.10805-1-colin.king@canonical.com>
-References: <20210915105027.10805-1-colin.king@canonical.com>
+        id S230088AbhIORvE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 Sep 2021 13:51:04 -0400
+Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:24465 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229738AbhIORvD (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 15 Sep 2021 13:51:03 -0400
+Received: from [192.168.1.18] ([90.126.248.220])
+        by mwinf5d05 with ME
+        id uHpg2500H4m3Hzu03Hpg24; Wed, 15 Sep 2021 19:49:42 +0200
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 15 Sep 2021 19:49:42 +0200
+X-ME-IP: 90.126.248.220
+Subject: Re: [PATCH] usb: musb: tusb6010: uninitialized data in
+ tusb_fifo_write_unaligned()
+To:     Dan Carpenter <dan.carpenter@oracle.com>, Bin Liu <b-liu@ti.com>,
+        Felipe Balbi <felipe.balbi@nokia.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20210915103659.GB7060@kili>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <e3ce24c3-477f-5a55-a89a-a0cdff564d8e@wanadoo.fr>
+Date:   Wed, 15 Sep 2021 19:49:40 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20210915103659.GB7060@kili>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 15 Sep 2021 11:50:27 +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+Le 15/09/2021 à 12:36, Dan Carpenter a écrit :
+> This is writing to the first 1 - 3 bytes of "len" and then writing all
+> four bytes to musb_writel().  The last byte is always going to be
+> garbage.  Zero out the last bytes instead.
 > 
-> Don't populate the array adda_dai_list on the stack but instead it
-> static const. Also makes the object code smaller by 33 bytes:
+> Fixes: 550a7375fe72 ("USB: Add MUSB and TUSB support")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>   drivers/usb/musb/tusb6010.c | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> Before:
->    text	   data	    bss	    dec	    hex	filename
->   28271	  11640	      0	  39911	   9be7	mt8195/mt8195-dai-adda.o
+> diff --git a/drivers/usb/musb/tusb6010.c b/drivers/usb/musb/tusb6010.c
+> index c42937692207..c510fb84faa6 100644
+> --- a/drivers/usb/musb/tusb6010.c
+> +++ b/drivers/usb/musb/tusb6010.c
+> @@ -190,6 +190,7 @@ tusb_fifo_write_unaligned(void __iomem *fifo, const u8 *buf, u16 len)
+>   	}
+>   	if (len > 0) {
+>   		/* Write the rest 1 - 3 bytes to FIFO */
+> +		len = 0;
+
++		val = 0;
+?
+
+>   		memcpy(&val, buf, len);
+>   		musb_writel(fifo, 0, val);
+>   	}
 > 
-> [...]
 
-Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: mediatek: mt8195: make array adda_dai_list static const
-      commit: ce3f9357638720f4a78f6a6e481941c37f33bceb
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+CJ

@@ -2,85 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA830414A58
-	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Sep 2021 15:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22823414BCD
+	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Sep 2021 16:24:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231663AbhIVNS6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 22 Sep 2021 09:18:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40518 "EHLO
+        id S233513AbhIVOZ7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 22 Sep 2021 10:25:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230413AbhIVNS5 (ORCPT
+        with ESMTP id S236027AbhIVOZ6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 22 Sep 2021 09:18:57 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C62C061574
-        for <kernel-janitors@vger.kernel.org>; Wed, 22 Sep 2021 06:17:27 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id d6so6611173wrc.11
-        for <kernel-janitors@vger.kernel.org>; Wed, 22 Sep 2021 06:17:27 -0700 (PDT)
+        Wed, 22 Sep 2021 10:25:58 -0400
+Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9BF8C06175F
+        for <kernel-janitors@vger.kernel.org>; Wed, 22 Sep 2021 07:24:28 -0700 (PDT)
+Received: by mail-vs1-xe36.google.com with SMTP id z62so3121200vsz.9
+        for <kernel-janitors@vger.kernel.org>; Wed, 22 Sep 2021 07:24:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=FPfmBJzHT+JaocXdsOVwjR5yIsUZhr27wAcmXc5LLyw=;
-        b=Hz+9GFA/nDOvS6b2pvrs/o4qttiLDv/3qcOO+yBAaGVnYaz56kHxvOvQuptlQqjKHz
-         vhsztXkx1i27riCnpY9UKPZsCNFylntcNak9k4JvLz3AkHe5CTTLb1vzTvEiu2YhsZDl
-         IutxxV+bVcBxfoOuIWHKH05knX5RJN02doZjdxqQxOrVpaiQO7/qPDEQ8FxBFmLfMds3
-         c6Yj44fO9b23HJCnxfcIxNFGFP+StM31QNUigrNmaf4f2Kz8Hk9d3kybPmaJVuJyJBgi
-         SWkHIOaxqJEsV4t8Xu2O9kIF0EVr1iOjhqX7Jt6Yw8XKPBDd16SR9VJJGX70IUGjx+3I
-         F/og==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=n9CHWZyWDp9kvdnuR+4lcf8cF9DH3RRu6znx/rfpPqs=;
+        b=odL3wjNPb7I/0EoO8dr+zljh4jE2fNC4oA2cjJ+HsQuUByWbcm8xybAfPB5XBu93PO
+         Yz9D2apLt8mEiEfIMQlmSLNthA+3pPQCOCJthLiRwhhFKnqHSdO2kNvGSwDmIYDq5V6g
+         NGpko1fxp9twGzQ2emsGAkJStrw6Ukxg53KGJqyFXKspthWU0kr5o/0PmnyrODt2ZEGg
+         zvZG2ou3UTwZN/ouBhmkRec6cKvs57XzSRKLnxQJTlZH8X5MjgPBf26l556eAwj+7Aii
+         5j5Ucqbm76Yk/kkwlaCbCacNNdZlWSCm1pIfWO+xOyrrlb6VYCcf2x8W7L2YoXiwJxRm
+         bMHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=FPfmBJzHT+JaocXdsOVwjR5yIsUZhr27wAcmXc5LLyw=;
-        b=pJZZI3QYZLfqBGag7R04f61BLUpxx0vIHmQPQynibKyULXCXN/uKr84HUbLL3qfHdW
-         kB91Kc5KtXNfH2e/3Xld6Zk7CNMr5DL85srJM5QFJfr1sktql9vQQnL6Nk879qC5LGcB
-         lV3sMtqaJb0GfOUh07tl71g7yJj0Fs8VkYtAyBXhdjYpihAW5xP+VesNccbUpY920bh3
-         jLqUwNmaoWuaYQKm1JR7+NnHQ+wxJEReoar1uK0V9pSipgAk1oifJKlxgPCyeZLRCtgp
-         2UOnbMzByO8rCFyaImH83lK11HrwoOLlGDUccJsljXhRq6tDedzliBGbiGdmc3vwX8sY
-         DJeg==
-X-Gm-Message-State: AOAM530CojF7KTyjAvzd8tKPH91F7q1VvSDd0KruhwQku5KVEUjgccGf
-        TTBg99h2KZbMevWcNOMuj+A9iQ==
-X-Google-Smtp-Source: ABdhPJxnCGGSJkeD7rng8f/uNJHmNF+Jg0efhKKJmNzWkc9UJw6VAEz47CT0ALJuUJUwR2WZVMeoOQ==
-X-Received: by 2002:a5d:56cf:: with SMTP id m15mr41644241wrw.240.1632316646386;
-        Wed, 22 Sep 2021 06:17:26 -0700 (PDT)
-Received: from google.com ([95.148.6.233])
-        by smtp.gmail.com with ESMTPSA id g131sm1993221wme.22.2021.09.22.06.17.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Sep 2021 06:17:25 -0700 (PDT)
-Date:   Wed, 22 Sep 2021 14:17:23 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mfd: ti_am335x_tscadc: Fix spelling mistake "atleast" ->
- "at least"
-Message-ID: <YUss4+szE8241hP4@google.com>
-References: <20210826123250.14234-1-colin.king@canonical.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=n9CHWZyWDp9kvdnuR+4lcf8cF9DH3RRu6znx/rfpPqs=;
+        b=HN/XprVxXodTV3EKo8yCKnLX4i+MrCVOgwljI5t6tuwONVhTX62t26bChN9u500k5x
+         cyv0VP5NkJuci3NKQ84ZcQXVPu89itzD6gtPPWynsD6j0ssRJTr90rrJKEB6rtA+QiwZ
+         elJesG5UdeVRczt3tK+k714EGKh794mTNfJoOIYz7GMZRzYZPPe6+DXhbhAszfJa0qas
+         T0IxWLoAKrBgojJeAF1z85Y+ZafTJn+Wxwwhp8s/E0PeWb0VnL4fqJr+HQndrxUmXlN7
+         //H8L+HlxNe9Mpo2rDpzHTVJH9SXCZ3KXN9wpBhU14decxog5FBqBOw0WVI0FbRC2SqN
+         kaqw==
+X-Gm-Message-State: AOAM533QIDxHyCK6bvM8Y3kkgq0Rw+Vy0shv00wf7TbQWjYdLFNcti8K
+        YizJNGo14Cs+b259dZxbd0lkU3ECV4ksBKKe8Pc=
+X-Google-Smtp-Source: ABdhPJzPzLSijOszPBevexjHldaaqEMTc6CkBViPa5wbzxTT9B0EL9xFruWgnqGtnhyFtWUQjGOQtLk2EJijGK0P4jM=
+X-Received: by 2002:a05:6102:20c1:: with SMTP id i1mr14438141vsr.60.1632320666521;
+ Wed, 22 Sep 2021 07:24:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210826123250.14234-1-colin.king@canonical.com>
+Received: by 2002:a67:ca19:0:0:0:0:0 with HTTP; Wed, 22 Sep 2021 07:24:25
+ -0700 (PDT)
+Reply-To: mrs.fedora@yahoo.com
+From:   "Mrs. Fedora Borislav" <nnakhodorkovsky2@gmail.com>
+Date:   Wed, 22 Sep 2021 15:24:25 +0100
+Message-ID: <CANBA4+ePa0L40OzN2iWGkHui=rteMSRX9cHVLt33GdtgOGzSzA@mail.gmail.com>
+Subject: HELLO
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 26 Aug 2021, Colin King wrote:
-
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in a dev_err message. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/mfd/ti_am335x_tscadc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Applied, thanks.
-
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Hello
+
+I am Mrs.Fedora Borislav from Russia, i have a business proposal for
+you. Please reach me on my private email for more information.(
+mrs.fedora1@hotmail.com)
+
+Thank you.

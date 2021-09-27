@@ -2,78 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F4474190D4
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Sep 2021 10:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2C794190D5
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Sep 2021 10:30:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233416AbhI0Ibt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Sep 2021 04:31:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59072 "EHLO
+        id S233411AbhI0Ib5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Sep 2021 04:31:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233411AbhI0Ibr (ORCPT
+        with ESMTP id S233337AbhI0Ib5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Sep 2021 04:31:47 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDD65C061604
-        for <kernel-janitors@vger.kernel.org>; Mon, 27 Sep 2021 01:30:08 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id y28so73406584lfb.0
-        for <kernel-janitors@vger.kernel.org>; Mon, 27 Sep 2021 01:30:08 -0700 (PDT)
+        Mon, 27 Sep 2021 04:31:57 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 569E8C061575
+        for <kernel-janitors@vger.kernel.org>; Mon, 27 Sep 2021 01:30:19 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id i4so73854870lfv.4
+        for <kernel-janitors@vger.kernel.org>; Mon, 27 Sep 2021 01:30:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=J7Z4frfkNygPo6FHbFDcIBQYjHYPOVKaL1K52NaFr7Y=;
-        b=l4OB+VMWI73wwxS+8p5xSt7MI/zoS8QeuT/L9P/Wv8G02hUXGtKsGe31jOy2TxUxwl
-         h9b3igQOINuFxO0xn++RGFO7snUT/JdlFHVc9bJCJ6/FGejsWk2x6clBscMhQBLY77eR
-         3+d20BuZADEcwR7x5cPUp145zauCmUvUogwUZ9fPxAWZONJYBWTlNRn42c27iuqZTmEI
-         PK0JcXY1ZGfbI+ByvO4gX4wCbnpYkWsp8ja8v74LeOnP1Bpqm9jMhWH28X7RU712EvAD
-         XqyKGzvgLCRVJCfHG+nnXnWlunOyQVTaQGAL4t21z/K5ouJa8f0/s1QSVQ4JEVozQrAO
-         YV0w==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GA+w/7Fz7pakq81lfEfoU3pvOJjsT/IRnVhcz7mumtU=;
+        b=PqTM8Z1XyThr8zP1E88HEWwxMztdEkgS/wFDGnZ2Hs5wm4Uqwe7AIcFdo6m02qfgZu
+         YWUws2qQZBc8xVg+76rHPY1oSmoQapqoVDn4mCR98TuaR047XnaAOVaC05kYQ00/NsyJ
+         wUYZ8LML2ZCJlQxtglPY5b+XZ1apHJPn4VEJJWHPD+ppNd7MEz/ORS7HJAzBt5nVFyda
+         cQVTY/M2rgCJwV7tkNN69UV9v5Gfs9hwq2hFlDfITZFeR7ovUVw+Kt5rHw5PVFnFhOHw
+         d3BIyZ7osifz3oXJTFsSQkVBdD+bBpwBe2sBBpAI2nQQiLJ20hNfFzkeLJP+eZuC9DTG
+         CwCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=J7Z4frfkNygPo6FHbFDcIBQYjHYPOVKaL1K52NaFr7Y=;
-        b=ohD3R7rZz2yi5XZk1tEanH8e63FIqlAciAFM/fSPISt3jtb/TbVr2gmMIcLMXZsljo
-         jk2k9Uhk34MA16DZzGY8aYBo1VmPg2/S2yx+BPw7MNZ3Mn/0doU2mAhd5qoT2dpYs/iu
-         1Nl1iXDYOPwDGcQ0eBZrq9xRlXTtAWYnBiOCRKHiiRbSss7a0zwEt9ZqpgwQE3eMLx8+
-         72b1PLKBmy7yPqowvhZcIaF4TisYqHjStX+Gv+EWJHJEvPzipbXMovjwByx/V+n0GL6B
-         n9Ko7xf0ML8aOdOmXmcm5jMW/GwrF/3H8mOMvPht6Qfb9+TC6iKn2xaOksupAkdGMmCV
-         6aow==
-X-Gm-Message-State: AOAM530sckTNAHsfC98nXV+yug6UlM9e1TVeFsHEjVTgaqnVTUK9ITRl
-        ARU/fBVmcQBEbQn+Ngc7QI2olRJH8VLzyxnB8gQ=
-X-Google-Smtp-Source: ABdhPJzqH1oa3gJtWRnFjavTNczaKgYZxEIdn94hCgZy/QW/C6Thu4XZdaoycPwybw2FEDE3Lat4AZy1ic24/GgxOfs=
-X-Received: by 2002:ac2:4c97:: with SMTP id d23mr22566616lfl.15.1632731406839;
- Mon, 27 Sep 2021 01:30:06 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GA+w/7Fz7pakq81lfEfoU3pvOJjsT/IRnVhcz7mumtU=;
+        b=vu9ftHmLRihKYlLXbZoeMwXjYjb6ZiLsVC5ONCtxHavQO58YnWVDDHvsGER8lrRu1r
+         /IBsIDRTbQlmc6UbwBDVlhMgt1JfyAKRBctqs5THlgvIuN3bRuZ/zMqPlkvt5TgSYtCG
+         eupnd63uLWG85S3rqu3+rIkZsgQclJKwPczrufhDyAOUonJKTYID/kkDLl1zYieYlAnk
+         TcyxOwKpOWZ5Uh7iEnNtTU5WTrGPbt1wNYwxBZ2ZOvqiOCXNf+ETcFPPRKJwism+T0F1
+         VArH5RHeiP5UQf34yp2XuValHe/JL1o0WBOEVbQQ9dmviLzeUQtbixnd+l5n7fQxwKpy
+         YKmg==
+X-Gm-Message-State: AOAM530w3yEnlVWkE+ILshoT4Zc+pShc7w00dKlOM4rckS/LLn/q+JfI
+        VsI52tKCfpJnDceTBEd/ItyK9iAsMJAUYD3XMMU=
+X-Google-Smtp-Source: ABdhPJwYHjyBP7mZhAmpgLhGWAsbaUV7IlU5kun3EgVI7EacBVOexLL13DDFGMMullGRY6HEuHbKqUqQ8T3lZpWCQxM=
+X-Received: by 2002:a2e:9901:: with SMTP id v1mr26572450lji.384.1632731417725;
+ Mon, 27 Sep 2021 01:30:17 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:651c:119c:0:0:0:0 with HTTP; Mon, 27 Sep 2021 01:30:05
- -0700 (PDT)
-Reply-To: ayishagddafio@mail.ru
-From:   Aisha Gaddafi <mahasaliou99999@gmail.com>
-Date:   Mon, 27 Sep 2021 01:30:05 -0700
-Message-ID: <CAMugOs9QR8XUjcsVW2p72U-Ja1ERgB_9fs5+qArkd5GTp1yHMw@mail.gmail.com>
-Subject: Liebster Freund,?
-To:     undisclosed-recipients:;
+References: <20210927081628.GA10186@kili>
+In-Reply-To: <20210927081628.GA10186@kili>
+From:   Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Date:   Mon, 27 Sep 2021 10:30:06 +0200
+Message-ID: <CAMeQTsaobgz5kc7m+2_xfqzTVd_zF3Ae=Htscc0JjG3B-cdegg@mail.gmail.com>
+Subject: Re: [PATCH] drm/gma500: Fix error code in probe()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        kernel-janitors@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Liebster Freund,
+On Mon, Sep 27, 2021 at 10:16 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> The error code is stored in "dev_priv", not "dev".  The "dev" pointer
+> isn't initialized yet.
+>
 
-Im Namen Gottes, des gn=C3=A4digsten, barmherzigsten.
+Hi Dan,
+This is already addressed in:
+https://patchwork.kernel.org/project/dri-devel/patch/20210924094040.3631675-1-yangyingliang@huawei.com/
 
-Friede sei mit dir und Barmherzigkeit sei mit dir und Segen sei mit dir.
-Ich habe die Summe von 27,5 Millionen USD f=C3=BCr Investitionen, ich
-interessiere mich f=C3=BCr Sie f=C3=BCr die Unterst=C3=BCtzung von
-Investitionsprojekten in Ihrem Land. Mein Name ist Aisha Gaddafi und
-lebe derzeit im Oman, ich bin eine Witwe und alleinerziehende Mutter
-mit drei Kindern, die einzige leibliche Tochter des verstorbenen
-libyschen Pr=C3=A4sidenten (dem verstorbenen Oberst Muammar Gaddafi) und
-stehe derzeit unter politischem Asylschutz der omanischen Regierung.
+-Patrik
 
-Bitte antworten Sie dringend f=C3=BCr weitere Details.
-
-meine E-Mail-Adresse unten: ayishagddafio@mail.ru
-Vielen Dank
-Mit freundlichen Gr=C3=BC=C3=9Fen Aisha
+> Fixes: c2f17e60cbe1 ("drm/gma500: Embed struct drm_device in struct drm_psb_private")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/gpu/drm/gma500/psb_drv.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/gma500/psb_drv.c b/drivers/gpu/drm/gma500/psb_drv.c
+> index 3d036d2a3b29..7a10bb39ef0b 100644
+> --- a/drivers/gpu/drm/gma500/psb_drv.c
+> +++ b/drivers/gpu/drm/gma500/psb_drv.c
+> @@ -454,7 +454,7 @@ static int psb_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>
+>         dev_priv = devm_drm_dev_alloc(&pdev->dev, &driver, struct drm_psb_private, dev);
+>         if (IS_ERR(dev_priv))
+> -               return PTR_ERR(dev);
+> +               return PTR_ERR(dev_priv);
+>         dev = &dev_priv->dev;
+>
+>         pci_set_drvdata(pdev, dev);
+> --
+> 2.20.1
+>

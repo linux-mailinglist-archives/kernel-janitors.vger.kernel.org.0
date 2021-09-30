@@ -2,77 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCFEC41E472
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Oct 2021 00:58:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED74D41E4B4
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Oct 2021 01:21:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245251AbhI3XA3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 Sep 2021 19:00:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40954 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347915AbhI3XA0 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 Sep 2021 19:00:26 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52D97C061779
-        for <kernel-janitors@vger.kernel.org>; Thu, 30 Sep 2021 15:58:41 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id e15so31562138lfr.10
-        for <kernel-janitors@vger.kernel.org>; Thu, 30 Sep 2021 15:58:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=AnIUtRQtDgk3YDJAatwz+LXUKRWPbctJNdAprjwvZ5o=;
-        b=FYrpNEp0zwymsUrUWvdUY9zg7bQqbIGfxDPPCHvF42IJ3bBpebm7KBYvtEnhjVJU+k
-         kc0RkBkQWIC9qz9CmBvVwjaqxOXjsJrW+nKNcZSRCDscgYzAFIAzmbAFq4EDpnq2sNEI
-         sbWlhfW7LvmJcBf2lYyFaAQ1NoPe0MZZNTMSdqwxSZQ9FrihxeYL48acwLrCVx0/oOCu
-         bo/5xgQpQVGtvQrGXriciZI6ZLcCfsanEfD3fSOc+k4HKjLcd5FiNq+W1H/K1U0FLt0x
-         TtjtVS2fUVBBlnpRN7k6ja0F1yP1w+LTfJJvd97Etbqlgl/4h4tpEJiIbsHj2huvYLaO
-         4TFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=AnIUtRQtDgk3YDJAatwz+LXUKRWPbctJNdAprjwvZ5o=;
-        b=CnZrUy2GO2p8g3/ERZZv/ASs+kRpmmOtD4Mi+Pof98HTFzdy4W4h6AjCZgfaQNuWKf
-         ZKSbs4mBVUVeCY65ITKcjcYXgy36z4CpN2BN3URp3hBnGYxjxHXsMraVDq9pS6gYfdHY
-         d4XYEyNocDRaccb6C1bMxkzyZDNAOcrxTmARLqwh5tJA6aB73a/BQsq/Zn7rNl7fIBtc
-         AaH4zFDe1jNQCtcq1+6YKs4o+Oj9UyvtNezeiIDAYir5TjZkHLY8ELBpzq/tFSCvxIAC
-         osTgw0OCbf4axHzULQGCzaJ+mD/z//9hFGBlRN3nSkGTFpYszuAJRiW6lxK9aLi/xJm0
-         3/FQ==
-X-Gm-Message-State: AOAM5325nRaHs6tDLW2pbUoABM9FfNHxXufvTRR29wO1opvw9VOTgboQ
-        O2kc/ie5zVKXsLlVxQd8SNgedGMxUxtNe20HqAY=
-X-Google-Smtp-Source: ABdhPJx4GVBpAqUdpSc6GV2Ccser+SzsoFXEvbqpvIweCdcopVV+06RlyWu2S8RAkedNbXO5I85gVF7ApS9JXlkXPY0=
-X-Received: by 2002:a2e:98c3:: with SMTP id s3mr8845623ljj.430.1633042719148;
- Thu, 30 Sep 2021 15:58:39 -0700 (PDT)
+        id S1347588AbhI3XWr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 Sep 2021 19:22:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55970 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1350178AbhI3XWp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 30 Sep 2021 19:22:45 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A1FF7619F5;
+        Thu, 30 Sep 2021 23:21:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1633044062;
+        bh=pwMFTpu6UjMcXbczxPhkqI2dpzFuWUbNB/t7W5OpaUk=;
+        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+        b=i6a5a13v6vDiB2Z5Zp6f7xmWyNmrl9VXiKI9/alh1UHim7O77DxfqE70YBhmQJwJJ
+         mjztSqouqO0K/W4L50ZTMibiR46vwkdObyH8sKjcaIuIvD4qDRmMgKvWmULDvRcBV3
+         BDosO+9vdWUqipY0Lan2ZN0kbFdrXqQYnU8V2sWW+pPrD8QxyfgrDOnR8Mxmdwz/LV
+         jAUOLEzNMSd6FTDcEkS9UqPDWk2law8ldJZrp/gFpNDGYkGtGP8rFLam5SJF40hzK/
+         opfEvkYLtpBcPNmp6oYWMGYtwcSg8sLQ8f/vkZXh+gw27n5yOebS+fDrAB3gDj+9ac
+         jTHBQWLYNyhaA==
+Received: by mail-ot1-f49.google.com with SMTP id x33-20020a9d37a4000000b0054733a85462so9343677otb.10;
+        Thu, 30 Sep 2021 16:21:02 -0700 (PDT)
+X-Gm-Message-State: AOAM532odo3iGB5AxIg9gzDCkxtOU7zVK7C2zU0rBRQ/9Bu5ddvVknRA
+        DM5uDGJdhE7DrJrLpkUah2HYoBOhAl/loS4isY8=
+X-Google-Smtp-Source: ABdhPJxrkZF8lbNaQWxg6uwD/gNrY0Ney582MtT68kXjQP+VBqZBUsm8Z6fc6dWFyZqKPc5qsGoyuZ+XBjO90S4OFDM=
+X-Received: by 2002:a05:6830:24a8:: with SMTP id v8mr7213571ots.185.1633044062043;
+ Thu, 30 Sep 2021 16:21:02 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6512:5d8:0:0:0:0 with HTTP; Thu, 30 Sep 2021 15:58:38
+Received: by 2002:a8a:1342:0:0:0:0:0 with HTTP; Thu, 30 Sep 2021 16:21:01
  -0700 (PDT)
-Reply-To: southwestloanco59@gmail.com
-From:   SOUTHWESTLOANCO <saniabdullahinng2020@gmail.com>
-Date:   Thu, 30 Sep 2021 15:58:38 -0700
-Message-ID: <CA+3X9TwgMQ7NU-AkrdA8VQ5-2PDYbids5N+jtor+L_1QHLjV2w@mail.gmail.com>
-Subject: Dear owner,
-To:     undisclosed-recipients:;
+In-Reply-To: <20210930122456.GA10068@kili>
+References: <20210930122456.GA10068@kili>
+From:   Namjae Jeon <linkinjeon@kernel.org>
+Date:   Fri, 1 Oct 2021 08:21:01 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd_VNuyn7HAfnZjkxhGQUnwgCYXe3xTuOEE=P+h6kyQoSg@mail.gmail.com>
+Message-ID: <CAKYAXd_VNuyn7HAfnZjkxhGQUnwgCYXe3xTuOEE=P+h6kyQoSg@mail.gmail.com>
+Subject: Re: [PATCH] ksmbd: missing check for NULL in convert_to_nt_pathname()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Hyunchul Lee <hyc.lee@gmail.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Steve French <sfrench@samba.org>, linux-cifs@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
--- 
-Good day,
-          Do you need a loan ? We offer any kind of loan to repay in
-6months with just 2% interest
+2021-09-30 21:24 GMT+09:00, Dan Carpenter <dan.carpenter@oracle.com>:
+> The kmalloc() does not have a NULL check.  This code can be re-written
+> slightly cleaner to just use the kstrdup().
+>
+> Fixes: 265fd1991c1d ("ksmbd: use LOOKUP_BENEATH to prevent the out of share
+> access")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 
-Kindly Reply with below information
-
-NAME...............
-ADDRESS..........
-OCCUPATION....
-AGE...................
-PHONE..............
-AMOUNT NEEDED......
-
-Regards
-
-Contact  Mr Gary Edward +13182955380
-
-Remittance Department southwestloanco59@gmail.com
+Thanks for your patch!

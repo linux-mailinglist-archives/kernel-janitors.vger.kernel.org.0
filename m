@@ -2,72 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D17141EC4B
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Oct 2021 13:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFD6341ECC2
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Oct 2021 14:00:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354043AbhJALhI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 1 Oct 2021 07:37:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41382 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354060AbhJALhF (ORCPT
+        id S1354208AbhJAMCN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 1 Oct 2021 08:02:13 -0400
+Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120]:59252
+        "EHLO smtp-relay-canonical-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1354205AbhJAMCL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 1 Oct 2021 07:37:05 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CEFCC0613E7
-        for <kernel-janitors@vger.kernel.org>; Fri,  1 Oct 2021 04:35:21 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id dj4so34629598edb.5
-        for <kernel-janitors@vger.kernel.org>; Fri, 01 Oct 2021 04:35:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
-        b=Igu7yJaWAmhucLg/mwHvKTeuu/qZkMxa3XykEe7w6Hw3qw49v0TOOQYSaKwBDTq4aI
-         57SBERv4ZZomvdwJSieMXAklKTYg9x5cG/4RGGaev//uOS4LfBzLbIShMJBLRKq8+xYF
-         M5/yF76N6gheRodudIAELxM/z+AwHj5/DaaMG5x1DPRRY/1XbumQ70fuY8738RkcMstK
-         FI39p68pHQsMpnPVufTwz+fuHq6EWkHFTlRsiJ+SQE/jhgsOGdblxsl293ZSA++mZ9QB
-         8ARQ2VvTy77xe1z9EvO6zi62zyhUOYBCeVNeQ1JMsDjVOk0rgsSO8UgLAWotB+u9EuiI
-         LWqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
-        b=FsO06Su3D0mDtqULgcny9eJjImvslGFuWCvVfPmEXr0Qxk7+kfxmlD+DpTL653FNGW
-         KGbxnRJ230nxwDLDzSQQgC8IAwvpm2N3G7jcLQgkCQ6VE34ocfbXv3eZ40cugYXieffn
-         fWMmIQVGvia6rSuekhAU7lNcTlRc6BdQlIIfabABbLfDSX8gJYTXHyS+fm8y8XkOFA7g
-         5dNrNf0VzEU6i0/3gqdkXNFtNvYav7S9kkDLZatSipEGuhcaVXqbmkZLA56/je4Imp18
-         bFn7KGikd9Gvz+mMTHxupZ9sxxujEsIooRsTPO/FFSryeL+O/eK9QVidHTviBlrKeNA4
-         n97Q==
-X-Gm-Message-State: AOAM5338y3gDl+5dLQvF3KedUzW+gelEFRQejXFFKqKAW1odLpy52mVi
-        K+gLmmMA90+oMm4bcSgyHPORL6J5Plrp/KGOM/k=
-X-Google-Smtp-Source: ABdhPJxi034eV9rZI26vCO3pMFKpKwwgMYIMcmCe0FyVx2q8+lwfNTibcjOoiM5Oum/bpuPlg1eK4TR/OFITysPMdws=
-X-Received: by 2002:a17:906:564e:: with SMTP id v14mr5636253ejr.424.1633088119082;
- Fri, 01 Oct 2021 04:35:19 -0700 (PDT)
+        Fri, 1 Oct 2021 08:02:11 -0400
+Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id C559440186;
+        Fri,  1 Oct 2021 12:00:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1633089618;
+        bh=xoVeBwEbq5yYbiC4MKK88HqPxlCFGkYEHA+6yK4TZTA=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
+        b=p1BeaFQ3coUHtNeEOxSWXmLfJIOD2R8e8FtDlN3E4OAKig7Wd0rxW1Mhx1drNO9dX
+         w2rjQ/A32OQpuUe9lrBVfHweu7KZpUGqXto90jf0HrDEWLwK2PamMgJ1ww2eWp6Yrb
+         NK7ppO1l8n73F38kpKfYvqC7rBI/eqJgZFPFax2xWI+5ExE8KBYqQPIjLjhHezD17O
+         deBMeiL8VLAygvegr/ER3nWo9st/BgZfYnDEpKly73jSCo2Fp/71ZhdWDnY1pA5Wqj
+         V867cDEXBTLiDirFjE4hpUN8vmOrJymx7xtcpP3xL5Ir3mNRnV2SjLao5vHv2thlVc
+         J8rTqh+z6BiZg==
+From:   Colin King <colin.king@canonical.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Billy Tsai <billy_tsai@aspeedtech.com>,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] iio: adc: aspeed: Fix spelling mistake "battey" -> "battery"
+Date:   Fri,  1 Oct 2021 13:00:18 +0100
+Message-Id: <20211001120018.17570-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Received: by 2002:a17:906:724a:0:0:0:0 with HTTP; Fri, 1 Oct 2021 04:35:18
- -0700 (PDT)
-Reply-To: joymat52@gmail.com
-From:   Joyce Thomas <tjoyc1234@gmail.com>
-Date:   Fri, 1 Oct 2021 04:35:18 -0700
-Message-ID: <CAF-RpUhU=R3ySUquSc6MHpjtPVmoTZA7CFh8hiR6fMJ+Z2710g@mail.gmail.com>
-Subject: ATTN:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello Dear
-My Name is Mr. Joyce Thomas. Contact me for more information on the
-transfer of ($7.9 million dollars) left by my late client from your
-Country. I want to present you as a business partner and next of kin
-of the fund. I will give you the details of this transaction, as soon
-as I hear from you. I need the information below:
-Full Name:
-Address:
-Occupation:
-Age:
-Personal Email:
-Personal Telephone:
-Best Regards,
-Mr.Joyce  Thomas
+From: Colin Ian King <colin.king@canonical.com>
+
+There is a spelling mistake in a dev_warn message. Fix it.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/iio/adc/aspeed_adc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
+index 3e9850a43372..a957cad1bfab 100644
+--- a/drivers/iio/adc/aspeed_adc.c
++++ b/drivers/iio/adc/aspeed_adc.c
+@@ -581,7 +581,7 @@ static int aspeed_adc_probe(struct platform_device *pdev)
+ 			}
+ 		} else
+ 			dev_warn(&pdev->dev,
+-				 "Failed to enable battey-sensing mode\n");
++				 "Failed to enable battery-sensing mode\n");
+ 	}
+ 
+ 	ret = clk_prepare_enable(data->clk_scaler->clk);
+-- 
+2.32.0
+

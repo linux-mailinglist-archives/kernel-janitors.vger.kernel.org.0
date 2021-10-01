@@ -2,105 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00EFD41EB65
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Oct 2021 13:07:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D17141EC4B
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Oct 2021 13:35:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353731AbhJALIu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 1 Oct 2021 07:08:50 -0400
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:44220
-        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1353454AbhJALIt (ORCPT
+        id S1354043AbhJALhI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 1 Oct 2021 07:37:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41382 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1354060AbhJALhF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 1 Oct 2021 07:08:49 -0400
-Received: from [10.172.193.212] (1.general.cking.uk.vpn [10.172.193.212])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 6C30E4199E;
-        Fri,  1 Oct 2021 11:07:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1633086423;
-        bh=MKQMNrTSMw8rMSA9wt8sZInaKcQhtrgdLt8Y5PCva+M=;
-        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-         In-Reply-To:Content-Type;
-        b=pI0I4TTo8596Mi+AGA//j25xo3txLmpXOKVAwJoCZusJxSxjyEb+m5DZ8uvFIqLRB
-         17Qbc0xIE3OFDfdYDtb+gdqEy0snRSjseYEQvBA2nNLx1RYyBoEyrFBLjln+5Mqf6n
-         kJRIF0yByasuj2cAGZqxkuB+GLqWUK108djbnu4HKVZzhILA9UBzkQ80JJ6S0kDxXa
-         kxf6QTn7KE/rWczv7IspF9eJfHFZEVrypiMkYnsi1uXCc1R/BHOkH7lyTYKSfUAWI7
-         ma7QgBqlj3gYjKyodCcUp9GlPq4+uNSw86FsaW+B1hQTsafcggK72q6ki2yf2tufkg
-         kxqzSE/JiEPrw==
-Message-ID: <0bce4268-cac5-4dee-451d-cfafb5efdb8b@canonical.com>
-Date:   Fri, 1 Oct 2021 12:07:03 +0100
+        Fri, 1 Oct 2021 07:37:05 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CEFCC0613E7
+        for <kernel-janitors@vger.kernel.org>; Fri,  1 Oct 2021 04:35:21 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id dj4so34629598edb.5
+        for <kernel-janitors@vger.kernel.org>; Fri, 01 Oct 2021 04:35:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
+        b=Igu7yJaWAmhucLg/mwHvKTeuu/qZkMxa3XykEe7w6Hw3qw49v0TOOQYSaKwBDTq4aI
+         57SBERv4ZZomvdwJSieMXAklKTYg9x5cG/4RGGaev//uOS4LfBzLbIShMJBLRKq8+xYF
+         M5/yF76N6gheRodudIAELxM/z+AwHj5/DaaMG5x1DPRRY/1XbumQ70fuY8738RkcMstK
+         FI39p68pHQsMpnPVufTwz+fuHq6EWkHFTlRsiJ+SQE/jhgsOGdblxsl293ZSA++mZ9QB
+         8ARQ2VvTy77xe1z9EvO6zi62zyhUOYBCeVNeQ1JMsDjVOk0rgsSO8UgLAWotB+u9EuiI
+         LWqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
+        b=FsO06Su3D0mDtqULgcny9eJjImvslGFuWCvVfPmEXr0Qxk7+kfxmlD+DpTL653FNGW
+         KGbxnRJ230nxwDLDzSQQgC8IAwvpm2N3G7jcLQgkCQ6VE34ocfbXv3eZ40cugYXieffn
+         fWMmIQVGvia6rSuekhAU7lNcTlRc6BdQlIIfabABbLfDSX8gJYTXHyS+fm8y8XkOFA7g
+         5dNrNf0VzEU6i0/3gqdkXNFtNvYav7S9kkDLZatSipEGuhcaVXqbmkZLA56/je4Imp18
+         bFn7KGikd9Gvz+mMTHxupZ9sxxujEsIooRsTPO/FFSryeL+O/eK9QVidHTviBlrKeNA4
+         n97Q==
+X-Gm-Message-State: AOAM5338y3gDl+5dLQvF3KedUzW+gelEFRQejXFFKqKAW1odLpy52mVi
+        K+gLmmMA90+oMm4bcSgyHPORL6J5Plrp/KGOM/k=
+X-Google-Smtp-Source: ABdhPJxi034eV9rZI26vCO3pMFKpKwwgMYIMcmCe0FyVx2q8+lwfNTibcjOoiM5Oum/bpuPlg1eK4TR/OFITysPMdws=
+X-Received: by 2002:a17:906:564e:: with SMTP id v14mr5636253ejr.424.1633088119082;
+ Fri, 01 Oct 2021 04:35:19 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.1
-Subject: Re: [PATCH][next] ALSA: usb-audio: Fix sum of uninitialized variable
- sample_accum
-Content-Language: en-US
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        Alexander Tsoy <alexander@tsoy.me>,
-        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20211001104417.14291-1-colin.king@canonical.com>
- <s5htui1hvgi.wl-tiwai@suse.de>
-From:   Colin Ian King <colin.king@canonical.com>
-In-Reply-To: <s5htui1hvgi.wl-tiwai@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a17:906:724a:0:0:0:0 with HTTP; Fri, 1 Oct 2021 04:35:18
+ -0700 (PDT)
+Reply-To: joymat52@gmail.com
+From:   Joyce Thomas <tjoyc1234@gmail.com>
+Date:   Fri, 1 Oct 2021 04:35:18 -0700
+Message-ID: <CAF-RpUhU=R3ySUquSc6MHpjtPVmoTZA7CFh8hiR6fMJ+Z2710g@mail.gmail.com>
+Subject: ATTN:
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 01/10/2021 11:48, Takashi Iwai wrote:
-> On Fri, 01 Oct 2021 12:44:17 +0200,
-> Colin King wrote:
->>
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> Variable sample_accum is not being intialized and then has
->> ep->sample_rem added to it, leading to a bogus value. One solution
->> is to initialize it to zero at declaration time, but it is probably
->> best to just assign it to ep->sample_rem on first use.
->>
->> Addresses-Coveriry: ("Uninitialized scalar variable")
->> Fixes: f0bd62b64016 ("ALSA: usb-audio: Improve frames size computation")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> 
-> Thanks for the patch, but it's no right fix.  The Fixes tag points to
-> a wrong commit, it was d215f63d49da9a8803af3e81acd6cad743686573
->      ALSA: usb-audio: Check available frames for the next packet size
->    
-> And sample_accum has to be initialized from ep->sample_accum instead.
-> I'll post the proper fix.
-
-Thanks Takshi.
-
-Colin
-
-> 
-> 
-> Takashi
-> 
-> 
->> ---
->>   sound/usb/endpoint.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/sound/usb/endpoint.c b/sound/usb/endpoint.c
->> index 42c0d2db8ba8..c6a33732db3f 100644
->> --- a/sound/usb/endpoint.c
->> +++ b/sound/usb/endpoint.c
->> @@ -182,7 +182,7 @@ static int next_packet_size(struct snd_usb_endpoint *ep, unsigned int avail)
->>   	if (ep->fill_max)
->>   		return ep->maxframesize;
->>   
->> -	sample_accum += ep->sample_rem;
->> +	sample_accum = ep->sample_rem;
->>   	if (sample_accum >= ep->pps) {
->>   		sample_accum -= ep->pps;
->>   		ret = ep->packsize[1];
->> -- 
->> 2.32.0
->>
-
+Hello Dear
+My Name is Mr. Joyce Thomas. Contact me for more information on the
+transfer of ($7.9 million dollars) left by my late client from your
+Country. I want to present you as a business partner and next of kin
+of the fund. I will give you the details of this transaction, as soon
+as I hear from you. I need the information below:
+Full Name:
+Address:
+Occupation:
+Age:
+Personal Email:
+Personal Telephone:
+Best Regards,
+Mr.Joyce  Thomas

@@ -2,115 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 190AB421FE2
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Oct 2021 09:55:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25D64422B4A
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Oct 2021 16:42:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233132AbhJEH51 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Oct 2021 03:57:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36226 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233262AbhJEH5U (ORCPT
+        id S235075AbhJEOoI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Oct 2021 10:44:08 -0400
+Received: from mail-oi1-f177.google.com ([209.85.167.177]:43923 "EHLO
+        mail-oi1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233705AbhJEOoH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Oct 2021 03:57:20 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FF7CC061749;
-        Tue,  5 Oct 2021 00:55:30 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id e12so15448445wra.4;
-        Tue, 05 Oct 2021 00:55:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=f1ACAdPpXdD7+6xlsaFl8y9pYKjykE5MoAahHiFRZ5E=;
-        b=er4wiUbQiLkmUVpKn+tlxmS/Qs66tV0kj619OOdd/4IahYBHC0sQVo3cMYjzP1i5X6
-         ZbGbK60zuyoe3y8Hh6YUTvvOQfEGBhpWUH8Kooj5X5FZYTucrzXj7Ftl/rZKMdzca4aZ
-         g7tS4lOZZVKh3lnzn4CZ8gLDQZO6+iy1JbPodKviWHfNRvwHLFkwt+O7bwryyvPt8JJN
-         Xqb6GGWaXkKWm50xPDD5dPdcK6F2pBizjyxSuJm12Ybfp9ObTGhxfIj0St2/vI60jF4r
-         qt07H30FuZWdYNS1N/ofd+9mvJqa+SqzJMzlyb47RoH8pz1FMcrSpllKlv65AE7InABx
-         nWHw==
+        Tue, 5 Oct 2021 10:44:07 -0400
+Received: by mail-oi1-f177.google.com with SMTP id o4so2583766oia.10;
+        Tue, 05 Oct 2021 07:42:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=f1ACAdPpXdD7+6xlsaFl8y9pYKjykE5MoAahHiFRZ5E=;
-        b=w+3TEcPwo0E/0MOnSUY0USvRYdiFE3YWHYxSfAUQSzya+LWQlxz5eU+Rcdy7zJB/02
-         NUWDakJWJfcgplpXb/GEFTsBL+K1vOkY017dWqAmNe+FZEIY6cHLrmFuMmEA/hsRJlIa
-         nqgC8OC+AKMrCMziinmmB9nagc0IqPz3m8LTeHsXvF87gum6QJKIgQkFr7N4Mzi6xjQ0
-         MhJu9w3EEXnL/svz2LmJIIxK1EYUmlsDQqEyo+/5T2up4strhDA9DYfw3G3GpUTEVP2E
-         QbsE8Pn8Hv1vJjo8u2KprXjpxNBmOI46WaNMXEfq82h7HlVRN5A710SI5+7nS/ukbs5w
-         cIIA==
-X-Gm-Message-State: AOAM532VzzPhKCOSS8wyoCz8BkM5rAy3G9tVlnlhtW68xNd/iljMozQl
-        stqW/BLA9+6vBu9i0YtfEEM=
-X-Google-Smtp-Source: ABdhPJwDIbP8wwo0ZNAP9e9uSY7WrXGStyt4Ykt1Eq+rfFKv2BP59bZHZhVmj6pZY91sllPZGUnEVA==
-X-Received: by 2002:adf:a2c8:: with SMTP id t8mr19955799wra.215.1633420528694;
-        Tue, 05 Oct 2021 00:55:28 -0700 (PDT)
-Received: from localhost.localdomain (i59F67A83.versanet.de. [89.246.122.131])
-        by smtp.gmail.com with ESMTPSA id o1sm1176984wmq.26.2021.10.05.00.55.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Oct 2021 00:55:28 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Cc:     Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-        Yu Chen <chenyu56@huawei.com>,
-        Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Naga Sureshkumar Relli <nagasure@xilinx.com>,
-        Hans Ulli Kroll <ulli.kroll@googlemail.com>,
-        Deepak Saxena <dsaxena@plexity.net>,
-        Mirela Rabulea <mirela.rabulea@nxp.com>,
-        Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>,
-        Wilken Gottwalt <wilken.gottwalt@posteo.net>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Brendan Higgins <brendanhiggins@google.com>,
-        Joakim Zhang <qiangqing.zhang@nxp.com>,
-        Maxime Ripard <maxime@cerno.tech>,
-        Mark Brown <broonie@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH v4 11/11] MAINTAINERS: rectify entry for CHIPONE ICN8318 I2C TOUCHSCREEN DRIVER
-Date:   Tue,  5 Oct 2021 09:54:51 +0200
-Message-Id: <20211005075451.29691-12-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20211005075451.29691-1-lukas.bulwahn@gmail.com>
-References: <20211005075451.29691-1-lukas.bulwahn@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=eZwLpL3VR1cDxPTIuLWceDkViaFbLKix0Hx3TUG7elc=;
+        b=SU3ofwoQli/UBW8PwznNzXTHtUtlVI4P8/WZCpJpEqcK8RL01sekP7dwCQR+MDjHND
+         /KpyGNU3I99K4La/USw4iDmhCctIoSsEVdLraq5QhBeS8SwHv8f96yGAZZnuBXdUvQUH
+         +vlcuund9X/mgXJEGjDCdN5JufBizxDDuHkP5Ic2NOZR87VJJdo0QN02oBFoi59IjqSx
+         aBr6LLlGZ+awJO717qiEOcdWmlUk6m/vaiZrPKdXAQk84yHrAS7exsX4mGQ/CTA4Yygd
+         DD1Hrz1vJ3mM2PzdeUgFUnZryf+sa/THKDigJ9mkuVaOjm0zbUTXVne5HY6FFolUIa90
+         YkFg==
+X-Gm-Message-State: AOAM532ui/9KjAR90Tumk/5CGV7I4KSIobrsGDcdebbd7+h8e6ZTkENt
+        cH+RhUAzsivjmxAAgXIq2RoqRyz/Tt7M8FENxoI=
+X-Google-Smtp-Source: ABdhPJwBSQTruG4tXHdQMFKRNdq9o7SvD0P5bn3E9E1CZEYOchSGi2uTsPDGXPY9h9SA95cqB2Yd2ha3bikKX6rl05E=
+X-Received: by 2002:a05:6808:1816:: with SMTP id bh22mr2786784oib.69.1633444936747;
+ Tue, 05 Oct 2021 07:42:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <f7513027ae9242643b5ddb6ed48a3aeca1b0f2a8.1632640557.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <f7513027ae9242643b5ddb6ed48a3aeca1b0f2a8.1632640557.git.christophe.jaillet@wanadoo.fr>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 5 Oct 2021 16:42:05 +0200
+Message-ID: <CAJZ5v0hSRn2Au5phOHnoR3SMtA0B-H_tn+dskHSZEfHt1g9G_g@mail.gmail.com>
+Subject: Re: [PATCH] thermal: intel_powerclamp: Use bitmap_zalloc/bitmap_free
+ when applicable
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     "Zhang, Rui" <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 04647773d648 ("dt-bindings: input: Convert ChipOne ICN8318
-binding to a schema") converts chipone_icn8318.txt to chipone,icn8318.yaml,
-but missed to adjust its reference in MAINTAINERS.
+On Sun, Sep 26, 2021 at 9:17 AM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
+>
+> 'cpu_clamping_mask' is a bitmap. So use 'bitmap_zalloc()' and
+> 'bitmap_free()' to simplify code, improve the semantic of the code and
+> avoid some open-coded arithmetic in allocator arguments.
+>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  drivers/thermal/intel/intel_powerclamp.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/thermal/intel/intel_powerclamp.c b/drivers/thermal/intel/intel_powerclamp.c
+> index a5b58ea89cc6..9b68489a2356 100644
+> --- a/drivers/thermal/intel/intel_powerclamp.c
+> +++ b/drivers/thermal/intel/intel_powerclamp.c
+> @@ -705,10 +705,8 @@ static enum cpuhp_state hp_state;
+>  static int __init powerclamp_init(void)
+>  {
+>         int retval;
+> -       int bitmap_size;
+>
+> -       bitmap_size = BITS_TO_LONGS(num_possible_cpus()) * sizeof(long);
+> -       cpu_clamping_mask = kzalloc(bitmap_size, GFP_KERNEL);
+> +       cpu_clamping_mask = bitmap_zalloc(num_possible_cpus(), GFP_KERNEL);
+>         if (!cpu_clamping_mask)
+>                 return -ENOMEM;
+>
+> @@ -753,7 +751,7 @@ static int __init powerclamp_init(void)
+>  exit_unregister:
+>         cpuhp_remove_state_nocalls(hp_state);
+>  exit_free:
+> -       kfree(cpu_clamping_mask);
+> +       bitmap_free(cpu_clamping_mask);
+>         return retval;
+>  }
+>  module_init(powerclamp_init);
+> @@ -764,7 +762,7 @@ static void __exit powerclamp_exit(void)
+>         cpuhp_remove_state_nocalls(hp_state);
+>         free_percpu(worker_data);
+>         thermal_cooling_device_unregister(cooling_dev);
+> -       kfree(cpu_clamping_mask);
+> +       bitmap_free(cpu_clamping_mask);
+>
+>         cancel_delayed_work_sync(&poll_pkg_cstate_work);
+>         debugfs_remove_recursive(debug_dir);
+> --
 
-Hence, ./scripts/get_maintainer.pl --self-test=patterns complains about
-a broken reference.
-
-Repair this file reference in CHIPONE ICN8318 I2C TOUCHSCREEN DRIVER.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9e537e78f426..84acb8c57176 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4415,7 +4415,7 @@ CHIPONE ICN8318 I2C TOUCHSCREEN DRIVER
- M:	Hans de Goede <hdegoede@redhat.com>
- L:	linux-input@vger.kernel.org
- S:	Maintained
--F:	Documentation/devicetree/bindings/input/touchscreen/chipone_icn8318.txt
-+F:	Documentation/devicetree/bindings/input/touchscreen/chipone,icn8318.yaml
- F:	drivers/input/touchscreen/chipone_icn8318.c
- 
- CHIPONE ICN8505 I2C TOUCHSCREEN DRIVER
--- 
-2.26.2
-
+Applied as 5.16 material, thanks!

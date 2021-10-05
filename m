@@ -2,88 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A6C1422B71
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Oct 2021 16:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4872422B7B
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Oct 2021 16:49:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235323AbhJEOtg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Oct 2021 10:49:36 -0400
-Received: from mail-ot1-f50.google.com ([209.85.210.50]:38544 "EHLO
-        mail-ot1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233705AbhJEOtf (ORCPT
+        id S235263AbhJEOvd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Oct 2021 10:51:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50248 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234084AbhJEOvd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Oct 2021 10:49:35 -0400
-Received: by mail-ot1-f50.google.com with SMTP id c6-20020a9d2786000000b005471981d559so26105379otb.5;
-        Tue, 05 Oct 2021 07:47:45 -0700 (PDT)
+        Tue, 5 Oct 2021 10:51:33 -0400
+Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A6F9C061749
+        for <kernel-janitors@vger.kernel.org>; Tue,  5 Oct 2021 07:49:42 -0700 (PDT)
+Received: by mail-ot1-x329.google.com with SMTP id c6-20020a9d2786000000b005471981d559so26114213otb.5
+        for <kernel-janitors@vger.kernel.org>; Tue, 05 Oct 2021 07:49:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=3PYTT8kJpyzpxpd4IUA8A7KEa4VhIQYWn6d7OgYbvSg=;
+        b=H9LyjyX6KCBZUkkIRHI1ebob/Gl9+fdRgMVPO678nrG34TigpipTZOlO0Eox1faOpz
+         zJj1A740WpJ7/ZeUnnpaJVJThAfw1YtPzBSvmMgwHaO7/k5b9pZJnv4l9zthBH+8jvke
+         KVdQqv82QzoL0DhOQx5KbWXZmJqZQ1lf9dDYtpptbtcEe8yX9jfd9TZz5qPBsYEYTR9/
+         7VrxoPP5GKPWnGzbd3Wn/A7yHfBQIW7jMuxXobEW7LJOnABpyKJgPYlLTTMAgwvugdZS
+         PXv5US/zo/Latw5cczKhW1uucCU0+N7ZsItGqb9zDpEERCVtM2bMdowBLrJg3XgRS2V9
+         RRcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4nYP50RnEwXOBEfqaBjPyWNKlAUJcU1dr1Q7oO/S2m4=;
-        b=6bzBM3mZybrPvXlIH97vjaaG4YqL6+gSmmOlug7pl0dng4NkQ20D11LXxXd3S46dIS
-         /YOiqRzeclOT7QzMBs0fbcbhq2KbMGHuBEPIhRpCndBOH9reR8CCjDa8vMOwGnf3M7uh
-         DxgcBSkHCA86Dt8YqAL56JD6WGz5SHZ7zrceRCgtaHxTRch+QEMDbDVcmsyel7bkv91J
-         9lNLzWXdIgWgRrr7yX8C5tki5y2aHZK4g9Po+c5GQE/QMVNQOhYlYmirsbc0HfH8o06z
-         9aA5yEuFA76dvbnsy0ASWj2y1nQcceRX5uv6bK5SiVRsPFfk3y2xZsP/l78TuIjeTDae
-         C8Ug==
-X-Gm-Message-State: AOAM531JszNBeZLHEINdUXutv4vPKTh8PP5cOWt4Cp9Va0agfnUK1b4O
-        Gl6LaqjbB1g69N+fwaes7vwmwq7JOSwlBRxToEY=
-X-Google-Smtp-Source: ABdhPJyo1TtZkR9LWtCpd4ymU8HXD06ALO7VmmnTz/q8hRWsq/HXWKw2OUPmKpBCp6BMulu0BuAWTNZP+EFvBXdNvcs=
-X-Received: by 2002:a05:6830:2784:: with SMTP id x4mr14795102otu.86.1633445264743;
- Tue, 05 Oct 2021 07:47:44 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=3PYTT8kJpyzpxpd4IUA8A7KEa4VhIQYWn6d7OgYbvSg=;
+        b=S4xlETqjHcFLJSr6xf2WTysxzE3bK6tcOfeBN5vxPJFPYMS8TKkicIJZd65uroQ7cZ
+         xtxEkYzlxb84oDp7Bb+QaJbudS0bpHYbxE4HdgKwZd0Pa/T/tTJg6ZxN064vpkcKeFJ5
+         MM3BoaUgydp/yydlzZd0fV8eKikAN4zC8uQXPPRNU8POkSdo1jGOuu76tZ0BNSME5Itk
+         ytvxxACj2hNBZMpSI9PMXg+TYA2SuKOqnQrphLeSeGD8EKCETYyIy2Gw6ZZ7OIKBFhMc
+         r6oZv5mTnWtG98Szz36nMco7n7QuX6aqNHt0k2zhxm6uBU2favx6I7E3yuFHUxyI4Fqr
+         wydg==
+X-Gm-Message-State: AOAM533eXFFGgFts5Ib9Dx5GYer0HuQP0LcLC3yF0GIkfKzEEd9TonwJ
+        hpN7H9UnXYzyapkKzqzlr8ClCTWKMsCwB+Eie+0=
+X-Google-Smtp-Source: ABdhPJyZ5tLI7mAMk153lrk+YntS0jFrQq5HtSfx8bcbg54ZtlJcz2A/SBaXRF8AmQNyQZyqkZa3HCYgTebQoT+yynQ=
+X-Received: by 2002:a05:6830:438a:: with SMTP id s10mr8122767otv.173.1633445381960;
+ Tue, 05 Oct 2021 07:49:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210930122803.GC10068@kili>
-In-Reply-To: <20210930122803.GC10068@kili>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 5 Oct 2021 16:47:33 +0200
-Message-ID: <CAJZ5v0j3-o9L6q3YZFszSCKU3=yvoEWE7cbhahq1qSxu+z553w@mail.gmail.com>
-Subject: Re: [PATCH] thermal: int340x: delete bogus length check
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Zhang Rui <rui.zhang@intel.com>, Takashi Iwai <tiwai@suse.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+Received: by 2002:aca:b641:0:0:0:0:0 with HTTP; Tue, 5 Oct 2021 07:49:41 -0700 (PDT)
+From:   "Kokou A. Mensah " <kokouamouzou01@gmail.com>
+Date:   Tue, 5 Oct 2021 14:49:41 +0000
+Message-ID: <CAAun06byP43NfaPHA=1bbPV8NY7Xxi1PX+drvg5qPrMdv_qC0w@mail.gmail.com>
+Subject: Re: Hello
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Sep 30, 2021 at 2:28 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> This check has a signedness bug and does not work.  If "length" is
-> larger than "PAGE_SIZE" then "PAGE_SIZE - length" is not negative
-> but instead it is a large unsigned value.  Fortunately, Takashi Iwai
-> changed this code to use scnprint() instead of snprintf() so now
-> "length" is never larger than "PAGE_SIZE - 1" and the check can be
-> removed.
->
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/thermal/intel/int340x_thermal/int3400_thermal.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-> index 19926beeb3b7..8502b7d8df89 100644
-> --- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-> +++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-> @@ -129,11 +129,10 @@ static ssize_t available_uuids_show(struct device *dev,
->
->         for (i = 0; i < INT3400_THERMAL_MAXIMUM_UUID; i++) {
->                 if (priv->uuid_bitmap & (1 << i))
-> -                       if (PAGE_SIZE - length > 0)
-> -                               length += scnprintf(&buf[length],
-> -                                                  PAGE_SIZE - length,
-> -                                                  "%s\n",
-> -                                                  int3400_thermal_uuids[i]);
-> +                       length += scnprintf(&buf[length],
-> +                                           PAGE_SIZE - length,
-> +                                           "%s\n",
-> +                                           int3400_thermal_uuids[i]);
->         }
->
->         return length;
-> --
+Good day,
 
-Applied as 5.16 material, thanks!
+In my honor as the personal attorney to your late relative, I hereby
+officially invite you to his inheritance claim.
+With your permission, I will give you more information .
+
+Yours faithfully,
+
+-- 
+Kokou Mensah. Esq

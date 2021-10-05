@@ -2,65 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4872422B7B
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Oct 2021 16:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CCA5422C28
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Oct 2021 17:16:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235263AbhJEOvd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Oct 2021 10:51:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50248 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234084AbhJEOvd (ORCPT
+        id S235519AbhJEPSE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Oct 2021 11:18:04 -0400
+Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:60900
+        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235709AbhJEPSD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Oct 2021 10:51:33 -0400
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A6F9C061749
-        for <kernel-janitors@vger.kernel.org>; Tue,  5 Oct 2021 07:49:42 -0700 (PDT)
-Received: by mail-ot1-x329.google.com with SMTP id c6-20020a9d2786000000b005471981d559so26114213otb.5
-        for <kernel-janitors@vger.kernel.org>; Tue, 05 Oct 2021 07:49:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=3PYTT8kJpyzpxpd4IUA8A7KEa4VhIQYWn6d7OgYbvSg=;
-        b=H9LyjyX6KCBZUkkIRHI1ebob/Gl9+fdRgMVPO678nrG34TigpipTZOlO0Eox1faOpz
-         zJj1A740WpJ7/ZeUnnpaJVJThAfw1YtPzBSvmMgwHaO7/k5b9pZJnv4l9zthBH+8jvke
-         KVdQqv82QzoL0DhOQx5KbWXZmJqZQ1lf9dDYtpptbtcEe8yX9jfd9TZz5qPBsYEYTR9/
-         7VrxoPP5GKPWnGzbd3Wn/A7yHfBQIW7jMuxXobEW7LJOnABpyKJgPYlLTTMAgwvugdZS
-         PXv5US/zo/Latw5cczKhW1uucCU0+N7ZsItGqb9zDpEERCVtM2bMdowBLrJg3XgRS2V9
-         RRcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=3PYTT8kJpyzpxpd4IUA8A7KEa4VhIQYWn6d7OgYbvSg=;
-        b=S4xlETqjHcFLJSr6xf2WTysxzE3bK6tcOfeBN5vxPJFPYMS8TKkicIJZd65uroQ7cZ
-         xtxEkYzlxb84oDp7Bb+QaJbudS0bpHYbxE4HdgKwZd0Pa/T/tTJg6ZxN064vpkcKeFJ5
-         MM3BoaUgydp/yydlzZd0fV8eKikAN4zC8uQXPPRNU8POkSdo1jGOuu76tZ0BNSME5Itk
-         ytvxxACj2hNBZMpSI9PMXg+TYA2SuKOqnQrphLeSeGD8EKCETYyIy2Gw6ZZ7OIKBFhMc
-         r6oZv5mTnWtG98Szz36nMco7n7QuX6aqNHt0k2zhxm6uBU2favx6I7E3yuFHUxyI4Fqr
-         wydg==
-X-Gm-Message-State: AOAM533eXFFGgFts5Ib9Dx5GYer0HuQP0LcLC3yF0GIkfKzEEd9TonwJ
-        hpN7H9UnXYzyapkKzqzlr8ClCTWKMsCwB+Eie+0=
-X-Google-Smtp-Source: ABdhPJyZ5tLI7mAMk153lrk+YntS0jFrQq5HtSfx8bcbg54ZtlJcz2A/SBaXRF8AmQNyQZyqkZa3HCYgTebQoT+yynQ=
-X-Received: by 2002:a05:6830:438a:: with SMTP id s10mr8122767otv.173.1633445381960;
- Tue, 05 Oct 2021 07:49:41 -0700 (PDT)
+        Tue, 5 Oct 2021 11:18:03 -0400
+Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 9C8753FFEA;
+        Tue,  5 Oct 2021 15:16:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1633446971;
+        bh=QvIq1h9e/NhyWPRySEGTralffxgGmERWgEP2mQB01KM=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
+        b=WQCsf16xlonqTKrvB6VvrnLWy3lGEt1zYlmSjqrfimyiIJ602hd1J4b0ZKRgS6qDQ
+         jkFEVgJNKJ4osEMI71osYYHSRCbXMHe4ZyVj9NLD4BElT5na+cUXSgjYoWO9PvkUMV
+         k6BOgCCDtFFVAST9Ej25fe+EWj/enZOzM2h7SUFfSUHXQhcRFQATnl1O4WlIodQ2BO
+         fG+J0BzxztbALuShndTtaY57SntV5nwZfEtgEJ3xV8XA6AbRSyfrQnHtMVwwl1/AAB
+         APV2XlXHgWLMGSadJ9irMSldQbuGISY8qE5mLJHUT1tUBFU4tVdolduxurZi1sMkxs
+         oKZKXcYg/6mgg==
+From:   Colin King <colin.king@canonical.com>
+To:     Corey Minyard <minyard@acm.org>,
+        openipmi-developer@lists.sourceforge.net
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] ipmi: ipmb: Fix off-by-one size check on rcvlen
+Date:   Tue,  5 Oct 2021 16:16:11 +0100
+Message-Id: <20211005151611.305383-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Received: by 2002:aca:b641:0:0:0:0:0 with HTTP; Tue, 5 Oct 2021 07:49:41 -0700 (PDT)
-From:   "Kokou A. Mensah " <kokouamouzou01@gmail.com>
-Date:   Tue, 5 Oct 2021 14:49:41 +0000
-Message-ID: <CAAun06byP43NfaPHA=1bbPV8NY7Xxi1PX+drvg5qPrMdv_qC0w@mail.gmail.com>
-Subject: Re: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Good day,
+From: Colin Ian King <colin.king@canonical.com>
 
-In my honor as the personal attorney to your late relative, I hereby
-officially invite you to his inheritance claim.
-With your permission, I will give you more information .
+There is an off-by-one bounds check on the rcvlen causing a potential
+out of bounds write on iidev->rcvmsg. Fix this by using the >= operator
+on the bounds check rather than the > operator.
 
-Yours faithfully,
+Addresses-Coverity: ("Out-of-bounds write")
+Fixes: 0ba0c3c5d1c1 ("ipmi:ipmb: Add initial support for IPMI over IPMB")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/char/ipmi/ipmi_ipmb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/char/ipmi/ipmi_ipmb.c b/drivers/char/ipmi/ipmi_ipmb.c
+index b10a1fd9c563..77ebec4ed28e 100644
+--- a/drivers/char/ipmi/ipmi_ipmb.c
++++ b/drivers/char/ipmi/ipmi_ipmb.c
+@@ -192,7 +192,7 @@ static int ipmi_ipmb_slave_cb(struct i2c_client *client,
+ 		break;
+ 
+ 	case I2C_SLAVE_WRITE_RECEIVED:
+-		if (iidev->rcvlen > sizeof(iidev->rcvmsg))
++		if (iidev->rcvlen >= sizeof(iidev->rcvmsg))
+ 			iidev->overrun = true;
+ 		else
+ 			iidev->rcvmsg[iidev->rcvlen++] = *val;
 -- 
-Kokou Mensah. Esq
+2.32.0
+

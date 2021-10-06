@@ -2,78 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1A0542411C
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Oct 2021 17:17:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCF53424376
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Oct 2021 18:55:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239167AbhJFPTt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Oct 2021 11:19:49 -0400
-Received: from mout.kundenserver.de ([212.227.126.134]:50943 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231874AbhJFPTs (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Oct 2021 11:19:48 -0400
-Received: from mail-wr1-f41.google.com ([209.85.221.41]) by
- mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1MNKuI-1mAX1c2hNi-00OrM3; Wed, 06 Oct 2021 17:17:54 +0200
-Received: by mail-wr1-f41.google.com with SMTP id j8so9901411wro.7;
-        Wed, 06 Oct 2021 08:17:54 -0700 (PDT)
-X-Gm-Message-State: AOAM532Q43ElqS2UQ23hjzSfwnj9OHkRE/+A3QS9kCMKb5NMJhd1yV6h
-        3dpik9wlo4MbVO/nfyJlfMAb7zKPlzSZnBPfB6I=
-X-Google-Smtp-Source: ABdhPJzzqvoHYlQk2fQWJUzRcXdqZhuq+vNm94ftkYZ7RMylClUbZjxaLkQtrEJaWxkhu1k6wukF1ikvRUsQcoSXV/M=
-X-Received: by 2002:adf:b1c4:: with SMTP id r4mr28248153wra.428.1633533474265;
- Wed, 06 Oct 2021 08:17:54 -0700 (PDT)
+        id S238116AbhJFQ5a (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 Oct 2021 12:57:30 -0400
+Received: from bues.ch ([80.190.117.144]:39454 "EHLO bues.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239419AbhJFQ5a (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 Oct 2021 12:57:30 -0400
+X-Greylist: delayed 2448 seconds by postgrey-1.27 at vger.kernel.org; Wed, 06 Oct 2021 12:57:30 EDT
+Received: by bues.ch with esmtpsa (Exim 4.92)
+        (envelope-from <m@bues.ch>)
+        id 1mY9Z1-0002Y7-Es; Wed, 06 Oct 2021 18:14:39 +0200
+Date:   Wed, 6 Oct 2021 18:13:34 +0200
+From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, kernel-janitors@vger.kernel.org,
+        linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org
+Subject: Re: [PATCH 2/2] b43: fix a lower bounds test
+Message-ID: <20211006181334.621ac10c@wiggum>
+In-Reply-To: <20211006073621.GE8404@kili>
+References: <20211006073542.GD8404@kili>
+        <20211006073621.GE8404@kili>
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20211006145859.9564-1-lukas.bulwahn@gmail.com>
-In-Reply-To: <20211006145859.9564-1-lukas.bulwahn@gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 6 Oct 2021 17:17:38 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a12-atmqjtjqi-RhFXH2Kwa-hxYcxy3Ftz2YjY5yyPHqg@mail.gmail.com>
-Message-ID: <CAK8P3a12-atmqjtjqi-RhFXH2Kwa-hxYcxy3Ftz2YjY5yyPHqg@mail.gmail.com>
-Subject: Re: [PATCH] asm-generic: correct reference to GENERIC_LIB_DEVMEM_IS_ALLOWED
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Palmer Dabbelt <palmerdabbelt@google.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:nIl25lFbfNeOMxdEthhqs0MK70ahLfP3x9ECRWZNMgCj2qfywzL
- WDhlPDN210R8SBPhm7di6dzIa+rskaw3oXzZ7uNjuJ8YD8abpemXGWJIFAyS3BZs+jnDQKH
- xhjNq3EOkJa44N/03wjzYl6dSSjr63UehjLs8n5wQDvPgsJ7iyh8oInYrwz6EQmIunsxFwA
- SYd2tb46E0WRa9EK9XZtw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Mtxe3FpY1yw=:JhWVhEk8cwwRWfgc4FGWD2
- JkxnfiPYNYdaLjquCNPhuYbjynIBCtWx3fdXnPslZ84EVOpa+r9zLI0xlP45HVXmfUO8uyKe7
- zvQaE9XPmnitnKg2tMkcEs/w9fzNgvPWVsnllAHr48bya5GzUG8UUtvTjastYS7KDT8/JUfWR
- YE2tCSiCbWGZMUoY7nqjiWe3kYvCncPyoZqyOj5se6jTxS8h81/xaV/E5NHxVODeY0LuhhzsR
- 5UG04wZNC+P7JqKHWJDHg0shZt1hvFFeTpvFq6p3HdrdU2mDJALMkEWeuU3Tj1OiM1JdEt+A2
- SutSVenVH9lHg+r6xnAiuSp99U87tBBUDDZN+7YRnllasZAhSTBnuxxrv3EupMTHOkwd2ciN5
- NWUsEpyfbtq1tw3TZR7xtRR+FG5TQLl2vfqAyOjfZiEb6zYywelkoHL9U9vqo3Ty2wVLXeyFC
- tGRuqWK39ZRmXC6XDlYvNmU7G1dRC91NAJa+ieW2mtvcQncuSXTiAn3zmA71iBMnpnCR8RoWL
- zZEpWIc2DZZ1PvyA4uGBEc3EQ2Ooa/fhw+94i1LdVOcKSdXztsbm+YHCCKrrxvhlf/fH6G4QU
- Wzs4MceK4dJWU/VfCBMf5KXm7eKQJlNWQF6uaRkzgm9gtn3k5H5dDDX9pNnJAeBxQjffuNC27
- TRrteIsMWyDmsYV4CuTyhgrCJpuh1vgXHcV5m3roGlBROWdUEFM6qEJTzxsfhCawqPmjphsRH
- Xn68GFVhPk00Ay7KjKQf3Dz8yaCtVDRKvHEeSA==
+Content-Type: multipart/signed; boundary="Sig_/QqtpiT/CB7f5fqDpH1ja61U";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Oct 6, 2021 at 5:00 PM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
->
-> Commit 527701eda5f1 ("lib: Add a generic version of devmem_is_allowed()")
-> introduces the config symbol GENERIC_LIB_DEVMEM_IS_ALLOWED, but then
-> falsely refers to CONFIG_GENERIC_DEVMEM_IS_ALLOWED (note the missing LIB
-> in the reference) in ./include/asm-generic/io.h.
->
-> Luckily, ./scripts/checkkconfigsymbols.py warns on non-existing configs:
->
-> GENERIC_DEVMEM_IS_ALLOWED
-> Referencing files: include/asm-generic/io.h
->
-> Correct the name of the config to the intended one.
->
-> Fixes: 527701eda5f1 ("lib: Add a generic version of devmem_is_allowed()")
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+--Sig_/QqtpiT/CB7f5fqDpH1ja61U
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+On Wed, 6 Oct 2021 10:36:22 +0300
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
+
+> The problem is that "channel" is an unsigned int, when it's less 5 the
+> value of "channel - 5" is not a negative number as one would expect but
+> is very high positive value instead.
+>=20
+> This means that "start" becomes a very high positive value.  The result
+> of that is that we never enter the "for (i =3D start; i <=3D end; i++) {"
+> loop.  Instead of storing the result from b43legacy_radio_aci_detect()
+> it just uses zero.
+>=20
+> Fixes: ef1a628d83fc ("b43: Implement dynamic PHY API")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/net/wireless/broadcom/b43/phy_g.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/wireless/broadcom/b43/phy_g.c b/drivers/net/wire=
+less/broadcom/b43/phy_g.c
+> index d5a1a5c58236..ac72ca39e409 100644
+> --- a/drivers/net/wireless/broadcom/b43/phy_g.c
+> +++ b/drivers/net/wireless/broadcom/b43/phy_g.c
+> @@ -2297,7 +2297,7 @@ static u8 b43_gphy_aci_scan(struct b43_wldev *dev)
+>  	b43_phy_mask(dev, B43_PHY_G_CRS, 0x7FFF);
+>  	b43_set_all_gains(dev, 3, 8, 1);
+> =20
+> -	start =3D (channel - 5 > 0) ? channel - 5 : 1;
+> +	start =3D (channel > 5) ? channel - 5 : 1;
+>  	end =3D (channel + 5 < 14) ? channel + 5 : 13;
+> =20
+>  	for (i =3D start; i <=3D end; i++) {
+
+Nice finding.
+
+Acked-by: Michael B=C3=BCsch <m@bues.ch>
+
+
+--=20
+Michael
+
+https://bues.ch/
+
+--Sig_/QqtpiT/CB7f5fqDpH1ja61U
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmFdyy4ACgkQ9TK+HZCN
+iw4crQ//YkcAD+VIJxm2yzxA85cp8FKUG68UeFSuTudaxcEmwNxvgoM29sYjEk0C
+zT2gP0KOGrJ5WcjSEVeHs0x8MNJ0mjby9YYGJ30ggM4Mz/jWABF9SckOs4Vou2XA
+ssWJGPu9Qp44BbQrrJpds81piTlEjPtBuzAusYN58NfnHnI3jSOT+gPw59sQ17Re
+X7qRCRdNkTejmyE7FtZ19/r0zHhtxJ/cVeSewYRrPdrXr7mIMbXIQeQffRczoGER
+4ntZUyHSOTamVrwDNr6X1sg7+p2jYwN2PmQyhH53NYQZcdHEhWcPa9iFBIdBCUyb
+CXRVP+uZ1nmQ/muZ+tf85Wbm651RN8B20y3eoABozHOVST0wZAs0t5Ql7H1CJsWh
+3160MN9nzRG2rCuuXq5MIHzHv8QvPEIH5oev2lzBzH+O4iAjY6J07SKc1ajJtvlt
+fsfw3WsenslRrUE33js3mM3M8ZMxG0uV8QGbDsIY+xQo6zumN2hja5qaonYnUpkt
+ZRZM2kA+qTkNvsq0ZaRwiGQnCPpPGT5GCPsZ61woeL1NLPlAq1/nNsPG9skP38Om
+3FiwBuz7jbawgO+FOeizDmC1/rz2shzcQ1MLsHa2AvIYPQF9Zmg8VoNpCIBwddgo
+s6GbKK+1Mt0MOprjl8vAh7IaP02JYtecWFN0E5r9L5gGLqHRP5g=
+=o5Qg
+-----END PGP SIGNATURE-----
+
+--Sig_/QqtpiT/CB7f5fqDpH1ja61U--

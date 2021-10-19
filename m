@@ -2,121 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F310D4334D7
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Oct 2021 13:37:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E13454335FD
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Oct 2021 14:30:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235418AbhJSLkB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 Oct 2021 07:40:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53128 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235442AbhJSLj5 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 Oct 2021 07:39:57 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACD6FC061770
-        for <kernel-janitors@vger.kernel.org>; Tue, 19 Oct 2021 04:37:32 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id x27so6773526lfu.5
-        for <kernel-janitors@vger.kernel.org>; Tue, 19 Oct 2021 04:37:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=D5PzwEBrOldlaIz/yoBnECaUyGI46VY83yvfxIz1ZF4=;
-        b=WXLTnuVzOfIvphbQT4ZFrAt0wNTFY+MOeJZN7s04aT4LzVae1rULH5dGy0LzUllzwz
-         2I4HFJQR5QtcmWPoKV+r+z10l5H05Rzls7CPnkijH4T6AEiHheOanmzBjxzEQ6qUxQME
-         k4oVD0v2jt2O4MWMDbs4klhoyOG7bMYoHh5YdkRVDZFUl9eE1b7WqwkPZqczaB2BDBB2
-         IFs/RI6e7oQxWn2EIZdL68Snl+58JXtiGJpflTE9bgI067dDWM1naY3dh1uRG/qfmZ5+
-         5Ji72Gr0JlOP1Ij/DTKFk+dzrGseMPb1EWaEFK4otMo4H4NaGZIaDuk/JgFMvPPmf7wu
-         kSWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=D5PzwEBrOldlaIz/yoBnECaUyGI46VY83yvfxIz1ZF4=;
-        b=vGbjMqf+wgHEWJ/OC5c9sJXB+G/esSoaxNeUzJDRmug+ACpvLkwm778ujw7yYWr259
-         N/d8IpXdzonWBmqTFE4YcoKay1FcbLCmLtDRCA7X3nQOcw1yz5upHAEg3rrqyhdD7rsU
-         kXUBQLvcAP/J9fZ0r7dFRPjQenhs8vUl9gq9LCQ2FFfifaamHRbXZePb3/Q71e0QqYF+
-         YicMMMe5XWDsSNI1YKsw36I5CPLW6tJhNX6JH1vB6infLCmp3MuVykLDJ8111rw2qFsF
-         hDwwHdKwtF6OZAWmdwAp8Lr3EoLcZtaIp/ATW+z4GehEdUpU4RkpLLNT7zotGgyV1uZ1
-         T0kA==
-X-Gm-Message-State: AOAM53174MQpeC5y5NxCYEhoB78xY7ibnhHqfosnlL2WC2OheD9mFk32
-        GQeG9sWSs4S1LZuz1VgORI2ojl2UouEZG14WPpzZdg==
-X-Google-Smtp-Source: ABdhPJxI1KBn0TsgDp3DyQqblAi01bephKSl6c86Z7+PTcABb14fvdzOS9EMLr3KRGaiG817ECkKj2j23M8q4eSma5I=
-X-Received: by 2002:ac2:4293:: with SMTP id m19mr5618302lfh.254.1634643451083;
- Tue, 19 Oct 2021 04:37:31 -0700 (PDT)
+        id S235627AbhJSMcb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 Oct 2021 08:32:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58930 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235415AbhJSMca (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 19 Oct 2021 08:32:30 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 98BA36137B;
+        Tue, 19 Oct 2021 12:30:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634646613;
+        bh=eugL9T3Vr9MAt7iQ9wK5Cepix0GbEaI9SlaUAY2SSjQ=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=a3lL0ITys7v2bvhwOFauP+IU9PzCWPe5pH5MSlWxGwSHEVNYk4pPqT+gMldvJ1u+M
+         M0AXQlYNsHrPDbpXkiS6ECW4S6cpdJUoFuZtuO4NUQ6Rkpm5jJL+S229o7UYZfIntY
+         PqdlC21ozNcT+SiSQVYPmFyErht/FWVVyQx7dwVQ1cYDxuAzOMlFytRA1hjqCzLhnK
+         KJpJVAVYtQbQJYqPSKap7vAFcOQjdfiV/daEnrbueVDxe2T3eUWIjgQTFIjkRLc1ZA
+         aZp+jg4sKWwh3ryplqBo2HUzEa+iYEzH3nr8LPmQa4fZ+ekqXwDQD1rja8iebVywwz
+         RniJWMEPJIQhA==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 8B62D609E3;
+        Tue, 19 Oct 2021 12:30:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <4aadb3c97835f7b80f00819c3d549e6130384e67.1634365151.git.christophe.jaillet@wanadoo.fr>
-In-Reply-To: <4aadb3c97835f7b80f00819c3d549e6130384e67.1634365151.git.christophe.jaillet@wanadoo.fr>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 19 Oct 2021 13:36:54 +0200
-Message-ID: <CAPDyKFo-ahKB8naaBFBdrCy3f_a08s_2e9FnjwOqsDc1-gWYvg@mail.gmail.com>
-Subject: Re: [PATCH] mmc: mxs-mmc: disable regulator on error and in the
- remove function
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] ieee802154: Remove redundant 'flush_workqueue()' calls
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <163464661256.12016.17334842037871093626.git-patchwork-notify@kernel.org>
+Date:   Tue, 19 Oct 2021 12:30:12 +0000
+References: <fedb57c4f6d4373e0d6888d13ad2de3a1d315d81.1634235880.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <fedb57c4f6d4373e0d6888d13ad2de3a1d315d81.1634235880.git.christophe.jaillet@wanadoo.fr>
 To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        dl-linux-imx <linux-imx@nxp.com>, Chris Ball <cjb@laptop.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Cc:     h.morris@cascoda.com, alex.aring@gmail.com,
+        stefan@datenfreihafen.org, davem@davemloft.net, kuba@kernel.org,
+        linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 16 Oct 2021 at 08:21, Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
->
-> The 'reg_vmmc' regulator is enabled in the probe. It is never disabled.
-> Neither in the error handling path of the probe nor in the remove
-> function.
->
-> Register a devm_action to disable it when needed.
->
-> Fixes: 4dc5a79f1350 ("mmc: mxs-mmc: enable regulator for mmc slot")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Hello:
 
-Applied for next, thanks!
+This patch was applied to netdev/net-next.git (master)
+by David S. Miller <davem@davemloft.net>:
 
-Kind regards
-Uffe
+On Thu, 14 Oct 2021 20:26:14 +0200 you wrote:
+> 'destroy_workqueue()' already drains the queue before destroying it, so
+> there is no need to flush it explicitly.
+> 
+> Remove the redundant 'flush_workqueue()' calls.
+> 
+> This was generated with coccinelle:
+> 
+> [...]
+
+Here is the summary with links:
+  - ieee802154: Remove redundant 'flush_workqueue()' calls
+    https://git.kernel.org/netdev/net-next/c/07fab5a469a5
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-> ---
->  drivers/mmc/host/mxs-mmc.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/drivers/mmc/host/mxs-mmc.c b/drivers/mmc/host/mxs-mmc.c
-> index 947581de7860..8c3655d3be96 100644
-> --- a/drivers/mmc/host/mxs-mmc.c
-> +++ b/drivers/mmc/host/mxs-mmc.c
-> @@ -552,6 +552,11 @@ static const struct of_device_id mxs_mmc_dt_ids[] = {
->  };
->  MODULE_DEVICE_TABLE(of, mxs_mmc_dt_ids);
->
-> +static void mxs_mmc_regulator_disable(void *regulator)
-> +{
-> +       regulator_disable(regulator);
-> +}
-> +
->  static int mxs_mmc_probe(struct platform_device *pdev)
->  {
->         struct device_node *np = pdev->dev.of_node;
-> @@ -591,6 +596,11 @@ static int mxs_mmc_probe(struct platform_device *pdev)
->                                 "Failed to enable vmmc regulator: %d\n", ret);
->                         goto out_mmc_free;
->                 }
-> +
-> +               ret = devm_add_action_or_reset(&pdev->dev, mxs_mmc_regulator_disable,
-> +                                              reg_vmmc);
-> +               if (ret)
-> +                       goto out_mmc_free;
->         }
->
->         ssp->clk = devm_clk_get(&pdev->dev, NULL);
-> --
-> 2.30.2
->

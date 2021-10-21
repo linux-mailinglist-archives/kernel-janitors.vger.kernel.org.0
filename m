@@ -2,83 +2,215 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77A8C43590F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Oct 2021 05:43:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 032A6435A71
+	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Oct 2021 07:46:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231371AbhJUDph (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 Oct 2021 23:45:37 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32]:48852 "EHLO
-        mx0a-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230434AbhJUDpU (ORCPT
+        id S229597AbhJUFss convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 21 Oct 2021 01:48:48 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:47248 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229499AbhJUFsr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 Oct 2021 23:45:20 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19L1MeS4020970;
-        Thu, 21 Oct 2021 03:43:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2021-07-09;
- bh=KmPjvWP7uHNVKZb/bfyFWcjICvRoWEiuSuB3zepHOns=;
- b=L6EPcrf7R3XvzwYrafpXK97Fr9gOAjosrEsrUjDvN/xVCVvYXKFuQp9pIeTGihpb9UIe
- Ouf6N+UKgsYvUxZmPwTbU3pPY5wpf3glZ+3kgNG5SSGfmJeubqy2Iw1aYt+7HS/NmT4O
- xjgfskLbBY1WpPTO+LsrrCcZd+bGkUuBJj/SM+HiUAQNW1HKNFQCehE2iR0mUVJAo47c
- H3Gwhp/ftX/NZ7wBfjTnluyIP00WeiYZFt5O2QrMYQbtyHv1dpUgb8j8z0L5hajRJ502
- eT2lAt4mq/WWJrOaSXLtnoiRv0sm4pbzpEv8ULzpJg8E0mG/rctvHt+glr/KtOLTNcRZ 6Q== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3btkx9v8vs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 21 Oct 2021 03:43:02 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 19L3etvY078225;
-        Thu, 21 Oct 2021 03:43:02 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by aserp3030.oracle.com with ESMTP id 3bqmshem31-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 21 Oct 2021 03:43:02 +0000
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 19L3gu80082116;
-        Thu, 21 Oct 2021 03:43:01 GMT
-Received: from ca-mkp.mkp.ca.oracle.com (ca-mkp.ca.oracle.com [10.156.108.201])
-        by aserp3030.oracle.com with ESMTP id 3bqmshekyd-8;
-        Thu, 21 Oct 2021 03:43:01 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Sumit Saxena <sumit.saxena@broadcom.com>,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        mpi3mr-linuxdrv.pdl@broadcom.com, linux-scsi@vger.kernel.org,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] scsi: mpi3mr: use scnprintf() instead of snprintf()
-Date:   Wed, 20 Oct 2021 23:42:39 -0400
-Message-Id: <163478764103.7011.7736758287562784042.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20211013083005.GA8592@kili>
-References: <20211013083005.GA8592@kili>
+        Thu, 21 Oct 2021 01:48:47 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19L5kGedD026158, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19L5kGedD026158
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 21 Oct 2021 13:46:16 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Thu, 21 Oct 2021 13:46:15 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Wed, 20 Oct 2021 22:46:15 -0700
+Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
+ RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
+ 15.01.2308.015; Thu, 21 Oct 2021 13:46:15 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+CC:     Colin King <colin.king@canonical.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH][next] rtw89: Fix potential dereference of the null pointer sta
+Thread-Topic: [PATCH][next] rtw89: Fix potential dereference of the null
+ pointer sta
+Thread-Index: AQHXwduziBNegQ3KtE6tzEeaYjpkJqvX/pCwgACwb0mAANdosIACEPZJgAFhaMA=
+Date:   Thu, 21 Oct 2021 05:46:15 +0000
+Message-ID: <35c096e5251f49c1abfbb51f761eab82@realtek.com>
+References: <20211015154530.34356-1-colin.king@canonical.com>
+        <9cc681c217a449519aee524b35e6b6bc@realtek.com>
+        <87pms2ttvi.fsf@codeaurora.org>
+        <abc2e3a274694d48aa468491df334349@realtek.com>
+ <87h7dcf5zj.fsf@codeaurora.org>
+In-Reply-To: <87h7dcf5zj.fsf@codeaurora.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/10/21_=3F=3F_03:10:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: -u-u4iDzw6KRgkd9AWtIZeYurMw1N_m8
-X-Proofpoint-GUID: -u-u4iDzw6KRgkd9AWtIZeYurMw1N_m8
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/21/2021 05:25:21
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 166865 [Oct 20 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/21/2021 05:27:00
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 13 Oct 2021 11:30:05 +0300, Dan Carpenter wrote:
 
-> I intended to move from snprintf() to scnprintf() in the previous
-> patch but I messed up and did not do that.  The result of my bug is
-> that it this function could trigger a WARN() if the buffer is too
-> large.
+> -----Original Message-----
+> From: kvalo=codeaurora.org@mg.codeaurora.org <kvalo=codeaurora.org@mg.codeaurora.org> On Behalf Of Kalle
+> Valo
+> Sent: Wednesday, October 20, 2021 4:36 PM
+> To: Pkshih <pkshih@realtek.com>
+> Cc: Colin King <colin.king@canonical.com>; David S . Miller <davem@davemloft.net>; Jakub Kicinski
+> <kuba@kernel.org>; linux-wireless@vger.kernel.org; netdev@vger.kernel.org;
+> kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: Re: [PATCH][next] rtw89: Fix potential dereference of the null pointer sta
 > 
+> Pkshih <pkshih@realtek.com> writes:
 > 
+> >> -----Original Message-----
+> >> From: kvalo=codeaurora.org@mg.codeaurora.org
+> >> <kvalo=codeaurora.org@mg.codeaurora.org> On
+> >> Behalf Of Kalle Valo
+> >> Sent: Monday, October 18, 2021 8:12 PM
+> >> To: Pkshih <pkshih@realtek.com>
+> >> Cc: Colin King <colin.king@canonical.com>; David S . Miller
+> >> <davem@davemloft.net>; Jakub
+> >> Kicinski <kuba@kernel.org>; linux-wireless@vger.kernel.org; netdev@vger.kernel.org;
+> >> kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+> >> Subject: Re: [PATCH][next] rtw89: Fix potential dereference of the null pointer sta
+> >>
+> >> Pkshih <pkshih@realtek.com> writes:
+> >>
+> >> >> -----Original Message-----
+> >> >> From: Colin King <colin.king@canonical.com>
+> >> >> Sent: Friday, October 15, 2021 11:46 PM
+> >> >> To: Kalle Valo <kvalo@codeaurora.org>; David S . Miller <davem@davemloft.net>; Jakub Kicinski
+> >> >> <kuba@kernel.org>; Pkshih <pkshih@realtek.com>; linux-wireless@vger.kernel.org;
+> >> >> netdev@vger.kernel.org
+> >> >> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+> >> >> Subject: [PATCH][next] rtw89: Fix potential dereference of the null pointer sta
+> >> >>
+> >> >> From: Colin Ian King <colin.king@canonical.com>
+> >> >>
+> >> >> The pointer rtwsta is dereferencing pointer sta before sta is
+> >> >> being null checked, so there is a potential null pointer deference
+> >> >> issue that may occur. Fix this by only assigning rtwsta after sta
+> >> >> has been null checked. Add in a null pointer check on rtwsta before
+> >> >> dereferencing it too.
+> >> >>
+> >> >> Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+> >> >> Addresses-Coverity: ("Dereference before null check")
+> >> >> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> >> >> ---
+> >> >>  drivers/net/wireless/realtek/rtw89/core.c | 9 +++++++--
+> >> >>  1 file changed, 7 insertions(+), 2 deletions(-)
+> >> >>
+> >> >> diff --git a/drivers/net/wireless/realtek/rtw89/core.c
+> >> >> b/drivers/net/wireless/realtek/rtw89/core.c
+> >> >> index 06fb6e5b1b37..26f52a25f545 100644
+> >> >> --- a/drivers/net/wireless/realtek/rtw89/core.c
+> >> >> +++ b/drivers/net/wireless/realtek/rtw89/core.c
+> >> >> @@ -1534,9 +1534,14 @@ static bool rtw89_core_txq_agg_wait(struct rtw89_dev *rtwdev,
+> >> >>  {
+> >> >>  	struct rtw89_txq *rtwtxq = (struct rtw89_txq *)txq->drv_priv;
+> >> >>  	struct ieee80211_sta *sta = txq->sta;
+> >> >> -	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
+> >> >
+> >> > 'sta->drv_priv' is only a pointer, we don't really dereference the
+> >> > data right here, so I think this is safe. More, compiler can optimize
+> >> > this instruction that reorder it to the place just right before using.
+> >> > So, it seems like a false alarm.
+> >> >
+> >> >> +	struct rtw89_sta *rtwsta;
+> >> >>
+> >> >> -	if (!sta || rtwsta->max_agg_wait <= 0)
+> >> >> +	if (!sta)
+> >> >> +		return false;
+> >> >> +	rtwsta = (struct rtw89_sta *)sta->drv_priv;
+> >> >> +	if (!rtwsta)
+> >> >> +		return false;
+> >> >> +	if (rtwsta->max_agg_wait <= 0)
+> >> >>  		return false;
+> >> >>
+> >> >>  	if (rtwdev->stats.tx_tfc_lv <= RTW89_TFC_MID)
+> >> >
+> >> > I check the size of object files before/after this patch, and
+> >> > the original one is smaller.
+> >> >
+> >> >    text    data     bss     dec     hex filename
+> >> >   16781    3392       1   20174    4ece core-0.o  // original
+> >> >   16819    3392       1   20212    4ef4 core-1.o  // after this patch
+> >> >
+> >> > Do you think it is worth to apply this patch?
+> >>
+> >> I think that we should apply the patch. Even though the compiler _may_
+> >> reorder the code, it might choose not to do that.
+> >
+> > Understand.
+> >
+> > I have another way to fix this coverity warning, like:
+> >
+> > @@ -1617,7 +1617,7 @@ static bool rtw89_core_txq_agg_wait(struct rtw89_dev *rtwdev,
+> >  {
+> >         struct rtw89_txq *rtwtxq = (struct rtw89_txq *)txq->drv_priv;
+> >         struct ieee80211_sta *sta = txq->sta;
+> > -       struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
+> > +       struct rtw89_sta *rtwsta = sta ? (struct rtw89_sta *)sta->drv_priv : NULL;
+> >
+> >         if (!sta || rtwsta->max_agg_wait <= 0)
+> >                 return false;
+> >
+> > Is this acceptable?
+> > It has a little redundant checking of 'sta', but the code looks clean.
+> 
+> I feel that Colin's fix is more readable, but this is just matter of
+> taste. You can choose.
 
-Applied to 5.16/scsi-queue, thanks!
+I would like my version. 
 
-[1/1] scsi: mpi3mr: use scnprintf() instead of snprintf()
-      https://git.kernel.org/mkp/scsi/c/30e99f05f8b1
+There are three similar warnings reported by smatch, so I will fix them by
+myself. Please drop this patch. 
+But, still thank Colin to point out this issue.
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+--
+Ping-Ke
+
+

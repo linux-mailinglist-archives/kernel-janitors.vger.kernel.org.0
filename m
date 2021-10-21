@@ -2,72 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C19CD435140
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Oct 2021 19:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01A1343591D
+	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Oct 2021 05:43:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230134AbhJTR3w (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 Oct 2021 13:29:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33320 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230031AbhJTR3v (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 Oct 2021 13:29:51 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 078E360F9F;
-        Wed, 20 Oct 2021 17:27:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634750857;
-        bh=tyQDeymI59Y8MZ5eBC3Ad/9unrJV3Xk5ZkBbMyhhpMY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jmEwPqivbWiqRPgwabXQE9M4rlYkApDKdrJyzOpn0tYGhFt1w4gCs18Cdh3mPb/E+
-         sqjRRL6MA3KykefzXR4ceq61SgELnhd+KEm40UpFuubFs6UN1d+/1wKlCmKJ77EYhW
-         0ZMXmNubwhg9lqk96AEj0utvopTL0IuMJBzyO14fldVk8fJI02IY2Bdjof0TeibmJX
-         6KwmfGVvSAB2ZF5WZ9eysWjUYWqLupYWM0hXVKfAzFGblvpKG9VfCxl3s8wMA+dFpe
-         8yeQA5YgVVVNxqqM/G2jR+eqS3sNyeJQuu7Rg0p+8DT523FIPsUJN7EA7CnsnLA4uE
-         lPcHWDDlKXBGw==
-Date:   Wed, 20 Oct 2021 22:57:32 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        linux-phy@lists.infradead.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] phy: ti: gmii-sel: check of_get_address() for failure
-Message-ID: <YXBRhOmXRQJDdJoW@matsya>
-References: <20210914110038.GB11657@kili>
+        id S231439AbhJUDpw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 Oct 2021 23:45:52 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32]:49136 "EHLO
+        mx0a-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230507AbhJUDpU (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 20 Oct 2021 23:45:20 -0400
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19L33AdG029729;
+        Thu, 21 Oct 2021 03:43:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2021-07-09;
+ bh=sCa0DBuKWiePDVne6M/kw2h8j0FJir/ih2Kit+gL7nY=;
+ b=ZloWzcvaEump9ursU8PAbEDle1if2kw5tQLGYnE5MrqxkVqhxATHSj3n3exkxncjfFg4
+ ryPrR+kV8/Al02K+kq6Kh3XCV0KQuJ/ZkP26ShOInV38KDIMoFgKZS96tCCiAuzotUet
+ HDlRNzIDcHOzDp2tWVgkLtwxvyxmXTDYpyU0qvdQTDHau/Fw0VtticspVXzBfhjURemh
+ urWX4n1kVvfAWnveD8blHBUeTSdAl6HawVKxKJAQPHnK8idh/puqgEF+sWwsXBvi020D
+ JZkYW8QsjiGTXcMiQflHU9tybn6OG6UK/Z7SHPC90Y5UPmsHifEmC8ob9HSwBGzOcAUj Rg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by mx0b-00069f02.pphosted.com with ESMTP id 3btkwj3wvb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 21 Oct 2021 03:43:00 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 19L3esWY078082;
+        Thu, 21 Oct 2021 03:42:59 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by aserp3030.oracle.com with ESMTP id 3bqmshem1t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 21 Oct 2021 03:42:59 +0000
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 19L3gu7u082116;
+        Thu, 21 Oct 2021 03:42:59 GMT
+Received: from ca-mkp.mkp.ca.oracle.com (ca-mkp.ca.oracle.com [10.156.108.201])
+        by aserp3030.oracle.com with ESMTP id 3bqmshekyd-6;
+        Thu, 21 Oct 2021 03:42:59 +0000
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     Colin King <colin.king@canonical.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        Adam Radford <aradford@gmail.com>, linux-scsi@vger.kernel.org
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] scsi: 3w-xxx: Remove redundant initialization of variable retval
+Date:   Wed, 20 Oct 2021 23:42:37 -0400
+Message-Id: <163478764103.7011.7284356461891990689.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20211013182834.137410-1-colin.king@canonical.com>
+References: <20211013182834.137410-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210914110038.GB11657@kili>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: W4ohr29NiuhibCb7pX-9_LMH2jbxNPkn
+X-Proofpoint-GUID: W4ohr29NiuhibCb7pX-9_LMH2jbxNPkn
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 14-09-21, 14:00, Dan Carpenter wrote:
-> Smatch complains that if of_get_address() returns NULL, then "size"
-> isn't initialized.  Also it would lead to an Oops.
+On Wed, 13 Oct 2021 19:28:34 +0100, Colin King wrote:
 
-Applied, thanks
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable retvasl is being initialized with a value that is never
+> read, it is being updated immediately afterwards. The assignment is
+> redundant and can be removed.
+> 
+> 
+> [...]
 
-> 
-> Fixes: 7f78322cdd67 ("phy: ti: gmii-sel: retrieve ports number and base offset from dt")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/phy/ti/phy-gmii-sel.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/phy/ti/phy-gmii-sel.c b/drivers/phy/ti/phy-gmii-sel.c
-> index 5fd2e8a08bfc..d0ab69750c6b 100644
-> --- a/drivers/phy/ti/phy-gmii-sel.c
-> +++ b/drivers/phy/ti/phy-gmii-sel.c
-> @@ -320,6 +320,8 @@ static int phy_gmii_sel_init_ports(struct phy_gmii_sel_priv *priv)
->  		u64 size;
->  
->  		offset = of_get_address(dev->of_node, 0, &size, NULL);
-> +		if (!offset)
-> +			return -EINVAL;
->  		priv->num_ports = size / sizeof(u32);
->  		if (!priv->num_ports)
->  			return -EINVAL;
-> -- 
-> 2.20.1
+Applied to 5.16/scsi-queue, thanks!
+
+[1/1] scsi: 3w-xxx: Remove redundant initialization of variable retval
+      https://git.kernel.org/mkp/scsi/c/8ecfb16c9be2
 
 -- 
-~Vinod
+Martin K. Petersen	Oracle Linux Engineering

@@ -2,112 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DF3C437638
-	for <lists+kernel-janitors@lfdr.de>; Fri, 22 Oct 2021 13:56:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F4CC4376CC
+	for <lists+kernel-janitors@lfdr.de>; Fri, 22 Oct 2021 14:21:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231154AbhJVL6T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 22 Oct 2021 07:58:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47626 "EHLO
+        id S231537AbhJVMYJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 22 Oct 2021 08:24:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229842AbhJVL6T (ORCPT
+        with ESMTP id S230462AbhJVMYJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 22 Oct 2021 07:58:19 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DEC8C061764
-        for <kernel-janitors@vger.kernel.org>; Fri, 22 Oct 2021 04:56:01 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id p21so2631477wmq.1
-        for <kernel-janitors@vger.kernel.org>; Fri, 22 Oct 2021 04:56:01 -0700 (PDT)
+        Fri, 22 Oct 2021 08:24:09 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81A3DC061764
+        for <kernel-janitors@vger.kernel.org>; Fri, 22 Oct 2021 05:21:51 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id l13so1069017edi.8
+        for <kernel-janitors@vger.kernel.org>; Fri, 22 Oct 2021 05:21:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GfBU0GpSmy79GbH1anUO6sQjWFqwumWH7YxWakuinzc=;
-        b=tWFAlFo6sqxss1FMA0XqNpWM7eRhtkHwtdMZr7zjgIb9Kk1jFDMx8krC6Pb6mRQJaB
-         YVlYtaP1wZZWcAIaqOa3C8Og9j133Gm0PjCPtNTZycCwAwGHM4UIaSAzKegCraumHUGv
-         dpUQ8+yZex7bLvyKOSSG/AZ2J1OernkkHlGRiAcIkbd11zkrEMqmmdJ7L0aBsbQGht97
-         73yRbPa0l6tjQwWs5yRdKAsPp3i3/kVscHlz7wmqgWkqPNxcWSm1jbdCXHbO+CqRJEdB
-         u1ODdswp9XwhcF2Gg8cDf+JBaZJZXIMThDP9nPL1xI6qdhI5XPKP/sQuCqOZf39UcAKY
-         KHuw==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=EabbjzyBCsHP1Pqryzjhoy0dM3xlyxLmmpO8ACgMTo8=;
+        b=opUIgqVWyZcHOIldu+LgQVfQLu2JLSm4eq0yRYoR8X3EkJ0jJdtgK1LJrEC4fAYG/u
+         x5QndCavFk6KrgrLKL2M04eWhmo9Ht5gsCUOTzm6BFmYlOhPKCnfQmAWRcGWJ3Kgd+Po
+         dxnzE1GzD0Fe/zdoRYGanqsnNZ7HZwcDd5jvb2P53Z7ySB2eUUW5eKcCwJjvHcLwQW3D
+         hmZMQ0WQ67mADARNZlQPTMDFACAa1pT2f55C5E+z5xU/0SGGI05AA1ys/nk/8Z7QRecx
+         rbFLK51ODld/urTp+hjZ3tCNNEiv03NL8R5n8H4ZVv1sIR3Pcfr4FSd/aUugOrtvCJBK
+         4QUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GfBU0GpSmy79GbH1anUO6sQjWFqwumWH7YxWakuinzc=;
-        b=rPc822nk3FN9jEpF6YUSq1GdUyFZVZpLiqv5mWqw+8CQbtbtu3OVmoIaafw6q8BZA1
-         cAdvU10iWoYrMSNg+mSZWIospvakwjrgbc4rCBtfFrXlXi/gf9hAdo5r2mD+ZdhUR0o1
-         3JrPFoCdzG74sLmYAihCqRcPQS3vHp78cCJcPQaYfhSAgMPBAOhi1YFat/uhyiN5SpzM
-         W4/lTRmZnctR0QXH6JOvZPnOkNzstKVZnagWZhat5sB4y5pOWWRowyiajmGU4XuRd80J
-         H+VRhRS6gM8UV01Uete0p0LHspLCSyGmS9LIwylMD/GV1C4kGztYBxF0TjnsbDZtCKqW
-         HyvQ==
-X-Gm-Message-State: AOAM531phpQbhnAz/eL10L7BBR0VO0L7OgU02HuZdYhxsZdH1YAkanow
-        Ml9Ycy+zCWXhJhGgkVwNL7hj6Yw615ueBCYrFzy4mA==
-X-Google-Smtp-Source: ABdhPJyje0rIg0VhIHC70ks2ose2WVfVFBCEjQcBhQxEnJNRdtAXMllSDvh8stJgNdMbceG5aDtLDTWNxC9gMg0twV0=
-X-Received: by 2002:a1c:7918:: with SMTP id l24mr13289169wme.137.1634903759923;
- Fri, 22 Oct 2021 04:55:59 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=EabbjzyBCsHP1Pqryzjhoy0dM3xlyxLmmpO8ACgMTo8=;
+        b=h+Lq9s97KMINizVtzAISUNctcvTXIFMpZDyxguC2qbk1Uy94eYVtx1ksz94tjuZFSm
+         ecUa2WM0+YpmfYSnfYgjF2TT94QtzE/LiesbS5uTpwZpGEXdKUbue71myIN9kEISe1oI
+         hr7076AziAK2swW9L+5dNkj6TRR5sGQtkGVnSXN5JXUJJEtjGiGMXV3zibYfiXJN/xo7
+         KPu1ky1OeBV9kPVNFS8Iws9kNSyM5M3EypqWsDRt4ieXLu3Lk1vNNueVyAHVgR26I7r0
+         57EwIhN+t0+LLYX/QA6PX2iYkFTsb2tNEMBMHa55AHE3Mj2IeVtiZs/lxnh86lFzSweZ
+         ywYw==
+X-Gm-Message-State: AOAM532khFRM8JNprGqF/J/cnGgFTtxqFwEUGpTHFHmAYLB9W2mymclS
+        QCUtVDStsbAehB9S6QiBxm/8u5b49DdTE2inuwU=
+X-Google-Smtp-Source: ABdhPJy2Z+mCK6UsBedDHfuHLqHjOelryE6bx9xZ/OavTEghlxY+bPID2uQBe/oD5nVNF4jHf9BZTkpf3h9vpVXzB08=
+X-Received: by 2002:a17:907:1b0a:: with SMTP id mp10mr15488909ejc.29.1634905309828;
+ Fri, 22 Oct 2021 05:21:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211022061514.25946-1-lukas.bulwahn@gmail.com> <5c27a2ff-b7a2-99d8-bdc4-7f2b20092500@redhat.com>
-In-Reply-To: <5c27a2ff-b7a2-99d8-bdc4-7f2b20092500@redhat.com>
-From:   Anup Patel <anup@brainfault.org>
-Date:   Fri, 22 Oct 2021 17:25:48 +0530
-Message-ID: <CAAhSdy0h38gOZ-7WKDN=SLBhC0pbRjXS19XyU9eu-PzUi3Xv7A@mail.gmail.com>
-Subject: Re: [PATCH] riscv: do not select non-existing config ANON_INODES
-To:     Paolo Bonzini <pbonzini@redhat.com>
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Anup Patel <anup.patel@wdc.com>,
-        Atish Patra <atish.patra@wdc.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        KVM General <kvm@vger.kernel.org>,
-        kvm-riscv@lists.infradead.org,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        kernel-janitors@vger.kernel.org,
-        "linux-kernel@vger.kernel.org List" <linux-kernel@vger.kernel.org>
+Received: by 2002:a17:907:7fa7:0:0:0:0 with HTTP; Fri, 22 Oct 2021 05:21:48
+ -0700 (PDT)
+Reply-To: bahadur.rayanby@gmail.com
+From:   Ryan Bahadur <dr.philposman7@gmail.com>
+Date:   Fri, 22 Oct 2021 05:21:48 -0700
+Message-ID: <CAMOT=VQ19xGMh1Soq8rNHNKaBCqZh03d0u+Nrf_Ou9bAtd-seQ@mail.gmail.com>
+Subject: CAN I TRUST YOU
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Oct 22, 2021 at 3:24 PM Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> On 22/10/21 08:15, Lukas Bulwahn wrote:
-> > Commit 99cdc6c18c2d ("RISC-V: Add initial skeletal KVM support") selects
-> > the config ANON_INODES in config KVM, but the config ANON_INODES is removed
-> > since commit 5dd50aaeb185 ("Make anon_inodes unconditional") in 2018.
-> >
-> > Hence, ./scripts/checkkconfigsymbols.py warns on non-existing symbols:
-> >
-> >    ANON_INODES
-> >    Referencing files: arch/riscv/kvm/Kconfig
-> >
-> > Remove selecting the non-existing config ANON_INODES.
-> >
-> > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> > ---
-> >   arch/riscv/kvm/Kconfig | 1 -
-> >   1 file changed, 1 deletion(-)
-> >
-> > diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
-> > index a712bb910cda..f5a342fa1b1d 100644
-> > --- a/arch/riscv/kvm/Kconfig
-> > +++ b/arch/riscv/kvm/Kconfig
-> > @@ -22,7 +22,6 @@ config KVM
-> >       depends on RISCV_SBI && MMU
-> >       select MMU_NOTIFIER
-> >       select PREEMPT_NOTIFIERS
-> > -     select ANON_INODES
-> >       select KVM_MMIO
-> >       select KVM_GENERIC_DIRTYLOG_READ_PROTECT
-> >       select HAVE_KVM_VCPU_ASYNC_IOCTL
-> >
->
-> Queued, thanks.
+-- 
+Greetings,
 
-Thanks Paolo for applying this directly.
+Firstly, I apologize for encroaching into your privacy in this manner
+as it may seem unethical though it is a matter of great importance.
 
-Regards,
-Anup
+I am Mr.Ryan Bahadur, I work with Cayman National Bank (Cayman Islands).
 
->
-> Paolo
->
+I am contacting you because my status would not permit me to do this
+alone as it is concerning our customer and an investment placed under
+our bank's management over 5 years ago.
+
+I have a proposal I would love to discuss with you which will be very
+beneficial to both of us. It's regarding my late client who has a huge
+deposit with my bank.
+
+He is from your country and shares the same last name with you.
+
+I want to seek your consent to present you as the next of kin to my
+late client who died and left a huge deposit with my bank.
+
+I would respectfully request that you keep the contents of this mail
+confidential and respect the integrity of the information you come by
+as a result of this mail.
+
+Please kindly get back to me for more details if I can TRUST YOU.{
+bahadur.rayanby@gmail.com}
+
+Regards
+Mr.Ryan Bahadur
+Treasury and Deposit Management,
+Cayman National Bank Cayman Islands.

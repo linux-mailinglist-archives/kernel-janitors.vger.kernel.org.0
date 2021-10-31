@@ -2,95 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 849574409DE
-	for <lists+kernel-janitors@lfdr.de>; Sat, 30 Oct 2021 17:13:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C2CA441049
+	for <lists+kernel-janitors@lfdr.de>; Sun, 31 Oct 2021 20:03:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231766AbhJ3PPv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 30 Oct 2021 11:15:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60796 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229993AbhJ3PPu (ORCPT
+        id S230248AbhJaTFg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 31 Oct 2021 15:05:36 -0400
+Received: from mailgate.kemenperin.go.id ([202.47.80.142]:51058 "EHLO
+        mailgate.kemenperin.go.id" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229732AbhJaTFf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 30 Oct 2021 11:15:50 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95E76C061570
-        for <kernel-janitors@vger.kernel.org>; Sat, 30 Oct 2021 08:13:20 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id w1so29820924edd.0
-        for <kernel-janitors@vger.kernel.org>; Sat, 30 Oct 2021 08:13:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hF2D2p8R03MXzhio9eo1V6ljCWCm/2b9pw+faHVE6UQ=;
-        b=C+QHVLjyfNj1RMDbT/2ZWGgiW8GaTiLQSR8+yk4wLMBKR1Ui1hSE57P+HmW2s7gRbS
-         K9gmM194msV9u4wah9FCMjroBOOm0cqoMU43Ckvwtzf1YET+5eN3JNj5Xb1NewxdK2QR
-         CgqydKB7JfOrgoU9afKDLQjzBTi4JoIImsRMAL+GuaIOEyrChgF06h+JSixg2wOXo7xK
-         id2HghqJIVPveKGcfBh8km9y51utwKMaooqUHEJbN+ISxY8D2CFDGn0LrtTbDvxRg7Av
-         D1SO1a0NUuHeUAAVlbiftSg12tdvqQQq6rAthDd6k6hAv1+7VJx4qt5dVrrj07E9MGr/
-         G5Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hF2D2p8R03MXzhio9eo1V6ljCWCm/2b9pw+faHVE6UQ=;
-        b=g8jPoZ6SYSuYlIF3BZaVLF61YmEficAR5xEQYItk7triijYwuXsPR1tnq1OFUllR8t
-         hSaHgVI0Lpv9JGxw7rvehGa5DoXGK67jW6dgYQOMnyy74vUqHqbTbpmF0fm2VUyPq74L
-         VFBZsoskLYzh+TVjC6OdZo3yXod5UgCxWihpbjsajLPgm/4NXElsip7dwARUubhnXa9O
-         L1Q/ULvlfIPdFHC4cEg5NyGAUn5drlK23YfnCefhyJCfwXydlE4l4qpCHeVqPF3fckvy
-         A2Kv2LXhhK5rLpgmh0t+sFVjhaZ2ykohfTtuvaJ2otfgBmSwaLmbKnkRSX+VMbaYGnWN
-         gHmg==
-X-Gm-Message-State: AOAM533t1EaaLyNDI4xbQjlK0E6TiFTHM2+yZ+GX122Bxx0bgsVGoZ5q
-        /r0Cn7qGs0stXf71lxp4V+Al0eWS17llMI9ym66OOQ==
-X-Google-Smtp-Source: ABdhPJy34XwCcmYaIo7aLruDKeslQBQc3GziCc4YeYQA5TYkQlaQNCnuLcDPmEznfwWAkG0+JU+ZHYRr2m126T4kXe8=
-X-Received: by 2002:a05:6402:51cf:: with SMTP id r15mr25228272edd.60.1635606799114;
- Sat, 30 Oct 2021 08:13:19 -0700 (PDT)
+        Sun, 31 Oct 2021 15:05:35 -0400
+X-Greylist: delayed 4317 seconds by postgrey-1.27 at vger.kernel.org; Sun, 31 Oct 2021 15:05:34 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mailgate.kemenperin.go.id (Postfix) with ESMTP id A802B828076;
+        Mon,  1 Nov 2021 00:37:13 +0700 (WIB)
+Received: from mailgate.kemenperin.go.id ([127.0.0.1])
+        by localhost (mailgate.kemenperin.go.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id EE8F4dTNWf5m; Mon,  1 Nov 2021 00:37:12 +0700 (WIB)
+Received: from localhost (localhost [127.0.0.1])
+        by mailgate.kemenperin.go.id (Postfix) with ESMTP id 150A28285F8;
+        Mon,  1 Nov 2021 00:36:33 +0700 (WIB)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mailgate.kemenperin.go.id 150A28285F8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kemenperin.go.id;
+        s=3298A942-BBC6-11E3-B333-483736368EC2; t=1635701793;
+        bh=+tje3x5yIAM91gcZZJ8xoRjx6IuR+B3ePoXPCKu2mgI=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=Z8uNC8L1Ok2jb1UzseBKEdAKpQMn+FLBudnnr/KcM46Ii4ekYglHCurQSeaZw/l8y
+         oNEaHzzWwWsMvrSpuTOJV86/1hTthQRUsh9xRYFnNd4+k1o4REOJO5+57Nre4af5Ty
+         2rYTC9hCKqSkAg5GwaiPHdX5mo+85ZxNND3m15jY=
+X-Virus-Scanned: amavisd-new at kemenperin.go.id
+Received: from mailgate.kemenperin.go.id ([127.0.0.1])
+        by localhost (mailgate.kemenperin.go.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id T8qmD88KUOO6; Mon,  1 Nov 2021 00:36:32 +0700 (WIB)
+Received: from mailgate.kemenperin.go.id (mailgate.kemenperin.go.id [10.1.0.89])
+        by mailgate.kemenperin.go.id (Postfix) with ESMTP id EAE9C82859E;
+        Mon,  1 Nov 2021 00:36:06 +0700 (WIB)
+Date:   Mon, 1 Nov 2021 00:36:06 +0700 (WIB)
+From:   Manuel Franco <silitonga@kemenperin.go.id>
+Reply-To: Manuel Franco <manuelfrancospende1@gmail.com>
+Message-ID: <1049404780.325924.1635701766851.JavaMail.zimbra@kemenperin.go.id>
+Subject: 2,000,000.00 Euro
 MIME-Version: 1.0
-References: <20211030040757.2168399-1-weiyongjun1@huawei.com>
-In-Reply-To: <20211030040757.2168399-1-weiyongjun1@huawei.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Sat, 30 Oct 2021 17:13:08 +0200
-Message-ID: <CAMRc=MfEytPqH3PFnWLcyGaVgM+=KPpRqEPK-f+Lu8dnj9u2kQ@mail.gmail.com>
-Subject: Re: [PATCH -next] gpio: sim: fix missing unlock on error in gpio_sim_config_commit_item()
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.1.0.89]
+Thread-Index: x9xErTSmGMpTu7pqpA5KcPXJzqjeng==
+Thread-Topic: 2,000,000.00 Euro
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Oct 30, 2021 at 5:54 AM Wei Yongjun <weiyongjun1@huawei.com> wrote:
->
-> Add the missing unlock before return from function
-> gpio_sim_config_commit_item() in the error handling
-> case.
->
-> Fixes: b48f6b466e44 ("gpio: sim: new testing module")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->  drivers/gpio/gpio-sim.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/gpio/gpio-sim.c b/drivers/gpio/gpio-sim.c
-> index d8bf84b604d9..e2113092f85b 100644
-> --- a/drivers/gpio/gpio-sim.c
-> +++ b/drivers/gpio/gpio-sim.c
-> @@ -789,8 +789,10 @@ static int gpio_sim_config_commit_item(struct config_item *item)
->                                                 config->num_line_names);
->
->         fwnode = fwnode_create_software_node(properties, NULL);
-> -       if (IS_ERR(fwnode))
-> +       if (IS_ERR(fwnode)) {
-> +               mutex_unlock(&config->lock);
->                 return PTR_ERR(fwnode);
-> +       }
->
->         pdevinfo.name = "gpio-sim";
->         pdevinfo.fwnode = fwnode;
->
 
-Applied, thanks!
 
-Bart
+-- 
+You have a donation of 2,000,000.00 Euro.Get back to me now so we can proceed.

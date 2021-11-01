@@ -2,112 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7BE1441BF9
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Nov 2021 14:53:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82FE0441BEE
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Nov 2021 14:49:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231493AbhKAN4Q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Nov 2021 09:56:16 -0400
-Received: from mx.socionext.com ([202.248.49.38]:59494 "EHLO mx.socionext.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231366AbhKAN4P (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Nov 2021 09:56:15 -0400
-Received: from unknown (HELO kinkan2-ex.css.socionext.com) ([172.31.9.52])
-  by mx.socionext.com with ESMTP; 01 Nov 2021 22:53:41 +0900
-Received: from mail.mfilter.local (m-filter-2 [10.213.24.62])
-        by kinkan2-ex.css.socionext.com (Postfix) with ESMTP id 6F1FF203F6D9;
-        Mon,  1 Nov 2021 22:53:41 +0900 (JST)
-Received: from 172.31.9.53 (172.31.9.53) by m-FILTER with ESMTP; Mon, 1 Nov 2021 22:53:41 +0900
-Received: from yuzu2.css.socionext.com (yuzu2 [172.31.9.57])
-        by iyokan2.css.socionext.com (Postfix) with ESMTP id 46B83B62AB;
-        Mon,  1 Nov 2021 22:53:41 +0900 (JST)
-Received: from [10.212.1.157] (unknown [10.212.1.157])
-        by yuzu2.css.socionext.com (Postfix) with ESMTP id C209CB6291;
-        Mon,  1 Nov 2021 22:53:40 +0900 (JST)
-Message-ID: <3fd7f2a2-9883-af35-b5d1-c9d68875bb48@socionext.com>
-Date:   Mon, 1 Nov 2021 22:53:40 +0900
+        id S231693AbhKANvm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Nov 2021 09:51:42 -0400
+Received: from szxga02-in.huawei.com ([45.249.212.188]:15328 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231493AbhKANva (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 1 Nov 2021 09:51:30 -0400
+Received: from dggeml709-chm.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4HjZBQ5M0kz90Nb;
+        Mon,  1 Nov 2021 21:48:46 +0800 (CST)
+Received: from localhost.localdomain (10.175.102.38) by
+ dggeml709-chm.china.huawei.com (10.3.17.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.15; Mon, 1 Nov 2021 21:48:53 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     <weiyongjun1@huawei.com>,
+        Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
+        Prabhjot Khurana <prabhjot.khurana@intel.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>
+CC:     <linux-crypto@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] crypto: keembay-ocs-ecc - Fix error return code in kmb_ocs_ecc_probe()
+Date:   Mon, 1 Nov 2021 14:02:33 +0000
+Message-ID: <20211101140233.777222-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.1
-Subject: Re: [PATCH 09/13] arm: milbeaut: remove select of non-existing
- PINCTRL_MILBEAUT
-Content-Language: en-US
-To:     Arnd Bergmann <arnd@arndb.de>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Sekhar Nori <nsekhar@ti.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Linus Walleij <linusw@kernel.org>,
-        Imre Kaloz <kaloz@openwrt.org>,
-        Krzysztof Halasa <khalasa@piap.pl>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        OpenBMC Maillist <openbmc@lists.ozlabs.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Takao Orito <orito.takao@socionext.com>,
-        Jassi Brar <jaswinder.singh@linaro.org>
-References: <20211028141938.3530-1-lukas.bulwahn@gmail.com>
- <20211028141938.3530-10-lukas.bulwahn@gmail.com>
- <CAK8P3a2J3Eufd_LL7qX=0bui_PwkN1WATqrrigia3f6Z8b1tpg@mail.gmail.com>
-From:   Sugaya Taichi <sugaya.taichi@socionext.com>
-In-Reply-To: <CAK8P3a2J3Eufd_LL7qX=0bui_PwkN1WATqrrigia3f6Z8b1tpg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.102.38]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggeml709-chm.china.huawei.com (10.3.17.139)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Fix to return negative error code -ENOMEM from the error handling
+case instead of 0, as done elsewhere in this function.
 
+Fixes: c9f608c38009 ("crypto: keembay-ocs-ecc - Add Keem Bay OCS ECC Driver")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/crypto/keembay/keembay-ocs-ecc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-On 2021/10/28 23:55, Arnd Bergmann wrote:
-> On Thu, Oct 28, 2021 at 4:19 PM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
->>
->> The patch series "Add basic support for Socionext Milbeaut M10V SoC" (see
->> Link) introduced the config ARCH_MILBEAUT_M10V "Milbeaut SC2000/M10V
->> platform" in ./arch/arm/mach-milbeaut/ and intended to introduce timer,
->> clock, pinctrl and serial controller drivers.
->>
->> However, during patch submission in March 2019, the introduction of the
->> milbeaut pinctrl driver was dropped from v2 to v3 of the patch series.
->> Since then, there was no further patch series to add this pinctrl driver
->> later on.
->>
->> Hence, selecting PINCTRL_MILBEAUT in config is simply dangling and
->> referring to a non-existing config symbols.
->> Fortunately, ./scripts/checkkconfigsymbols.py warns:
->>
->> PINCTRL_MILBEAUT
->> Referencing files: arch/arm/mach-milbeaut/Kconfig
->>
->> Remove this select of the non-existing PINCTRL_MILBEAUT for now.
->>
->> Link: https://lore.kernel.org/linux-arm-kernel/1551243056-10521-1-git-send-email-sugaya.taichi@socionext.com/
->>
->> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> 
-> I would take that as an indication that there is no interest in supporting this
-> platform upstream any more, the version we merged probably never worked
-> without the rest of the drivers.
-> 
-> I've added the original authors of the other drivers to Cc. Should we remove
-> all of this?
-> 
->          Arnd
-> 
+diff --git a/drivers/crypto/keembay/keembay-ocs-ecc.c b/drivers/crypto/keembay/keembay-ocs-ecc.c
+index 679e6ae295e0..5d0785d3f1b5 100644
+--- a/drivers/crypto/keembay/keembay-ocs-ecc.c
++++ b/drivers/crypto/keembay/keembay-ocs-ecc.c
+@@ -930,6 +930,7 @@ static int kmb_ocs_ecc_probe(struct platform_device *pdev)
+ 	ecc_dev->engine = crypto_engine_alloc_init(dev, 1);
+ 	if (!ecc_dev->engine) {
+ 		dev_err(dev, "Could not allocate crypto engine\n");
++		rc = -ENOMEM;
+ 		goto list_del;
+ 	}
+ 
 
-It is okay to drop PINCTRL_MILBEAUT. I will add it again when working at the pinctrl
-driver. But don`t remove the milbeaut platform. Actually we haven't been doing
-maintenance recently, but we have plans to add drivers in the future.
-
-Thanks,
-Taichi Sugaya

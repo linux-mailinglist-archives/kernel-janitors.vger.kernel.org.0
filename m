@@ -2,68 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10A95441BF2
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Nov 2021 14:49:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40A0A441F07
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Nov 2021 18:11:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232081AbhKANvs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Nov 2021 09:51:48 -0400
-Received: from szxga03-in.huawei.com ([45.249.212.189]:26219 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231981AbhKANvh (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Nov 2021 09:51:37 -0400
-Received: from dggeml709-chm.china.huawei.com (unknown [172.30.72.55])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4HjZ8x54YFz8v7T;
-        Mon,  1 Nov 2021 21:47:29 +0800 (CST)
-Received: from localhost.localdomain (10.175.102.38) by
- dggeml709-chm.china.huawei.com (10.3.17.139) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.15; Mon, 1 Nov 2021 21:48:56 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     <weiyongjun1@huawei.com>, Wolfram Sang <wsa@kernel.org>,
+        id S232645AbhKARNl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Nov 2021 13:13:41 -0400
+Received: from foss.arm.com ([217.140.110.172]:43484 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229811AbhKARNl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 1 Nov 2021 13:13:41 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8DF3B11B3;
+        Mon,  1 Nov 2021 10:11:07 -0700 (PDT)
+Received: from bogus (unknown [10.57.46.68])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4E7893F719;
+        Mon,  1 Nov 2021 10:11:05 -0700 (PDT)
+Date:   Mon, 1 Nov 2021 17:11:02 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Wolfram Sang <wsa@kernel.org>,
         Jassi Brar <jaswinder.singh@linaro.org>,
         Tian Tao <tiantao6@hisilicon.com>,
         Zhiqi Song <songzhiqi1@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-CC:     <linux-i2c@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        linux-i2c@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] i2c: xgene-slimpro: Fix wrong pointer passed to PTR_ERR()
-Date:   Mon, 1 Nov 2021 14:02:35 +0000
-Message-ID: <20211101140235.777322-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+Subject: Re: [PATCH -next] i2c: xgene-slimpro: Fix wrong pointer passed to
+ PTR_ERR()
+Message-ID: <20211101171102.vht5arppz3gdz7vv@bogus>
+References: <20211101140235.777322-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.102.38]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggeml709-chm.china.huawei.com (10.3.17.139)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211101140235.777322-1-weiyongjun1@huawei.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-PTR_ERR should access the value just tested by IS_ERR, otherwise
-the wrong error code will be returned.
+On Mon, Nov 01, 2021 at 02:02:35PM +0000, Wei Yongjun wrote:
+> PTR_ERR should access the value just tested by IS_ERR, otherwise
+> the wrong error code will be returned.
+> 
+> Fixes: 7b6da7fe7bba ("mailbox: pcc: Use PCC mailbox channel pointer instead of standard")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
 
-Fixes: 7b6da7fe7bba ("mailbox: pcc: Use PCC mailbox channel pointer instead of standard")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/i2c/busses/i2c-xgene-slimpro.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks for spotting and fixing the issue.
 
-diff --git a/drivers/i2c/busses/i2c-xgene-slimpro.c b/drivers/i2c/busses/i2c-xgene-slimpro.c
-index 1a19ebad60ad..63259b3ea5ab 100644
---- a/drivers/i2c/busses/i2c-xgene-slimpro.c
-+++ b/drivers/i2c/busses/i2c-xgene-slimpro.c
-@@ -487,7 +487,7 @@ static int xgene_slimpro_i2c_probe(struct platform_device *pdev)
- 		pcc_chan = pcc_mbox_request_channel(cl, ctx->mbox_idx);
- 		if (IS_ERR(pcc_chan)) {
- 			dev_err(&pdev->dev, "PCC mailbox channel request failed\n");
--			return PTR_ERR(ctx->pcc_chan);
-+			return PTR_ERR(pcc_chan);
- 		}
- 
- 		ctx->pcc_chan = pcc_chan;
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
 
+-- 
+Regards,
+Sudeep

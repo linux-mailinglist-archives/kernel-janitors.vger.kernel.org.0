@@ -2,31 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA33D444A1E
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Nov 2021 22:16:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59A5A444A31
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Nov 2021 22:24:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230198AbhKCVTd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Nov 2021 17:19:33 -0400
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:50109 "EHLO
+        id S230302AbhKCV11 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Nov 2021 17:27:27 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:51218 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229893AbhKCVTd (ORCPT
+        with ESMTP id S230210AbhKCV10 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Nov 2021 17:19:33 -0400
+        Wed, 3 Nov 2021 17:27:26 -0400
 Received: from pop-os.home ([86.243.171.122])
         by smtp.orange.fr with ESMTPA
-        id iNcsmLYXlBazoiNcsmwyh5; Wed, 03 Nov 2021 22:16:55 +0100
+        id iNkVmLbELBazoiNkWmwzkt; Wed, 03 Nov 2021 22:24:48 +0100
 X-ME-Helo: pop-os.home
 X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Wed, 03 Nov 2021 22:16:55 +0100
+X-ME-Date: Wed, 03 Nov 2021 22:24:48 +0100
 X-ME-IP: 86.243.171.122
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     bhelgaas@google.com
-Cc:     linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] PCI/P2PDMA: Save a few cycles in 'pci_alloc_p2pmem()'
-Date:   Wed,  3 Nov 2021 22:16:53 +0100
-Message-Id: <ab80164f4d5b32f9e6240aa4863c3a147ff9c89f.1635974126.git.christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] scsi: target: Save a few cycles in 'transport_lookup_[cmd|tmr]_lun()'
+Date:   Wed,  3 Nov 2021 22:24:46 +0100
+Message-Id: <e4a21bc607c39935cb98d4825cd63ba349820550.1635974637.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -40,22 +40,31 @@ taken/released.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/pci/p2pdma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/target/target_core_device.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index 8d47cb7218d1..081c391690d4 100644
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -710,7 +710,7 @@ void *pci_alloc_p2pmem(struct pci_dev *pdev, size_t size)
- 	if (!ret)
- 		goto out;
+diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
+index 44bb380e7390..bfd5d5606522 100644
+--- a/drivers/target/target_core_device.c
++++ b/drivers/target/target_core_device.c
+@@ -77,7 +77,7 @@ transport_lookup_cmd_lun(struct se_cmd *se_cmd)
  
--	if (unlikely(!percpu_ref_tryget_live(ref))) {
-+	if (unlikely(!percpu_ref_tryget_live_rcu(ref))) {
- 		gen_pool_free(p2pdma->pool, (unsigned long) ret, size);
- 		ret = NULL;
- 		goto out;
+ 		se_lun = rcu_dereference(deve->se_lun);
+ 
+-		if (!percpu_ref_tryget_live(&se_lun->lun_ref)) {
++		if (!percpu_ref_tryget_live_rcu(&se_lun->lun_ref)) {
+ 			se_lun = NULL;
+ 			goto out_unlock;
+ 		}
+@@ -154,7 +154,7 @@ int transport_lookup_tmr_lun(struct se_cmd *se_cmd)
+ 	if (deve) {
+ 		se_lun = rcu_dereference(deve->se_lun);
+ 
+-		if (!percpu_ref_tryget_live(&se_lun->lun_ref)) {
++		if (!percpu_ref_tryget_live_rcu(&se_lun->lun_ref)) {
+ 			se_lun = NULL;
+ 			goto out_unlock;
+ 		}
 -- 
 2.30.2
 

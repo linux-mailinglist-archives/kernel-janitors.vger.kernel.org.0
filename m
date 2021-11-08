@@ -2,62 +2,114 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51DC6447B2C
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Nov 2021 08:31:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EDBA449952
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Nov 2021 17:14:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237763AbhKHHbk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Nov 2021 02:31:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57718 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232465AbhKHHba (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Nov 2021 02:31:30 -0500
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76DBAC061210
-        for <kernel-janitors@vger.kernel.org>; Sun,  7 Nov 2021 23:28:08 -0800 (PST)
-Received: by mail-ed1-x534.google.com with SMTP id g14so58059001edz.2
-        for <kernel-janitors@vger.kernel.org>; Sun, 07 Nov 2021 23:28:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=gS+G2bXPLTc8QV9oSOsVFPfildfSifO+gabOlUjPn+8=;
-        b=qqK0pyD7zsOn2jDUu4R5ROR5RclX0JocH8z6xiwn5j9oCauwZDCVY95sZ2l1TziVXZ
-         hHGPoxrW6wchraiwmuw4ued0wpd5+G6FoNoL1yxLy0Vf7BOBJCJGnLyhUpD63S7xQCGG
-         bi0K1G5J+0OAHGBUfaY6+THJBMDuaePmD/sMWHpk6U6UMKEYQ4chJcIKVL8fDYekmVsc
-         v9gdsvJxv/F3UtPE+2DjKNbEvRj6pMbdlM4mlKZ8zkswEEj1LuxZDfGJHvmE3o20wmb2
-         3BY5ALE3cOKR51TgZSYcX8ucrFFJmzQxEp2YzYACeqyZ/O9c0OJZbPyMKiOrjPqgNg0S
-         33uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=gS+G2bXPLTc8QV9oSOsVFPfildfSifO+gabOlUjPn+8=;
-        b=J1/wFNxvvopL+PrjurqJ2wLwXkgg/ntyRpAUhXXYHzpGd07qB2cCk/Zs0EUrEqSpHH
-         SqpHLYaDSKzUAKm6e6RdKMeYGM9s70d60QSNzrnt3XMKuZWpLix9MSZvYxSa+xHha//u
-         Okl6nJa/B6WNuhW9z0J18mtyFZqJv/q9ChChqUrsEJANzbM9Gvs5SgSrWmoTqLctDDP3
-         P9cLVZ4C6YaTy3S+JDzGaUoelnGlUvOnkRJ/TWQXDUHnpxGTY8WN0HitvjDzqr5FKHms
-         BTf4yezToa7Zzqd8dnGbIQ39OnQ588LKyGz8KnbqXqzLN4tYFtkeAKUQ0Evb+XlF04PA
-         YFEw==
-X-Gm-Message-State: AOAM530hPRV+PZINKRPRJocZKLMSwHK4m5MzZoEj0XfJTFAjKq42qEW4
-        +Lyb6hIM+MjgufXXx+5UhEMi4jWVz8QeaAjrAks=
-X-Google-Smtp-Source: ABdhPJypAIo1XfJZo6m7c37+c4O90azQv6ITnR4BqJTd+sN2UgPAmseY/MeTaYfknGYoirq44waE9BjpJmUAVwd+68o=
-X-Received: by 2002:a17:907:94ca:: with SMTP id dn10mr75784610ejc.263.1636356487133;
- Sun, 07 Nov 2021 23:28:07 -0800 (PST)
+        id S238291AbhKHQRL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Nov 2021 11:17:11 -0500
+Received: from mga09.intel.com ([134.134.136.24]:12416 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236038AbhKHQRL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 8 Nov 2021 11:17:11 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10162"; a="232098289"
+X-IronPort-AV: E=Sophos;i="5.87,218,1631602800"; 
+   d="scan'208";a="232098289"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2021 08:14:17 -0800
+X-IronPort-AV: E=Sophos;i="5.87,218,1631602800"; 
+   d="scan'208";a="503082774"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2021 08:14:16 -0800
+Date:   Mon, 8 Nov 2021 08:14:16 -0800
+From:   Ira Weiny <ira.weiny@intel.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     dan.j.williams@intel.com, vishal.l.verma@intel.com,
+        dave.jiang@intel.com, nvdimm@lists.linux.dev,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] nvdimm/pmem: Fix an error handling path in
+ 'pmem_attach_disk()'
+Message-ID: <20211108161416.GD3538886@iweiny-DESK2.sc.intel.com>
+References: <f1933a01d9cefe24970ee93d741babb8fe9c1b32.1636219557.git.christophe.jaillet@wanadoo.fr>
+ <20211107171157.GC3538886@iweiny-DESK2.sc.intel.com>
+ <050385c3-7707-76cb-c580-c64d43456462@wanadoo.fr>
 MIME-Version: 1.0
-Received: by 2002:a50:2501:0:0:0:0:0 with HTTP; Sun, 7 Nov 2021 23:28:06 -0800 (PST)
-Reply-To: mariaschaefler@gmx.com
-From:   Maria Schaefler <ziskoraa@gmail.com>
-Date:   Mon, 8 Nov 2021 07:28:06 +0000
-Message-ID: <CAJh0FjihEEJ56Zb9S+y4y5yzT-0qfzNO8UjeVDavoK0+5Tsw_Q@mail.gmail.com>
-Subject: MY HEART CHOOSE YOU.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <050385c3-7707-76cb-c580-c64d43456462@wanadoo.fr>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Given my current state of health, I have decided to donate what I
-inherited from my late husband to you to help the poor and needy. I am
-Mrs Maria Schaefler,a 57years old dying woman. I was diagnosed for
-cancer about 2 years ago and I have few months to live according to
-medical experts. Email me for my directives
+On Sun, Nov 07, 2021 at 06:20:14PM +0100, Christophe JAILLET wrote:
+> Le 07/11/2021 à 18:11, Ira Weiny a écrit :
+> > On Sat, Nov 06, 2021 at 06:27:11PM +0100, Christophe JAILLET wrote:
+> > > If 'devm_init_badblocks()' fails, a previous 'blk_alloc_disk()' call must
+> > > be undone.
+> > 
+> > I think this is a problem...
+> > 
+> > > 
+> > > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> > > ---
+> > > This patch is speculative. Several fixes on error handling paths have been
+> > > done recently, but this one has been left as-is. There was maybe a good
+> > > reason that I have missed for that. So review with care!
+> > > 
+> > > I've not been able to identify a Fixes tag that please me :(
+> > > ---
+> > >   drivers/nvdimm/pmem.c | 5 +++--
+> > >   1 file changed, 3 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
+> > > index fe7ece1534e1..c37a1e6750b3 100644
+> > > --- a/drivers/nvdimm/pmem.c
+> > > +++ b/drivers/nvdimm/pmem.c
+> > > @@ -490,8 +490,9 @@ static int pmem_attach_disk(struct device *dev,
+> > >   	nvdimm_namespace_disk_name(ndns, disk->disk_name);
+> > >   	set_capacity(disk, (pmem->size - pmem->pfn_pad - pmem->data_offset)
+> > >   			/ 512);
+> > > -	if (devm_init_badblocks(dev, &pmem->bb))
+> > > -		return -ENOMEM;
+> > > +	rc = devm_init_badblocks(dev, &pmem->bb);
+> > > +	if (rc)
+> > > +		goto out;
+> > 
+> > But I don't see this 'out' label in the function currently?  Was that part of
+> > your patch missing?
+> 
+> Hi,
+> the patch is based on the latest linux-next.
+> See [1]. The 'out' label exists there and is already used.
+
+Ah I see.  Sorry.
+
+> 
+> In fact, I run an own-made coccinelle script which tries to spot mix-up
+> between return and goto.
+> In this case, we have a 'return -ENOMEM' after a 'goto out' which looks
+> spurious.
+>
+
+Yes agreed.  I was looking at Linus' kernel not linux-next sorry.
+
+Sorry for the noise,
+Ira
+
+> Hence, my patch.
+> 
+> [1]:https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/drivers/nvdimm/pmem.c#n512
+> 
+> CJ
+> 
+> > 
+> > Ira
+> > 
+> > >   	nvdimm_badblocks_populate(nd_region, &pmem->bb, &bb_range);
+> > >   	disk->bb = &pmem->bb;
+> > > -- 
+> > > 2.30.2
+> > > 
+> > 
+> 

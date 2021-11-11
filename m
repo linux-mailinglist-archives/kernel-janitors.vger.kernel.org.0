@@ -2,118 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B7B244DBC3
-	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Nov 2021 19:47:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D02F44DB87
+	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Nov 2021 19:20:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233981AbhKKSty (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 11 Nov 2021 13:49:54 -0500
-Received: from fanzine2.igalia.com ([213.97.179.56]:50631 "EHLO
-        fanzine.igalia.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S233575AbhKKStw (ORCPT
+        id S234004AbhKKSXY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 11 Nov 2021 13:23:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53058 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232203AbhKKSXY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 11 Nov 2021 13:49:52 -0500
-X-Greylist: delayed 2208 seconds by postgrey-1.27 at vger.kernel.org; Thu, 11 Nov 2021 13:49:51 EST
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; s=20170329;
-        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=LJIW4lxDvBNuPZdFbOnJp2QLvNQr8PhdLSeOjMlDVjo=;
-        b=YoWJ3UULnfH3LiCnVUgPfEDIbU/2naxM2IjDgqUGgH7R/jaljjaxBVpTpJsqS71Gi5vxUx3iltiiFU6+3o18YGIQU05St1K8j9A6LzpFSMKEqEHlQ1vPm+dx6EVj1S2FAiVe6VFxgp/pVvXo1c+bJE62RfDZ6ComM43BE+yHzUgoHeYJ9GCxWCPwqZdlFRUSe94F7ETN7b7ugnRfEZ0xvmrCR0eiVgVvXeVbCQ2GXGSaZ568oa93a74IYAnSP4mI+AlKZsUypwaHTxoq7XFC+vrEQk8amEym/ggI72GSBZwXK9WTasVt6tMXNXivN0XxFn4UedUY8moWr460Dg2VwA==;
-Received: from [169.239.12.53] (helo=mail.igalia.com)
-        by fanzine.igalia.com with esmtpsa 
-        (Cipher TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim)
-        id 1mlEWo-00034E-6p; Thu, 11 Nov 2021 19:10:26 +0100
-Date:   Thu, 11 Nov 2021 17:09:20 -0100
-From:   Melissa Wen <mwen@igalia.com>
-To:     Colin Ian King <colin.i.king@googlemail.com>
-Cc:     Emma Anholt <emma@anholt.net>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Iago Toral Quiroga <itoral@igalia.com>,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] drm/v3d: pass null pointers using NULL
-Message-ID: <20211111180920.sbngpa4vqc2ptijs@mail.igalia.com>
-References: <20211110193635.312328-1-colin.i.king@gmail.com>
+        Thu, 11 Nov 2021 13:23:24 -0500
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84D77C061767
+        for <kernel-janitors@vger.kernel.org>; Thu, 11 Nov 2021 10:20:34 -0800 (PST)
+Received: by mail-ed1-x535.google.com with SMTP id z21so27560696edb.5
+        for <kernel-janitors@vger.kernel.org>; Thu, 11 Nov 2021 10:20:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=OaaeBy7wNy2KZuuz+/U1uJcihHu87eaQLFgJ6Qj43Nk=;
+        b=TgF9McPm81VWaEO14gKhL35xliRtxTHkllFsIgGdPPTI+D+44/jC8xBQSV+4b1YULT
+         Kxw2rQ/e7ewgw7wogKYiMngBhurOzeohOkz3WgxXfp3riIXuACsGHfaCUoh7xMJHVqMw
+         PyihjQ3/GJfeYHi6fMSxpHpMVbFAUEGGTwKpOvm+MDL2OfQz+cnElRZyjpMyBhq0NrX9
+         j0DMDg/JkZucgO8yY8F/uH0HhaNJ4zRYKhmrRiAGMYrqMSVWb+doRk+/4V9pdOtoH8bz
+         O7ZldzaV0gwYyPy2Tor8dGSSx317OfT6t7UD5BnjmllxejvQxsDF458HxTVdZl2mmAOi
+         8QdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OaaeBy7wNy2KZuuz+/U1uJcihHu87eaQLFgJ6Qj43Nk=;
+        b=QZB8+R5/MfOw3zqxaI6zjNLG2yTkbNUj1De5lMMcEpdFHkio52TcHl8/yaxuW2GIKe
+         3mtL8DrR85owEct19usHhHNdOi1Tw+tLfJ9jnEP4cgvjTKWO4alx3BRP58/IXYE/eoNn
+         5BjJkS5yII2PwNHssU0oIZlQ5XQW6/GPNhWiGn9O5H9MQHC6h+0lh6k1KxQ8f16LAkuf
+         z0Q+ExYJey4EnWpUVacQCFOc6SF9vjqiFenUzwQJQlxRyMqRB5x187W3Ws8XBFiq49XZ
+         +FJY0DfqaNELEjDfpx01jzn3QPoemcqBuXqm/WaVu0KEbpGRbx4jy7YU9p+BTfY9kJ+E
+         8Maw==
+X-Gm-Message-State: AOAM531hyazzlh/zFlM+QPEwM4wVGy7GxrX/aaJRLRbAQYiKqIiNtqwO
+        v/KJgqC+cohXqZy6bzu+eiaNhgsZS/CRScEKfXwUjA==
+X-Google-Smtp-Source: ABdhPJxqySLvBigiVcFrvQfU7wP2KHHvyyK6s+YUBDQL3NsNNLfiIYqjyMmFduBZMNTTt31eHG5doB3Q6BJPyBpjkqE=
+X-Received: by 2002:a17:906:4f05:: with SMTP id t5mr12362768eju.68.1636654833112;
+ Thu, 11 Nov 2021 10:20:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="325a2qr3pmdrhiay"
-Content-Disposition: inline
-In-Reply-To: <20211110193635.312328-1-colin.i.king@gmail.com>
+References: <d28ca94a4031bd7297d47c2164e18885a5a6ec19.1634366546.git.christophe.jaillet@wanadoo.fr>
+ <DU0PR04MB94173DCAA87A0B24E1C7073388939@DU0PR04MB9417.eurprd04.prod.outlook.com>
+In-Reply-To: <DU0PR04MB94173DCAA87A0B24E1C7073388939@DU0PR04MB9417.eurprd04.prod.outlook.com>
+From:   Mathieu Poirier <mathieu.poirier@linaro.org>
+Date:   Thu, 11 Nov 2021 11:20:21 -0700
+Message-ID: <CANLsYkwGN7LbWwu5JmcoH-zWQe8MMZYirLbU+EAFcTbFr=C+xQ@mail.gmail.com>
+Subject: Re: [PATCH] remoteproc: imx_rproc: Fix a resource leak in the remove function
+To:     Peng Fan <peng.fan@nxp.com>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        "ohad@wizery.com" <ohad@wizery.com>,
+        "bjorn.andersson@linaro.org" <bjorn.andersson@linaro.org>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        Hongxing Zhu <hongxing.zhu@nxp.com>,
+        "linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Wed, 10 Nov 2021 at 01:54, Peng Fan <peng.fan@nxp.com> wrote:
+>
+> > Subject: [PATCH] remoteproc: imx_rproc: Fix a resource leak in the remove
+> > function
+> >
+> > 'priv->workqueue' is destroyed in the error handling path of the probe but not
+> > in the remove function.
+> >
+> > Add the missing call to release some resources.
+> >
+> > Fixes: 2df7062002d0 ("remoteproc: imx_proc: enable virtio/mailbox")
+> > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>
+> Reviewed-and-Tested-by: Peng Fan <peng.fan@nxp.com>
+>
 
---325a2qr3pmdrhiay
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thank you for that - I will pick up this patch when -rc1 or -rc2 gets released.
 
-On 11/10, Colin Ian King wrote:
-> There are a couple of calls that are passing null pointers as
-> integer zeros rather than NULL. Fix this by using NULL instead.
->=20
-> Fixes: 07c2a41658c4 ("drm/v3d: alloc and init job in one shot")
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
->  drivers/gpu/drm/v3d/v3d_gem.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
-> index e47ae40a865a..c7ed2e1cbab6 100644
-> --- a/drivers/gpu/drm/v3d/v3d_gem.c
-> +++ b/drivers/gpu/drm/v3d/v3d_gem.c
-> @@ -774,7 +774,7 @@ v3d_submit_cl_ioctl(struct drm_device *dev, void *dat=
-a,
-> =20
->  	if (args->flags & DRM_V3D_SUBMIT_CL_FLUSH_CACHE) {
->  		ret =3D v3d_job_init(v3d, file_priv, (void *)&clean_job, sizeof(*clean=
-_job),
-> -				   v3d_job_free, 0, 0, V3D_CACHE_CLEAN);
-> +				   v3d_job_free, 0, NULL, V3D_CACHE_CLEAN);
->  		if (ret)
->  			goto fail;
-> =20
-> @@ -1007,7 +1007,7 @@ v3d_submit_csd_ioctl(struct drm_device *dev, void *=
-data,
->  		goto fail;
-> =20
->  	ret =3D v3d_job_init(v3d, file_priv, (void *)&clean_job, sizeof(*clean_=
-job),
-> -			   v3d_job_free, 0, 0, V3D_CACHE_CLEAN);
-> +			   v3d_job_free, 0, NULL, V3D_CACHE_CLEAN);
->  	if (ret)
->  		goto fail;
+Thanks,
+Mathieu
 
-Hi Colin,
-
-This fix has been already done:
-https://cgit.freedesktop.org/drm/drm-misc/commit/?id=3D75ad021f21927311b8d4=
-54939eb248a50df92525
-
-Thanks, anyway.
-
-Melissa
-> =20
-> --=20
-> 2.32.0
->=20
-
---325a2qr3pmdrhiay
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEd8WOo/JViG+Tu+XIwqF3j0dLehwFAmGNXEsACgkQwqF3j0dL
-ehwXUBAAo/tDFp8Fc7C1cDgMAUeGAJzpS1GJtU1NW1hPHWXVDhfN6hiTEwtePgkQ
-edppAzJib36jKl92E9sbpNlFVJdBxUEd123iSfeXWjSptxxqjwYgnHHbkh/X06JO
-yz/ps/qfumxJGtD36c139fFobd75AvDBcJF1OO+atV9myBOTaz0DClpukUyAh7k5
-dE3C7xCgDZg6W4KFWrm+z6F8IG0cHnJlHg/8cAJ5Y3RdsPLBVLdG3Q/5SUKQCqyu
-uhpLNh1TLE3FIz81jTmafAsGGJx3cnoVcLlR+gOYOkLcMWoAJcWL5wAXhIJauQkm
-2ga4vJaMAVBY+1Q7Ffb4XHEdZdt+6KGANfw3ubu26dpXmyhyWwSGwCasFU7aITi8
-v7MoiLWUY6T0CyepvaklWS0+qBCc1xPU7QMycb/nNePYQg5e6igo4MlCfo2V+R87
-5Gkmg4TFi3Ea3EIH+7tC4PbPH3UJW0J9L1XCY3KwjroNHla5rkRhULaDUGo2jrRC
-cLh8kcuVoyogKp3g5rmpMyrmyBLTJ5ApbvsT4PjfIy/Sxg6GFT6lcWSbl2Wbz5Pu
-QUfA080DZPDYZVAWo+vSNHr+AgtfLEnLbcJHexC12kuwpNzpAB5qk6Atynf4xbwU
-uZv0BLaGGUt6BzElqRyhst6ttRFNmUZ8M58kN2VTbbvAx0BnKcE=
-=9wCf
------END PGP SIGNATURE-----
-
---325a2qr3pmdrhiay--
+> > ---
+> > This patch is speculative. I'm not sure if the added function call is at the right
+> > place in the remove function.
+> > Review with care.
+> > ---
+> >  drivers/remoteproc/imx_rproc.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/drivers/remoteproc/imx_rproc.c
+> > b/drivers/remoteproc/imx_rproc.c index ff8170dbbc3c..0a45bc0d3f73
+> > 100644
+> > --- a/drivers/remoteproc/imx_rproc.c
+> > +++ b/drivers/remoteproc/imx_rproc.c
+> > @@ -804,6 +804,7 @@ static int imx_rproc_remove(struct platform_device
+> > *pdev)
+> >       clk_disable_unprepare(priv->clk);
+> >       rproc_del(rproc);
+> >       imx_rproc_free_mbox(rproc);
+> > +     destroy_workqueue(priv->workqueue);
+> >       rproc_free(rproc);
+> >
+> >       return 0;
+> > --
+> > 2.30.2
+>

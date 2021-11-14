@@ -2,81 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A04E44F3CF
-	for <lists+kernel-janitors@lfdr.de>; Sat, 13 Nov 2021 16:06:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCFCB44F66B
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Nov 2021 05:52:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230001AbhKMPJQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 13 Nov 2021 10:09:16 -0500
-Received: from [152.32.141.60] ([152.32.141.60]:54572 "EHLO mail.opaydev.com"
-        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S229668AbhKMPJP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 13 Nov 2021 10:09:15 -0500
-X-Greylist: delayed 14222 seconds by postgrey-1.27 at vger.kernel.org; Sat, 13 Nov 2021 10:09:12 EST
-Received: from localhost (localhost [127.0.0.1])
-        by mail.opaydev.com (Postfix) with ESMTP id 830F7E2EE9A;
-        Sat, 13 Nov 2021 10:25:43 +0100 (WAT)
-Received: from mail.opaydev.com ([127.0.0.1])
-        by localhost (mail.opaydev.com [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id tw-QaPNPsxxz; Sat, 13 Nov 2021 10:25:43 +0100 (WAT)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.opaydev.com (Postfix) with ESMTP id C33E3E2EE9B;
-        Sat, 13 Nov 2021 10:25:41 +0100 (WAT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.opaydev.com C33E3E2EE9B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=opay-ctr.com;
-        s=13A7165E-7DCA-11EB-8D5D-9907FFCED0F4; t=1636795541;
-        bh=9Ya5S5WqJTLJFZUenk8zTzUfa/tlY7tIAXu8D0pRS5I=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=MAr0ysOf0Cn77Mcv7dgQbWAPWFngICFcyW9p1DItMfcgecRIRfAUHcYh+2CYnLzsJ
-         fRKSks+ijR1jjSviFjgmOAYOu0l7bScUjw4R6S+SKQw7TF1bLjENYXMHVY0UFnwxdE
-         SbehhGsA5VnyzejzT9F0FuEjQpvEnx5PwzcCBDLEaEJa1+xXOJhcU2Tp7o6g7grGvj
-         A9pCAVsqbfj0I01Q4EyaRxNrVtFW8D65ZsQOTLLy4HOY2lm/V2dJropeGQxS6wtURi
-         sBnS5KiORj7mSIRjAZvux3+B25HElpuxFuQIqQvdkgmEiN+EuJ6PNebmKKqDfIj52g
-         EnFwJ+otQr3og==
-X-Virus-Scanned: amavisd-new at opaydev.com
-Received: from mail.opaydev.com ([127.0.0.1])
-        by localhost (mail.opaydev.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id mIjrXjcXOjRH; Sat, 13 Nov 2021 10:25:41 +0100 (WAT)
-Received: from [85.62.55.37] (unknown [85.62.55.37])
-        by mail.opaydev.com (Postfix) with ESMTPSA id 182BEE2EE83;
-        Sat, 13 Nov 2021 10:25:37 +0100 (WAT)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S231617AbhKNE1P (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 13 Nov 2021 23:27:15 -0500
+Received: from mail-ed1-f52.google.com ([209.85.208.52]:36802 "EHLO
+        mail-ed1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230441AbhKNE1O (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 13 Nov 2021 23:27:14 -0500
+Received: by mail-ed1-f52.google.com with SMTP id o8so55351901edc.3;
+        Sat, 13 Nov 2021 20:24:20 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=7rlmuPdMhnVMN0EKqqXPhzO5LaYq5KpGdQ9/F9AAtXk=;
+        b=rWIIQI0vG/Y+cmgaabdAov5JxhBqJGPQhIbzpqzvRznRiyqTm0em7vQA2NMSRapWNw
+         /8ssbLWxuSYahWJfAz8b8NsTbus3DMjOvo21PNnsLnLPJfxXldt3sapdymTgHT8LZfVa
+         CqFWqNdO46tMcGqmL0m/w5JNlRl57LvN78WMiAwvGHlu0LIfo6BrvRRYjmqyqhpJ9/mS
+         qebW2T9oU9whhCfEq1rGlX3rJzZRv90PU6euDAzSHhUuX0cR6wsgwM1CHG2wZreKgdbl
+         EDj6BoYD0VKAqtagN7vsseUPpnRamBuxAKocHzBpjrbpt5Iy0T9AtIwCP0htUCbPcifI
+         FKog==
+X-Gm-Message-State: AOAM530GbFCO/VOE3ENuqUljgVLyrfnW/OxAP31SSjhqV2P0mnFllFbF
+        Xkue6aozZuqMb1e7Bji8GYU=
+X-Google-Smtp-Source: ABdhPJxHbWT7hGwsTqiFFmicf/NGrbVWQCk+BHGG5FWyoaakDMeNU0yM7d/Ws4csvPpIcXr7q1UsVQ==
+X-Received: by 2002:a17:906:4c95:: with SMTP id q21mr36043847eju.485.1636863860300;
+        Sat, 13 Nov 2021 20:24:20 -0800 (PST)
+Received: from rocinante ([95.155.85.46])
+        by smtp.gmail.com with ESMTPSA id g21sm5495555edb.89.2021.11.13.20.24.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 13 Nov 2021 20:24:19 -0800 (PST)
+Date:   Sun, 14 Nov 2021 05:24:18 +0100
+From:   Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     bhelgaas@google.com, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] PCI/P2PDMA: Save a few cycles in 'pci_alloc_p2pmem()'
+Message-ID: <YZCPcusrcCIJvYdn@rocinante>
+References: <ab80164f4d5b32f9e6240aa4863c3a147ff9c89f.1635974126.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: NOTIFICATION OF PAYMENT.>
-To:     Recipients <user01@opay-ctr.com>
-From:   "Mr. BENJAMIN TARIQ" <user01@opay-ctr.com>
-Date:   Sat, 13 Nov 2021 10:21:16 +0100
-Reply-To: lentmelvin@gmail.com
-Message-Id: <20211113092538.182BEE2EE83@mail.opaydev.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ab80164f4d5b32f9e6240aa4863c3a147ff9c89f.1635974126.git.christophe.jaillet@wanadoo.fr>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-FEDERAL RESERVE BANK OF NEW YORK
-33 LIBERTY ST, NEW YORK
-NY 10045, UNITED STATES
+Hi Christophe,
 
-ATTENTION FUND OWNER:
+Thank you for another nice patch!
 
-THE FEDERAL RESERVE BANK OF NEW YORK WRITES TO INFORM YOU THAT SOME FUND HA=
-S BEEN APPROVED BY THE WORLD BANK ORGANIZATION AND PRESIDENCY UNION TO BE R=
-ECEIVED BY YOU AS A FORM OF COMPENSATION FOR BEING A SCAM VICTIM IN THE PAS=
-T YEARS OR THE WORLD PANDEMIC AFFECTED.
+> Use 'percpu_ref_tryget_live_rcu()' instead of 'percpu_ref_tryget_live()' to
+> save a few cycles when it is known that the rcu lock is already
+> taken/released.
 
-NOTE: YOU ARE REQUESTED TO CONFIRM YOUR VALID INFORMATION SO AS TO ENABLE T=
-HE BANK TO REACH OUT TO  YOU AND BE SURE WE ARE DEALING WITH THE AFFECTED P=
-ERSON OR THE FAMILY.
+If possible, we should explain why are we using this new API, especially
+since percpu_ref_tryget_live_rcu() is a relatively new addition [1], so
+it's obvious that its users already manage the RCU lock accordingly, and
+that there is no need to hold the RCU read lock again (which can in turn
+lead to performance improvement), which is what the percpu_ref_tryget_live()
+does internally.
 
-CONFIRM THE BELOW INFORMATION;
+What do you think?
 
-1) COMPLETE NAME AS STATED ON YOUR ID CARD:
-2) PHONE NUMBER:
-3) ADDRESS:
-4) ID CARD FOR VERIFICATION :
+1. 3b13c168186c ("percpu_ref: percpu_ref_tryget_live() version holding RCU")
 
-YOUR URGENT RESPONSE IS WELCOMED AS WE ARE OPEN TO RECEIVE ANY QUESTION THA=
-T MAY DISTURB YOU.
+>  	if (!ret)
+>  		goto out;
+>  
+> -	if (unlikely(!percpu_ref_tryget_live(ref))) {
+> +	if (unlikely(!percpu_ref_tryget_live_rcu(ref))) {
+>  		gen_pool_free(p2pdma->pool, (unsigned long) ret, size);
+>  		ret = NULL;
+>  		goto out;
 
-REGARDS
-BENJAMIN TARIQ
+Thank you!
+
+Reviewed-by: Krzysztof Wilczyński <kw@linux.com>
+
+	Krzysztof

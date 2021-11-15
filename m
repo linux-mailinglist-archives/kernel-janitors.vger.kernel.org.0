@@ -2,68 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED1CA44FA0A
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Nov 2021 20:02:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C611450030
+	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Nov 2021 09:43:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236112AbhKNTFr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 14 Nov 2021 14:05:47 -0500
-Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:63691 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236204AbhKNTFr (ORCPT
+        id S230354AbhKOIqr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 15 Nov 2021 03:46:47 -0500
+Received: from mail.tomediacase.pl ([151.236.28.249]:52052 "EHLO
+        mail.tomediacase.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237110AbhKOIpy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 14 Nov 2021 14:05:47 -0500
-Received: from pop-os.home ([86.243.171.122])
-        by smtp.orange.fr with ESMTPA
-        id mKlwmkSLSUGqlmKlxmi68i; Sun, 14 Nov 2021 20:02:38 +0100
-X-ME-Helo: pop-os.home
-X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Sun, 14 Nov 2021 20:02:38 +0100
-X-ME-IP: 86.243.171.122
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     roopa@nvidia.com, nikolay@nvidia.com, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     bridge@lists.linux-foundation.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] net: bridge: Slightly optimize 'find_portno()'
-Date:   Sun, 14 Nov 2021 20:02:35 +0100
-Message-Id: <00c39d09c8df7ad0673bf2043f6566d6ef08b789.1636916479.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.30.2
+        Mon, 15 Nov 2021 03:45:54 -0500
+X-Greylist: delayed 341 seconds by postgrey-1.27 at vger.kernel.org; Mon, 15 Nov 2021 03:45:54 EST
+Received: by mail.tomediacase.pl (Postfix, from userid 1001)
+        id 3582C411BB; Mon, 15 Nov 2021 09:32:18 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tomediacase.pl;
+        s=mail; t=1636965430;
+        bh=Bje9A+dX2J3376TsmOuP73t2Vi7ACwCdfE9j+pWA3Rs=;
+        h=Date:From:To:Subject:From;
+        b=OH3xMEk50t3C84TAG+z0jKTWWa+751OfkhktrYRgspfjX9posdbeYPRYseUC7AtMy
+         JMf4qVT6j6/7VqaIGsJrhNTMkKebYMsovr64ztoqgl44m8JUmnOC3sI24+QkNdMCmn
+         LGnmwwR5ZLabz7iU3h2NaG28ui8MCKQsa8tLOqQNF8mnWtDKdNRVm9BVGTtnGiwcSW
+         +cilvzaMAvvYJMC1JNcy8qoy5Y5eWWvdpjyJD4ZaXgnLPbd/MX/skgfzHE1XcCZyCy
+         kyPzDo1PINL/FnQbsex+UW+pLxooGGpbq10jYc/AqWGU7HcPOd76oRG4TorsjbcvBe
+         vm94qBqOH+/0g==
+Received: by mail.tomediacase.pl for <kernel-janitors@vger.kernel.org>; Mon, 15 Nov 2021 08:32:15 GMT
+Message-ID: <20211115092006-0.1.8.ht0.0.7b1t1hmd5h@tomediacase.pl>
+Date:   Mon, 15 Nov 2021 08:32:15 GMT
+From:   =?UTF-8?Q? "Mi=C5=82osz_Nowak" ?= <milosz.nowak@tomediacase.pl>
+To:     <kernel-janitors@vger.kernel.org>
+Subject: Wycena paneli fotowoltaicznych
+X-Mailer: mail.tomediacase.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The 'inuse' bitmap is local to this function. So we can use the
-non-atomic '__set_bit()' to save a few cycles.
+Dzie=C5=84 dobry,
 
-While at it, also remove some useless {}.
+dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
+irm=C4=85.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- net/bridge/br_if.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
+ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
 
-diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
-index c1183fef1f21..64b2d4fb50f5 100644
---- a/net/bridge/br_if.c
-+++ b/net/bridge/br_if.c
-@@ -397,10 +397,10 @@ static int find_portno(struct net_bridge *br)
- 	if (!inuse)
- 		return -ENOMEM;
- 
--	set_bit(0, inuse);	/* zero is reserved */
--	list_for_each_entry(p, &br->port_list, list) {
--		set_bit(p->port_no, inuse);
--	}
-+	__set_bit(0, inuse);	/* zero is reserved */
-+	list_for_each_entry(p, &br->port_list, list)
-+		__set_bit(p->port_no, inuse);
-+
- 	index = find_first_zero_bit(inuse, BR_MAX_PORTS);
- 	bitmap_free(inuse);
- 
--- 
-2.30.2
+Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
+ropozycji?
 
+
+Pozdrawiam,
+Mi=C5=82osz Nowak

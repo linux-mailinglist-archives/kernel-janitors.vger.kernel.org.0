@@ -2,77 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 680FF452D3F
-	for <lists+kernel-janitors@lfdr.de>; Tue, 16 Nov 2021 09:55:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD35745300C
+	for <lists+kernel-janitors@lfdr.de>; Tue, 16 Nov 2021 12:15:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232593AbhKPI6A (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 16 Nov 2021 03:58:00 -0500
-Received: from elvis.franken.de ([193.175.24.41]:52940 "EHLO elvis.franken.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232490AbhKPI55 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 16 Nov 2021 03:57:57 -0500
-Received: from uucp (helo=alpha)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1mmuF0-0006gG-00; Tue, 16 Nov 2021 09:54:58 +0100
-Received: by alpha.franken.de (Postfix, from userid 1000)
-        id E2328C2D9B; Tue, 16 Nov 2021 09:45:46 +0100 (CET)
-Date:   Tue, 16 Nov 2021 09:45:46 +0100
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     Colin Ian King <colin.i.king@googlemail.com>
-Cc:     Paul Burton <paulburton@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][V2] MIPS: generic/yamon-dt: fix uninitialized variable
- error
-Message-ID: <20211116084546.GA21168@alpha.franken.de>
-References: <20211110232824.1372368-1-colin.i.king@gmail.com>
+        id S234778AbhKPLR7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 16 Nov 2021 06:17:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51676 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234781AbhKPLRz (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 16 Nov 2021 06:17:55 -0500
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99C13C061570
+        for <kernel-janitors@vger.kernel.org>; Tue, 16 Nov 2021 03:14:57 -0800 (PST)
+Received: by mail-ed1-x536.google.com with SMTP id x15so86143051edv.1
+        for <kernel-janitors@vger.kernel.org>; Tue, 16 Nov 2021 03:14:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=49VN2EPgYHrEXK97OpQX0CxGM5w7EiGtxSfN5GFh/XE=;
+        b=nuECwvWtiIwyOLulN2Lk416KXliU4irAvS9eYxzStgtHAffBTPQOgXMroqlLPeAfkr
+         elDpxfol//6RC/sg1q+Ub609xObN5depgOkeSOj23D93+P/tJev487ym1QE6upJ9yJib
+         l6WKUQOl9Y1r9xRkfPrUH6n9eBUbahT/zUPfmPy60l4NzUQKtK4bWAidTKjWoVfZaf9/
+         zFOFVKgE2IwJ612ej3DNKgw52l8iLX9aEMzeZNvH52lwWe1wqnD+rZiYfrj/8gN3bL7H
+         b1xgbcQh0r4wcMq01Y5eH8m8slx1dkyp3F2DkYqQkSKLXr1zXrL3dM1Xc4i+p/IdjJbQ
+         hy3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=49VN2EPgYHrEXK97OpQX0CxGM5w7EiGtxSfN5GFh/XE=;
+        b=jJ1xDrznheYdDUjpqlIPbOReGnhMBH+C3o/s6R9RBQhok2gcXQgsCREECMibfV+wSg
+         pLRiEc+OFQgJfVv5wAaZRUE93BaiJXbNK5Pf09T5qt8JUpFNaUJmq8rcITCVNg0H4776
+         f6omdLpHWvbcsJDq7OlY+Ou+aXdIaHsnl+SVy7GDBFuxj6rGpB1miY1wpldIn1IPqXdV
+         RbCO7raQwEd3MLrVMfeXZknTAnv3SGR9QPesiqANXG17ijiMvxFitZsfnZwhLFD6QZnJ
+         Hr+l9bNAmg9rjADHMWHqxbXrwhyxwBVNeZ1jPgt6lZ7GKzBsRNmwjwCwRRxbjClXfaPV
+         qsug==
+X-Gm-Message-State: AOAM533qFBqydth3hTMUck1HkEZFia12OAWtHcgJ2RQgXj2JC+RgjesV
+        6HVmRyrvLZ+qBPMTJP7RB8ZqiVUQU1QuTEG5fm0=
+X-Google-Smtp-Source: ABdhPJwWXYNs5vaaEuBxolzuNn+GCpyFwAXkA0OP4GCZU5ToNnN2F36S9L0nx7VDB2AMF2ccn4D6R1R8/gfRVAmA2ks=
+X-Received: by 2002:aa7:c30e:: with SMTP id l14mr9086282edq.370.1637061296082;
+ Tue, 16 Nov 2021 03:14:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211110232824.1372368-1-colin.i.king@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Received: by 2002:a17:907:7f86:0:0:0:0 with HTTP; Tue, 16 Nov 2021 03:14:55
+ -0800 (PST)
+Reply-To: ebodrdickson1020@gmail.com
+From:   "Dr.Dickson Ebo" <drdicksonelo1022@gmail.com>
+Date:   Tue, 16 Nov 2021 03:14:55 -0800
+Message-ID: <CAAAfx4y8_pV2o=G4Zt7w84=eNO_0nZ34_C7MUcEwuEDA1Gm=wA@mail.gmail.com>
+Subject: hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Nov 10, 2021 at 11:28:24PM +0000, Colin Ian King wrote:
-> In the case where fw_getenv returns an error when fetching values
-> for ememsizea and memsize then variable phys_memsize is not assigned
-> a variable and will be uninitialized on a zero check of phys_memsize.
-> Fix this by initializing phys_memsize to zero.
-> 
-> Cleans up cppcheck error:
-> arch/mips/generic/yamon-dt.c:100:7: error: Uninitialized variable: phys_memsize [uninitvar]
-> 
-> Fixes: f41d2430bbd6 ("MIPS: generic/yamon-dt: Support > 256MB of RAM")
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
-> V2: Use correct email address in SoB.
-> ---
->  arch/mips/generic/yamon-dt.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/mips/generic/yamon-dt.c b/arch/mips/generic/yamon-dt.c
-> index a3aa22c77cad..a07a5edbcda7 100644
-> --- a/arch/mips/generic/yamon-dt.c
-> +++ b/arch/mips/generic/yamon-dt.c
-> @@ -75,7 +75,7 @@ static unsigned int __init gen_fdt_mem_array(
->  __init int yamon_dt_append_memory(void *fdt,
->  				  const struct yamon_mem_region *regions)
->  {
-> -	unsigned long phys_memsize, memsize;
-> +	unsigned long phys_memsize = 0, memsize;
->  	__be32 mem_array[2 * MAX_MEM_ARRAY_ENTRIES];
->  	unsigned int mem_entries;
->  	int i, err, mem_off;
-> -- 
-> 2.32.0
+Finance and Audit Department, Zenith Bank Plc.
 
-applied to mips-fixes.
+The President of the Federal Republic of Nigeria through the Zenith
+International Bank Nigeria PLC has released your
+Contract/Inheritance/Compensation Fund.
 
-Thomas.
+Kindly get back to us as soon as possible.
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+Yours faithfully,
+Dr. Dickson Ebo.

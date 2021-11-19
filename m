@@ -2,121 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B70CD4565D8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 18 Nov 2021 23:45:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0A91456901
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Nov 2021 05:16:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232460AbhKRWsy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 18 Nov 2021 17:48:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45374 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232616AbhKRWsv (ORCPT
+        id S233149AbhKSETx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 18 Nov 2021 23:19:53 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:10024 "EHLO
+        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229812AbhKSETx (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 18 Nov 2021 17:48:51 -0500
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B08E4C061748;
-        Thu, 18 Nov 2021 14:45:50 -0800 (PST)
-Received: by mail-yb1-xb31.google.com with SMTP id y68so22773686ybe.1;
-        Thu, 18 Nov 2021 14:45:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Drrxg0bait9D2hSu5Rb+lqByc8pviUXeN3/NBO2Mdw0=;
-        b=ALelaSYbC0JAGYqDK1XiIqBleMj2mT/SaxMSw+/uyDrnimujzZtPhY0VtYFsUEqaXg
-         mm/OIiSTamkgkCAyipQRGpRKcuZzigaaVhPUlGRailSg2QJTWJhHdCoeWjvLxS20SHRH
-         MnPT2HsDkPxXMJoHb8O/VXSjN9BcJtZ4sHdihnpPwUo9NaxD2nb+25F+DljhM4n3frHW
-         sYys5igeVfB3WFLjkCb44UuoqLV0cu7TknknwZWHXTD2UePVXD4orSxxEC8rNxyxNN/n
-         +Ck60VdaF8aV0NEHFVw7d0/Vu3c0omHgS4nnbRsF5PtuMivM7iiNFmlZhhvvfM0SS1QH
-         4Ayw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Drrxg0bait9D2hSu5Rb+lqByc8pviUXeN3/NBO2Mdw0=;
-        b=4G0vi80WlRtCVgdGjyiqRoX234L8zluXYk+LMGWK9XJ8RUm3thuL0QAt7VMfXjMGmU
-         V7M9vlriY/ss2ttnntQpJ8E2epqOUQNfDv4IjNsn2llMQY6UX9Iukh7Zf4G3nOUo+Efo
-         oKh3VoAnIY7kDwsBP3xdG7NhSosH3k18GfC0ujCIsvJz3Nuxx+vMZqmp9MtJ1CvfOGRg
-         HV6E2OC5gg9MmKPdBy9r4Q6X98QDdXvGrczywumMaIx2hdxn55fsiVVWKQvNMt/ZZ/fU
-         u+s8NK18Epm707TdFAw1dBVOlp1+6boKF6q+jRO8tMKVtuh8fAIGhky0Ccxcjj8ro1Tm
-         DVjw==
-X-Gm-Message-State: AOAM530JfH9SY3Z+eJDxK9maqYEtz+Dr6wrbVakByrF8A+z3XWonRmpY
-        NHt0yDZX6Uv8tTi/ZXiD7J3Z3fFrEdTd1zEYjOo=
-X-Google-Smtp-Source: ABdhPJz4F3+J1gbdCBhQ0sBG5pFrqOoaVWVM1MOWWO5ipi7oqJGxkL204p7x7LR7PkF1BEm0c3jhfkDCgRf8F3yERwU=
-X-Received: by 2002:a25:378c:: with SMTP id e134mr30130496yba.474.1637275549921;
- Thu, 18 Nov 2021 14:45:49 -0800 (PST)
-MIME-Version: 1.0
-References: <20211118111314.GB1147@kili>
-In-Reply-To: <20211118111314.GB1147@kili>
-From:   Ben Skeggs <skeggsb@gmail.com>
-Date:   Fri, 19 Nov 2021 08:45:38 +1000
-Message-ID: <CACAvsv5jiOo+4hvO-G1ojAvrwZDALX7VfAV8-SHnzYak-3mFDA@mail.gmail.com>
-Subject: Re: [Nouveau] [PATCH] drm/nouveau/acr: fix a couple NULL vs IS_ERR() checks
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Ben Skeggs <bskeggs@redhat.com>, David Airlie <airlied@linux.ie>,
-        ML nouveau <nouveau@lists.freedesktop.org>,
+        Thu, 18 Nov 2021 23:19:53 -0500
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AJ1ti89020985;
+        Fri, 19 Nov 2021 04:16:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2021-07-09;
+ bh=9Eu44hnETw+Fqcy1GlNFLqt/UYZxFr1YDuew9+fEO8s=;
+ b=vZY1ir8bKIb6Lnfc23BPwA6QHoV+QW9BpOXyTHCTI2qBwJEv3RvxvIspXcK9UaMK347U
+ wv8V7tCV/XmHwgaSeq7qruLW/Fmq7E3fCHHJLOJhIILO1Fb9bQOqlUZx3ihPeILCefa8
+ JqQhDp4D6dokmkmTSBzqB7xiy9jrXCkt7iJDrl4fYuaciF0AnlCXOljsRKZ3/3ExHbpd
+ jqqnf2OYmoS6sejdezGdpXdQnpW5F/t7px/5kTMYvOdCjxXyC/dgIKaRQgVLoA4a8/fZ
+ maYcxdJAhnkB1Ztwjf/EqqVuV4i5lwIPSvEGYOBNUjsW9rUwklWiJLK4Jjc1Z2Pwj2Ig 6g== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by mx0b-00069f02.pphosted.com with ESMTP id 3cd4qyucj4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 19 Nov 2021 04:16:49 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 1AJ4FBBI020315;
+        Fri, 19 Nov 2021 04:16:48 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by userp3020.oracle.com with ESMTP id 3caq4x7c0e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 19 Nov 2021 04:16:48 +0000
+Received: from userp3020.oracle.com (userp3020.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 1AJ4GiwM024731;
+        Fri, 19 Nov 2021 04:16:47 GMT
+Received: from ca-mkp.mkp.ca.oracle.com (ca-mkp.ca.oracle.com [10.156.108.201])
+        by userp3020.oracle.com with ESMTP id 3caq4x7bx2-4;
+        Fri, 19 Nov 2021 04:16:47 +0000
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     Quinn Tran <qutran@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
         kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        ML dri-devel <dri-devel@lists.freedesktop.org>,
-        Daniel Vetter <daniel@ffwll.ch>
-Content-Type: text/plain; charset="UTF-8"
+        Larry Wisneski <Larry.Wisneski@marvell.com>,
+        GR-QLogic-Storage-Upstream@marvell.com,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        linux-scsi@vger.kernel.org
+Subject: Re: [PATCH] scsi: qla2xxx: edif: fix off by one bug in qla_edif_app_getfcinfo()
+Date:   Thu, 18 Nov 2021 23:16:33 -0500
+Message-Id: <163729506337.21244.1075922687448615071.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20211109115219.GE16587@kili>
+References: <20211109115219.GE16587@kili>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: InXFH-9KKTK-CwkeyVOF-swlzDILyET4
+X-Proofpoint-GUID: InXFH-9KKTK-CwkeyVOF-swlzDILyET4
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 18 Nov 2021 at 21:13, Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> The nvkm_acr_lsfw_add() function never returns NULL.  It returns error
-> pointers on error.
->
-> Fixes: 22dcda45a3d1 ("drm/nouveau/acr: implement new subdev to replace "secure boot"")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Reviewed-by: Ben Skeggs <bskeggs@redhat.com>
+On Tue, 9 Nov 2021 14:52:19 +0300, Dan Carpenter wrote:
 
-> ---
->  drivers/gpu/drm/nouveau/nvkm/subdev/acr/gm200.c | 6 ++++--
->  drivers/gpu/drm/nouveau/nvkm/subdev/acr/gp102.c | 6 ++++--
->  2 files changed, 8 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/acr/gm200.c b/drivers/gpu/drm/nouveau/nvkm/subdev/acr/gm200.c
-> index cdb1ead26d84..82b4c8e1457c 100644
-> --- a/drivers/gpu/drm/nouveau/nvkm/subdev/acr/gm200.c
-> +++ b/drivers/gpu/drm/nouveau/nvkm/subdev/acr/gm200.c
-> @@ -207,11 +207,13 @@ int
->  gm200_acr_wpr_parse(struct nvkm_acr *acr)
->  {
->         const struct wpr_header *hdr = (void *)acr->wpr_fw->data;
-> +       struct nvkm_acr_lsfw *lsfw;
->
->         while (hdr->falcon_id != WPR_HEADER_V0_FALCON_ID_INVALID) {
->                 wpr_header_dump(&acr->subdev, hdr);
-> -               if (!nvkm_acr_lsfw_add(NULL, acr, NULL, (hdr++)->falcon_id))
-> -                       return -ENOMEM;
-> +               lsfw = nvkm_acr_lsfw_add(NULL, acr, NULL, (hdr++)->falcon_id);
-> +               if (IS_ERR(lsfw))
-> +                       return PTR_ERR(lsfw);
->         }
->
->         return 0;
-> diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/acr/gp102.c b/drivers/gpu/drm/nouveau/nvkm/subdev/acr/gp102.c
-> index fb9132a39bb1..fd97a935a380 100644
-> --- a/drivers/gpu/drm/nouveau/nvkm/subdev/acr/gp102.c
-> +++ b/drivers/gpu/drm/nouveau/nvkm/subdev/acr/gp102.c
-> @@ -161,11 +161,13 @@ int
->  gp102_acr_wpr_parse(struct nvkm_acr *acr)
->  {
->         const struct wpr_header_v1 *hdr = (void *)acr->wpr_fw->data;
-> +       struct nvkm_acr_lsfw *lsfw;
->
->         while (hdr->falcon_id != WPR_HEADER_V1_FALCON_ID_INVALID) {
->                 wpr_header_v1_dump(&acr->subdev, hdr);
-> -               if (!nvkm_acr_lsfw_add(NULL, acr, NULL, (hdr++)->falcon_id))
-> -                       return -ENOMEM;
-> +               lsfw = nvkm_acr_lsfw_add(NULL, acr, NULL, (hdr++)->falcon_id);
-> +               if (IS_ERR(lsfw))
-> +                       return PTR_ERR(lsfw);
->         }
->
->         return 0;
-> --
-> 2.20.1
->
+> The > comparison needs to be >= to prevent accessing one element beyond
+> the end of the app_reply->ports[] array.
+> 
+> 
+
+Applied to 5.16/scsi-fixes, thanks!
+
+[1/1] scsi: qla2xxx: edif: fix off by one bug in qla_edif_app_getfcinfo()
+      https://git.kernel.org/mkp/scsi/c/e11e285b9cd1
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

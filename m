@@ -2,74 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 731E5457552
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Nov 2021 18:19:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92B88457551
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Nov 2021 18:19:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236637AbhKSRWc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 19 Nov 2021 12:22:32 -0500
-Received: from www.linuxtv.org ([130.149.80.248]:47950 "EHLO www.linuxtv.org"
+        id S236543AbhKSRW2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 19 Nov 2021 12:22:28 -0500
+Received: from www.linuxtv.org ([130.149.80.248]:47940 "EHLO www.linuxtv.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236628AbhKSRWa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 19 Nov 2021 12:22:30 -0500
+        id S236502AbhKSRW2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 19 Nov 2021 12:22:28 -0500
+X-Greylist: delayed 1919 seconds by postgrey-1.27 at vger.kernel.org; Fri, 19 Nov 2021 12:22:28 EST
 Received: from mchehab by www.linuxtv.org with local (Exim 4.92)
         (envelope-from <mchehab@linuxtv.org>)
-        id 1mo72t-002cT8-4v; Fri, 19 Nov 2021 16:47:27 +0000
+        id 1mo72t-002cSm-2r; Fri, 19 Nov 2021 16:47:27 +0000
 From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Date:   Fri, 19 Nov 2021 16:09:07 +0000
-Subject: [git:media_stage/master] media: dvb-frontends/stv0367: remove redundant variable ADCClk_Hz
+Date:   Fri, 19 Nov 2021 16:12:18 +0000
+Subject: [git:media_stage/master] media: drivers: cx24113: remove redundant variable r
 To:     linuxtv-commits@linuxtv.org
-Cc:     Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+Cc:     Colin Ian King <colin.king@canonical.com>,
         kernel-janitors@vger.kernel.org,
-        Colin Ian King <colin.king@canonical.com>
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
 Mail-followup-to: linux-media@vger.kernel.org
 Forward-to: linux-media@vger.kernel.org
 Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1mo72t-002cT8-4v@www.linuxtv.org>
+Message-Id: <E1mo72t-002cSm-2r@www.linuxtv.org>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 This is an automatic generated email to let you know that the following patch were queued:
 
-Subject: media: dvb-frontends/stv0367: remove redundant variable ADCClk_Hz
+Subject: media: drivers: cx24113: remove redundant variable r
 Author:  Colin Ian King <colin.king@canonical.com>
-Date:    Thu Oct 14 16:32:53 2021 +0100
+Date:    Thu Oct 14 16:12:35 2021 +0100
 
-GIT_AUTHOR_NAME=Colin King
-GIT_AUTHOR_EMAIL=colin.king@canonical.com
-
-Variable ADCClk_Hz is being initialised with a variable that is never read
-and then re-assigned immediately afterwards. Clean up the code by removing
-it and just returning the return value from the call to stv0367cab_get_mclk
+Variable r is being assigned values but its value was never used,
+being overriden on its first usage. So, drop the initialization.
 
 Addresses-Coverity: ("Unused value")
 
-Link: https://lore.kernel.org/linux-media/20211014153253.63527-1-colin.king@canonical.com
+Link: https://lore.kernel.org/linux-media/20211014151235.62671-1-colin.king@canonical.com
 
 Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
- drivers/media/dvb-frontends/stv0367.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/media/dvb-frontends/cx24113.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 ---
 
-diff --git a/drivers/media/dvb-frontends/stv0367.c b/drivers/media/dvb-frontends/stv0367.c
-index 6c2b05fae1c5..95e376f23506 100644
---- a/drivers/media/dvb-frontends/stv0367.c
-+++ b/drivers/media/dvb-frontends/stv0367.c
-@@ -1797,11 +1797,7 @@ static u32 stv0367cab_get_mclk(struct dvb_frontend *fe, u32 ExtClk_Hz)
+diff --git a/drivers/media/dvb-frontends/cx24113.c b/drivers/media/dvb-frontends/cx24113.c
+index 60a9f70275f7..dd55d314bf9a 100644
+--- a/drivers/media/dvb-frontends/cx24113.c
++++ b/drivers/media/dvb-frontends/cx24113.c
+@@ -378,7 +378,7 @@ static void cx24113_set_nfr(struct cx24113_state *state, u16 n, s32 f, u8 r)
  
- static u32 stv0367cab_get_adc_freq(struct dvb_frontend *fe, u32 ExtClk_Hz)
+ static int cx24113_set_frequency(struct cx24113_state *state, u32 frequency)
  {
--	u32 ADCClk_Hz = ExtClk_Hz;
--
--	ADCClk_Hz = stv0367cab_get_mclk(fe, ExtClk_Hz);
--
--	return ADCClk_Hz;
-+	return stv0367cab_get_mclk(fe, ExtClk_Hz);
- }
+-	u8 r = 1; /* or 2 */
++	u8 r;
+ 	u16 n = 6;
+ 	s32 f = 0;
  
- static enum stv0367cab_mod stv0367cab_SetQamSize(struct stv0367_state *state,

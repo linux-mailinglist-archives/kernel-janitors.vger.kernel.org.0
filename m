@@ -2,81 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 872E14568FF
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Nov 2021 05:16:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB462456DED
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Nov 2021 12:01:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232358AbhKSETw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 18 Nov 2021 23:19:52 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:8426 "EHLO
-        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229812AbhKSETw (ORCPT
+        id S234720AbhKSLED (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 19 Nov 2021 06:04:03 -0500
+Received: from out2-smtp.messagingengine.com ([66.111.4.26]:37621 "EHLO
+        out2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232004AbhKSLED (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 18 Nov 2021 23:19:52 -0500
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AJ2a3Nx019268;
-        Fri, 19 Nov 2021 04:16:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2021-07-09;
- bh=9NggQVwdIjN3vsXLW5blYXZFo8Q7T5oYufE6wjanflI=;
- b=q0uLNyxeNaP0514muw+oH2cwen8uffJjIr3hsTjlXv8Hejw6g/EyL/Zini5zdHCSFvw4
- NqXA5HmOTSlFkTdnuTV9AyCjbCaTfCfgG4zxR1DQ16T2pyjT5+pkscqGZa5WS0SiJevW
- 9kUuYR5FJXOFo2LIPk3ZWfTrHKt7YkxO4x5FdZ8PEabjg+ht0ibdPYT3uxe58XofBk3d
- 7BcP+Nsi59j8oJgr593Ceku7pc29FysG6GiHUOGnZHJJ10tmSy1S5oCIZRuXswo5cW0F
- qmCyn8H8wUear+42S8NTfuN4tEDbJhGJquhZLmEbkLgqe4OPjmFXtaOR/80lQwWDNJ8O tg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3cd2w93kb3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 19 Nov 2021 04:16:50 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 1AJ4FBMm020341;
-        Fri, 19 Nov 2021 04:16:48 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by userp3020.oracle.com with ESMTP id 3caq4x7c0s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 19 Nov 2021 04:16:48 +0000
-Received: from userp3020.oracle.com (userp3020.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 1AJ4GiwN024731;
-        Fri, 19 Nov 2021 04:16:48 GMT
-Received: from ca-mkp.mkp.ca.oracle.com (ca-mkp.ca.oracle.com [10.156.108.201])
-        by userp3020.oracle.com with ESMTP id 3caq4x7bx2-5;
-        Fri, 19 Nov 2021 04:16:48 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        target-devel@vger.kernel.org
-Subject: Re: [PATCH] target/configfs: delete unnecessary checks for NULL
-Date:   Thu, 18 Nov 2021 23:16:34 -0500
-Message-Id: <163729506338.21244.1697148412821112593.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20211118084900.GA24550@kili>
-References: <20211118084900.GA24550@kili>
+        Fri, 19 Nov 2021 06:04:03 -0500
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id 0407C5C00D4;
+        Fri, 19 Nov 2021 06:01:01 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Fri, 19 Nov 2021 06:01:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
+        from:to:cc:subject:date:message-id:in-reply-to:references
+        :mime-version:content-type:content-transfer-encoding; s=fm1; bh=
+        aqV1j+PWhw1EcvbQXT1J3L/THztodbDSfacb7pAVugM=; b=ftbKAxf07PobC8tc
+        3xnTmS8A5B+lTLU5mM6sNe0Cl17dgo+Hfm8byyKLzo/D3VXtRpWUZlBtlN6+5qfB
+        J4jOlfRjj2JD6mUbSeUyVfg+8hhkDxL7yeoJFZGc0g6Dhp7HGYbf9t6YrERVO/Ad
+        TqRGbafDqh5BmIUuCvnHyVH5gB8UkBgdw43nl2BPk4GI3CW1cKMKCk0mgcfOBdjB
+        JOtD5/AVeBa2oxOPNVt+/SsvQRG84nWJChTt7suSCZOzfrDfXrWoRCVYOFpHg4j8
+        fw9dKu9zDIsGpYQBhro2Cr0Lm29hb+DFFxBYmm0Zx7uhB8Sche/0uNXeWe7YKlWn
+        8JYY+Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :date:from:in-reply-to:message-id:mime-version:references
+        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; bh=aqV1j+PWhw1EcvbQXT1J3L/THztodbDSfacb7pAVu
+        gM=; b=H+4YAfIklh5jmWWnXafnjUsLSKbg8zIQ6nqM9avIZ5UkAj8TY3VrP5ytF
+        xYsa1YbPh/ZRzZRt0V9Kz9cScuC+duehuhZJO6WLvLjgq4ywoah2FGJGFsILV4mF
+        7QEzjMao7pgC3svRBzSFxZlMKCtXwwzlrIQqJTR8HBNndKlJFK29bRfgJ++21AUY
+        5u00wP5Hk0wAK7PvD8FCfbNszvC8c0H37PLwUjSBXOIfUIQR616EK8xrPnW5mX1R
+        96jhNdiGIiq1Y8qCa930xlOzvkaib6c4uKNvDffud72i6EUQcz++E+fYpeanR1bx
+        KgJzQOM/DjqiV8sA9Gyq3Tu5HrMtg==
+X-ME-Sender: <xms:7IOXYTk49j4kro134d7Of7BnHXnls_ilMt4e_L-OuRNdSPxr9Q_Nrw>
+    <xme:7IOXYW1C249-KZMTjIelZ0JsWVVlmHFBuPXyXNfNcy-8ZQaUhKI-OBsI_1MSWQENN
+    unxs3yhG3atuiMQVQc>
+X-ME-Received: <xmr:7IOXYZqO5ffRpQ5pE25xuLk1GXQXW2nJqykQpCU23Ev9mo4TwVI64sJEKq4UwSFZUhTCa1MsaR0aNf_6kN4PKsGEFcxHASdm1e6jd0_3OVc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvuddrfeekgddvvdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefhvffufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpeforgigihhm
+    vgcutfhiphgrrhguuceomhgrgihimhgvsegtvghrnhhordhtvggthheqnecuggftrfgrth
+    htvghrnhepjeeugfegkeffgfeuvedtvddufffhjeffjeejvddvudduteehhfefhfefgeei
+    keeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmh
+    grgihimhgvsegtvghrnhhordhtvggthh
+X-ME-Proxy: <xmx:7IOXYbl_txF_lipHZxwMYl3vuVcleg7hb0kA2rlX1MuoZCdXUhRlkQ>
+    <xmx:7IOXYR1csdC__J0iMFBBRpXe10cLUSPi3Xte1rlcON4tGV5KIAcGdg>
+    <xmx:7IOXYavi6MWKPRZlRoEz5smVrZ_vI6cxquVWMDCjK0ISsMleY8uk5g>
+    <xmx:7IOXYelB_ig3WITGQ5wJDq0Mtj9d2bGg3r69G3qXL02K80cDdOPY2w>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 19 Nov 2021 06:00:59 -0500 (EST)
+From:   Maxime Ripard <maxime@cerno.tech>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Emma Anholt <emma@anholt.net>
+Cc:     Maxime Ripard <maxime@cerno.tech>, kernel-janitors@vger.kernel.org,
+        David Airlie <airlied@linux.ie>,
+        dri-devel@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
+        Maxime Ripard <mripard@kernel.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: (subset) [PATCH] drm/vc4: fix error code in vc4_create_object()
+Date:   Fri, 19 Nov 2021 12:00:56 +0100
+Message-Id: <163731964127.830809.14126199659521737361.b4-ty@cerno.tech>
+X-Mailer: git-send-email 2.33.1
+In-Reply-To: <20211118111416.GC1147@kili>
+References: <20211118111416.GC1147@kili>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: 2xHiodOVnZ3Oct1bQtMqDqgKiPHL_uNC
-X-Proofpoint-ORIG-GUID: 2xHiodOVnZ3Oct1bQtMqDqgKiPHL_uNC
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 18 Nov 2021 11:49:00 +0300, Dan Carpenter wrote:
-
-> The "item" pointer is always going to be valid pointer and does not
-> need to be checked.
+On Thu, 18 Nov 2021 14:14:16 +0300, Dan Carpenter wrote:
+> The ->gem_create_object() functions are supposed to return NULL if there
+> is an error.  None of the callers expect error pointers so returing one
+> will lead to an Oops.  See drm_gem_vram_create(), for example.
 > 
-> But if "item" were NULL then item_to_lun() would not return a NULL, but
-> instead, the container_of() pointer math would return a value in the
-> error pointer range.  This confuses static checkers since it looks like
-> a NULL vs IS_ERR() bug.
 > 
-> [...]
 
-Applied to 5.16/scsi-fixes, thanks!
+Applied to drm/drm-misc (drm-misc-fixes).
 
-[1/1] target/configfs: delete unnecessary checks for NULL
-      https://git.kernel.org/mkp/scsi/c/9c6603e1faf8
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Thanks!
+Maxime

@@ -2,55 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03AD9461CE5
-	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Nov 2021 18:42:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C85A4461E20
+	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Nov 2021 19:29:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349374AbhK2Rp5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 29 Nov 2021 12:45:57 -0500
-Received: from foss.arm.com ([217.140.110.172]:43958 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1348208AbhK2Rn5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 29 Nov 2021 12:43:57 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 36DFF1063;
-        Mon, 29 Nov 2021 09:40:39 -0800 (PST)
-Received: from e123427-lin.arm.com (unknown [10.57.34.225])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D05703F5A1;
-        Mon, 29 Nov 2021 09:40:36 -0800 (PST)
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     toan@os.amperecomputing.com, robh@kernel.org, bhelgaas@google.com,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        kw@linux.com
-Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] PCI: xgene-msi: Use bitmap_zalloc() when applicable
-Date:   Mon, 29 Nov 2021 17:40:29 +0000
-Message-Id: <163820760990.16735.3697424205036931357.b4-ty@arm.com>
-X-Mailer: git-send-email 2.31.0
-In-Reply-To: <32f3bc1fbfbd6ee0815e565012904758ca9eff7e.1635019243.git.christophe.jaillet@wanadoo.fr>
-References: <32f3bc1fbfbd6ee0815e565012904758ca9eff7e.1635019243.git.christophe.jaillet@wanadoo.fr>
+        id S238562AbhK2Scu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 29 Nov 2021 13:32:50 -0500
+Received: from smtp01.smtpout.orange.fr ([80.12.242.123]:64434 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1377543AbhK2Sar (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 29 Nov 2021 13:30:47 -0500
+Received: from [192.168.1.18] ([86.243.171.122])
+        by smtp.orange.fr with ESMTPA
+        id rlN7mrVOWdmYbrlN7mc7pN; Mon, 29 Nov 2021 19:27:26 +0100
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
+X-ME-Date: Mon, 29 Nov 2021 19:27:26 +0100
+X-ME-IP: 86.243.171.122
+Subject: Re: [PATCH] bus: mhi: pci_generic: Simplify code and axe the use of a
+ deprecated API
+To:     Hemant Kumar <hemantk@codeaurora.org>, mani@kernel.org
+Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <bb3dc436fe142309a2334549db782c5ebb80a2be.1625718497.git.christophe.jaillet@wanadoo.fr>
+ <1625765577.10055.24.camel@codeaurora.org>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <cd72331c-c3d3-f1e9-e1b2-7572b6cdf0a2@wanadoo.fr>
+Date:   Mon, 29 Nov 2021 19:27:20 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <1625765577.10055.24.camel@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 23 Oct 2021 22:02:05 +0200, Christophe JAILLET wrote:
-> 'xgene_msi->bitmap' is a bitmap. So use 'bitmap_zalloc()' to simplify code,
-> improve the semantic and avoid some open-coded arithmetic in allocator
-> arguments.
+Le 08/07/2021 à 19:32, Hemant Kumar a écrit :
+> On Thu, 2021-07-08 at 06:30 +0200, Christophe JAILLET wrote:
+>> The wrappers in include/linux/pci-dma-compat.h should go away.
+>>
+>> Replace 'pci_set_dma_mask/pci_set_consistent_dma_mask' by an
+>> equivalent
+>> and less verbose 'dma_set_mask_and_coherent()' call.
+>>
+>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>> ---
+>> If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+>>     https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+>> ---
 > 
-> Also change the corresponding 'kfree()' into 'bitmap_free()' to keep
-> consistency.
+> Reviewed-by: Hemant Kumar <hemantk@codeaurora.org>
 > 
-> [...]
 
-Applied to pci/xgene, thanks!
+Hi,
 
-[1/1] PCI: xgene-msi: Use bitmap_zalloc() when applicable
-      https://git.kernel.org/lpieralisi/pci/c/1ed9b961be
+Polite reminder.
+This is still not part of -next.
 
-Thanks,
-Lorenzo
+The patch is old (July/21), I can resend if needed.
+
+CJ

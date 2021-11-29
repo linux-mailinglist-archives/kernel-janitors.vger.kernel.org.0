@@ -2,125 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F708461F04
-	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Nov 2021 19:40:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87BD0462242
+	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Nov 2021 21:32:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380070AbhK2Smk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 29 Nov 2021 13:42:40 -0500
-Received: from mail-dm6nam12on2054.outbound.protection.outlook.com ([40.107.243.54]:64097
-        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1380008AbhK2Ski (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 29 Nov 2021 13:40:38 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gai2RhfxtczKIhGfFDlY+StjgSdv7t9MGH9GJexHd+sfzQGe2lriwdZP4jhaqI4dvRuGdIwzPyu1kQD/t24oiq6smbJh5ZZm8VXSIRQndcEXhake3naQQ/ReYZdxx5a2+BSuJUY+QHmWjGiLuHBn56ebDGLZPkZ5WLWJi1V2xd/b5oLQiRb7GA0NbyKg/TBT/f4WRRv/S04+rPirTUJBHglCH61Cafqrvub5AfkC6NfN528hYI/vNsRx3EoEt0Avgu20Hgnme3dFvpuB9GFFIk2R/GQcxs3JOJWgsOVG4NfT9lKsPmyrY2GpshPHw+F1IU1ww/sKsaG9jeqB6df8XA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L+GEygL/f+GJXTK2KCcXYfBaUr2YQUPnxuDh1wWTJ1I=;
- b=khDZltndXhOM5vYYYnpB6AhTwuw4M7xav+DkMtdUfqyn5Zx81vIupyuP8kzw9sTDiFCw9rs7wsvJFm6iXi0wL6vxrVNKNCnjBx2BzlOKmRYNKBSknoXqR54XKb8BF/2pMYBsJJIfedzXpncCjdWkpfahh8F95kLUQrIwSw+XRD+O6Lu5FeF6Nt1vd8uV52j2hm6szxuiXTnfCqVOMWQwaTjDBBj6Susuid803z4OJD0nFn0CeQwIPy2DrydO+FYnIGL0QHkIMgKogNFEHLNI1NEmC4JV4t0Eved1Z6m4scNIY5Gn5h6wYPNu2hIaaTejTOc1tKwfy2bfM7Nyr8+obA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L+GEygL/f+GJXTK2KCcXYfBaUr2YQUPnxuDh1wWTJ1I=;
- b=lMu2X2H0C0KrM3QQgW4yyxzUyImh5WMO4FFgjTkA1GLa1WsI5LJzDjM5dCYhUgkqWV4eMj5I8nQ5pTVy6b7lefqeRVdvwRNR6UDWUMWpk8KaxQlIq6ghw7SFS+H6Tm494R7BGK0mAYGUF8dJdgfLoJp9vqGKpReQarN3yxLCMVxMFVKNd5xBqmaBl2kyV5/WbJISIf1reUAnkXss9U/e/5AQ1y+lLPkPDY91Fo5fsye5+qf6rTroF8J7AR+ZOi/+NOOM2Ha2wonTb7sVt128csVnYWgrQDkzQTqHdUuzBdXU8a/YTf+woUZB4A0WAiXQVoKRcUvzA7XN8e2lAr3l3A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BL0PR12MB5506.namprd12.prod.outlook.com (2603:10b6:208:1cb::22)
- by BL0PR12MB5508.namprd12.prod.outlook.com (2603:10b6:208:1c1::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4734.23; Mon, 29 Nov
- 2021 18:37:15 +0000
-Received: from BL0PR12MB5506.namprd12.prod.outlook.com
- ([fe80::5897:83b2:a704:7909]) by BL0PR12MB5506.namprd12.prod.outlook.com
- ([fe80::5897:83b2:a704:7909%8]) with mapi id 15.20.4734.024; Mon, 29 Nov 2021
- 18:37:15 +0000
-Date:   Mon, 29 Nov 2021 14:37:14 -0400
-From:   Jason Gunthorpe <jgg@nvidia.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     selvin.xavier@broadcom.com, dledford@redhat.com,
-        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] RDMA/bnxt_re: Use bitmap_zalloc() when applicable
-Message-ID: <20211129183714.GE1065466@nvidia.com>
-References: <5c029daf43b92fdc27926fe8a98084843437c498.1637872888.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5c029daf43b92fdc27926fe8a98084843437c498.1637872888.git.christophe.jaillet@wanadoo.fr>
-X-ClientProxiedBy: BL1PR13CA0114.namprd13.prod.outlook.com
- (2603:10b6:208:2b9::29) To BL0PR12MB5506.namprd12.prod.outlook.com
- (2603:10b6:208:1cb::22)
+        id S231738AbhK2Ufu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 29 Nov 2021 15:35:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33626 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235159AbhK2Udr (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 29 Nov 2021 15:33:47 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DBF9C0698DB
+        for <kernel-janitors@vger.kernel.org>; Mon, 29 Nov 2021 09:04:44 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id r11so74929267edd.9
+        for <kernel-janitors@vger.kernel.org>; Mon, 29 Nov 2021 09:04:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=eBfL2rcNUJ3pohF9CeJl+9Z6rglBgXbidO8+Cf5EKE0=;
+        b=cWHqqDBaoBfzt1wibinK590sz81H5/WkDa2BzSCUrMSaaiQdp9QtOrWHnL67llPFaO
+         zpVwJw1OhmTMfzot5EuAJoI3yfHfSmo/NbXlBvUA9KTNmndCfA2cbvt2XFihN5LOS4gk
+         bKEubYzf6RwyMNaYuGy/pt9R2d+aUtf0rB1clQwroyc9leA/6bU7kj+WIvy4ZlSDaA3r
+         kmIX8G3BiuuQVF1uhfERGGS9MR8wuFkdvfqpLTk8IFyq4qy4RA+wlgsnpa2lKfBPq+zP
+         +K7Ti5MvAJSN3yOEclc/rNnKYKjlEPzL20DWTf2PjzjPF//SJQPnZ+KFnuIom+vpUYpW
+         7dNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=eBfL2rcNUJ3pohF9CeJl+9Z6rglBgXbidO8+Cf5EKE0=;
+        b=CrwSvVGcF99pUljTcaQIFMlYTeffi24Ptdf8RJeoVfo5zWnEKJpo7UzKdiq5fAuuFB
+         M0xv1R6YrhwkAxtgt+hKfxgabLWI5nWXWFQ6avkvUZahGZeH7Ww396lhjV3Cr/Yp9B0U
+         wgeCPMMsiK29Pf4P5ya67N2zIOazD/JNl+ZK7HY5SMU4tWwaQXwynU6eTv4PKIV0aAvy
+         TTawPlLTa9xjaCsMi2RSC6bmSzsbtdsp19zNKzQ/ciDTeS7q2YSsk15nN08o7EP+nI9E
+         wltrhnBfvckNr+CDMUqrfs9nsGqQOaDUjh2cww/11d8jMT7nMAQSXRFzyOlHwDkG6wTK
+         9L5w==
+X-Gm-Message-State: AOAM531wJXFxvOKIVY38g4ROxiZ/p8QAKKHdODk4Jbirt+3+qeIrnXiY
+        L5mHTf/mKBfC2p+XkgMWgal3oGes4bCtjeixkyM=
+X-Google-Smtp-Source: ABdhPJyB6pqMthVXC8gSkwRW8TkKbs5nRa2tRz0hfSQgoLfmx9/dFgicpmLhsIBvUyODDDeDbL7NmF6tIqdoq7gpKsg=
+X-Received: by 2002:aa7:cd06:: with SMTP id b6mr76617124edw.131.1638205482613;
+ Mon, 29 Nov 2021 09:04:42 -0800 (PST)
 MIME-Version: 1.0
-Received: from mlx.ziepe.ca (142.162.113.129) by BL1PR13CA0114.namprd13.prod.outlook.com (2603:10b6:208:2b9::29) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.9 via Frontend Transport; Mon, 29 Nov 2021 18:37:14 +0000
-Received: from jgg by mlx with local (Exim 4.94)        (envelope-from <jgg@nvidia.com>)        id 1mrlWc-004TDf-0w; Mon, 29 Nov 2021 14:37:14 -0400
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: d215eb6c-50b1-4d44-266c-08d9b36743c4
-X-MS-TrafficTypeDiagnostic: BL0PR12MB5508:
-X-Microsoft-Antispam-PRVS: <BL0PR12MB55082B030686057E79A3316AC2669@BL0PR12MB5508.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6108;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: rtrLQKYkXoxZtB04602aRmIoTYmDnCYoEVDCNKjZrHG+zLVig3jzw5tERCPacTo6d0kCE7ZDNIszBf6n32nutfjoRwN/2udJMdKwr9W1uUlnj0FLjsY3r+Wt/cP4HaAtYiNm7dKqokStWzK2QcfJrV+ydouck/+BQdgmLvRdGoH9KHXB9AHEyIhx2yTpEDuJd/KLD8v7DnXiPy2npcNGdu7evXcEyNTY7LtUkd3sMecHY3FcojVv3PFIDACnDuF0YSkOsKE1hXjbFrfYfArHU0B19CLPhf6YpGMqwx8bIF4xLm36r2w4O2W3S2ERxDJK0+N1odF8nPWAgq/EDfnTsOXPZi8r99QkPsLUdQwvEgZpzNuqmQIs5tYh0WkULKcDeTf6NoW+WVSP3d9FVomElkDHUUVB90Rsk/boPr53PLVJRYbdaay491H3nGdppuqox36+2k77wKnk7cbFL3kBoLW9ZwV3TJWXtpEOVhT3joloxlc7VKLdRoSKDDQSZBdIdJIy/6VDGSVW5RDvXxmmkBHqkA6TTod+vUVkJFa+0s4J/Qg/zDijWNk94lpmyn9KPaR47/lj0ZWYTFZhcAJR6ECFhGTAi/AEcZ+sghevCoILufWMDl3CEyiXGHMtg3lz7XgXpitrAnDyBHTb1p9DyA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB5506.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(33656002)(2906002)(1076003)(4326008)(66556008)(6916009)(66476007)(66946007)(316002)(38100700002)(8936002)(8676002)(5660300002)(86362001)(26005)(36756003)(2616005)(186003)(508600001)(9746002)(9786002)(83380400001)(426003)(4744005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?R6KnxVqUbr+m5S3HiOwiRiepVKB2ToqLFxCpDMuz0JDvrbUPtFWVxyvlYzWc?=
- =?us-ascii?Q?BAuazxj80T9WKkJpBoo9tzqmseTjL5R2IGnw3+Z48ILv6MaRIxScj1QbXl7i?=
- =?us-ascii?Q?FyfYMLGJrRreXvHU6pRrVIyWkBGEitB5QL4puMJLZpelnHntt+dOcDQ2gB/c?=
- =?us-ascii?Q?G2zxiIg5TYtuBAb3Fgvifv1eB//gNltSfFr9X7Ae8mKn6V3sgcZTBNkRrXcX?=
- =?us-ascii?Q?OWgCMcwrjqtzFyw7RDWkh96XHgHcU0QCk+zweTcmQftXa7T4mG/dWDvZdwML?=
- =?us-ascii?Q?JR744HrNVydSnnf+3NabH2Dm6x2TTi6HrhVC7eqk9zkSUZQ9MqgZQgvUv6uP?=
- =?us-ascii?Q?68eQN2e1C/NltUaJx1ZjrB4Wng6gy2rzkd1e0lFkotK/gx1vUsvw2SxCVBd9?=
- =?us-ascii?Q?w/LFBCJ4hctsGnrdfedsNgT7xF+BLvBBeSx5jOuo55XdOK9thIq+nr/iPAXJ?=
- =?us-ascii?Q?MLASpScEmf7Y75dSTmwK9SG2HL3h+NILIAVnX4VH56e9mZGeOLdrryJzSLJa?=
- =?us-ascii?Q?xomQz22tNQC4M7DgL4tj0brIC3ThAT4qkEgZO+xVUTcPvTJz1XbEFhFN0kje?=
- =?us-ascii?Q?6ODeFOKrSSVsS4QxIlJs+P3V/A3WTZ5TN/97kWiKQs5BwbJPdl2wzd66yvRn?=
- =?us-ascii?Q?lbbrj6v6PYVolqFKTa56TLW6ceY3MU2NZaym4del24gmahFrqbvcMsVo9Cyt?=
- =?us-ascii?Q?Z6JUjtIQOy9TJJUMdo47m4vE7fXdukPcipa1STNzpOk69x6+qnDkem7oyMZ2?=
- =?us-ascii?Q?DOWL8iwtZeGO6/SRoAkuXrOb0efhxfJsu9WWla9KJRIyu4MvBBhJ/ZX6mTTk?=
- =?us-ascii?Q?YgiFSj8qdghWUWzynn6BldGi0p6HJlmpRFoEvfDrCpaoNICGmlhyNJHQWaR9?=
- =?us-ascii?Q?BCz0v6owLWU2ACm8wkrTDYeewpvUkwaQjvLfEdGOFbcDaNPGNQbXUnd6lx0v?=
- =?us-ascii?Q?L1EQWChQJtugHX0wqADY4n5ucc2vB2ewZVIIocKzWMaahyxiL8iU2iWij4h9?=
- =?us-ascii?Q?bpq+acl53UMHi/QkJ01I7uIHv7xy80Lv/MdyJw8MvW4KXOLQ6aEy3EpoK5Ha?=
- =?us-ascii?Q?TAGv4dksnZzqJvnlyudDMkYbjYueFSpey1hMID2eEbOmVtFDeTaZZP8uVmqW?=
- =?us-ascii?Q?Ng1tO2Y8cIO2sUvL5aohoJfAoOfVZjSIq/+sCcNyG/zGYjN/CVKBvvQpeLeh?=
- =?us-ascii?Q?cfvmZ72xEpxZCfuJCpKu6eR31GuCSDWwdfglzRBfh7+M7tGWWsmPTr7qhRFm?=
- =?us-ascii?Q?5o97WWqH92cSe/r/4j7nyNyofAEskQBC+3q3QTal98N7Aomc4gyNsD6STyzz?=
- =?us-ascii?Q?qPTBGA0rzBLkVKYell2LWka48HhLl6vPguXgWzJoyhQca3+72DcWLw6Bwjsl?=
- =?us-ascii?Q?8U0oJ7tknPfAxaFMQkT2nV0P9hDU4hcIh9NGNlktDhSnGO/+68EQH32cBMb2?=
- =?us-ascii?Q?CCCldUVDhK02gv3tbfdh2M9z0fFxZa0vtBljjSdEOpYkotfaVLZoQF/coxC2?=
- =?us-ascii?Q?wjf8Lh1UjDZa4OEEKSTLfGiN018FRDT3GcS41Um6p6QI+K6rcxYdLQKR6AU8?=
- =?us-ascii?Q?ogqwD23tgujf+yiQoIA=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d215eb6c-50b1-4d44-266c-08d9b36743c4
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB5506.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Nov 2021 18:37:15.1897
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dk08JLtZrt3PJc5JnsSAzWiMtPOFi/pUDZ/9DkYwweYNZB6MwpKK00twHs7KNY+L
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR12MB5508
+Received: by 2002:a54:34c3:0:0:0:0:0 with HTTP; Mon, 29 Nov 2021 09:04:42
+ -0800 (PST)
+Reply-To: m_amoussou@aol.com
+From:   "Mr. Faustin Amoussou" <marcus.bentiz911@gmail.com>
+Date:   Mon, 29 Nov 2021 09:04:42 -0800
+Message-ID: <CABjeDR06EUL1_5B6m0JMOCThTRfs0LxAd_qa+UVRpejYZzh6Mg@mail.gmail.com>
+Subject: I await your urgent reply.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Nov 25, 2021 at 09:42:28PM +0100, Christophe JAILLET wrote:
-> Use 'bitmap_zalloc()' to simplify code, improve the semantic and avoid some
-> open-coded arithmetic in allocator arguments.
-> 
-> Also change the corresponding 'kfree()' into 'bitmap_free()' to keep
-> consistency.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->  drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+Good Day,
 
-Applied to for-next, thanks
+Please forgive me if my request is not acceptable by your kind person.
 
-Jason
+I am Mr. Faustin Amoussou, who works in BOA (BURKINA FASO) as a
+non-independent non-executive Director and President of auditting
+department, During our last banking audits, we discovered that an
+account that belongs to one of our deceased foreign clients, Mr. Wang
+Jian, co-founder and co-chair of the HNA Group, a Chinese conglomerate
+with important real estate properties throughout the USA. he died in
+an accident during a business trip in France on Tuesday.
+
+Go to this link:
+ttps://observer.com/2018/07/wang-jian-hna-founder-dies-tragic-fall/
+
+I got your contact from a yahoo tourist search while I was searching
+for a foreign partner. I am assured of your capability and reliability
+to champion this business opportunity when I prayed about you.
+
+I am writing to request your assistance to transfer the sum of
+$50,000,000.00 (Fifty million United States dollars) at its counts
+as Wang Jian's last foreign business partner, And we will use the fund
+to invest in public benefit as follows
+
+1. Establish an orphanage home to help orphaned children.
+2. Build a hospital to help the poor.
+3. Build an asylum for the elderly and homeless.
+
+Meanwhile, before contacting you, I did an investigation to locate one
+of the relatives of the late Mr Jian Wang who knows the account, but I
+didn't succeed. However, I took this decision to support orphans and
+less privileged children with this fund, because I don't want this
+fund transferred to our Account of Government treasury as an unclaimed
+fund. I am willing to offer you the 50% of the fund for your support
+and assistance to transfer the fund to your account.
+
+More detailed information will be sent to the desegregation explaining
+how the fund will be transferred to you Please continue to achieve the
+purpose, Reply me on my private E-Mail Address: m_amoussou@aol.com
+
+Waiting for your urgent response.
+Attentively
+Mr. Faustin Amoussou

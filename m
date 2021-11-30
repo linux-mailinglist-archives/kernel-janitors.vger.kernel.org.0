@@ -2,74 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25D11462FEC
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Nov 2021 10:42:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 673F5462FE3
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Nov 2021 10:41:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235439AbhK3Jpx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 30 Nov 2021 04:45:53 -0500
-Received: from www.linuxtv.org ([130.149.80.248]:48244 "EHLO www.linuxtv.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233704AbhK3Jpx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 30 Nov 2021 04:45:53 -0500
-Received: from mchehab by www.linuxtv.org with local (Exim 4.92)
-        (envelope-from <mchehab@linuxtv.org>)
-        id 1mrzej-0004NL-4E; Tue, 30 Nov 2021 09:42:33 +0000
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Date:   Fri, 19 Nov 2021 16:09:07 +0000
-Subject: [git:media_tree/master] media: dvb-frontends/stv0367: remove redundant variable ADCClk_Hz
-To:     linuxtv-commits@linuxtv.org
-Cc:     kernel-janitors@vger.kernel.org,
-        Colin Ian King <colin.king@canonical.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1mrzej-0004NL-4E@www.linuxtv.org>
+        id S235639AbhK3Jom (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 30 Nov 2021 04:44:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44214 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240323AbhK3Jom (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 30 Nov 2021 04:44:42 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0B8FC061746
+        for <kernel-janitors@vger.kernel.org>; Tue, 30 Nov 2021 01:41:23 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id x15so83999122edv.1
+        for <kernel-janitors@vger.kernel.org>; Tue, 30 Nov 2021 01:41:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=UcBPTmCi1X1jI8Y2VIsxUbt5jsE7eH++35qZosZ1HhM=;
+        b=dh+1jByED6LwdkZ3CZET0R3SL05gu5/wNtdxl57scHlB+dLuLQUS4Y3cIzEq/P4m7R
+         +NBSMGN2+uAk3m/GJG73EtUq+fT1CXGg06W8zL/1VTR2dLsrkTUZTliV9uTWCPFUPhAZ
+         6UN0634EZTk/izix1ZrSxKXt5zG407rfUmg8dO1qVNolvCZfN9gT7NcmMxMumRWvGxEh
+         7+s3aagWQ9nodCJ94Bj8k7zEaa6PchYg2+DKmV8pSxV6iajlR0xo06JVwh1pSceHUx+j
+         RLDTfDRdi03SSN9VEMftu12eUMCkUyLWH1WX/4NH8AMFjwpc81O9qnWFYh1W0Aqwg0pE
+         LN4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=UcBPTmCi1X1jI8Y2VIsxUbt5jsE7eH++35qZosZ1HhM=;
+        b=HlVin0siyTOKY5p3xALgLkxHpPem59NNsYlYBSY970788xDTDo8L6b/KVZA6SpRVE0
+         P10PFeUBYUO6Jy5I0qzmX9f2anjwQol10WKjX6YQyF4ABF4MLxJAX3xXiUx0wuq8gLSi
+         L3Qmfbe9b1fcyGEQhyzjxqN689gmqAvKvX+WDileJ7S1IVEHGYMacBNiadCGU2spLRkW
+         GR+8TjJL8D4dErrbTGv7HTPqfoAANE59T41hCPV7Oz02fG4Ivt4CJ5r4eSXUI/o3h0pz
+         8bpp50QXhHYANZVqA3Bg71Ua8kK08m45TJt1t8oqOD441wdGBvcX1NRzMCx/P+QTsTna
+         xmhw==
+X-Gm-Message-State: AOAM533d1TiLkmz7KoOTA1cFiwUa/oAfi5FafaNLyvTMGNGFJU1jTv6H
+        CymIP9zL/SQylZCAcx9N15TgqYn52xNESlgxI8M=
+X-Google-Smtp-Source: ABdhPJxMfcTIz5oRO8DQYEk/he4Cw7mu+ozoGEA9n2oq4/yjh/eUEdKhyzYpzlnKwQLsqJ0DNExR5ZhLhz6Ys5FFqR8=
+X-Received: by 2002:a50:9e0f:: with SMTP id z15mr29380659ede.278.1638265281704;
+ Tue, 30 Nov 2021 01:41:21 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:ab4:9a02:0:0:0:0:0 with HTTP; Tue, 30 Nov 2021 01:41:21
+ -0800 (PST)
+Reply-To: keree.casmiree@gmail.com
+From:   casmire kere <casmirekere7@gmail.com>
+Date:   Tue, 30 Nov 2021 09:41:21 +0000
+Message-ID: <CADBE2rVZ2QJY4jPnuL_Fg=du_WLj4OsBuz7xmh_-SVVKtLrwVQ@mail.gmail.com>
+Subject: YOUR URGENT REPLY FOR MORE DETAILS!!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This is an automatic generated email to let you know that the following patch were queued:
+-- 
+Good morning,
 
-Subject: media: dvb-frontends/stv0367: remove redundant variable ADCClk_Hz
-Author:  Colin Ian King <colin.king@canonical.com>
-Date:    Thu Oct 14 16:32:53 2021 +0100
+I am Mr. Kere Casmire  if you were marked safe from the covid-19
+epidemic, my prayers with you. i wish to offer you a business deal
+worth $5.3 million  dollars, if you are interested contact me
+privately Email:(keree.casmiree@gmail.com)
 
-GIT_AUTHOR_NAME=Colin King
-GIT_AUTHOR_EMAIL=colin.king@canonical.com
+Upon receipt of your reply; I will give you full details
+on how the business  will be executed.
 
-Variable ADCClk_Hz is being initialised with a variable that is never read
-and then re-assigned immediately afterwards. Clean up the code by removing
-it and just returning the return value from the call to stv0367cab_get_mclk
+I am waiting for your reply.
 
-Addresses-Coverity: ("Unused value")
+Best regards,
 
-Link: https://lore.kernel.org/linux-media/20211014153253.63527-1-colin.king@canonical.com
-
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-
- drivers/media/dvb-frontends/stv0367.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
-
----
-
-diff --git a/drivers/media/dvb-frontends/stv0367.c b/drivers/media/dvb-frontends/stv0367.c
-index 6c2b05fae1c5..95e376f23506 100644
---- a/drivers/media/dvb-frontends/stv0367.c
-+++ b/drivers/media/dvb-frontends/stv0367.c
-@@ -1797,11 +1797,7 @@ static u32 stv0367cab_get_mclk(struct dvb_frontend *fe, u32 ExtClk_Hz)
- 
- static u32 stv0367cab_get_adc_freq(struct dvb_frontend *fe, u32 ExtClk_Hz)
- {
--	u32 ADCClk_Hz = ExtClk_Hz;
--
--	ADCClk_Hz = stv0367cab_get_mclk(fe, ExtClk_Hz);
--
--	return ADCClk_Hz;
-+	return stv0367cab_get_mclk(fe, ExtClk_Hz);
- }
- 
- static enum stv0367cab_mod stv0367cab_SetQamSize(struct stv0367_state *state,
+Mr.Kere Casmire

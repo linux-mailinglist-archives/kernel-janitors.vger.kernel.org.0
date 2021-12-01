@@ -2,91 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06D9C464B2B
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Dec 2021 11:05:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9A9D464CB2
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Dec 2021 12:33:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348359AbhLAKIW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Dec 2021 05:08:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41494 "EHLO
+        id S242950AbhLALhO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Dec 2021 06:37:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229950AbhLAKIW (ORCPT
+        with ESMTP id S237978AbhLALhN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Dec 2021 05:08:22 -0500
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A66DC061574
-        for <kernel-janitors@vger.kernel.org>; Wed,  1 Dec 2021 02:05:01 -0800 (PST)
-Received: by mail-wr1-x441.google.com with SMTP id a18so51007276wrn.6
-        for <kernel-janitors@vger.kernel.org>; Wed, 01 Dec 2021 02:05:01 -0800 (PST)
+        Wed, 1 Dec 2021 06:37:13 -0500
+Received: from mail-ua1-x935.google.com (mail-ua1-x935.google.com [IPv6:2607:f8b0:4864:20::935])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A7F0C061574
+        for <kernel-janitors@vger.kernel.org>; Wed,  1 Dec 2021 03:33:53 -0800 (PST)
+Received: by mail-ua1-x935.google.com with SMTP id j14so48058406uan.10
+        for <kernel-janitors@vger.kernel.org>; Wed, 01 Dec 2021 03:33:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=YWCyyD+MJMBr+vIyLiJLDP6vS8VirSg1vC1mP9B4Zfg=;
-        b=AAO9YlGdczEeQl0kfqoPOWlv/wDuTdp+46Ia5fWC0vZUSYNkImorbn17lhdNz6eJgo
-         HuAmf5WVT5hSliyfxPmh4COH3WhGLKVv9RybEmuCRZqXcH5VyyNAwiKj/AXgsoauV2oU
-         k5enZ9QeDzEICvRIhijbGU9qIX79gJRiBbN3HxfGMlnMhTCrHtFnniXnPq7xFB0f8BCl
-         Db7ob1gIgtrJoaZ9SSSrXHryN6Mq6MWAWAffAEB6mRIjO2YJDWt5c18s+Fl0DNo+r6di
-         4kYZNZ+H+vl3OaPrhilXUwQ9SpkMHbs34c9k/hCj6MUZAregqW5myjD/OMPG2RoBTiuQ
-         jPeA==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
+        b=E48CYQvvhFCYho4FOpJBELHvILMfGA1hbPgGGLlCehdm4D0HGkwuBJXS5Dc09Zr2Wg
+         /lqalP2u9JWQmBmIvfNZSAi8a9gFRCJHDl+i5A5Wa9F4bLUA7nlf3WFBJ0sc/VBQnMpu
+         /izvV+ab1bjxz1EQ+8dy3rtfgEfESRfV76uaCWqvtOeNNE7xG73xT6njecPk+XSyatvs
+         x6ITgzG+TDCZOcC6AvatYgvxqmIiCRkJDWJz082WkoatjCFq6oYfzttqj0u+l0fNOsup
+         VPGlJE/8KPMzzUZ75RHLhtBELhe0nsHauCg3zXDjPt1MPOvSXsYbntKuxPUkacSvVX4o
+         XYBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=YWCyyD+MJMBr+vIyLiJLDP6vS8VirSg1vC1mP9B4Zfg=;
-        b=WDDdknlwrFu4yXczslda4h01+Bb8IbTR44FSzTu+FnToISx6QicjpeRkh8oALsFVGK
-         7Hd/wTSl/EGVyV/Oe2Xw1gdniC+YKj0NgyhlWHyil0WLg6AONyDl7ifBrn6peAzKbhYM
-         WbQ3WhsQKbH+yT0tloVbL7RQrTKcdhWy8JkLm5qRJ4rxyvcM43GQesphMBI2EKZwtJK4
-         RetZsBH+zUaOZMT3seVBGnphxA5NIsB/GTLvTGi6y5WlorAg52zH2AeFYjw3c+kg0L/k
-         JDGCEJklb/aqH6GRFIwHwT0hph2a/Kcdr5mTfPUZ22AmlR0rC1GXSwJxauuChqiOch5M
-         ZmIA==
-X-Gm-Message-State: AOAM530SrU6HvlVDsFo1wywS1cOmoo1x+rfqoY5sxizjb82BxmtvuAtO
-        lgegQsrluUX1XG0Z+hvu+YtMYO1UeKdLXgIyBEY=
-X-Google-Smtp-Source: ABdhPJwrSDvDGj9XfwYE/ix3aHambrRYKy+bWJ0uhp0Sm/JiF7NJvchqhTRTyYeVzquFBYxlxPxai5bgOQxXqZ/dB5g=
-X-Received: by 2002:a05:6000:2c7:: with SMTP id o7mr5661216wry.62.1638353099282;
- Wed, 01 Dec 2021 02:04:59 -0800 (PST)
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
+        b=TwuHQwVI4ty3R9pgdtQBUFmBj5DBJJxeIJgglN4jrcv2q/BzOcuyFCjAzEygXDJaLx
+         rX4oHln8KC59h2OwHORYCb4f/zzj72tNpm7TvkDVpeXvthEry77TaKHJ9TBevDqcPiMV
+         rZfwOQS4iupZG+PdnURYcmyKBeCHzeym37Npj6bqHsCdnygrxoQJ620Y1yVweArWtA8q
+         B/P0sn7jTbaoJvmGIx53AGWqXvFfenbu6cAv27Z/5BXCt+C9Is5Hfspd/g+4Maj8ngKN
+         jNwQ9MBWdtItTgJ3xiR1xS3V2Y/VrB4R0Nf/uBn8W3w48MlsBbGDN8TqOZ6MMGaqnIy1
+         jHJQ==
+X-Gm-Message-State: AOAM532Nhi9fAF4F+aEUCx+qxJQRgOSDIFHljy1KlcvGAbyzQXSlWpyP
+        upwY7MQxu2nmH5lP6cxE+CX+FnosCPeJCpTFxlg=
+X-Google-Smtp-Source: ABdhPJw+geceTXhiCD3k8/gxsP17ZEIfm6lA1PD7eGfkggxMYL/AMYXB9CaM/93vpMgHA07cWWStov1E+ARuRhm6YPY=
+X-Received: by 2002:ab0:2916:: with SMTP id v22mr6496268uap.112.1638358432256;
+ Wed, 01 Dec 2021 03:33:52 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a7b:c74a:0:0:0:0:0 with HTTP; Wed, 1 Dec 2021 02:04:58 -0800 (PST)
-From:   Coris International <coris.bf.international23@gmail.com>
-Date:   Wed, 1 Dec 2021 02:04:58 -0800
-Message-ID: <CAPuuUxR9PGV7c3UF-u12RnTJWk+d832=wwJShLTTvfkXZzyuFg@mail.gmail.com>
-Subject: Notification / Notification/ Notification
+Sender: unitednationawardwinner@gmail.com
+Received: by 2002:ab0:6c55:0:0:0:0:0 with HTTP; Wed, 1 Dec 2021 03:33:51 -0800 (PST)
+From:   "Mrs. Orgil Baatar" <mrs.orgilbaatar21@gmail.com>
+Date:   Wed, 1 Dec 2021 03:33:51 -0800
+X-Google-Sender-Auth: e5TI2YlgM2EcOXRbgAN_tf-NWIE
+Message-ID: <CAJ4dHaRCZq1DEpVGKqqLnPC_XnGOvC6xY=+VrorTNDH2cyetFA@mail.gmail.com>
+Subject: Your long awaited part payment of $2.5.000.00Usd
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Att: Client
+Attention: Beneficiary, Your long awaited part payment of
+$2.5.000.00Usd (TWO MILLION FIVE Hundred Thousand United State
+Dollars) is ready for immediate release to you, and it was
+electronically credited into an ATM Visa Card for easy delivery.
 
-CORISBANK INTERNATIONAL URGENT NOTIFICATION
+Your new Payment Reference No.- 6363836,
+Pin Code No: 1787
+Your Certificate of Merit Payment No: 05872,
 
-                          Notification / Notification/ Notification
+Your Names: |
+Address: |
 
-Note, We are writing to inform you officially that Finally the Central
-Bank Financial Authority have approved to transfer your $8.2Million
-which was signed by late Mrs Edes  Banneth the COVID.19 victim that we should
-transfer to you, Late Mrs Edes Banneth the France Lady instructed us to
-transfer her fund that is in our bank to you for Orphanage work before she
-died by the COVID.19
-and as it is now, you will receive your fund through our corresponding
-bank in Dubai [Emirate Investment Bank ] for security reason. Please
-you should reconfirm your details to receive the $8.2Million.
+Person to Contact:MR KELLY HALL the Director of the International
+Audit unit ATM Payment Center,
 
-Name, Country, Address, occupations, Age, Telephone number, account
-Details.  So that we can immediately forward to the Emirate Investment Bank to
-transfer the fund.
-You are advised to comply on timely manner to permit this esteem bank
-transfer your fund as scheduled.
+Email: uba-bf@e-ubabf.com
+TELEPHONE: +226 64865611 You can whatsApp the bank
 
-We look forward to serving you better
-Your Financial Comfort Is A Priority
-Thank you for choosing Corisbank International.
-
-Sincerely,
-
-----
-
-Mr Diakarya Ouattara
-Managing Director
-Bank Coris
-Burkina Faso
-+226 556 16 37
-bf_info_coris@accountant.com
+Regards.
+Mrs ORGIL BAATAR

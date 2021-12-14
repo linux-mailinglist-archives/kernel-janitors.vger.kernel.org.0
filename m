@@ -2,42 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CAB29474A26
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Dec 2021 18:57:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 556A8474A29
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Dec 2021 18:58:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236775AbhLNR5y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Dec 2021 12:57:54 -0500
-Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:63570 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236635AbhLNR5x (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Dec 2021 12:57:53 -0500
-Received: from [192.168.1.18] ([86.243.171.122])
-        by smtp.orange.fr with ESMTPA
-        id xC3hmDtUWIEdlxC3hmHzWx; Tue, 14 Dec 2021 18:57:51 +0100
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Tue, 14 Dec 2021 18:57:51 +0100
-X-ME-IP: 86.243.171.122
+        id S236781AbhLNR56 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Dec 2021 12:57:58 -0500
+Received: from ciao.gmane.io ([116.202.254.214]:37248 "EHLO ciao.gmane.io"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236731AbhLNR55 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 14 Dec 2021 12:57:57 -0500
+Received: from list by ciao.gmane.io with local (Exim 4.92)
+        (envelope-from <glkj-kernel-janitors-2@m.gmane-mx.org>)
+        id 1mxC3l-0001xO-LP
+        for kernel-janitors@vger.kernel.org; Tue, 14 Dec 2021 18:57:53 +0100
+X-Injected-Via-Gmane: http://gmane.org/
+To:     kernel-janitors@vger.kernel.org
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Subject: Re: [PATCH v2] xen-blkfront: Use the bitmap API when applicable
-To:     =?UTF-8?Q?Roger_Pau_Monn=c3=a9?= <roger.pau@citrix.com>
-Cc:     boris.ostrovsky@oracle.com, jgross@suse.com,
-        sstabellini@kernel.org, axboe@kernel.dk,
-        xen-devel@lists.xenproject.org, linux-block@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Newsgroups: gmane.linux.kernel.janitors,gmane.comp.emulators.xen.devel,gmane.linux.block,gmane.linux.kernel
+Date:   Tue, 14 Dec 2021 18:57:48 +0100
+Message-ID: <14dbcf69-afc1-c11b-e1ad-e8453a80cc6e@wanadoo.fr>
 References: <d6f31db1d2542e1b4ba66d4cea80d3891678aa5a.1638476031.git.christophe.jaillet@wanadoo.fr>
  <Ybh5G2ziyRXkz3WF@Air-de-Roger> <Ybh7KgtQt0/MFtyw@Air-de-Roger>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <14dbcf69-afc1-c11b-e1ad-e8453a80cc6e@wanadoo.fr>
-Date:   Tue, 14 Dec 2021 18:57:48 +0100
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.14.0
-MIME-Version: 1.0
 In-Reply-To: <Ybh7KgtQt0/MFtyw@Air-de-Roger>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Cc:     xen-devel@lists.xenproject.org, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -70,3 +64,4 @@ I'll update this patch when/if it is merged.
 You can drop it for now.
 
 CJ
+

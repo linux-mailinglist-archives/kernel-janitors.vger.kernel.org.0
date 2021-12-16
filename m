@@ -2,86 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CAA964770A5
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Dec 2021 12:42:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FF594771D4
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Dec 2021 13:30:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233209AbhLPLmo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Dec 2021 06:42:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60266 "EHLO
+        id S234364AbhLPMar (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Dec 2021 07:30:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233072AbhLPLmk (ORCPT
+        with ESMTP id S234355AbhLPMar (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Dec 2021 06:42:40 -0500
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B323FC0617A1
-        for <kernel-janitors@vger.kernel.org>; Thu, 16 Dec 2021 03:42:29 -0800 (PST)
-Received: by mail-qt1-x82c.google.com with SMTP id q14so25085267qtx.10
-        for <kernel-janitors@vger.kernel.org>; Thu, 16 Dec 2021 03:42:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
-        b=XAiY5JQCbKhUV3kfV68NxknTY8076aQ+jZiIG+NNSnrj8SbWsLA5ZyVis9Hv7MDsX5
-         Wp1aJ8rEmDfQ1U3vhA+W5Q6fUW0sQxhqwaHiosPbQFbyYijHt4Icvm/T0vEK5/kKmBc+
-         QqELCOAj0es+5TzRQyWwGBhwQGehjbOewfhMN3/S4hQw7QoR6Y3+tDzh1TbUcqm1TT9t
-         NYT2/qpfB6ahTcpnyVYoBu/0br0EmuZ66fyA68h0ieuZcBkGcxPgfheRqd2GHCJMPyzP
-         6QgpFUXd/uCVTtz1/hZUUGudKd9Q0ZImcSJeB1tjd8lIsCPvJkt1eKVnbTcB60Kk9v0/
-         CoRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
-        b=ZP3YlUuuluHY6Cyp8FEPNWc/kh9shv8mhnvbMomICO40DXRRyp7nobQtUrs2acMHVR
-         Yx94j97dX72PkcFifO3RbZbBDZITpRk7ad08ATC3CfUa/VtD6o33NH0FhGN/Gq6gqGga
-         yp2elsDj8delyydj8HE191zhJND+s5HnvY60oICDyUilJnWCX7FIxRpyA0V8A9Nycx3+
-         /wDZofLt3nqFFxKI8DULKtgu+V40iJbUaSXqeKFxFCdFMA68FEIuKbLix9jYIbJeCdED
-         RNcY0aG0ziQB9uG0yHgwZula+hYdC4/xWSdOQJFgGORrZN2hXXPTQimxtQYOAs5RKbOL
-         QwUg==
-X-Gm-Message-State: AOAM532ZwzYSZfeIMfmyYvb+6YiC1ukrHuvEtXJyTAcYV0H6m2kiq0pr
-        gMrXmqkR9sUkV4mzkISaKLW6vRQu0bma9vAPWuQ=
-X-Google-Smtp-Source: ABdhPJxzAaV5DauAecsJzqBWmheSvDxk3ghiLfb6YRovClVg4kL4yUlGwYUFAnV+1q8jYrfo3AT6l8iJutzsg/2jTPA=
-X-Received: by 2002:a05:622a:1d4:: with SMTP id t20mr16497208qtw.84.1639654948506;
- Thu, 16 Dec 2021 03:42:28 -0800 (PST)
+        Thu, 16 Dec 2021 07:30:47 -0500
+X-Greylist: delayed 358 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 16 Dec 2021 04:30:47 PST
+Received: from haggis.mythic-beasts.com (haggis.mythic-beasts.com [IPv6:2a00:1098:0:86:1000:0:2:1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ABA2C061574
+        for <kernel-janitors@vger.kernel.org>; Thu, 16 Dec 2021 04:30:47 -0800 (PST)
+Received: from [81.101.6.87] (port=52568 helo=jic23-huawei)
+        by haggis.mythic-beasts.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <jic23@jic23.retrosnub.co.uk>)
+        id 1mxpoS-0004Ep-Ep; Thu, 16 Dec 2021 12:24:45 +0000
+Date:   Thu, 16 Dec 2021 12:30:07 +0000
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] iio: addac: ad74413r: fix off by one in
+ ad74413r_parse_channel_config()
+Message-ID: <20211216122956.69da41f3@jic23-huawei>
+In-Reply-To: <45dd874f40e54872b4c94e00eae814c4@analog.com>
+References: <20211215115053.GE14552@kili>
+        <45dd874f40e54872b4c94e00eae814c4@analog.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Received: by 2002:a05:622a:199c:0:0:0:0 with HTTP; Thu, 16 Dec 2021 03:42:28
- -0800 (PST)
-Reply-To: selviasantiago1@gmail.com
-From:   Selvia Santiago <mariamatinez119@gmail.com>
-Date:   Thu, 16 Dec 2021 11:42:28 +0000
-Message-ID: <CAONDhKOtxcgjB1YEPd0RXNOVbbQ8k-9k32v_cdFxEKFzk62kJg@mail.gmail.com>
-Subject: Urgent
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-BlackCat-Spam-Score: 4
+X-Spam-Status: No, score=0.4
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
--- 
-Urgent
+On Thu, 16 Dec 2021 10:50:41 +0000
+"Tanislav, Cosmin" <Cosmin.Tanislav@analog.com> wrote:
 
-I am Mrs. Selvia Santiago from Abidjan, Cote D'Ivoire, I am a widow
-suffering from long time illness (Cancer), there is funds I inherited
-from my late loving husband Mr. Santiago Carlos, the sum of (US$2.7
-Million Dollars) which he deposited in bank before his death, I need a
-honest and Faithful person that can use these funds for humanity work.
+> Reviewed-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
 
-I took this decision because I don't have any child that will inherit
-this money and I don't want a situation where this money will be used
-in an ungodly way. That is why I am taking this decision, and my
-doctor has confirmed to me that I have less than two weeks to live,
-having known my condition I decided to donate this fund to a charity
-or individual that will utilize this money to assist the poor and the
-needy in accordance to my instructions.
+Applied, thanks,
 
-I want you to use 70% of this funds for orphanages, school, church,
-widows, propagating the word and other humanity works,The remaining
-30% should be yours for your efforts as the new beneficiary.
+Jonathan
 
-Please if you would be able to use these funds for humanity work
-kindly reply me. As soon as I have received your response, I will give
-you further directives on how you are to go about the claims of the
-said funds.
+> 
+> > -----Original Message-----
+> > From: Dan Carpenter <dan.carpenter@oracle.com>
+> > Sent: Wednesday, December 15, 2021 1:51 PM
+> > To: Tanislav, Cosmin <Cosmin.Tanislav@analog.com>
+> > Cc: Hennerich, Michael <Michael.Hennerich@analog.com>; Jonathan
+> > Cameron <jic23@kernel.org>; Linus Walleij <linus.walleij@linaro.org>; linux-
+> > iio@vger.kernel.org; kernel-janitors@vger.kernel.org
+> > Subject: [PATCH] iio: addac: ad74413r: fix off by one in
+> > ad74413r_parse_channel_config()
+> > 
+> > [External]
+> > 
+> > The > needs to be >= to prevent accessing one element beyond the end of
+> > the st->channel_configs[] array.
+> > 
+> > Fixes: fea251b6a5db ("iio: addac: add AD74413R driver")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> > Obligatory grumble:  When you merge a new driver please use a patch
+> > prefix based on what the driver will use.
+> > 
+> >  Bad: [SUBJECT] subsystem: add new driver for XYZ123
+> > Good: [SUBJECT] subsystem/xyz123: add new driver for XYZ123
+> > 
+> > Same rule for adding subdirectories.  That way no one (me) has to guess.
+> > 
+> >  drivers/iio/addac/ad74413r.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
+> > index cbd9aa9b399a..289d254943e1 100644
+> > --- a/drivers/iio/addac/ad74413r.c
+> > +++ b/drivers/iio/addac/ad74413r.c
+> > @@ -1150,7 +1150,7 @@ static int ad74413r_parse_channel_config(struct
+> > iio_dev *indio_dev,
+> >  		return ret;
+> >  	}
+> > 
+> > -	if (index > AD74413R_CHANNEL_MAX) {
+> > +	if (index >= AD74413R_CHANNEL_MAX) {
+> >  		dev_err(st->dev, "Channel index %u is too large\n", index);
+> >  		return -EINVAL;
+> >  	}
+> > --
+> > 2.20.1  
+> 
 
-Remain blessed.
-Mrs Selvia Santiago.

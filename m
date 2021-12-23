@@ -2,84 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2EB547E67C
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Dec 2021 17:38:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C23E947E848
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Dec 2021 20:27:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349277AbhLWQiY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Dec 2021 11:38:24 -0500
-Received: from www381.your-server.de ([78.46.137.84]:34024 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240125AbhLWQiY (ORCPT
+        id S240481AbhLWT1X (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Dec 2021 14:27:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56612 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240540AbhLWT1U (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Dec 2021 11:38:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=xclLypP0lYpJWHJx1fDqFO+MLwhcLhCsssUQkOWIW7o=; b=eLAxm37CVubS/3z1Rv/qNPKimf
-        1A1ZPrevCrlOxjw7SyVlm873hMd6/RbwpiX6c90/eE7pfbVtkAV1FWUdLST3AwaAvLoUpS3SEb+5F
-        mS98ggcVdiTb3YHHuhPvqivqJCIXgPV8JEBPdxm6f9wMEXPF8DRPhFMAY6K1gZE+qlQsPnVY2BGNk
-        AQt6tJprZ08/daFYUJ+JPrrSLXOZDDU6NY3nGndOELMath842vgHJdpS2IHF/JjLpIkZ6FlbyIfkV
-        y8ZLg1MFrP4LjjtuJjyZzsxIxcJS0N/h3MqTa+dZyh6Mb911wvvO/hcl+YVd+q8euF90rzilb56hY
-        YTKZfzZw==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1n0R6h-000C54-Tw; Thu, 23 Dec 2021 17:38:19 +0100
-Received: from [2001:a61:2bc8:8501:9e5c:8eff:fe01:8578]
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1n0R6h-000S0O-FP; Thu, 23 Dec 2021 17:38:19 +0100
-Subject: Re: [PATCH] drivers:iio:dac make expression evaluation 64-bit
-To:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Mihail Chindris <mihail.chindris@analog.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Collabora Kernel ML <kernel@collabora.com>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>
-References: <YcIpAKV7Cmi0o7PU@debian-BULLSEYE-live-builder-AMD64>
- <CAHp75VcU8B8fydh874p6HpgGXXRYvNGdphH=i17JHB3DYJ1JZQ@mail.gmail.com>
- <eb59f405-24c6-69b8-beb1-465bfb783f61@collabora.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <16f84d86-4135-8a19-c5e1-3fbe8db78947@metafoo.de>
-Date:   Thu, 23 Dec 2021 17:38:19 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        Thu, 23 Dec 2021 14:27:20 -0500
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5D87C061759
+        for <kernel-janitors@vger.kernel.org>; Thu, 23 Dec 2021 11:27:19 -0800 (PST)
+Received: by mail-lj1-x22b.google.com with SMTP id p7so9824550ljj.1
+        for <kernel-janitors@vger.kernel.org>; Thu, 23 Dec 2021 11:27:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=PA5Eb3SKatYFaqsO/40bx9AAytaL07oA6ydkj8EAbzQ=;
+        b=L5IUfI7uCQrYnKF8Hq2D11D3Bho3smAkuzkB99lG+rOJu/vgK7KodlK1JeFiZBVym0
+         MzWGyZ6Uevd0Tf1zGjnNtOZpw9zVJthb/SoiYwwNUf63BRSA8fYQSzKVn46Q9ejFoi/+
+         YUYRPav6VykH0puOjlVAECMXb7k3VW80jNciYDsqGdc+LprznMXRj66vhAtEDccd4cQ3
+         3XB2ffmITzUmhMe7icbZxLXvy7ewROGFYlDrzwfJKRBPJqWuvieyZJBCBIdvc7PajMq/
+         qWpxq8SIQUVdCFR4c1IXGVHIQ4krNkVz+aLd/ffDYJYyuaHh4fx0g8ZeBe7DApXCGkeK
+         QpHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=PA5Eb3SKatYFaqsO/40bx9AAytaL07oA6ydkj8EAbzQ=;
+        b=SR0yjOylIH46YoqwOtXR2CsaMl4mIkNzLD6HUqDk6oE9KxHpsiIbmdTGeFmVttr0VA
+         j9cL78M102JYhvyk372Ei9VT3r1ePXmGtXtVuU/AruYIY1TiX6t/bIgc+ImJfYC1txJv
+         sHGOyXxTqdANU1Be5xP0Shg/Qw5NTte/OCFDAq182IkMSKFCCx2rByimHSfEGsUAwFqy
+         4gDG4Z30E1ZSspiOUXs4ZUQrO+hpHkTpqJr9T956rmqmG/cYBEAiXedYKnWuc/yRA1jx
+         IlbEbm1r5kBBX28DZwJ+3Z6UgX1JrlGBf8mF7WjlcItDcpSRxq0v2OgnMABjsyc3i4Nz
+         ns+w==
+X-Gm-Message-State: AOAM5314uZvmdj3SX6cusGdCB4rhcYaNjg3N6BHWPMQZjyQXUr0gBut6
+        IXb8poZI8tlHZhXJ1CcOgXrlyuceGNcNy83idyY=
+X-Google-Smtp-Source: ABdhPJzNVheQwBRihHy8QletrZY26oFr0CQEEYaFXrDaMIht3lEywzgQJzqA6bM5QJ4CjB/dWCVTN10t3I1oi6ZCVHc=
+X-Received: by 2002:a05:651c:168a:: with SMTP id bd10mr2440139ljb.115.1640287637904;
+ Thu, 23 Dec 2021 11:27:17 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <eb59f405-24c6-69b8-beb1-465bfb783f61@collabora.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.3/26399/Thu Dec 23 10:42:51 2021)
+Received: by 2002:ab3:73d5:0:0:0:0:0 with HTTP; Thu, 23 Dec 2021 11:27:16
+ -0800 (PST)
+Reply-To: revfrpaulwilliams2@gmail.com
+From:   "Rev. Fr. Paul Williams" <melindagatesfoundation84@gmail.com>
+Date:   Fri, 24 Dec 2021 00:57:16 +0530
+Message-ID: <CANLnpRuct=kBuYQZn+tPUFxmoNOTBSUYdc7-nc28_bjE2Sr14g@mail.gmail.com>
+Subject: Donation From Williams Foundation.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 12/23/21 5:34 PM, Muhammad Usama Anjum wrote:
-> On 12/22/21 11:49 PM, Andy Shevchenko wrote:
->> On Wed, Dec 22, 2021 at 5:59 PM Muhammad Usama Anjum
->> <usama.anjum@collabora.com> wrote:
->>> Two 32-bit values are being evaluated using 32-bit arithmetic and then
->>> passed to s64 type. It is wrong. Expression should be evaluated using
->>> 64-bit arithmetic and then passed.
->> ...
->>
->>>          dac->ch_data[ch].scale_dec = DIV_ROUND_CLOSEST((s64)rem * 1000000,
->>>                                                          65536);
->> Shouldn't the above be fixed as well? Has anybody tried to compile on
->> 32-bit arch this?
-> No, it correct already. In this case, rem is being typecasted to s64 and
-> then multiplied with a 32-bit number, 1000000. Thus 64-bit arithmetic is
-> being performed here.
-
-What Andy means is that this needs to be DIV_S64_ROUND_CLOSEST() to work 
-on 32-bit platforms. But it is clearly unrelated to your change and 
-should be in its own patch.
-
+Contact Rev. Fr. Paul Williams Immediately For A Charity Donation Of
+$6,200,000.00 United States Dollars At E-Mail:
+revfrpaulwilliams2@gmail.com

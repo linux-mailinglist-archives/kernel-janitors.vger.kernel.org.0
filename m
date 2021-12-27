@@ -2,87 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB1C847FCCC
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Dec 2021 13:53:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F338047FD1F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Dec 2021 13:57:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236754AbhL0MxW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Dec 2021 07:53:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56614 "EHLO
+        id S232226AbhL0M5H (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Dec 2021 07:57:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233867AbhL0MxW (ORCPT
+        with ESMTP id S230274AbhL0M5G (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Dec 2021 07:53:22 -0500
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B241C06173E;
-        Mon, 27 Dec 2021 04:53:22 -0800 (PST)
-Received: by mail-wm1-x331.google.com with SMTP id k66-20020a1ca145000000b00345fa984108so2656878wme.2;
-        Mon, 27 Dec 2021 04:53:21 -0800 (PST)
+        Mon, 27 Dec 2021 07:57:06 -0500
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52CFDC061757
+        for <kernel-janitors@vger.kernel.org>; Mon, 27 Dec 2021 04:57:06 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id x15so61510701edv.1
+        for <kernel-janitors@vger.kernel.org>; Mon, 27 Dec 2021 04:57:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id;
-        bh=P/au97/FpQGpCIWXJLd40PtZYg+NpWsNt/T09/0nn+g=;
-        b=i4owH1aagy9ydAw3s1oaf8UoLtfw4gyeld2AiMpsi8EadR9S2YleL5Lv79Jsr1gSLL
-         wJuFUuiw5nyMjo+mj7KmEwImjQGIB9T0Jt4XMcv281+wEmKm3yCGu1YieObGFBrgi+4S
-         7iwgzJdEZ+HwEf1AFaRfc6g8UvNAudzEppHQ1rtxrF/QiSIPJ0ATyAxrNbGvOJkRsj3L
-         XNwVLspZMcZMZTy406rQSX/mHSMHfesO5yN/ueGdH8L/mhdrp2eQINWaUE49A5s4dhbK
-         7VlK9ZsKhejOzCfUNpZBL/8hLfJZ4U+sR2r1AWFiDdUI1G6Wec+yw734WXv6AFs6C0rE
-         YZ6Q==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=8eBQNbw3SO1e8ktAyegovyRlLVh2FOUz73o8lPmGdmQ=;
+        b=cED9aYJ9q9CwMWZ9nYgnyBlUyBJYbIV4ItarqehEM6E11y6yXZmKfzZ4VgJeo27ezZ
+         rpa8hDQGx1fDtc4zypjFHtBSTSGQyoYe0M8JdOvT+kI4258tuJ2I1Uy/8ajavx9HZjqu
+         bGL9uD2zv5NJDXCaJzHZqPdgrxnny4ynvzqPANLGf3i49QNdrtsxL4u3shtPMcNbgI1y
+         qNCBfHsYwA44PuCAqD3kmhnsg6bzwx9xZbOnT0PGsgoQ4WFyclMMwqal/hfxUdD2lxjB
+         GZLcDT5chdmtTE+nU2EGZCyOKGqPucD+6ALWE83/2/lahc2QGZ8sCL5oGzI6jv7IcvhT
+         loaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=P/au97/FpQGpCIWXJLd40PtZYg+NpWsNt/T09/0nn+g=;
-        b=CnI1Jn6ZaxkLEUm39YVJOwDIWIWG4jm7Bo31N4GgQbFbPM5i+liroj9xllm9N5WeCM
-         DX5u/2HJ1/jWvB/pwI5i8CtDf6lBnykidDU1p8n9kZFU0TgFPA17B9kDg+tM2QaKS4zq
-         ubwKdnrNmCXmEVcQgIwYZWGzXTPqS6N5GrEAUeFUbZQomN1c06i9eCnpl4ixHVY4eso8
-         4GVrG7dxhk7dUpMqAOb/xnxZziYxf3sbLvOGv9bxjaiKQAdXg2Xvh5LX3JPJMzQtiTxo
-         mmtUamM1SCKfbti6vwPNy4nqotDh8+EPVTnDAdGOyWe/IAnhxjewAzDdV92XrFP7UmuV
-         DKQQ==
-X-Gm-Message-State: AOAM532kQ8i5s9Acnb+41671OBSbJXo+3Dj/VNxUoWWpSs6nfLXKnQGc
-        Fx50ZGxxY2FOEtGoa5r2KFc=
-X-Google-Smtp-Source: ABdhPJytIe560EhN2h0QMk8mA3ZbjMwKjx9t9jLhWaRh41LdpywGHWtJKnt4PB1nBkNmaDeAtbZdcQ==
-X-Received: by 2002:a05:600c:35cf:: with SMTP id r15mr13190147wmq.106.1640609600481;
-        Mon, 27 Dec 2021 04:53:20 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:26c4:7200:610f:609b:d46a:2a08])
-        by smtp.gmail.com with ESMTPSA id y8sm16666635wrd.10.2021.12.27.04.53.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Dec 2021 04:53:19 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] trace: remove unneeded initialization in __trace_uprobe_create()
-Date:   Mon, 27 Dec 2021 13:53:08 +0100
-Message-Id: <20211227125308.25787-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=8eBQNbw3SO1e8ktAyegovyRlLVh2FOUz73o8lPmGdmQ=;
+        b=Vs5lnIrKLf5+5WfUnVELlji8WE8mRzVIuIAxUBiF85/buRNmjw33jUc7mx9QGx6ZvV
+         odDQf2qzItYWz+1BJ5Dcrx0CklmoTB1R7RbJMdAMEdzt6D4gdRFtrKbUcxn4PJiZ3HTO
+         +y/q0UAstSvKSJ9eCq0v8MK6kN04PL4oIN+EexeHDxpG5pLO7Juhbu3JqWjSxJuhhd3L
+         NVvHYRbNt+L32NOI8xrTr2sBSmlgaSZ3i7wMeT2YkC6p+lG+AnuOEQxvxa5eVNeBDlyN
+         PxR3PpwiUTLNRynHF8TlNWlKZO/eFpQAtulXtj+TymJBewF0A81eitlylH1lmnbfPxaN
+         Lc+g==
+X-Gm-Message-State: AOAM530i1YLOUZnq0jqn6XDtGqkVQRfZ5FtyDD7YTCjhw/JJgkYwNk5R
+        bGxVQ1EFt0yipYjxX7HSBdOWZuWNkgIv25dvc1w=
+X-Google-Smtp-Source: ABdhPJx2s2K5qT6fS8XlaXO75jfVhNQiPeeVtBmtKl7AJOnKTSrgjU5snSTmcObx2Mdwn5t2iwtHr6xNh3bV8B1XP6U=
+X-Received: by 2002:a17:907:1689:: with SMTP id hc9mr13801980ejc.228.1640609823411;
+ Mon, 27 Dec 2021 04:57:03 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a50:3f06:0:0:0:0:0 with HTTP; Mon, 27 Dec 2021 04:57:02
+ -0800 (PST)
+Reply-To: michaelb.gregory221@gmail.com
+From:   "Mr.Michael B.Gregory" <gzzhy0o3@gmail.com>
+Date:   Mon, 27 Dec 2021 14:57:02 +0200
+Message-ID: <CAKuEWRvNUedxkF3tjO6VHh5SMzp0=xatXevjO96KvciASHV=Cw@mail.gmail.com>
+Subject: Re: Seasons Greetings.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is no need to initialize ret with 0, as all the early error branches
-simply return constant values, and the default path always reaches
-ret = kern_path(filename, LOOKUP_FOLLOW, &path), which will reset ret
-before the initial value was ever used.
+Good Day,
 
-Remove this unneeded initialization and keep the code succinct.
+Compliments Of The Seasons To you. My Dear friend with great
+pleasure,I contact in or with trust and honesty i have a project that
+i want us to talk about.
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
- kernel/trace/trace_uprobe.c | 1 -
- 1 file changed, 1 deletion(-)
+Here is my personal Email if you are interested (
+michaelb.gregory221@gmail.com ) . If you give me positive signals, I
+will initiate this process towards a conclusion.
 
-diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-index 5921951a0d5c..9da10c5efdce 100644
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -548,7 +548,6 @@ static int __trace_uprobe_create(int argc, const char **argv)
- 	bool is_return = false;
- 	int i, ret;
- 
--	ret = 0;
- 	ref_ctr_offset = 0;
- 
- 	switch (argv[0][0]) {
--- 
-2.17.1
+Sincerely,
 
+Mr. Michael B. Greg.

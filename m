@@ -2,71 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F338047FD1F
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Dec 2021 13:57:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8868D47FD42
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Dec 2021 14:10:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232226AbhL0M5H (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Dec 2021 07:57:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57528 "EHLO
+        id S232896AbhL0NK5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Dec 2021 08:10:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230274AbhL0M5G (ORCPT
+        with ESMTP id S230148AbhL0NK5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Dec 2021 07:57:06 -0500
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52CFDC061757
-        for <kernel-janitors@vger.kernel.org>; Mon, 27 Dec 2021 04:57:06 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id x15so61510701edv.1
-        for <kernel-janitors@vger.kernel.org>; Mon, 27 Dec 2021 04:57:06 -0800 (PST)
+        Mon, 27 Dec 2021 08:10:57 -0500
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85DD6C06173E;
+        Mon, 27 Dec 2021 05:10:56 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id n10-20020a7bc5ca000000b00345c520d38eso8182545wmk.1;
+        Mon, 27 Dec 2021 05:10:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=8eBQNbw3SO1e8ktAyegovyRlLVh2FOUz73o8lPmGdmQ=;
-        b=cED9aYJ9q9CwMWZ9nYgnyBlUyBJYbIV4ItarqehEM6E11y6yXZmKfzZ4VgJeo27ezZ
-         rpa8hDQGx1fDtc4zypjFHtBSTSGQyoYe0M8JdOvT+kI4258tuJ2I1Uy/8ajavx9HZjqu
-         bGL9uD2zv5NJDXCaJzHZqPdgrxnny4ynvzqPANLGf3i49QNdrtsxL4u3shtPMcNbgI1y
-         qNCBfHsYwA44PuCAqD3kmhnsg6bzwx9xZbOnT0PGsgoQ4WFyclMMwqal/hfxUdD2lxjB
-         GZLcDT5chdmtTE+nU2EGZCyOKGqPucD+6ALWE83/2/lahc2QGZ8sCL5oGzI6jv7IcvhT
-         loaw==
+        h=from:to:cc:subject:date:message-id;
+        bh=B6EDKAnHtoumNaOqDyi3E7TX6yPK13Mj5ojCgKu08oc=;
+        b=YAtG05krtdU9+ZKMiMUsGDdQ106+O6rwJkSc3+B1OrJeLMEu7x5YxedoO441w25Me6
+         WNNOup1KpSIHxOXs2fKl+dzKfd+Ao4yOBlEMFCgcHJM+lxazc0CpPNTHGAltw+uEauUs
+         pdalXh4hVj28OMwyhcsNuKLcWzeFZqXmgdBgV6I8xpkSGyEenqFdnXzdKeW4blFMn9zG
+         IdJTg+sfZ02OUpoP4uyhhGtu3q9hQoMLccoV4l2V6EqbYelkj3LhYnQO4Fqs9mJFKBgb
+         UD2KK3cMepIP5auToveFOPk0tTJi35PSR5meyu21AY3aXYp1qg2YkAForBZZls6ROd+a
+         I5Qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=8eBQNbw3SO1e8ktAyegovyRlLVh2FOUz73o8lPmGdmQ=;
-        b=Vs5lnIrKLf5+5WfUnVELlji8WE8mRzVIuIAxUBiF85/buRNmjw33jUc7mx9QGx6ZvV
-         odDQf2qzItYWz+1BJ5Dcrx0CklmoTB1R7RbJMdAMEdzt6D4gdRFtrKbUcxn4PJiZ3HTO
-         +y/q0UAstSvKSJ9eCq0v8MK6kN04PL4oIN+EexeHDxpG5pLO7Juhbu3JqWjSxJuhhd3L
-         NVvHYRbNt+L32NOI8xrTr2sBSmlgaSZ3i7wMeT2YkC6p+lG+AnuOEQxvxa5eVNeBDlyN
-         PxR3PpwiUTLNRynHF8TlNWlKZO/eFpQAtulXtj+TymJBewF0A81eitlylH1lmnbfPxaN
-         Lc+g==
-X-Gm-Message-State: AOAM530i1YLOUZnq0jqn6XDtGqkVQRfZ5FtyDD7YTCjhw/JJgkYwNk5R
-        bGxVQ1EFt0yipYjxX7HSBdOWZuWNkgIv25dvc1w=
-X-Google-Smtp-Source: ABdhPJx2s2K5qT6fS8XlaXO75jfVhNQiPeeVtBmtKl7AJOnKTSrgjU5snSTmcObx2Mdwn5t2iwtHr6xNh3bV8B1XP6U=
-X-Received: by 2002:a17:907:1689:: with SMTP id hc9mr13801980ejc.228.1640609823411;
- Mon, 27 Dec 2021 04:57:03 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a50:3f06:0:0:0:0:0 with HTTP; Mon, 27 Dec 2021 04:57:02
- -0800 (PST)
-Reply-To: michaelb.gregory221@gmail.com
-From:   "Mr.Michael B.Gregory" <gzzhy0o3@gmail.com>
-Date:   Mon, 27 Dec 2021 14:57:02 +0200
-Message-ID: <CAKuEWRvNUedxkF3tjO6VHh5SMzp0=xatXevjO96KvciASHV=Cw@mail.gmail.com>
-Subject: Re: Seasons Greetings.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=B6EDKAnHtoumNaOqDyi3E7TX6yPK13Mj5ojCgKu08oc=;
+        b=i9X/UZUH0uJmk7/PpGVhHObJkCyVCo+lctsNbLyt2ctZvU+14BpbZEx28nEJJGTPt4
+         XNo1MD14mq14HXThQCwCy6Uxv8k1XerJgKurLp2+iTu9fcdFscf+GegQ3EpLcB9w9se/
+         bLNzSAb6tZ6ZbOSBQlZhpcHmh8KBd3/Iu7KRnbh8owyI7MoOGtNqWBEnPUGj3s/pIhUm
+         BzedDGEJ/9cc7HkTCIOQg8DnbSaDBVaww24Cc3RonsZ0EjhCXlisEXejgtHIWVoha2Y7
+         RVcjNe/9saYgdpKKFMnPaD0LYb2Xe4NDMVLFW3iqrbypxc3XjFa2hXOQFvR2ONpADp23
+         pm5Q==
+X-Gm-Message-State: AOAM533Dp3TlmU9KGmiP+C++SrZw3lWZSMjv5h1aAp1R0FO2Wxa5Ssva
+        WFPzsnJNEjedMv/ezJacB6Y=
+X-Google-Smtp-Source: ABdhPJw6OyLoHPd6dzSdn/iAJCsy45wJ8UA0VVqIflmFaZbeRCmMTG2k8vwe/wGY1GAJeXlYpxx8hQ==
+X-Received: by 2002:a05:600c:c7:: with SMTP id u7mr13159108wmm.85.1640610655047;
+        Mon, 27 Dec 2021 05:10:55 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:26c4:7200:610f:609b:d46a:2a08])
+        by smtp.gmail.com with ESMTPSA id y13sm17170951wrd.89.2021.12.27.05.10.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Dec 2021 05:10:54 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Balbir Singh <bsingharora@gmail.com>
+Cc:     Tom Rix <trix@redhat.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH RESEND] taskstats: remove unneeded dead assignment
+Date:   Mon, 27 Dec 2021 14:10:41 +0100
+Message-Id: <20211227131041.4668-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Good Day,
+make clang-analyzer on x86_64 defconfig caught my attention with:
 
-Compliments Of The Seasons To you. My Dear friend with great
-pleasure,I contact in or with trust and honesty i have a project that
-i want us to talk about.
+  kernel/taskstats.c:120:2: warning: Value stored to 'rc' is never read \
+  [clang-analyzer-deadcode.DeadStores]
+          rc = 0;
+          ^
 
-Here is my personal Email if you are interested (
-michaelb.gregory221@gmail.com ) . If you give me positive signals, I
-will initiate this process towards a conclusion.
+Commit d94a041519f3 ("taskstats: free skb, avoid returns in
+send_cpu_listeners") made send_cpu_listeners() not return a value and
+hence, the rc variable remained only to be used within the loop where
+it is always assigned before read and it does not need any other
+initialisation.
 
-Sincerely,
+So, simply remove this unneeded dead initializing assignment.
 
-Mr. Michael B. Greg.
+As compilers will detect this unneeded assignment and optimize this anyway,
+the resulting object code is identical before and after this change.
+
+No functional change. No change to object code.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+applies cleanly on current master and next-20201105
+Resend: still applies cleanly on next-20211224
+
+Balbir, please pick this minor non-urgent clean-up patch.
+
+ kernel/taskstats.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/kernel/taskstats.c b/kernel/taskstats.c
+index a2802b6ff4bb..bd18a7bf5276 100644
+--- a/kernel/taskstats.c
++++ b/kernel/taskstats.c
+@@ -117,7 +117,6 @@ static void send_cpu_listeners(struct sk_buff *skb,
+ 
+ 	genlmsg_end(skb, reply);
+ 
+-	rc = 0;
+ 	down_read(&listeners->sem);
+ 	list_for_each_entry(s, &listeners->list, list) {
+ 		skb_next = NULL;
+-- 
+2.17.1
+

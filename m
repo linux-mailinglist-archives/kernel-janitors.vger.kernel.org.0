@@ -2,105 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51A0B48079A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Dec 2021 10:11:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E13E548090C
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Dec 2021 13:20:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233041AbhL1JLz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Dec 2021 04:11:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42836 "EHLO
+        id S230425AbhL1MUL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Dec 2021 07:20:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233036AbhL1JLy (ORCPT
+        with ESMTP id S230301AbhL1MUL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Dec 2021 04:11:54 -0500
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93D83C061574
-        for <kernel-janitors@vger.kernel.org>; Tue, 28 Dec 2021 01:11:54 -0800 (PST)
-Received: by mail-oi1-x232.google.com with SMTP id m6so29123905oim.2
-        for <kernel-janitors@vger.kernel.org>; Tue, 28 Dec 2021 01:11:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=zOHJbgxEeKcTUS1M3dbg/CCHL8zxNc7o7Y1pwSiNVNQ=;
-        b=TsE8H2d2TJuYuxqwqhfZiVOx5PQWgFKBfAldtLOm1venrAOw6wE1Iqthwteb/FPR28
-         mQtPu5bCmLWawtG0MKwOnGdjmmKzMZvjE93+rSDVlsmxtrsle2wGGDpfQNGnB1X6t5lN
-         TwIr4O454UlkHUvLsSexVYoJS4DT/L8Tb+ltmAMMsXFvgojRZo+5+1XwpWMnagQvtYQP
-         +XTJ0z+V73z5eD9/PEWwrmNbYKQ4P7Cw24tYNPcrC12rBieK2lUiYCifDYc4IQm1bFdf
-         YGYV5kMpeloAcnLmolXVjf673aWoCnLxgyfH+xC1iEwTFlU+ClVX11NkyUxEj3HdIaD3
-         eq4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=zOHJbgxEeKcTUS1M3dbg/CCHL8zxNc7o7Y1pwSiNVNQ=;
-        b=8LLewlz8I7IgwBMaDXDXQYvXKSupD4b6FIlPJMhl39hXSiRXlhYiY9ewDWctruoB+S
-         THAoSkxdvzkcMbUwzhYKQBL8y+LHJE21pHkWzToQhp5ZKWS31n7m4mMcvO4RXcAlNwJR
-         wko0TEDKUFjNnPeD7ljOUmL+Yah3/7uDXLPDzepoqDh6pgg3JnSJ+CSAhKWFt6NHOD33
-         BYAE3hDQLNusgqdw3z76J3VPedOEVEI8LbndWVjrlwWxR/1+ybNtS0sSWJkv4dI9dRRU
-         nTEOnmDKxOOZ8SmgoNXfjoQS0JTP96kizYz88Sv26YadA9hdXS+aHEbsIQD7No+2Mf2w
-         97xg==
-X-Gm-Message-State: AOAM532C/G06WBXwEf21oKEH95MdZmZP4swbcxSzE7g+EpYKx1U+wh//
-        OEMicmHGDWffH/fkC+He++V/KX+mFSNzCoP01go=
-X-Google-Smtp-Source: ABdhPJwARhbqHFhdqfvYur28YPpAhtWWXNVHF1ZybXJ0d/NgDODOk9sT0B2i0/2TgiZNBw9fn840rlsgv20Z3+m+dfE=
-X-Received: by 2002:a05:6808:14c4:: with SMTP id f4mr16149071oiw.76.1640682713937;
- Tue, 28 Dec 2021 01:11:53 -0800 (PST)
+        Tue, 28 Dec 2021 07:20:11 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF75DC061574;
+        Tue, 28 Dec 2021 04:20:10 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53995611E0;
+        Tue, 28 Dec 2021 12:20:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A7DB7C36AEB;
+        Tue, 28 Dec 2021 12:20:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1640694009;
+        bh=ZqpNAYZslppWZAxjgspaQbIdA3KXNlCzslcoXk+px7w=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=Yh0FK3eQNTf9BuUJgC8K0liaqz8H+4LI4UDhvbCQ9QqMXRg34iskTpGRlqcfYII2M
+         vA/U+1flea/CcDQ/vGoJ+vqPJHkRbvDgLJpPlCYLAo5NqnrbLW+VsybPiQSA73o+/s
+         C7KZCvz8uBkT1nxm+isS9K8S7BTdMYr3gFLr+MAtzavoZYJ6yMqPsn6zIwUo3SORsx
+         FGV0f6nAikmj+6n2cPQc6kmGSaZsA6XfgfTKUqmXaaLw7cSNlX8kkQCA9PgMtrc4ZS
+         Y+1I9NbT2KpQyRsV4pawHC+VuygmiHk9AHwI0r8v9Jst8uFbPrXYnbOmSnps8aUnGq
+         C/mOvuf1xMasQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 845DBC395E8;
+        Tue, 28 Dec 2021 12:20:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Sender: ericgloriapaul@gmail.com
-Received: by 2002:a9d:7dc6:0:0:0:0:0 with HTTP; Tue, 28 Dec 2021 01:11:53
- -0800 (PST)
-From:   DINA MCKENNA <dinamckennahowley@gmail.com>
-Date:   Tue, 28 Dec 2021 09:11:53 +0000
-X-Google-Sender-Auth: reku3QYgVu2iWwlBoNn2Sf8FyVY
-Message-ID: <CAApFGfRdWnbOK2WZqr=do4UOGaHpe1=1tjV8xo6_1VMaHJGRDg@mail.gmail.com>
-Subject: Calvary greetings.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net: ag71xx: Fix a potential double free in error handling
+ paths
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <164069400953.26128.4657256476646014759.git-patchwork-notify@kernel.org>
+Date:   Tue, 28 Dec 2021 12:20:09 +0000
+References: <b2da37192380cdb9e81cad6484754b3159d12400.1640541019.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <b2da37192380cdb9e81cad6484754b3159d12400.1640541019.git.christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     chris.snook@gmail.com, davem@davemloft.net, kuba@kernel.org,
+        andrew@lunn.ch, linux@rempel-privat.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello my dear,
+Hello:
 
- I sent this mail praying it will get to you in a good condition of
-health, since I myself are in a very critical health condition in
-which I sleep every night without knowing if I may be alive to see the
-next day. I bring peace and love to you. It is by the grace of God, I
-had no choice than to do what is lawful and right in the sight of God
-for eternal life and in the sight of man, for witness of God=E2=80=99s merc=
-y
-and glory upon my life. I am Mrs. Dina. Howley Mckenna, a widow. I am
-suffering from a long time brain tumor, It has defiled all forms of
-medical treatment, and right now I have about a few months to leave,
-according to medical experts. The situation has gotten complicated
-recently with my inability to hear proper, am communicating with you
-with the help of the chief nurse herein the hospital, from all
-indication my conditions is really deteriorating and it is quite
-obvious that, according to my doctors they have advised me that I may
-not live too long, Because this illness has gotten to a very bad
-stage. I plead that you will not expose or betray this trust and
-confidence that I am about to repose on you for the mutual benefit of
-the orphans and the less privilege. I have some funds I inherited from
-my late husband, the sum of ($ 11,000,000.00, Eleven Million Dollars).
-Having known my condition, I decided to donate this fund to you
-believing that you will utilize it the way i am going to instruct
-herein. I need you to assist me and reclaim this money and use it for
-Charity works therein your country  for orphanages and gives justice
-and help to the poor, needy and widows says The Lord." Jeremiah
-22:15-16.=E2=80=9C and also build schools for less privilege that will be
-named after my late husband if possible and to promote the word of God
-and the effort that the house of God is maintained. I do not want a
-situation where this money will be used in an ungodly manner. That's
-why I'm taking this decision. I'm not afraid of death, so I know where
-I'm going. I accept this decision because I do not have any child who
-will inherit this money after I die.. Please I want your sincerely and
-urgent answer to know if you will be able to execute this project for
-the glory of God, and I will give you more information on how the fund
-will be transferred to your bank account. May the grace, peace, love
-and the truth in the Word of God be with you and all those that you
-love and care for.
+This patch was applied to netdev/net.git (master)
+by David S. Miller <davem@davemloft.net>:
 
-I'm waiting for your immediate reply..
+On Sun, 26 Dec 2021 18:51:44 +0100 you wrote:
+> 'ndev' is a managed resource allocated with devm_alloc_etherdev(), so there
+> is no need to call free_netdev() explicitly or there will be a double
+> free().
+> 
+> Simplify all error handling paths accordingly.
+> 
+> Fixes: d51b6ce441d3 ("net: ethernet: add ag71xx driver")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> 
+> [...]
 
-May God Bless you,
-Mrs. Dina. Howley Mckenna.
+Here is the summary with links:
+  - net: ag71xx: Fix a potential double free in error handling paths
+    https://git.kernel.org/netdev/net/c/1cd5384c88af
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+

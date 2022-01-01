@@ -2,48 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 415A34825BD
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Dec 2021 21:30:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31B274827B9
+	for <lists+kernel-janitors@lfdr.de>; Sat,  1 Jan 2022 15:19:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231608AbhLaUOm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 Dec 2021 15:14:42 -0500
-Received: from mail.osorio.rs.gov.br ([177.73.0.123]:56780 "EHLO
-        mail.osorio.rs.gov.br" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbhLaUOl (ORCPT
+        id S232065AbiAAOCv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 1 Jan 2022 09:02:51 -0500
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:57101 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231522AbiAAOCu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 Dec 2021 15:14:41 -0500
-Received: by mail.osorio.rs.gov.br (Postfix, from userid 999)
-        id 53E8B487D5E0; Fri, 31 Dec 2021 15:26:01 -0200 (BRST)
-Received: from localhost (nac.osorio.rs.gov.br [127.0.0.1])
-        by nac (Postfix) with SMTP id E6FBA48AB82F;
-        Fri, 31 Dec 2021 15:17:04 -0200 (BRST)
-Received: from User (unknown [84.38.132.16])
-        by mail.osorio.rs.gov.br (Postfix) with ESMTP id ADDFC488CCE8;
-        Fri, 31 Dec 2021 13:04:15 -0200 (BRST)
-Reply-To: <andbaill228@mail2world.com>
-From:   "Ads" <projetos@gov.br>
-Subject: Very Importante Notice
-Date:   Fri, 31 Dec 2021 16:19:40 +0200
+        Sat, 1 Jan 2022 09:02:50 -0500
+Received: from pop-os.home ([86.243.171.122])
+        by smtp.orange.fr with ESMTPA
+        id 3ey6ngUjHTdRT3ey6nTwT7; Sat, 01 Jan 2022 15:02:47 +0100
+X-ME-Helo: pop-os.home
+X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
+X-ME-Date: Sat, 01 Jan 2022 15:02:47 +0100
+X-ME-IP: 86.243.171.122
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     benve@cisco.com, govind@gmx.com, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] enic: Use dma_set_mask_and_coherent()
+Date:   Sat,  1 Jan 2022 15:02:45 +0100
+Message-Id: <f926eab883a3e5c4dbfd3eb5108b3e1828e6513b.1641045708.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-Id: <20211231150415.ADDFC488CCE8@mail.osorio.rs.gov.br>
-To:     undisclosed-recipients:;
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Sir/Madam,
+Use dma_set_mask_and_coherent() instead of unrolling it with some
+dma_set_mask()+dma_set_coherent_mask().
 
-Good day to you.
+This simplifies code and removes some dead code (dma_set_coherent_mask()
+can not fail after a successful dma_set_mask())
 
-I am Dr.Gertjan Vlieghe personal Secretary to Andrew Bailey who double as the Governor, Bank of England (https://en.wikipedia.org/wiki/Andrew_Bailey_%28banker%29). We have an inheritance of a deceased client, who bear the same name  with your surname. kindly contact Andrew Bailey through his personal email (andbaill228@mail2world.com) with your details for more information.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/net/ethernet/cisco/enic/enic_main.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
-Thank you.
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index 2faba079b4fb..1c81b161de52 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -2718,26 +2718,14 @@ static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	 * fail to 32-bit.
+ 	 */
+ 
+-	err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(47));
++	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(47));
+ 	if (err) {
+-		err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
++		err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
+ 		if (err) {
+ 			dev_err(dev, "No usable DMA configuration, aborting\n");
+ 			goto err_out_release_regions;
+ 		}
+-		err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
+-		if (err) {
+-			dev_err(dev, "Unable to obtain %u-bit DMA "
+-				"for consistent allocations, aborting\n", 32);
+-			goto err_out_release_regions;
+-		}
+ 	} else {
+-		err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(47));
+-		if (err) {
+-			dev_err(dev, "Unable to obtain %u-bit DMA "
+-				"for consistent allocations, aborting\n", 47);
+-			goto err_out_release_regions;
+-		}
+ 		using_dac = 1;
+ 	}
+ 
+-- 
+2.32.0
 
-Dr.Gertjan Vlieghe

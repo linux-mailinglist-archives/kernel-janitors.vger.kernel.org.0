@@ -2,77 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5302648300D
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Jan 2022 11:50:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CA9B483075
+	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Jan 2022 12:26:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232757AbiACKuK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Jan 2022 05:50:10 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:57522 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232752AbiACKuK (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Jan 2022 05:50:10 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 21F2A61023;
-        Mon,  3 Jan 2022 10:50:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 86957C36AEE;
-        Mon,  3 Jan 2022 10:50:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641207009;
-        bh=Nt8rKJVx8L07QrjNrtOBcZ4c2qEOLYPssokLETed7ZU=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=OzwP/DZJpy19MOour9UXjU6NzLq4omAHTk1bJkwdnxt7ZdJ1J9oDRFgcsOYBXGG1L
-         Ks3BTtW6lnAMZs/simQ1hqNp2QujK1zjsxd+xuTGlBTXMELwXaBh3NuZtxM4UFEUgs
-         T+1DzogXJUPWwC6EXV2b8j59SnJnwM2A6PCKNqSSdtwy22sNEzm4UGL+l71eMp1q2L
-         f/moHa6sSLFXbaGsHErh1TYCO9eK4kxwwiLnoMD8ng3IkS9fkQSHlCyGdvtKWC3IH9
-         tTFxuArFXcUMOvGin4gdtRnq5GplmN4l0cWODwWmM+uv6Tl9uD8OL/brWj3mN6vyZ5
-         DUFzQSs/hrM7Q==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 74C37F79402;
-        Mon,  3 Jan 2022 10:50:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: vxge: Use dma_set_mask_and_coherent() and simplify code
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <164120700947.2591.17033109564004070251.git-patchwork-notify@kernel.org>
-Date:   Mon, 03 Jan 2022 10:50:09 +0000
-References: <6e78ed8aef3240a2cbacb3e424c6470336253e47.1641157546.git.christophe.jaillet@wanadoo.fr>
-In-Reply-To: <6e78ed8aef3240a2cbacb3e424c6470336253e47.1641157546.git.christophe.jaillet@wanadoo.fr>
+        id S232954AbiACL0z convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Jan 2022 06:26:55 -0500
+Received: from aposti.net ([89.234.176.197]:56396 "EHLO aposti.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231570AbiACL0z (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 3 Jan 2022 06:26:55 -0500
+Date:   Mon, 03 Jan 2022 11:26:41 +0000
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH] Input: gpio-keys: Avoid clearing twice some memory
 To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     jdmason@kudzu.us, davem@davemloft.net, kuba@kernel.org,
-        jesse.brandeburg@intel.com, liuhangbin@gmail.com,
-        colin.king@intel.com, zhengyongjun3@huawei.com,
-        paskripkin@gmail.com, arnd@arndb.de, netdev@vger.kernel.org,
+Cc:     dmitry.torokhov@gmail.com, linux-input@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Message-Id: <H4T45R.07J01GT7EIY23@crapouillou.net>
+In-Reply-To: <d6ee621b9dd75b92f8831db365cee58dc2025322.1640813136.git.christophe.jaillet@wanadoo.fr>
+References: <d6ee621b9dd75b92f8831db365cee58dc2025322.1640813136.git.christophe.jaillet@wanadoo.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
+Hi,
 
-This patch was applied to netdev/net-next.git (master)
-by David S. Miller <davem@davemloft.net>:
-
-On Sun,  2 Jan 2022 22:07:05 +0100 you wrote:
-> Use dma_set_mask_and_coherent() instead of unrolling it with some
-> dma_set_mask()+dma_set_coherent_mask().
+Le mer., déc. 29 2021 at 22:26:56 +0100, Christophe JAILLET 
+<christophe.jaillet@wanadoo.fr> a écrit :
+> bitmap_parselist() already clears the 'bits' bitmap, so there is no 
+> need
+> to clear it when it is allocated. This just wastes some cycles.
 > 
-> Moreover, as stated in [1], dma_set_mask() with a 64-bit mask will never
-> fail if dev->dma_mask is non-NULL.
-> So, if it fails, the 32 bits case will also fail for the same reason.
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+
+Acked-by: Paul Cercueil <paul@crapouillou.net>
+
+Cheers,
+-Paul
+
+> ---
+>  drivers/input/keyboard/gpio_keys.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> [...]
-
-Here is the summary with links:
-  - net: vxge: Use dma_set_mask_and_coherent() and simplify code
-    https://git.kernel.org/netdev/net-next/c/3d694552fd8f
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> diff --git a/drivers/input/keyboard/gpio_keys.c 
+> b/drivers/input/keyboard/gpio_keys.c
+> index 8dbf1e69c90a..d75a8b179a8a 100644
+> --- a/drivers/input/keyboard/gpio_keys.c
+> +++ b/drivers/input/keyboard/gpio_keys.c
+> @@ -247,7 +247,7 @@ static ssize_t gpio_keys_attr_store_helper(struct 
+> gpio_keys_drvdata *ddata,
+>  	ssize_t error;
+>  	int i;
+> 
+> -	bits = bitmap_zalloc(n_events, GFP_KERNEL);
+> +	bits = bitmap_alloc(n_events, GFP_KERNEL);
+>  	if (!bits)
+>  		return -ENOMEM;
+> 
+> --
+> 2.32.0
+> 
 
 

@@ -2,67 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE815483003
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Jan 2022 11:45:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB7FD483010
+	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Jan 2022 11:50:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232681AbiACKpL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Jan 2022 05:45:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45936 "EHLO
+        id S232766AbiACKuL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Jan 2022 05:50:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231356AbiACKpK (ORCPT
+        with ESMTP id S232753AbiACKuK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Jan 2022 05:45:10 -0500
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80374C061761;
-        Mon,  3 Jan 2022 02:45:10 -0800 (PST)
-Received: by mail-yb1-xb2a.google.com with SMTP id d1so77351259ybh.6;
-        Mon, 03 Jan 2022 02:45:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=VbPuZiW/1Qkzm5w7KW+G1qO7Y5j2xfvJABuQJzXu4eE=;
-        b=fuaRNJKNrp3vE3uSHgjrdqCVm8KmM7Te50uPnH/Ks0UIQpYFDZbWUmZfkUcBIZQqPZ
-         /fw87SCujq3gddXDwi+xTVxWrYw9exzOJt4Kb0iGuNYGzMSm1VBsezRHgYaFHSr0/I0W
-         6U/dOL3UpvaGCJ7kiu7wbpF+u12biX3MqvE99GnVwq9sgNmxFySaJ/BXN0uBoMBDhEl9
-         s1jP5LzLIZrFflAHF/9C00w8hPU5vtE3LWSLT+SLVUyZH1IzbKgjEvKzeMtRgl3b+j6R
-         xnXxKlIYOq/fvqRFooXJcEkMRlaj7c6KZgELZNRipjCwe70TqrfIbwQBK2X2yC3gZPXF
-         QrGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=VbPuZiW/1Qkzm5w7KW+G1qO7Y5j2xfvJABuQJzXu4eE=;
-        b=srs4YI/Gae/u2Vgnq0gNKuxbV6gH9lYnMvZvrXPRWGy6lXVW/J63M2ZWtMxxX+NlMY
-         qDfRaj16fYtMNXlyNCVfQbfpa2GGWXXSlgZtrhYL2WTj15D6X+xQeNhUN8YR8IB60WU0
-         SLijOrBNxpomS3UfhY2n1G70q5pvCQQvT/X4am9WbcN+AHOPJeSGQbd/Ki0m8vUruOc1
-         NJJ2NpTTs3Z3Xj6zMR9ozbs2M+s1Z46IbkZLXcXya+FHcON6uRgO8pyM9tl8VqigXnJx
-         TSOAHBE3L55D4mimRxnvA/9ZkuCSMXjdogfJGnSo4u3lVIHt14dX27GfHDcSTMLlPAM9
-         l9gQ==
-X-Gm-Message-State: AOAM530w9PItB4mxggzX90pzb5Age/5JZ71muUz3+XsnQoSeXrBImEdu
-        14Xqtd8mZYtVL2UKcxPJUw6dWta3pSfYK9qKM4aB1aWSXFM=
-X-Google-Smtp-Source: ABdhPJwIrrCOZiixswFFGbjt1p5pJZZ5VD1zyAOhh+nu8/z+9NN2n0DbanaszwWOuuUSLDqwO5gAD0aVxqAZAL/FPr4=
-X-Received: by 2002:a25:cccf:: with SMTP id l198mr2515418ybf.608.1641206709699;
- Mon, 03 Jan 2022 02:45:09 -0800 (PST)
+        Mon, 3 Jan 2022 05:50:10 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95DA6C061784;
+        Mon,  3 Jan 2022 02:50:10 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DBEC61025;
+        Mon,  3 Jan 2022 10:50:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9C3B1C36AF2;
+        Mon,  3 Jan 2022 10:50:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641207009;
+        bh=SbzhVYDA7q36z2bKdgU4rcWBPtBR6G7zZfQLH8PrWFk=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=UUX0YiaPjWOw7LxiIw0L/VEoiFtHiHVJOnAJNbXkWakqO4TXkfp0U7h7gPy6KguCy
+         LVioZVqAEVO1LVvygfQobxYbhS1y/s6LJkUqsaTd6yMAN1wzUz9QbGbIBFUuj2oMHS
+         TxjUMpORGWAj/oQcri0ahqzWslqWG9OxrIgE6xzpW69LcsYkEQ15c2ajeAjJ2MRTy5
+         cYxKXTsuWRWucWUrHmn0PqpJqTc3LdiMGuQG+iEoAgm+Pafn3k69r6euoHeCslBzmw
+         MrXAmftLb1ksLXqoiZZBhUAbPCKS6EGNabWEB/fOhMFb+FVT0JfGbA4q7cSHmjTUSU
+         4DdNwGXnN9WSw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 7FD0EF79406;
+        Mon,  3 Jan 2022 10:50:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Date:   Mon, 3 Jan 2022 11:44:59 +0100
-Message-ID: <CAKXUXMwARdtgBQ26vB2c0gubgc5P08xfwyQonrG_D+p1iNDLxg@mail.gmail.com>
-Subject: Reference to non-existing CONFIG_CPU_H300H
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        uclinux-h8-devel@lists.sourceforge.jp
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] ethernet: s2io: Use dma_set_mask_and_coherent() and simplify
+ code
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <164120700951.2591.15379662570045379334.git-patchwork-notify@kernel.org>
+Date:   Mon, 03 Jan 2022 10:50:09 +0000
+References: <e53afd59c8938bfaaa94cadd4621d40f54ec2102.1641155181.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <e53afd59c8938bfaaa94cadd4621d40f54ec2102.1641155181.git.christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     jdmason@kudzu.us, davem@davemloft.net, kuba@kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dear Yoshinori-san,
+Hello:
 
-In ./arch/h8300/include/asm/hash.h, there is a reference to
-CONFIG_CPU_H300H, but CONFIG_CPU_H300H does not exist.
+This patch was applied to netdev/net-next.git (master)
+by David S. Miller <davem@davemloft.net>:
 
-Was CONFIG_CPU_H8300H intended to be referred to here?
+On Sun,  2 Jan 2022 21:27:39 +0100 you wrote:
+> Use dma_set_mask_and_coherent() instead of unrolling it with some
+> dma_set_mask()+dma_set_coherent_mask().
+> 
+> Moreover, as stated in [1], dma_set_mask() with a 64-bit mask will never
+> fail if dev->dma_mask is non-NULL.
+> So, if it fails, the 32 bits case will also fail for the same reason.
+> 
+> [...]
 
-Best regards,
+Here is the summary with links:
+  - ethernet: s2io: Use dma_set_mask_and_coherent() and simplify code
+    https://git.kernel.org/netdev/net-next/c/7120075ec41a
 
-Lukas
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+

@@ -2,116 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F175486FBA
-	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Jan 2022 02:35:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA22C487086
+	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Jan 2022 03:36:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344935AbiAGBfO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Jan 2022 20:35:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40056 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344075AbiAGBfN (ORCPT
+        id S1344849AbiAGCgT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Jan 2022 21:36:19 -0500
+Received: from mail-qt1-f176.google.com ([209.85.160.176]:44602 "EHLO
+        mail-qt1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344793AbiAGCgR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Jan 2022 20:35:13 -0500
-Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7376C061245;
-        Thu,  6 Jan 2022 17:35:13 -0800 (PST)
-Received: by mail-ot1-x335.google.com with SMTP id 45-20020a9d0a30000000b0058f1a6df088so5080046otg.4;
-        Thu, 06 Jan 2022 17:35:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ywgP16oIByxs3QRc1jRR8SDOEZAjX7UvCJxKV2kqOV4=;
-        b=mrh3lTBfiCf9J3eoPKI+PHd5CE9aD3+kFjRQfweXdWxj2krX/eCoEgC7mVPKYr74gZ
-         P/HEUv5RFc2St+AKt7HMKIMFEkr4FCRMn1fj7sygol6eKBjN+qjVF6mPw8QemvhQfQUX
-         fy+fhqkdqps5pcjkrbYQY7br0upRvbac5nqLmAvkNT9mX3npgkWdp4+yJDMPIhidv567
-         Y+Z1Xx4dp80BZ6SLHQIyDhWu9NFPdZ7dityC2PUpF1PjJDpLfLHynmPPUhQOWtK8/3ET
-         quxN83kXsgTIyeRE63Kfp//5zNXmybkCy8FbmSjyxSpbJSbIYWfaD5mPZ+k3VOxb/olz
-         afyQ==
+        Thu, 6 Jan 2022 21:36:17 -0500
+Received: by mail-qt1-f176.google.com with SMTP id a1so4229276qtx.11;
+        Thu, 06 Jan 2022 18:36:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ywgP16oIByxs3QRc1jRR8SDOEZAjX7UvCJxKV2kqOV4=;
-        b=thnI3qhAdu0N+1gMGbcUfR1tN/DLpKqpqcm5A1+2lN5qYdtFrSJO52TWC1G5p0vhZU
-         gs1Bue+5j/GXzFbeMcpt7JeSMBbBjAFahhOPBFMhCIIhehdxkSmK8JHLM/5zvhueFuMr
-         ugpcPUtTeI7FCNFcU12JIt/FkLmgcloGLyszZGqcMwHf690cbUK45iYxCo2RodP6kiG6
-         CJrKgMctXQBEpfBl10YXcr6QeKhUliGsPa2+s7XXvhCh0f7gOPGBD2Pvx/N+AFtbHl0y
-         7RjaAwpIVQR16DtLT/Dk8XVfQGJA4X2VfonnRrud7ctdo31iLfXMSjqceBO19/LnGk3P
-         ClXA==
-X-Gm-Message-State: AOAM5339F/eg+pIVXIuF6dAiVNPLH5SuvRE7fDxSP8qbu6Ld3qCSIiEj
-        yb1to+hbSNuKtfjaO9j2yh7HF2Lu99E=
-X-Google-Smtp-Source: ABdhPJzeCW7OSrCBMsXcTSnyd7bsXkRM9ty/z7avlBtYxITWKpHY+umUnWdwBOBO03dkTdkW5XM2mA==
-X-Received: by 2002:a05:6830:2:: with SMTP id c2mr44862275otp.341.1641519312889;
-        Thu, 06 Jan 2022 17:35:12 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id k1sm658659otj.61.2022.01.06.17.35.11
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=p1K15mtU3zzMsv0QlhLQ7Ko388P+IV6nME1cO1C6EvU=;
+        b=RwWfijicqAvoLpSjeB7cgho9YCGFNscwsH29QH23LpBQzLpCIJnUFkvEafSrwtVQ9N
+         otIkWAw3VNIVEJsPteIr70LIAmJvg9Nw+1duHoR4W8Rs5+JVRqLc14uTIGWZRgaviLrj
+         hGUUOdxk1Cu7Y8h7g30/svpTKmCHB2iwvXP5kEoUx6dM2eqQujcbmt4rPXa92Cy/Hquj
+         7JvRxgp9i44CkHYcz9U4bd8A+oEKbDX03FcHy3psFy4sz9RoOuTqdBnVN8Y8qd6oupmt
+         bSSZVmomVbEDzg9NPK9Elh2DEcTOG0Dd3ipYjdP+mIGnY9VQFwZxAidaMy6IK3g2JkZ7
+         I81g==
+X-Gm-Message-State: AOAM530AuZG5ME1uYSKCyz39fcfA6A7K9r8WzeQWu3TwpDar8U4Kajth
+        8MriW1Lp2VVF/zjGlm5cE/wt2xRjeiXOoHoB
+X-Google-Smtp-Source: ABdhPJwctH+K6wy/8G3P/ejagpHh3YQ8FjNq147K/x4fdUGFhbbD2HkKy7q43wGLdGsqa3wWDPLUXg==
+X-Received: by 2002:a05:622a:4c:: with SMTP id y12mr55998380qtw.21.1641522976789;
+        Thu, 06 Jan 2022 18:36:16 -0800 (PST)
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com. [209.85.219.47])
+        by smtp.gmail.com with ESMTPSA id l9sm2502430qkj.37.2022.01.06.18.36.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Jan 2022 17:35:12 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Subject: Re: [PATCH] fsi: Aspeed: Fix a potential double free
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Greg KH <gregkh@linuxfoundation.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-        alistair@popple.id.au, linux-kernel@vger.kernel.org,
-        linux-fsi@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-References: <2cafa0607ca171ebd00ac6c7e073b46808e24f00.1640537669.git.christophe.jaillet@wanadoo.fr>
- <YcldM9sgYdjMYMtH@kroah.com> <20220106081418.GH7674@kadam>
- <f2ba50fd-5c6b-e905-17ed-541dcc98c6c1@roeck-us.net>
- <edd19014-3b99-fa0b-912b-e058c14401d8@wanadoo.fr>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <6926bb63-836b-b37c-3605-d6df9992bfaf@roeck-us.net>
-Date:   Thu, 6 Jan 2022 17:35:10 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        Thu, 06 Jan 2022 18:36:16 -0800 (PST)
+Received: by mail-qv1-f47.google.com with SMTP id kj16so4236122qvb.2;
+        Thu, 06 Jan 2022 18:36:16 -0800 (PST)
+X-Received: by 2002:a05:6214:252a:: with SMTP id gg10mr57473867qvb.19.1641522975923;
+ Thu, 06 Jan 2022 18:36:15 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <edd19014-3b99-fa0b-912b-e058c14401d8@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <1063e5a4738d897adcaffce2ab8e4e45f07998ff.1635969326.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <1063e5a4738d897adcaffce2ab8e4e45f07998ff.1635969326.git.christophe.jaillet@wanadoo.fr>
+From:   Li Yang <leoyang.li@nxp.com>
+Date:   Fri, 7 Jan 2022 10:36:04 +0800
+X-Gmail-Original-Message-ID: <CADRPPNRke7ga1MsSKEpr948wkgNygNTQhcnB7Kk-f7DhMpptMQ@mail.gmail.com>
+Message-ID: <CADRPPNRke7ga1MsSKEpr948wkgNygNTQhcnB7Kk-f7DhMpptMQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] soc: fsl: guts: Revert commit 3c0d64e867ed
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     tyreld@linux.ibm.com, kernel-janitors@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        lkml <linux-kernel@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 1/6/22 10:35 AM, Christophe JAILLET wrote:
-> Le 06/01/2022 à 18:25, Guenter Roeck a écrit :
->> On 1/6/22 12:14 AM, Dan Carpenter wrote:
->>> On Mon, Dec 27, 2021 at 07:29:07AM +0100, Greg KH wrote:
->>>> On Sun, Dec 26, 2021 at 05:56:02PM +0100, Christophe JAILLET wrote:
->>>>> 'aspeed' is a devm_alloc'ed, so there is no need to free it explicitly or
->>>>> there will be a double free().
->>>>
->>>> A struct device can never be devm_alloced for obvious reasons.  Perhaps
->>>> that is the real problem here?
->>>>
->>>
->>> I don't understand how "aspeed" is a struct device.
->>>
->>
->> -static void aspeed_master_release(struct device *dev)
->> -{
->> -    struct fsi_master_aspeed *aspeed =
->> -        to_fsi_master_aspeed(dev_to_fsi_master(dev));
->> -
->> -    kfree(aspeed);
->> -}
->>
->> So "dev" is embedded in struct fsi_master, and struct fsi_master is embedded
->> in struct fsi_master_aspeed. Since "struct device" is embedded, the data
->> structure embedding it must be released with the release function, as is done
->> here. The problem is indeed that the data structure is allocated with
->> devm_kzalloc(), which as Greg points out must not be devm_ allocated
->> (because its lifetime does not match the lifetime of devm_ allocated
->> memory).
-> 
-> Thanks a lot for the detailed explanation.
-> Crystal clear for me now.
-> 
-> Do you want me to send a patch to remove the devm_ or will you?
-> 
+On Thu, Nov 4, 2021 at 4:09 AM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
+>
+> This reverts commit 3c0d64e867ed
+> ("soc: fsl: guts: reuse machine name from device tree").
+>
+> A following patch will fix the missing memory allocation failure check
+> instead.
+>
+> Suggested-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Sorry, I am way behind with code reviews. I won't have time to submit a patch.
+Applied for next.  Thanks.
 
-Guenter
+> ---
+> This is a follow-up of discussion in:
+> https://lore.kernel.org/kernel-janitors/b12e8c5c5d6ab3061d9504de8fbaefcad6bbc385.1629321668.git.christophe.jaillet@wanadoo.fr/
+> ---
+>  drivers/soc/fsl/guts.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/soc/fsl/guts.c b/drivers/soc/fsl/guts.c
+> index 072473a16f4d..af7741eafc57 100644
+> --- a/drivers/soc/fsl/guts.c
+> +++ b/drivers/soc/fsl/guts.c
+> @@ -28,7 +28,6 @@ struct fsl_soc_die_attr {
+>  static struct guts *guts;
+>  static struct soc_device_attribute soc_dev_attr;
+>  static struct soc_device *soc_dev;
+> -static struct device_node *root;
+>
+>
+>  /* SoC die attribute definition for QorIQ platform */
+> @@ -138,7 +137,7 @@ static u32 fsl_guts_get_svr(void)
+>
+>  static int fsl_guts_probe(struct platform_device *pdev)
+>  {
+> -       struct device_node *np = pdev->dev.of_node;
+> +       struct device_node *root, *np = pdev->dev.of_node;
+>         struct device *dev = &pdev->dev;
+>         const struct fsl_soc_die_attr *soc_die;
+>         const char *machine;
+> @@ -159,8 +158,9 @@ static int fsl_guts_probe(struct platform_device *pdev)
+>         root = of_find_node_by_path("/");
+>         if (of_property_read_string(root, "model", &machine))
+>                 of_property_read_string_index(root, "compatible", 0, &machine);
+> +       of_node_put(root);
+>         if (machine)
+> -               soc_dev_attr.machine = machine;
+> +               soc_dev_attr.machine = devm_kstrdup(dev, machine, GFP_KERNEL);
+>
+>         svr = fsl_guts_get_svr();
+>         soc_die = fsl_soc_die_match(svr, fsl_soc_die);
+> @@ -195,7 +195,6 @@ static int fsl_guts_probe(struct platform_device *pdev)
+>  static int fsl_guts_remove(struct platform_device *dev)
+>  {
+>         soc_device_unregister(soc_dev);
+> -       of_node_put(root);
+>         return 0;
+>  }
+>
+> --
+> 2.30.2
+>

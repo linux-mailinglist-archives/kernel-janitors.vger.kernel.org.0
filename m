@@ -2,79 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5B65488DC4
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Jan 2022 02:01:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33D98488DF4
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Jan 2022 02:11:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237899AbiAJBAt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 9 Jan 2022 20:00:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48122 "EHLO
+        id S231499AbiAJBL3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 9 Jan 2022 20:11:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237736AbiAJBAT (ORCPT
+        with ESMTP id S229729AbiAJBL3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 9 Jan 2022 20:00:19 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FA91C061756;
-        Sun,  9 Jan 2022 17:00:18 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 206D1B8107B;
-        Mon, 10 Jan 2022 01:00:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2454DC36B09;
-        Mon, 10 Jan 2022 01:00:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641776414;
-        bh=xxrtH6AQpTOSTjEmBsXyFHyyljWLYcbQt6gYD5ZCeGs=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=iknfAbllJeOlgq0JW5E9TtAh1lVup2JdNFjgLlqMUNSuVddZDVKVTOdDl4HmYqfnQ
-         imvrLF3uI36dYcdf0HX7ev2vcKJTbMTluFViKj32dIlm6mGg3P0KRL1PSFIhQMAUQE
-         uJqOQjImsOe3boGt3QY1gwSHQnQdseMpvCyZsIWAlsd5YSD1myOc5vRXdTd2gIMWho
-         x7lwUlEKTgLaROdlS/pY32R2cNRbwlWCxWSHZgouJvA1lZ1rs2scwzMRz3Gz4UckJf
-         drulTqucwNG06PcmznugQ/22fCKSfmwXdDHpYJIPbOV6fzMyMdY67u7QyFhtyFAiwJ
-         nAWq5SpusKKSA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 11F1CF60791;
-        Mon, 10 Jan 2022 01:00:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Sun, 9 Jan 2022 20:11:29 -0500
+Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBCAFC06173F;
+        Sun,  9 Jan 2022 17:11:28 -0800 (PST)
+Received: by mail-oi1-x22a.google.com with SMTP id t204so17175962oie.7;
+        Sun, 09 Jan 2022 17:11:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=F6urcwiu2eUOJWSMLNJN+g7iFfO+F3fQ+xSPdkGivsU=;
+        b=i1NboyVOoXP7d8zeEGiKH71dQVdT+b3sik2aZQvmr5V4h/yGFicfqYsFIskErXzgGz
+         AAu+ZWCixjtM140UQ59LvHcAGpBJvjEBvISFWBRX+uK9p+dpgE4VhiHCos6otcjyQpU4
+         fod9Tth3xnd8EGCLLOgPMNc0eefzXbNkljFdEkJ12UWaaJzFuJ1QutUMvuiv63Oh1/M2
+         GC1bIdQzLR989luRb1WH6b7+OcnHXzwEhSnLBCsJxVxBzyiaVRS7Us7U9WulnnXfUfnc
+         nBeALM9HSMwcyqHxhLZ25Ruh5dzbwKoMTbXGyLjrz2Kbn2KbE/nZ/Fbvy60lnX2Zgake
+         E4kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=F6urcwiu2eUOJWSMLNJN+g7iFfO+F3fQ+xSPdkGivsU=;
+        b=IXJHA85IJmvmS9TnAIlCSZ9AHmHDdIOV/PdxvbL35pVML/jJuM9OP9JA5OvB8IkKLA
+         hTnwRL+SB32M4hOTnimIgTXAGxuxf8AO7+ftqx28Eu+iPhuAGr+SPbGPrRQcYVin+LnF
+         AFOqAToGyZd/kWsERoSL3/Ppe2TcYIG/7EHksFKxd8oL5d4iZisQS62/LCB1x+wlfIpb
+         YM0ls1OQCmZlQYV1ZiZNRSvAXfw8Q56V4zRHudZhwLVJq6NtKg0B5NWOa03JUB6l6d+c
+         Fq71xzlcP+zs+WNkiqi3fzyOVw+h6KHYp/54Ah7eKDgtJC23aNo/udAPjY4DkR2gmlnU
+         CT7Q==
+X-Gm-Message-State: AOAM530WLsnNbWZvik/EaV/GEHAVWUyaC2PX7/3Lo99vtF+5Xd1BA5E5
+        8C3ZPGZ/oDYyzl/xkV1dRv8=
+X-Google-Smtp-Source: ABdhPJxpbKB5Y78UBzmf/TRkogz4RExWkq7xaURE9tcac2IeGrvBrM4DUofkEAV3vldfVEfqZ52Fug==
+X-Received: by 2002:a05:6808:b0e:: with SMTP id s14mr7521871oij.61.1641777088121;
+        Sun, 09 Jan 2022 17:11:28 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id o145sm1056686ooo.1.2022.01.09.17.11.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Jan 2022 17:11:27 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Sun, 9 Jan 2022 17:11:25 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Colin Ian King <colin.i.king@gmail.com>
+Cc:     Aleksandr Mezin <mezin.alexander@gmail.com>,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] hwmon: nzxt-smart2: make array detect_fans_report
+ static const
+Message-ID: <20220110011125.GA841668@roeck-us.net>
+References: <20220109194558.45811-1-colin.i.king@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: enetc: Remove useless DMA-32 fallback configuration
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <164177641406.18208.1968849844538949127.git-patchwork-notify@kernel.org>
-Date:   Mon, 10 Jan 2022 01:00:14 +0000
-References: <dbecd4eb49a9586ee343b5473dda4b84c42112e9.1641742884.git.christophe.jaillet@wanadoo.fr>
-In-Reply-To: <dbecd4eb49a9586ee343b5473dda4b84c42112e9.1641742884.git.christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     claudiu.manoil@nxp.com, davem@davemloft.net, kuba@kernel.org,
-        yangbo.lu@nxp.com, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220109194558.45811-1-colin.i.king@gmail.com>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
-
-This patch was applied to netdev/net-next.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sun,  9 Jan 2022 16:41:43 +0100 you wrote:
-> As stated in [1], dma_set_mask() with a 64-bit mask never fails if
-> dev->dma_mask is non-NULL.
-> So, if it fails, the 32 bits case will also fail for the same reason.
+On Sun, Jan 09, 2022 at 07:45:58PM +0000, Colin Ian King wrote:
+> Don't populate the read-only array detect_fans_report on the stack but
+> instead it static const. Also makes the object code a little smaller.
 > 
-> Simplify code and remove some dead code accordingly.
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+
+Applied.
+
+Thanks,
+Guenter
+
+> ---
+>  drivers/hwmon/nzxt-smart2.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> [1]: https://lkml.org/lkml/2021/6/7/398
-> 
-> [...]
-
-Here is the summary with links:
-  - net: enetc: Remove useless DMA-32 fallback configuration
-    https://git.kernel.org/netdev/net-next/c/cfcfc8f5a54b
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+> diff --git a/drivers/hwmon/nzxt-smart2.c b/drivers/hwmon/nzxt-smart2.c
+> index 6e67da766969..dd892ff5a3e8 100644
+> --- a/drivers/hwmon/nzxt-smart2.c
+> +++ b/drivers/hwmon/nzxt-smart2.c
+> @@ -583,7 +583,7 @@ static int set_update_interval(struct drvdata *drvdata, long val)
+>  static int init_device(struct drvdata *drvdata, long update_interval)
+>  {
+>  	int ret;
+> -	u8 detect_fans_report[] = {
+> +	static const u8 detect_fans_report[] = {
+>  		OUTPUT_REPORT_ID_INIT_COMMAND,
+>  		INIT_COMMAND_DETECT_FANS,
+>  	};

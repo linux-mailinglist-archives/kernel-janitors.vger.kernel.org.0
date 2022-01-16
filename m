@@ -2,43 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02B6448FE37
-	for <lists+kernel-janitors@lfdr.de>; Sun, 16 Jan 2022 18:42:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F92148FE7E
+	for <lists+kernel-janitors@lfdr.de>; Sun, 16 Jan 2022 19:46:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235919AbiAPRmy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 16 Jan 2022 12:42:54 -0500
-Received: from [36.155.112.122] ([36.155.112.122]:38020 "EHLO
-        ecs-42a4.novalocal" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231224AbiAPRmy (ORCPT
+        id S235992AbiAPSqd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 16 Jan 2022 13:46:33 -0500
+Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:63413 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235924AbiAPSqc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 16 Jan 2022 12:42:54 -0500
-Received: from User (localhost [127.0.0.1])
-        by ecs-42a4.novalocal (Postfix) with SMTP id EB6173040CC;
-        Sun,  9 Jan 2022 13:48:50 +0800 (CST)
-Reply-To: <andbaill228@mail2world.com>
-From:   "Vlieghe" <andbaill228@mail2world.com>
-Subject: Very Importante Notice
-Date:   Sun, 9 Jan 2022 07:47:21 +0200
+        Sun, 16 Jan 2022 13:46:32 -0500
+Received: from pop-os.home ([90.126.236.122])
+        by smtp.orange.fr with ESMTPA
+        id 9AXrnM977HZHJ9AXrn7KaY; Sun, 16 Jan 2022 19:46:30 +0100
+X-ME-Helo: pop-os.home
+X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
+X-ME-Date: Sun, 16 Jan 2022 19:46:30 +0100
+X-ME-IP: 90.126.236.122
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Shiraz Saleem <shiraz.saleem@intel.com>,
+        Dave Ertman <david.m.ertman@intel.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
+Subject: [PATCH] ice: Don't use GFP_KERNEL in atomic context
+Date:   Sun, 16 Jan 2022 19:46:20 +0100
+Message-Id: <40c94af2f9140794351593047abc95ca65e4e576.1642358759.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-Id: <20220109054851.EB6173040CC@ecs-42a4.novalocal>
-To:     undisclosed-recipients:;
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Sir/Madam,
+ice_misc_intr() is an irq handler. It should not sleep.
 
-Good day to you.
+Use GFP_ATOMIC instead of GFP_KERNEL when allocating some memory.
 
-I am Dr.Gertjan Vlieghe personal Secretary to Andrew Bailey who double as the Governor, Bank of England (https://en.wikipedia.org/wiki/Andrew_Bailey_%28banker%29). We have an inheritance of a deceased client, who bear the same name  with your surname. kindly contact Andrew Bailey through his personal email ( andbaill228@mail2world.com ) with your details for more information.
+Fixes: 348048e724a0 ("ice: Implement iidc operations")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+I've never played a lot with irq handler. My understanding is that they
+should never sleep. So GFP_KERNEL must be avoided. So I guess that this
+patch is correct.
 
-Thank you.
+However, I don't know if some special cases allow such allocation.
+Any feedback/pointer to a good doc/explanation is welcome :)
+---
+ drivers/net/ethernet/intel/ice/ice_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Dr.Gertjan Vlieghe
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 30814435f779..65de01f3a504 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -3018,7 +3018,7 @@ static irqreturn_t ice_misc_intr(int __always_unused irq, void *data)
+ 		struct iidc_event *event;
+ 
+ 		ena_mask &= ~ICE_AUX_CRIT_ERR;
+-		event = kzalloc(sizeof(*event), GFP_KERNEL);
++		event = kzalloc(sizeof(*event), GFP_ATOMIC);
+ 		if (event) {
+ 			set_bit(IIDC_EVENT_CRIT_ERR, event->type);
+ 			/* report the entire OICR value to AUX driver */
+-- 
+2.32.0
+

@@ -2,57 +2,47 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9CBC49729B
-	for <lists+kernel-janitors@lfdr.de>; Sun, 23 Jan 2022 16:33:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8BAA4972CD
+	for <lists+kernel-janitors@lfdr.de>; Sun, 23 Jan 2022 17:09:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237750AbiAWPdd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 23 Jan 2022 10:33:33 -0500
-Received: from relay12.mail.gandi.net ([217.70.178.232]:59747 "EHLO
-        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237759AbiAWPda (ORCPT
+        id S234180AbiAWQJM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 23 Jan 2022 11:09:12 -0500
+Received: from relay7-d.mail.gandi.net ([217.70.183.200]:53189 "EHLO
+        relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234138AbiAWQJL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 23 Jan 2022 10:33:30 -0500
+        Sun, 23 Jan 2022 11:09:11 -0500
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 8E515200005;
-        Sun, 23 Jan 2022 15:33:27 +0000 (UTC)
-Date:   Sun, 23 Jan 2022 16:33:26 +0100
+        by mail.gandi.net (Postfix) with ESMTPSA id 0074020004;
+        Sun, 23 Jan 2022 16:09:09 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Joern Engel <joern@lazybastard.org>,
-        yangerkun <yangerkun@huawei.com>
-Cc:     Richard Weinberger <richard@nod.at>,
+To:     Colin Ian King <colin.i.king@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-mtd@lists.infradead.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2] mtd: phram: Prevent divide by zero bug in
- phram_setup()
-Message-ID: <20220123163326.5ea97476@xps13>
-In-Reply-To: <20220123152256.529296-1-miquel.raynal@bootlin.com>
-References: <20220121115505.GI1978@kadam>
-        <20220123152256.529296-1-miquel.raynal@bootlin.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        linux-mtd@lists.infradead.org
+Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mtd: rawnand: omap_elm: remove redundant variable 'errors'
+Date:   Sun, 23 Jan 2022 17:09:09 +0100
+Message-Id: <20220123160909.744397-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20211221181340.524639-1-colin.i.king@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-linux-mtd-patch-notification: thanks
+X-linux-mtd-patch-commit: b'2212c19e51969213924ab538396b6c1e072c41f1'
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-miquel.raynal@bootlin.com wrote on Sun, 23 Jan 2022 16:22:56 +0100:
-
-> On Fri, 2022-01-21 at 11:55:05 UTC, Dan Carpenter wrote:
-> > The problem is that "erasesize" is a uint64_t type so it might be
-> > non-zero but the lower 32 bits are zero so when it's truncated,
-> > "(uint32_t)erasesize", then that value is zero. This leads to a
-> > divide by zero bug.
-> > 
-> > Avoid the bug by delaying the divide until after we have validated
-> > that "erasesize" is non-zero and within the uint32_t range.
-> > 
-> > Fixes: dc2b3e5cbc80 ("mtd: phram: use div_u64_rem to stop overwrite len in phram_setup")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>  
+On Tue, 2021-12-21 at 18:13:40 UTC, Colin Ian King wrote:
+> The variable 'errors' is being used to sum the number of errors
+> but it is never used afterwards. This can be considered a
+> redundant set of operations and can be removed.
 > 
-> Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git mtd/next, thanks.
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 
-Pushed on mtd/fixes, actually.
+Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git nand/next, thanks.
+
+Miquel

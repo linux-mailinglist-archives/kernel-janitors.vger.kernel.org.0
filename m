@@ -2,88 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97FDE49885A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jan 2022 19:30:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EB2C499C4D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jan 2022 23:07:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244832AbiAXSal (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Jan 2022 13:30:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38510 "EHLO
+        id S1380676AbiAXWE2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Jan 2022 17:04:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235727AbiAXSak (ORCPT
+        with ESMTP id S1454661AbiAXVdT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Jan 2022 13:30:40 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2C9DC06173B;
-        Mon, 24 Jan 2022 10:30:40 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FE5D614AD;
-        Mon, 24 Jan 2022 18:30:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623CEC340E5;
-        Mon, 24 Jan 2022 18:30:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643049039;
-        bh=sWky1z6e82y61W+ExVfU6DywuqIuqx2MeSnFl2lNsr4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BUpSMogUy9XL3WKGYTkb5rIDTCR5WWPxazUcVTg6rgRYVwk/8EaVNy2RWvDx3lKrP
-         /gy10YZIjTcqvcuI9XE011gwb+eF/tog2/HLTO2GIIr12ddLhRABsd/Y10yGyReF/J
-         4fSBUK6onn8b1GEw5489RqKiR9TLfMPfpWPXkndzjeSTsUNweNkP74oBqnB01vJaL0
-         QKEIPUU9w415bJnTxe01P2xyuMEOpR7kZaFEL4Vs0c68skjYpV+TfdYXVCr8otmtqm
-         5Ll6+yMLjpj9377uk0JxHNwac33dXhbOPzpR0oBPUM/xctSzWCFIT3iRDKmGuXUiPL
-         4XMSVIWyYAVPQ==
-Date:   Mon, 24 Jan 2022 10:30:38 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Colin Ian King <colin.i.king@gmail.com>
-Cc:     "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-parisc@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: tulip: remove redundant assignment to variable
- new_csr6
-Message-ID: <20220124103038.76f15516@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
-In-Reply-To: <20220123183440.112495-1-colin.i.king@gmail.com>
-References: <20220123183440.112495-1-colin.i.king@gmail.com>
+        Mon, 24 Jan 2022 16:33:19 -0500
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 583BFC075974
+        for <kernel-janitors@vger.kernel.org>; Mon, 24 Jan 2022 12:21:22 -0800 (PST)
+Received: by mail-lf1-x12c.google.com with SMTP id n8so11960921lfq.4
+        for <kernel-janitors@vger.kernel.org>; Mon, 24 Jan 2022 12:21:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=wyMvRdYooGkNnpiPbja1/uSfdA1/U9snsdIqkkHvJEc=;
+        b=htyyJ1Z3GRsmUZan58N3Prr0pEBcELIKOR7HkjpOyyQX11oHKKsVhGziUzHRAk9gAQ
+         qKIJ1la4FQPjdeduY0TumzsXC1keATPYK+6nRTIgrBg2Yx3j+qLswnmWYNKKkUD32SGa
+         NEUVgy1cbCWp9ftv9S/S5W24Xf77OuvIUUPVXQgqfByM1wogeIS6Un6jOyUF9MMCkpXG
+         teWa0koFmo2WyVhH9ii5kbYSuulkh24QTq4DkaKRlSHApSrAqcmB2KzC4vQu8X9FU9gv
+         2EOV8xLbbtvhhc9TN8f/mQhQ6bw3lBLH/4ZukkYU7sfiq5QPCY/xyIFbbSA1hYPq/sPZ
+         OO2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=wyMvRdYooGkNnpiPbja1/uSfdA1/U9snsdIqkkHvJEc=;
+        b=SRdmrr/L/d9fpXV9/liAgfgTKGLPDxr7/OTw6QX5f7nVs+9ReA19OsKKMlRCFSYPGW
+         1EoLZ0lZ/bDxwry7Jtqqme7uWPbxW7pUH0XhsEYvDchj+UMioVdesivpuCyMdxsdVdPy
+         spTLsw7nYKrNc1EN9TKbBabmp+3iVq8cJophkyDi4nnHbmg1KBvjo0oPN0cbT3dZvHIa
+         /FHwhwkNP8ZZ/yzcb4ddBa/cTe//Uq5Kla/zmADuCZo4L+ydMUj23fdRjninYbYSpqrs
+         5jJ/2xKm2d5569yDhpnsgW9lxTKX1ctqEa/JL+SHPqxQ0/oxUvUwy27L47/XOy8Zf7Xz
+         TgJA==
+X-Gm-Message-State: AOAM530F4VEEcR8JD1SLf2oJHjkq4s91uxp82/Nk9EN1SfOryf1hoaZL
+        9VKTv1gRVvihrs49HLxG/FoA/DrfFuERoaya4B2oWg==
+X-Google-Smtp-Source: ABdhPJzNbWHLfVK0G4oHmQubeJbQeEM15S/l2in0t/MpUPzxIWlbk0Bzs9ERTx3WfdkjIX9h30ubfENOdawlZCrT2bU=
+X-Received: by 2002:a19:ad02:: with SMTP id t2mr14058303lfc.82.1643055680456;
+ Mon, 24 Jan 2022 12:21:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20220119224628.123084-1-colin.i.king@gmail.com>
+In-Reply-To: <20220119224628.123084-1-colin.i.king@gmail.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Mon, 24 Jan 2022 12:21:07 -0800
+Message-ID: <CAKwvOdnMibw77AvvWw7seB2PPamS_OLMUarSjdsa4w4OP1isKg@mail.gmail.com>
+Subject: Re: [PATCH] drm/radeon: remove redundant assignment to reg
+To:     Colin Ian King <colin.i.king@gmail.com>
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        Xinhui.Pan@amd.com, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 23 Jan 2022 18:34:40 +0000 Colin Ian King wrote:
-> Variable new_csr6 is being initialized with a value that is never
-> read, it is being re-assigned later on. The assignment is redundant
-> and can be removed.
+On Wed, Jan 19, 2022 at 2:46 PM Colin Ian King <colin.i.king@gmail.com> wrote:
+>
+> The pointer reg is being assigned a value that is not read, the
+> exit path via label 'out' never accesses it. The assignment is
+> redundant and can be removed.
+>
+> Cleans up clang scan build warning:
+> drivers/gpu/drm/radeon/radeon_object.c:570:3: warning: Value
+> stored to 'reg' is never read [deadcode.DeadStores]
+>
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 
-> @@ -21,7 +21,7 @@ void pnic_do_nway(struct net_device *dev)
->  	struct tulip_private *tp = netdev_priv(dev);
->  	void __iomem *ioaddr = tp->base_addr;
->  	u32 phy_reg = ioread32(ioaddr + 0xB8);
-> -	u32 new_csr6 = tp->csr6 & ~0x40C40200;
-> +	u32 new_csr6;
->  
->  	if (phy_reg & 0x78000000) { /* Ignore baseT4 */
->  		if (phy_reg & 0x20000000)		dev->if_port = 5;
+Thanks for the patch!
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-I can't say I see what you mean, it's not set in some cases:
-
-			if (tp->medialock) {
-			} else if (tp->nwayset  &&  (dev->if_port & 1)) {
-				next_tick = 1*HZ;
-			} else if (dev->if_port == 0) {
-				dev->if_port = 3;
-				iowrite32(0x33, ioaddr + CSR12);
-				new_csr6 = 0x01860000;
-				iowrite32(0x1F868, ioaddr + 0xB8);
-			} else {
-				dev->if_port = 0;
-				iowrite32(0x32, ioaddr + CSR12);
-				new_csr6 = 0x00420000;
-				iowrite32(0x1F078, ioaddr + 0xB8);
-			}
-			if (tp->csr6 != new_csr6) {
-				tp->csr6 = new_csr6;
+> ---
+>  drivers/gpu/drm/radeon/radeon_object.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/radeon/radeon_object.c b/drivers/gpu/drm/radeon/radeon_object.c
+> index 56ede9d63b12..87536d205593 100644
+> --- a/drivers/gpu/drm/radeon/radeon_object.c
+> +++ b/drivers/gpu/drm/radeon/radeon_object.c
+> @@ -567,7 +567,6 @@ int radeon_bo_get_surface_reg(struct radeon_bo *bo)
+>                 return 0;
+>
+>         if (bo->surface_reg >= 0) {
+> -               reg = &rdev->surface_regs[bo->surface_reg];
+>                 i = bo->surface_reg;
+>                 goto out;
+>         }
+> --
+> 2.33.1
+>
+>
 
 
-That said clang doesn't complain so maybe I'm missing something static
-analysis had figured out about this code.
+-- 
+Thanks,
+~Nick Desaulniers

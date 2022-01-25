@@ -2,106 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02AB449AC0F
-	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Jan 2022 06:57:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08FEF49ACCC
+	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Jan 2022 07:56:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241108AbiAYFz2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 25 Jan 2022 00:55:28 -0500
-Received: from mga04.intel.com ([192.55.52.120]:21601 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229667AbiAYF3h (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 25 Jan 2022 00:29:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643088577; x=1674624577;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=szMhn+GZucHPTDtHBcqaEh1jiwyMxWJmIcgFkQpSSbQ=;
-  b=JUrRQvlEErBUiJx4Eulam1oi85Wi9ulHMC/5TBrUC5XXPD5reL4TDfWr
-   BpZxTOCAJ+b5Nqnl0F6DliCV9ArxDAy0xxPkMYjPwJk3fFbDJwKVDPj1G
-   mTqfgtMdG5mh5xY9luELc/Jw39tQpjtyhBrDO2otuBFUnBoLTgfVwg7qT
-   Ab+IRhjXIcvQeNlEvuD27fUtcUzoRHGSXUyrgKL/tNK9AbK/fH10CCH8e
-   RYmgjArU9rIluL23qZyfJ0aV9Y5KHCpJ6oiV2UW/OOqMZ4ySl5JJUYgba
-   Skru88DW2j6+TvWyJKxgedTHhMhPvB+Fg799AFAg8EI5YGti1vELBoIQK
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10237"; a="245056447"
-X-IronPort-AV: E=Sophos;i="5.88,314,1635231600"; 
-   d="scan'208";a="245056447"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2022 21:17:31 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,314,1635231600"; 
-   d="scan'208";a="624343984"
-Received: from stinkbox.fi.intel.com (HELO stinkbox) ([10.237.72.147])
-  by fmsmga002.fm.intel.com with SMTP; 24 Jan 2022 21:17:26 -0800
-Received: by stinkbox (sSMTP sendmail emulation); Tue, 25 Jan 2022 07:17:25 +0200
-Date:   Tue, 25 Jan 2022 07:17:25 +0200
-From:   Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Sean Paul <seanpaul@chromium.org>,
-        Fernando Ramos <greenfoo@u92.eu>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Matt Roper <matthew.d.roper@intel.com>,
-        Eric Anholt <eric@anholt.net>, intel-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] drm/i915/overlay: Prevent divide by zero bugs in scaling
-Message-ID: <Ye+H5fF6KeNA1Be3@intel.com>
-References: <20220124122409.GA31673@kili>
+        id S1377066AbiAYG4d (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 25 Jan 2022 01:56:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43558 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1384463AbiAYGyb (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 25 Jan 2022 01:54:31 -0500
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97096C0612AF
+        for <kernel-janitors@vger.kernel.org>; Mon, 24 Jan 2022 21:28:38 -0800 (PST)
+Received: by mail-pj1-x102f.google.com with SMTP id my12-20020a17090b4c8c00b001b528ba1cd7so1618512pjb.1
+        for <kernel-janitors@vger.kernel.org>; Mon, 24 Jan 2022 21:28:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
+        b=KgSAeTgt4hnsb2SkXIzMaDaIygnal3l4bxa1TJGpKaFENHjzv8iRtvNSOFK2hvAMEV
+         1TPqdhWlGwIn3NWC6OZQX+VvNkrMoBTf5lX2pNEspgkOENFgiWuKVHoViPSjbPkyDDcx
+         Lt0wjImW0gU6dTAtHZsdyGK+vVUaVZwxPgqzrTNiR2/gRDHMYdzlDXGuQXthTL/46QGu
+         MLiinSnqhloAvgBQqONw2LyFkdUsmQI4eQVkkOtBQro5Fn0PiIy6Xti3WoggRDw89y3P
+         hY2Z3UCcTEf+VXueWgjZbbhtui/+U+p85ULOxL2HZl0YzOcrJt6zHt/8liShxaGw0zFn
+         PyFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
+        b=N3FFmZOEoI9bSc/dvb35Wfp+jYLqrEaXVX5oyHm/mjU8eWmbm7NZeW7dkqRsThybFU
+         fwnAWao8MfbwzZv6LAktNvLvO/C3DVSDCzwjdFRE4qAt7s5UZYdZapChINRbhIMCqxrn
+         BYqBdUE9rV5k1M8TkNRZzC8jK+RiqMbfLEkJ+suyTTEesyXni9OnO46o2yvbnwpDVSxQ
+         g04NNxu5N8v6jjQJLuQlFSGi0mTkCOizdXKf6nsnJLJVM7pl1mTU/sl6vjmxhgfjQZMX
+         p2U3SrOTzV8ZC8F0HENUJTCIuXJ64YDMybTp+bYTHb4pNmo3+7nVnHYOx7twYOhXOL+g
+         6AMA==
+X-Gm-Message-State: AOAM533mpRkL4MjdzfqIFVe2b8VoDLM/PfWfeXY/e0EFuWlPhPfit/p+
+        AF3bgPUddshBrmXDM8B3GmNbPyAl6ZlNRmW1t6I=
+X-Google-Smtp-Source: ABdhPJzGDvCs1drto6X5QCft3iwPX4DkojwejBgZKqEyCcaHdKQiAO/q7WT8evkS7QeER9GEF1tKYa06a82qpWlqVfk=
+X-Received: by 2002:a17:902:ea93:b0:14b:574e:4066 with SMTP id
+ x19-20020a170902ea9300b0014b574e4066mr6319446plb.118.1643088517904; Mon, 24
+ Jan 2022 21:28:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220124122409.GA31673@kili>
-X-Patchwork-Hint: comment
+Received: by 2002:a05:6a10:6704:0:0:0:0 with HTTP; Mon, 24 Jan 2022 21:28:37
+ -0800 (PST)
+Reply-To: danielseyba@yahoo.com
+From:   Seyba Daniel <fredjoness981@gmail.com>
+Date:   Tue, 25 Jan 2022 06:28:37 +0100
+Message-ID: <CAOJNp-XO9dNwkg5SvB00zwBkyyKBgC9EFDL2K6OVt3BZQy+dZQ@mail.gmail.com>
+Subject: Hello,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jan 24, 2022 at 03:24:09PM +0300, Dan Carpenter wrote:
-> Smatch detected a divide by zero bug in check_overlay_scaling().
-> 
->     drivers/gpu/drm/i915/display/intel_overlay.c:976 check_overlay_scaling()
->     error: potential divide by zero bug '/ rec->dst_height'.
->     drivers/gpu/drm/i915/display/intel_overlay.c:980 check_overlay_scaling()
->     error: potential divide by zero bug '/ rec->dst_width'.
-> 
-> Prevent this by ensuring that the dst height and width are non-zero.
-> 
-> Fixes: 02e792fbaadb ("drm/i915: implement drmmode overlay support v4")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Hello,
 
-Thanks. Pushed to drm-intel-next.
+I am so sorry contacting you in this means especially when we have never
+met before. I urgently seek your service to represent me in investing in
+your region / country and you will be rewarded for your service without
+affecting your present job with very little time invested in it.
 
-> ---
-> >From static analysis.  Not tested.
-> 
->  drivers/gpu/drm/i915/display/intel_overlay.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/i915/display/intel_overlay.c b/drivers/gpu/drm/i915/display/intel_overlay.c
-> index 1a376e9a1ff3..d610e48cab94 100644
-> --- a/drivers/gpu/drm/i915/display/intel_overlay.c
-> +++ b/drivers/gpu/drm/i915/display/intel_overlay.c
-> @@ -959,6 +959,9 @@ static int check_overlay_dst(struct intel_overlay *overlay,
->  	const struct intel_crtc_state *pipe_config =
->  		overlay->crtc->config;
->  
-> +	if (rec->dst_height == 0 || rec->dst_width == 0)
-> +		return -EINVAL;
-> +
->  	if (rec->dst_x < pipe_config->pipe_src_w &&
->  	    rec->dst_x + rec->dst_width <= pipe_config->pipe_src_w &&
->  	    rec->dst_y < pipe_config->pipe_src_h &&
-> -- 
-> 2.20.1
+My interest is in buying real estate, private schools or companies with
+potentials for rapid growth in long terms.
 
--- 
-Ville Syrjälä
-Intel
+So please confirm interest by responding back.
+
+My dearest regards
+
+Seyba Daniel

@@ -2,85 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB4F449E942
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jan 2022 18:47:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC6C949EE0A
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jan 2022 23:26:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238820AbiA0RrK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Jan 2022 12:47:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39816 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232342AbiA0RrK (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Jan 2022 12:47:10 -0500
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C88BDC061714
-        for <kernel-janitors@vger.kernel.org>; Thu, 27 Jan 2022 09:47:09 -0800 (PST)
-Received: by mail-oi1-x242.google.com with SMTP id g205so7323573oif.5
-        for <kernel-janitors@vger.kernel.org>; Thu, 27 Jan 2022 09:47:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=r4uL6sckAnaCJM6MEQaHZL7fDy5zSQzjqi9SEPfLKhw=;
-        b=WEH4SXdm61/elC6b5ZZ1ZZZw2TJcwuOGa1L9ycuTxjF/94Y2E2jdBt5umc7QqRb+RH
-         4neVmgsng+KDSwV96ub8sSJyV+PiwMXQrMOpEStXpXiINSN0wCl8WkIHuA/l27NZ9FV0
-         5OwO3PKTyFWKYPVYtmGXyf/Z9hMMkGpF64lU4aN4y+xYP2iEuQNJOLPHt5OvigfZH7eo
-         /7ZALU5HuuLAiG4Efpq2URo3kt3GuYIclwunqoHylpMjG5u3GdzE+CcH1a+zox1wdlHf
-         sKcIBoj6qF1qpE+J6X7zuFKAYlGmX9O51Dj7kVqnglKn3Yf/LrkRSp177Ym9MEEhqqAA
-         MF9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=r4uL6sckAnaCJM6MEQaHZL7fDy5zSQzjqi9SEPfLKhw=;
-        b=fCyE44KRN74KMajLwLUDJkH6kPuCgSG1n5/TPBa8oY6FEf0QSUQpJPg1POX5U8zbVV
-         DByBErdICOxOSE05GN2lA8GTmwJLEjmLE4xMfQ9s4SKSVWkIQWxesAd9mI8QMrUkf+Wa
-         yQeZ5twKlDQD9uauJv+JFCzhXmvV6UMuxGjFqwGbehpkbzFFkYxJ9nMyiJdvLezFcfgO
-         4H8OfUAqforL4QXKaNtA48tvbIIZ1A6OiPur5Ud54iVtDMlEdDPerG4tsNBUzbQXr+7i
-         Fr8yoqiusKtsMfijHXmO4fKG90hJF0TW/S7j5JJb/lZGQ1Jq+UJkOUYnwB34zzlgzlq+
-         CDGQ==
-X-Gm-Message-State: AOAM5310434QSC8xQZpzNSqcj5iMfu6GIIZK8ouLjOMttcaNi1gT7ykG
-        tlFicvXFWLD1w5yX8KNRLycJEpUzxJILPdH977Y=
-X-Google-Smtp-Source: ABdhPJwdhJf38b7ykmfVlokzFAwjFDuc04xMA8vaF0lTAMYMqDS5exXr8tH2pdbwEIvxW9hyT0a9ydhbsBqdWuYKmJY=
-X-Received: by 2002:aca:59d5:: with SMTP id n204mr3031756oib.291.1643305629092;
- Thu, 27 Jan 2022 09:47:09 -0800 (PST)
+        id S235004AbiA0W0P (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Jan 2022 17:26:15 -0500
+Received: from mga02.intel.com ([134.134.136.20]:42145 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229796AbiA0W0P (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Jan 2022 17:26:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643322375; x=1674858375;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DFD6DTmCY8gllT9JYJeAvRmQ1JOyPKL07DPGPY7ZyI4=;
+  b=Y/paVZcSxqR97XDvenTTbS0SFd2N/CLI89cOBa2XXXKwfgxrEUOO8A4P
+   x5n8E2eemWGdc/QaKJZO47n1nmGcf1JPI5rw7mEoJ4qNkQsJKV1tstaPM
+   QeItQtgTRvD6zHxG7Ffd1COknY7g2QInZ45JVcNIftpBYvQlR5L5rvQDJ
+   VY6c7HA3NN9ZCzogMOpwWRhLynmvYPiWDSbGY+Uyq4V/psxLmLlv1TtTS
+   EGGxcx4PO2Am73p6lA360kMqnkANMJYVzGZrReoYGdiE/eNydnq7X+wcS
+   m8jPY6OlCkIQEzioJ1BILML0nUTPLWQmeocj84ZqfwCmDLpsazvGXFoH+
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10239"; a="234360058"
+X-IronPort-AV: E=Sophos;i="5.88,321,1635231600"; 
+   d="scan'208";a="234360058"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2022 14:26:14 -0800
+X-IronPort-AV: E=Sophos;i="5.88,321,1635231600"; 
+   d="scan'208";a="535860787"
+Received: from jhbabine-mobl.amr.corp.intel.com (HELO intel.com) ([10.255.34.10])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2022 14:26:13 -0800
+Date:   Thu, 27 Jan 2022 17:26:11 -0500
+From:   Rodrigo Vivi <rodrigo.vivi@intel.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Thomas =?iso-8859-1?Q?Hellstr=F6m?= 
+        <thomas.hellstrom@linux.intel.com>,
+        David Airlie <airlied@linux.ie>,
+        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org
+Subject: Re: [Intel-gfx] [PATCH] drm/i915: delete shadow "ret" variable
+Message-ID: <YfMcAzJgjeqzLVEB@intel.com>
+References: <20220127085115.GD25644@kili>
 MIME-Version: 1.0
-Received: by 2002:a05:6838:e89b:0:0:0:0 with HTTP; Thu, 27 Jan 2022 09:47:08
- -0800 (PST)
-Reply-To: muali000111@gmail.com
-From:   MR MUSSA ALI <mussaaliooooo6@gmail.com>
-Date:   Thu, 27 Jan 2022 09:47:08 -0800
-Message-ID: <CAHpt-r3bvZ494Evof4-XNuF9rwBnUqQd+SK3GqPBT0RGuyPz7g@mail.gmail.com>
-Subject: Urgent Reply
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220127085115.GD25644@kili>
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dear  friend,
+On Thu, Jan 27, 2022 at 11:51:15AM +0300, Dan Carpenter wrote:
+> This "ret" declaration shadows an existing "ret" variable at the top of
+> the function.  Delete it.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-I know this means of communication may not be morally right to you as
-a person but I also have had a great thought about it and I have come
-to this conclusion which I am about to share with you.
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-INTRODUCTION: I am a assistance  and in one way or the other was hoping
-you will cooperate with me as a partner in a project of transferring
-an abandoned fund of a late customer of the bank worth of $18,000,000
-(Eighteen Million Dollars US).
+and pushing right now
 
-This will be disbursed or shared between the both of us in these
-percentages, 55% for me and 45% for you. Contact me immediately if
-that is alright for you so that we can enter in agreement before we
-start processing for the transfer of the funds. If you are satisfied
-with this proposal, please provide the below details for the Mutual
-Confidential Agreement:
-
-1. Full Name and Address
-2. Occupation and Country of Origin
-3. Telephone Number
-
-I wait for your response so that we can commence on this project as
-soon as possible.
-
-Regards,
-Mr. Mussa  Ali
+> ---
+>  drivers/gpu/drm/i915/i915_vma.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/i915_vma.c b/drivers/gpu/drm/i915/i915_vma.c
+> index 0026e85a0a0d..b66591d6e436 100644
+> --- a/drivers/gpu/drm/i915/i915_vma.c
+> +++ b/drivers/gpu/drm/i915/i915_vma.c
+> @@ -505,8 +505,6 @@ int i915_vma_bind(struct i915_vma *vma,
+>  			work->pinned = i915_gem_object_get(vma->obj);
+>  	} else {
+>  		if (vma->obj) {
+> -			int ret;
+> -
+>  			ret = i915_gem_object_wait_moving_fence(vma->obj, true);
+>  			if (ret) {
+>  				i915_vma_resource_free(vma->resource);
+> -- 
+> 2.20.1
+> 

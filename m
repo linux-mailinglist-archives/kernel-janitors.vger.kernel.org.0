@@ -2,92 +2,50 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 329D14A78ED
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Feb 2022 20:50:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 916854A7B22
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Feb 2022 23:33:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346998AbiBBTug (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Feb 2022 14:50:36 -0500
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:44018 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346977AbiBBTue (ORCPT
+        id S1347893AbiBBWdd convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Feb 2022 17:33:33 -0500
+Received: from 137.34.87.110.broad.fz.fj.dynamic.163data.com.cn ([110.87.34.137]:51856
+        "EHLO fjxxll.cn" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S235260AbiBBWdc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Feb 2022 14:50:34 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 212JoSCj069396;
-        Wed, 2 Feb 2022 13:50:28 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1643831428;
-        bh=PDV41FIeSzz6CCLPpJKxpTZ+EEr1ZsxD91v3CVrekpw=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=Byts02izTV24QPqQMvm1o8HQgFwAlPuhRXuVHdTQwuSTrSpon3CwGUodX5Rf8Ja2c
-         Kx10LjFBxnsOyB7F+q01zlk8J/m9Ehk9rx2dFqhLyh76s6oWtXHYiabA79zi6+p9N+
-         3FDnO835o+5SZvlIiKiVwBeOpNQGT/d2NfubiI0o=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 212JoSDs004660
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 2 Feb 2022 13:50:28 -0600
-Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Wed, 2
- Feb 2022 13:50:28 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE107.ent.ti.com
- (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Wed, 2 Feb 2022 13:50:28 -0600
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 212JoSHW004263;
-        Wed, 2 Feb 2022 13:50:28 -0600
-From:   Nishanth Menon <nm@ti.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        <maz@kernel.org>, <ssantosh@kernel.org>, <kristo@kernel.org>
-CC:     Nishanth Menon <nm@ti.com>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH] firmware: ti_sci: Fix compilation failure when CONFIG_TI_SCI_PROTOCOL is not defined
-Date:   Wed, 2 Feb 2022 13:50:27 -0600
-Message-ID: <164383139483.1725.16513553485038742707.b4-ty@ti.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <e6c3cb793e1a6a2a0ae2528d5a5650dfe6a4b6ff.1640276505.git.christophe.jaillet@wanadoo.fr>
-References: <e6c3cb793e1a6a2a0ae2528d5a5650dfe6a4b6ff.1640276505.git.christophe.jaillet@wanadoo.fr>
+        Wed, 2 Feb 2022 17:33:32 -0500
+Received: from Unknown (unknown [190.239.24.2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by fjxxll.cn (Postfix) with ESMTPSA id 4862450C5F00;
+        Thu,  3 Feb 2022 00:50:38 +0800 (CST)
+Message-ID: <7E7BCD9E95416FDC00054CF105BF193D@pceyklz>
+Reply-To: "Fredrik Elvebakk" <fcresswell9@gmail.com>
+From:   "Fredrik Elvebakk" <investment@dnb.no>
+Subject: Re:
+Date:   Wed, 2 Feb 2022 08:49:16 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain;
+        format=flowed;
+        charset="windows-1251";
+        reply-type=original
+Content-Transfer-Encoding: 8BIT
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Windows Live Mail 14.0.8117.416
+X-MimeOLE: Produced By Microsoft MimeOLE V14.0.8117.416
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Christophe JAILLET,
 
-On Thu, 23 Dec 2021 17:23:00 +0100, Christophe JAILLET wrote:
-> Remove an extra ";" which breaks compilation.
-> 
-> 
+Hello
 
-I have applied the following to branch ti-drivers-soc-next on [1].
-Thank you!
+I'm a senior Account manager in BITCOIN MINING AND INVESTMENT COMPANY. Have you heard about bitcoin mining and investment before.?
+ 
+Do you know that you can make up to $30,000 daily in bitcoin mining directly to your bitcoin wallet, bank account or any withdrawal details you wish to. I’m willing to teach you about bitcoin mining, coach you on how to invest and work with you.
 
-[1/1] firmware: ti_sci: Fix compilation failure when CONFIG_TI_SCI_PROTOCOL is not defined
-      commit: 043cfff99a18933fda2fb2e163daee73cc07910b
+If you are interested... I can help you earn that amazing profit you desire because I use the most sophisticated bitcoin and cryptocurrency mining machines and personal developed analysis intertwined with my wealth of experience which enables me to earn huge profit and that is guaranteed.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent up the chain during
-the next merge window (or sooner if it is a relevant bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-[1] git://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
--- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
-
+Kind regards 
+Fredrik Elvebakk

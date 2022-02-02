@@ -2,59 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABFC64A6F56
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Feb 2022 12:02:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60C7C4A6D8C
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Feb 2022 10:12:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232745AbiBBLCM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Feb 2022 06:02:12 -0500
-Received: from mail.profitfirm24.com.pl ([212.237.10.110]:58976 "EHLO
-        mail.profitfirm24.com.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343647AbiBBLCL (ORCPT
+        id S245334AbiBBJMv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Feb 2022 04:12:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54178 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245328AbiBBJMu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Feb 2022 06:02:11 -0500
-Received: by mail.profitfirm24.com.pl (Postfix, from userid 1001)
-        id 0B95CA4479; Tue,  1 Feb 2022 08:32:25 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=profitfirm24.com.pl;
-        s=mail; t=1643704425;
-        bh=M1ZVeu3q6Upppe+FUx/3rgI7MKJXh389NZDbgCK1SX4=;
-        h=Date:From:To:Subject:From;
-        b=SSvOKEjIWuudTTd7AEs5JUmW0wQRs5iMy9Q6YdhcWTiWMnWAZBTw3GJeRf18w76G2
-         TKX3PqYK27puWGgvy7gT1hPj0KWXoUreW3j4ik9LG8722lzIK4473L+RubzKhKZDls
-         k8zlpPpa0zmbGHv1AP3TdamtEG7cWiiiuTS8n3n4kFsjFy8SD8qNGUUP6tOlWE5xaK
-         zsd/xabRriLkGT5bRJTMQFt9ECW72QCsM4ixarXXZWVm1qTXXE4Nq82PPWs94eet0t
-         07Ng7bAXcSAcYMfF0eUmRbZxG7Cqj1zOSeBiDPAoCXgohzN0yth4i/zO4r9ZSRFjJR
-         1pv+IJvntVEPA==
-Received: by profitfirm24.com.pl for <kernel-janitors@vger.kernel.org>; Tue,  1 Feb 2022 08:31:57 GMT
-Message-ID: <20220201074652-0.1.b.2ioe.0.bmi922ixgn@profitfirm24.com.pl>
-Date:   Tue,  1 Feb 2022 08:31:57 GMT
-From:   =?UTF-8?Q? "Arkadiusz_Soko=C5=82owski" ?= 
-        <arkadiusz.sokolowski@profitfirm24.com.pl>
-To:     <kernel-janitors@vger.kernel.org>
-Subject: Koszty instalacji fotowoltaicznej
-X-Mailer: mail.profitfirm24.com.pl
+        Wed, 2 Feb 2022 04:12:50 -0500
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B958BC061714;
+        Wed,  2 Feb 2022 01:12:49 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id v13so36944416wrv.10;
+        Wed, 02 Feb 2022 01:12:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yJdtPOjpOJxcw/bDrep6QyoQiiLSPQ6yNsHfnZN05PI=;
+        b=jSUB4XrIRP6GTtKBT+hq9g63X7O1VislQePExHgAwMfwlO0SqMVeEd9JKZ9CJhFR+W
+         Wj5881Lad6UA9L/qk4xuwZlu6TUoOT3tuTZ5J5cdPCM9QdUu576JUaIjlOLdyG7enFlS
+         UdQIzMT6nYHC16AQoyJvWtGdya1EP48iuJxZ5E9I/ApEJHleOVYvTB7ff+4BrbCcN55y
+         IriE6ufcTxAYYFgTIoLHliIlDqlVGXl1NzivvraBEMHgtEtNvgb7ewKj96yTs5x+yJwe
+         OonhUvWaanyy7zyxFTocEz1LBO0k+ba1vZmXEGTJFeBax7RYM9352e6e3sSn0ZeuyqY0
+         76GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yJdtPOjpOJxcw/bDrep6QyoQiiLSPQ6yNsHfnZN05PI=;
+        b=oqZ/49w8hghBuxrfOaiXr3ruKvXYX+wqoU249sELD7HGFVjcL7/vSI0JEq064OAKZ9
+         oIf8vLhVAQYdEpteR2j6wopzOZwQVY5Ljx8vLa0/X0x/74xzN/6G+dzJ4jVH0hHmKDNT
+         EFaYIFcrGi89A2r38fSxdI8JfOPnCVPK9D5e5jroXtN6+IW7CjGQLZnF6PP0fdj5FRTE
+         YFF4h0QQLIs+c3nGX67U1sfneCPScIqXy83+88prJ5QveSR2zWciZ/+2mmsb8GavR4XW
+         Os3h4FSn+Jha7gqkyhtv4CNepKAHoLNPxVH1pXAZsCIwb+KVvz+slzhM/nQLr6rcFRvW
+         n13Q==
+X-Gm-Message-State: AOAM5310XzHhoH7CeR+kaKSiMHW5upRr5/Df5HGTGqY6Xno0XhmdXjtw
+        Ksnh19/MYYmynKQuoE7kVQU=
+X-Google-Smtp-Source: ABdhPJzGm5XRxQrPBOIGpKj/DmunuAW2c5T5gyDjptyQR+b0izn4UDCqFxguQioa4WWh87M3GLZQvQ==
+X-Received: by 2002:a5d:6d82:: with SMTP id l2mr24731664wrs.236.1643793168264;
+        Wed, 02 Feb 2022 01:12:48 -0800 (PST)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id b11sm4112779wmq.46.2022.02.02.01.12.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Feb 2022 01:12:47 -0800 (PST)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Sebastian Reichel <sre@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+        Hans de Goede <hdegoede@redhat.com>, linux-pm@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] power: supply: axp288_fuel_gauge: Fix spelling mistake "resisitor" -> "resistor"
+Date:   Wed,  2 Feb 2022 09:12:46 +0000
+Message-Id: <20220202091246.580091-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dzie=C5=84 dobry,
+There is a spelling mistake in a MODULE_PARM_DESC description. Fix it.
 
-stworzyli=C5=9Bmy specjaln=C4=85 ofert=C4=99 dla firm, na kompleksow=C4=85=
- obs=C5=82ug=C4=99 inwestycji w fotowoltaik=C4=99. =20
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/power/supply/axp288_fuel_gauge.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Specjalizujemy si=C4=99 w zakresie doboru, monta=C5=BCu i serwisie instal=
-acji fotowoltaicznych, dysponujemy najnowocze=C5=9Bniejszymi rozwi=C4=85z=
-ania, kt=C3=B3re zapewni=C4=85 Pa=C5=84stwu oczekiwane rezultaty.
+diff --git a/drivers/power/supply/axp288_fuel_gauge.c b/drivers/power/supply/axp288_fuel_gauge.c
+index dcedbc59732d..13be2c1d6528 100644
+--- a/drivers/power/supply/axp288_fuel_gauge.c
++++ b/drivers/power/supply/axp288_fuel_gauge.c
+@@ -91,7 +91,7 @@
+ 
+ static bool no_current_sense_res;
+ module_param(no_current_sense_res, bool, 0444);
+-MODULE_PARM_DESC(no_current_sense_res, "No (or broken) current sense resisitor");
++MODULE_PARM_DESC(no_current_sense_res, "No (or broken) current sense resistor");
+ 
+ enum {
+ 	QWBTU_IRQ = 0,
+-- 
+2.34.1
 
-Mo=C5=BCemy przygotowa=C4=87 dla Pa=C5=84stwa wst=C4=99pn=C4=85 kalkulacj=
-=C4=99 i przeanalizowa=C4=87 efekty mo=C5=BCliwe do osi=C4=85gni=C4=99cia=
-=2E
-
-Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
-temacie?
-
-
-Pozdrawiam
-Arkadiusz Soko=C5=82owski

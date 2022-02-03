@@ -2,138 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 004134A8293
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Feb 2022 11:45:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 142504A8BEC
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Feb 2022 19:52:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241083AbiBCKpB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Feb 2022 05:45:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:52097 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230289AbiBCKpB (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Feb 2022 05:45:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1643885100;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=6jbdwerPehMJZgP+utUUo4nFfSR4t23J67pZxvwQ5qI=;
-        b=THoo2sCHGlzI7XmEfjdo73E9fXt7P1II1UXaK2C+7LrlFmotGQ2eF8qol6f/3h1WZHxnoI
-        DqwCFjG/t67aVHUvgj8mfDSsPU2lGVSdEAbxrpctpyjXD7nblWsnLo50IyJ+vZRrkiK3kV
-        /1m4x1Y0Am/5BnfccApaVus+HJ0j7so=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-264-0lj9q-tPMjSPMuI0Cfy4LA-1; Thu, 03 Feb 2022 05:44:59 -0500
-X-MC-Unique: 0lj9q-tPMjSPMuI0Cfy4LA-1
-Received: by mail-ed1-f69.google.com with SMTP id f21-20020a50d555000000b00407a8d03b5fso1235663edj.9
-        for <kernel-janitors@vger.kernel.org>; Thu, 03 Feb 2022 02:44:59 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=6jbdwerPehMJZgP+utUUo4nFfSR4t23J67pZxvwQ5qI=;
-        b=ZAWOkgYjtOWqe6MfRqQeb29bGBdwzprFYVj4KYfSuEkLK5QqA0Yvensy10IumQ1qif
-         TMO2CvfO61/gzOMZGE1vmVzHcjjmskraQXNTQRy8Krj5MuQ7jVZim2Go7+NDFACI5iNm
-         zkN9jTcF6YD6sTQAc/6dXZz1RTqmrZer/7aN8eLp601I/PT89HCNLhoKMitKEdZzSsFr
-         NeFfoKA9qh5wv2fPlMqVYLXaOweGF7EIC+qauTpCVFVUG6QiZz2PhfTF2Gub4zi6Unsj
-         vI32/xT8dbS97SNWjg9zWJddH/O1Y6B4CfsTRcPPI9X3+2HSrte+PaXq/pmVgLfMzcVy
-         duUg==
-X-Gm-Message-State: AOAM531aAtnTeyGt1xW9nm/rh3FuXvTnX60gxYYV0wF2wMMGmoG/GD9a
-        fP9g5DpIfzIsjhH0bapms4vvJPZ5DCfFECDlmIbXv+Oxek8OgBK+FM1IGEkD/AC5V9T6v4gvf9Z
-        O0FB63VZidmLdDZJ72LxKBAmzcH8K
-X-Received: by 2002:a05:6402:348a:: with SMTP id v10mr34614486edc.249.1643885098345;
-        Thu, 03 Feb 2022 02:44:58 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJziGnZ4JGjZ6FxAD97378swmhF6EsF+lw6m58rqHfjOByG6S7DBP89wcwicAJQgVUaAaJkrQw==
-X-Received: by 2002:a05:6402:348a:: with SMTP id v10mr34614476edc.249.1643885098152;
-        Thu, 03 Feb 2022 02:44:58 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id c14sm22295393edy.66.2022.02.03.02.44.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Feb 2022 02:44:57 -0800 (PST)
-Message-ID: <155858a5-1736-caee-d44d-b56e54797664@redhat.com>
-Date:   Thu, 3 Feb 2022 11:44:56 +0100
+        id S1353575AbiBCSwo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Feb 2022 13:52:44 -0500
+Received: from [106.75.164.200] ([106.75.164.200]:65287 "EHLO ts3card.com"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1353537AbiBCSwo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 3 Feb 2022 13:52:44 -0500
+Message-ID: <20220204025244734757@ts3card.com>
+From:   =?utf-8?B?44OI44Oo44K/44OV44Kh44Kk44OK44Oz44K55qCq5byP5Lya56S+?= 
+        <info@ts3card.com>
+To:     <kernel-janitors@vger.kernel.org>
+Subject: =?utf-8?B?44CQVFMzIFRTIENVQklDQ0FSROOAkemHjeimgQ==?=
+        =?utf-8?B?OuW/heOBmuOBiuiqreOBv+OBj+OBoOOBleOBhA==?=
+Date:   Fri, 4 Feb 2022 02:52:33 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH] surface: surface3-wmi: Simplify resource management
-Content-Language: en-US
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Mark Gross <markgross@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-References: <8b1a6d05036d5d9527241b2345482b369331ce5c.1643531799.git.christophe.jaillet@wanadoo.fr>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <8b1a6d05036d5d9527241b2345482b369331ce5c.1643531799.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: base64
+X-mailer: Pigbvabluf 7
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
+4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB
+4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB
+4pSB4pSBDQoNCuKYheOAgi46KjpUUyBDVUJJQyBDQVJE5Lya5ZOh5YCL5Lq65oOF5aCx5aSJ5pu0
+44CC4piF44CCLjoqOg0KDQrilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHi
+lIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHi
+lIHilIHilIHilIHilIHilIHilIHilIENCg0KDQpUUyBDVUJJQyBDQVJE5Lya5ZOh5qijDQoNCuOB
+k+OBruOBn+OBs+OBr+OAgVRTIENVQklDIENBUkRF44Oh44O844Or44K144O844OT44K544KS44GU
+5Yip55So44GE44Gf44Gg44GN44GC44KK44GM44Go44GG44GU44GW44GE44G+44GZ44CCDQoNCuW9
+k+ekvuOBr+OCu+OCreODpeODquODhuOCo+OCt+OCueODhuODoOOBruWkp+W5heOBquOCouODg+OD
+l+OCsOODrOODvOODieOCkuWun+aWveOBl+OBpuOBhOOCi+OBn+OCgeOAgeWAi+S6uuaDheWgseOB
+rg0K5YaN6KqN6Ki844GM5a6M5LqG44GZ44KL44G+44Gn44CBVFMgQ1VCSUMgQ0FSROODoeODs+OD
+kOODvOOBruOCteODvOODk+OCueOBr+OBmeOBueOBpuWBnOatouOBleOCjOOBvuOBmeOAgg0KDQrm
+nKzml6XjgYvjgonjgIFUUyBDVUJJQyBDQVJE44Oh44Oz44OQ44O844Gu44Om44O844K244O844GM
+6YCa5bi45L2/55So44GX44Gf44GE5aC05ZCI44Gv44CBMjTmmYLplpPku6XlhoXjgasNCuS7peS4
+i+OBruWAi+S6uuaDheWgseaUueWWhOiqjeiovOOCkuihjOOBhuW/heimgeOBjOOBguOCiuOBvuOB
+meaJv+iqjeW+jOOBq+OBruOBv+S9v+eUqOOBp+OBjeOBvuOBmSANCg0K44Ot44Kw44Kk44Oz6KqN
+6Ki8Omh0dHBzOi8vbXktdHMzY2FyZC1jb20uamFjY3NpY21jbHUudG9wDQoNCuOBk+OBruOCteOD
+vOODk+OCueOBr+OAgVRTIENVQklDIENBUkTjg6Hjg47jg5Djg7zlsILnlKjjga7pgJrnn6XjgrXj
+g7zjg5PjgrnjgafjgZnjgILjgZPjga7jg6Hjg7zjg6vjga7lhoXlrrkNCuOBq+OBlOazqOaEj+OB
+hOOBn+OBoOOBjeOAgeS4jeW/heimgeOBque0m+WkseOCkumBv+OBkeOBpuOBj+OBoOOBleOBhOOA
+gg0KDQrilI/ilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHi
+lIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHi
+lIHilIHilJMNCg0K44CA4pag5pys44Oh44O844Or44Gv6YCB5L+h5bCC55So44Gu44Gf44KB44CB
+44GT44Gh44KJ44Gu44Oh44O844Or44Ki44OJ44Os44K544Gr44GU6L+U5L+h44GE44Gf44Gg44GE
+44Gm44KCDQrjgIDjgIDlr77lv5zjga/jgYTjgZ/jgZfjgYvjga3jgb7jgZnjga7jgafjgZTkuobm
+ib/jgY/jgaDjgZXjgYTjgIINCuOAgOOAgOOBquOBiuOAgeacrOODoeODvOODq+OBq+OBpOOBhOOB
+puOBiuW/g+W9k+OBn+OCiuOBjOOBquOBhOWgtOWQiOOBq+OBr+OAgQ0K44CAIOOBiuaJi+aVsOOB
+p+OBmeOBjOOAgeS4i+iomOOBiuWVj+OBhOWQiOOCj+OBm+WFiOOBvuOBp+OBiumbu+ipseOBq+OB
+pumAo+e1oeOCkuOBiumhmOOBhOOBhOOBn+OBl+OBvuOBmeOAgg0KDQrjgIA9PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09DQoNCuOA
+gOKWoOeZuuihjO+8mlRTIENVQklDIENBUkTjgIzjg4bjgqPjg7zjgqjjgrnjgq3jg6Xjg7zjg5Pj
+g4Pjgq/jgqvjg7zjg4njgI0NCuOAgOOAgOOAgOOAgOOAgCBodHRwczovL3RzY3ViaWMuY29tLw0K
+44CA44CA44CA44CA44CA44OI44Oo44K/44OV44Kh44Kk44OK44Oz44K55qCq5byP5Lya56S+DQrj
+gIDjgIDjgIDjgIDjgIDjgJI0NTEtNjAxNOOAgOaEm+efpeecjOWQjeWPpOWxi+W4guilv+WMuueJ
+m+WztueUujbnlaox5Y+3DQoNCuOAgOKWoOacrOODoeODvOODq+OBq+OBpOOBhOOBpuOBruOBiuWV
+j+OBhOWQiOOCj+OBm++8mg0K4pePVE9ZT1RBLCBEQUlIQVRTVSwg44K444Kn44O844Og44K5LCDj
+g4jjg6jjgr/jg6zjg7Pjgr/jgqvjg7wgRkRD44GuDQrjgIDjgIDjgIDjgIDjgIDjgIBUUyBDVUJJ
+QyBDQVJELCBUUyBDVUJJQyBWSUVXIENBUkTjgpLjgYrmjIHjgaHjga7mlrnjga/jgZPjgaHjgokN
+CuOAgOOAgOOAgOOAgOOAgOOAgOOCpOODs+ODleOCqeODoeODvOOCt+ODp+ODs+ODh+OCueOCrw0K
+44CA44CA44CA44CA44CA44CAWyDmnbHkuqwgXeOAgDAz77yNNTYxN++8jTI1MTENCuOAgOOAgOOA
+gOOAgOOAgOOAgFvlkI3lj6TlsYtd44CAMDUy77yNMjM577yNMjUxMQ0KKDk6MDDvvZ4xNzozMCDl
+ubTkuK3nhKHkvJEg5bm05pyr5bm05aeL6Zmk44GPKQ0K4peP5LiK6KiY5Lul5aSW44Gu44Kr44O8
+44OJ5Lya5ZOh44GV44G+44Gv44CB44GK5omL5oyB44Gh44Gu44Kr44O844OJ5Yi46Z2i6KOP44Gr
+6KiY6LyJ44GuDQrjgIDjgIDjgIDjgIDjgIDjgIDjgqvjg7zjg4njgavplqLjgZnjgovjgYrllY/j
+gYTlkIjjgo/jgZvpm7voqbHnlarlj7fjgavjgYrjgYvjgZHjgY/jgaDjgZXjgYQNCuOAgOOAgOOA
+gOOAgOOAgA0K4pSX4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB
+4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB
+4pSB4pSB4pSB4pSbDQo=
 
-On 1/30/22 09:36, Christophe JAILLET wrote:
-> 's3_wmi.input' is a managed resource, so there should be no need to free it
-> explicitly.
-> 
-> Moreover, 's3_wmi' is a global variable. 's3_wmi.input' should be NULL
-> when this error handling path is executed, because it has not been
-> assigned yet.
-> 
-> All this is puzzling. So simplify it and remove a few lines of code to have
-> it be more straightforward.
-> 
-> Fixes: 3dda3b3798f9 ("platform/x86: Add custom surface3 platform device for controlling LID")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-
-Thank you for your patch, I've applied this patch to my review-hans 
-branch:
-https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
-
-Note it will show up in my review-hans branch once I've pushed my
-local branch there, which might take a while.
-
-Once I've run some tests on this branch the patches there will be
-added to the platform-drivers-x86/for-next branch and eventually
-will be included in the pdx86 pull-request to Linus for the next
-merge-window.
-
-Regards,
-
-Hans
-
-
-> ---
-> Compile tested only
-> ---
->  drivers/platform/surface/surface3-wmi.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/drivers/platform/surface/surface3-wmi.c b/drivers/platform/surface/surface3-wmi.c
-> index 09ac9cfc40d8..b9a4b2d81f4b 100644
-> --- a/drivers/platform/surface/surface3-wmi.c
-> +++ b/drivers/platform/surface/surface3-wmi.c
-> @@ -190,14 +190,11 @@ static int s3_wmi_create_and_register_input(struct platform_device *pdev)
->  
->  	error = input_register_device(input);
->  	if (error)
-> -		goto out_err;
-> +		return error;
->  
->  	s3_wmi.input = input;
->  
->  	return 0;
-> - out_err:
-> -	input_free_device(s3_wmi.input);
-> -	return error;
->  }
->  
->  static int __init s3_wmi_probe(struct platform_device *pdev)
-> 
 

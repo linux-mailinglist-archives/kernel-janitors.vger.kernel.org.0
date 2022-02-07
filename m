@@ -2,60 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF15B4AC0B0
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Feb 2022 15:12:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 933664AC0AA
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Feb 2022 15:12:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358085AbiBGOCK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Feb 2022 09:02:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38518 "EHLO
+        id S232563AbiBGOCH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Feb 2022 09:02:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345274AbiBGNkm (ORCPT
+        with ESMTP id S1388005AbiBGNrz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Feb 2022 08:40:42 -0500
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56CE0C043189;
-        Mon,  7 Feb 2022 05:40:42 -0800 (PST)
-Received: by mail-wr1-x431.google.com with SMTP id e3so10897665wra.0;
-        Mon, 07 Feb 2022 05:40:42 -0800 (PST)
+        Mon, 7 Feb 2022 08:47:55 -0500
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78F38C043188;
+        Mon,  7 Feb 2022 05:47:54 -0800 (PST)
+Received: by mail-wr1-x435.google.com with SMTP id u23so1110893wru.6;
+        Mon, 07 Feb 2022 05:47:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=jjxTRl/c4nrLxVy+a0+jLX2ZtSQhFhV7DHi5h4ELxr4=;
-        b=E+DyHE87RmaOz/LO2EGtRzJ7qReSsX8GI2mSUXxCy4Jb9z8abBB9IjlvhYdkQvxS+d
-         R8Sx1RmFrP21229QcZMtsm6EnCbvzpvQ/858oNxuiJxJu0W7LSB/cEhYpk9aT3nMcYWp
-         Tqd4zsXOmbtwCbQw+9jJiDJ8mIGtW+1QDwtv29bkCbYPPC9fkqVqtA3MUNZn+OR/rcdu
-         bhpBbP24HBiKTqH9nIBcYp9NoGtYXHgqiGso2mxnR9/MIrGUktDn2Si4E1Kfnf3sBbVp
-         EVOm61pTbrlOGKDYe9W1xJy9g/tr8ACXWYnALNw2MqAF1oVdfM3lx0f/9FiI96wlgbAe
-         UW5Q==
+        bh=bKcb6htcU3nqL3xVplZ7gYiatJOz+PCyFD5n/EZWoj0=;
+        b=j+4PquH5vQ/ytXnWXKd7Mwnr1N0q7MxKtLYjcLtMU+rSeTlZIpmk+erwRPZeqpj8he
+         0YBS9Pqhl0odXOIzEMcb07bJLy9apH/mcjGsC3/PtN0qZOmLoewHCYkGJS0UzP3zYfsd
+         +OdM1CAGbhDgNrJeLyVKCC6mfbKRO4E3S/JywHZJW9LqAFO8gCbht+dSRM6y/gsqa7V9
+         pZBbA/0EKyg9uRNCzAIXX+S0DUXLP2STHeavdPG1HfMOGcrAr0lQoetfrjgVD4ZPB0JU
+         GAJJUvobv1eRN1zxLWOLG7C9ySibU5HwzIwPB3FE+JJ3Z2kRmriXt/UYCt49htGKCwzP
+         vUmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=jjxTRl/c4nrLxVy+a0+jLX2ZtSQhFhV7DHi5h4ELxr4=;
-        b=wEQSSkhnC0Ek5Fi79F8i4jfkQccHBPQ52/PM07yt1VkadW8RefytzMi8jbV8NNlxoi
-         HNxf+P33U96Zb0gZLyPnKtn3ynVQ0Ztkx4q6BVgg7lVIkRRklTFVs1okxcjv3TBxxQPp
-         daswirRuJtwg5OCRHiAjDkHq5sZR6R/TqTMEcQoGb3qyBBcH+NDihNGV4zVvSpEHwrLq
-         0voGOYLyKR1RHeFoXS97wVETlhB5k7czO04aLc2N6DREY70DhY3mwQt7kfjv0PRcZQ3k
-         DqaXxueUQjU+atTTBJEdCYUCFglc1fjind0yKq7Br5+4bvHWXNIXpvC2WOf6FmIHG9X5
-         RI5Q==
-X-Gm-Message-State: AOAM531RHYbhf9P/FgYCQRlczdyjtTcLWca/s+/UqgHgPqJgHzo6IHq5
-        G/RsPPEgI9+M1li02TQRgmc=
-X-Google-Smtp-Source: ABdhPJxsup6qGXdvRsBdbwgeWEnB972cXcL5N67PKOnqUSoTorSOUP3oaLQaaGmhbM1OvqMP/UFcBQ==
-X-Received: by 2002:a5d:4528:: with SMTP id j8mr2904210wra.544.1644241240818;
-        Mon, 07 Feb 2022 05:40:40 -0800 (PST)
+        bh=bKcb6htcU3nqL3xVplZ7gYiatJOz+PCyFD5n/EZWoj0=;
+        b=jDUgcRghCtsfDRKH8praX0D7s2xT5KmIGMJedQJFGLaVUrF7yWNGM5PkWDvXqSLDmU
+         FXgk7OQYQb/ymfcz0SA/6uKWaToWXti95YbGIS1JiWsTrnR0+NdnjEbNTAXQ0vlivcdj
+         ITFYHJb+brADOBEmOZV0uhyhJRRW1xbKGiuWzwM0cjyBXFRcSxPecdg17zJPNrrI0ure
+         jvXt2vpVhs1YMhUVQZx0NENTq+APFkQ/v9W0ddi4YnN8384RHARa4L9SZLZiu9NQWUVL
+         RzFNFgdj+aBNWxKVI8gYBWYI3V4fJhKl5g+AIFHVK+l7v0DlVap305RuGwyIIrDbwDLo
+         Hzsg==
+X-Gm-Message-State: AOAM532mDCMp9BMLySkFBCuggSNS3hngf/bT6W4AoF3tkAFEEC8BY5kK
+        qqpDXy2iqWS05vFxpfwl0grS8MFr2VQ=
+X-Google-Smtp-Source: ABdhPJwYYMhMJYTcuBEPRJVRuqoQJcLpP6bMYyYxlUmAcDxFRMlI5/R0GAvjpeLVSrk9rF217IVB+w==
+X-Received: by 2002:adf:e8c3:: with SMTP id k3mr5315177wrn.713.1644241673103;
+        Mon, 07 Feb 2022 05:47:53 -0800 (PST)
 Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id 24sm1478380wmf.48.2022.02.07.05.40.40
+        by smtp.gmail.com with ESMTPSA id r2sm17339250wmq.0.2022.02.07.05.47.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Feb 2022 05:40:40 -0800 (PST)
+        Mon, 07 Feb 2022 05:47:52 -0800 (PST)
 From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Jan Kara <jack@suse.com>, Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        NeilBrown <neilb@suse.de>, linux-ext4@vger.kernel.org
+To:     Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ext2: remove unused pointer bdi
-Date:   Mon,  7 Feb 2022 13:40:39 +0000
-Message-Id: <20220207134039.337197-1-colin.i.king@gmail.com>
+Subject: [PATCH][next] intel_th: remove redundant early initialization of pointer hubdrv
+Date:   Mon,  7 Feb 2022 13:47:51 +0000
+Message-Id: <20220207134751.337775-1-colin.i.king@gmail.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -70,29 +68,29 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The call to bdi_congested has been removed and so the bdi pointer
-is no longer required. Remove it.
+Pointer hubdrv is being initialized with a value that is never read,
+it is being re-assigned the same value later on closer to where it
+is being first used. The initialization is redundant and can be
+removed.
 
-Fixes: 9bbab3a63d49 ("mm/fs: remove bdi_congested() and wb_congested() and related functions")
 Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 ---
- fs/ext2/ialloc.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/hwtracing/intel_th/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext2/ialloc.c b/fs/ext2/ialloc.c
-index d632764da240..998dd2ac8008 100644
---- a/fs/ext2/ialloc.c
-+++ b/fs/ext2/ialloc.c
-@@ -170,9 +170,6 @@ static void ext2_preread_inode(struct inode *inode)
- 	unsigned long offset;
- 	unsigned long block;
- 	struct ext2_group_desc * gdp;
--	struct backing_dev_info *bdi;
--
--	bdi = inode_to_bdi(inode);
+diff --git a/drivers/hwtracing/intel_th/core.c b/drivers/hwtracing/intel_th/core.c
+index 7e753a75d23b..f8fa0bd414fb 100644
+--- a/drivers/hwtracing/intel_th/core.c
++++ b/drivers/hwtracing/intel_th/core.c
+@@ -1037,7 +1037,7 @@ int intel_th_set_output(struct intel_th_device *thdev,
+ 			unsigned int master)
+ {
+ 	struct intel_th_device *hub = to_intel_th_hub(thdev);
+-	struct intel_th_driver *hubdrv = to_intel_th_driver(hub->dev.driver);
++	struct intel_th_driver *hubdrv;
+ 	int ret;
  
- 	block_group = (inode->i_ino - 1) / EXT2_INODES_PER_GROUP(inode->i_sb);
- 	gdp = ext2_get_group_desc(inode->i_sb, block_group, NULL);
+ 	/* In host mode, this is up to the external debugger, do nothing. */
 -- 
 2.34.1
 

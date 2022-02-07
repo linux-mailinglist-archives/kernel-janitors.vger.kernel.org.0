@@ -2,58 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B1524AC0BC
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Feb 2022 15:12:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0260C4AC14A
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Feb 2022 15:33:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235925AbiBGOBR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Feb 2022 09:01:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53068 "EHLO
+        id S1344970AbiBGOcY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Feb 2022 09:32:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1390703AbiBGN7q (ORCPT
+        with ESMTP id S240034AbiBGOGV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Feb 2022 08:59:46 -0500
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5DE8C0401C1;
-        Mon,  7 Feb 2022 05:59:45 -0800 (PST)
-Received: by mail-wr1-x436.google.com with SMTP id r29so7007928wrr.13;
-        Mon, 07 Feb 2022 05:59:45 -0800 (PST)
+        Mon, 7 Feb 2022 09:06:21 -0500
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B984C0401C3;
+        Mon,  7 Feb 2022 06:06:20 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id k18so24984471wrg.11;
+        Mon, 07 Feb 2022 06:06:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=mcWbPuUD9zG5TmO7Q6+xyivnOj6cc3M0HEAfvxU+7N0=;
-        b=itcITwBvp8aqCL8K9Inahp3hlAut70WgrUe2y7ZIrA9VKxPz5YUyvnE3a6pyDhe7A5
-         9vh8ylalPe4+CfW7VnQE6FYt0nWmKLEUUimUbA5rYZRjK6R/yR/rnCzDMvMwOGqwR/Zi
-         hZMn8ocr5DmpXhxBGcPQUF59bHnfxyRNzw9w21vKyd8f6n3YNIgvLlDsCdVZB41xbJNh
-         rOJIDTfuOSzYS4lLL/sIW6fSo6jCT0OF5a+UjFIc0coPFk15bf2HDT8tVKRWAPjCj7yU
-         YgAlaJkL6dDuWNxsVtQu0zHa2myy9fMZ2AJufcculCPCgrzfcE7r/xpAKnBJUON6DL2u
-         CeEA==
+        bh=tBKWnS+g7You4oahdBZV1moenSdw6O464+uIoP4Ehfw=;
+        b=dXHUkHHHLQVcF081BhnShtt/ILiXpVb0T3NzyCo3i0nakhqxWs2EPz9K/tIrOG4t/q
+         ZmJBv6zMZ9oe2EmWqrcUsw0RWxqGsxtBSS4T4i2UE1VGygzOS0q5+qq1slHJLFk61oua
+         32mR5gFhRVh0FEPZ8PCqrbEPsdeUVImaqnqPUkg2cYvsF55RNOzS7L/8Bl9l/pljVxiV
+         Tc8pb7VPlg5FpOF2bd6lqh7OJ7EpRKlboqsn/+n+WB8gl5tuYmx6b8XTa6k97x7IPPxt
+         q7Mvq5E2Hi7r8q6eIWDyZ0jZ+gnBR4HFiHWwyOlmMbRQeGVbu6rIxc85DNgUrhocF6eh
+         OF4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=mcWbPuUD9zG5TmO7Q6+xyivnOj6cc3M0HEAfvxU+7N0=;
-        b=j3Gl14xoooPcjP0mo/aGRjYZL25QLYbD8byGfeFDpuxkgVYIOxjTyV1EpWTsHp97x3
-         9BG808HY0RBpvkxum89K7bU4RcCqKN9ay+VFYVQ9Hh7M7BryB2a1DApk4pR5hBB9OOdX
-         ioGI0nLq+kcxC1UgDfVzdduWUmI+vK+lzSQuR4+CNU+QFuLAtOp/CF2YWEFUDjw1FfX5
-         LmbreM0KP1wZSVFa8gZ52vLlgvjaJeCJP3jDCNgtajD6qL0UumEO7PfunoNbN4y3TeVH
-         D3iujowfkeqao+weeGKMWzUlWXX7fRQ8CPDmelrNC4y5ZllZxMbb64ibm5TOGJa2O4h7
-         1/+A==
-X-Gm-Message-State: AOAM533WlbpllNtbtjjP7s2C9OjNbhHQkAMrWVyQy0y9XUaqRwwV/4bZ
-        t7vsNoT4FMNpVxyXuWUq7Yfodq/3WGA=
-X-Google-Smtp-Source: ABdhPJwoYphSKekOyNfRZroxq98own7clIJ9kHg2JAwpfGVrwxrfnBnu7pYQNCeL7DH24pgwwfvC9g==
-X-Received: by 2002:adf:f312:: with SMTP id i18mr9978656wro.441.1644242384384;
-        Mon, 07 Feb 2022 05:59:44 -0800 (PST)
+        bh=tBKWnS+g7You4oahdBZV1moenSdw6O464+uIoP4Ehfw=;
+        b=Oa/vru13XJJl4LvgtF3HepbIBVdR4bkWMYXBGmJKDEtgEOg+fCVhJ5y606pI0+j3On
+         z/bpDHUSqPjV45QanUjDPUbe0jO9+8iTMBufbfyBuHrlP9u7dYLJq0d2Zs9G2rbA0Abs
+         SkNk2F7KlvjzxoeeAPdbnK3cDNYFaLex7KlBfNzZpeI85+UbXtvMsXt75LVZQHDRSNiy
+         GPumB6A2pOrV/shzsFCOFykR+hIGIrb7Fhby21HyYDumG4RTen21sX0KAUQe+PrtW8mz
+         pCYsWDpwZ8yaSapCQx0vliUW9Q7kWpgya+WMrs2EBKoyctwlR3jlNAfI1Djtpp6TxZLA
+         Fufw==
+X-Gm-Message-State: AOAM532iJqyj9LXFZTcE/MgVSXvk0uu3jd+wf3JxI+3EsHzBGYXZ5fSR
+        UU+n4dXBn5j/LdfAjulZvZsdmh7TCEGCJQ==
+X-Google-Smtp-Source: ABdhPJyKet9Uuh60UU/p6hDZJIyCF7NM/ixYXuVRcY9k1xOZeokpEzA36xzaIhpdpjAHmboNRpfbrw==
+X-Received: by 2002:a05:6000:1866:: with SMTP id d6mr10140333wri.309.1644242778904;
+        Mon, 07 Feb 2022 06:06:18 -0800 (PST)
 Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id x7sm9910183wrt.77.2022.02.07.05.59.43
+        by smtp.gmail.com with ESMTPSA id n10sm4140786wrt.93.2022.02.07.06.06.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Feb 2022 05:59:43 -0800 (PST)
+        Mon, 07 Feb 2022 06:06:18 -0800 (PST)
 From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        alsa-devel@alsa-project.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: adc: cpcap-adc: remove redundant assignment to variable cal_data_diff
-Date:   Mon,  7 Feb 2022 13:59:43 +0000
-Message-Id: <20220207135943.340629-1-colin.i.king@gmail.com>
+Subject: [PATCH] ALSA: usb-audio: remove redundant assignment to variable c
+Date:   Mon,  7 Feb 2022 14:06:17 +0000
+Message-Id: <20220207140617.341172-1-colin.i.king@gmail.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -68,28 +69,28 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The variable cal_data_diff is being assigned a value that is never read,
-it is being re-assigned later on with a new value in both paths of an
-if statement. The assignment is redundant, so remove it.
+The variable c is being initialized in an outer for-loop and also
+re-initialized inside an inner for-loop. The first initialization
+is redundant and can be removed.
 
 Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 ---
- drivers/iio/adc/cpcap-adc.c | 2 +-
+ sound/usb/mixer_s1810c.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/cpcap-adc.c b/drivers/iio/adc/cpcap-adc.c
-index 40e59f4c95bc..b6c4ef70484e 100644
---- a/drivers/iio/adc/cpcap-adc.c
-+++ b/drivers/iio/adc/cpcap-adc.c
-@@ -474,7 +474,7 @@ static int cpcap_adc_calibrate_one(struct cpcap_adc *ddata,
- 	for (i = 0; i < CPCAP_ADC_MAX_RETRIES; i++) {
- 		calibration_data[0]  = 0;
- 		calibration_data[1]  = 0;
--		cal_data_diff = 0;
-+
- 		cpcap_adc_setup_calibrate(ddata, channel);
- 		error = regmap_read(ddata->reg, calibration_register,
- 				    &calibration_data[0]);
+diff --git a/sound/usb/mixer_s1810c.c b/sound/usb/mixer_s1810c.c
+index 0255089c9efb..fac4bbc6b275 100644
+--- a/sound/usb/mixer_s1810c.c
++++ b/sound/usb/mixer_s1810c.c
+@@ -221,7 +221,7 @@ static int snd_s1810c_init_mixer_maps(struct snd_usb_audio *chip)
+ 	e = 0xbc;
+ 	for (n = 0; n < 2; n++) {
+ 		off = n * 18;
+-		for (b = off, c = 0; b < 18 + off; b++) {
++		for (b = off; b < 18 + off; b++) {
+ 			/* This channel to all outputs ? */
+ 			for (c = 0; c <= 8; c++) {
+ 				snd_s1810c_send_ctl_packet(dev, a, b, c, 0, e);
 -- 
 2.34.1
 

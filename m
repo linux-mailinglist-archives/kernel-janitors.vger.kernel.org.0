@@ -2,88 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D5634ABF9E
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Feb 2022 14:28:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A6984AC0B1
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Feb 2022 15:12:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234943AbiBGN2F (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Feb 2022 08:28:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47462 "EHLO
+        id S241990AbiBGOCI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Feb 2022 09:02:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1446548AbiBGMn3 (ORCPT
+        with ESMTP id S1381046AbiBGNdd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Feb 2022 07:43:29 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E7C9C033256;
-        Mon,  7 Feb 2022 04:40:12 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0AA03B81247;
-        Mon,  7 Feb 2022 12:40:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 87459C340EF;
-        Mon,  7 Feb 2022 12:40:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644237609;
-        bh=xFqWxcO0ZOFW/A0bFuTO/amUCZo5jjYUv6KiZcjHi5Q=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=rFKREdmAVUEy93hgb+e2gXnS3oD4Lif8PJ9dBEKp4dIjT0SXhX6zYy0pvaSdbznMI
-         gB/8qV56WzbndURDcLYY+Il5NrsD6bmnpmXRFsgPkPVRe5YgWLZaAiZdAQ9zkhTb/U
-         7MULBDGE8Ze9fGX2S84GKTWlqNv1GVz9oEJn0FrRYFo4LGgByONUUwVv8zBvXC5REi
-         kyvaUJwbgsD+QQkdG4FQeFOJG3h3Xz6uc/b6DaV4vlZRr/vtf3NTip5Y9ONHF3ord4
-         iu6o2rN7KujIfsyQEvsEZdWvnJ6sBeAkJ6TYx3nlacMJpm6DRUofn0qEgK7W5ysXC3
-         CTAR351EQLQUw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 6C263E6BB3D;
-        Mon,  7 Feb 2022 12:40:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Mon, 7 Feb 2022 08:33:33 -0500
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AF9FC043189;
+        Mon,  7 Feb 2022 05:33:32 -0800 (PST)
+Received: by mail-wm1-x335.google.com with SMTP id v129so6337305wme.2;
+        Mon, 07 Feb 2022 05:33:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=V9QEgmdSl8jrpLmboxH3MycHRrNVtMiq+z3Om5YP+L4=;
+        b=ZeXCogp2RMZJX5bCWf5GbVepmcsMjxXm6LLMgfx0ol8BSDdh8zAsv+NO9/LnCpM0jB
+         bVrc/woX1x72Ie3U1zOWBW+QSDGWgRoIhxbPYK3X2ZzjKJDMjnPpbYMJVM6Boqr2sPeL
+         /6sCSMQUF7rByaBI1nwjEu/MhYDhu1qvv+5TCmAdzNs7BgTo2djdrGjEPKsqW7EJefsD
+         P3neh3NRyJGCLgoNX1YxdsjWaL698+tF51+kY7JtQSg/bF3ycqX9PoPavxEQn+06JR4T
+         r2XMKw7uXjNmpoJYCU770I/sBp4rR71G5lrGSFrHU/NEg1K3bRMhiRMuuK+eyQHFr6Fw
+         u8yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=V9QEgmdSl8jrpLmboxH3MycHRrNVtMiq+z3Om5YP+L4=;
+        b=hJAE/FGJ5sfq/a269J/NFlK9/RZWFhoSeD1eWoHdDgKmPyT0Net15V3f5swN2xv58G
+         ccUHSCExOlLT9h+7HOJjrXp0gIedPUjgIwzbveqSx5thHPVrvXnBgiQjKwIZ/FqB5ZFY
+         QhEpGnZPhpCsZwZNn0KrNF4KHPhvMDKeeZwfdDEk5PLjKio5gyeuQb7Am0KsezISk6a9
+         Ktg7BLS3l1i1FutbamshnrFKEZYnUGcLmi8RUlf5PX4hgP7wXy6RE7klayg6hUhkokRO
+         RJIs2Gr8adbAE/o4edtBVjHISu/t37QjJ5DnYUZxmfvFufe/8+aFbvSc+yRhQa5AOkbH
+         GXBg==
+X-Gm-Message-State: AOAM533fI1CIBL30lwDqLqgWMGmoZcEUqhsIkv/Y/HnjxFyPa49chFVZ
+        UprX5CeTAJMQUC3cj6gAA1s=
+X-Google-Smtp-Source: ABdhPJylUXyrmFmYPgL7jbK0a9g9xkwVwdjDV+JW8NPwgewUuCwNlNWvwo/VRNkr3mzIoT3RoF/Q2Q==
+X-Received: by 2002:a7b:c84f:: with SMTP id c15mr14361555wml.181.1644240811059;
+        Mon, 07 Feb 2022 05:33:31 -0800 (PST)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id bg23sm11366849wmb.5.2022.02.07.05.33.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Feb 2022 05:33:30 -0800 (PST)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] brcmfmac: of: remove redundant variable len
+Date:   Mon,  7 Feb 2022 13:33:29 +0000
+Message-Id: <20220207133329.336664-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 1/2 net-next] net: dsa: mv88e6xxx: Fix off by in one in
- mv88e6185_phylink_get_caps()
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <164423760943.4874.16326636205625200936.git-patchwork-notify@kernel.org>
-Date:   Mon, 07 Feb 2022 12:40:09 +0000
-References: <20220207082253.GA28514@kili>
-In-Reply-To: <20220207082253.GA28514@kili>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     andrew@lunn.ch, rmk+kernel@armlinux.org.uk,
-        vivien.didelot@gmail.com, f.fainelli@gmail.com, olteanv@gmail.com,
-        davem@davemloft.net, kuba@kernel.org, kabel@kernel.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
+The variable len is being assigned bit is never used. The variable
+and the strlen call are redundant and can be removed.
 
-This series was applied to netdev/net-next.git (master)
-by David S. Miller <davem@davemloft.net>:
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-On Mon, 7 Feb 2022 11:22:53 +0300 you wrote:
-> The <= ARRAY_SIZE() needs to be < ARRAY_SIZE() to prevent an out of
-> bounds error.
-> 
-> Fixes: d4ebf12bcec4 ("net: dsa: mv88e6xxx: populate supported_interfaces and mac_capabilities")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/net/dsa/mv88e6xxx/chip.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Here is the summary with links:
-  - [1/2,net-next] net: dsa: mv88e6xxx: Fix off by in one in mv88e6185_phylink_get_caps()
-    https://git.kernel.org/netdev/net-next/c/dde41a697331
-  - [2/2,net-next] net: dsa: mv88e6xxx: Unlock on error in mv88e6xxx_port_bridge_join()
-    https://git.kernel.org/netdev/net-next/c/ff62433883b3
-
-You are awesome, thank you!
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+index 5708de1d9f26..8623bde5eb70 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+@@ -71,14 +71,13 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+ 	/* Set board-type to the first string of the machine compatible prop */
+ 	root = of_find_node_by_path("/");
+ 	if (root) {
+-		int i, len;
++		int i;
+ 		char *board_type;
+ 		const char *tmp;
+ 
+ 		of_property_read_string_index(root, "compatible", 0, &tmp);
+ 
+ 		/* get rid of '/' in the compatible string to be able to find the FW */
+-		len = strlen(tmp) + 1;
+ 		board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
+ 		if (!board_type) {
+ 			of_node_put(root);
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 

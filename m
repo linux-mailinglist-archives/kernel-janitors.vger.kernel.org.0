@@ -2,104 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C01F4AD3DA
-	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Feb 2022 09:44:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE9DA4AD413
+	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Feb 2022 09:54:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352173AbiBHIo1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 8 Feb 2022 03:44:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41184 "EHLO
+        id S1352134AbiBHIyH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 8 Feb 2022 03:54:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348310AbiBHIoC (ORCPT
+        with ESMTP id S1352195AbiBHIyF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 8 Feb 2022 03:44:02 -0500
-Received: from mail-ua1-x944.google.com (mail-ua1-x944.google.com [IPv6:2607:f8b0:4864:20::944])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11331C03FEFC
-        for <kernel-janitors@vger.kernel.org>; Tue,  8 Feb 2022 00:44:01 -0800 (PST)
-Received: by mail-ua1-x944.google.com with SMTP id g15so10369080uap.11
-        for <kernel-janitors@vger.kernel.org>; Tue, 08 Feb 2022 00:44:01 -0800 (PST)
+        Tue, 8 Feb 2022 03:54:05 -0500
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3710C03FEC6
+        for <kernel-janitors@vger.kernel.org>; Tue,  8 Feb 2022 00:54:00 -0800 (PST)
+Received: by mail-wm1-x335.google.com with SMTP id l35-20020a05600c1d2300b0034d477271c1so1075446wms.3
+        for <kernel-janitors@vger.kernel.org>; Tue, 08 Feb 2022 00:54:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=edeevZ54MxyNr2ONaDsC9jI+UtdZjrCL/LCuSFC70Ao=;
-        b=qzcA3K52de9EhxIhzDkkmYbbQbKaihztEhpxunYq2GbraMA2FahupsNjdrEQdl+2Xo
-         x8jS+FGEUTCMk4tDTYOrkEiAnHXAkXcvH7RvY2aCKbp+IjLQ3Bp7h8T/UGTTv6cbvQJx
-         UDaJ+EExkU2Hp+cSSYRA9eBK9kaPiYVEdlhpEIKA2WBzvL9GDh4CBhV+D7H2jS5hbt2m
-         8LtLW4gnxvDWL+oX1Mu+PuIaS25Xny7KZOl+qnwzrY5EU6w8EDQE49bsI3Zvp3xnEqz9
-         DCUxVi2bJ97Z5XO1ifHRoy2QV3wbBOmeBX5qA9XMxLaJLZCuYBlb/QVcJLQKQ1TiYL1W
-         HBgg==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=TwOpOhCkewurBTdSPeNG/7ZJDIatq7Dw8T+vkk/TtIs=;
+        b=lW/GiqdU3VVDp/fM92/DOGcQiYkmHr49MJ8+ldaZtWG+Rz0AGaKzffcSP6e7mKYNtp
+         49/IjQdY63rG2pETJUo630qcGPZsdVPQIJj873h1TvLczfsWYqMZ38inMSLfNaQihw9x
+         LhQvvvpv/jIbjn+KTCIi6iLEIN8lvzm/6z25rtRwYmtebnh9Sej2ZI4P16dbsIDlL9mh
+         weGZIiRJ4jqQDxuxM3tk44SqZbaAO/aFwlinYdFKoqsb7UiI8wm+hdy5UPdESAp0DOyB
+         bO2AMyvRX9Z6EXZ6UNE/DXSiy8BmQ9npowQ8ZGmqcoPgFy3Y+1vOh8MWE6YKaPeRtFOk
+         ZR6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=edeevZ54MxyNr2ONaDsC9jI+UtdZjrCL/LCuSFC70Ao=;
-        b=XnXc3IYY0v/VTxwF56j/7+30dd1av1w6cZx+21R3Nr+HlJNEl8yKF6C75tQqtvj/b5
-         lZRzbDW/rNclz8voXvRfKy8F28d690Ha+Hd6Z+N67LztWjO3CveFnN9Aq09oDnoB5jOh
-         9S6HitMY8Um8k0lFUGCNOB3d+MDnrN1xR6OvOq/ZLyOL+u77SO6jGekhIs8wcuzN3fYD
-         HOlozFWVEO9XlqA1OFne17fzzVDcV7k8No3YIEY6789AfF0jxltT3PR4eVtJxArCGeD7
-         3CXifd+d7JMX2RlYoBgnU//YOUqgfs5DESbvmdNmbsZdp1NNUwv9a378zBOI2OoWWWxS
-         4Blg==
-X-Gm-Message-State: AOAM53046nGIlNpJRzmuhJ7VlVA1EbBNPnlSgJ3plOMda1ygImBIp2ij
-        bwowB/vrhw5qEDGNXxUYYYnfjmoi0XHWrcbcA7M=
-X-Google-Smtp-Source: ABdhPJwabOZCYr3WB5MAVlhPccZ8TF1Tp/Jgj7lvaHsfCshVug2Z/NGcswi/yGz08altCfIkGJhgE6VUV2eXkpdV8Qk=
-X-Received: by 2002:ab0:72c2:: with SMTP id g2mr1148800uap.15.1644309840067;
- Tue, 08 Feb 2022 00:44:00 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=TwOpOhCkewurBTdSPeNG/7ZJDIatq7Dw8T+vkk/TtIs=;
+        b=iIdaVmcMC0lleYLbbort/WmeejQg62MmmSDKechZVWfaORrnKeYqmh0mb69V6/++eJ
+         5QExiDvAz0PFEt3Myy0EEaoJ8gluRggBhlHKchDZYbj+nkIZsQxoawG2QUW+abeExzXv
+         K7Njn/W/zbI/ysZZP8Xs0+rD57aS18tDYSh9/KfuHFWCfrssP6ND186B/DLDNWN2JE+3
+         91aQoqf6EaeRdEiZTYtLYkZAyusfSwM6GVr5tdVLiSM/ILJ6ATf5VBdBos2ManwXft7O
+         diMywlN0vVuvqivEbS391daIaJ3FAI5Y3dPrJo4ihv1ZezWAedDsTn1lQRsX1R+IErzj
+         +Pnw==
+X-Gm-Message-State: AOAM530BlBaZUL197XoXDG8gC1tpRDMnF62euTTchs/JjD6KBIbCJO1v
+        icBM1tQwEaef0aVJBZs0bpAgiw==
+X-Google-Smtp-Source: ABdhPJyOewoFyg7DILHZmhtw2fzDp/fVpk8M5K4TsGNIZ1zInW2wlEQgwVzk/ZuITeCHKUQCDC3Q7w==
+X-Received: by 2002:a1c:a595:: with SMTP id o143mr191510wme.78.1644310439409;
+        Tue, 08 Feb 2022 00:53:59 -0800 (PST)
+Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
+        by smtp.gmail.com with ESMTPSA id o10sm7645041wri.69.2022.02.08.00.53.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Feb 2022 00:53:58 -0800 (PST)
+Date:   Tue, 8 Feb 2022 08:53:56 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Helge Deller <deller@gmx.de>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-pwm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH] backlight: pwm_bl: Avoid open coded arithmetic in memory
+ allocation
+Message-ID: <YgIvpFp8igFkVsP+@google.com>
+References: <bd3d74acfa58d59f6f5f81fc5a9fb409edb8d747.1644046817.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Received: by 2002:ab0:2bc5:0:0:0:0:0 with HTTP; Tue, 8 Feb 2022 00:43:59 -0800 (PST)
-Reply-To: saeedmohammedsaeed085@gmail.com
-From:   Mohammed Saeed <nzubewwwww@gmail.com>
-Date:   Tue, 8 Feb 2022 11:43:59 +0300
-Message-ID: <CAMj4HvQnWsfFGFOGV12hnhn1-7ggyDY5TkaLTvG3KD73KTrShQ@mail.gmail.com>
-Subject: Proposal
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,HK_RANDOM_ENVFROM,HK_RANDOM_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:944 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  1.0 HK_RANDOM_ENVFROM Envelope sender username looks random
-        *  0.6 HK_RANDOM_FROM From username looks random
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [nzubewwwww[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [saeedmohammedsaeed085[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.4 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: ******
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bd3d74acfa58d59f6f5f81fc5a9fb409edb8d747.1644046817.git.christophe.jaillet@wanadoo.fr>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Salam alaikum,
+On Sat, 05 Feb 2022, Christophe JAILLET wrote:
 
-I am the investment officer of UAE based investment company who are
-ready to fund projects outside UAE, in the form of debt finance. We
-grant loan to both Corporate and private entities at a low interest
-rate of 2% ROI per annum. The terms are very flexible and
-interesting.Kindly revert back if you have projects that needs funding
-for further discussion and negotiation.
+> kmalloc_array()/kcalloc() should be used to avoid potential overflow when
+> a multiplication is needed to compute the size of the requested memory.
+> 
+> So turn a kzalloc()+explicit size computation into an equivalent kcalloc().
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  drivers/video/backlight/pwm_bl.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
 
-Thanks
+Applied, thanks.
 
-investment officer
+-- 
+Lee Jones [李琼斯]
+Principal Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog

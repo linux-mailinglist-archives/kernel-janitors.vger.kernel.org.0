@@ -2,51 +2,44 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A86D4ADE3D
-	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Feb 2022 17:23:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1221F4AE1BF
+	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Feb 2022 20:00:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381331AbiBHQWE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 8 Feb 2022 11:22:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51058 "EHLO
+        id S1385669AbiBHTAZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 8 Feb 2022 14:00:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1383035AbiBHQWE (ORCPT
+        with ESMTP id S1385660AbiBHTAY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 8 Feb 2022 11:22:04 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A681C06174F;
-        Tue,  8 Feb 2022 08:22:03 -0800 (PST)
+        Tue, 8 Feb 2022 14:00:24 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E7D2C0612BA;
+        Tue,  8 Feb 2022 11:00:23 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 26F346163C;
-        Tue,  8 Feb 2022 16:22:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F12C004E1;
-        Tue,  8 Feb 2022 16:22:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 047A3614E5;
+        Tue,  8 Feb 2022 19:00:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91181C340ED;
+        Tue,  8 Feb 2022 19:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644337322;
-        bh=UaVxOWmsbivSkU9vIw/GYJbDCYQehGoFF7tme6i5Rgw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V9Q0TqQSdjW4iYnYCrU2P4W7USzsBBA/Ckk5QjBhmR1VitF63RGskEr/3mzgYnuuj
-         qIgjoH+EVmb/4V3v6GpxKPcPmvoaxIALpXP1kKpDKkG9jVps2momdSLPeMz30DOJZY
-         0utjHzP133Ov84Z9EZUuZjW1zLOzf7Q3LGTHQZvxXQTm1WSZ1a6EvJl2FS0rCWi3tQ
-         7cGVMz8vbvMv7173RfD+zf0bI6YrSvcmwDNfBWoRuLFYy7TmqdwM3W6bsrENAp7VlU
-         PiXhNaFzBSwKS53bHCu+fSxEgcCsJ1Ib8Wq28M8D4hIoazgXSBo+SP9jdhMUdgF7xC
-         mbXo2FXH7L7fQ==
-From:   Will Deacon <will@kernel.org>
-To:     Joerg Roedel <joro@8bytes.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Robin Murphy <robin.murphy@arm.com>
-Cc:     catalin.marinas@arm.com, kernel-team@android.com,
-        Will Deacon <will@kernel.org>,
-        iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] iommu/arm-smmu-v3: Avoid open coded arithmetic in memory allocation
-Date:   Tue,  8 Feb 2022 16:21:51 +0000
-Message-Id: <164433570600.932619.3193725963159387011.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <3f7b9b202c6b6f5edc234ab7af5f208fbf8bc944.1644274051.git.christophe.jaillet@wanadoo.fr>
-References: <3f7b9b202c6b6f5edc234ab7af5f208fbf8bc944.1644274051.git.christophe.jaillet@wanadoo.fr>
+        s=k20201202; t=1644346822;
+        bh=x7Cg6DsGf+3kZH0y3tn63HpnQtCVa0lOTBUssXE7/jk=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=u2nZcWx9vdDcN5f8YxyKuKdv+DcFNJOu8INNPbfgMhmXsZOexeG4bjKXxHz95ngWg
+         wTQ1BzHnD7dzv4NBNS2FJbDM7J+OKMIQk+kmTo4HRr8QQdIcwpMABnYAlzNt5qBq8Z
+         5XOgIPYpWUSNjoBErT6HK8s6gAk8UAP6sQibfedvWrASqQapAEubbaSgbQ67+0stVd
+         /UdQx/itwa5jDtckv8d+vfU3PTyjjxE+CUKubOe1fyRyGfxEm7uRhpymgGegcMnEbV
+         cOx23m2grlp/dhfC4nHZ/WPXQlrZTYKqLoOVkm1AKEhqLdiTiqekudoaH3ZUmFAw05
+         gPGeEP78XKAjw==
+From:   Mark Brown <broonie@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     linux-spi@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <20220125065202.GA8807@kili>
+References: <20220125065202.GA8807@kili>
+Subject: Re: [PATCH] spi: spidev: prevent spidev->speed_hz from being zero
+Message-Id: <164434682130.1135514.6941363158812350659.b4-ty@kernel.org>
+Date:   Tue, 08 Feb 2022 19:00:21 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -60,27 +53,42 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 7 Feb 2022 23:50:48 +0100, Christophe JAILLET wrote:
-> kmalloc_array()/kcalloc() should be used to avoid potential overflow when
-> a multiplication is needed to compute the size of the requested memory.
+On Tue, 25 Jan 2022 09:52:02 +0300, Dan Carpenter wrote:
+> A zero value for spi->max_speed_hz or spidev->speed_hz does not make
+> sense and trying to set that can lead to divide by zero crashes in
+> a some of the drivers.
 > 
-> So turn a devm_kzalloc()+explicit size computation into an equivalent
-> devm_kcalloc().
-> 
+> drivers/spi/spi-s3c64xx.c:874 s3c64xx_spi_setup() error: potential divide by zero bug '/ spi->max_speed_hz'.
+> drivers/spi/spi-fsl-dspi.c:613 hz_to_spi_baud() error: potential divide by zero bug '/ speed_hz'.
+> drivers/spi/spi-xlp.c:146 xlp_spi_setup() error: potential divide by zero bug '/ (spi->max_speed_hz)'.
+> drivers/spi/spi-orion.c:162 orion_spi_baudrate_set() error: potential divide by zero bug '/ speed'.
 > 
 > [...]
 
-Applied to will (for-joerg/arm-smmu/updates), thanks!
+Applied to
 
-[1/2] iommu/arm-smmu-v3: Avoid open coded arithmetic in memory allocation
-      https://git.kernel.org/will/c/98b64741d611
-[2/2] iommu/arm-smmu-v3: Simplify memory allocation
-      https://git.kernel.org/will/c/fcdeb8c34043
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Cheers,
--- 
-Will
+Thanks!
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+[1/1] spi: spidev: prevent spidev->speed_hz from being zero
+      commit: 833026ad56f76d1a1035d6511fd5aeed308465fd
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

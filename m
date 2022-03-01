@@ -2,105 +2,137 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F6264C87D7
-	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Mar 2022 10:28:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D04244C8A98
+	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Mar 2022 12:22:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233723AbiCAJ2y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 1 Mar 2022 04:28:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33812 "EHLO
+        id S232893AbiCALXf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 1 Mar 2022 06:23:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233720AbiCAJ2y (ORCPT
+        with ESMTP id S231239AbiCALXf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 1 Mar 2022 04:28:54 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1195C10FE3;
-        Tue,  1 Mar 2022 01:28:14 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A1CB5615C6;
-        Tue,  1 Mar 2022 09:28:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D232DC340EE;
-        Tue,  1 Mar 2022 09:28:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646126893;
-        bh=G6h8jszAwYJPPcXy+BDianvBzTvPr+OQ1EdUgeja2xQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dAfQCTgP3bk1zhk4X2i5oeFmoouu+iJ1CL8pd88ePBLQQePKvG8AFws3eFsKA+OwP
-         +MQ82Y5E+BxIE6q1f1rpb4Bq/kMoCFBId2/Igq+cXxIwhTTFOEMKkBcWcMVMIO/cGJ
-         HEd7igpOy1BgOX16Q8WZmqzwpOv2agHrLEIDe1SgKClWxAcqkwPt85XswWRieW+fGx
-         CoSP3TYviCMhdo+vb6OIFWPomhlOKW5sBi1fewOhliFYFJ3DlNfqx30xXno1yXJkDB
-         1VjskLB8oMilTw5U1nATo39sN1fXCNI8U/j2dXWlZRjFs/aLTvRkp/LUlOBqE4Tsq+
-         wFKclcljWjKHQ==
-Received: by pali.im (Postfix)
-        id F1988C77; Tue,  1 Mar 2022 10:28:09 +0100 (CET)
-Date:   Tue, 1 Mar 2022 10:28:09 +0100
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        linux-serial@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH -next] serial: mvebu-uart: fix return value check in
- mvebu_uart_clock_probe()
-Message-ID: <20220301092809.lobuk4u4mfgo4t4p@pali>
-References: <20220301075806.3950108-1-weiyongjun1@huawei.com>
+        Tue, 1 Mar 2022 06:23:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D3F3C49C8C
+        for <kernel-janitors@vger.kernel.org>; Tue,  1 Mar 2022 03:22:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1646133774;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=pFMGRfIAmrHrnLa3rzlWjdovVbrK0w7x/Azrkml2F4k=;
+        b=CxZKKkRSe0hVHBAj1hYwGPtx9sq/PYqPZQ5Z4aFCJLxNH84feo+1m7xMocd6qXvjIAIUee
+        QVDMexB2obHizvGAK2pXhrzrZ0AepXP4+07QYclRH7BeOp+2jY65OFK189EJL5aoSqdKYu
+        K+YKeUv098DW3WWSeTPRDLnauEaow5Y=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-631-xOS4H6B4OTSnqNa3WIN42Q-1; Tue, 01 Mar 2022 06:22:53 -0500
+X-MC-Unique: xOS4H6B4OTSnqNa3WIN42Q-1
+Received: by mail-ed1-f71.google.com with SMTP id h17-20020a05640250d100b004133863d836so7640058edb.0
+        for <kernel-janitors@vger.kernel.org>; Tue, 01 Mar 2022 03:22:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=pFMGRfIAmrHrnLa3rzlWjdovVbrK0w7x/Azrkml2F4k=;
+        b=E/ZS4TtfTfiP5ulJHQ/V+xRYD47QPUy7KErHDBE1GoyDnuUyUEekifYzmZtPrBf2f7
+         qu9IDEQlHUbvP3p+5DbUSfJR++lwlhxcRBMIPhY2KKNZwCmRejxs24iDzWVGOuq++Nsk
+         XFeuvP13ORTqQ0A6NJ7/QBYW4SYg9yvexNwQMsiHFIzs5diba3u+REz5dnDgm0BomUOh
+         OLptsIW52wCBI+BYda4qAvm+q5YSldqfcntd+7EDT2+R39OUe/mtTq8DTqjWF0Z2keEV
+         GUmf4GpIGSvZ0rIqi/41rhQdzcwdtFILNVkjJqoiVlSNGdGPHIcb3nuu3INCADoU2ynl
+         +DMg==
+X-Gm-Message-State: AOAM530cirRb2E8Bxy8CoW2aIKAZ2MFjdkHSYcFxnPk7GRu6go/lPuSi
+        dlgEV6F4PO8kHj5N8NPe3AQHaVUE9lhnkYlJzK7HpFMfmoAeJhfhnvwTZRY9V3DQKLPHZV/EfeE
+        VVXUpo9m3HcotMC2jES0DNlu1Il+t
+X-Received: by 2002:a17:907:1de9:b0:6b9:e4f:25ec with SMTP id og41-20020a1709071de900b006b90e4f25ecmr18442058ejc.741.1646133771856;
+        Tue, 01 Mar 2022 03:22:51 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJx+FvelUXqjUMkFgQlPbM4vmDcfG8aw+ARZ98e8mbNjb+ZEBkzBWNtvUDQB7qjysKVje2E3iA==
+X-Received: by 2002:a17:907:1de9:b0:6b9:e4f:25ec with SMTP id og41-20020a1709071de900b006b90e4f25ecmr18442036ejc.741.1646133771584;
+        Tue, 01 Mar 2022 03:22:51 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
+        by smtp.gmail.com with ESMTPSA id et3-20020a170907294300b006d6534ef273sm4619085ejc.156.2022.03.01.03.22.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Mar 2022 03:22:50 -0800 (PST)
+Message-ID: <497da433-f300-cfed-33af-02b8e9f16426@redhat.com>
+Date:   Tue, 1 Mar 2022 12:22:50 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220301075806.3950108-1-weiyongjun1@huawei.com>
-User-Agent: NeoMutt/20180716
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH] x86/PCI: Fix use after free in
+ pci_acpi_root_prepare_resources()
+Content-Language: en-US
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-pci@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20220301081010.GA17375@kili>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220301081010.GA17375@kili>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tuesday 01 March 2022 07:58:06 Wei Yongjun wrote:
-> In case of error, the function devm_ioremap() returns NULL pointer
-> not ERR_PTR(). The IS_ERR() test in the return value check should
-> be replaced with NULL test.
+Hi,
 
-Ou, that is really truth.
-
-Reviewed-by: Pali Rohár <pali@kernel.org>
-
-> Fixes: b7e2b5360f9b ("serial: mvebu-uart: implement UART clock driver for configuring UART base clock")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+On 3/1/22 09:10, Dan Carpenter wrote:
+> The resource_list_destroy_entry() function frees "entry", so move the
+> dereferences before the free.
+> 
+> Fixes: 62fabd56faaf ("x86/PCI: Disable exclusion of E820 reserved addresses in some cases")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  drivers/tty/serial/mvebu-uart.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  arch/x86/pci/acpi.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/tty/serial/mvebu-uart.c b/drivers/tty/serial/mvebu-uart.c
-> index 2e9263888ddc..45976e2140d4 100644
-> --- a/drivers/tty/serial/mvebu-uart.c
-> +++ b/drivers/tty/serial/mvebu-uart.c
-> @@ -1382,8 +1382,8 @@ static int mvebu_uart_clock_probe(struct platform_device *pdev)
->  	 */
->  	uart_clock_base->reg1 = devm_ioremap(dev, res->start,
->  					     resource_size(res));
-> -	if (IS_ERR(uart_clock_base->reg1))
-> -		return PTR_ERR(uart_clock_base->reg1);
-> +	if (!uart_clock_base->reg1)
-> +		return -ENOMEM;
->  
->  	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
->  	if (!res) {
-> @@ -1401,8 +1401,8 @@ static int mvebu_uart_clock_probe(struct platform_device *pdev)
->  	 */
->  	uart_clock_base->reg2 = devm_ioremap(dev, res->start,
->  					     resource_size(res));
-> -	if (IS_ERR(uart_clock_base->reg2))
-> -		return PTR_ERR(uart_clock_base->reg2);
-> +	if (!uart_clock_base->reg2)
-> +		return -ENOMEM;
->  
->  	hw_clk_data = devm_kzalloc(dev,
->  				   struct_size(hw_clk_data, hws,
-> 
+> diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
+> index e4617df661a9..fa89ffba2e51 100644
+> --- a/arch/x86/pci/acpi.c
+> +++ b/arch/x86/pci/acpi.c
+> @@ -357,14 +357,14 @@ static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
+>  	status = acpi_pci_probe_root_resources(ci);
+>  	if (pci_use_crs) {
+>  		resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
+> -			if (resource_is_pcicfg_ioport(entry->res))
+> -				resource_list_destroy_entry(entry);
+>  			if (resource_is_efi_mmio_region(entry->res)) {
+>  				dev_info(&device->dev,
+>  					"host bridge window %pR is marked by EFI as MMIO\n",
+>  					entry->res);
+>  				pci_use_e820 = false;
+>  			}
+> +			if (resource_is_pcicfg_ioport(entry->res))
+> +				resource_list_destroy_entry(entry);
+>  		}
+>  		return status;
+>  	}
+
+
+Thank you, I actually send a new version of that commit to replace the original
+one also addressing some other issues:
+
+https://lore.kernel.org/linux-acpi/20220228105259.230903-1-hdegoede@redhat.com/
+
+I expect Rafael to pick up the new version, resolving this. But maybe
+Rafael prefers a follow up commit instead ?
+
+Regards,
+
+Hans
+

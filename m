@@ -2,111 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 273EB4CF195
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Mar 2022 07:06:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 947E74CF6DE
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Mar 2022 10:43:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235479AbiCGGHH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Mar 2022 01:07:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50186 "EHLO
+        id S234549AbiCGJnU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Mar 2022 04:43:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235466AbiCGGHG (ORCPT
+        with ESMTP id S241085AbiCGJlu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Mar 2022 01:07:06 -0500
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 656345F27F
-        for <kernel-janitors@vger.kernel.org>; Sun,  6 Mar 2022 22:06:11 -0800 (PST)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-2db2add4516so151835807b3.1
-        for <kernel-janitors@vger.kernel.org>; Sun, 06 Mar 2022 22:06:11 -0800 (PST)
+        Mon, 7 Mar 2022 04:41:50 -0500
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F8975D198;
+        Mon,  7 Mar 2022 01:40:06 -0800 (PST)
+Received: by mail-ej1-x62e.google.com with SMTP id r13so30560394ejd.5;
+        Mon, 07 Mar 2022 01:40:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7Im1JG6q3q15hqSa7NWQHVGGERLfnPf1iBbuaSTqgJQ=;
-        b=WuuqZePnQCTYyW3vdlf8CE2U4f8fpBttgfXFoOCnA7Fl/9FkSGMg3D41XBFEMgGjzv
-         Ty/XpCgaCNzHlHjd3eCcF6N+/YSR+T/Zp0ng38dbMtWAdqKkd+lYGXW+Y7MfCA1TV/m8
-         +Cm+TY8HhY5qu8tmMnRowC2tFygclMbeI5y8QxyAJ4m2jAXpabrAlwJd5ehe8zjFYZNO
-         tcwNk8Snsv3jembZByLJ6Xc4iNMBs2y43wxsEKWS2hl2bklxexVjYAkirRxNqTjz5DUe
-         FshcjFuvWBjoYqRwebdwLEX3/v9CDVooCIHZXgeCOIYc+VAxnOJbRNxGy8RwKemdfuzp
-         KVWw==
+        h=from:to:cc:subject:date:message-id;
+        bh=02/z7rGh7wq3Rx0moWAvG5QcxZRbuVyz3BcvKrgSmHQ=;
+        b=ZRAJsePtFV1DPUqouisAqP8JZqypceQuD8Ou8X6d3+5Zh7jCb60ZVLaeDc93eDSDlP
+         A2GSEGmPcwjuOdo4B25dwdb5j5AOxACih77T0FYWjLBJhgCghoGusRjzspnh+tTq1I1q
+         3qs8wA4P5ZrEi1/nG7ShpByombFkAdbdaV28DXlQkAKEIFe4z3RR4zNcevBnofnYhLoS
+         dfyHDmyrrnXy6Xa5omBzS8hxY/Xmon6JvC7rggBljTVPkUZMBqJTP0o//quAWm9Obowo
+         M0xGZGnKtIpuL5Lc28K7YXxshFJlXl7aiaKwQFnYWDDaR3vjgLF2JedsSPXjl5/h3GiK
+         nyhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7Im1JG6q3q15hqSa7NWQHVGGERLfnPf1iBbuaSTqgJQ=;
-        b=yuwKrsbiFizOwA/0yENFPMxZDE7LzFJi212xo5m6uu89Y88t5I5bXIjS3JffwkWcUe
-         83u6+aNIX2Wc6JtV1fkYgAjBLHvcL95hYPq6JmCyLpPwerQc42H4rMfzthjFztsPnPyr
-         EaLCW1CcOudIyBbkIfdpnbWXaCHC3k4MIwp2+PuHW11fylIqBGJ64NkWgXRc33tBqHTJ
-         aTRKnanFD0zE9El9N8xLYAmigaB9vseWArb4ZhbB+qJwgdwOcqgPkDeEUT/ACtzxChv9
-         tVj4IJcuxzcsM09nC/n+nA/VIIaO18dA3Rmev8Q7iKL0x0SMSzklGzPPclGDICIRTt0z
-         HA4g==
-X-Gm-Message-State: AOAM533G0ZD5FEUzr/tz1BpgncHxAq/bjxJ6gCD/SV3ODbN2Fw/aya+z
-        1Pl3U5eYFFjlaPaQswJOObYcMcNlI64NfyeoQtg=
-X-Google-Smtp-Source: ABdhPJyLxikFIn3jXgVw+YYgX/loIs0xij5gGPaqfj+uWdInK6QT6cXmPQajXl+MuRLinyUfN432g+6vv3cxyx5RVrI=
-X-Received: by 2002:a0d:da45:0:b0:2d0:bd53:b39 with SMTP id
- c66-20020a0dda45000000b002d0bd530b39mr7196673ywe.463.1646633170407; Sun, 06
- Mar 2022 22:06:10 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a05:6918:b986:b0:a4:b698:78d9 with HTTP; Sun, 6 Mar 2022
- 22:06:09 -0800 (PST)
-Reply-To: markwillima00@gmail.com
-From:   Mark <markpeterdavid@gmail.com>
-Date:   Sun, 6 Mar 2022 22:06:09 -0800
-Message-ID: <CAC_St2_SE7zwPDwxo2c1sYPkpyBkqPNSy0rtdi4BFYSnYi0wvw@mail.gmail.com>
-Subject: Re: Greetings!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:112d listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [markwillima00[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [markpeterdavid[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.6 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=02/z7rGh7wq3Rx0moWAvG5QcxZRbuVyz3BcvKrgSmHQ=;
+        b=lvfaPo7qmJJC20KSNUgSYMJwU6qJFEhLgFxrcaYsiiB1bxGvor7bIi2i6AVyG5mJOf
+         84U6xmAxmVZBJ6M/w0/5GTNozE7H7CDqP2EZdCNNpttySD+lce7L6MnFQwbz2hqd9h0E
+         5zxyeSNlhuYYSVDdUgBLzgyT9OVKYWlBXTfmGfXGr9RXXm+TP1TqDzxXDX0KzuxYy6wg
+         Aw/KWbP+lNJE7lAPymNYmx8mJ+6CtHF7Vot8B2kq3SzoTdk4WogDCW/yS6wyL/kSFbre
+         nMrSq9wCgsCPAO0E71hJirBwK/7IxzpZ/STGapEl5w+sW0NRz9Jf8u3iroTRkKN6l1rF
+         pfmw==
+X-Gm-Message-State: AOAM5310A6xzt9lEZ4QpPBuiNtPyk/kfPyUnoFhMoNeWtTa6iTRZ7P40
+        QYTTiHoGt9RJjmjRXp+zZLg=
+X-Google-Smtp-Source: ABdhPJx8KrYFuscnBUQ7T29vOwNyOFDlnyThkAvMJB0HvDDE7CInnFmDb3e4RErfrN1RzDZodekIIQ==
+X-Received: by 2002:a17:906:6a0f:b0:6d7:1021:2bd2 with SMTP id qw15-20020a1709066a0f00b006d710212bd2mr8909924ejc.395.1646646004536;
+        Mon, 07 Mar 2022 01:40:04 -0800 (PST)
+Received: from felia.fritz.box (200116b826f87d009c8e984acb545ab7.dip.versatel-1u1.de. [2001:16b8:26f8:7d00:9c8e:984a:cb54:5ab7])
+        by smtp.gmail.com with ESMTPSA id b24-20020a170906491800b006db31196e2bsm691029ejq.218.2022.03.07.01.40.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Mar 2022 01:40:04 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Balbir Singh <bsingharora@gmail.com>, Tom Rix <trix@redhat.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        clang-built-linux@googlegroups.com,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH RESEND 2] taskstats: remove unneeded dead assignment
+Date:   Mon,  7 Mar 2022 10:39:42 +0100
+Message-Id: <20220307093942.21310-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
-Good day,
+make clang-analyzer on x86_64 defconfig caught my attention with:
 
-The HSBC Bank is a financial institution in United Kingdom. We
-promotes long-term,sustainable and broad-based economic growth in
-developing and emerging countries by providing financial support like
-loans and investment to large, small and
-medium-sized companies (SMEs) as well as fast-growing enterprises
-which in turn helps to create secure and permanent jobs and reduce
-poverty.
+  kernel/taskstats.c:120:2: warning: Value stored to 'rc' is never read \
+  [clang-analyzer-deadcode.DeadStores]
+          rc = 0;
+          ^
 
-If you need fund to promotes your business, project(Project Funding),
-Loan, planning, budgeting and expansion of your business(s) , do not
-hesitate to indicate your interest as we are here to serve you better
-by granting your request.
+Commit d94a041519f3 ("taskstats: free skb, avoid returns in
+send_cpu_listeners") made send_cpu_listeners() not return a value and
+hence, the rc variable remained only to be used within the loop where
+it is always assigned before read and it does not need any other
+initialisation.
 
+So, simply remove this unneeded dead initializing assignment.
 
-Thank you
-Mr:Mark
+As compilers will detect this unneeded assignment and optimize this anyway,
+the resulting object code is identical before and after this change.
+
+No functional change. No change to object code.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+---
+added Nick's Reviewed tag from the first resend:
+  https://lore.kernel.org/all/CAKwvOdk68xzVVCCGgdEDj3fSD9nwgh8=7zi6QGa-hhxweRibYQ@mail.gmail.com/
+
+Andrew, please pick this minor non-urgent clean-up patch.
+
+Balbir Singh, mentioned in MAINTAINERS, has not been active lately.
+
+ kernel/taskstats.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/kernel/taskstats.c b/kernel/taskstats.c
+index 2b4898b4752e..7cdf4018a9c5 100644
+--- a/kernel/taskstats.c
++++ b/kernel/taskstats.c
+@@ -117,7 +117,6 @@ static void send_cpu_listeners(struct sk_buff *skb,
+ 
+ 	genlmsg_end(skb, reply);
+ 
+-	rc = 0;
+ 	down_read(&listeners->sem);
+ 	list_for_each_entry(s, &listeners->list, list) {
+ 		skb_next = NULL;
+-- 
+2.17.1
+

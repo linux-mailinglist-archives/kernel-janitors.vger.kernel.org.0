@@ -2,60 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AB954D017F
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Mar 2022 15:36:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE9DB4D01B5
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Mar 2022 15:46:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233403AbiCGOhX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Mar 2022 09:37:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39614 "EHLO
+        id S237423AbiCGOrD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Mar 2022 09:47:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233330AbiCGOhX (ORCPT
+        with ESMTP id S235849AbiCGOrA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Mar 2022 09:37:23 -0500
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54AC27E590;
-        Mon,  7 Mar 2022 06:36:28 -0800 (PST)
-Received: by mail-wr1-x429.google.com with SMTP id j26so13262778wrb.1;
-        Mon, 07 Mar 2022 06:36:28 -0800 (PST)
+        Mon, 7 Mar 2022 09:47:00 -0500
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3847B7D024;
+        Mon,  7 Mar 2022 06:46:06 -0800 (PST)
+Received: by mail-wr1-x42b.google.com with SMTP id k24so14213935wrd.7;
+        Mon, 07 Mar 2022 06:46:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=CeIhj+xlbNH1tbRacxDrcMILHX0PhWKDMIaEBWJrU/0=;
-        b=L9Yy9MzJkNzV/4C4etsj7XGiuZUF21kwtAR0Kpsb8xVBwxFXRDOY0SHCeC9pHGeCIr
-         eXS7pcBvdlYH+iYGPPnCfKfgnuUANcL66LChHy+NdG2AcBhTVSH+2pwiTszUh1RQEt35
-         VmcuZCb+Wkfsx8x1GLdfUT990PIwmIi2z0014LwVppPzA01QJ+6KrohYMnoI1l1KQnzu
-         kUeqz/ibg2YsIXINHBcwCdiH/EAYyugzNK7sjhbbAtP00I65BX5N8a3+ZaKTezIkQck9
-         pXfV4lcBRtdV7tj5MQz61/zpG0ucxZySFwtCjUpmFEQ00CnYOQIRhTaoQ9snz4kPTlj0
-         vTFQ==
+        bh=TnuayJqqO6PRDmzyTvn21h8f65mMIJndsojjx882OXc=;
+        b=QNJugbyqzySDgHdDdGqu0c/SNKPry3EZ5Un0ef5kLO5A2MINUwhlw6rmfuY1bg/qDo
+         lrIAPvEDtP3dTn8wAyounn60fEcS2VELUVmfrj5hehBxPbEvuXYKnAHEy8tZTldMon/4
+         TgjpyZUEGFfUzp8x0pZrL4H5oNcmoO5fD76FRaam7XvG8GMZqA8zwAkLESXgHEpLAH0e
+         R+uSXhekTZWguXSvr4MCnhV4aSK6JYAIpQCx1pBpI2IBjfsc+VN4/o9n7gm9wEzqzbEH
+         aLWiyxkxYyOCqDzsNGAEXm3lXP53wZIFxJzOkbZS8ibEFbSB9y5I1Gg2R1kl5bRDMkhq
+         1vhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=CeIhj+xlbNH1tbRacxDrcMILHX0PhWKDMIaEBWJrU/0=;
-        b=2xCMe/KosgvNIprVKQS8J74tqsA1nDVt4OP5TAkiu+42epWWQ29qlfUpNT2ClGayBM
-         HFwWbLKo6plDB2PTUljbKmP59Fi5FWKKUFzjweiT2mXhchqM1Q6Oh98xKmm+bT2SKSIO
-         QS+k4gFK1CPBBEqhE3yB21IjHlsTpUNE/OzznWrFed53diSmUqTzhHqGzGh+tWvsXmg2
-         bpXInC7c9yO8vC3aR9e15g8+Xl7jH//ShykbIDtR+FVeG0c2EJJK16mKWj1wZ+jOyiGR
-         fJ58AUnIrkcd+xb5AIMN8rkrsZoO3fXl5GT55y4Lq4oBq2Vh2LdPSo3+Q2ZuqcWDDsN9
-         AM+Q==
-X-Gm-Message-State: AOAM531FTLvotrPxJ15N3Aou0kE0/pYVI1IgayawzIT8KPQP/mnCfpp/
-        sbrCWnzmABOVSZkyt5xLEbE=
-X-Google-Smtp-Source: ABdhPJzAxxaAb26zhaHLIkISgqgjxNtoRShsy26CNag6U+fVlySw7Ij39E5P0na4aYKZjESTeF9bLA==
-X-Received: by 2002:adf:fc08:0:b0:1f0:48ef:cec7 with SMTP id i8-20020adffc08000000b001f048efcec7mr8170366wrr.540.1646663786801;
-        Mon, 07 Mar 2022 06:36:26 -0800 (PST)
+        bh=TnuayJqqO6PRDmzyTvn21h8f65mMIJndsojjx882OXc=;
+        b=7vinU83qY1yl0VrQpIIjlzJGgxI/gag4lYaUTB1yg7nbalYmpsrP8RBDMa+UMpNYda
+         ZNLO9f4KJlSwOJD9mfcTzYA5FbalOUIIh7FlOrj0hBkNfgYJbbuCqWwlMD9ZHrV/afKU
+         cpszKFXJB/DX+yJrB6gJ4dos7lERnRmsWaZpQN0i23MDRKFJrFqDtCgzbMQi8PgAb00f
+         Nw1SlTAwOKv4igJePKe/SrsBgFcCe/xITFmU0Tt+qH/+k6tX22eNftzwrxzJppTKyy+l
+         QcaWTAaPvIGw4kny2pvWKo5llc6J7/n0/hv6WAzm5J2PGalROf6L/YzPJsOVVLpjlhMI
+         9eJg==
+X-Gm-Message-State: AOAM5317N33V0dY12b0r+TqLk+5k1THeyVlGNsvz/3ZeyfdiXbQqUT0m
+        tBm21EBTGgdICltJ+k//mmgwsr4uttg=
+X-Google-Smtp-Source: ABdhPJwwXWeujosxzRqNzzOHBuqrta0lQ8JNylmK2wr7FxCzx7SadlOqXdGe4d6U7mz2dam3O5GbeQ==
+X-Received: by 2002:a05:6000:1d8f:b0:1e3:319d:519e with SMTP id bk15-20020a0560001d8f00b001e3319d519emr8626895wrb.548.1646664364669;
+        Mon, 07 Mar 2022 06:46:04 -0800 (PST)
 Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id l1-20020a05600c4f0100b00387369f380bsm14428800wmq.41.2022.03.07.06.36.26
+        by smtp.gmail.com with ESMTPSA id j17-20020a05600c191100b00389a1a68b95sm11218160wmq.27.2022.03.07.06.46.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Mar 2022 06:36:26 -0800 (PST)
+        Mon, 07 Mar 2022 06:46:04 -0800 (PST)
 From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Forest Bond <forest@alittletooquiet.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-staging@lists.linux.dev
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: vt6655: remove redundant assignment of pointer tx_key
-Date:   Mon,  7 Mar 2022 14:36:25 +0000
-Message-Id: <20220307143625.136189-1-colin.i.king@gmail.com>
+Subject: [PATCH] staging: gdm724x: remove redundant assignment of pointer w
+Date:   Mon,  7 Mar 2022 14:46:03 +0000
+Message-Id: <20220307144603.136846-1-colin.i.king@gmail.com>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -70,32 +69,31 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Pointer tx_key is being assigned a value that is never read, it is
+Pointer w is being assigned a value that is never read, it is
 being re-assigned a new value later. The assignment is redundant
 and can be removed.
 
 Cleans up clan scan build warning:
-drivers/staging/vt6655/rxtx.c:1311:3: warning: Value stored
-to 'tx_key' is never read [deadcode.DeadStores]
+drivers/staging/gdm724x/gdm_lte.c:198:2: warning: Value stored to 'w'
+is never read [deadcode.DeadStores]
 
 Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 ---
- drivers/staging/vt6655/rxtx.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/staging/gdm724x/gdm_lte.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/staging/vt6655/rxtx.c b/drivers/staging/vt6655/rxtx.c
-index 0de801b666da..53506e242a96 100644
---- a/drivers/staging/vt6655/rxtx.c
-+++ b/drivers/staging/vt6655/rxtx.c
-@@ -1308,8 +1308,6 @@ int vnt_generate_fifo_header(struct vnt_private *priv, u32 dma_idx,
- 			cpu_to_le16(ieee80211_get_hdrlen_from_skb(skb) << 10);
+diff --git a/drivers/staging/gdm724x/gdm_lte.c b/drivers/staging/gdm724x/gdm_lte.c
+index 0d8d8fed283d..d5bec53b0194 100644
+--- a/drivers/staging/gdm724x/gdm_lte.c
++++ b/drivers/staging/gdm724x/gdm_lte.c
+@@ -195,7 +195,6 @@ static __sum16 icmp6_checksum(struct ipv6hdr *ipv6, u16 *ptr, int len)
+ 	pseudo_header.ph.ph_len = be16_to_cpu(ipv6->payload_len);
+ 	pseudo_header.ph.ph_nxt = ipv6->nexthdr;
  
- 	if (info->control.hw_key) {
--		tx_key = info->control.hw_key;
--
- 		switch (info->control.hw_key->cipher) {
- 		case WLAN_CIPHER_SUITE_WEP40:
- 		case WLAN_CIPHER_SUITE_WEP104:
+-	w = (u16 *)&pseudo_header;
+ 	for (i = 0; i < ARRAY_SIZE(pseudo_header.pa); i++) {
+ 		pa = pseudo_header.pa[i];
+ 		sum = csum_add(sum, csum_unfold((__force __sum16)pa));
 -- 
 2.35.1
 

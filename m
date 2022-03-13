@@ -2,74 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FFEF4D711B
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Mar 2022 22:48:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FDD14D73AC
+	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Mar 2022 09:09:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232778AbiCLVqQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 12 Mar 2022 16:46:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41484 "EHLO
+        id S233774AbiCMILD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 13 Mar 2022 04:11:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232730AbiCLVqQ (ORCPT
+        with ESMTP id S230366AbiCMILD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 12 Mar 2022 16:46:16 -0500
-Received: from relay.hostedemail.com (relay.a.hostedemail.com [64.99.140.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71C496E4D3;
-        Sat, 12 Mar 2022 13:45:10 -0800 (PST)
-Received: from omf09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-        by unirelay07.hostedemail.com (Postfix) with ESMTP id 0F8BD20EF6;
-        Sat, 12 Mar 2022 21:45:09 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf09.hostedemail.com (Postfix) with ESMTPA id 8F47420028;
-        Sat, 12 Mar 2022 21:45:02 +0000 (UTC)
-Message-ID: <846e22e76ba9e4c620df159b073bbf4e058a35f0.camel@perches.com>
-Subject: Re: [PATCH 4/6] scsi: lpfc: use kzalloc
-From:   Joe Perches <joe@perches.com>
-To:     Julia Lawall <Julia.Lawall@inria.fr>,
-        James Smart <james.smart@broadcom.com>
-Cc:     kernel-janitors@vger.kernel.org,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Sat, 12 Mar 2022 13:45:01 -0800
-In-Reply-To: <20220312102705.71413-5-Julia.Lawall@inria.fr>
+        Sun, 13 Mar 2022 04:11:03 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4A9E8E18E;
+        Sun, 13 Mar 2022 00:09:55 -0800 (PST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out1.suse.de (Postfix) with ESMTP id 9CC38212C6;
+        Sun, 13 Mar 2022 08:09:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1647158993; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=NeSB+jHq6YcFTSHppR+CSlD97vyl7qDeXaqfoy6cbFY=;
+        b=koBY2n6PTzkyxuUgBZjixpgA31crlNAju/YLchRDI/d04UYCWGTuqZvp06cG3k63B+u8Os
+        4EnqzNLPdboenPOWfz4VW+/y/ccUdoZpvPDBIisf11sGj2ZiixiuI5Zk8GsvJvymAgRbto
+        K2VwqSxngDIwh5HoqpZGDmX93GJV5/0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1647158993;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=NeSB+jHq6YcFTSHppR+CSlD97vyl7qDeXaqfoy6cbFY=;
+        b=mV2u/8Bsw8T7bo/NI3rX+R+NmmrQ5gcs4N5yhpFbccCHHzonw7soJfxbDZgSorQDEmJ9Io
+        mUs1sEzPIq7+2dBA==
+Received: from alsa1.suse.de (alsa1.suse.de [10.160.4.42])
+        by relay2.suse.de (Postfix) with ESMTP id 83175A3B8A;
+        Sun, 13 Mar 2022 08:09:53 +0000 (UTC)
+Date:   Sun, 13 Mar 2022 09:09:53 +0100
+Message-ID: <s5h8rteclym.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     Jaroslav Kysela <perex@perex.cz>, kernel-janitors@vger.kernel.org,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/6] ALSA: seq: oss: use kzalloc
+In-Reply-To: <20220312102705.71413-4-Julia.Lawall@inria.fr>
 References: <20220312102705.71413-1-Julia.Lawall@inria.fr>
-         <20220312102705.71413-5-Julia.Lawall@inria.fr>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.40.4-1ubuntu2 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: p6yih6y7q3hu9hsxzjjetq7mn7b659cd
-X-Rspamd-Server: rspamout07
-X-Rspamd-Queue-Id: 8F47420028
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=no autolearn_force=no
+        <20220312102705.71413-4-Julia.Lawall@inria.fr>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
+ FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
+ (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX19DJWJu0mr74IBHBM/nl8mkWSl5saQ3BR8=
-X-HE-Tag: 1647121502-545075
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 2022-03-12 at 11:27 +0100, Julia Lawall wrote:
+On Sat, 12 Mar 2022 11:27:02 +0100,
+Julia Lawall wrote:
+> 
 > Use kzalloc instead of kmalloc + memset.
-[]
-> diff --git a/drivers/scsi/lpfc/lpfc_debugfs.c b/drivers/scsi/lpfc/lpfc_debugfs.c
-[]
-> @@ -6272,10 +6272,8 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
->  				 phba->hba_debugfs_root,
->  				 phba, &lpfc_debugfs_op_slow_ring_trc);
->  		if (!phba->slow_ring_trc) {
-> -			phba->slow_ring_trc = kmalloc(
-> -				(sizeof(struct lpfc_debugfs_trc) *
-> -				lpfc_debugfs_max_slow_ring_trc),
-> -				GFP_KERNEL);
-> +			phba->slow_ring_trc = kzalloc((sizeof(struct lpfc_debugfs_trc) * lpfc_debugfs_max_slow_ring_trc),
-> +						      GFP_KERNEL);
+> 
+> The semantic patch that makes this change is:
+> (https://coccinelle.gitlabpages.inria.fr/website/)
+> 
+> //<smpl>
+> @@
+> expression res, size, flag;
+> @@
+> - res = kmalloc(size, flag);
+> + res = kzalloc(size, flag);
+>   ...
+> - memset(res, 0, size);
+> //</smpl>
+> 
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
-kcalloc
+Applied, thanks.
 
 
+Takashi

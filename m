@@ -2,40 +2,41 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3BD74D83F3
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Mar 2022 13:21:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCCF44D81C2
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Mar 2022 12:54:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240986AbiCNMWY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Mar 2022 08:22:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51274 "EHLO
+        id S239748AbiCNLzZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Mar 2022 07:55:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243882AbiCNMVV (ORCPT
+        with ESMTP id S239713AbiCNLzQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Mar 2022 08:21:21 -0400
+        Mon, 14 Mar 2022 07:55:16 -0400
 Received: from mail2-relais-roc.national.inria.fr (mail2-relais-roc.national.inria.fr [192.134.164.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91D38264D;
-        Mon, 14 Mar 2022 05:17:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3207365BB;
+        Mon, 14 Mar 2022 04:54:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=inria.fr; s=dc;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=yHuInlLPYPtI5nW4OGH0dkkIEdiHVs1voPfQFQF2pHY=;
-  b=VrmSxakQgGIDKCRASUzXErERNiVN+dY7ummNknm001h+ThPgV64wTc7u
-   N1oqDszfVBOHhyVEKvdL1x77msMSa/h9ndecLXIHPLF0gkXx4vk/GgwaE
-   otvs8qYlMQkMvD/zviv8r4UC3e9Yh4I1Z/b2lmIFZ7v71XxH60x04BvkB
-   c=;
+  bh=2bPo/ehC6PvjvjHbIR6MD5i0BWWQ35nkkz07QKW4GuI=;
+  b=ZgoJ9URYLWs39A25c89pC542rz7dKzDlLsyDrSbpIvlorWVFiRRx1OSL
+   Fs/xWAZCor1/YPzDgIfbcR7Zz5Q3pk+uzxOOCZ1kw+wZN6xvyOkVMKYwP
+   JosB127WUZlHPXUXn0FJiWi2847qJ6DN+AO3eJaBzEjVm00mDrPeDdeq2
+   Q=;
 Authentication-Results: mail2-relais-roc.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
 X-IronPort-AV: E=Sophos;i="5.90,180,1643670000"; 
-   d="scan'208";a="25997341"
+   d="scan'208";a="25997342"
 Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.90.48])
   by mail2-relais-roc.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2022 12:53:59 +0100
 From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     kernel-janitors@vger.kernel.org, linux-leds@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 08/30] leds: pca963x: fix typos in comments
-Date:   Mon, 14 Mar 2022 12:53:32 +0100
-Message-Id: <20220314115354.144023-9-Julia.Lawall@inria.fr>
+To:     Shunqian Zheng <zhengsq@rock-chips.com>
+Cc:     kernel-janitors@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 09/30] media: i2c: ov5695: fix typos in comments
+Date:   Mon, 14 Mar 2022 12:53:33 +0100
+Message-Id: <20220314115354.144023-10-Julia.Lawall@inria.fr>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20220314115354.144023-1-Julia.Lawall@inria.fr>
 References: <20220314115354.144023-1-Julia.Lawall@inria.fr>
@@ -44,8 +45,7 @@ Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -58,20 +58,20 @@ Detected with the help of Coccinelle.
 Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
 ---
- drivers/leds/leds-pca963x.c |    2 +-
+ drivers/media/i2c/ov5695.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/leds/leds-pca963x.c b/drivers/leds/leds-pca963x.c
-index 00aecd67e348..268c6bea2158 100644
---- a/drivers/leds/leds-pca963x.c
-+++ b/drivers/leds/leds-pca963x.c
-@@ -249,7 +249,7 @@ static int pca963x_blink_set(struct led_classdev *led_cdev,
+diff --git a/drivers/media/i2c/ov5695.c b/drivers/media/i2c/ov5695.c
+index 439385938a51..910309783885 100644
+--- a/drivers/media/i2c/ov5695.c
++++ b/drivers/media/i2c/ov5695.c
+@@ -1122,7 +1122,7 @@ static int ov5695_set_ctrl(struct v4l2_ctrl *ctrl)
  
- 	period = pca963x_period_scale(led, time_on + time_off);
- 
--	/* If period not supported by hardware, default to someting sane. */
-+	/* If period not supported by hardware, default to something sane. */
- 	if ((period < PCA963X_BLINK_PERIOD_MIN) ||
- 	    (period > PCA963X_BLINK_PERIOD_MAX)) {
- 		time_on = 500;
+ 	switch (ctrl->id) {
+ 	case V4L2_CID_EXPOSURE:
+-		/* 4 least significant bits of expsoure are fractional part */
++		/* 4 least significant bits of exposure are fractional part */
+ 		ret = ov5695_write_reg(ov5695->client, OV5695_REG_EXPOSURE,
+ 				       OV5695_REG_VALUE_24BIT, ctrl->val << 4);
+ 		break;
 

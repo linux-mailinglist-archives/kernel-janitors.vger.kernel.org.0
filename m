@@ -2,139 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4913A4D8E27
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Mar 2022 21:30:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FADC4D8F2F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Mar 2022 23:01:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245005AbiCNUbY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Mar 2022 16:31:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38660 "EHLO
+        id S245450AbiCNWCX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Mar 2022 18:02:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239124AbiCNUbX (ORCPT
+        with ESMTP id S245425AbiCNWCW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Mar 2022 16:31:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8449739812;
-        Mon, 14 Mar 2022 13:30:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E0BE9611E3;
-        Mon, 14 Mar 2022 20:30:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 395EAC340EE;
-        Mon, 14 Mar 2022 20:30:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647289811;
-        bh=5slkzW/wYFCAJdfNlCFTBba0nZcr16X7BRShsWGs8e4=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=leggAOjDGLqu5Y16iRzmCapGpn9MgtEwT4CrU4eyl+t2E31oSfK39qKDLg3AehmbU
-         40wH8plobcUAZegoJFqfw9/xkqsBBPmZP9vZVSFOcI/Xp23ZGUf+pgmWTjQguJdafL
-         aR+7p6LxqiE9iThzqyS8jQ9G6EB+4tZZi+yCfGQiapJJIo9jcBYm9fR9I2LX08BkN2
-         bFDWmepy5ZVI6q23q7h6GXJ7SL0Svf5wH1oJCuTgacReCjqPgety1pGCFxOBEiOwa4
-         z9SA1gQwBNf2EwKLfJ+KdExejyFckwalTlOP/U5FXz63cZ94Vo7u6CrKogKN+nyC4B
-         +CVXdED/jOy7Q==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 0DC0AE6D3DE;
-        Mon, 14 Mar 2022 20:30:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Mon, 14 Mar 2022 18:02:22 -0400
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 442C63C48F;
+        Mon, 14 Mar 2022 15:01:11 -0700 (PDT)
+Received: by mail-yb1-xb2a.google.com with SMTP id o5so4745858ybe.2;
+        Mon, 14 Mar 2022 15:01:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=FDQp0elUbEb3l2ztp8B9W0hhZAwxOZgBnkRa+RhHUnU=;
+        b=WvHe4lvu9eMeiGDQrTW+QFd0atSq6h7tPADdOTemrhvtyF8fR44hONCUmP0BXcMICq
+         JD3TdX9CequRTw9vJXkuES8i5Gko+9m6uEF/P0SfS+6vGijN1MQDhGVutZ81RLJAQS2S
+         uTSibi6jnSh+A8VH9wDeT9A4EtrE+iqiTaHdH9mEXKFPyMQ7B8N6QQLS4hz8Egcl9AO+
+         U46H8gbP8konmPKMj6reDwTQbs50B8ykWJEDaT/WLGDYDVzZhJRxl9mZp+zDSapC/lZZ
+         cJhnrPLQEUA0wJhh3vfgUOYJaP3mJ3T/KUZmlR+tni99BAty+93dOAESeaaejKEbG6KE
+         UU3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=FDQp0elUbEb3l2ztp8B9W0hhZAwxOZgBnkRa+RhHUnU=;
+        b=HicE5R3XrpaO6TncjgeGxicCpgGIxZtAvj1Iwg9ePt0fzbCpTckId38OTwevc256rA
+         pE5KU/ujewY4Nf4smBwOrUpVCE8RYiZOo1HovOXu9j1NRQDOFnsunD/j69v/oxRLU7Ii
+         clNCQGao454S7Sh/CpAhYov7HWtJzted8zk0mzMmJ6viZlsmzdnZu5+hlitXyzQdddLk
+         jduDMrJhh2UkgadNZYOhnA2xerzmiZSajPGU2dw30NC6fAc6C2+sVNEF6+UxwiOlMGdb
+         uyWiRCfF/OYGysWW4LhJ1JLNBBS+x0T8ycy4NtfoUUNdmSkuNwZkSwDS2uyFoV1qvo8i
+         STQQ==
+X-Gm-Message-State: AOAM533BrIHoFH/U2HCH9dtqR8Hm2CXfclg0TFIQx3tZXjAfpoLbzCsi
+        gGAji7LqJNo+znrqX26e8mXuZ0vuQN0Z2ULYvhOITELI
+X-Google-Smtp-Source: ABdhPJyje4eQsiO8dt4q7jDAtFimCxHJPbizI7qD7bwtkI9WgWPNi408Kg2S6oHIMFc3vrtLGm9QkspOr98knrLIUO0=
+X-Received: by 2002:a25:a467:0:b0:61e:1b4a:7700 with SMTP id
+ f94-20020a25a467000000b0061e1b4a7700mr19985076ybi.390.1647295270388; Mon, 14
+ Mar 2022 15:01:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 00/30] fix typos in comments
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <164728981105.21494.10764025984714254687.git-patchwork-notify@kernel.org>
-Date:   Mon, 14 Mar 2022 20:30:11 +0000
-References: <20220314115354.144023-1-Julia.Lawall@inria.fr>
-In-Reply-To: <20220314115354.144023-1-Julia.Lawall@inria.fr>
-To:     Julia Lawall <julia.lawall@inria.fr>
-Cc:     linux-can@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-sunxi@lists.linux.dev, linux-spi@vger.kernel.org,
-        target-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-usb@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        platform-driver-x86@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-scsi@vger.kernel.org, Laurent.pinchart@ideasonboard.com,
-        jonas@kwiboo.se, jernej.skrabec@gmail.com,
-        linux-leds@vger.kernel.org, shayne.chen@mediatek.com,
-        sean.wang@mediatek.com, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-clk@vger.kernel.org, rafael@kernel.org,
-        linux-rdma@vger.kernel.org, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, linux-s390@vger.kernel.org,
-        matti.vaittinen@fi.rohmeurope.com, linux-power@fi.rohmeurope.com,
-        mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
-        jolsa@kernel.org, namhyung@kernel.org,
-        linux-perf-users@vger.kernel.org
-X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <e2c2fe36c226529c99595370003d3cb1b7133c47.1646252285.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <e2c2fe36c226529c99595370003d3cb1b7133c47.1646252285.git.christophe.jaillet@wanadoo.fr>
+From:   Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date:   Mon, 14 Mar 2022 15:00:59 -0700
+Message-ID: <CABBYNZ+uNjszAf9jYL4iu+HxjrktnQL2FeQfdDRnFfNNnmw07g@mail.gmail.com>
+Subject: Re: [PATCH] Bluetooth: Don't assign twice the same value
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        "linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>,
+        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
+Hi Christophe,
 
-This series was applied to netdev/net-next.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 14 Mar 2022 12:53:24 +0100 you wrote:
-> Various spelling mistakes in comments.
-> Detected with the help of Coccinelle.
-> 
+On Wed, Mar 2, 2022 at 12:18 PM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
+>
+> data.pid is set twice with the same value. Remove one of these redundant
+> calls.
+>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > ---
-> 
->  drivers/base/devres.c                               |    4 ++--
->  drivers/clk/qcom/gcc-sm6125.c                       |    2 +-
->  drivers/clk/ti/clkctrl.c                            |    2 +-
->  drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c              |    4 ++--
->  drivers/gpu/drm/amd/display/dc/bios/command_table.c |    6 +++---
->  drivers/gpu/drm/amd/pm/amdgpu_pm.c                  |    2 +-
->  drivers/gpu/drm/bridge/analogix/analogix_dp_core.c  |    4 ++--
->  drivers/gpu/drm/sti/sti_gdp.c                       |    2 +-
->  drivers/infiniband/hw/qib/qib_iba7220.c             |    4 ++--
->  drivers/leds/leds-pca963x.c                         |    2 +-
->  drivers/media/i2c/ov5695.c                          |    2 +-
->  drivers/mfd/rohm-bd9576.c                           |    2 +-
->  drivers/mtd/ubi/block.c                             |    2 +-
->  drivers/net/can/usb/ucan.c                          |    4 ++--
->  drivers/net/ethernet/packetengines/yellowfin.c      |    2 +-
->  drivers/net/wireless/ath/ath6kl/htc_mbox.c          |    2 +-
->  drivers/net/wireless/cisco/airo.c                   |    2 +-
->  drivers/net/wireless/mediatek/mt76/mt7915/init.c    |    2 +-
->  drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c |    6 +++---
->  drivers/platform/x86/uv_sysfs.c                     |    2 +-
->  drivers/s390/crypto/pkey_api.c                      |    2 +-
->  drivers/scsi/aic7xxx/aicasm/aicasm.c                |    2 +-
->  drivers/scsi/elx/libefc_sli/sli4.c                  |    2 +-
->  drivers/scsi/lpfc/lpfc_mbox.c                       |    2 +-
->  drivers/scsi/qla2xxx/qla_gs.c                       |    2 +-
->  drivers/spi/spi-sun4i.c                             |    2 +-
->  drivers/staging/rtl8723bs/core/rtw_mlme.c           |    2 +-
->  drivers/usb/gadget/udc/snps_udc_core.c              |    2 +-
->  fs/kernfs/file.c                                    |    2 +-
->  kernel/events/core.c                                |    2 +-
->  30 files changed, 39 insertions(+), 39 deletions(-)
+>  net/bluetooth/l2cap_core.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+> index e817ff0607a0..0d460cb7f965 100644
+> --- a/net/bluetooth/l2cap_core.c
+> +++ b/net/bluetooth/l2cap_core.c
+> @@ -1443,7 +1443,6 @@ static void l2cap_ecred_connect(struct l2cap_chan *chan)
+>         data.pdu.scid[0]     = cpu_to_le16(chan->scid);
+>
+>         chan->ident = l2cap_get_ident(conn);
+> -       data.pid = chan->ops->get_peer_pid(chan);
+>
+>         data.count = 1;
+>         data.chan = chan;
+> --
+> 2.32.0
+>
+Applied, thanks.
 
-Here is the summary with links:
-  - [03/30] ath6kl: fix typos in comments
-    (no matching commit)
-  - [10/30] mt76: mt7915: fix typos in comments
-    (no matching commit)
-  - [12/30] drivers: net: packetengines: fix typos in comments
-    https://git.kernel.org/netdev/net-next/c/ebc0b8b5374e
-  - [19/30] rtlwifi: rtl8821ae: fix typos in comments
-    (no matching commit)
-  - [20/30] airo: fix typos in comments
-    (no matching commit)
-  - [27/30] can: ucan: fix typos in comments
-    (no matching commit)
-
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Luiz Augusto von Dentz

@@ -2,42 +2,42 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 828934D81BC
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Mar 2022 12:54:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 353A84D856C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Mar 2022 13:49:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239734AbiCNLz1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Mar 2022 07:55:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58854 "EHLO
+        id S235282AbiCNMtu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Mar 2022 08:49:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239730AbiCNLzY (ORCPT
+        with ESMTP id S237907AbiCNMr4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Mar 2022 07:55:24 -0400
+        Mon, 14 Mar 2022 08:47:56 -0400
 Received: from mail2-relais-roc.national.inria.fr (mail2-relais-roc.national.inria.fr [192.134.164.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDC0065D5;
-        Mon, 14 Mar 2022 04:54:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A05F13D7D;
+        Mon, 14 Mar 2022 05:41:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=inria.fr; s=dc;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=PTwOcgm2slbmg9VL7iVtoVa9+P+qCUypTT7BxbCACEc=;
-  b=MBne6/9eSWzHJJv1CzvQEflUBhYI5DdP9CaBpGjCMvDcLoHbnQ4MEshV
-   VUpNuvPV1eKLCIDT1VulXc8zYkVXuWspnvNwcqhpiqHwfXZxJzmdx42FJ
-   70uWnBON0BfBSw0iGr7irSvTDsi1H8f2ledzsBuaM+fuIVqaF4TAJ1CsP
-   Q=;
+  bh=RBomFePC0D3Nz1nRDfr5gUM4W4kZT6zAPNV0+Hq+aWE=;
+  b=OpCQwjxAdFHsU6aTCrifW9qTCnMKp+/mh16Ez/S05MOtWRHohzP+fqYW
+   ou319aHC2g3dk9DRUyMuuXJ5PSYtjNvyz9HA96Y5f5miGPVgjul3aSef/
+   8Tc0aL7i2fjvDQYaUWuZUNDusJOhCHSZ5rnx6/cTj8q9Nvt0lxrS41Ab+
+   w=;
 Authentication-Results: mail2-relais-roc.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
 X-IronPort-AV: E=Sophos;i="5.90,180,1643670000"; 
-   d="scan'208";a="25997346"
+   d="scan'208";a="25997347"
 Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.90.48])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2022 12:53:59 +0100
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2022 12:54:00 +0100
 From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Richard Weinberger <richard@nod.at>
+To:     Tero Kristo <kristo@kernel.org>
 Cc:     kernel-janitors@vger.kernel.org,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 13/30] UBI: block: fix typos in comments
-Date:   Mon, 14 Mar 2022 12:53:37 +0100
-Message-Id: <20220314115354.144023-14-Julia.Lawall@inria.fr>
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-omap@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 14/30] clk: ti: clkctrl: fix typos in comments
+Date:   Mon, 14 Mar 2022 12:53:38 +0100
+Message-Id: <20220314115354.144023-15-Julia.Lawall@inria.fr>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20220314115354.144023-1-Julia.Lawall@inria.fr>
 References: <20220314115354.144023-1-Julia.Lawall@inria.fr>
@@ -46,7 +46,8 @@ Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -59,20 +60,20 @@ Detected with the help of Coccinelle.
 Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
 ---
- drivers/mtd/ubi/block.c |    2 +-
+ drivers/clk/ti/clkctrl.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/ubi/block.c b/drivers/mtd/ubi/block.c
-index a78fdf3b30f7..d32768f7fe5c 100644
---- a/drivers/mtd/ubi/block.c
-+++ b/drivers/mtd/ubi/block.c
-@@ -441,7 +441,7 @@ int ubiblock_create(struct ubi_volume_info *vi)
+diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
+index 864c484bde1b..170cdf9ea8f6 100644
+--- a/drivers/clk/ti/clkctrl.c
++++ b/drivers/clk/ti/clkctrl.c
+@@ -603,7 +603,7 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
  
  	/*
- 	 * Create one workqueue per volume (per registered block device).
--	 * Rembember workqueues are cheap, they're not threads.
-+	 * Remember workqueues are cheap, they're not threads.
+ 	 * The code below can be removed when all clkctrl nodes use domain
+-	 * specific compatible proprerty and standard clock node naming
++	 * specific compatible property and standard clock node naming
  	 */
- 	dev->wq = alloc_workqueue("%s", 0, 0, gd->disk_name);
- 	if (!dev->wq) {
+ 	if (legacy_naming) {
+ 		provider->clkdm_name = kasprintf(GFP_KERNEL, "%pOFnxxx", node->parent);
 

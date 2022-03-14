@@ -2,41 +2,43 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D11E24D853A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Mar 2022 13:47:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 765894D8536
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Mar 2022 13:47:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233421AbiCNMs4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Mar 2022 08:48:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53822 "EHLO
+        id S231602AbiCNMsy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Mar 2022 08:48:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239079AbiCNMr6 (ORCPT
+        with ESMTP id S239275AbiCNMr6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
         Mon, 14 Mar 2022 08:47:58 -0400
 Received: from mail2-relais-roc.national.inria.fr (mail2-relais-roc.national.inria.fr [192.134.164.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CD9D3A1B1;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 955BD3A1A2;
         Mon, 14 Mar 2022 05:41:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=inria.fr; s=dc;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=NDrGo4abYpLAI+P7k95QOThXiOM+RKCCrwYJwOgjGuk=;
-  b=JvCBrmkRS2Be5Cq+4L5jGHxiyfvhd38YOxsm258OFYB5zUZ65bOsd/hp
-   h4+nZyWbTzEaQ8+FBA3T/JlmL9Mv60Xytjsk2axJsqSqygao4LeNGDOTO
-   pZcowuUKbcQDpSUoqv5CtT7wkOjtYhBMSBzx0z9EF3YvVZBIc40C4dguF
-   A=;
+  bh=+hYUu2G/bq68s9f2SGkYZi4xlcaxcWwYD94UHu9GgRY=;
+  b=p9GC6OpXJFvaT9UgALjpX+KCc0W9t9BgRzlCd4QoDwR4er5TD0eMzJXf
+   DzriE/66opaOKETRTPjE9OG0m7KC1tMUXl7LiKztQkRo8CQrgGKYtj8jC
+   QkOqFsWa0Hcrkc3qfiXAVUjObxEM1YZHFPRQ9Qi9fLqe470ItuvysdJfW
+   k=;
 Authentication-Results: mail2-relais-roc.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
 X-IronPort-AV: E=Sophos;i="5.90,180,1643670000"; 
-   d="scan'208";a="25997351"
+   d="scan'208";a="25997352"
 Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.90.48])
   by mail2-relais-roc.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2022 12:54:00 +0100
 From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     kernel-janitors@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     kernel-janitors@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 18/30] devres: fix typos in comments
-Date:   Mon, 14 Mar 2022 12:53:42 +0100
-Message-Id: <20220314115354.144023-19-Julia.Lawall@inria.fr>
+Subject: [PATCH 19/30] rtlwifi: rtl8821ae: fix typos in comments
+Date:   Mon, 14 Mar 2022 12:53:43 +0100
+Message-Id: <20220314115354.144023-20-Julia.Lawall@inria.fr>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20220314115354.144023-1-Julia.Lawall@inria.fr>
 References: <20220314115354.144023-1-Julia.Lawall@inria.fr>
@@ -58,29 +60,38 @@ Detected with the help of Coccinelle.
 Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
 ---
- drivers/base/devres.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-index eaa9a5cd1db9..864d0b3f566e 100644
---- a/drivers/base/devres.c
-+++ b/drivers/base/devres.c
-@@ -692,7 +692,7 @@ EXPORT_SYMBOL_GPL(devres_release_group);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
+index f6bff0ebd6b0..f3fe16798c59 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
+@@ -872,7 +872,7 @@ static void rtl8821ae_dm_false_alarm_counter_statistics(struct ieee80211_hw *hw)
+ 	else
+ 		falsealm_cnt->cnt_all = falsealm_cnt->cnt_ofdm_fail;
  
- /*
-  * Custom devres actions allow inserting a simple function call
-- * into the teadown sequence.
-+ * into the teardown sequence.
-  */
+-	/*reset OFDM FA coutner*/
++	/*reset OFDM FA counter*/
+ 	rtl_set_bbreg(hw, ODM_REG_OFDM_FA_RST_11AC, BIT(17), 1);
+ 	rtl_set_bbreg(hw, ODM_REG_OFDM_FA_RST_11AC, BIT(17), 0);
+ 	/* reset CCK FA counter*/
+@@ -1464,7 +1464,7 @@ void rtl8812ae_dm_txpower_tracking_callback_thermalmeter(
+ 	const u8 *delta_swing_table_idx_tup_b;
+ 	const u8 *delta_swing_table_idx_tdown_b;
  
- struct action_devres {
-@@ -916,7 +916,7 @@ void *devm_krealloc(struct device *dev, void *ptr, size_t new_size, gfp_t gfp)
+-	/*2. Initilization ( 7 steps in total )*/
++	/*2. Initialization ( 7 steps in total )*/
+ 	rtl8812ae_get_delta_swing_table(hw,
+ 		&delta_swing_table_idx_tup_a,
+ 		&delta_swing_table_idx_tdown_a,
+@@ -2502,7 +2502,7 @@ static void rtl8821ae_dm_check_edca_turbo(struct ieee80211_hw *hw)
+ 	rtlpriv->dm.dbginfo.num_non_be_pkt = 0;
  
- 	/*
- 	 * We can copy the memory contents after releasing the lock as we're
--	 * no longer modyfing the list links.
-+	 * no longer modifying the list links.
+ 	/*===============================
+-	 * list paramter for different platform
++	 * list parameter for different platform
+ 	 *===============================
  	 */
- 	memcpy(new_dr->data, old_dr->data,
- 	       total_old_size - offsetof(struct devres, data));
+ 	pb_is_cur_rdl_state = &rtlpriv->dm.is_cur_rdlstate;
 

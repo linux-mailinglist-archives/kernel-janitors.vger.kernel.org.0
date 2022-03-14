@@ -2,40 +2,42 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1485A4D81B3
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Mar 2022 12:54:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 950E14D83ED
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Mar 2022 13:21:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239698AbiCNLzQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Mar 2022 07:55:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57982 "EHLO
+        id S240430AbiCNMWW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Mar 2022 08:22:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239695AbiCNLzO (ORCPT
+        with ESMTP id S243879AbiCNMVV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Mar 2022 07:55:14 -0400
+        Mon, 14 Mar 2022 08:21:21 -0400
 Received: from mail2-relais-roc.national.inria.fr (mail2-relais-roc.national.inria.fr [192.134.164.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF8D065BD;
-        Mon, 14 Mar 2022 04:54:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 321F81140;
+        Mon, 14 Mar 2022 05:17:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=inria.fr; s=dc;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=pC+jZYa0N/coy9ndTADCmLZOR5Knf8xSuYTEETm4CuE=;
-  b=Xyk8/eKcmpaK4I1WGhzwBy58EONTsXyBXaBvBS/WuPuobHQ8PhsRGe3L
-   dWlTg5kPUOeJ2V7TFhpb0eofnEXd9OV4gPpunnMj+XdFl1Qa8JHtVOxp1
-   lGyOxCRxngklR4Kax7j7dtbhO9DQWal0N4+k1gQcLCTXz+X2zfkqejfqa
-   A=;
+  bh=FWNbZTFAMBhTgS2R1HpJWQ7vZbciDztq6nj7YGJohCE=;
+  b=HQtBKMWZuEVOREaqlRVE/01NtC4d9mTQstV2bcHaHlXi2M27x094itGk
+   yuLGQkwQVo5Kd+5w4hU+jps2xadytqyLLJD/jb2fGybRoVlo75MrqeOgt
+   CniSZtbcfdKiirA6FrQ75csVKfWVUiiTbUXYzQvGVOJZ2yELq0Y+wq8mE
+   U=;
 Authentication-Results: mail2-relais-roc.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
 X-IronPort-AV: E=Sophos;i="5.90,180,1643670000"; 
-   d="scan'208";a="25997336"
+   d="scan'208";a="25997337"
 Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.90.48])
   by mail2-relais-roc.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2022 12:53:59 +0100
 From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     kernel-janitors@vger.kernel.org, Tejun Heo <tj@kernel.org>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 04/30] kernfs: fix typos in comments
-Date:   Mon, 14 Mar 2022 12:53:28 +0100
-Message-Id: <20220314115354.144023-5-Julia.Lawall@inria.fr>
+To:     Justin Ernst <justin.ernst@hpe.com>
+Cc:     kernel-janitors@vger.kernel.org,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 05/30] x86/platform/uv: fix typos in comments
+Date:   Mon, 14 Mar 2022 12:53:29 +0100
+Message-Id: <20220314115354.144023-6-Julia.Lawall@inria.fr>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20220314115354.144023-1-Julia.Lawall@inria.fr>
 References: <20220314115354.144023-1-Julia.Lawall@inria.fr>
@@ -44,7 +46,8 @@ Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -57,20 +60,20 @@ Detected with the help of Coccinelle.
 Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
 ---
- fs/kernfs/file.c |    2 +-
+ drivers/platform/x86/uv_sysfs.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/kernfs/file.c b/fs/kernfs/file.c
-index 7aefaca876a0..88423069407c 100644
---- a/fs/kernfs/file.c
-+++ b/fs/kernfs/file.c
-@@ -997,7 +997,7 @@ struct kernfs_node *__kernfs_create_file(struct kernfs_node *parent,
- #endif
- 
- 	/*
--	 * kn->attr.ops is accesible only while holding active ref.  We
-+	 * kn->attr.ops is accessible only while holding active ref.  We
- 	 * need to know whether some ops are implemented outside active
- 	 * ref.  Cache their existence in flags.
+diff --git a/drivers/platform/x86/uv_sysfs.c b/drivers/platform/x86/uv_sysfs.c
+index 625b0b79d185..7c7c95c59908 100644
+--- a/drivers/platform/x86/uv_sysfs.c
++++ b/drivers/platform/x86/uv_sysfs.c
+@@ -555,7 +555,7 @@ static int init_pci_top_obj(struct uv_pci_top_obj *top_obj, char *line)
  	 */
+ 	line[6] = '_';
+ 
+-	/* Null terminate after the concatencated name tokens
++	/* Null terminate after the concatenated name tokens
+ 	 * to produce kobj name string.
+ 	 */
+ 	line[14] = '\0';
 

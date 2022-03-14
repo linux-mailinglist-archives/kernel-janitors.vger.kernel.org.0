@@ -2,44 +2,40 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 239454D83F8
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Mar 2022 13:21:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 555C94D8408
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Mar 2022 13:21:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241244AbiCNMW1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Mar 2022 08:22:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49560 "EHLO
+        id S241382AbiCNMWf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Mar 2022 08:22:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243869AbiCNMVV (ORCPT
+        with ESMTP id S243872AbiCNMVV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
         Mon, 14 Mar 2022 08:21:21 -0400
-X-Greylist: delayed 1408 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 14 Mar 2022 05:17:30 PDT
 Received: from mail2-relais-roc.national.inria.fr (mail2-relais-roc.national.inria.fr [192.134.164.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BFCF1030;
-        Mon, 14 Mar 2022 05:17:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87B451096;
+        Mon, 14 Mar 2022 05:17:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=inria.fr; s=dc;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=TstykKkU8UiYmac2M4JtdidjM5ToasXW3oJnVLqn9vc=;
-  b=uZzqcfNxXJOrnqiHy4dxBPEniXBeG9MHrl0ZszKiBL28QGGlpwFHTMjF
-   loVpcgV/rW9yM/CyACnLPSer0B4BmLiaeINYnwYmVfsjN8moHt0A+kD0z
-   +zUVg7IyX0JWs0U1lX5a8D9OyAhUqXLaK8QS62Xj/Adbc3xtMZRueg8OR
-   8=;
+  bh=W/+ETx5b3xS1Tdv9RdFRhbPpWKbPzvFWXK5rp+AtZnI=;
+  b=syBj3rUl3ursH0T++MuaesnsdMP2hosY4QJOBLPo46+CkhrwQsA7Mi8s
+   zbicBYa2rxPCOsEpDZ0NuY7meHnhcIvDxphOVVXXybCjQwkR3ToUKADVV
+   SC767kaFu8jfBW0jAhVy5zkX9xjfbEuM5i1C1uxUesnxLD8KzP+u1kMJp
+   s=;
 Authentication-Results: mail2-relais-roc.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
 X-IronPort-AV: E=Sophos;i="5.90,180,1643670000"; 
-   d="scan'208";a="25997361"
+   d="scan'208";a="25997362"
 Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.90.48])
   by mail2-relais-roc.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2022 12:54:00 +0100
 From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Wolfgang Grandegger <wg@grandegger.com>
-Cc:     kernel-janitors@vger.kernel.org,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-can@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 27/30] can: ucan: fix typos in comments
-Date:   Mon, 14 Mar 2022 12:53:51 +0100
-Message-Id: <20220314115354.144023-28-Julia.Lawall@inria.fr>
+To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     kernel-janitors@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+        linux-power@fi.rohmeurope.com, linux-kernel@vger.kernel.org
+Subject: [PATCH 28/30] mfd: bd9576: fix typos in comments
+Date:   Mon, 14 Mar 2022 12:53:52 +0100
+Message-Id: <20220314115354.144023-29-Julia.Lawall@inria.fr>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20220314115354.144023-1-Julia.Lawall@inria.fr>
 References: <20220314115354.144023-1-Julia.Lawall@inria.fr>
@@ -61,29 +57,20 @@ Detected with the help of Coccinelle.
 Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
 ---
- drivers/net/can/usb/ucan.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mfd/rohm-bd9576.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/usb/ucan.c b/drivers/net/can/usb/ucan.c
-index c7c41d1fd038..5ae0d7c017cc 100644
---- a/drivers/net/can/usb/ucan.c
-+++ b/drivers/net/can/usb/ucan.c
-@@ -1392,7 +1392,7 @@ static int ucan_probe(struct usb_interface *intf,
- 	 * Stage 3 for the final driver initialisation.
- 	 */
+diff --git a/drivers/mfd/rohm-bd9576.c b/drivers/mfd/rohm-bd9576.c
+index 6661a27d69a8..f37cd4f27aeb 100644
+--- a/drivers/mfd/rohm-bd9576.c
++++ b/drivers/mfd/rohm-bd9576.c
+@@ -23,7 +23,7 @@ enum {
+ };
  
--	/* Prepare Memory for control transferes */
-+	/* Prepare Memory for control transfers */
- 	ctl_msg_buffer = devm_kzalloc(&udev->dev,
- 				      sizeof(union ucan_ctl_payload),
- 				      GFP_KERNEL);
-@@ -1526,7 +1526,7 @@ static int ucan_probe(struct usb_interface *intf,
- 	ret = ucan_device_request_in(up, UCAN_DEVICE_GET_FW_STRING, 0,
- 				     sizeof(union ucan_ctl_payload));
- 	if (ret > 0) {
--		/* copy string while ensuring zero terminiation */
-+		/* copy string while ensuring zero termination */
- 		strncpy(firmware_str, up->ctl_msg_buffer->raw,
- 			sizeof(union ucan_ctl_payload));
- 		firmware_str[sizeof(union ucan_ctl_payload)] = '\0';
+ /*
+- * Due to the BD9576MUF nasty IRQ behaiour we don't always populate IRQs.
++ * Due to the BD9576MUF nasty IRQ behaviour we don't always populate IRQs.
+  * These will be added to regulator resources only if IRQ information for the
+  * PMIC is populated in device-tree.
+  */
 

@@ -2,102 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A94E4DD141
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Mar 2022 00:47:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 087674DD174
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Mar 2022 00:50:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230156AbiCQXsH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 17 Mar 2022 19:48:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53068 "EHLO
+        id S230223AbiCQXvg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 17 Mar 2022 19:51:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229776AbiCQXsH (ORCPT
+        with ESMTP id S229653AbiCQXvc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 17 Mar 2022 19:48:07 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FA2226133B;
-        Thu, 17 Mar 2022 16:46:49 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id r10so9607132wrp.3;
-        Thu, 17 Mar 2022 16:46:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=44jSVu9ViGX65V2KV4sJoKN91g8S2sbZ550L2N5DUJ4=;
-        b=l/0VWzdsq+0tapKmp9GM2+I2R4GUGVKdkGWYWuAwvHzKLPI3p5TshglsScGVDa6NFW
-         DaUSL0XENlAwNhjU9nCyUGZAAKbuLTE5fPZkTuqREBsP1ImFELxbCE3lmp3Tj4nI/jZy
-         9MwmBjSZpXSmwI4DVJZDYjtVulXynQRqIUs3I7K0QsW9YAidOZSK0Tv9Ac8x3k42NYBa
-         rI6tO6VGSjlkuhdZoQ0C6BU3ba7i/97qKi1VIMAusTrJVubzZfr5sUa8Dru53eP9ebuz
-         wQGxh7PiQr4lqSAjy9LGqm91YM5rAGN3LoMMnC2WtFXix6zXjBdx0Wr+n4qempHJNmVk
-         hZKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=44jSVu9ViGX65V2KV4sJoKN91g8S2sbZ550L2N5DUJ4=;
-        b=sPUOJTii9xSjQLTLtiE9pAUEoyRZQ97p9muRYglQ8XeP08eSzXK+xguUdunXn0d7WS
-         wVpb8MrYYI+0t75LPg1n+CtVhWjapuI9RQSkFske7aIIRvBsUNPwviB8wVBSD8ppXr+1
-         rOMoFfV9wCA7CuEHjwAtVOClA4K5EGYlkgb+qpWWqSH7NY3Do9olkGBqI5DgyNBrpn94
-         L8ASrm77fkUD7j4pyCEg8BCe27j+7/pA8vzYasdRCeBwuEndc5JvLqztBoD2u/OfvXtz
-         JIw+rGwLfXl6d4BXPC7gYH920dFy5UMh8dFAeBJ/1ZR/tQoOtYRP37mohKxm2SoTOzXA
-         R/kg==
-X-Gm-Message-State: AOAM533QnNUUji0luwbIBmqt0dLmZ8/kWiHDtEizzgV7z3a8Lr0MKx2m
-        cUDK0wkJNEdEa8kRwzXm+oY=
-X-Google-Smtp-Source: ABdhPJxdH/WN2xf224PSCmdD+V5oRw0iLxFKpaeNeTNgCZ9Kx3jYO0+gAPl3kcA/9A7EbQbNAzpyng==
-X-Received: by 2002:adf:efd2:0:b0:203:db42:c56c with SMTP id i18-20020adfefd2000000b00203db42c56cmr5842974wrp.698.1647560808002;
-        Thu, 17 Mar 2022 16:46:48 -0700 (PDT)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id v5-20020adfe4c5000000b001edc1e5053esm4860565wrm.82.2022.03.17.16.46.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Mar 2022 16:46:47 -0700 (PDT)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
-        Jens Axboe <axboe@kernel.dk>, xen-devel@lists.xenproject.org,
-        linux-block@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev
-Subject: [PATCH] xen-blkback: remove redundant assignment to variable i
-Date:   Thu, 17 Mar 2022 23:46:46 +0000
-Message-Id: <20220317234646.78158-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.35.1
-MIME-Version: 1.0
+        Thu, 17 Mar 2022 19:51:32 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 693FE2B04FA;
+        Thu, 17 Mar 2022 16:50:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 23A0DB820F3;
+        Thu, 17 Mar 2022 23:50:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C57ADC340EE;
+        Thu, 17 Mar 2022 23:50:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1647561012;
+        bh=xjxwpu7dNH7KZwEMZJSJ3w2kaLh6Kkub/7iGqhMnWj4=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=UxjD1wCM3Im0DLozNHMjeWkRqVqoS+iEA5SRNVncB0VKNAVf91TEAbIPDSm4b33lQ
+         dw1n8Cbeu5HxBi7MgwDSvh7XK5QcT1+h2INzm7nWsdZz+kdBQgSPJ7gwxdY/vVpPa/
+         R16FkJfpDgZFp54joc97hZi48i/1fPw4QQYthlOGEoFhPdZrJmN8IK9AwroohsCNa2
+         GtTgRFGcn7jgC8xAt+i+2fRyhLxc4vyf0E5Rr+ctsCWX8u9KPGKf8/smmQ8JdxPat2
+         iMwT9PyL9Xlsj438LGHfU/Q8m7N86s78+F11tO5EljENYGnvpVQAyrqXz08fBLwy4q
+         IaJ/ewgnCrhyg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id AB14DE8DD5B;
+        Thu, 17 Mar 2022 23:50:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH] net: ethernet: ti: Fix spelling mistake and clean up message
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <164756101269.14093.9710637048125873924.git-patchwork-notify@kernel.org>
+Date:   Thu, 17 Mar 2022 23:50:12 +0000
+References: <20220316233455.54541-1-colin.i.king@gmail.com>
+In-Reply-To: <20220316233455.54541-1-colin.i.king@gmail.com>
+To:     Colin Ian King <colin.i.king@gmail.com>
+Cc:     davem@davemloft.net, kuba@kernel.org, colin.king@intel.com,
+        kernel-janitors@vger.kernel.org, netdev@vger.kernel.org
+X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Variable i is being assigned a value that is never read, it is being
-re-assigned later in a for-loop. The assignment is redundant and can
-be removed.
+Hello:
 
-Cleans up clang scan build warning:
-drivers/block/xen-blkback/blkback.c:934:14: warning: Although the value
-stored to 'i' is used in the enclosing expression, the value is never
-actually read from 'i' [deadcode.DeadStores]
+This patch was applied to netdev/net-next.git (master)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/block/xen-blkback/blkback.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, 16 Mar 2022 23:34:55 +0000 you wrote:
+> There is a spelling mistake in a dev_err message and the MAX_SKB_FRAGS
+> value does not need to be printed between parentheses. Fix this.
+> 
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> ---
+>  drivers/net/ethernet/ti/netcp_core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/xen-blkback/blkback.c b/drivers/block/xen-blkback/blkback.c
-index d1e26461a64e..de42458195bc 100644
---- a/drivers/block/xen-blkback/blkback.c
-+++ b/drivers/block/xen-blkback/blkback.c
-@@ -931,7 +931,7 @@ static int xen_blkbk_parse_indirect(struct blkif_request *req,
- 	if (rc)
- 		goto unmap;
- 
--	for (n = 0, i = 0; n < nseg; n++) {
-+	for (n = 0; n < nseg; n++) {
- 		uint8_t first_sect, last_sect;
- 
- 		if ((n % SEGS_PER_INDIRECT_FRAME) == 0) {
+Here is the summary with links:
+  - net: ethernet: ti: Fix spelling mistake and clean up message
+    https://git.kernel.org/netdev/net-next/c/30fb35989dcc
+
+You are awesome, thank you!
 -- 
-2.35.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 

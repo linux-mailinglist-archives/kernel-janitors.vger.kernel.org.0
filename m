@@ -2,56 +2,45 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D4A64DBD27
-	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Mar 2022 03:40:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44CEB4DBD4E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Mar 2022 03:58:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358467AbiCQCl3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Mar 2022 22:41:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49532 "EHLO
+        id S242994AbiCQDAH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Mar 2022 23:00:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354977AbiCQCl2 (ORCPT
+        with ESMTP id S234652AbiCQDAG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Mar 2022 22:41:28 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2A5F20185;
-        Wed, 16 Mar 2022 19:40:13 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 814FFB81DEA;
-        Thu, 17 Mar 2022 02:40:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 294E7C340EF;
-        Thu, 17 Mar 2022 02:40:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647484811;
-        bh=d6PHNPVPmTysZRBit4MXXt2WuAvPHuq0x2xiVX6+buQ=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=Bd03dVaQKeLa5kOBEyhtT8eCYCLD/LUX/77MAU8WEW/Gr/wbI9ZqqKXFS7jtixiZW
-         rfJtkwdDOBlb9sx5sAIW6FCgXkbjhtX8OxzwhBFghAKl3zfDguPK1HFcAZ9cs50ixn
-         R6xuGNdYYtfG8VzV/bzaKtPAc3B4ePpNZQcZmbEOarpoHzSkU9rbWpTzpPYNeivBx/
-         t81cumUNi+67xotsGyRyc/UJ31hEI2xX0pvVqhAH+1VCH5q/uK9oNFqJod8dWMzZB5
-         aQfl1vQS5gB8DRrxp8FwQscKBOMPPiiN3FQIfoPwuReXFMK/ddUO/VFZw3+3MsMVC2
-         K1uaMWuAy1IMA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id E8A2BF03848;
-        Thu, 17 Mar 2022 02:40:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Wed, 16 Mar 2022 23:00:06 -0400
+Received: from ha.nfschina.com (unknown [IPv6:2400:dd01:100f:2:72e2:84ff:fe10:5f45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 276FF201BC;
+        Wed, 16 Mar 2022 19:58:51 -0700 (PDT)
+Received: from localhost (unknown [127.0.0.1])
+        by ha.nfschina.com (Postfix) with ESMTP id 98BF11E80D24;
+        Thu, 17 Mar 2022 10:57:50 +0800 (CST)
+X-Virus-Scanned: amavisd-new at test.com
+Received: from ha.nfschina.com ([127.0.0.1])
+        by localhost (ha.nfschina.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id ZotB6GPQhZ7h; Thu, 17 Mar 2022 10:57:47 +0800 (CST)
+Received: from localhost.localdomain (unknown [101.228.249.16])
+        (Authenticated sender: yuzhe@nfschina.com)
+        by ha.nfschina.com (Postfix) with ESMTPA id 548181E80CD2;
+        Thu, 17 Mar 2022 10:57:47 +0800 (CST)
+From:   yuzhe <yuzhe@nfschina.com>
+To:     mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+        bristot@redhat.com
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        yuzhe <yuzhe@nfschina.com>
+Subject: [PATCH] sched: Fix spelling mistake "then" -> "than"
+Date:   Wed, 16 Mar 2022 19:58:41 -0700
+Message-Id: <20220317025841.5738-1-yuzhe@nfschina.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: hns3: Fix spelling mistake "does't" -> "doesn't"
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <164748481094.31245.11981080354188425621.git-patchwork-notify@kernel.org>
-Date:   Thu, 17 Mar 2022 02:40:10 +0000
-References: <20220315222914.2960786-1-colin.i.king@gmail.com>
-In-Reply-To: <20220315222914.2960786-1-colin.i.king@gmail.com>
-To:     Colin Ian King <colin.i.king@gmail.com>
-Cc:     yisen.zhuang@huawei.com, salil.mehta@huawei.com,
-        davem@davemloft.net, kuba@kernel.org, huangguangbin2@huawei.com,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RDNS_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,26 +48,26 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
+There is a spelling mistake in comment.Fix it.
 
-This patch was applied to netdev/net-next.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
+Signed-off-by: yuzhe <yuzhe@nfschina.com>
+---
+ kernel/sched/fair.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Tue, 15 Mar 2022 22:29:14 +0000 you wrote:
-> There is a spelling mistake in a dev_warn message. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
->  drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Here is the summary with links:
-  - net: hns3: Fix spelling mistake "does't" -> "doesn't"
-    https://git.kernel.org/netdev/net-next/c/f403443015c6
-
-You are awesome, thank you!
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 8bcc1dbc544c..e6b3d62389c9 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -5944,7 +5944,7 @@ static unsigned long capacity_of(int cpu)
+ static void record_wakee(struct task_struct *p)
+ {
+ 	/*
+-	 * Only decay a single time; tasks that have less then 1 wakeup per
++	 * Only decay a single time; tasks that have less than 1 wakeup per
+ 	 * jiffy will not have built up many flips.
+ 	 */
+ 	if (time_after(jiffies, current->wakee_flip_decay_ts + HZ)) {
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.25.1
 

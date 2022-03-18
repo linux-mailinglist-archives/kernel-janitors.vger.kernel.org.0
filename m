@@ -2,85 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBC914DDB42
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Mar 2022 15:08:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08AD84DDC3D
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Mar 2022 15:53:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237050AbiCROJH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 18 Mar 2022 10:09:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43258 "EHLO
+        id S237625AbiCROzB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 18 Mar 2022 10:55:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237054AbiCROJG (ORCPT
+        with ESMTP id S237623AbiCROy6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 18 Mar 2022 10:09:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA80A15E8AF;
-        Fri, 18 Mar 2022 07:07:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF80261A4D;
-        Fri, 18 Mar 2022 14:07:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF8CC340E8;
-        Fri, 18 Mar 2022 14:07:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647612466;
-        bh=6/qgX4VsYNnji//fdZoQeDNIf2p1YkUCR7TjkqdZtpw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T0CYtkxiIyiTg/I8iNxQYQS0pKjEug7xKQ0rPiFckKyyMbBkXqUKGykOLnfz/cnw6
-         GrEGfEiTa6lyTHRE/IkKM/eouuIj3V2BnZCWBUpmzbMNraXHF6yDrwQa0FOGGwhQ9c
-         FKhxYxQKTZ79+Qjk/dfX5k4kuUSQL2JUMJC4vj0u8fsCV6bdjEu6SEtc0pDgIX6tC1
-         5vA0LWfLvqsoUJGyw0cJw8hxmCY95/zorirvuRBgxP88WhPrfNhf5FBlgo5ZhNwnK1
-         Sc0/xZkf+VQQs5c7x2952lsZRPom7eqPZ4cFlnlGgXjF3SaCq+Rt5bMRDyy4XWD+V1
-         dElewf3DmAXRw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=hot-poop.lan)
-        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <maz@kernel.org>)
-        id 1nVDGa-00FSU4-5V; Fri, 18 Mar 2022 14:07:44 +0000
-From:   Marc Zyngier <maz@kernel.org>
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     James Morse <james.morse@arm.com>, Will Deacon <will@kernel.org>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alexandru Elisei <alexandru.elisei@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu
-Subject: Re: [PATCH] KVM: arm64: fix typos in comments
-Date:   Fri, 18 Mar 2022 14:07:37 +0000
-Message-Id: <164761240231.2295955.754353604300597232.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220318103729.157574-24-Julia.Lawall@inria.fr>
-References: <20220318103729.157574-24-Julia.Lawall@inria.fr>
+        Fri, 18 Mar 2022 10:54:58 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5371F10876B
+        for <kernel-janitors@vger.kernel.org>; Fri, 18 Mar 2022 07:53:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1647615218; x=1679151218;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=bfWU2YF+kWT90DlMBu51PEmAdtdOwU0hgjdLKZfgG2s=;
+  b=Bx/Rs+J8yx9YTou+ZpZw0INueGKXZzCdga/Z0XyJzkfEIAfCSwOcAlx1
+   lIDQ9glhqwiSHfNgHOvOmTdwMDtlrHNJZ+NvjgkuIhGr9HbExMeFeaUXh
+   NmvuFebbIbR4Xnget4IS5r+UXBShXdunh38rtxGJbbISfbJzPZnAtxr/l
+   bkWNkARnfc7xAw3f6ovNQ9qxieP9I/0CUE+h36QATEIcd8/BQuEsD1Y9D
+   EF9nuKjSlonUcf2b5zwfel3Au2oin6KMHvGvhhmllyAOpKv7MvxzwVoBJ
+   vqTFxZFoemlTwdQ0Lan///YOXapIonM1Jev6gddHxaGmcejbA5D4VpZUT
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10289"; a="281959326"
+X-IronPort-AV: E=Sophos;i="5.90,192,1643702400"; 
+   d="scan'208";a="281959326"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2022 07:53:30 -0700
+X-IronPort-AV: E=Sophos;i="5.90,192,1643702400"; 
+   d="scan'208";a="691342073"
+Received: from mdabdull-mobl1.amr.corp.intel.com (HELO [10.251.31.89]) ([10.251.31.89])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2022 07:53:29 -0700
+Message-ID: <cf4c4a84-335d-8799-7a5b-afe298881342@linux.intel.com>
+Date:   Fri, 18 Mar 2022 09:42:51 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: Julia.Lawall@inria.fr, james.morse@arm.com, will@kernel.org, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, alexandru.elisei@arm.com, suzuki.poulose@arm.com, catalin.marinas@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
-X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Firefox/91.0 Thunderbird/91.5.0
+Subject: Re: [PATCH 1/2] ASoC: SOF: Prevent NULL dereference in
+ sof_pcm_dai_link_fixup()
+Content-Language: en-US
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Cc:     alsa-devel@alsa-project.org,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        =?UTF-8?Q?P=c3=a9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+        kernel-janitors@vger.kernel.org, Takashi Iwai <tiwai@suse.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        sound-open-firmware@alsa-project.org
+References: <20220318071233.GB29472@kili>
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <20220318071233.GB29472@kili>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-8.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 18 Mar 2022 11:37:19 +0100, Julia Lawall wrote:
-> Various spelling mistakes in comments.
-> Detected with the help of Coccinelle.
-
-Applied to next, thanks!
-
-[1/1] KVM: arm64: fix typos in comments
-      commit: 21ea457842759a236eefed2cfaa8cc7e5dc967a0
-
-Cheers,
-
-	M.
--- 
-Without deviation from the norm, progress is not possible.
 
 
+On 3/18/22 02:12, Dan Carpenter wrote:
+> The "dia" pointer can be NULL, so handle that condition first before
+> storing "dia->private".
+> 
+> Fixes: 839e484f9e17 ("ASoC: SOF: make struct snd_sof_dai IPC agnostic")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+Thanks for the patch.
+
+This part will be removed in follow-up patches, likely the reason why 
+this problem was missed.
+
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+
+> ---
+>   sound/soc/sof/pcm.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/sound/soc/sof/pcm.c b/sound/soc/sof/pcm.c
+> index 1661b0bc6f12..71f5bce0c4c7 100644
+> --- a/sound/soc/sof/pcm.c
+> +++ b/sound/soc/sof/pcm.c
+> @@ -702,7 +702,7 @@ int sof_pcm_dai_link_fixup(struct snd_soc_pcm_runtime *rtd, struct snd_pcm_hw_pa
+>   	struct snd_sof_dai *dai =
+>   		snd_sof_find_dai(component, (char *)rtd->dai_link->name);
+>   	struct snd_sof_dev *sdev = snd_soc_component_get_drvdata(component);
+> -	struct sof_dai_private_data *private = dai->private;
+> +	struct sof_dai_private_data *private;
+>   	struct snd_soc_dpcm *dpcm;
+>   
+>   	/* no topology exists for this BE, try a common configuration */
+> @@ -727,6 +727,7 @@ int sof_pcm_dai_link_fixup(struct snd_soc_pcm_runtime *rtd, struct snd_pcm_hw_pa
+>   	/* read format from topology */
+>   	snd_mask_none(fmt);
+>   
+> +	private = dai->private;
+>   	switch (private->comp_dai->config.frame_fmt) {
+>   	case SOF_IPC_FRAME_S16_LE:
+>   		snd_mask_set_format(fmt, SNDRV_PCM_FORMAT_S16_LE);

@@ -2,75 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5C014DE69B
-	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Mar 2022 08:01:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89CD34DE799
+	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Mar 2022 12:23:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242308AbiCSHCw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 19 Mar 2022 03:02:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36558 "EHLO
+        id S242787AbiCSLYZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 19 Mar 2022 07:24:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236462AbiCSHCt (ORCPT
+        with ESMTP id S238827AbiCSLYY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 19 Mar 2022 03:02:49 -0400
-Received: from smtp.smtpout.orange.fr (smtp05.smtpout.orange.fr [80.12.242.127])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87BD219BE78
-        for <kernel-janitors@vger.kernel.org>; Sat, 19 Mar 2022 00:01:28 -0700 (PDT)
-Received: from pop-os.home ([90.126.236.122])
-        by smtp.orange.fr with ESMTPA
-        id VT5ZnbL9ovjW4VT5ZnU3SP; Sat, 19 Mar 2022 08:01:27 +0100
-X-ME-Helo: pop-os.home
-X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Sat, 19 Mar 2022 08:01:27 +0100
-X-ME-IP: 90.126.236.122
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        James Bottomley <James.Bottomley@SteelEye.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-scsi@vger.kernel.org
-Subject: [PATCH] zorro: Fix a resource leak in zorro7xx_remove_one()
-Date:   Sat, 19 Mar 2022 08:01:24 +0100
-Message-Id: <247066a3104d25f9a05de8b3270fc3c848763bcc.1647673264.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.32.0
+        Sat, 19 Mar 2022 07:24:24 -0400
+X-Greylist: delayed 415 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 19 Mar 2022 04:23:02 PDT
+Received: from meesny.iki.fi (meesny.iki.fi [IPv6:2001:67c:2b0:1c1::201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D510C1C7F17;
+        Sat, 19 Mar 2022 04:23:02 -0700 (PDT)
+Received: from darkstar.musicnaut.iki.fi (85-76-3-17-nat.elisa-mobile.fi [85.76.3.17])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: aaro.koskinen)
+        by meesny.iki.fi (Postfix) with ESMTPSA id 2421220AF5;
+        Sat, 19 Mar 2022 13:16:02 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
+        t=1647688562;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=O3HSI3kgBP9o10gxLuhqQNqLjuiIJtyoXFee1GnFDww=;
+        b=TkMLjdYlVQkEsd/BWSVLtjFp8B67Ez3eL4BSXr0RA+K4/KZVTk70jqOF5kFaavGKqP4Wfs
+        WYOewSwRGkUoEgAwaWmDcMX28ae3IeJ+SSqOqm4n2hrDrPTSnbrczkXggvrdW8AS+OuG4A
+        MW28lQgDLjhMZNtGh6ow+BIuAiXHdz4=
+Date:   Sat, 19 Mar 2022 13:16:00 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     kernel-janitors@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] omap1: htc_herald: fix typos in comments
+Message-ID: <20220319111600.GC1986@darkstar.musicnaut.iki.fi>
+References: <20220318103729.157574-27-Julia.Lawall@inria.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220318103729.157574-27-Julia.Lawall@inria.fr>
+ARC-Authentication-Results: i=1;
+        ORIGINATING;
+        auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
+ARC-Seal: i=1; s=meesny; d=iki.fi; t=1647688562; a=rsa-sha256; cv=none;
+        b=M8vH3FQS7nMt/sEnmefQnt/ZQdwIv5ZXxQuReK8V8VxC0tmsowmna3DAczgS7a4prjQyje
+        U/tFgcWy+ZTYOtitNqo4vUzu503yFxL341nLhd97ZEMLAMCMwZiQLuAiNPEsPRLE1JLIND
+        ilIr0artOjDu2hbfuGT4+BMBuv08+S8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+        s=meesny; t=1647688562;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=O3HSI3kgBP9o10gxLuhqQNqLjuiIJtyoXFee1GnFDww=;
+        b=cVhaRE9aKxgRXpjNeSDtn7BCgdquclIasP3INrQmN9teRDa4wFerlEolusuFKmx3cWp3Bf
+        H6x5kJVi+J7k5GGNsMIHEPLvFxXsDNbzYvXC61kmuVoLFARt3w+hsZdhGEKUyvWGNEWDPd
+        t0/gF0fIlBo52HVdV9PyMe7ZE/m7ut0=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The error handling path of the probe releases a resource that is not freed
-in the remove function.
+On Fri, Mar 18, 2022 at 11:37:22AM +0100, Julia Lawall wrote:
+> Various spelling mistakes in comments.
+> Detected with the help of Coccinelle.
+> 
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
-In some cases, a ioremap() must be undone.
+Reviewed-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-Add the missing iounmap() call in the remove function.
+A.
 
-Fixes: 45804fbb00ee ("[SCSI] 53c700: Amiga Zorro NCR53c710 SCSI")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/scsi/zorro7xx.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/scsi/zorro7xx.c b/drivers/scsi/zorro7xx.c
-index 27b9e2baab1a..7acf9193a9e8 100644
---- a/drivers/scsi/zorro7xx.c
-+++ b/drivers/scsi/zorro7xx.c
-@@ -159,6 +159,8 @@ static void zorro7xx_remove_one(struct zorro_dev *z)
- 	scsi_remove_host(host);
- 
- 	NCR_700_release(host);
-+	if (host->base > 0x01000000)
-+		iounmap(hostdata->base);
- 	kfree(hostdata);
- 	free_irq(host->irq, host);
- 	zorro_release_device(z);
--- 
-2.32.0
-
+> 
+> ---
+>  arch/arm/mach-omap1/board-htcherald.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/mach-omap1/board-htcherald.c b/arch/arm/mach-omap1/board-htcherald.c
+> index 258304edf23e..d528b8497061 100644
+> --- a/arch/arm/mach-omap1/board-htcherald.c
+> +++ b/arch/arm/mach-omap1/board-htcherald.c
+> @@ -170,7 +170,7 @@ static const unsigned int htc_herald_keymap[] = {
+>  	KEY(3, 0, KEY_VOLUMEUP), /* Volume up */
+>  	KEY(4, 0, KEY_F2),  /* Right bar (landscape) */
+>  	KEY(5, 0, KEY_MAIL), /* Win key (portrait) */
+> -	KEY(6, 0, KEY_DIRECTORY), /* Right bar (protrait) */
+> +	KEY(6, 0, KEY_DIRECTORY), /* Right bar (portrait) */
+>  	KEY(0, 1, KEY_LEFTCTRL), /* Windows key */
+>  	KEY(1, 1, KEY_COMMA),
+>  	KEY(2, 1, KEY_M),
+> 

@@ -2,87 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E43594E2C46
-	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Mar 2022 16:30:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9FF54E2F78
+	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Mar 2022 18:58:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245438AbiCUPbh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 21 Mar 2022 11:31:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56294 "EHLO
+        id S1351900AbiCUR7N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 21 Mar 2022 13:59:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238427AbiCUPbg (ORCPT
+        with ESMTP id S1349361AbiCUR7M (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 21 Mar 2022 11:31:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3333814092;
-        Mon, 21 Mar 2022 08:30:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BB6CC6106E;
-        Mon, 21 Mar 2022 15:30:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1C1CDC340F2;
-        Mon, 21 Mar 2022 15:30:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647876610;
-        bh=AveAZ/3hKAGUAES+HC0hqCGqhlq9GGIJEnRyUj9KmHM=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=CwQLVBeQ4XDqtA6sZedyeIVTYA62GKzs2G4bjxZfLuLpAqv7VXRBjbJZWSnmbYTVN
-         /TztKdkoaKJBhKol0Bo2t8rbyl+mcz7SKUMLHcyVbfKbqCFIbBTQV9PiIOpHMh1UGZ
-         6frvva4mnxxJrhgjFo4/9k0vguCUIBFJrNgmQxsxW5h8stuTPojtYBTMwt/AXjCmR4
-         WyuhC1axRxV2jEhPOISD7rIShVsIBgPbHtODRiP7Y+Q6uPBYT6k0SMamk6dNCStRvE
-         LHYnVASlfdj/6JM5p3HeYSx+qkqfchqTcyPaQ63tvlHigcTq7b/9Cid6su487k4+8I
-         66vKtSNSUqF6Q==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id F16D3E7BB0B;
-        Mon, 21 Mar 2022 15:30:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Mon, 21 Mar 2022 13:59:12 -0400
+Received: from smtp.smtpout.orange.fr (smtp07.smtpout.orange.fr [80.12.242.129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E06A715DABA
+        for <kernel-janitors@vger.kernel.org>; Mon, 21 Mar 2022 10:57:45 -0700 (PDT)
+Received: from [192.168.1.18] ([90.126.236.122])
+        by smtp.orange.fr with ESMTPA
+        id WMHlnEz17SDrIWMHlnJ4cZ; Mon, 21 Mar 2022 18:57:43 +0100
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
+X-ME-Date: Mon, 21 Mar 2022 18:57:43 +0100
+X-ME-IP: 90.126.236.122
+Message-ID: <7ef297b7-0de4-2ee2-aa3d-c70fa1ad7a3a@wanadoo.fr>
+Date:   Mon, 21 Mar 2022 18:57:41 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH] zorro: Fix a resource leak in zorro7xx_remove_one()
+Content-Language: fr
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        James Bottomley <James.Bottomley@steeleye.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, scsi <linux-scsi@vger.kernel.org>
+References: <247066a3104d25f9a05de8b3270fc3c848763bcc.1647673264.git.christophe.jaillet@wanadoo.fr>
+ <CAMuHMdUgXek+BDT4vJQfFcwDgQfyDAB=wXfdC0poynzH26=okw@mail.gmail.com>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <CAMuHMdUgXek+BDT4vJQfFcwDgQfyDAB=wXfdC0poynzH26=okw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] ARM: net: bpf: fix typos in comments
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <164787660998.26943.16234173622571786402.git-patchwork-notify@kernel.org>
-Date:   Mon, 21 Mar 2022 15:30:09 +0000
-References: <20220318103729.157574-9-Julia.Lawall@inria.fr>
-In-Reply-To: <20220318103729.157574-9-Julia.Lawall@inria.fr>
-To:     Julia Lawall <julia.lawall@inria.fr>
-Cc:     illusionist.neo@gmail.com, kernel-janitors@vger.kernel.org,
-        linux@armlinux.org.uk, ast@kernel.org, daniel@iogearbox.net,
-        andrii@kernel.org, kafai@fb.com, songliubraving@fb.com, yhs@fb.com,
-        john.fastabend@gmail.com, kpsingh@kernel.org,
-        netdev@vger.kernel.org, bpf@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
-
-This patch was applied to bpf/bpf-next.git (master)
-by Daniel Borkmann <daniel@iogearbox.net>:
-
-On Fri, 18 Mar 2022 11:37:04 +0100 you wrote:
-> Various spelling mistakes in comments.
-> Detected with the help of Coccinelle.
+Le 21/03/2022 à 10:00, Geert Uytterhoeven a écrit :
+> Hi Christophe,
 > 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> On Sat, Mar 19, 2022 at 8:01 AM Christophe JAILLET
+> <christophe.jaillet@wanadoo.fr> wrote:
+>> The error handling path of the probe releases a resource that is not freed
+>> in the remove function.
+>>
+>> In some cases, a ioremap() must be undone.
+>>
+>> Add the missing iounmap() call in the remove function.
+>>
+>> Fixes: 45804fbb00ee ("[SCSI] 53c700: Amiga Zorro NCR53c710 SCSI")
+>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > 
-> ---
->  arch/arm/net/bpf_jit_32.c |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> Thanks for your patch!
+> 
+> The online-summary should be
+> "scsi: zorro7xx: Fix a resource leak in zorro7xx_remove_one()".
 
-Here is the summary with links:
-  - ARM: net: bpf: fix typos in comments
-    https://git.kernel.org/bpf/bpf-next/c/d8dc09a4db45
+Hi,
+should I send a V2 or can this be fixed when/if applied?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+CJ
 
+> 
+> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> 
+> Gr{oetje,eeting}s,
+> 
+>                          Geert
+> 
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> 
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                  -- Linus Torvalds
+> 
 

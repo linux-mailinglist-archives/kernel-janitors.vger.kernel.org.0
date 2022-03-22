@@ -2,75 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F8B04E4788
-	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Mar 2022 21:29:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2682D4E4792
+	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Mar 2022 21:33:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233746AbiCVUbY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 22 Mar 2022 16:31:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56762 "EHLO
+        id S233886AbiCVUfL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 22 Mar 2022 16:35:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233410AbiCVUbX (ORCPT
+        with ESMTP id S229704AbiCVUfK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 22 Mar 2022 16:31:23 -0400
+        Tue, 22 Mar 2022 16:35:10 -0400
 Received: from smtp.smtpout.orange.fr (smtp06.smtpout.orange.fr [80.12.242.128])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49DDADDC
-        for <kernel-janitors@vger.kernel.org>; Tue, 22 Mar 2022 13:29:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C483F24583
+        for <kernel-janitors@vger.kernel.org>; Tue, 22 Mar 2022 13:33:42 -0700 (PDT)
 Received: from pop-os.home ([90.126.236.122])
         by smtp.orange.fr with ESMTPA
-        id Wl8anBpiiIQAdWl8an8q7V; Tue, 22 Mar 2022 21:29:53 +0100
+        id WlCGnBrc3IQAdWlCGn8qgV; Tue, 22 Mar 2022 21:33:41 +0100
 X-ME-Helo: pop-os.home
 X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Tue, 22 Mar 2022 21:29:53 +0100
+X-ME-Date: Tue, 22 Mar 2022 21:33:41 +0100
 X-ME-IP: 90.126.236.122
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Namjae Jeon <linkinjeon@kernel.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Steve French <sfrench@samba.org>,
-        Hyunchul Lee <hyc.lee@gmail.com>
+To:     Helge Deller <deller@gmx.de>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-cifs@vger.kernel.org
-Subject: [PATCH] ksmbd: Remove a redundant zeroing of memory
-Date:   Tue, 22 Mar 2022 21:29:51 +0100
-Message-Id: <f8f1f383c4533a91a6025b1db5827ed6aaab002f.1647980983.git.christophe.jaillet@wanadoo.fr>
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: [PATCH] video: of: display_timing: Remove a redundant zeroing of memory
+Date:   Tue, 22 Mar 2022 21:33:38 +0100
+Message-Id: <99f22ad1068fbbbc95acea59871cd408cde2623d.1647981212.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-fill_transform_hdr() already call memset(0) on its 1st argument, so there
-is no need to clear it explicitly before calling this function.
+of_parse_display_timing() already call memset(0) on its 2nd argument, so
+there is no need to clear it explicitly before calling this function.
 
 Use kmalloc() instead of kzalloc() to save a few cycles.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
-Alternatively, fill_transform_hdr() has only one caller. So its memset()
-could be removed instead and this kzalloc() left as is.
----
- fs/ksmbd/smb2pdu.c | 2 +-
+ drivers/video/of_display_timing.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index bcb98109bac9..0e4f819e5859 100644
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -8434,7 +8434,7 @@ int smb3_encrypt_resp(struct ksmbd_work *work)
- 	if (ARRAY_SIZE(iov) < rq_nvec)
- 		return -ENOMEM;
+diff --git a/drivers/video/of_display_timing.c b/drivers/video/of_display_timing.c
+index f93b6abbe258..bebd371c6b93 100644
+--- a/drivers/video/of_display_timing.c
++++ b/drivers/video/of_display_timing.c
+@@ -199,7 +199,7 @@ struct display_timings *of_get_display_timings(const struct device_node *np)
+ 		struct display_timing *dt;
+ 		int r;
  
--	work->tr_buf = kzalloc(sizeof(struct smb2_transform_hdr) + 4, GFP_KERNEL);
-+	work->tr_buf = kmalloc(sizeof(struct smb2_transform_hdr) + 4, GFP_KERNEL);
- 	if (!work->tr_buf)
- 		return rc;
- 
+-		dt = kzalloc(sizeof(*dt), GFP_KERNEL);
++		dt = kmalloc(sizeof(*dt), GFP_KERNEL);
+ 		if (!dt) {
+ 			pr_err("%pOF: could not allocate display_timing struct\n",
+ 				np);
 -- 
 2.32.0
 

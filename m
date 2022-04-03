@@ -2,69 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA35A4F0888
-	for <lists+kernel-janitors@lfdr.de>; Sun,  3 Apr 2022 11:11:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5194A4F089E
+	for <lists+kernel-janitors@lfdr.de>; Sun,  3 Apr 2022 12:01:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355119AbiDCJNN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 3 Apr 2022 05:13:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48370 "EHLO
+        id S237637AbiDCKBP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 3 Apr 2022 06:01:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345092AbiDCJNN (ORCPT
+        with ESMTP id S236610AbiDCKBO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 3 Apr 2022 05:13:13 -0400
+        Sun, 3 Apr 2022 06:01:14 -0400
 Received: from smtp.smtpout.orange.fr (smtp07.smtpout.orange.fr [80.12.242.129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B13A32EF4
-        for <kernel-janitors@vger.kernel.org>; Sun,  3 Apr 2022 02:11:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ADF0AE50
+        for <kernel-janitors@vger.kernel.org>; Sun,  3 Apr 2022 02:59:19 -0700 (PDT)
 Received: from pop-os.home ([90.126.236.122])
         by smtp.orange.fr with ESMTPA
-        id awGRnFBSyRGzQawGRnw1Y8; Sun, 03 Apr 2022 11:11:17 +0200
+        id ax0vnFTWQRGzQax0vnw6b6; Sun, 03 Apr 2022 11:59:18 +0200
 X-ME-Helo: pop-os.home
 X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Sun, 03 Apr 2022 11:11:17 +0200
+X-ME-Date: Sun, 03 Apr 2022 11:59:18 +0200
 X-ME-IP: 90.126.236.122
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>, Arnd Bergmann <arnd@arndb.de>
+To:     Souradeep Chowdhury <quic_schowdhu@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        virtualization@lists.linux-foundation.org
-Subject: [PATCH] virtio: pci: Fix an error handling path in vp_modern_probe()
-Date:   Sun,  3 Apr 2022 11:11:14 +0200
-Message-Id: <237109725aad2c3c03d14549f777b1927c84b045.1648977064.git.christophe.jaillet@wanadoo.fr>
+        linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: [PATCH] usb: misc: eud: Fix an error handling path in eud_probe()
+Date:   Sun,  3 Apr 2022 11:59:15 +0200
+Message-Id: <362908699275ecec078381b42d87c817c6965fc6.1648979948.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If an error occurs after a successful pci_request_selected_regions() call,
-it should be undone by a corresponding pci_release_selected_regions() call,
-as already done in vp_modern_remove().
+It is odd to call devm_add_action_or_reset() before calling the function
+that should be undone.
 
-Fixes: fd502729fbbf ("virtio-pci: introduce modern device module")
+Either, the "_or_reset" part should be omitted, or the action should be
+recorded after the resources have been allocated.
+
+Switch the order of devm_add_action_or_reset() and usb_role_switch_get().
+
+Fixes: 9a1bf58ccd44 ("usb: misc: eud: Add driver support for Embedded USB Debugger(EUD)")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/virtio/virtio_pci_modern_dev.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/misc/qcom_eud.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/virtio/virtio_pci_modern_dev.c b/drivers/virtio/virtio_pci_modern_dev.c
-index 591738ad3d56..4093f9cca7a6 100644
---- a/drivers/virtio/virtio_pci_modern_dev.c
-+++ b/drivers/virtio/virtio_pci_modern_dev.c
-@@ -347,6 +347,7 @@ int vp_modern_probe(struct virtio_pci_modern_device *mdev)
- err_map_isr:
- 	pci_iounmap(pci_dev, mdev->common);
- err_map_common:
-+	pci_release_selected_regions(pci_dev, mdev->modern_bars);
- 	return err;
- }
- EXPORT_SYMBOL_GPL(vp_modern_probe);
+diff --git a/drivers/usb/misc/qcom_eud.c b/drivers/usb/misc/qcom_eud.c
+index f929bffdc5d1..b7f13df00764 100644
+--- a/drivers/usb/misc/qcom_eud.c
++++ b/drivers/usb/misc/qcom_eud.c
+@@ -186,16 +186,16 @@ static int eud_probe(struct platform_device *pdev)
+ 
+ 	chip->dev = &pdev->dev;
+ 
+-	ret = devm_add_action_or_reset(chip->dev, eud_role_switch_release, chip);
+-	if (ret)
+-		return dev_err_probe(chip->dev, ret,
+-				"failed to add role switch release action\n");
+-
+ 	chip->role_sw = usb_role_switch_get(&pdev->dev);
+ 	if (IS_ERR(chip->role_sw))
+ 		return dev_err_probe(chip->dev, PTR_ERR(chip->role_sw),
+ 					"failed to get role switch\n");
+ 
++	ret = devm_add_action_or_reset(chip->dev, eud_role_switch_release, chip);
++	if (ret)
++		return dev_err_probe(chip->dev, ret,
++				"failed to add role switch release action\n");
++
+ 	chip->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(chip->base))
+ 		return PTR_ERR(chip->base);
 -- 
 2.32.0
 

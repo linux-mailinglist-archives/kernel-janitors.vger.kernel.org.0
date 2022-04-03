@@ -2,71 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B1434F06C2
-	for <lists+kernel-janitors@lfdr.de>; Sun,  3 Apr 2022 04:12:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7934A4F0801
+	for <lists+kernel-janitors@lfdr.de>; Sun,  3 Apr 2022 08:10:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229895AbiDCCNz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 2 Apr 2022 22:13:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46924 "EHLO
+        id S232840AbiDCGMX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 3 Apr 2022 02:12:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229565AbiDCCNy (ORCPT
+        with ESMTP id S230501AbiDCGMW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 2 Apr 2022 22:13:54 -0400
-X-Greylist: delayed 361 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 02 Apr 2022 19:12:01 PDT
-Received: from mta-out-05.alice.it (mta-out-05.alice.it [217.169.118.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0C96227FE4
-        for <kernel-janitors@vger.kernel.org>; Sat,  2 Apr 2022 19:12:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alice.it; s=20211207; t=1648951921; 
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        h=Reply-To:From:To:Date:Message-ID:MIME-Version;
-        b=bgz3NCGC1CZcr/PxrnFr71alvvlbD8o8v27dOIQYPXtFgxxjYZMcZemABIA7QYDy6I6Grjypugk+lvwEmoOtdIuonhzDld6Vpx7X/MBmGlkb7l+gZk9nXhVpZAxJjv8FHpyWEUI7BES8lOemzQCTR7hckvkKVHgoyipnbXtEUrkfSQo4hrk4kZMLGu5t1gmQAvLK4kBo+wbwgMUBDA7AVT9cyMwKTJxnCvw1MwvBCKyUF4DK1qJALQ0ocQAOQ75jyZM9t5EoGaFM6SokN/axudKTNtNaMMblALx72hvsT2+ThbteA8WoKVY8c20aY9emeaAdaCxaACRjCCBdkR+Meg==
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvvddrudeiledghedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuvffgnffgvefqoffkvfetnffktedpqfgfvfenuceurghilhhouhhtmecufedtudenucfgmhhpthihuchsuhgsjhgvtghtucdluddtmdengfhmphhthicusghougihucdlhedtmdenucfjughrpehrhffvfffkggestddtfedttddttdenucfhrhhomhephggvuchhrghvvgcurghnuchofhhfvghruchtohcuihhnvhgvshhtuchinhcuhihouhhrucgtohhunhhtrhihuchunhguvghrucgruchjohhinhhtuchvvghnthhurhgvuchprghrthhnvghrshhhihhpuchplhgvrghsvgcurhgvphhlhicufhhorhcumhhorhgvucguvghtrghilhhsuceofhgpphgvnhhnrgesrghlihgtvgdrihhtqeenucggtffrrghtthgvrhhnpeehjeetgefhleetiedtkeelfffgjeeugeegleekueffgfegtdekkeeifedvvdffteenucfkphepudejiedrvddvjedrvdegvddrudeltdenucevlhhushhtvghrufhiiigvpedvvdefnecurfgrrhgrmhephhgvlhhopegrlhhitggvrdhithdpihhnvghtpedujeeirddvvdejrddvgedvrdduledtpdhmrghilhhfrhhomhepfhgpphgvnhhnrgesrghlihgtvgdrihhtpdhnsggprhgtphhtthhopedupdhrtghpthhtohepkhgvrhhnvghlqdhjrghnihhtohhrshesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-RazorGate-Vade-Verdict: clean 60
-X-RazorGate-Vade-Classification: clean
-Received: from alice.it (176.227.242.190) by mta-out-05.alice.it (5.8.807.04) (authenticated as f_penna@alice.it)
-        id 623DD3C500E882E2 for kernel-janitors@vger.kernel.org; Sun, 3 Apr 2022 04:05:57 +0200
-Reply-To: dougfield20@inbox.lv
-From:   We have an offer to invest in your country under a
-         joint venture partnership please reply for more
-         details <f_penna@alice.it>
-To:     kernel-janitors@vger.kernel.org
-Date:   02 Apr 2022 19:05:55 -0700
-Message-ID: <20220402190555.D75CAE9C7A41C6EE@alice.it>
+        Sun, 3 Apr 2022 02:12:22 -0400
+Received: from smtp.smtpout.orange.fr (smtp03.smtpout.orange.fr [80.12.242.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7BFD32EDA
+        for <kernel-janitors@vger.kernel.org>; Sat,  2 Apr 2022 23:10:28 -0700 (PDT)
+Received: from pop-os.home ([90.126.236.122])
+        by smtp.orange.fr with ESMTPA
+        id atRRnoSgJN7CcatRSnMr9N; Sun, 03 Apr 2022 08:10:27 +0200
+X-ME-Helo: pop-os.home
+X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
+X-ME-Date: Sun, 03 Apr 2022 08:10:27 +0200
+X-ME-IP: 90.126.236.122
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Banajit Goswami <bgoswami@codeaurora.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Venkata Prasad Potturu <quic_potturu@quicinc.com>,
+        Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        alsa-devel@alsa-project.org
+Subject: [PATCH] ASoC: codecs: Fix an error handling path in va_macro_probe()
+Date:   Sun,  3 Apr 2022 08:10:24 +0200
+Message-Id: <6d08311472e272fdc1a184f019ec98ade6e9dc46.1648966195.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,BODY_EMPTY,
-        DKIM_INVALID,DKIM_SIGNED,EMPTY_MESSAGE,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,MISSING_SUBJECT,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L4,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.7 RCVD_IN_DNSWL_LOW RBL: Sender listed at https://www.dnswl.org/,
-        *       low trust
-        *      [217.169.118.11 listed in list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5153]
-        *  0.0 RCVD_IN_MSPIKE_L4 RBL: Bad reputation (-4)
-        *      [217.169.118.11 listed in bl.mailspike.net]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [f_penna[at]alice.it]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [dougfield20[at]inbox.lv]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  2.3 EMPTY_MESSAGE Message appears to have no textual parts and no
-        *      Subject: text
-        *  1.8 MISSING_SUBJECT Missing Subject: header
-        *  0.1 DKIM_INVALID DKIM or DK signature exists, but is not valid
-        *  0.0 RCVD_IN_MSPIKE_BL Mailspike blacklisted
-        *  0.0 BODY_EMPTY No body text in message
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,
+        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
+
+After a successful lpass_macro_pds_init() call, lpass_macro_pds_exit() must
+be called.
+
+Add the missing call in the error handling path of the probe function and
+use it.
+
+Fixes: 9e3d83c52844 ("ASoC: codecs: Add power domains support in digital macro codecs")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ sound/soc/codecs/lpass-va-macro.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/sound/soc/codecs/lpass-va-macro.c b/sound/soc/codecs/lpass-va-macro.c
+index f3cb596058e0..d18b56e60433 100644
+--- a/sound/soc/codecs/lpass-va-macro.c
++++ b/sound/soc/codecs/lpass-va-macro.c
+@@ -1434,8 +1434,10 @@ static int va_macro_probe(struct platform_device *pdev)
+ 		va->dmic_clk_div = VA_MACRO_CLK_DIV_2;
+ 	} else {
+ 		ret = va_macro_validate_dmic_sample_rate(sample_rate, va);
+-		if (!ret)
+-			return -EINVAL;
++		if (!ret) {
++			ret = -EINVAL;
++			goto err;
++		}
+ 	}
+ 
+ 	base = devm_platform_ioremap_resource(pdev, 0);
+@@ -1492,6 +1494,8 @@ static int va_macro_probe(struct platform_device *pdev)
+ err_dcodec:
+ 	clk_disable_unprepare(va->macro);
+ err:
++	lpass_macro_pds_exit(va->pds);
++
+ 	return ret;
+ }
+ 
+-- 
+2.32.0
 

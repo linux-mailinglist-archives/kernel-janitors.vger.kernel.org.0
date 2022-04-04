@@ -2,97 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 425364F1CFF
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Apr 2022 23:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CB3E4F1CE1
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Apr 2022 23:29:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379402AbiDDV3r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 Apr 2022 17:29:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44172 "EHLO
+        id S1355523AbiDDV30 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 Apr 2022 17:29:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379418AbiDDRKT (ORCPT
+        with ESMTP id S1379826AbiDDSLb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 Apr 2022 13:10:19 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F2DC40A24
-        for <kernel-janitors@vger.kernel.org>; Mon,  4 Apr 2022 10:08:22 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id qh7so11299330ejb.11
-        for <kernel-janitors@vger.kernel.org>; Mon, 04 Apr 2022 10:08:22 -0700 (PDT)
+        Mon, 4 Apr 2022 14:11:31 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66D733A5F9
+        for <kernel-janitors@vger.kernel.org>; Mon,  4 Apr 2022 11:09:34 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id m12so2304298ljp.8
+        for <kernel-janitors@vger.kernel.org>; Mon, 04 Apr 2022 11:09:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=LXXr7F0cW3RTrkA8M6uuznqZSvmvR1TGt0LOYkCfNSQ=;
-        b=wBUWd1KOHSXpqah/8BaOgmo8qLPdZf1sdgt0au6YhBPtGFBBh2rBCHyFSGtQaXNZe7
-         khGltgNxaO32X6qwHt4slyv3JWF+NX5P+dHNeemg4Dp4Rj2oEKD1T3M7L+jBkvG0cEaj
-         XWzBID2cjpeX8s/+1fc7UvWjmeXe7cRskPgFVjXw5x5VHbcBDjc3bg59jDMUgbQMp0QD
-         LFBiJ6j2JSV6MBnkz8TAYalVInVz6tEnJZIX0E2/DYb+fBpSM+arJRv+VD6RXlRi6b5Y
-         Ek8TgLsFU9b5Qf6uMfaf/Q6xTn5QkVOkUzkmJD5P8m3DccA+TDLPfosr3ptDA05BQWii
-         dHCQ==
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Uz4lPE2rdo2tRM1taU9hjtHkKN6cEscjMgtJGGpCZK0=;
+        b=AKh+Xx8Jri22FLpKBD4E3RoftVzjoBrDVxvOksJJs1GiZpvdGJdEX2vPXJvyGWVcDC
+         Tsws7vziNMKhEc1zFl/txeNmPo/Wx7XJU0EJZq+3mQ6ntGZLXmpSi8w6nhlFDGUBzWmX
+         Yq+MB4VarfRzItJWG71o6LZ/2bUZ5IMRLDkDDxXbx8gBkWa58++9ibIS0lfl8QXbFYIc
+         e6nDCpIHZIZkDQigSykJm8MIxAStv7nYv6rs85ZIHdGzECyEPFVpFeNZslA0YGNsgm/J
+         vb7bEkgtvx02wVWUHzX1C4z68lOmkxFEyA4y4BJ3/zRjlRU1yBfRbZ5ORhOrFwx5FwrM
+         BsDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=LXXr7F0cW3RTrkA8M6uuznqZSvmvR1TGt0LOYkCfNSQ=;
-        b=GoDDzEwU4L2fCpV3kzXNBOdkycsAH/aW2hLW2gEOBfnv07vt8bvt+Ils4Sr+GFUpNn
-         ZdGHEGlGTrLxVEkEdlmSqgp8CXI10IMVh/5F4U1+21Y4Bffel7ocvZiZicmuY6AaVo4C
-         kd+4ofrWGg8ZIrxT6gnKjtoHtG2iQuQ5B/CoRhSnVoHuXt9JvbhTVg5WjjehyctILjiD
-         E4NNbvdCowZZW65kCuPjj0opPvVdYgx5SpQ8IG4JNm3rsT4h9P+iCWr3YsAhMyXvQFvX
-         uLcgxF5q8LQsaNG3FBbIYptpjn0i8ID4UfcJorxrEsjcForRkTkoZBEm3A4tQhg52tDB
-         YStg==
-X-Gm-Message-State: AOAM532Wcg5sUVvR65fvIEtB0itnNse3Sqh1+Q46mA3v/S+iv9RTJ8Jh
-        Jb6h3PpMFz+sgqHKIsA1j0fKzg==
-X-Google-Smtp-Source: ABdhPJx2qo4HGcrJqr114ZtIIY4ckwTEFuRMwUlvOaFJCAC2pEj4AzRRvX7sa3sEZVcPo8HyRUAHlA==
-X-Received: by 2002:a17:907:a41e:b0:6e7:9ea9:8350 with SMTP id sg30-20020a170907a41e00b006e79ea98350mr1021136ejc.377.1649092101002;
-        Mon, 04 Apr 2022 10:08:21 -0700 (PDT)
-Received: from localhost.localdomain (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.gmail.com with ESMTPSA id u25-20020a170906b11900b006e08588afedsm4565827ejy.132.2022.04.04.10.08.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Apr 2022 10:08:20 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Lukasz Luba <lukasz.luba@arm.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-samsung-soc@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] memory: samsung: exynos5422-dmc: Avoid some over memory allocation
-Date:   Mon,  4 Apr 2022 19:08:14 +0200
-Message-Id: <164909209237.1690243.6125620782539753539.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <69d7e69346986e2fdb994d4382954c932f9f0993.1647760213.git.christophe.jaillet@wanadoo.fr>
-References: <69d7e69346986e2fdb994d4382954c932f9f0993.1647760213.git.christophe.jaillet@wanadoo.fr>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Uz4lPE2rdo2tRM1taU9hjtHkKN6cEscjMgtJGGpCZK0=;
+        b=dtN3xgHqCnijazXRENiqetHwqZMDbFOfpxG64s9hjF8NWj8soa2zOaPPS5zTfGatvM
+         r6hb/FolLJW2olQ33EncKkCs3cvC0SPyu9N7WUGUzaeMPUQkvXohc3KbFYmJIB8TSgzm
+         vL20iGJAhl0d3OpTA02lqlZLBQecTQ8W6ex6OftbSJDW45qz6S/LnFT0mFeqE445AO8b
+         y7/OPkvhWA0kgfKb0/s1GKWfoBF10Y3iDR19DFpI7aHL9KhXaNQ6yi1XP2w+KTIaewKg
+         u5zQrw1UsOxEarfuwkf1AESvkv5ZgjnW0QVDTGmj4cgYnfIq0iifEwlVBQ83FB/qXOt/
+         ksPg==
+X-Gm-Message-State: AOAM531xbP7O8ZfDYrzHRNIJ5xEimhT1mekNIH3+ErphpLbhuAl/Ue1g
+        yMKbtwrMbTObecQZYN38UeLHiVf1e0Bx/wH7bvQhZA==
+X-Google-Smtp-Source: ABdhPJyEamkccvVwsWuiMfR8yOe39RymGH9/TLP+zLi/6TZpWH3im6mHt1c9jyr67LnqZRKEZnZwcP1sY9HjUQIPna4=
+X-Received: by 2002:a05:651c:1588:b0:249:b90d:253c with SMTP id
+ h8-20020a05651c158800b00249b90d253cmr525887ljq.408.1649095772447; Mon, 04 Apr
+ 2022 11:09:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+References: <20220318000055.79280-1-colin.i.king@gmail.com>
+In-Reply-To: <20220318000055.79280-1-colin.i.king@gmail.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Mon, 4 Apr 2022 11:09:21 -0700
+Message-ID: <CAKwvOd=GRBTs43JcwMBS=aEYtOXLP+SVEj3d89LjcfJJZLOZ5Q@mail.gmail.com>
+Subject: Re: [PATCH] amd64-agp: remove redundant assignment to variable i
+To:     Colin Ian King <colin.i.king@gmail.com>
+Cc:     David Airlie <airlied@linux.ie>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 20 Mar 2022 08:10:30 +0100, Christophe JAILLET wrote:
-> 'dmc->counter' is a 'struct devfreq_event_dev **', so there is some
-> over memory allocation. 'counters_size' should be computed with
-> 'sizeof(struct devfreq_event_dev *)'.
-> 
-> Use 'sizeof(*dmc->counter)' instead to fix it.
-> 
-> While at it, use devm_kcalloc() instead of devm_kzalloc()+open coded
-> multiplication.
-> 
-> [...]
+On Thu, Mar 17, 2022 at 5:01 PM Colin Ian King <colin.i.king@gmail.com> wrote:
+>
+> Variable i is being assigned a value that is never read, it is being
+> re-assigned later in a for-loop. The assignment is redundant and can
+> be removed.
+>
+> Cleans up clang scan build warning:
+> drivers/char/agp/amd64-agp.c:336:2: warning: Value stored to 'i' is
+> never read [deadcode.DeadStores]
+>
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 
-Applied, thanks!
+Thanks for the patch!
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-[1/1] memory: samsung: exynos5422-dmc: Avoid some over memory allocation
-      commit: 56653827f0d7bc7c2d8bac0e119fd1521fa9990a
+> ---
+>  drivers/char/agp/amd64-agp.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/drivers/char/agp/amd64-agp.c b/drivers/char/agp/amd64-agp.c
+> index dc78a4fb879e..5f64991c73bf 100644
+> --- a/drivers/char/agp/amd64-agp.c
+> +++ b/drivers/char/agp/amd64-agp.c
+> @@ -333,7 +333,6 @@ static int cache_nbs(struct pci_dev *pdev, u32 cap_ptr)
+>         if (!amd_nb_has_feature(AMD_NB_GART))
+>                 return -ENODEV;
+>
+> -       i = 0;
+>         for (i = 0; i < amd_nb_num(); i++) {
+>                 struct pci_dev *dev = node_to_amd_nb(i)->misc;
+>                 if (fix_northbridge(dev, pdev, cap_ptr) < 0) {
+> --
+> 2.35.1
+>
+>
 
-Best regards,
+
 -- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Thanks,
+~Nick Desaulniers

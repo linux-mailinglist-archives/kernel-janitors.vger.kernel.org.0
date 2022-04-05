@@ -2,85 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BB4B4F1CDC
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Apr 2022 23:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDD234F222E
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Apr 2022 06:45:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380368AbiDDV3U (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 Apr 2022 17:29:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54066 "EHLO
+        id S230412AbiDEEU7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Apr 2022 00:20:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379992AbiDDSf2 (ORCPT
+        with ESMTP id S230448AbiDEEUl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 Apr 2022 14:35:28 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99A70DE6;
-        Mon,  4 Apr 2022 11:33:32 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id y6so8875657plg.2;
-        Mon, 04 Apr 2022 11:33:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=HTlJgdeE3lDAqjCO4JsmP8RkA59LG12ag3IJtKwIY0w=;
-        b=P+dfA3xvQXkqkDVlraLxZTQnIMWTwarqXlYTJ99lRVk7T2xkorG4bZnidEdbaLbGES
-         RyNomIVom+PWAe4r4wm2td8PnRxJ9fAslAsGGwkaSzZvwUETX8b6s7pETYTcMoWWdkRH
-         aHxvAIhs/IbxLyErjub8jgWIo187ee97PNZ2Ucy9yi18MGSTIY2Ona5H4w53u9CExOgg
-         0NG53Fk4vnKnuZlUnihv7Vj5hPA/pqAxYAir8fpcby0uEDowXno2DUlEQOMk0HpKq6Fl
-         yRWuvEAWnpGK623LtUxevSPLH5yZhlzfBdYTJ53WysTo6T0Gfy7XshDsS60LFpHGAiS5
-         /EXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=HTlJgdeE3lDAqjCO4JsmP8RkA59LG12ag3IJtKwIY0w=;
-        b=349U9bjqolacvAF4TKlIz+2Gd7qTGBuC3N/ZYwht3ZvGxHP1RBsMYLidX/ELmo7HeA
-         asSRettZfdQigejH6qFFh+XfHF/UwPachcyXD/X2DmMaqkDMo4FzJ/e2lfJWwGzv/RrK
-         G3x10TKowmTm6PfHormpchrmzjv+guPiwdWwzysOfLm/WHswv4mdcn5fqRuJTRJUD+Ik
-         hhpoZmT/MFzSju7MlekRmeGD2Zf5LlK9N6kz3W6P66WemdIlT73y2dGRbkfUrUw66sbj
-         wfzVqetKKqgigp9MDMf0EuyL4no8M/QKBOrTABNG3JS/bxyL916sITK4sMkzkAFftKBL
-         UxaQ==
-X-Gm-Message-State: AOAM533CDjOP9IM+YcMDT8JD7NyhhlW+nrCdnx18ZUvHa2dPDeGwHDCP
-        4EfdttWvYUaVnkIc6NY3j6g=
-X-Google-Smtp-Source: ABdhPJwNXvwaTH65EoOOHPTEfB5Y2JfrzarbaacpVXtcBxzrJWqO/r0jswwpURqlCoHbrfBnh+mFIw==
-X-Received: by 2002:a17:90b:224f:b0:1c9:949e:2202 with SMTP id hk15-20020a17090b224f00b001c9949e2202mr567659pjb.56.1649097212048;
-        Mon, 04 Apr 2022 11:33:32 -0700 (PDT)
-Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id b13-20020a056a000ccd00b004fadb6f0299sm13163917pfv.191.2022.04.04.11.33.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Apr 2022 11:33:31 -0700 (PDT)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     bcm-kernel-feedback-list@broadcom.com,
-        Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     kernel-janitors@vger.kernel.org, Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: brcmstb: fix typos in comments
-Date:   Mon,  4 Apr 2022 11:33:29 -0700
-Message-Id: <20220404183329.2316211-1-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220318103729.157574-34-Julia.Lawall@inria.fr>
-References: <20220318103729.157574-34-Julia.Lawall@inria.fr>
+        Tue, 5 Apr 2022 00:20:41 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09CBFF71;
+        Mon,  4 Apr 2022 21:17:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C5F05B81B79;
+        Tue,  5 Apr 2022 04:17:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCF7C340F0;
+        Tue,  5 Apr 2022 04:17:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649132242;
+        bh=KCPGLPVeH6NYTKvdtiGBtcJRWw93SSF1I3156qmZZSM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QVwAnVKdmrWaK0a/L7PZoNplSCX1Y7xJ2q3ES1fA6a+owx43D7XQ80+BCiWLUUPrn
+         ph3OJTwN+MqWw85S+HQXSJ4rOrTIPan2Uaymd64QPTpjNqFnOWJ5dMuE2ns+/1WEo2
+         nl62VqxlWyc4YKy82ppGGnQZd2idxD6Y5BKjueAd11a2sgURGMZi+GAMOKsEeXZvIT
+         m6MHO6FTUFPjsj97zkEx/UsySW5csN6hBW2s6fxcZSMdGNDQUiFvzixym59uKjeOJS
+         FaFYt819xFCAGo8wJG8aaeA+Q5aovyeVNODa+oL2d9Z0Sa41zoetW+NgVEB3HiUs9O
+         0x26KECI1U2kA==
+Date:   Tue, 5 Apr 2022 09:47:18 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Andy Gross <agross@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Sanyog Kale <sanyog.r.kale@intel.com>,
+        linux-arm-msm@vger.kernel.org, alsa-devel@alsa-project.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] soundwire: qcom: fix an error message in
+ swrm_wait_for_frame_gen_enabled()
+Message-ID: <YkvCzlU5/KuKE1rS@matsya>
+References: <20220307125814.GD16710@kili>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220307125814.GD16710@kili>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 18 Mar 2022 11:37:29 +0100, Julia Lawall <Julia.Lawall@inria.fr> wrote:
-> Various spelling mistakes in comments.
-> Detected with the help of Coccinelle.
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> 
-> ---
+On 07-03-22, 15:58, Dan Carpenter wrote:
+> The logical AND && is supposed to be bitwise AND & so it will sometimes
+> print "connected" instead of "disconnected".
 
-Applied to https://github.com/Broadcom/stblinux/commits/soc/next, thanks!
---
-Florian
+Applied, thanks
+
+-- 
+~Vinod

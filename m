@@ -2,75 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F61B4F4932
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Apr 2022 02:20:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 025FD4F4904
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Apr 2022 02:19:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232233AbiDEWFk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Apr 2022 18:05:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57894 "EHLO
+        id S230284AbiDEV7l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Apr 2022 17:59:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1389781AbiDEP0q (ORCPT
+        with ESMTP id S1443051AbiDEPiw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Apr 2022 11:26:46 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28AE1EEA43;
-        Tue,  5 Apr 2022 06:37:32 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: kholk11)
-        with ESMTPSA id C01181F4512B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1649165850;
-        bh=plGTTyi7O6qDtXxCe+h/xQcs9ltHnMhWtxjOqkuVZDA=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=c7CbAeTNu93R+wac0xUo8wYt5JHYwVPd64SEqW/SDwK8otS4ZmnyP2OT8Zetat059
-         odFY4s7LLMRKdZx+u9DgJ+6R76/bmNzUrxwpPJMv+KYldaKtX0rVOinXvHBuewmHCd
-         GPiHBfHg9bzOyApLYuAlAGJ54YI1ZvRFGvvu31CzQMNaPh7/FpmEf6WgCoWWVghk0v
-         n7+V4pbW+bbDbiuVhQ74MTamguMKsNtXVYQJBaVZkV4tM1g6haDmp3nJBTJhcq+6me
-         SGNpIoCdUfJATVmysl7Ianu9MVm7k8Y6RobJ0fX1h6SE+SehjaHHxv8XRMMnf90Yif
-         lU13kvmJsV8CA==
-Message-ID: <9999f731-1e95-ef51-4b09-c88222320696@collabora.com>
-Date:   Tue, 5 Apr 2022 15:37:26 +0200
+        Tue, 5 Apr 2022 11:38:52 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEA4E144B5C;
+        Tue,  5 Apr 2022 06:54:15 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id h4so19385760wrc.13;
+        Tue, 05 Apr 2022 06:54:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DtW73tEE2+XFkT3bPsX/7iGbHd2vWpPYT/i50JAUgmI=;
+        b=KRuBEqeehUWFQiE6Qb6pz2CZtRUAXww/24GIyCnvwpdbtfIKvDXbMg/G7g3DnY42x6
+         /iZbgKc5kKf24N8Ac4Mpu156t4HMYzU7Nm+RM3S3BnmbpSHNkHbZn/OOn478oWoEpF8E
+         De5/l0DXrm9uA/jpBI0/y5L4nLSqe4IWXKqb4B9WfjbhMRIsV28Dz8F/Eb2URXYcNzQM
+         AtiZNEnvnfUmIdfza2vc32Mep19NqVFUKjYP78+D97mljq2ztcdx3TyvTolE+C9Klo0g
+         A++9eTEGSW/RNdTwnTzk/7OBaYYwNf3nClqpPAgFLubykoDzWaSzpo9QnkjU9VSqUVjI
+         FKYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DtW73tEE2+XFkT3bPsX/7iGbHd2vWpPYT/i50JAUgmI=;
+        b=wg2+xuN2p/2bH9p0ysDY0PM6PYQ8n/7R/ZS4VFjHDTpKvINogCpTWx/9WCBTAuVo7j
+         PinirXoGTmofj2Ln5Gan1Gip4C4OocGgxWo9ob4Hebzu3IWGVWAYomgkiDu5ndSHpCJG
+         QFAJ0oW6NBPzGaWiTVhc5iXnMjD1+YO6NIaNpTn1gq3pgWIPuDudm9J/EU/9+FtU1sIu
+         xrpdDGHoP0pQg07hQI4Eqbw7zJ1eVlpNL2JkUzBA7Ge3jdsFYByX2WdTDB5XkDS3o5Mm
+         XQiZWc98z48LaZGT5nYfjLgplX4JvuwyDyHWNPGAvQqdBhwsCSAooD3JxOe2UnROC4Q/
+         mkDg==
+X-Gm-Message-State: AOAM530w4awfk3c2ymPRlPpwMmmXnYDUIurCvkyZUeqlNaQuxi3UlFmy
+        0sqjcuoEVA10yEhRf1DKOkA=
+X-Google-Smtp-Source: ABdhPJx7uWLB6seAta51fiSK0+njz9yI+4yOg/CEwF3nvoU2EuPI0t4kkYbH392xPZ7JN2jShsBA+w==
+X-Received: by 2002:a05:6000:156d:b0:204:c24:895f with SMTP id 13-20020a056000156d00b002040c24895fmr3015212wrz.339.1649166854425;
+        Tue, 05 Apr 2022 06:54:14 -0700 (PDT)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id k12-20020a5d628c000000b00203e2fbb2absm12132822wru.113.2022.04.05.06.54.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Apr 2022 06:54:13 -0700 (PDT)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        alsa-devel@alsa-project.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ALSA: echoaudio: remove redundant assignment to variable i
+Date:   Tue,  5 Apr 2022 14:54:12 +0100
+Message-Id: <20220405135412.199251-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH] remoteproc: mtk_scp: Fix a potential double free
-Content-Language: en-US
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-References: <1d15923b4ffb94531435c48482fef276a11b9a67.1648981531.git.christophe.jaillet@wanadoo.fr>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <1d15923b4ffb94531435c48482fef276a11b9a67.1648981531.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Il 03/04/22 12:25, Christophe JAILLET ha scritto:
-> 'scp->rproc' is allocated using devm_rproc_alloc(), so there is no need
-> to free it explicitly in the remove function.
-> 
-> Fixes: c1407ac1099a ("remoteproc: mtk_scp: Use devm variant of rproc_alloc()")
+The variable i is being assigned a value that is never read, it
+is being re-assigned in the following for-loop. The assignment is
+redundant and can be removed.
 
-Hello Cristophe,
-thanks for the patch!
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ sound/pci/echoaudio/midi.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-I agree with what you're doing here, but you forgot to add your Signed-off-by.
-Please resend it with your signoff, then I will give you my R-b.
-Also, please make sure to add me to the Ccs so that I can see your v2 sooner!
+diff --git a/sound/pci/echoaudio/midi.c b/sound/pci/echoaudio/midi.c
+index 7be5c3327b16..47b2c023ee3d 100644
+--- a/sound/pci/echoaudio/midi.c
++++ b/sound/pci/echoaudio/midi.c
+@@ -124,7 +124,6 @@ static int midi_service_irq(struct echoaudio *chip)
+ 		return 0;
+ 
+ 	/* Get the MIDI data from the comm page */
+-	i = 1;
+ 	received = 0;
+ 	for (i = 1; i <= count; i++) {
+ 		/* Get the MIDI byte */
+-- 
+2.35.1
 
-Thanks,
-Angelo

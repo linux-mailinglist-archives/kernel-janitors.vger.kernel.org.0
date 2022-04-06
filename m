@@ -2,114 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84D024F6556
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Apr 2022 18:27:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D3B24F6478
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Apr 2022 18:08:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237139AbiDFQPb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Apr 2022 12:15:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60118 "EHLO
+        id S236837AbiDFP45 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 Apr 2022 11:56:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237236AbiDFQPP (ORCPT
+        with ESMTP id S236662AbiDFP4s (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Apr 2022 12:15:15 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CABA3E37FB;
-        Tue,  5 Apr 2022 21:11:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649218307; x=1680754307;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=cR9iKxrz/8HA3dd1/jwZRF3XG6WX3t9oScAc0DPOnW8=;
-  b=Qhr3ZgcT6AghAGdmMiC42Yq+xjXtn3ha0USfQQjyMEydVBDv0FC4Afip
-   QdNUZQ5q7U+avhoyBYeNyTjKoqHwy+n23gZMIHzRPszfWR/i5RRVn9FAA
-   ivTGW0i/EvCYdBLPQvqQOYItX+SyA2zvCLZ/mNieoxs8FT4MbVJm9nC/C
-   a9ayqykO7f69eBEIwUcKcPSD+CVQsymH20Nr3ySz9Zj6Ag6I/EYxD7+A4
-   m/MYFj82grrvtlc+Q/5JvURh0DZ0wzaeJArpjZFZUwgo4zPIIwuEOqryq
-   l+kWxm2bsTJyg/7HHWH44kRAvhEqy+H1bV212Gk/aG7KTZUvU9SM7g5uW
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10308"; a="241530382"
-X-IronPort-AV: E=Sophos;i="5.90,239,1643702400"; 
-   d="scan'208";a="241530382"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2022 21:11:46 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,239,1643702400"; 
-   d="scan'208";a="524294591"
-Received: from unknown (HELO localhost.localdomain) ([10.23.185.145])
-  by orsmga006.jf.intel.com with ESMTP; 05 Apr 2022 21:11:44 -0700
-Message-ID: <f3b6524f899f2775e630dee2ad1cc4c4c389b2fe.camel@intel.com>
-Subject: Re: [PATCH] i2c: ismt: Remove useless DMA-32 fallback configuration
-From:   Seth Heasley <seth.heasley@intel.com>
-To:     Wolfram Sang <wsa@kernel.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Neil Horman <nhorman@tuxdriver.com>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-i2c@vger.kernel.org,
-        seth.heasley@intel.com
-Date:   Tue, 05 Apr 2022 14:13:04 -0700
-In-Reply-To: <YgEtUT7Dhntmidxy@shikoro>
-References: <853d9f9d746864435abf93dfc822fccac5b04f37.1641731339.git.christophe.jaillet@wanadoo.fr>
-         <YgEtUT7Dhntmidxy@shikoro>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-8.el7) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Wed, 6 Apr 2022 11:56:48 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B43B25A62A9;
+        Wed,  6 Apr 2022 06:22:38 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 563A5B823BF;
+        Wed,  6 Apr 2022 13:22:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C2DC385A7;
+        Wed,  6 Apr 2022 13:22:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649251356;
+        bh=TLyvTgiqSYYjMHPC+UQMx0cLGBFAbPTGSNIZDD5qmEE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=BRcBrf+6Ca4lrZIXmPFpnu3aoqjnUw8Z6cGxpjYO6fDettqwmZVCSZOBIDjbNq5YO
+         i5dzuDYR466yR9B0fywX8ZLS4PfkvRVA3d5dgswxve5JR04uo5sl6q1eF5FS8iRgbt
+         GwlSaGapzZSML6khLQC38qPSgzf4Vcu6K0tQvETDYD/0PA4/4eAakoulI0mdHDq+UM
+         E9gaEVbSo/U0Ob/Nj1VCvMzAms8bYJaOpLrryGksX2erF/kPMQhBcBmkF5A4NqPuoz
+         Qw94e16voGukyrwBeUu708IJvfk0MmtInmz6xMhBXUBoPGp45bobwDs9thZs76CmOW
+         M53nCiiglPPcQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=hot-poop.lan)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <maz@kernel.org>)
+        id 1nc5cH-002AfU-Jz; Wed, 06 Apr 2022 14:22:33 +0100
+From:   Marc Zyngier <maz@kernel.org>
+To:     alexandru.elisei@arm.com, suzuki.poulose@arm.com,
+        Yu Zhe <yuzhe@nfschina.com>, james.morse@arm.com
+Cc:     keescook@chromium.org, ricarkol@google.com, justin.he@arm.com,
+        linux-arm-kernel@lists.infradead.org, samitolvanen@google.com,
+        kernel-janitors@vger.kernel.org, catalin.marinas@arm.com,
+        kvmarm@lists.cs.columbia.edu, will@kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KVM: arm64: vgic: remove unnecessary type castings
+Date:   Wed,  6 Apr 2022 14:22:31 +0100
+Message-Id: <164925133306.3716042.8666897986559310118.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220329102059.268983-1-yuzhe@nfschina.com>
+References: <20220328103836.2829-1-yuzhe@nfschina.com> <20220329102059.268983-1-yuzhe@nfschina.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: alexandru.elisei@arm.com, suzuki.poulose@arm.com, yuzhe@nfschina.com, james.morse@arm.com, keescook@chromium.org, ricarkol@google.com, justin.he@arm.com, linux-arm-kernel@lists.infradead.org, samitolvanen@google.com, kernel-janitors@vger.kernel.org, catalin.marinas@arm.com, kvmarm@lists.cs.columbia.edu, will@kernel.org, linux-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 2022-02-07 at 15:31 +0100, Wolfram Sang wrote:
-> On Sun, Jan 09, 2022 at 01:29:45PM +0100, Christophe JAILLET wrote:
-> > As stated in [1], dma_set_mask() with a 64-bit mask never fails if
-> > dev->dma_mask is non-NULL.
-> > So, if it fails, the 32 bits case will also fail for the same
-> > reason.
-> > 
-> > 
-> > Simplify code and remove some dead code accordingly.
-> > 
-> > [1]: https://lkml.org/lkml/2021/6/7/398
-> > 
-> > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Seth Heasley <seth.heasley@intel.com>
-> 
-> Seth, Neil, do you agree?
+On Tue, 29 Mar 2022 03:20:59 -0700, Yu Zhe wrote:
+> remove unnecessary casts.
 
-Yes, I agree this change makes sense.
+Applied to fixes, thanks!
 
-> 
-> > ---
-> >  drivers/i2c/busses/i2c-ismt.c | 7 ++-----
-> >  1 file changed, 2 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/drivers/i2c/busses/i2c-ismt.c
-> > b/drivers/i2c/busses/i2c-ismt.c
-> > index f4820fd3dc13..951f3511afaa 100644
-> > --- a/drivers/i2c/busses/i2c-ismt.c
-> > +++ b/drivers/i2c/busses/i2c-ismt.c
-> > @@ -920,11 +920,8 @@ ismt_probe(struct pci_dev *pdev, const struct
-> > pci_device_id *id)
-> >  
-> >  	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
-> >  	if (err) {
-> > -		err = dma_set_mask_and_coherent(&pdev->dev,
-> > DMA_BIT_MASK(32));
-> > -		if (err) {
-> > -			dev_err(&pdev->dev, "dma_set_mask fail\n");
-> > -			return -ENODEV;
-> > -		}
-> > +		dev_err(&pdev->dev, "dma_set_mask fail\n");
-> > +		return -ENODEV;
-> >  	}
-> >  
-> >  	err = ismt_dev_init(priv);
-> > -- 
-> > 2.32.0
-> > 
+[1/1] KVM: arm64: vgic: remove unnecessary type castings
+      commit: c707663e81ef48d279719e97fd86acef835a2671
+
+Cheers,
+
+	M.
+-- 
+Without deviation from the norm, progress is not possible.
+
 

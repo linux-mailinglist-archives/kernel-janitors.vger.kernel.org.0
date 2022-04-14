@@ -2,55 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 144EE5016CB
-	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Apr 2022 17:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A966501836
+	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Apr 2022 18:07:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239025AbiDNPL7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 14 Apr 2022 11:11:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39422 "EHLO
+        id S245387AbiDNQF7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 14 Apr 2022 12:05:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354781AbiDNOmh (ORCPT
+        with ESMTP id S244187AbiDNPi1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 14 Apr 2022 10:42:37 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 080DDDE94
-        for <kernel-janitors@vger.kernel.org>; Thu, 14 Apr 2022 07:39:36 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id z6-20020a17090a398600b001cb9fca3210so5872925pjb.1
-        for <kernel-janitors@vger.kernel.org>; Thu, 14 Apr 2022 07:39:36 -0700 (PDT)
+        Thu, 14 Apr 2022 11:38:27 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C48102A27F;
+        Thu, 14 Apr 2022 08:15:58 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id c190-20020a1c35c7000000b0038e37907b5bso6212283wma.0;
+        Thu, 14 Apr 2022 08:15:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=gJ8pcz3Yaw1gKMnr6f7nkiOA+qMs14RS4sjJplU0gjM=;
-        b=R4JJPAxBiFl6PYRwZGRkCFzqF4VwdjE3sCH/tcEdYlbUlKE40ftv4JdLWisRcFdYD+
-         ZLPXO8yK68lWcdip9fPvd539XPVr0LDMwcHJYld7xq+NTMqK4zO/fBnRDPY4ReezcpiT
-         JdwrQMgNMvGbpSuS30JR74qg3aQuKtF2S2RQYN1PhbM0k3BNLsaBiv45OV5UWZagEa4u
-         Jr/VESJVUOAcZAQr/ZCswkJRgxe1UdqlQiNNfmilwIZIwDOp5tfmoIHRHxAvjoNxXnN+
-         EQ1InC2XexhkzFjVnN9GiHdeciEeyR+KRFdB1lWMlL1esYJgtlNQfvZN9wS2wH7Tk5On
-         Io6w==
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=XsqTqLkugnBvqYjkKxNnUI1wcLv9BGValT596llmCYU=;
+        b=jNxJb4hv+jK+H7pc0ZcQ/w2lMqB/5HYjF44vYxPhVvrxcsoLUy9gjgiKp/5ChWh20f
+         TCoLRdR3mjQM9sxZbmLBjozoJFIM6276z2+oxpgiCmZqc1ucjFz+7fArDg0YkM1pVMwf
+         IosDdC5sGL3kxBaHAosuofLXAZjvEp8KMyXvqPkmDYO+hno21LZnPF2s/fbI1D+Fu53g
+         b+Z2nuyrfFRAYLwqaGM/Kkn0/OMXE8kqokiGIxmyk7KUcRA1oAH1scBYi9Se42PYzuNv
+         6yOZBZYVzrXvRM0gt3Cz26HwOOCDdPNb9JN8GDtZe4P21xNhns+rmH9NTYfnyhmM6vpM
+         i3FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=gJ8pcz3Yaw1gKMnr6f7nkiOA+qMs14RS4sjJplU0gjM=;
-        b=tASigfRS3Za8KsHPqqrkr0qLiazm4G6/buLVIhuhFjAiPv+nxJVMazeQ0E312oJFZZ
-         7lDLayqC51duqACreGHJbsqv5iyEzKHdzYl+HctJSLBoWDOr8br24dbXIAMN83eAPQF4
-         TT0eaQWsFwiuhE6HatguBxHIcg1qnkmTyVGFf1XJKBbvUP0F6CBiNmwiRD4lIg1auXnq
-         WqOD9fH2gGvhFTqXJhj7sHky3okevGE7WlrlIm5f9ZMhFjI6vZHevpKAZN9SJHbROhdy
-         PdzY3w178LDHZAFgAq6mQMMnwi+FblxXEFl/riab9bEVoe4BQ8b6ciuV6Sa7p0I1UfrE
-         wyMQ==
-X-Gm-Message-State: AOAM5306uAgvUNFTDuOiRcJ4ii11z0L04oXEfZ0KQhMc5JUpyr997fDM
-        mxTmAYajk8mZX51PJ3qZ0qhEyA==
-X-Google-Smtp-Source: ABdhPJyQhgIYo4iouGyYUQ+Q7Nt/zlHN4/wmdz2jjSvmkYXLB9lHmvXGarXlMm7Az348QWDplNeaIw==
-X-Received: by 2002:a17:903:110c:b0:14d:8859:5c8 with SMTP id n12-20020a170903110c00b0014d885905c8mr47115691plh.156.1649947176324;
-        Thu, 14 Apr 2022 07:39:36 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id p10-20020a056a0026ca00b004fb44e0cb17sm178299pfw.116.2022.04.14.07.39.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Apr 2022 07:39:35 -0700 (PDT)
-Date:   Thu, 14 Apr 2022 14:39:32 +0000
-From:   Sean Christopherson <seanjc@google.com>
-To:     Colin Ian King <colin.i.king@gmail.com>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=XsqTqLkugnBvqYjkKxNnUI1wcLv9BGValT596llmCYU=;
+        b=wRxHZfl55Wh6V65RDOkV0or4IsbomqeEK1L0MDtOQ2zs2YCrry/zNsOj1FULNkwH/T
+         HOKZzEUtJ2xguW40On0DLzeE9e/3iQlz2ZgFI3aPXdOJ7wac4vjXYYyzHjSgCx75FEVQ
+         GONN42rI7mqZkXvhCJllW0Mesob6jPQPLEwngbfCWvKuqMPJGKpktq5WMPKVgtVuherA
+         zztNRIxaURoVQTeEVL4qzMFdtSdBLdxRWfAGvlj8lNCC2zNKJonFiOC1CtSZ0XKgnOgx
+         2czcvH2/mEtNOJ99ocxsHTCuMpNhCc3g3YiCgszZvbYZOU05sAq0aqHng6ZxKBVRmfnk
+         WTcw==
+X-Gm-Message-State: AOAM532LgJpwTNW6TMVfwTpdJaZQWXHNsFRF0TCq053VB9dSp8cQyzCM
+        2rmLDIHe5D+Ks4YrwRsBLGs=
+X-Google-Smtp-Source: ABdhPJycB+Y5sEJjd8AoMIjUoXTPawNZMIKOdRkwxy5iZGTZ8YrwC4qby0DPf8MDpd1fbqMX+afNww==
+X-Received: by 2002:a05:600c:3585:b0:38e:be0e:8471 with SMTP id p5-20020a05600c358500b0038ebe0e8471mr3736537wmq.30.1649949357188;
+        Thu, 14 Apr 2022 08:15:57 -0700 (PDT)
+Received: from [192.168.0.210] (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.googlemail.com with ESMTPSA id q16-20020a1ce910000000b0038eabd31749sm2747109wmc.32.2022.04.14.08.15.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Apr 2022 08:15:56 -0700 (PDT)
+Message-ID: <e32f16a0-f963-be9e-906a-e8995ea60ca2@gmail.com>
+Date:   Thu, 14 Apr 2022 16:15:55 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH] KVM: VMX: make read-only const array vmx_uret_msrs_list
+ static
+Content-Language: en-US
+To:     Sean Christopherson <seanjc@google.com>
 Cc:     Paolo Bonzini <pbonzini@redhat.com>,
         Vitaly Kuznetsov <vkuznets@redhat.com>,
         Wanpeng Li <wanpengli@tencent.com>,
@@ -61,18 +68,15 @@ Cc:     Paolo Bonzini <pbonzini@redhat.com>,
         Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         "H . Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KVM: VMX: make read-only const array vmx_uret_msrs_list
- static
-Message-ID: <YlgyJPRVNCe4w8q3@google.com>
 References: <20220414100720.295502-1-colin.i.king@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220414100720.295502-1-colin.i.king@gmail.com>
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+ <YlgyJPRVNCe4w8q3@google.com>
+From:   "Colin King (gmail)" <colin.i.king@gmail.com>
+In-Reply-To: <YlgyJPRVNCe4w8q3@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,34 +84,42 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Apr 14, 2022, Colin Ian King wrote:
-> Don't populate the read-only array vmx_uret_msrs_list on the stack
-> but instead make it static. Also makes the object code a little smaller.
-
-Why not put it on the stack?  It's an __init function, i.e. called once in the
-lifetime of kvm-intel.ko, isn't all that big, and is certainly not performance
-critical.  And making it static begs the question of whether or not the data gets
-thrown away after init, i.e. this might consume _more_ memory once KVM has reached
-steady state.
-
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
->  arch/x86/kvm/vmx/vmx.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On 14/04/2022 15:39, Sean Christopherson wrote:
+> On Thu, Apr 14, 2022, Colin Ian King wrote:
+>> Don't populate the read-only array vmx_uret_msrs_list on the stack
+>> but instead make it static. Also makes the object code a little smaller.
 > 
-> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> index c654c9d76e09..36429e2bb918 100644
-> --- a/arch/x86/kvm/vmx/vmx.c
-> +++ b/arch/x86/kvm/vmx/vmx.c
-> @@ -7871,7 +7871,7 @@ static __init void vmx_setup_user_return_msrs(void)
->  	 * but is never loaded into hardware.  MSR_CSTAR is also never loaded
->  	 * into hardware and is here purely for emulation purposes.
->  	 */
-> -	const u32 vmx_uret_msrs_list[] = {
-> +	static const u32 vmx_uret_msrs_list[] = {
->  	#ifdef CONFIG_X86_64
->  		MSR_SYSCALL_MASK, MSR_LSTAR, MSR_CSTAR,
->  	#endif
-> -- 
-> 2.35.1
+> Why not put it on the stack?  It's an __init function, i.e. called once in the
+> lifetime of kvm-intel.ko, isn't all that big, and is certainly not performance
+> critical.  And making it static begs the question of whether or not the data gets
+> thrown away after init, i.e. this might consume _more_ memory once KVM has reached
+> steady state.
+
+Doh, my bad, I forgot to check that it was an __init function. Please 
+discard this patch.
+
+Colin
+
 > 
+>> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+>> ---
+>>   arch/x86/kvm/vmx/vmx.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+>> index c654c9d76e09..36429e2bb918 100644
+>> --- a/arch/x86/kvm/vmx/vmx.c
+>> +++ b/arch/x86/kvm/vmx/vmx.c
+>> @@ -7871,7 +7871,7 @@ static __init void vmx_setup_user_return_msrs(void)
+>>   	 * but is never loaded into hardware.  MSR_CSTAR is also never loaded
+>>   	 * into hardware and is here purely for emulation purposes.
+>>   	 */
+>> -	const u32 vmx_uret_msrs_list[] = {
+>> +	static const u32 vmx_uret_msrs_list[] = {
+>>   	#ifdef CONFIG_X86_64
+>>   		MSR_SYSCALL_MASK, MSR_LSTAR, MSR_CSTAR,
+>>   	#endif
+>> -- 
+>> 2.35.1
+>>
+

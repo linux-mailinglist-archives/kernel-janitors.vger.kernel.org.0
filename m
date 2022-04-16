@@ -2,83 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 480C450282F
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Apr 2022 12:21:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D0E95034B3
+	for <lists+kernel-janitors@lfdr.de>; Sat, 16 Apr 2022 09:44:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345909AbiDOKW4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 15 Apr 2022 06:22:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50846 "EHLO
+        id S230081AbiDPHq7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 16 Apr 2022 03:46:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352283AbiDOKWo (ORCPT
+        with ESMTP id S229845AbiDPHq6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 15 Apr 2022 06:22:44 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA840AC05A;
-        Fri, 15 Apr 2022 03:20:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 888BEB82DEE;
-        Fri, 15 Apr 2022 10:20:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 46B35C385A6;
-        Fri, 15 Apr 2022 10:20:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650018014;
-        bh=PaY/ntdZ5Yibo6BVXe7E+AX6IN9dt5+Gh5e51jh8ERw=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=tndsMcdHLKiFPAx2otn6O6h3Tu+35qdwnNuW8KGghrc2B0593Md1rOwzNsCZUOVXJ
-         9KeIsdjodzOqljxz6ZJiFDgbSZE6SRy2NFDOOg4KmjVAWPKmaWyZCscJvOAHPk6Bwu
-         acgkuCFbpVFZie32MJmGRYtHoGbtJc94a5UnmDPClk/ZFPilEmxIhg999/TNXgcoxP
-         /R7WEV76DcwEcQJyzMpTEnZDiUFJQg8B0UBvZ2SXUCnEw32xbtvqqGi1VVEH29ZSLk
-         ffbbJwPp9YIDLmClNvFZN520L5BfK/47QzjF/6E2p7vz1FpG1o/OuQ/fisxDlKNe0s
-         7t/zemAu9yqzw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 2F0F0E8DBD4;
-        Fri, 15 Apr 2022 10:20:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Sat, 16 Apr 2022 03:46:58 -0400
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2C06F94E1
+        for <kernel-janitors@vger.kernel.org>; Sat, 16 Apr 2022 00:44:27 -0700 (PDT)
+Received: by mail-io1-xd44.google.com with SMTP id 79so1903819iou.7
+        for <kernel-janitors@vger.kernel.org>; Sat, 16 Apr 2022 00:44:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
+        b=WLytQdsOgAm2SCwXWhIlfiUxFYp8V6KJhxqFHEDChKeorU61bpUH0dIGlR8YlBIFZn
+         diZgZUA370TREgWOTMvywwgaXNAQEn8Meq463qA5vJ51GfRM6HFArlX7SvJSLO3Tw3PT
+         1KYPlvWsqnOJVw5P14sSxcbrtJmxIvWwm8ZgzqK+S2mPYyWSGW4ihcmDAtf4l+Wt1hFP
+         VvFHNlLJsjt4rVhmZOBJMhD74zd0c1Pq6ihXTkCNIVnkCTpmwd5/aZnHIGilqjyVPx9G
+         LiGFc4tH/iXUE67TzbojaC5MqPFtD/9ePUYbdqIkt1lkmfJKvtdxCQyNMDyrBf+b58Yr
+         kBlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
+        b=dNpvVRzGzPsdvOOYkRq+oJgmTQG6IdSzFpz8N+0Usdr0FWkUzZ8TtV1z8+CEeTOSwb
+         KjBC1lM2LfaywGn5cYEOoQravt30EAT9BF4eqpAg4Ey6Y7aSQqcWPwPKoQK0dnkZgeEf
+         614fFoWqK9r/XS9jp+eeDmxzI3UvtagxpekEZ8cesA2G2MvZFWBHSep9P2iFyDmhLa9a
+         zyKycUUjVsKU0l3c+4c0m2xHgzzxfQX+2F0opgLq+bc02LMmhQaQHrY+SX5Otp54pOGG
+         N6lFH5bnrNEPxWnWFBNwCqlSDtbYoe5VisTGnaDERD2CoPXSDuqlVIOEAsYT37akMJ2J
+         0+Pg==
+X-Gm-Message-State: AOAM533iz6c7DivK36mAlEwOwb/rglIjmdXz7ZJBWMqypiM8VX8Dn+lQ
+        GK/HnnN9stVYpqDwhNCziobsPFXvjZl+7KlpcZk=
+X-Google-Smtp-Source: ABdhPJwT5JAQijUAzuptGNTdBjReZccxsNjJ7Heww5sRuupRDeYEnJUh/WXc8vkJzY9+sjfh/zxDbHMFgqAcrWcUhvA=
+X-Received: by 2002:a05:6638:12c2:b0:326:665f:5bc2 with SMTP id
+ v2-20020a05663812c200b00326665f5bc2mr1049220jas.196.1650095066744; Sat, 16
+ Apr 2022 00:44:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH][next] octeon_ep: Fix spelling mistake "inerrupts" ->
- "interrupts"
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <165001801418.12692.17059813313427087802.git-patchwork-notify@kernel.org>
-Date:   Fri, 15 Apr 2022 10:20:14 +0000
-References: <20220414080834.290840-1-colin.i.king@gmail.com>
-In-Reply-To: <20220414080834.290840-1-colin.i.king@gmail.com>
-To:     Colin King (gmail) <colin.i.king@gmail.com>
-Cc:     vburru@marvell.com, aayarekar@marvell.com, davem@davemloft.net,
-        kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Received: by 2002:a05:6638:1309:0:0:0:0 with HTTP; Sat, 16 Apr 2022 00:44:26
+ -0700 (PDT)
+Reply-To: daniel.seyba@yahoo.com
+From:   Seyba Daniel <royhalton13@gmail.com>
+Date:   Sat, 16 Apr 2022 09:44:26 +0200
+Message-ID: <CALSxb2zRRtkrPOMBfVL9HRmcg_j2Af76EQdBJb6m45oLVUz8Hw@mail.gmail.com>
+Subject: Hello,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:d44 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5001]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [royhalton13[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [royhalton13[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
+Hello,
 
-This patch was applied to netdev/net-next.git (master)
-by David S. Miller <davem@davemloft.net>:
+I am so sorry contacting you in this means especially when we have never
+met before. I urgently seek your service to represent me in investing in
+your region / country and you will be rewarded for your service without
+affecting your present job with very little time invested in it.
 
-On Thu, 14 Apr 2022 09:08:34 +0100 you wrote:
-> There is a spelling mistake in a dev_info message. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
->  drivers/net/ethernet/marvell/octeon_ep/octep_cn9k_pf.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+My interest is in buying real estate, private schools or companies with
+potentials for rapid growth in long terms.
 
-Here is the summary with links:
-  - [next] octeon_ep: Fix spelling mistake "inerrupts" -> "interrupts"
-    https://git.kernel.org/netdev/net-next/c/bb578430d05b
+So please confirm interest by responding back.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+My dearest regards
 
-
+Seyba Daniel

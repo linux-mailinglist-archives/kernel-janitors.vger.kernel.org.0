@@ -2,42 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29A8B50B29E
-	for <lists+kernel-janitors@lfdr.de>; Fri, 22 Apr 2022 10:09:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E8F550B28B
+	for <lists+kernel-janitors@lfdr.de>; Fri, 22 Apr 2022 10:09:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1445439AbiDVIEv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 22 Apr 2022 04:04:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44144 "EHLO
+        id S1445394AbiDVIEp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 22 Apr 2022 04:04:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1445436AbiDVIEt (ORCPT
+        with ESMTP id S1445424AbiDVIEo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 22 Apr 2022 04:04:49 -0400
-Received: from ciao.gmane.io (ciao.gmane.io [116.202.254.214])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5759D527DB
-        for <kernel-janitors@vger.kernel.org>; Fri, 22 Apr 2022 01:01:57 -0700 (PDT)
-Received: from list by ciao.gmane.io with local (Exim 4.92)
-        (envelope-from <glkj-kernel-janitors-2@m.gmane-mx.org>)
-        id 1nhoEl-0009YY-16
-        for kernel-janitors@vger.kernel.org; Fri, 22 Apr 2022 10:01:55 +0200
-X-Injected-Via-Gmane: http://gmane.org/
-To:     kernel-janitors@vger.kernel.org
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH] drivers/base/memory: Fix a reference counting issue in
- __add_memory_block()
-Date:   Fri, 22 Apr 2022 10:01:48 +0200
+        Fri, 22 Apr 2022 04:04:44 -0400
+Received: from smtp.smtpout.orange.fr (smtp04.smtpout.orange.fr [80.12.242.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CE5E527DA
+        for <kernel-janitors@vger.kernel.org>; Fri, 22 Apr 2022 01:01:51 -0700 (PDT)
+Received: from [192.168.1.18] ([86.243.180.246])
+        by smtp.orange.fr with ESMTPA
+        id hoEen0sqCYnCyhoEen2yeU; Fri, 22 Apr 2022 10:01:49 +0200
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
+X-ME-Date: Fri, 22 Apr 2022 10:01:49 +0200
+X-ME-IP: 86.243.180.246
 Message-ID: <ef8e4a32-bc05-2632-bc09-00a20faf49dd@wanadoo.fr>
-References: <d44c63d78aafe844f920dc02ad6af25acc448fcf.1650611702.git.christophe.jaillet@wanadoo.fr>
- <YmJaoSam6g95yToH@dhcp22.suse.cz>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Date:   Fri, 22 Apr 2022 10:01:48 +0200
+MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
+Subject: Re: [PATCH] drivers/base/memory: Fix a reference counting issue in
+ __add_memory_block()
 Content-Language: en-GB
+To:     Michal Hocko <mhocko@suse.com>,
+        David Hildenbrand <david@redhat.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Scott Cheloha <cheloha@linux.vnet.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Nathan Lynch <nathanl@linux.ibm.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Newsgroups: gmane.linux.kernel.janitors,gmane.linux.kernel
+References: <d44c63d78aafe844f920dc02ad6af25acc448fcf.1650611702.git.christophe.jaillet@wanadoo.fr>
+ <YmJaoSam6g95yToH@dhcp22.suse.cz>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 In-Reply-To: <YmJaoSam6g95yToH@dhcp22.suse.cz>
-Cc:     linux-kernel@vger.kernel.org
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -114,5 +123,4 @@ CJ
 >> -- 
 >> 2.32.0
 > 
-
 

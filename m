@@ -2,94 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ABC650FF42
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Apr 2022 15:39:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C8295100F0
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Apr 2022 16:51:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237810AbiDZNmm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Apr 2022 09:42:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44496 "EHLO
+        id S1351779AbiDZOyY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Apr 2022 10:54:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239468AbiDZNml (ORCPT
+        with ESMTP id S1347580AbiDZOyV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 Apr 2022 09:42:41 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09A2A66AE6;
-        Tue, 26 Apr 2022 06:39:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1650980374; x=1682516374;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7fuoHjFYh58bCMLDeH91TfTPQ3w0G2M79t/dH46cWVM=;
-  b=kk55sE6m9ngH5zhZlN111jJef38ZLzfv5FlpLa3wXk/eaTmdeWxfHChL
-   xQUTRX38IL78SDBiIZ9xIZ3QXUhSV6LL7I9IkNWmqPdt1J0wGRaKCrPaY
-   Uh9aBFJEIpotgaWJcKgG0bRBd55X2qcPpX8ijPagbESMlI/uXpF3B7huC
-   dpExB89eB1unPmgwo0xbk4vZYlCad05KFFgACmT6PJoHcExEVN/IUmiF/
-   xGei0lYlG/hP2fxwmZquqiS9JqtTBmDxAc3jQLT/Y/U1PLJNIdX61PyBA
-   XrCZfxxP5tEc1jkYH23m9hjGJnyCYiZyt0bGbnySP0IcME9mDXYriRThK
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10328"; a="252955802"
-X-IronPort-AV: E=Sophos;i="5.90,291,1643702400"; 
-   d="scan'208";a="252955802"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2022 06:39:33 -0700
-X-IronPort-AV: E=Sophos;i="5.90,290,1643702400"; 
-   d="scan'208";a="579898754"
-Received: from dongyiyu-mobl1.ccr.corp.intel.com (HELO chenyu5-mobl1) ([10.249.173.93])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2022 06:39:30 -0700
-Date:   Tue, 26 Apr 2022 21:39:26 +0800
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     Colin Ian King <colin.i.king@gmail.com>
-Cc:     Len Brown <lenb@kernel.org>, linux-pm@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] tools/power turbostat: Fix file pointer leak
-Message-ID: <20220426133926.GA33188@chenyu5-mobl1>
-References: <20220426131607.1520483-1-colin.i.king@gmail.com>
+        Tue, 26 Apr 2022 10:54:21 -0400
+X-Greylist: delayed 1808 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 26 Apr 2022 07:51:13 PDT
+Received: from abedmanico.biharhotel.com (abedmanico.biharhotel.com [194.31.98.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B806341FBE
+        for <kernel-janitors@vger.kernel.org>; Tue, 26 Apr 2022 07:51:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=biharhotel.com;
+ h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=mar.veg@biharhotel.com;
+ bh=1dWi+UzZAOpqN+E1Lcs0ZpdTUIU=;
+ b=AWsUWmN1g81caY2wMyt+RGKwjhO8AacMmo9kCpVzSIhYDIApk2gTDdnJ+QgrkprygfKuR5yyPhlY
+   mLE7AbBr7isvJ2cYUxT2YNsMjULxp0MP7uneCLbs3QUlR7AOjY2H4Keq6OLt2zWEMm65XO3xziOj
+   4DkHlVmmxOiSqZEkWEorg4uvuZC19p9GFXWFS9SygrSb+sGxB4wqPOb0StfDxzXMnhJqGsD/L6WM
+   Trq+Rm+cjuBxuTDpPTnpA7Mmx1KE2tZpDbFJR31E8MZkjJA6u+9ZFeSgpbLY3q/IJF2nWfCCktU0
+   bCkMCkK0poC228InRqUb91mBRSxLveBejN1A4Q==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=biharhotel.com;
+ b=A7ZRH73IHX5u5uk2mZAgMk7UuGZvFMyNg8F5eSgHq1BaTSeFd9PRuXYLr7HQzvLj3iDgQA3YJE0c
+   ufXxXxjMRDYCgJpKtFxFog0/mfFvbdfK80+gjBWunsepiswxJz45ZaUON8VB3L/mmcPODBCmFV8x
+   WKs+3WPQV6cz53Cz0y/JA8vRv+Nvm8pRmfE7v7kerfUV1GXmNx19ypBoA/tM/3MObBgqZmrEa33G
+   zJH9DY36RPl2YXYQo9fI6dJqUwfQajp70xH0MLI/r2ZyhAseH3k6NFJuFwsjg3YbzAzhNzTCLqi1
+   d/e/EP+DQBZ6UVhr21fosCTUkwbsHQ8ebqt8UQ==;
+Reply-To: bradleywrubel@scotts-foundation.org
+From:   "MACKENZIE SCOTT (Scott Foundation)" <mar.veg@biharhotel.com>
+To:     kernel-janitors@vger.kernel.org
+Subject: CONGRATULATIONS...
+Date:   26 Apr 2022 16:21:03 +0200
+Message-ID: <20220426162103.DEAF57A15082CC1A@biharhotel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220426131607.1520483-1-colin.i.king@gmail.com>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LOTS_OF_MONEY,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,US_DOLLARS_3 autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Apr 26, 2022 at 02:16:07PM +0100, Colin Ian King wrote:
-> Currently if a fscanf fails then an early return leaks an open
-> file pointer. Fix this by fclosing the file before the return.
-> Detected using static analysis with cppcheck:
-> 
-> tools/power/x86/turbostat/turbostat.c:2039:3: error: Resource leak: fp [resourceLeak]
-> 
-> Fixes: eae97e053fe3 ("tools/power turbostat: Support thermal throttle count print")
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
->  tools/power/x86/turbostat/turbostat.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-> index e6779f599a8e..db431b31c4df 100644
-> --- a/tools/power/x86/turbostat/turbostat.c
-> +++ b/tools/power/x86/turbostat/turbostat.c
-> @@ -2035,9 +2035,9 @@ int get_core_throt_cnt(int cpu, unsigned long long *cnt)
->  	if (!fp)
->  		return -1;
->  	ret = fscanf(fp, "%lld", &tmp);
-> +	fclose(fp);
->  	if (ret != 1)
->  		return -1;
-> -	fclose(fp);
->  	*cnt = tmp;
->  
->  	return 0;
-Acked-by: Chen Yu <yu.c.chen@intel.com>
+Hello,
 
-Thanks for fixing it.
+I'm Mackenzie Scott, Ex-wife to Jeff Bezos (Amazon Founder and=20
+CEO). I'm donating $4 billion to charities, churches, individuals,=20
+colleges and businesses across the Globe from Scott's Foundation to=20
+provide immediate support to people and businesses suffering=20
+economically from the impact of COVID-19 pandemic and the ongoing=20
+war in Ukraine. Your email emerged as one of the lucky winners=20
+after an electronically conducted ballot process.
 
+I have a donation grant worth $8,500,000.00 Dollars for you. You=20
+are to contact Mr. BRADLEY WRUBEL for more information if you're=20
+interested.
 
-Chenyu
+MR. BRADLEY WRUBEL
+bradleywrubel@scotts-foundation.org
+
+Congratulations.
+
+Yours Sincerely
+Mackenzie Scott
+The Scott Foundation
+P.O. Box 1513
+Los Gatos, CA 95031-1513
+USA.

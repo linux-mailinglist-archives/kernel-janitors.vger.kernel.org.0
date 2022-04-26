@@ -2,71 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1E445100DD
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Apr 2022 16:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20F195101CA
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Apr 2022 17:22:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243319AbiDZOvR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Apr 2022 10:51:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57714 "EHLO
+        id S1345302AbiDZPZb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Apr 2022 11:25:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231352AbiDZOvQ (ORCPT
+        with ESMTP id S1350893AbiDZPZ3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 Apr 2022 10:51:16 -0400
-Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 003343614A
-        for <kernel-janitors@vger.kernel.org>; Tue, 26 Apr 2022 07:48:08 -0700 (PDT)
-Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-e93ff05b23so6480245fac.9
-        for <kernel-janitors@vger.kernel.org>; Tue, 26 Apr 2022 07:48:08 -0700 (PDT)
+        Tue, 26 Apr 2022 11:25:29 -0400
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDBA9BCB4
+        for <kernel-janitors@vger.kernel.org>; Tue, 26 Apr 2022 08:22:21 -0700 (PDT)
+Received: by mail-io1-xd2c.google.com with SMTP id p62so20378753iod.0
+        for <kernel-janitors@vger.kernel.org>; Tue, 26 Apr 2022 08:22:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DpnqB2AGxqyw3CoghEbJ2vm3YwFMuogHkt07765d/4Y=;
-        b=h909C1DU4Y9hMLFITeZRFzhAHAaMyz19mocTiohQwpgkCha4ONej9EKuUPpjNZB+yo
-         vu1EfhlAWA8mbuJTvlOdv3/80apueEWsh9Ub8i0+PKlnnRQEKJMqQE2ic1Hd3bZad047
-         jri7ooT5HWOq1GlgFbyWHpX09AxYt5Wf5NtwB8uUZrH/VjcTyClTrWr7I6AtfaqGZrA8
-         W2XP/6XZoMBke5EGQ4TGnV7x9AxEyrn4nfaMiBITpL+usINt+BxyHtAZJM2Zvl1lHIlA
-         zLWDpjL6NwRBgB1MPOXXFodoJKzqea0k+A7d3Tbp13h6ZCPXh/hwNPke5X+4pjGJ82+k
-         Ctmg==
+        d=linuxfoundation.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=cuUc2xoUdcusYuxjPdEemxe0UNLqKWIyVIlb0000qns=;
+        b=QGqDycSpps1eWGDw6i+/PLvWV/1ssbWDef/meMng+TM1+EOjoXaBjNS1UhqPSVghFJ
+         CLQ3GitILHh8j/g+1ZW9jFPosj4H0B2uxSxNBBjZlrPSGvcejiCi+IVzMINRgjErRQ3A
+         vzaux1hFD+39PDEb336qsqQzmhLlxQfFeL7nU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DpnqB2AGxqyw3CoghEbJ2vm3YwFMuogHkt07765d/4Y=;
-        b=j3NOxxI82tcPC109TsQPqA8FmFcw+qy/LLGIkdvY3NUTsI2tAZftQDjnREzuwHbcGv
-         NNOE0aCSX2lRh7zX7B3Jw1pVrWJzSV+pdWhUUowdLr/xBK1ah2Q8DCOYzW7xjWrvC0MO
-         hXUa1ObZN5lSotTEhQeeMsF9AcQbbkVcBTs41tM6pEZIdPBu62ah3X7afB00FziLnBd6
-         43UDyiW/jA5+cPynUxQh2knOeq73D/axppejIEaGL5PEMamzYaLg+42nvelo9EFHc6cE
-         lgo6gud/9ILuITwmccIxovoZW06QJsvLNfBZ0bbGZugVJ+sIXuqf6+iUsk5dUG4MwjdN
-         pOOw==
-X-Gm-Message-State: AOAM532fKoELnRMoXx3enfWmL+88+HGitZNFwkHk+AdbIjPF2WS0mBgS
-        gKWbLh/pe+WPTC1i7ESjo5ogM/Z8m7koLS6xuKE=
-X-Google-Smtp-Source: ABdhPJxFZ1eTsOp1jW5ozMJ2r23INM9MidyGZO+m3ftYvOYdGMzSgXchHTKbRpG06n7GC5DcvbYoEu8DHzJ624Cw3u0=
-X-Received: by 2002:a05:6870:311d:b0:de:9b6c:362b with SMTP id
- v29-20020a056870311d00b000de9b6c362bmr12934047oaa.200.1650984488340; Tue, 26
- Apr 2022 07:48:08 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=cuUc2xoUdcusYuxjPdEemxe0UNLqKWIyVIlb0000qns=;
+        b=UJKkkbRsU1m5EyqKPll6EM6gYN9HKNd0Ng1jg7XJeRCS2+vFRQUAwkX3FhaUfrcwtp
+         NAfsoVW80bg4srcAr3ORMLsIfcStfil2qZ+sQUZ1RPAEjGqVXLWV4uLA56/eo7dAa105
+         oG6Eiha52meXJH+esh3KhaqLJK2MN68lonpku+ypWItJEsrE7MUJ+HMMAmNb/vg3Ofx9
+         /JolgGIHLNqCkoNPYxEvpR5uryiGYqN11lWVI+Ibdll1rvSGHq3PoQrLsMn9VmW4M/cl
+         HdIIf7ZdenGbUvhAvB2AcSHjLFjvLrjlmMG27gUMOpTjxS9OC+gZVWfVSxaCKBiYnG0y
+         zQzw==
+X-Gm-Message-State: AOAM530EP3Ysa39qQNM7GPTN0mFe5bKQaaA9dd7dM5PomMy/SuQ4wjxX
+        SnKF5M0X0asqoBFZmmfnZRJMhg==
+X-Google-Smtp-Source: ABdhPJw6/39kt+AkHmRqI0UfjPCWfFn4VCLbOGq0QHMTSobHN6hPb0rHONYxdmyZLKkU6FSTEZWcBw==
+X-Received: by 2002:a05:6638:25c3:b0:323:9914:c34f with SMTP id u3-20020a05663825c300b003239914c34fmr10887023jat.130.1650986541169;
+        Tue, 26 Apr 2022 08:22:21 -0700 (PDT)
+Received: from [192.168.1.128] ([71.205.29.0])
+        by smtp.gmail.com with ESMTPSA id s10-20020a92d90a000000b002cd7294db60sm8247970iln.20.2022.04.26.08.22.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Apr 2022 08:22:20 -0700 (PDT)
+Subject: Re: [PATCH][V2] selftests/resctrl: Fix null pointer dereference on
+ open failed
+To:     Colin Ian King <colin.i.king@gmail.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Sai Praneeth Prakhya <sai.praneeth.prakhya@intel.com>,
+        Babu Moger <babu.moger@amd.com>,
+        linux-kselftest@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Shuah Khan <skhan@linuxfoundation.org>
+References: <20220426122531.1506634-1-colin.i.king@gmail.com>
+From:   Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <1d0b168a-8fe3-0b44-5e72-77e90d1f9ebb@linuxfoundation.org>
+Date:   Tue, 26 Apr 2022 09:21:55 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-References: <Ymexw96moFElQvqG@kili> <YmeyEF4djrguNMEF@kili>
-In-Reply-To: <YmeyEF4djrguNMEF@kili>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Tue, 26 Apr 2022 10:47:57 -0400
-Message-ID: <CADnq5_PmoHWzJ9Mh=-ghMzOexv20h-Du2hGsoaR0owdDBnc8iw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] drm/amdgpu: debugfs: fix NULL dereference in ta_if_invoke_debugfs_write()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        Candice Li <candice.li@amd.com>, Tao Zhou <tao.zhou1@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        kernel-janitors@vger.kernel.org,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, Daniel Vetter <daniel@ffwll.ch>,
-        John Clements <john.clements@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        Hawking Zhang <Hawking.Zhang@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+In-Reply-To: <20220426122531.1506634-1-colin.i.king@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -75,41 +78,50 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Applied the series.  Thanks!
-
-Alex
-
-On Tue, Apr 26, 2022 at 4:49 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> If the kzalloc() fails then this code will crash.  Return -ENOMEM instead.
->
-> Fixes: e50d9ba0d2cd ("drm/amdgpu: Add debugfs TA load/unload/invoke support")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+On 4/26/22 6:25 AM, Colin Ian King wrote:
+> Currently if opening /dev/null fails to open then file pointer fp
+> is null and further access to fp via fprintf will cause a null
+> pointer dereference. Fix this by returning a negative error value
+> when a null fp is detected.
+> 
+> Detected using cppcheck static analysis:
+> tools/testing/selftests/resctrl/fill_buf.c:124:6: note: Assuming
+> that condition '!fp' is not redundant
+>   if (!fp)
+>       ^
+> tools/testing/selftests/resctrl/fill_buf.c:126:10: note: Null
+> pointer dereference
+>   fprintf(fp, "Sum: %d ", ret);
+> 
+> Fixes: a2561b12fe39 ("selftests/resctrl: Add built in benchmark")
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 > ---
-> This would look nicer as:
->
->         shared_buf = memdup_user(&buf[copy_pos], shared_buf_len);
->         if (IS_ERR(shared_buf))
->                 return PTR_ERR(shared_buf);
->
-> Probably eventually this will be sent as an automated Coccinelle patch?
->
->  drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
-> index 32bcc20b9e3f..6806deb098d3 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
-> @@ -254,7 +254,7 @@ static ssize_t ta_if_invoke_debugfs_write(struct file *fp, const char *buf, size
->
->         shared_buf = kzalloc(shared_buf_len, GFP_KERNEL);
->         if (!shared_buf)
-> -               ret = -ENOMEM;
-> +               return -ENOMEM;
->         if (copy_from_user((void *)shared_buf, &buf[copy_pos], shared_buf_len)) {
->                 ret = -EFAULT;
->                 goto err_free_shared_buf;
-> --
-> 2.35.1
->
+> 
+> V2: Add cppcheck analysis information
+> 
+> ---
+>   tools/testing/selftests/resctrl/fill_buf.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/resctrl/fill_buf.c b/tools/testing/selftests/resctrl/fill_buf.c
+> index 51e5cf22632f..56ccbeae0638 100644
+> --- a/tools/testing/selftests/resctrl/fill_buf.c
+> +++ b/tools/testing/selftests/resctrl/fill_buf.c
+> @@ -121,8 +121,10 @@ static int fill_cache_read(unsigned char *start_ptr, unsigned char *end_ptr,
+>   
+>   	/* Consume read result so that reading memory is not optimized out. */
+>   	fp = fopen("/dev/null", "w");
+> -	if (!fp)
+> +	if (!fp) {
+>   		perror("Unable to write to /dev/null");
+> +		return -1;
+> +	}
+>   	fprintf(fp, "Sum: %d ", ret);
+>   	fclose(fp);
+>   
+> 
+
+Thank you. Applied to linux-kselftest next for Linux 5.19-rc1
+
+thanks,
+-- Shuah

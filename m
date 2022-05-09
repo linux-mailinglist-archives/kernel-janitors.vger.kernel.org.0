@@ -2,123 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95DC651F272
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 May 2022 03:30:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBA4851F796
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 May 2022 11:12:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230211AbiEIBdk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 8 May 2022 21:33:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48716 "EHLO
+        id S232946AbiEIJMw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 May 2022 05:12:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236006AbiEIBBq (ORCPT
+        with ESMTP id S236491AbiEIIlo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 8 May 2022 21:01:46 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32573BE0C
-        for <kernel-janitors@vger.kernel.org>; Sun,  8 May 2022 17:57:53 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id p26so7995607lfh.10
-        for <kernel-janitors@vger.kernel.org>; Sun, 08 May 2022 17:57:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uk2GCo4tzO2z68A4aXi5qgjOdRQLhbqgNbxwMMvi8jk=;
-        b=Nql1Yjsic1g62x+3t7bP9sHcXY0u/gU5tmXaF5KQZzfGTru2e4lVe0MtlZA0k3imjr
-         YJxXKkTCdME5QT1vex+PZQooBQh5O0iISkVhcWdtmTb504b90IqPn944ijh9S2yR++u1
-         IQ1fIJlmWrCDlpWRNr+iMvB8UtpS7SN/swZmg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uk2GCo4tzO2z68A4aXi5qgjOdRQLhbqgNbxwMMvi8jk=;
-        b=dILx05mCyHAI4UUABi6fziSUNwc4iIokzv9gCNFpWuJZElzW0MdXW/5QIlO7m/IeHU
-         Hdteh2fA617Vv1oMbSr3INFHZqspfxOEVHSg8LIrpx3Utwx0UhNIcL18P1nQKTEis3Ym
-         XG0eoANdjEe5uBmbyOxPjigaHO0mRV0J/Obg8tpj3BJ+XBRrW0ATALkpiOTWB1el9Us6
-         MKwwkZXEFxdrdmSzTEQVTDILAWF/UGUMsJPhY7AaC9i3GAI/MSvsLhKAKrQjoYMKVNp4
-         Y2+9yBfkErlWhOUxjCVXxET3s3Bfg0OulAPZwVjo0Ua3tFSJy9Z/oi1mGYxtjYPfnKsE
-         Y2CQ==
-X-Gm-Message-State: AOAM531I+VwsDtR2SoxTn0rwlETzLJD5pnHG9NyvyDVBGlHXJeCHKswf
-        AoUW6fdgDLPqKVPhPCI1sE4uFnhvNBdtNNE1dOhXwg==
-X-Google-Smtp-Source: ABdhPJxYBGZN3P6DUr9QO720p7L7DYzFc6NRLCCRB9YrdPE8dAs6b+kSAN+4GFnljqurF4eRVhDm4HNiVEwm+vNJoIs=
-X-Received: by 2002:a05:6512:220d:b0:473:9ee1:660d with SMTP id
- h13-20020a056512220d00b004739ee1660dmr11065115lfu.326.1652057870802; Sun, 08
- May 2022 17:57:50 -0700 (PDT)
+        Mon, 9 May 2022 04:41:44 -0400
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE9981796F8;
+        Mon,  9 May 2022 01:37:50 -0700 (PDT)
+Received: (Authenticated sender: gregory.clement@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 2B68E240005;
+        Mon,  9 May 2022 08:37:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1652085469;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=+rqwth8FwDQSgAglp2OVaHDIsEvylppRxPGSliCTaDk=;
+        b=biHVJ17QCvaQFMnFtvXBiAP2r+H9XZv6WH2tBZpnkIVs2l6lOyxylMUt2I9LrA86kVcc3x
+        jXCG+YtSTgZOpwQQLBDw6xjk2jBCUk0E3+YvAId/4jB1qrn9AhXLHSkluoNnX3p/Wt9mOe
+        1SB2aonss+BE4sk2pghWVZKGexpFT//N5ef+rsxT/8+z+huKuPixjFJzWcV4MK5EiFn7Ah
+        szeidNVEo15naYzc7l1TNptHIxI3UCNxaAcImAhuWLBuWhKnVuTkZwy6p7o6oxrrRlQB6Y
+        w4BY6kv+fBa1LNcgUi2KkovpgU9bmRiQZUux7my/eRSIPA4fuv9Xvc1J4j+jYw==
+From:   Gregory CLEMENT <gregory.clement@bootlin.com>
+To:     Julia Lawall <Julia.Lawall@inria.fr>, Andrew Lunn <andrew@lunn.ch>
+Cc:     kernel-janitors@vger.kernel.org,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] [ARM] orion5x: fix typos in comments
+In-Reply-To: <20220318103729.157574-3-Julia.Lawall@inria.fr>
+References: <20220318103729.157574-3-Julia.Lawall@inria.fr>
+Date:   Mon, 09 May 2022 10:37:37 +0200
+Message-ID: <87pmknrtim.fsf@BL-laptop>
 MIME-Version: 1.0
-References: <20220508214500.60446-1-colin.i.king@gmail.com>
-In-Reply-To: <20220508214500.60446-1-colin.i.king@gmail.com>
-From:   Ozgur <ozgurk@ieee.org>
-Date:   Mon, 9 May 2022 04:57:40 +0400
-Message-ID: <CAADfD8wApw_v+uDTijY1K89WRJ_f7tkHmz=6LR086yMjEU4mWQ@mail.gmail.com>
-Subject: Re: [PATCH] x25: remove redundant pointer dev
-To:     Colin Ian King <colin.i.king@gmail.com>
-Cc:     Martin Schiller <ms@dev.tdt.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-x25@vger.kernel.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, May 9, 2022 at 1:45 AM Colin Ian King <colin.i.king@gmail.com> wrote:
+Julia Lawall <Julia.Lawall@inria.fr> writes:
+
+> Various spelling mistakes in comments.
+> Detected with the help of Coccinelle.
 >
-> Pointer dev is being assigned a value that is never used, the assignment
-> and the variable are redundant and can be removed. Also replace null check
-> with the preferred !ptr idiom.
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+
+Applied on mvebu/arm
+
+Thanks,
+
+Gregory
 >
-
-Hello,
-
-*dev pointer is device assign global linked list and shouldnt be
-touched by the driver so *dev wont get any value right?
-Also seems to use this while network interface is initializing because
-some activation information and stats information is also kept here,
-for example, open *dev will call when ifconfig is called from.
-
-route, link, forward these inital activate and move all values with
-net_device *dev?
-
-Regards
-
-> Cleans up clang scan warning:
-> net/x25/x25_proc.c:94:26: warning: Although the value stored to 'dev' is
-> used in the enclosing expression, the value is never actually read
-> from 'dev' [deadcode.DeadStores]
->
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 > ---
->  net/x25/x25_proc.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  arch/arm/mach-orion5x/dns323-setup.c |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/net/x25/x25_proc.c b/net/x25/x25_proc.c
-> index 3bddcbdf2e40..91a2aade3960 100644
-> --- a/net/x25/x25_proc.c
-> +++ b/net/x25/x25_proc.c
-> @@ -79,7 +79,6 @@ static int x25_seq_socket_show(struct seq_file *seq, void *v)
->  {
->         struct sock *s;
->         struct x25_sock *x25;
-> -       struct net_device *dev;
->         const char *devname;
+> diff --git a/arch/arm/mach-orion5x/dns323-setup.c b/arch/arm/mach-orion5x/dns323-setup.c
+> index 87cb47220e82..d69259b6b60d 100644
+> --- a/arch/arm/mach-orion5x/dns323-setup.c
+> +++ b/arch/arm/mach-orion5x/dns323-setup.c
+> @@ -696,12 +696,12 @@ static void __init dns323_init(void)
+>  			pr_err("DNS-323: failed to setup power-off GPIO\n");
+>  		pm_power_off = dns323c_power_off;
+>  
+> -		/* Now, -this- should theorically be done by the sata_mv driver
+> +		/* Now, -this- should theoretically be done by the sata_mv driver
+>  		 * once I figure out what's going on there. Maybe the behaviour
+>  		 * of the LEDs should be somewhat passed via the platform_data.
+>  		 * for now, just whack the register and make the LEDs happy
+>  		 *
+> -		 * Note: AFAIK, rev B1 needs the same treatement but I'll let
+> +		 * Note: AFAIK, rev B1 needs the same treatment but I'll let
+>  		 * somebody else test it.
+>  		 */
+>  		writel(0x5, ORION5X_SATA_VIRT_BASE + 0x2c);
 >
->         if (v == SEQ_START_TOKEN) {
-> @@ -91,7 +90,7 @@ static int x25_seq_socket_show(struct seq_file *seq, void *v)
->         s = sk_entry(v);
->         x25 = x25_sk(s);
->
-> -       if (!x25->neighbour || (dev = x25->neighbour->dev) == NULL)
-> +       if (!x25->neighbour || !x25->neighbour->dev)
->                 devname = "???";
->         else
->                 devname = x25->neighbour->dev->name;
-> --
-> 2.35.1
->
+
+-- 
+Gregory Clement, Bootlin
+Embedded Linux and Kernel engineering
+http://bootlin.com

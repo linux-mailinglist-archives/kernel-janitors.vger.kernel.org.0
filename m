@@ -2,92 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8E4C52215C
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 May 2022 18:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05A82522180
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 May 2022 18:43:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347488AbiEJQib (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 10 May 2022 12:38:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48328 "EHLO
+        id S1347539AbiEJQrN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 May 2022 12:47:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347479AbiEJQi2 (ORCPT
+        with ESMTP id S1347569AbiEJQrE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 10 May 2022 12:38:28 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B64452A4A0A;
-        Tue, 10 May 2022 09:34:29 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7BBA2B81E1F;
-        Tue, 10 May 2022 16:34:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7204C385C2;
-        Tue, 10 May 2022 16:34:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652200467;
-        bh=VODkbTVf3Dt1eFAC0XK/q51ZYmsgxWsx2okbVq533/I=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=FMONo6rKpM/kM/FTdTbOVzHXvhfPaCSQuBlJA6PJDkdaTs5h3XnyCI+NkpUOL5Bcf
-         6vqZbmrkamiTOK2a+wLItHL4hdgi34UVt8c7bxF07yVlQe73/VZJFHq3nYCdf3Ju5J
-         5LC6RZ5TcfWOu5qonumaSY+ck3IYMAClNwk6WOSgjjVDcZFCtnE1IMB1vn0Xd319kv
-         Dzl9BdvB8Ix8x70doQsw4iwzE25cfc0Ryh6fqclmmTXCvHLzLwM6Yn7xwusH41eZSx
-         wbHpHgWkZ8pQxys3c+v7ecTUqDzx4Nhevx3x9Qu7esxtmxW+zOV932j/ciFsM5aIAb
-         fBbUbrKzCu7rw==
-Content-Type: text/plain; charset="utf-8"
+        Tue, 10 May 2022 12:47:04 -0400
+Received: from mail-yw1-x1144.google.com (mail-yw1-x1144.google.com [IPv6:2607:f8b0:4864:20::1144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA50251339
+        for <kernel-janitors@vger.kernel.org>; Tue, 10 May 2022 09:43:03 -0700 (PDT)
+Received: by mail-yw1-x1144.google.com with SMTP id 00721157ae682-2ef5380669cso186266517b3.9
+        for <kernel-janitors@vger.kernel.org>; Tue, 10 May 2022 09:43:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=FRo/ATiHi18y5eGWMPtqMab2ppBYGs71AR/aSWrmm9o=;
+        b=liwDaNTQWQ/B/zdGnBcgrFEhxJZoIR4WCzM1EF36vicCJxDeeO/ruw2Oj5SKP/a3AO
+         gow1yGEek+PF7SbR0+nnoeHLUATbzbctyWCVUjUf6Z5niD2ef2ArvxbaQ3qfbWT5vG7U
+         lDUgVEYG1j4hDDktGZ6OGkdQ6z7zojc9hWmAJx9m9rRj8D9GYJlVFTLZ35CW6gTr1sAv
+         JtEaVNilBuGGAcyXAEzwOvFsxF84ifNqFilwo7WCfP6GvFRWzu0tPvmR/QzMnRqPXneU
+         AYy72fIexiYV57XKXIcg7ph5PRYSXithgn89rmY74EXQ3tf1O/WUCwVpWPc1DR5io/ia
+         fDKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=FRo/ATiHi18y5eGWMPtqMab2ppBYGs71AR/aSWrmm9o=;
+        b=tbmp4V0irbHLdpUqiDEynj+LzOElXWydU6Ds2yDYgMLbRI4kJvfVBKBbenqTraDmK7
+         URbpSVLOdO+zBbP/KLPlMHm0MGfg1eGfVrphEMfnPIy5en+gkmSyNrisvz8bsJgcyp0f
+         grriGPO4O84EVTL9btaH/AuirztwRSUZ1sNEuNeATys/BEF0ZuK13CbJdLPGYTHgCRic
+         owGoUqdhaOADbt5JZ7Uz6jbwIuhPDuW+8RmpzxLhvFkqjrjaejdav30XtI/u9cpAmhyb
+         qKqECT15Z7zlM8kMiDAfyz0nzFjJrhN3ujkXJuz7/yFecUp2K0TvNE5L3iwO+5wUoG6Q
+         v7TA==
+X-Gm-Message-State: AOAM533vf2gCmFG8LMVycMbZpKtjDNPPGuguDx4DICmL2yCx2V/qCyEa
+        GLespjEvnK3hEo0emLwRXEvvK52Cy/uBunKyIHo=
+X-Google-Smtp-Source: ABdhPJzYZ/KLn+EHRNF0DftiqS9fVR+eO22Kyc18ChENj3VAF2SXZO3VzxLEcNxSlqSgP4vMge79bMPyrDint2047sg=
+X-Received: by 2002:a81:1b54:0:b0:2fa:f842:bd7b with SMTP id
+ b81-20020a811b54000000b002faf842bd7bmr20165536ywb.170.1652200982605; Tue, 10
+ May 2022 09:43:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: remove redundant assignment to variables vht_mcs
- and
- he_mcs
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220507184155.26939-1-colin.i.king@gmail.com>
-References: <20220507184155.26939-1-colin.i.king@gmail.com>
-To:     Colin Ian King <colin.i.king@gmail.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165220046267.6768.5493678781221358887.kvalo@kernel.org>
-Date:   Tue, 10 May 2022 16:34:24 +0000 (UTC)
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Received: by 2002:a05:7010:3cd:b0:28b:e76d:8ab with HTTP; Tue, 10 May 2022
+ 09:43:01 -0700 (PDT)
+Reply-To: biiioqq@gmail.com
+From:   Rev Sister Grace <kiasskiww@gmail.com>
+Date:   Tue, 10 May 2022 22:13:01 +0530
+Message-ID: <CAOWny3PnVuFHwpxjP4u5N-sY7q5fp8zBQpx8wh6Z6_Zw-s66+g@mail.gmail.com>
+Subject: Rev Sis Grace Charity Work.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:1144 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [kiasskiww[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  0.2 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.5 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin Ian King <colin.i.king@gmail.com> wrote:
-
-> The variables vht_mcs and he_mcs are being initialized in the
-> start of for-loops however they are re-assigned new values in
-> the loop and not used outside the loop. The initializations
-> are redundant and can be removed.
-> 
-> Cleans up clang scan warnings:
-> 
-> warning: Although the value stored to 'vht_mcs' is used in the
-> enclosing expression, the value is never actually read from
-> 'vht_mcs' [deadcode.DeadStores]
-> 
-> warning: Although the value stored to 'he_mcs' is used in the
-> enclosing expression, the value is never actually read from
-> 'he_mcs' [deadcode.DeadStores]
-> 
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-
-Patch applied to ath-next branch of ath.git, thanks.
-
-25c321e8534e ath11k: remove redundant assignment to variables vht_mcs and he_mcs
-
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220507184155.26939-1-colin.i.king@gmail.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+My Name Is Rev Sister Grace, Contact me for a Charity donation of $2.2
+MILLION Dollars to you for charity work. Send Your Full Name & Your
+Phone No At: biiioqq@gmail.com

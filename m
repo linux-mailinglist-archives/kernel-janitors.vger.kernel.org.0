@@ -2,87 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 692D552FBB3
-	for <lists+kernel-janitors@lfdr.de>; Sat, 21 May 2022 13:17:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEE6052FC0A
+	for <lists+kernel-janitors@lfdr.de>; Sat, 21 May 2022 13:34:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354967AbiEULRL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 21 May 2022 07:17:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51196 "EHLO
+        id S243144AbiEULeJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 21 May 2022 07:34:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345604AbiEULOq (ORCPT
+        with ESMTP id S1354870AbiEULd4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 21 May 2022 07:14:46 -0400
-Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A5B213F933;
-        Sat, 21 May 2022 04:12:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=inria.fr; s=dc;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=y5bDNelPvC1Af06qeU1zinzPlEpQHukBeO/ewLou8cw=;
-  b=g48IdpdKNFc1DU+zmQi98JsJgCIoNUf10IuIZginiE3qDiAKv3jIPQMb
-   CXAbsvhG/PxEyi4iPZm6gEvSgepfIm/1Ujx4hv0HEFCMPOOBSXG3OAZsR
-   T3sPcJ2DsMDBR6kG00QPzl6otqxr65Fsot6U9zdpd4+91+J6Xkqq9YZ7z
-   U=;
-Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
-X-IronPort-AV: E=Sophos;i="5.91,242,1647298800"; 
-   d="scan'208";a="14728003"
-Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.90.48])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2022 13:12:09 +0200
-From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     kernel-janitors@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] tty: fix typos in comments
-Date:   Sat, 21 May 2022 13:11:45 +0200
-Message-Id: <20220521111145.81697-95-Julia.Lawall@inria.fr>
-X-Mailer: git-send-email 2.20.1
+        Sat, 21 May 2022 07:33:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B044036140;
+        Sat, 21 May 2022 04:33:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD22960C84;
+        Sat, 21 May 2022 11:33:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83905C385A9;
+        Sat, 21 May 2022 11:33:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653132826;
+        bh=l9by86nw6iePCzOmDkZQU5SCVcvIjg3rIH78FcJrxnk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=vPBjUecgsVVV+Rur5PY4bm1PRiEojRK9gCAXChl0pEH0hJWeZmRyT3qqPCpz+F06W
+         zatZylozBgQY8aDCI9OmrH6IhfKNry2gjURTt1yfKqaVGvmYiDQbt1/g3kCx/1l+UL
+         DKryVlwuLKerKaa0GTpbevegruq4iHjs01lcyUwV7Jz2pqu0c9bzVmRdXGmwwJoRyU
+         yzl4pVSKJOhlHR+W+GANr0K6QrL+gQHSY4w5jI18DjEpwadJHgJxCBqujzqmghupO2
+         SzN6U+ywJBfMPyAVnmNw9kZ2Q24yLgWg+HhkDE6yrlDqrdEwJutbYxRVDPsbMBXrS5
+         JRAeXkua22QSQ==
+Date:   Sat, 21 May 2022 13:33:42 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     Neil Armstrong <narmstrong@baylibre.com>,
+        kernel-janitors@vger.kernel.org,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] i2c: meson: fix typo in comment
+Message-ID: <YojOFtmzkQ9IH8UE@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Julia Lawall <Julia.Lawall@inria.fr>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        kernel-janitors@vger.kernel.org,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20220521111145.81697-53-Julia.Lawall@inria.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="fYqSdqxjDeDE3M9G"
+Content-Disposition: inline
+In-Reply-To: <20220521111145.81697-53-Julia.Lawall@inria.fr>
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Spelling mistakes (triple letters) in comments.
-Detected with the help of Coccinelle.
 
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+--fYqSdqxjDeDE3M9G
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
----
- drivers/tty/mips_ejtag_fdc.c |    2 +-
- drivers/tty/tty_io.c         |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+On Sat, May 21, 2022 at 01:11:03PM +0200, Julia Lawall wrote:
+> Spelling mistake (triple letters) in comment.
+> Detected with the help of Coccinelle.
+>=20
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+>=20
 
-diff --git a/drivers/tty/mips_ejtag_fdc.c b/drivers/tty/mips_ejtag_fdc.c
-index 31dceb5039b5..49907427a165 100644
---- a/drivers/tty/mips_ejtag_fdc.c
-+++ b/drivers/tty/mips_ejtag_fdc.c
-@@ -1222,7 +1222,7 @@ static void kgdbfdc_push_one(void)
- 
- 	/* Construct a word from any data in buffer */
- 	word = mips_ejtag_fdc_encode(bufs, &kgdbfdc_wbuflen, 1);
--	/* Relocate any remaining data to beginnning of buffer */
-+	/* Relocate any remaining data to beginning of buffer */
- 	kgdbfdc_wbuflen -= word.bytes;
- 	for (i = 0; i < kgdbfdc_wbuflen; ++i)
- 		kgdbfdc_wbuf[i] = kgdbfdc_wbuf[i + word.bytes];
-diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
-index 8fec1d8648f5..82a8855981f7 100644
---- a/drivers/tty/tty_io.c
-+++ b/drivers/tty/tty_io.c
-@@ -1663,7 +1663,7 @@ void tty_kclose(struct tty_struct *tty)
- 	 */
- 	tty_ldisc_release(tty);
- 
--	/* Wait for pending work before tty destruction commmences */
-+	/* Wait for pending work before tty destruction commences */
- 	tty_flush_works(tty);
- 
- 	tty_debug_hangup(tty, "freeing structure\n");
+Applied to for-next, thanks!
 
+
+--fYqSdqxjDeDE3M9G
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmKIzhYACgkQFA3kzBSg
+KbZP+Q/+M2eKB9fBFm0ki/BdRKVvwXbqZBQHMvjPeORijOnWqLSUqY8b/bGmFxaP
+Bzjii2CgLl059ir58BeYWUCawy9uRK3aeHONPD1ZtiN8XQRiJ3dAgHZSFUOYc6YX
+pZwftv7y3c1XmSCZtsZy3liAwbKrk9RK2s8lLpEl3IrI1+Za3PpMX3jbO0WJILpl
+LAD7X9dEsJ+HkjwvSs1trMwn3Xfun2wQBV84R/1ZqhrCxPnmroomfI3YJUrF6L78
+yVvc4x/rJ0dLFKzy/FnHBu01ifUm3BwGxwWnntT3jOwfUufy4E65gsHiC+qf9xU6
+q4XEqqZPC5lXyL5c0uelcQn9KxrNwHqoNkRR32xputrN5B4TPzDmaVUphg6XVTme
+1v6ykpneJOkb6LYwHHx9mw1386C14hUQHH82ByFLMggVmbOOrXbYbqh3zuala8bN
+X1sPNYJKSo6oyKiWYzIj3mODcftyqV+Dn9Rn1MpsFK1nzHu6rR6dT+XyKK6zOTa5
+5oxp2Bd9qWSAZ/WH9N2LJm1qRJDX1Hk+6oG0cqbqkQSCFbqnIi6bEYnOKSstI06E
+lEwCNheKDK6HpMAIkzIRWYbwqkkTVF2UDzOQSY7Ojhy9dGwzwbAlmuUk3ABn2Fbr
+MywuhDhGO68vdD3e2tpgg7X9k5/qMHbXs+G16G4TPbvKDYCYQqM=
+=YTwd
+-----END PGP SIGNATURE-----
+
+--fYqSdqxjDeDE3M9G--

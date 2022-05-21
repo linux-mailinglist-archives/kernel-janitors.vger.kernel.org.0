@@ -2,97 +2,152 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DAA652FDD7
-	for <lists+kernel-janitors@lfdr.de>; Sat, 21 May 2022 17:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 827AF52FDF9
+	for <lists+kernel-janitors@lfdr.de>; Sat, 21 May 2022 17:49:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238208AbiEUP2e (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 21 May 2022 11:28:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59680 "EHLO
+        id S244352AbiEUPtP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 21 May 2022 11:49:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235234AbiEUP2d (ORCPT
+        with ESMTP id S230091AbiEUPtP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 21 May 2022 11:28:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FEF36161B;
-        Sat, 21 May 2022 08:28:31 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8368E60DD4;
-        Sat, 21 May 2022 15:28:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D1EC385A5;
-        Sat, 21 May 2022 15:28:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653146910;
-        bh=AIDLIbiM3xgYCLX2XEeSflOaYYKL7d+10fkOYwkK2EU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=K+WxHnneXjL/20w2aIWiw+f4dHin6WyiZNiBWel/jpsprVdcTELFSzyhYkDszCqIb
-         JhgtBt4XEzekfBJxYA79GDXD3CmDWQSJ26U7xb0AAtybduaULJI8knRLfpiILH6uGz
-         Px2IAUNlqCXVRsZWUGI0gLdU3Ar5gVH2K6StZmMdCBAGnOy0e1QJAJCti3fc3mxxVK
-         P+FFyB3WN6ihtY0HHVgO5YEs3S/reug6I3vRAO6xfMwLt7BxRODZzsMXXe/Im2262y
-         3j3HKK6EyqRYSVkhPPth34PB+RE+M6WTg4N5s8J7pQA9ZEwW8HZPSuaUHAk5OXQKU2
-         Wtv5OtRU/DP2A==
-Date:   Sun, 22 May 2022 00:28:26 +0900
-From:   Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+        Sat, 21 May 2022 11:49:15 -0400
+X-Greylist: delayed 226 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 21 May 2022 08:49:10 PDT
+Received: from condef-05.nifty.com (condef-05.nifty.com [202.248.20.70])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9808C674FB
+        for <kernel-janitors@vger.kernel.org>; Sat, 21 May 2022 08:49:10 -0700 (PDT)
+Received: from conssluserg-01.nifty.com ([10.126.8.80])by condef-05.nifty.com with ESMTP id 24LFdMQe025847
+        for <kernel-janitors@vger.kernel.org>; Sun, 22 May 2022 00:39:22 +0900
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173]) (authenticated)
+        by conssluserg-01.nifty.com with ESMTP id 24LFcxRn020449;
+        Sun, 22 May 2022 00:38:59 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com 24LFcxRn020449
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1653147539;
+        bh=E7Am5Nb9a8KomAfL0DWSpMGcRuyvDbO2H0enFw86lac=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Mmss+paMa26fLx30DM4uAjXe+hi1m5UbvsADimGmzr7IWvQyc6/ycCqMbIK6Sn8xm
+         T8VwUVO3Eb1qe8Ct//Bc39+yvk+sWAe9GrN4+miP74KPs7FZWo/AWwG2sSzz8rp6YJ
+         OjAWhOOp6Q7/c1cINOoO8uIqMg3jqxM3Cu8HIlLWrRtdpdT9kS0Z9w3vPlWHVnmuhw
+         vY83rN/VIt3qDm1xePB8sQeGYLmXCE8l6aaeAP3VzyO6rWCc00bN41VzyhIO3SKIwM
+         ROjBLWIkgYW6pr89ytbBmjv53x9OjiLIRYTXGphXiw5fqg4rgR7YU9rK6X5rkZe/dq
+         KwU/UWjM4qW6A==
+X-Nifty-SrcIP: [209.85.210.173]
+Received: by mail-pf1-f173.google.com with SMTP id w200so10053813pfc.10;
+        Sat, 21 May 2022 08:38:59 -0700 (PDT)
+X-Gm-Message-State: AOAM533x//zvxN8lLJ3Zh6SQEJZBrqiYTOR0w3wLftJ5RwjoxCr+zImk
+        W710Y5drRv2OGQ2OhSKti1HqxJZEhkzyhHbydIg=
+X-Google-Smtp-Source: ABdhPJwqVIczKOUbexuJjN8ztbp6Eewxf8TjPCHhzKdG58dczONSDGOjuexLGdkEJyZqRUMX15iTRwYrfw5DZUuNY9A=
+X-Received: by 2002:a63:9043:0:b0:3f9:6c36:3de3 with SMTP id
+ a64-20020a639043000000b003f96c363de3mr5866156pge.616.1653147535087; Sat, 21
+ May 2022 08:38:55 -0700 (PDT)
+MIME-Version: 1.0
+References: <23e0ba7863d51ab629498762a97d477645aeafea.1653123744.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <23e0ba7863d51ab629498762a97d477645aeafea.1653123744.git.christophe.jaillet@wanadoo.fr>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Sun, 22 May 2022 00:38:17 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASHGyzKS-d+S1GYz_L0pBxxSwk05YfvV+LK4ghZ5xx=cA@mail.gmail.com>
+Message-ID: <CAK7LNASHGyzKS-d+S1GYz_L0pBxxSwk05YfvV+LK4ghZ5xx=cA@mail.gmail.com>
+Subject: Re: [RFC PATCH] kbuild: Add an option to enable -O1 and speed-up
+ compilation time
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org,
-        Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] kprobes: fix typo in comment
-Message-Id: <20220522002826.b1afffb4d70b0be5c0dce363@kernel.org>
-In-Reply-To: <20220521111145.81697-63-Julia.Lawall@inria.fr>
-References: <20220521111145.81697-63-Julia.Lawall@inria.fr>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Changbin Du <changbin.du@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 21 May 2022 13:11:13 +0200
-Julia Lawall <Julia.Lawall@inria.fr> wrote:
+(+CC: Arnd, Changbin Du)
 
-> Spelling mistake (triple letters) in comment.
-> Detected with the help of Coccinelle.
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
-Looks good to me.
+If -O1 support does not require additional effort,
+I have no objection to this patch.
 
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+(but I do not have enough insight about
+the compiler's inlining heuristic)
 
-Thank you!
 
-> 
+
+BTW, when we attempted to add the -Og support,
+we fixed various parts, and Linus rejected it.
+
+https://lore.kernel.org/linux-kbuild/CAK7LNARQggM3aKEPRKJqa4tunFAfmfErMZuS-rrnRv6UB1VpPQ@mail.gmail.com/
+
+
+
+
+
+
+
+On Sat, May 21, 2022 at 6:04 PM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
+>
+> Add a new compilation option which speeds-up compilation time.
+> This can be useful when using static checker such as smatch or build-bots.
+> In such cases, the speed and quality of the generated code is not
+> important.
+>
+> Using -O0 would be even better, but unfortunately, building fails with
+> this option.
+>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > ---
->  kernel/kprobes.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-> index dd58c0be9ce2..4721b76e61a1 100644
-> --- a/kernel/kprobes.c
-> +++ b/kernel/kprobes.c
-> @@ -651,7 +651,7 @@ void wait_for_kprobe_optimizer(void)
->  	while (!list_empty(&optimizing_list) || !list_empty(&unoptimizing_list)) {
->  		mutex_unlock(&kprobe_mutex);
->  
-> -		/* This will also make 'optimizing_work' execute immmediately */
-> +		/* This will also make 'optimizing_work' execute immediately */
->  		flush_delayed_work(&optimizing_work);
->  		/* 'optimizing_work' might not have been queued yet, relax */
->  		cpu_relax();
-> 
+>  Makefile     | 5 ++++-
+>  init/Kconfig | 8 ++++++++
+>  2 files changed, 12 insertions(+), 1 deletion(-)
+>
+> diff --git a/Makefile b/Makefile
+> index 1f8bef92868f..14467386f947 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -817,7 +817,10 @@ KBUILD_CFLAGS      += $(call cc-disable-warning, format-truncation)
+>  KBUILD_CFLAGS  += $(call cc-disable-warning, format-overflow)
+>  KBUILD_CFLAGS  += $(call cc-disable-warning, address-of-packed-member)
+>
+> -ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
+> +ifdef CONFIG_CC_OPTIMIZE_FOR_COMPILATION_SPEED
+> +KBUILD_CFLAGS += -O1
+> +KBUILD_RUSTFLAGS_OPT_LEVEL_MAP := 1
+> +else ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
+>  KBUILD_CFLAGS += -O2
+>  KBUILD_RUSTFLAGS_OPT_LEVEL_MAP := 2
+>  else ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE_O3
+> diff --git a/init/Kconfig b/init/Kconfig
+> index a96776a9b080..3177a1830c9a 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -1384,6 +1384,14 @@ choice
+>         prompt "Compiler optimization level"
+>         default CC_OPTIMIZE_FOR_PERFORMANCE
+>
+> +config CC_OPTIMIZE_FOR_COMPILATION_SPEED
+> +       bool "Optimize for compilation speed (-O1)"
+> +       help
+> +         This option can be useful when running a static checker such as smatch
+> +         or a build-bot.
+> +         Compilation time is slighly faster than -O2 and it requires less
+> +         memory.
+> +
+>  config CC_OPTIMIZE_FOR_PERFORMANCE
+>         bool "Optimize for performance (-O2)"
+>         help
+> --
+> 2.34.1
+>
 
 
 -- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Best Regards
+Masahiro Yamada

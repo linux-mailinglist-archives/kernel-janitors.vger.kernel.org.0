@@ -2,84 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0453453021B
-	for <lists+kernel-janitors@lfdr.de>; Sun, 22 May 2022 11:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACC25530243
+	for <lists+kernel-janitors@lfdr.de>; Sun, 22 May 2022 12:06:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237189AbiEVJiz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 22 May 2022 05:38:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52778 "EHLO
+        id S233349AbiEVKGe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 22 May 2022 06:06:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236843AbiEVJiz (ORCPT
+        with ESMTP id S230244AbiEVKGd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 22 May 2022 05:38:55 -0400
-Received: from aposti.net (aposti.net [89.234.176.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECAAD3B3C9;
-        Sun, 22 May 2022 02:38:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1653212330; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=hqD/oZcjT9FRYsqGzFInG5WgvxzOftyg0RKNFC2ww7o=;
-        b=FVSK1Pm7oLYN4Wygr8ewEmceAFkGgywZlcIA5rYPRgcOqvVobezKziIRP+8oU6I21fMzJ+
-        e5xUZi4NU6pLs0TdZwDKNxSpX5+I6QnnjY7iWEGooa+9Hop9/35vL00vPqwQPytPSAod+y
-        1qfQH1dR9utKidirmQMyikHPURajoD8=
-Date:   Sun, 22 May 2022 10:38:41 +0100
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH] dmaengine: jz4780: fix typo in comment
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     kernel-janitors@vger.kernel.org, Vinod Koul <vkoul@kernel.org>,
-        linux-mips@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Message-Id: <HS2ACR.CGG9DJPX3OD31@crapouillou.net>
-In-Reply-To: <20220521111145.81697-20-Julia.Lawall@inria.fr>
-References: <20220521111145.81697-20-Julia.Lawall@inria.fr>
+        Sun, 22 May 2022 06:06:33 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 802FD36175;
+        Sun, 22 May 2022 03:06:31 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0CE1CB80AC0;
+        Sun, 22 May 2022 10:06:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A62A4C385AA;
+        Sun, 22 May 2022 10:06:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653213988;
+        bh=UPbiNgGAwL5aqC80FZUlkF31vbhQbeH7p2NfiK7RD2M=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=eA61M92tHgqSHqaH2+zWhVTbhBium3ZcdMEvpGQ2mcCdkiV08IntwH/YZspjp9Y6p
+         l77Ybc5invmaeox5YhBnkU/2tDJHj2cncl+YbuxTshEaZ+N6GINcx49jQsdTWe1NR4
+         XYDq3wSJH2EqNJd1zRAWsoDSsAlSFCkpqeZMqOI+9qSkU7NtluM+Iee7bibENAYuaC
+         pI4xjE4EWVvCDlPBGKaXFkskkpsoFyzNg7MsN7KowN/tFErtrwCzsGimQT77RUGAPI
+         0pmfvuiGnjRRsCUGDwf0uPhz8j3sxgS35sQSbBDFmrqEs7wKFhm55JSHTrFxYEle8w
+         Kb5FTKuQm3M4Q==
+Message-ID: <30ab0c63-4576-a9a1-8dd2-aa0e79ddd59f@kernel.org>
+Date:   Sun, 22 May 2022 18:06:25 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH] f2fs: fix typo in comment
+Content-Language: en-US
+To:     Julia Lawall <Julia.Lawall@inria.fr>,
+        Jaegeuk Kim <jaegeuk@kernel.org>
+Cc:     kernel-janitors@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net,
+        linux-kernel@vger.kernel.org
+References: <20220521111145.81697-93-Julia.Lawall@inria.fr>
+From:   Chao Yu <chao@kernel.org>
+In-Reply-To: <20220521111145.81697-93-Julia.Lawall@inria.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-8.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Julia,
-
-Le sam., mai 21 2022 at 13:10:30 +0200, Julia Lawall=20
-<Julia.Lawall@inria.fr> a =E9crit :
+On 2022/5/21 19:11, Julia Lawall wrote:
 > Spelling mistake (triple letters) in comment.
 > Detected with the help of Coccinelle.
->=20
+> 
 > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
-Acked-by: Paul Cercueil <paul@crapouillou.net>
+Reviewed-by: Chao Yu <chao@kernel.org>
 
-Thanks!
--Paul
-
->=20
-> ---
->  drivers/dma/dma-jz4780.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/dma/dma-jz4780.c b/drivers/dma/dma-jz4780.c
-> index e2ec540e6519..2a483802d9ee 100644
-> --- a/drivers/dma/dma-jz4780.c
-> +++ b/drivers/dma/dma-jz4780.c
-> @@ -388,7 +388,7 @@ static struct dma_async_tx_descriptor=20
-> *jz4780_dma_prep_slave_sg(
->=20
->  		if (i !=3D (sg_len - 1) &&
->  		    !(jzdma->soc_data->flags & JZ_SOC_DATA_BREAK_LINKS)) {
-> -			/* Automatically proceeed to the next descriptor. */
-> +			/* Automatically proceed to the next descriptor. */
->  			desc->desc[i].dcm |=3D JZ_DMA_DCM_LINK;
->=20
->  			/*
->=20
-
-
+Thanks,

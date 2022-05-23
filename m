@@ -2,45 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24290530C20
-	for <lists+kernel-janitors@lfdr.de>; Mon, 23 May 2022 11:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A577530A8C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 23 May 2022 10:01:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231601AbiEWIF3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 23 May 2022 04:05:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52820 "EHLO
+        id S230441AbiEWHtQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 May 2022 03:49:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231562AbiEWIF0 (ORCPT
+        with ESMTP id S230456AbiEWHtP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 23 May 2022 04:05:26 -0400
-X-Greylist: delayed 862 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 23 May 2022 01:05:24 PDT
-Received: from mail.tireplot.pl (mail.tireplot.pl [46.183.184.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0AFC12AE8
-        for <kernel-janitors@vger.kernel.org>; Mon, 23 May 2022 01:05:23 -0700 (PDT)
-Received: by mail.tireplot.pl (Postfix, from userid 1001)
-        id 64F5F47C4F; Mon, 23 May 2022 09:45:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tireplot.pl; s=mail;
-        t=1653292040; bh=Rfzvu4C+yJ1wyuJ4V+t/udh6cgYEQVnY6S5ltO4wdNg=;
-        h=Date:From:To:Subject:From;
-        b=FZ0UqATMkSJG5E33K1MvFNcSXRPEVBXTGdmGeuS6lqEmFdUPRNavROkpDy0/u6SlS
-         9xKPHWMx5PT29A8/UXcfrW/qV0A2z51rIxiNsl/41QebglR+0rbwZjFR1xPTSZRxJq
-         KYOdSdhtFmdGpAM4GxdwKiLrGPQ4jQLyuDyCPmSdq2Dg08UIPiMHQQUPqoEdKzKEvY
-         6ZUxIyFMZigac7uIZQxiC+z71iBaCWtzhBuB+QA2r0RjAozZ+KOBFD/ERJBS+Q+s8J
-         1Ueuxz6jOEearPEmQS1nHdVnNSTSwMc+yfU7HJF6VHCZvj+FvYUm5bNxbOnl/IG7eb
-         ySTT+TRELXuHg==
-Received: by mail.tireplot.pl for <kernel-janitors@vger.kernel.org>; Mon, 23 May 2022 07:45:18 GMT
-Message-ID: <20220523084501-0.1.2k.fj4i.0.rfj0k6q90u@tireplot.pl>
-Date:   Mon, 23 May 2022 07:45:18 GMT
-From:   =?UTF-8?Q? "Arkadiusz_Soko=C5=82owski" ?= 
-        <arkadiusz.sokolowski@tireplot.pl>
-To:     <kernel-janitors@vger.kernel.org>
-Subject: Koszty instalacji fotowoltaicznej
-X-Mailer: mail.tireplot.pl
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        Mon, 23 May 2022 03:49:15 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D92C140EB;
+        Mon, 23 May 2022 00:49:13 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out2.suse.de (Postfix) with ESMTP id 4EE361F8CF;
+        Mon, 23 May 2022 07:49:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1653292152; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=XAg+6nx5PUs28DZ7+XHOM+CyCealxuvpvLVJpUXQk44=;
+        b=gDp2PyW5NIpyNPBkBZMOfhM01lfIgUpcc1/yahhhuOIRalyhwvrDZMR5y6ekuuFh/WeazF
+        k4vyV66abLWtYrF3Farb0tIvV4jnxYRcRieABtxXm1HxXtYvYl0vUlJrjxXuXX5i0CHRzz
+        LJE6emx0QVHMEgVtAl2u+FC8dX4YlYE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1653292152;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=XAg+6nx5PUs28DZ7+XHOM+CyCealxuvpvLVJpUXQk44=;
+        b=nPYgmwnWMcMzTu1pFEiMckvlmuCFea5F+14LGYZ8yfIPmoTU4BUgXrZQGWNPZQxGOLkel+
+        ooVsBBwCF2TC9HAA==
+Received: from valkyrie.site.suse.de (unknown [10.163.18.242])
+        by relay2.suse.de (Postfix) with ESMTP id 190442C141;
+        Mon, 23 May 2022 07:49:12 +0000 (UTC)
+Date:   Mon, 23 May 2022 09:49:11 +0200
+Message-ID: <871qwkofig.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     Jaya Kumar <jayakumar.alsa@gmail.com>,
+        kernel-janitors@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ALSA: cs5535audio: fix typo in comment
+In-Reply-To: <20220521111145.81697-1-Julia.Lawall@inria.fr>
+References: <20220521111145.81697-1-Julia.Lawall@inria.fr>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
+ FLIM/1.14.9 (=?ISO-2022-JP-2?B?R29qGyQoRCtXGyhC?=) APEL/10.8 Emacs/27
+ (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,21 +63,15 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Sat, 21 May 2022 13:10:11 +0200,
+Julia Lawall wrote:
+> 
+> Spelling mistake (triple letters) in comment.
+> Detected with the help of Coccinelle.
+> 
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
-stworzyli=C5=9Bmy specjaln=C4=85 ofert=C4=99 dla firm, na kompleksow=C4=85=
- obs=C5=82ug=C4=99 inwestycji w fotowoltaik=C4=99. =20
+Thanks, applied.
 
-Specjalizujemy si=C4=99 w zakresie doboru, monta=C5=BCu i serwisie instal=
-acji fotowoltaicznych, dysponujemy najnowocze=C5=9Bniejszymi rozwi=C4=85z=
-ania, kt=C3=B3re zapewni=C4=85 Pa=C5=84stwu oczekiwane rezultaty.
 
-Mo=C5=BCemy przygotowa=C4=87 dla Pa=C5=84stwa wst=C4=99pn=C4=85 kalkulacj=
-=C4=99 i przeanalizowa=C4=87 efekty mo=C5=BCliwe do osi=C4=85gni=C4=99cia=
-=2E
-
-Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
-temacie?
-
-Pozdrawiam
-Arkadiusz Soko=C5=82owski
+Takashi

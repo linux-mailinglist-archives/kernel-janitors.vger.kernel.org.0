@@ -2,35 +2,45 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24A55530AAC
-	for <lists+kernel-janitors@lfdr.de>; Mon, 23 May 2022 10:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24290530C20
+	for <lists+kernel-janitors@lfdr.de>; Mon, 23 May 2022 11:04:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229889AbiEWHfH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 23 May 2022 03:35:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55430 "EHLO
+        id S231601AbiEWIF3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 May 2022 04:05:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230070AbiEWHfE (ORCPT
+        with ESMTP id S231562AbiEWIF0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 23 May 2022 03:35:04 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 275E23A0
-        for <kernel-janitors@vger.kernel.org>; Mon, 23 May 2022 00:34:55 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 0E65980C2;
-        Mon, 23 May 2022 07:30:57 +0000 (UTC)
-Date:   Mon, 23 May 2022 10:34:53 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     kernel-janitors@vger.kernel.org
-Subject: Re: [bug report] tty: n_gsm: Fix packet data hex dump output
-Message-ID: <Yos5HacdiYhni9v+@atomide.com>
-References: <YosxSDXeL9jTCENN@kili>
+        Mon, 23 May 2022 04:05:26 -0400
+X-Greylist: delayed 862 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 23 May 2022 01:05:24 PDT
+Received: from mail.tireplot.pl (mail.tireplot.pl [46.183.184.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0AFC12AE8
+        for <kernel-janitors@vger.kernel.org>; Mon, 23 May 2022 01:05:23 -0700 (PDT)
+Received: by mail.tireplot.pl (Postfix, from userid 1001)
+        id 64F5F47C4F; Mon, 23 May 2022 09:45:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tireplot.pl; s=mail;
+        t=1653292040; bh=Rfzvu4C+yJ1wyuJ4V+t/udh6cgYEQVnY6S5ltO4wdNg=;
+        h=Date:From:To:Subject:From;
+        b=FZ0UqATMkSJG5E33K1MvFNcSXRPEVBXTGdmGeuS6lqEmFdUPRNavROkpDy0/u6SlS
+         9xKPHWMx5PT29A8/UXcfrW/qV0A2z51rIxiNsl/41QebglR+0rbwZjFR1xPTSZRxJq
+         KYOdSdhtFmdGpAM4GxdwKiLrGPQ4jQLyuDyCPmSdq2Dg08UIPiMHQQUPqoEdKzKEvY
+         6ZUxIyFMZigac7uIZQxiC+z71iBaCWtzhBuB+QA2r0RjAozZ+KOBFD/ERJBS+Q+s8J
+         1Ueuxz6jOEearPEmQS1nHdVnNSTSwMc+yfU7HJF6VHCZvj+FvYUm5bNxbOnl/IG7eb
+         ySTT+TRELXuHg==
+Received: by mail.tireplot.pl for <kernel-janitors@vger.kernel.org>; Mon, 23 May 2022 07:45:18 GMT
+Message-ID: <20220523084501-0.1.2k.fj4i.0.rfj0k6q90u@tireplot.pl>
+Date:   Mon, 23 May 2022 07:45:18 GMT
+From:   =?UTF-8?Q? "Arkadiusz_Soko=C5=82owski" ?= 
+        <arkadiusz.sokolowski@tireplot.pl>
+To:     <kernel-janitors@vger.kernel.org>
+Subject: Koszty instalacji fotowoltaicznej
+X-Mailer: mail.tireplot.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YosxSDXeL9jTCENN@kili>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -38,48 +48,21 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
+Dzie=C5=84 dobry,
 
-* Dan Carpenter <dan.carpenter@oracle.com> [220523 06:57]:
-> Hello Tony Lindgren,
-> 
-> The patch 925ea0fa5277: "tty: n_gsm: Fix packet data hex dump output"
-> from May 12, 2022, leads to the following Smatch static checker
-> warning:
-> 
-> 	drivers/tty/n_gsm.c:720 gsm_data_kick()
-> 	warn: sleeping in atomic context
-> 
-> drivers/tty/n_gsm.c
->     698 static void gsm_data_kick(struct gsm_mux *gsm, struct gsm_dlci *dlci)
->     699 {
->     700         struct gsm_msg *msg, *nmsg;
->     701         int len;
->     702 
->     703         list_for_each_entry_safe(msg, nmsg, &gsm->tx_list, list) {
->     704                 if (gsm->constipated && msg->addr)
->     705                         continue;
->     706                 if (gsm->encoding != 0) {
->     707                         gsm->txframe[0] = GSM1_SOF;
->     708                         len = gsm_stuff_frame(msg->data,
->     709                                                 gsm->txframe + 1, msg->len);
->     710                         gsm->txframe[len + 1] = GSM1_SOF;
->     711                         len += 2;
->     712                 } else {
->     713                         gsm->txframe[0] = GSM0_SOF;
->     714                         memcpy(gsm->txframe + 1 , msg->data, msg->len);
->     715                         gsm->txframe[msg->len + 1] = GSM0_SOF;
->     716                         len = msg->len + 2;
->     717                 }
->     718 
->     719                 if (debug & 4)
-> --> 720                         gsm_hex_dump_bytes(__func__, gsm->txframe, len);
-> 
-> gsm_control_message() is holding a spin lock so gsm_hex_dump_bytes()
-> might need to use GFP_ATOMIC instead of GFP_KERNEL.
+stworzyli=C5=9Bmy specjaln=C4=85 ofert=C4=99 dla firm, na kompleksow=C4=85=
+ obs=C5=82ug=C4=99 inwestycji w fotowoltaik=C4=99. =20
 
-OK thanks for the report. I'll send a patch for GFP_ATOMIC later on today.
+Specjalizujemy si=C4=99 w zakresie doboru, monta=C5=BCu i serwisie instal=
+acji fotowoltaicznych, dysponujemy najnowocze=C5=9Bniejszymi rozwi=C4=85z=
+ania, kt=C3=B3re zapewni=C4=85 Pa=C5=84stwu oczekiwane rezultaty.
 
-Regards,
+Mo=C5=BCemy przygotowa=C4=87 dla Pa=C5=84stwa wst=C4=99pn=C4=85 kalkulacj=
+=C4=99 i przeanalizowa=C4=87 efekty mo=C5=BCliwe do osi=C4=85gni=C4=99cia=
+=2E
 
-Tony
+Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
+temacie?
+
+Pozdrawiam
+Arkadiusz Soko=C5=82owski

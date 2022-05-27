@@ -2,88 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63324535D57
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 May 2022 11:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11195535F4F
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 May 2022 13:33:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239793AbiE0JZ4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 May 2022 05:25:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45992 "EHLO
+        id S1351320AbiE0LdR convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 May 2022 07:33:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235841AbiE0JZ4 (ORCPT
+        with ESMTP id S1351308AbiE0LdQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 May 2022 05:25:56 -0400
-Received: from smtp.smtpout.orange.fr (smtp09.smtpout.orange.fr [80.12.242.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C27ABF748C
-        for <kernel-janitors@vger.kernel.org>; Fri, 27 May 2022 02:25:53 -0700 (PDT)
-Received: from pop-os.home ([90.11.191.102])
-        by smtp.orange.fr with ESMTPA
-        id uWE9n3MmXOXCyuWEAnkQcb; Fri, 27 May 2022 11:25:51 +0200
-X-ME-Helo: pop-os.home
-X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Fri, 27 May 2022 11:25:51 +0200
-X-ME-IP: 90.11.191.102
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Claudiu Manoil <claudiu.manoil@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew@lunn.ch>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        netdev@vger.kernel.org
-Subject: [PATCH] net: enetc: Use pci_release_region() to release some resources
-Date:   Fri, 27 May 2022 11:25:47 +0200
-Message-Id: <b0dcb6124717d13900e48b2f1fa697b922f672b2.1653643529.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.34.1
+        Fri, 27 May 2022 07:33:16 -0400
+X-Greylist: delayed 1375 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 27 May 2022 04:33:14 PDT
+Received: from mail.composit.net (mail.composit.net [195.49.185.119])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 093DD5BE7A;
+        Fri, 27 May 2022 04:33:13 -0700 (PDT)
+Received: from mail.composit.net (localhost.localdomain [127.0.0.1])
+        by mail.composit.net (Proxmox) with ESMTP id 06B61393E0C;
+        Fri, 27 May 2022 14:06:28 +0300 (MSK)
+Received: from mail.composit.net (mail.composit.local [192.168.101.14])
+        by mail.composit.net (Proxmox) with SMTP id CD62D3874D8;
+        Fri, 27 May 2022 14:06:27 +0300 (MSK)
+Received: from [192.168.1.105] (Unknown [197.234.219.23])
+        by mail.composit.net with ESMTPSA
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256)
+        ; Fri, 27 May 2022 14:06:28 +0300
+Message-ID: <9BFDB06A-BFCE-40E8-A0DE-BA0D3E0A9D05@mail.composit.net>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Greetings From Ukraine.  
+To:     Recipients <heiss@dnet.it>
+From:   "Kostiantyn Chichkov" <heiss@dnet.it>
+Date:   Fri, 27 May 2022 12:06:11 +0100
+Reply-To: kostiantync@online.ee
+X-Spam-Status: No, score=3.7 required=5.0 tests=BAYES_50,RCVD_IN_SBL,
+        RCVD_IN_SORBS_WEB,RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Some resources are allocated using pci_request_region().
-It is more straightforward to release them with pci_release_region().
+Good Morning,
 
-Fixes: 231ece36f50d ("enetc: Add mdio bus driver for the PCIe MDIO endpoint")
+We are Kostiantyn Chychkov and Maryna Chudnovska from Ukraine, we need your service, we have gone through your profile and we will like to work with you on an important service that needs urgent attention due to the ongoing war in our country. Kindly acknowledge this inquiry as soon as possible for a detailed discussion about the service.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-This patch is speculative, mainly based on the inconsistency between some
-function's names.
-Using pci_request_mem_regions() would also have things look consistent.
+Thank you.
 
-Review with care.
----
- drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Yours expectantly,
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
-index 15f37c5b8dc1..dafb26f81f95 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
-@@ -69,7 +69,7 @@ static int enetc_pci_mdio_probe(struct pci_dev *pdev,
- 	return 0;
- 
- err_mdiobus_reg:
--	pci_release_mem_regions(pdev);
-+	pci_release_region(pdev, 0);
- err_pci_mem_reg:
- 	pci_disable_device(pdev);
- err_pci_enable:
-@@ -88,7 +88,7 @@ static void enetc_pci_mdio_remove(struct pci_dev *pdev)
- 	mdiobus_unregister(bus);
- 	mdio_priv = bus->priv;
- 	iounmap(mdio_priv->hw->port);
--	pci_release_mem_regions(pdev);
-+	pci_release_region(pdev, 0);
- 	pci_disable_device(pdev);
- }
- 
--- 
-2.34.1
+Kostiantyn Chichkov & Ms. Maryna Chudnovska,
+From Ukraine.
+
 

@@ -2,201 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FD1B537A1D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 May 2022 13:43:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC2155384BE
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 May 2022 17:22:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235943AbiE3Lnb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 30 May 2022 07:43:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44706 "EHLO
+        id S241810AbiE3PWG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 30 May 2022 11:22:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236037AbiE3LnN (ORCPT
+        with ESMTP id S242927AbiE3PUw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 30 May 2022 07:43:13 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 965931116
-        for <kernel-janitors@vger.kernel.org>; Mon, 30 May 2022 04:42:46 -0700 (PDT)
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24U8Qlkl029336;
-        Mon, 30 May 2022 11:42:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : content-type : mime-version; s=corp-2021-07-09;
- bh=3eZpIxDtY91XglPzok2mhvuA7Pi+5+XexcD3LxlBvCU=;
- b=qt87G1YeSCXJHoV71Q67y6BVpVs22ItEnfSug9aaeaJzlyz5y+wF1gVTY9KmGu+YugG9
- xQCQW/+lWGk8I+fnSMNi3Z7X/hoNCCKdG4VVv/FufOkkOJunNBBHDJL2+jSNFfChmpt5
- +6PjYWWU9KD6YUi0KAh2vAZ2f6tsL+tiT1sDxTEYJXvmGYsHVJCqRa+IBwJJfrn2nTEg
- ecpLH70F+xCmOY5/hvxml7pa+k+d0zY/4HPt98PwTgybh4oZX+SetdSi7d0f5W4CV+4T
- xg6LcsfdK8ObNaMY/zaq2ZBmepjrSQZMZO+LonhtaBdYTtF8PYMawgqI31PmraWLSPkb zg== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3gbc7kjrv2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 30 May 2022 11:42:42 +0000
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.16.1.2/8.16.1.2) with SMTP id 24UBeR1n019173;
-        Mon, 30 May 2022 11:42:42 GMT
-Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2172.outbound.protection.outlook.com [104.47.59.172])
-        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com with ESMTP id 3gc8kgd8j4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 30 May 2022 11:42:42 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WsmSRrN5QbxyC18AGzaiVCzXrhfl3W/6Hdk3NMr3LkF8A2jLZsfOzlYWg/Eoa2zEqwDFGvirY05Q5bLOq5G6lH8Fj/1djfZ3SQfKdpw+Nkf1LXqkjZ1WjKwxMdsAr0g7NM6C5AS2z7Ge97v9WpWjUSsQt9bUUJ6io5zvvee7w8gX8ceInEG2Cym48R3D5QPtjdHsdZpscanWkQQ57JaO/akj4IMbbrRr9tKWH6ASgGfKVB8J6hzqTHYgc2NceHuIw4Bqs8rGJw6HuXis4PRAXR0vN0lPHCaOTTTOoIQMztR9GFY3wYvaiT9D0/QiEvx+duFDSq57loJO5Ws+vzRmBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3eZpIxDtY91XglPzok2mhvuA7Pi+5+XexcD3LxlBvCU=;
- b=Z5cJsfgssxHElMhYsJLYpfTnooQVUc2PH+o32y58c6BhQ7r0a74iNhg7cfI5boXf1U9s+D394wb4S2tUp2oNSkW4EptuSQz7hZbPLFEOWIUjzee3I/hdhrhtTFXTP19Iqug9jfZbbbYN5RMoR0Y409PwkkOi4GWwWruWLObdWo4/M5kpLF7JeETTblkIVjoRi4jBWYqQTi/5Z40lXU0E5NMHKrjMl0XCKGaiZ0BHGxD6dajw/iEh8oA/HCn8oW3lqeKs9p7FrNL2Nl2vbOh2GN/IrGYvRcj0EaT6y4Mx9GLCOE/H4tbRUaXNN45wFtarHSBF8xpJ2uJqJbWuiIEQ9w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        Mon, 30 May 2022 11:20:52 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95A7B11CA11
+        for <kernel-janitors@vger.kernel.org>; Mon, 30 May 2022 07:22:52 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id 62so3079876iov.4
+        for <kernel-janitors@vger.kernel.org>; Mon, 30 May 2022 07:22:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3eZpIxDtY91XglPzok2mhvuA7Pi+5+XexcD3LxlBvCU=;
- b=nwy7liElXtszSGufyMSJqkV23rmOBDpwVD9DmVA4W4d0tg1dI3M84ElegqRvFeAOocMzMjtdl/V5GuW3dliXigqP+LZ3EnCZOO9ARCbCjpFoaMQUj6+Y4TL5DCto6oeih+eGrpAUAoIufmXopXh4NfjWpmZke0jb4eCg0dizGZc=
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28) by PH0PR10MB5871.namprd10.prod.outlook.com
- (2603:10b6:510:149::8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5293.19; Mon, 30 May
- 2022 11:42:40 +0000
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::86f:81ba:9951:5a7e]) by MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::86f:81ba:9951:5a7e%2]) with mapi id 15.20.5293.019; Mon, 30 May 2022
- 11:42:40 +0000
-Date:   Mon, 30 May 2022 14:42:25 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Alex Deucher <alexander.deucher@amd.com>
-Cc:     Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Hawking Zhang <Hawking.Zhang@amd.com>,
-        Jack Xiao <Jack.Xiao@amd.com>,
-        Mike Lothian <mike@fireburn.co.uk>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Xiaojian Du <Xiaojian.Du@amd.com>,
-        Evan Quan <evan.quan@amd.com>, amd-gfx@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] drm/amdgpu: delete duplicate condition in
- gfx_v11_0_soft_reset()
-Message-ID: <YpStoW0tbsYOg5Jx@kili>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-ClientProxiedBy: ZR0P278CA0146.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:41::7) To MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28)
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=XJqXgw0Qi4Ge6Q57wB4GlvotoYnhUuSq68y9152a6AE=;
+        b=Uon8wdSqHAkD3+idsDwqsw5/RYE9GUuamAt3cXARqV3NAeDaGTFSLoXs/G0hoAHt+5
+         codSJJxeeG8vzFjwPvQIVi8pQwh8BHkUEnJ12EbeOHHixGjwXNoKXbv093UEgoEUQfeX
+         Wod0GKDhAdiR/Ye/ytirv8v0lLWuUvpQJix1wPyUwccxWGh+xUage9MXo7G5h4Fk521r
+         DI2oe8/v8oseOn3Ob0K+CIOBqiMgej7MNHpUOxL774B1gIBhklt7oanUcWy5rMkcHIBO
+         DPJxFGRqOeAdN5gDE89YSbgO4qUovR5BE7nFCFMjyJGWrnHFIj5hKg5UUE4gd+cXFCdp
+         hO1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=XJqXgw0Qi4Ge6Q57wB4GlvotoYnhUuSq68y9152a6AE=;
+        b=nU8CBnabrZT5lIRiZhzloVos7/4xjIqnpopPLzwZz3cBRv5IYrjTumRiG+19DB/80A
+         FbFbYggj04lc70uoZi7BKQCG+KS+93/syyxWeT04VOmSOp8ICdZgo7YkdbfnWtmrM81j
+         q61BAOdNWDWAhwemsO2NM4V9vly4mPIfFrUVqWCazY9ouQe8fRs1LHliXxjDy6S6Q86O
+         PytLu/+kRcvUoB4mQrsGh2AECiRTVnSK2lm6X0YW07c1bkNQr5VzoIbB6kGwyAEc18fd
+         Ghp3I5BvuWkai5+hF7f/T0kaq1iR8KqcvIlWIUtt6omO11upx0O0WdArnUEoE3rD8iJw
+         Xz/A==
+X-Gm-Message-State: AOAM531r4RuAXkxlY5TrB1YixWbtyiNHjpVcXzwYivGbRjvF2QFqhbdJ
+        SlmI+ItVdd8tb3OhqwSpiR52YewRfGXn3OQXeYI=
+X-Google-Smtp-Source: ABdhPJwtvJ+07dKTyr7TpOGjLPDpnwsexIyHiV/hfgzfTPNlT+ipRRN6pgsw9s1i3X6T+BTCXU16HSeeuxtReVm1TBY=
+X-Received: by 2002:a05:6638:498e:b0:32e:be76:f908 with SMTP id
+ cv14-20020a056638498e00b0032ebe76f908mr20858880jab.66.1653920570933; Mon, 30
+ May 2022 07:22:50 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e8288e7f-d1e7-4523-0d9c-08da4231802a
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5871:EE_
-X-Microsoft-Antispam-PRVS: <PH0PR10MB587112865C57873B01EDC50D8EDD9@PH0PR10MB5871.namprd10.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: uuo5wJk2O9nZWX6g+Zn2XRCmlvWWVzxI/xaHTYA1BPGlWXxuJQ965JSz4bXCAvcraCCqtpAxGK9PmITG2kGa+5iVR2Ekoe73WQMvbfDqgXDNKZC0ovuR9FW4H9CZXXaOrqjHcVUjqweWLw6VG6Utm3kiRZp2v9eT69qL4jW++DjuOM1ZUcg0ex5E9V/7cWeKYDVtAY+J6cQEnyuBXpilOQtHWg45di9FMAteQGpZMZukXne/XH864LFnY8siz9GzRucOPdJwmKt9KN8h1kGQ1kOn27yAoaytD9Xqt+h3tCpyK/wsjQNZteTPfrnqBeXttpJJSso7CHoCXeXRDbgw+syGi1tDRauUaaz2TqbzoSeckon4Mf/3fWiVjkWd1DR4/aqKeWE4DifygIs0PYeshKEBeJYfkyhbcOafCzGzFNdt/lj3BGTkL4rHFow00jlSmXO+OucORNIFRcbpYJniCeHs5FkiR5G4A6yn9SHAzSB9VZw/BT9Idwua8jaFhEMf2dpKBqfUmIDtuE/DDwSm2cYeewe1/K205GLjOGWMdn3HGFYdqYZmN6J6Rpxadesk/CXMM7iH1jZUGS+8I2/MwMN1ZJOcZThQwmvQ0XO2tx5mYujJAwPIBjlRINiiw6QKS3uOitqlIeQMJgzU7yxqaEQWnHwWBKXijwSGUWVH79wreC+u5bEgx+my5Yi3xAdkW4PPxSy22noLJ2OAg/uASA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(7916004)(366004)(38350700002)(186003)(66476007)(38100700002)(8676002)(66556008)(2906002)(6486002)(508600001)(83380400001)(5660300002)(4326008)(33716001)(44832011)(8936002)(7416002)(66946007)(86362001)(54906003)(52116002)(6666004)(6512007)(9686003)(6506007)(316002)(6916009)(26005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3xCJnuSxk+iJS+564gyhWxFMTTCkVhOxtaMKoNwkbr6++x9eA7fZZCy6zvsj?=
- =?us-ascii?Q?H8mmOSIMzXmR2ZvE4nxyzR2VHLmJ1KY9LezCjPyT0RH15x//RHl8gfSZZtkJ?=
- =?us-ascii?Q?ThSwHefUiz2jisCt3ePga1avtGMZ3I0lj2HrtxsiCEzKeOdkLk3LoJK+ZGnH?=
- =?us-ascii?Q?vHXzsV8rOWXEJMothOMofqy0wYbd3vCVNI5cXNgGWosYsoSoqZaeoAm5DP1d?=
- =?us-ascii?Q?kFUd0QAnypjRc9C8Lrv6ekzJLlJTKBO8S75/VCgyraYptIZEg7eoBVQ+/uhS?=
- =?us-ascii?Q?YS0Venz4xkoLCYkxaR1shcLwE8415YjQw++vjV/AGpPGvJ7NbyjVgDHYCpQ8?=
- =?us-ascii?Q?rIfN0RsNWIh6rmBPiv5xv7QHDjPPBGX0yG7e5RmYxubIW6Ssf4Nxm2HZp9UV?=
- =?us-ascii?Q?cpjcpRn9w6vpQYa+QiCCifcLm+kcO1L3xg4mIJZWikeXQBfWfaxNURGud2i8?=
- =?us-ascii?Q?x14HcgOxxUPbliEn/fx8IUsXI/4r7aQ+AaHn83r7a0Gnza5h5O1JFeHDVA94?=
- =?us-ascii?Q?HufyUh4l6UpPJe+E5yutQkUy31hhKxv+yGk6C7XW/zWE5B3Q1Yvp7+nqbKH1?=
- =?us-ascii?Q?8Sy7JBUeuxY9MaKSrebw9yVmB54l2Ol+ksngDUXpK9NBAuFKSr10BTAOllHB?=
- =?us-ascii?Q?WXuGPIcKvtjXoidUot7X2DmDxq+hduva8whLofmrakGP/yBJcwi0LMVPR1NC?=
- =?us-ascii?Q?9pirwjyla4G+YPTmaaTntc4A1QB6366Ag8HTY6rX3yF71pE/sHtP5lbfsYAU?=
- =?us-ascii?Q?IvyDfQwkgt0N1xDdEydWen80CQDHdCzrS7vcF7FIEOHAqKTc92GJZyudG4M8?=
- =?us-ascii?Q?IFamcf2RhhNo0x9FrCOosDOxJHiPMXYoIVSDBVMFQvwcsbcwsVZJwJin7e8v?=
- =?us-ascii?Q?7BRRrPDLgkEly9Q7eq+EwEAsZqSVG0ERDhZLn1yrwHJGgEdBocShXPttXURS?=
- =?us-ascii?Q?WEnLaqijiPiWiAiYeVCNNUdNr5+Nsys6RswL3AljxJDMAQDZEanAv9ngp3Wz?=
- =?us-ascii?Q?xBwGJGkd/zUecpIK3MalQndh16OSy/23Mnt2xf4Rv8Tq7MNBtOJU+01JofTi?=
- =?us-ascii?Q?yiw5HIgEMq8lMaa0NRXLcUFfbKP8Sf9o3hqFtAZAIBE+aiTObszcHbYUcT0g?=
- =?us-ascii?Q?Gf0Goy570Y/426nTdpGWzDwH7fWkMFjpNcMRYjZyLeBItNVP2yZegac0+NFO?=
- =?us-ascii?Q?jF1WyBeMU2pMJS4d6uMhhpk6tZHxnFGLmg3gKArw2IuyW3AuoNSbfQrdrLMh?=
- =?us-ascii?Q?NMJ5o9+KQrgVzvK5yMdXSqKQF0L2EU4kX/KlIdQTq8UtGq6aPtyeXzHddV1i?=
- =?us-ascii?Q?2OypHv8wb4Kr7+5/YcUm3n2pCHZQ69TmilSInh/uMaGQfME1ruzKY6O+wweL?=
- =?us-ascii?Q?V8SIbSqrE6XrpuCKvuKTbT6Qolg6WAV7p1lNivOpeXclnTdqU58K5NXX8lSw?=
- =?us-ascii?Q?aP5XdyPWeRQiI1ri3aFjcRRZPsnvZBrMbdHKEwDksVcZpLWMBEhJ7dxF01Q7?=
- =?us-ascii?Q?eV6H0EdAKm3RroEfj3MvaFijMWcKrjPrBWVhWBk8dSNlxo4+DsZBIBQcmwD9?=
- =?us-ascii?Q?q2LBIHlnGMYzyvaslH1PPeZsOK8/bQP/Mz/N3S7vR0nT7/dko/JXyIWH9wXj?=
- =?us-ascii?Q?soNBn/3a8a4OEimMYJH7EpUrluNhAvapR1nHkb1PvTITlgx+ONMcftn/NWYE?=
- =?us-ascii?Q?q82ItGqT7uDJHEY3Bezbx9pbm4IMDNwXLO4O/8XRsZ8YcA1lisYme2PC8mwe?=
- =?us-ascii?Q?Bu4axLgn7EQxuHRJ9+6UM/9Wd4FHXZk=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e8288e7f-d1e7-4523-0d9c-08da4231802a
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2022 11:42:40.1947
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JL2vcIwXbiZfOZAiUdr+OoBmiQjwKiHTCVaH4If5NyvOZcAiNRzMpgsr/rWj+WbwXogFneSA30MTtm2mBlnnzR+cCrniLfi7PaZN1yUKDdk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB5871
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.486,18.0.874
- definitions=2022-05-30_04:2022-05-30,2022-05-30 signatures=0
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
- malwarescore=0 mlxscore=0 mlxlogscore=999 adultscore=0 bulkscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2205300061
-X-Proofpoint-GUID: CK0qon1-gOGWPPtKGKJhjk82BlLqE6cq
-X-Proofpoint-ORIG-GUID: CK0qon1-gOGWPPtKGKJhjk82BlLqE6cq
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6622:f06:0:0:0:0 with HTTP; Mon, 30 May 2022 07:22:50
+ -0700 (PDT)
+Reply-To: barristerbenjamin221@gmail.com
+From:   Attorney Amadou <koadaidrissa1@gmail.com>
+Date:   Mon, 30 May 2022 07:22:50 -0700
+Message-ID: <CAOh7+P_+cJJknP6BJXj8NWX7nn8nkbA=aoSG2t49pestA9PG0g@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-Spam-Status: Yes, score=7.7 required=5.0 tests=BAYES_99,BAYES_999,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:d43 listed in]
+        [list.dnswl.org]
+        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
+        *      [score: 1.0000]
+        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+        *      [score: 1.0000]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [koadaidrissa1[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [barristerbenjamin221[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [koadaidrissa1[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We know that "grbm_soft_reset" is true because we're already inside an
-if (grbm_soft_reset) condition.  No need to test again.
-
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index 8c0a3fc7aaa6..4bca63a346b4 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -4780,19 +4780,17 @@ static int gfx_v11_0_soft_reset(void *handle)
- 		/* Disable MEC parsing/prefetching */
- 		gfx_v11_0_cp_compute_enable(adev, false);
- 
--		if (grbm_soft_reset) {
--			tmp = RREG32_SOC15(GC, 0, regGRBM_SOFT_RESET);
--			tmp |= grbm_soft_reset;
--			dev_info(adev->dev, "GRBM_SOFT_RESET=0x%08X\n", tmp);
--			WREG32_SOC15(GC, 0, regGRBM_SOFT_RESET, tmp);
--			tmp = RREG32_SOC15(GC, 0, regGRBM_SOFT_RESET);
--
--			udelay(50);
--
--			tmp &= ~grbm_soft_reset;
--			WREG32_SOC15(GC, 0, regGRBM_SOFT_RESET, tmp);
--			tmp = RREG32_SOC15(GC, 0, regGRBM_SOFT_RESET);
--		}
-+		tmp = RREG32_SOC15(GC, 0, regGRBM_SOFT_RESET);
-+		tmp |= grbm_soft_reset;
-+		dev_info(adev->dev, "GRBM_SOFT_RESET=0x%08X\n", tmp);
-+		WREG32_SOC15(GC, 0, regGRBM_SOFT_RESET, tmp);
-+		tmp = RREG32_SOC15(GC, 0, regGRBM_SOFT_RESET);
-+
-+		udelay(50);
-+
-+		tmp &= ~grbm_soft_reset;
-+		WREG32_SOC15(GC, 0, regGRBM_SOFT_RESET, tmp);
-+		tmp = RREG32_SOC15(GC, 0, regGRBM_SOFT_RESET);
- 
- 		/* Wait a little for things to settle down */
- 		udelay(50);
--- 
-2.35.1
-
+SGVsbG8gZGVhciBmcmllbmQuDQoNClBsZWFzZSBJIHdpbGwgbG92ZSB0byBkaXNjdXNzIHNvbWV0
+aGluZyB2ZXJ5IGltcG9ydGFudCB3aXRoIHlvdSwgSQ0Kd2lsbCBhcHByZWNpYXRlIGl0IGlmIHlv
+dSBncmFudCBtZSBhdWRpZW5jZS4NCg0KU2luY2VyZWx5Lg0KQmFycmlzdGVyIEFtYWRvdSBCZW5q
+YW1pbiBFc3EuDQouLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4NCuimquaEm+OB
+quOCi+WPi+S6uuOAgeOBk+OCk+OBq+OBoeOBr+OAgg0KDQrnp4Hjga/jgYLjgarjgZ/jgajpnZ7l
+uLjjgavph43opoHjgarjgZPjgajjgavjgaTjgYTjgaboqbHjgZflkIjjgYbjga7jgYzlpKflpb3j
+gY3jgafjgZnjgIHjgYLjgarjgZ/jgYznp4HjgavogbTooYbjgpLkuI7jgYjjgabjgY/jgozjgozj
+gbDnp4Hjga/jgZ3jgozjgpLmhJ/orJ3jgZfjgb7jgZnjgIINCg0K5b+D44GL44KJ44CCDQrjg5Dj
+g6rjgrnjgr/jg7zjgqLjg57jg4njgqXjg5njg7Pjgrjjg6Pjg5/jg7NFc3HjgIINCg==

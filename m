@@ -2,128 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0269353ACFF
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jun 2022 20:47:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 845DF53AF66
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 Jun 2022 00:50:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229697AbiFASrC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Jun 2022 14:47:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50688 "EHLO
+        id S230310AbiFAVEN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Jun 2022 17:04:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbiFASrA (ORCPT
+        with ESMTP id S230369AbiFAVEM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Jun 2022 14:47:00 -0400
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9C77B82D1
-        for <kernel-janitors@vger.kernel.org>; Wed,  1 Jun 2022 11:46:57 -0700 (PDT)
-Received: by mail-oi1-x236.google.com with SMTP id k187so3826146oif.1
-        for <kernel-janitors@vger.kernel.org>; Wed, 01 Jun 2022 11:46:57 -0700 (PDT)
+        Wed, 1 Jun 2022 17:04:12 -0400
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06C4B4B861
+        for <kernel-janitors@vger.kernel.org>; Wed,  1 Jun 2022 14:04:11 -0700 (PDT)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-e93bbb54f9so4310905fac.12
+        for <kernel-janitors@vger.kernel.org>; Wed, 01 Jun 2022 14:04:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=f7ePlvGaUoiv82uA9fpuHBehewbB/3wH4W+yDdmOpHA=;
-        b=DDVRbcMFzfyNGPLs5L/1lRUcvNJSv6thmJC587vtTCPHFlkW2aVM0mpp4WEBDguSor
-         a33xCjJgUrldnEEVH0ZWoyIs6kTck0Z+p8e9Y3LApZkiqeaxBeLOzJj1F8XE1fY1fIOM
-         coymLeDr+CC/J0z9ydQ3MePb1YsessvsfZY/QRP6fknIar/KV55K6Es3SqfrIY3KMTPC
-         ca6cOTwiZIG0LYaGXqm4Km+tN5PGvBcdG+niEDJ8RT0/jU4zlUyc3kNScQ/QYIAqgsY5
-         U217iUx0KatCO+p0L+5nZ96G2vNb2iisnYYL8yXNy8RFAhBcYribTh4GLeDmkdsIjnBx
-         9irQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Gk4nfCem3ECRa7Gml0J0mN/3RZoOAdfGaQAqyHPKtiI=;
+        b=HLFKV03IvnCnmYNulbqEkPjTK3riUL87h2wHAPtiQ15M9iY6Q8e992KMQxJwLdk6f+
+         yc6asPWVRklcz8AY8oqwyi19SO9Z3FXfSKl8KIcHwdn2diZ16fcVN3Noj9XYHhxCnXOp
+         L86c6aBumcYcai1ti0jT0anzEO5LqUJSpP7KiFxQXIe3O9qnWY7viJfSABa1ly9ubc5O
+         7xqU4M/fQQEbpLLu8u6cCuAo0xRfp/5LoTJYIMP5ne/O4VXGwgI3hKlV02ue3fdzqvYA
+         6IABKhDngCz8ZKTuipfv5GZ/7HEqJFbM8x/u/85qQFiKTPs+Mb3XRU84XoMrlsTu1Zr+
+         PsMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=f7ePlvGaUoiv82uA9fpuHBehewbB/3wH4W+yDdmOpHA=;
-        b=18RaACOGwnCCdXnOYo4jIig2CzcO6qtn8/yoEunHeDdumtm22OXq1ieBPZFgtG2xWw
-         xPS90GVERxFsBvDt7nPV4RSalkAil0vZQdY/dyeFaht8zpGcWzbUgWWIJBvzKeh/uEpd
-         tNtXCHlqC0GyCMvJAHEDXZ1Jm8N8eB2pwz4TwPEcomQNvrM+BKNieA1WL5h4ebDLYf92
-         VzPkRNFI+kxcdJ93MyDeK23SL7laGa+obInxa5IJsY7sb2uQHwT6+t22pSF+NV/zeoZW
-         TH4ohW98lC7m7Bm5BlVnxKfuQGEiwA2GGWqMsJ4znM6tbwLNIUPiTsKuNR/2aGMeSJtA
-         STlg==
-X-Gm-Message-State: AOAM530heA/dYbso0bIvJ4fBmeySlKcQlsssBth8zjEBTglJtsctUwsb
-        D5MN+JllyzPpCCtjLxAwiO/pB9MeYd4MIyO7bdjEWifx
-X-Google-Smtp-Source: ABdhPJxjJHA+rxXyWyFeIboan8p/bOHZySJWVhCoyvwvl+KpJjRB1JzNsA5WJWYD+2Wou4pggWMJfWMjaBJcVfa1O2s=
-X-Received: by 2002:a05:6808:15a7:b0:32b:aeac:84d0 with SMTP id
- t39-20020a05680815a700b0032baeac84d0mr500009oiw.253.1654109216989; Wed, 01
- Jun 2022 11:46:56 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Gk4nfCem3ECRa7Gml0J0mN/3RZoOAdfGaQAqyHPKtiI=;
+        b=aJ6txWkQ51o8huo50YtVOAdCDYuRdOK6EQQtb4XiPCXHhlUrZABxTjAg5yhnZNhTHv
+         cKFggamObJ48a45n6/AbZtbq/PLmyHuo2enL5/gJ1CiJ1WC1Ml3SO2B3pdMgi4UuybT1
+         tMqKN2MvV5RhZc+aXKsk5yCV8NvH0EVOiNNAnc23E2FRwjxceTGK6V/nvb45mjSdGdxC
+         Mxkq3VAxLgW4BiAvTHcgts7AQVXqtz1o3DbYpfJU3uMuUzJ9DF9/AKz++JxuEGmUe1TG
+         nXp/xF5m6Ow3ZX6rfCsku/ieWuYdxd2xzR253uZt0AJoV00eWl1eW5kLcgJasUcdaMKL
+         q9lg==
+X-Gm-Message-State: AOAM530BlS+YnqXbj64g41a+pb22VqTevSiP2CcZ9S28dOVbZ1YBn5aZ
+        ZzlaJlBWkyX9ZjPrb68x6cd/mz0Tic/fKO8Xwt4Gsusz1uc=
+X-Google-Smtp-Source: ABdhPJzieEZsH3sz7p7h/CGCrygaKC3twss2VqEDgMRTw52PjXyF0yZxDsfC/Wcw+CTWK4gcBihtpQQBph7O0cnThRw=
+X-Received: by 2002:a05:6870:308:b0:f1:ddfe:8ac5 with SMTP id
+ m8-20020a056870030800b000f1ddfe8ac5mr16670934oaf.237.1654111051378; Wed, 01
+ Jun 2022 12:17:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <YpStoW0tbsYOg5Jx@kili>
-In-Reply-To: <YpStoW0tbsYOg5Jx@kili>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Wed, 1 Jun 2022 14:46:45 -0400
-Message-ID: <CADnq5_O41CK=0+OHfXQt2iUxzhQu4nE1K=+J3OXOnTtVot1ijA@mail.gmail.com>
-Subject: Re: [PATCH] drm/amdgpu: delete duplicate condition in gfx_v11_0_soft_reset()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        Jack Xiao <Jack.Xiao@amd.com>,
-        Xiaojian Du <Xiaojian.Du@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        kernel-janitors@vger.kernel.org,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Mike Lothian <mike@fireburn.co.uk>,
-        Daniel Vetter <daniel@ffwll.ch>, Evan Quan <evan.quan@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        Hawking Zhang <Hawking.Zhang@amd.com>
+Received: by 2002:a05:6358:3601:b0:a3:2139:251d with HTTP; Wed, 1 Jun 2022
+ 12:17:30 -0700 (PDT)
+Reply-To: johnwinery@online.ee
+From:   johnwinery <alicejohnson8974@gmail.com>
+Date:   Wed, 1 Jun 2022 12:17:30 -0700
+Message-ID: <CAFqHCSSUC0MpbjYK8d-GCxOG4b6Qbk2uH3+xQDZte6cPBsxLGA@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Applied.  Thanks!
-
-Alex
-
-On Mon, May 30, 2022 at 7:42 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> We know that "grbm_soft_reset" is true because we're already inside an
-> if (grbm_soft_reset) condition.  No need to test again.
->
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 24 +++++++++++-------------
->  1 file changed, 11 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-> index 8c0a3fc7aaa6..4bca63a346b4 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-> @@ -4780,19 +4780,17 @@ static int gfx_v11_0_soft_reset(void *handle)
->                 /* Disable MEC parsing/prefetching */
->                 gfx_v11_0_cp_compute_enable(adev, false);
->
-> -               if (grbm_soft_reset) {
-> -                       tmp = RREG32_SOC15(GC, 0, regGRBM_SOFT_RESET);
-> -                       tmp |= grbm_soft_reset;
-> -                       dev_info(adev->dev, "GRBM_SOFT_RESET=0x%08X\n", tmp);
-> -                       WREG32_SOC15(GC, 0, regGRBM_SOFT_RESET, tmp);
-> -                       tmp = RREG32_SOC15(GC, 0, regGRBM_SOFT_RESET);
-> -
-> -                       udelay(50);
-> -
-> -                       tmp &= ~grbm_soft_reset;
-> -                       WREG32_SOC15(GC, 0, regGRBM_SOFT_RESET, tmp);
-> -                       tmp = RREG32_SOC15(GC, 0, regGRBM_SOFT_RESET);
-> -               }
-> +               tmp = RREG32_SOC15(GC, 0, regGRBM_SOFT_RESET);
-> +               tmp |= grbm_soft_reset;
-> +               dev_info(adev->dev, "GRBM_SOFT_RESET=0x%08X\n", tmp);
-> +               WREG32_SOC15(GC, 0, regGRBM_SOFT_RESET, tmp);
-> +               tmp = RREG32_SOC15(GC, 0, regGRBM_SOFT_RESET);
-> +
-> +               udelay(50);
-> +
-> +               tmp &= ~grbm_soft_reset;
-> +               WREG32_SOC15(GC, 0, regGRBM_SOFT_RESET, tmp);
-> +               tmp = RREG32_SOC15(GC, 0, regGRBM_SOFT_RESET);
->
->                 /* Wait a little for things to settle down */
->                 udelay(50);
-> --
-> 2.35.1
->
+Greeting ,I had written an earlier mail to you but without response

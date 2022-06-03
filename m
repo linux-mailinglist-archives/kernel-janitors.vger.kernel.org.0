@@ -2,120 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6880E53C7E4
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Jun 2022 11:49:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DE4E53C96E
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Jun 2022 13:36:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238845AbiFCJtZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 Jun 2022 05:49:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49802 "EHLO
+        id S242736AbiFCLcI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 Jun 2022 07:32:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236738AbiFCJtY (ORCPT
+        with ESMTP id S238542AbiFCLcH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 Jun 2022 05:49:24 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B143B13D2C
-        for <kernel-janitors@vger.kernel.org>; Fri,  3 Jun 2022 02:49:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654249763; x=1685785763;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=dlOLpy+A8O2m4zwqEZZLEk4QfSQQMpvf3qipx/BEfdw=;
-  b=LCDvoxQKQnrtOgaVapR035U39EBeZXUO7ffmUE0tE5nY37YMFbZIixf+
-   uXMOAbzJK5BOs0gRs132y7R4BL+N24VWDVeA24fWlpI2MlBabMxcyNMeO
-   KF2wyOFsSMIBeCOd/vTEikyruYd4L/0E3ukNmdGuMhHloSm4KYh0C0crc
-   5PZssQQQItYiSvjBd9u03rZ9/pQq/tADwnzfxcJApbMFN1Gm3B3m/QOU9
-   p5juTQax0dH1xdb7OVs42CPiC4G5do7eSZvBSTjtVsUidfNSnq7jJtUby
-   fBFRoArsaetQ75fstYNvQaOGzICXq0XE1ELTZaJEbYXkMQee4XhdrYDAt
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10366"; a="256694666"
-X-IronPort-AV: E=Sophos;i="5.91,274,1647327600"; 
-   d="scan'208";a="256694666"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2022 02:49:23 -0700
-X-IronPort-AV: E=Sophos;i="5.91,274,1647327600"; 
-   d="scan'208";a="721689955"
-Received: from nmoazzen-mobl2.amr.corp.intel.com (HELO [10.251.214.119]) ([10.251.214.119])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2022 02:49:20 -0700
-Message-ID: <0273c0c4-c5f2-7b0b-dc30-19f15ed9df1c@linux.intel.com>
-Date:   Fri, 3 Jun 2022 12:49:56 +0300
+        Fri, 3 Jun 2022 07:32:07 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A08B36445
+        for <kernel-janitors@vger.kernel.org>; Fri,  3 Jun 2022 04:32:05 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id a10so1417056wmj.5
+        for <kernel-janitors@vger.kernel.org>; Fri, 03 Jun 2022 04:32:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=PaEzrm9U0WjJMxkE+zbw8yGRv0uhjcRl9sFl9vmbKpk=;
+        b=Ne7HHNwxSaydM5AHEYVap/i9dOlaqnll6PdeU6Erki26cZ/QpXWefD2kCTMI57EI6D
+         0Yy+AO4MYy5uSAKV5egZJB+T6y5VacLvM8jBzR42g7XV05fZC5wEH3umqe5f2HfWEPGM
+         D5Xve++0TViIZk4XHLiYLAswplB4gNd9YsRHC9EQXnvVOGCVC2jr8+fo74/kx7wRXEgI
+         ar/s6A3GmYpQQbXvWezGDTGSItKLPEoWWv8usXIxfUtRXfqhnheV4nQ01BVsFg0KqUFo
+         uagrkSo34mz7lVRpHUdSciKD0TgDgPCma72SZFZqTGYwIpCmjYOAPKxNP6GnFstunx9c
+         hSTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=PaEzrm9U0WjJMxkE+zbw8yGRv0uhjcRl9sFl9vmbKpk=;
+        b=rmBfGxDnB9uXoC9t8bLlUE0DhAY0WTNslFNhllFw2jJOyKj3YgqlB3gjT2GGhqONwN
+         VsTgs7JgoOEujG8IDFwfONJEFKsdANWFPs3z5GpdCjZGroBz/Wfm36QGpiphCbLyeINK
+         wcSEkhp28blmOlmoEr6nbYJ8bkaLoOmTIdclDySL9bfTfOMhEAdgoyNSrhfOxC1LuKlW
+         i+D3XXzr/4IMhuclDJk618n05v1gtU6J6/g2ifmrq+yEGcasVpr6PRHTBJ8NTiN58tbl
+         AJZVpCRdAYCGID2PgegX6M7siXrHB8QapdR1mNb373NchzgnScH6nNALrY9lGco7A/8W
+         +zgw==
+X-Gm-Message-State: AOAM530JLbUKfOjice3BuZjjO6ULabMemK1v7aqBOPvddCz1mwM4TZ/R
+        RErGLBGfXpIIgiCsU0o4SKX04I/CY5sCHq/7ECo=
+X-Google-Smtp-Source: ABdhPJx2kyZxjIRyqi4zQRzwDHeoWLrI5lQQg2Zijb6DBHvAq0B31MkSaK22fLwfbiDH1yn6XcA74r8V/pPbibOtphg=
+X-Received: by 2002:a7b:c5d0:0:b0:389:fe85:3d79 with SMTP id
+ n16-20020a7bc5d0000000b00389fe853d79mr37962024wmk.77.1654255924047; Fri, 03
+ Jun 2022 04:32:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Firefox/91.0 Thunderbird/91.9.1
-Subject: Re: [PATCH 2/2] ASoC: SOF: ipc-msg-injector: Fix reversed if
- statement
-Content-Language: en-US
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc:     alsa-devel@alsa-project.org,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Takashi Iwai <tiwai@suse.com>, kernel-janitors@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        sound-open-firmware@alsa-project.org
-References: <Yph+T3PpGCdPsEDj@kili>
-From:   =?UTF-8?Q?P=c3=a9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>
-In-Reply-To: <Yph+T3PpGCdPsEDj@kili>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a5d:64ed:0:0:0:0:0 with HTTP; Fri, 3 Jun 2022 04:32:03 -0700 (PDT)
+Reply-To: markwillima00@gmail.com
+From:   Mark <mariamabdul888@gmail.com>
+Date:   Fri, 3 Jun 2022 04:32:03 -0700
+Message-ID: <CAP9xyD0_yeaJ02FRx7znZBb5GOYkW7c+NkAomSccKbXYh-OnLQ@mail.gmail.com>
+Subject: Re: Greetings!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hello,
+
+Good day,
+
+The HSBC Bank is a financial institution in United Kingdom. We
+promotes long-term,sustainable and broad-based economic growth in
+developing and emerging countries by providing financial support like
+loans and investment to large, small and
+medium-sized companies (SMEs) as well as fast-growing enterprises
+which in turn helps to create secure and permanent jobs and reduce
+poverty.
+
+If you need fund to promotes your business, project(Project Funding),
+Loan, planning, budgeting and expansion of your business(s) , do not
+hesitate to indicate your interest as we are here to serve you better
+by granting your request.
 
 
-On 02/06/2022 12:09, Dan Carpenter wrote:
-> This if statement is reversed.  In fact, the condition can just be
-> deleted because writing zero bytes is a no-op.
-
-Wow, you are right. I only tested with a message w/o additional payload.
-
-Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-
-> Fixes: 066c67624d8c ("ASoC: SOF: ipc-msg-injector: Add support for IPC4 messages")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  sound/soc/sof/sof-client-ipc-msg-injector.c | 18 ++++++++----------
->  1 file changed, 8 insertions(+), 10 deletions(-)
-> 
-> diff --git a/sound/soc/sof/sof-client-ipc-msg-injector.c b/sound/soc/sof/sof-client-ipc-msg-injector.c
-> index 030cb97d7713..6bdfa527b7f7 100644
-> --- a/sound/soc/sof/sof-client-ipc-msg-injector.c
-> +++ b/sound/soc/sof/sof-client-ipc-msg-injector.c
-> @@ -200,16 +200,14 @@ static ssize_t sof_msg_inject_ipc4_dfs_write(struct file *file,
->  		return -EFAULT;
->  
->  	count -= size;
-> -	if (!count) {
-> -		/* Copy the payload */
-> -		size = simple_write_to_buffer(ipc4_msg->data_ptr,
-> -					      priv->max_msg_size, ppos, buffer,
-> -					      count);
-> -		if (size < 0)
-> -			return size;
-> -		if (size != count)
-> -			return -EFAULT;
-> -	}
-> +	/* Copy the payload */
-> +	size = simple_write_to_buffer(ipc4_msg->data_ptr,
-> +				      priv->max_msg_size, ppos, buffer,
-> +				      count);
-> +	if (size < 0)
-> +		return size;
-> +	if (size != count)
-> +		return -EFAULT;
->  
->  	ipc4_msg->data_size = count;
->  
-
--- 
-Péter
+Thank you
+Mr:Mark

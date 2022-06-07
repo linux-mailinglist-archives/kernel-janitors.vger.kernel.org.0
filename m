@@ -2,188 +2,135 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 177AA53F803
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jun 2022 10:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8A5253F92B
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jun 2022 11:14:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237997AbiFGISZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jun 2022 04:18:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41838 "EHLO
+        id S239055AbiFGJOh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jun 2022 05:14:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238094AbiFGISY (ORCPT
+        with ESMTP id S239057AbiFGJOb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jun 2022 04:18:24 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D6F325E9B;
-        Tue,  7 Jun 2022 01:18:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1654589902; x=1686125902;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=IPRNK8VLD+UQXaufvfThvHxCtUMZENJb1QFmKm2N1Js=;
-  b=B9EOx4mmCj9WLQoqMDTB4/krz53ej4tjf159UdCIGKzobzzWP5MluqKw
-   /G/wJ3AH7yhXfX4ndi2AOMN/9sukehCZ4UTuXm8sSkFAssXqY2sfA8VD8
-   tf/yXuFnVSt1dKv13zukGCx9av+ItPtuj0v6PZDrJpu7EFx/BLBe5sH8D
-   Wwetaf63hOpL5YXmDFa7oz4Ll/WmiiM9OmAxcGWuefD8xOEvF66yhxXY+
-   y1xqT0ivWji0NWkkN1H+xTPzjLPCU26VQqJPQQ35UfhKe5Fz7Q/ifbn/Q
-   Gwf7ysJ1x7/IVUWMik6xVEuNpn0tXbcyFJD38FfhjJnip3xZ/0q+PybKL
-   g==;
-X-IronPort-AV: E=Sophos;i="5.91,283,1647327600"; 
-   d="scan'208";a="167378408"
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 07 Jun 2022 01:18:21 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Tue, 7 Jun 2022 01:18:21 -0700
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17 via Frontend Transport; Tue, 7 Jun 2022 01:18:20 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gtlXuy/v94aa619sxrxA7P63WLETRqp77o4ToFeYC5zPyxx5+5+hJIYAjfILjANFXrT7MSQ4xviBKWThASw3dK1e95u/YlV1GNqx3BGyS2uiF+31F9XTciiP2eiKQ0xJ1XkPYBXsx9j5ZDo3SU1oMIXV4yLhMitDOt9lwzKdHLRbFRg8TnCYQCsVhMR5nlgyGMtK8Qe3Xa6sXLA0rqQZePnjRP08heduAPhuYBbArhpIemqfwmrRHVgrQnAOzP3VzlgWYcQzceNOJjlx4B6hC23cN95CeMIru6oI5wz+4xpksR5Gp9psJmvT8Zki0sykknFZqvxBxoSkdjP1IRGLeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IPRNK8VLD+UQXaufvfThvHxCtUMZENJb1QFmKm2N1Js=;
- b=lTH0HkOquREHQ1q0lEKiJFwh/mwo6a1QfP2kqzM43Ol0Fv1aQTSDkKJimctlQfS9Am+oZRPtTKcYnxL8sWrf/2nX/i4ah1xob5LQpFrQMkgzMVX0dX1KEeD8VuO0LfbucpL5ppwqbK8kKc0Vqe++X/qa2+teBAOjEIS6WiLIg27BFS7Ni9lNTisZP31YD3GFWV2A7e7+TPPRm+U9J4/QgmXke+tNQ2dm7O9w/xZwPdTg3xNq6OxHhoCUHIik0iEjYRIdkPXgb1A8Ecqc2x2vR7Fhcgva9CqzYuTItpIlnou7mtA2Iqslzv5CbdxdK4+MX8tBC9oUwPsqw034SQVebA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+        Tue, 7 Jun 2022 05:14:31 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 752407CB36
+        for <kernel-janitors@vger.kernel.org>; Tue,  7 Jun 2022 02:14:26 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id m20so33817841ejj.10
+        for <kernel-janitors@vger.kernel.org>; Tue, 07 Jun 2022 02:14:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IPRNK8VLD+UQXaufvfThvHxCtUMZENJb1QFmKm2N1Js=;
- b=Iy3k2sOFmIKwYdIGIXCjWUdortolfbcKwydVOCSvBIwj2/oJNELTufW22Cbt99IiR4mTC7SX/qclxQbQw6IV342LP2AVbmEcPzgyewe9AkQCDZDDg6EmNMOBhdWPOZBOhHbLW8IacC2yM4Ea1G9D9f8M4d63Wni8oTp9Op1Pv/o=
-Received: from BN6PR11MB1953.namprd11.prod.outlook.com (2603:10b6:404:105::14)
- by BN6PR1101MB2194.namprd11.prod.outlook.com (2603:10b6:405:55::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5314.15; Tue, 7 Jun
- 2022 08:18:19 +0000
-Received: from BN6PR11MB1953.namprd11.prod.outlook.com
- ([fe80::8dbc:9dd0:ba2:e99]) by BN6PR11MB1953.namprd11.prod.outlook.com
- ([fe80::8dbc:9dd0:ba2:e99%10]) with mapi id 15.20.5314.019; Tue, 7 Jun 2022
- 08:18:19 +0000
-From:   <Claudiu.Beznea@microchip.com>
-To:     <lukas.bulwahn@gmail.com>, <srinivas.kandagatla@linaro.org>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] MAINTAINERS: rectify file pattern in MICROCHIP OTPC
- DRIVER
-Thread-Topic: [PATCH] MAINTAINERS: rectify file pattern in MICROCHIP OTPC
- DRIVER
-Thread-Index: AQHYekcl11mRgfpD4kKOoAltNOk5/w==
-Date:   Tue, 7 Jun 2022 08:18:19 +0000
-Message-ID: <d4c963e4-6fb9-0035-9421-2a52c066360c@microchip.com>
-References: <20220607064220.9296-1-lukas.bulwahn@gmail.com>
-In-Reply-To: <20220607064220.9296-1-lukas.bulwahn@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microchip.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 08c7f23b-876c-4a9a-3460-08da485e479e
-x-ms-traffictypediagnostic: BN6PR1101MB2194:EE_
-x-microsoft-antispam-prvs: <BN6PR1101MB21944F25E85B7A1A74422AA087A59@BN6PR1101MB2194.namprd11.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: cSlukZBiyd0YoyptY6/pWEPAG9YhNlH1D+H0oEzo6SrpEgyHq4Ol86xGFvJ/yBdK7KZ/A0jIdxvzA0Q9QwdeZdD+KY3XfCAyYyywujjYixaBiSDmPtSJvWUWqNrsFU6t8I+ZVGZCfeGv/voP2EKxXsok8C2es8/GsXNECu4SFH/xgVG9PHfC0jBVN4iJzkt7Fh8OQb9X05W0K/vmzAaIOO/URxvxsX4Dns8nHfPLrca/0p/8fkBmiLF1Edwdp/eWt24lKgXbI9ruJVOgao0jNU/U6XhHLV4Kqs/nlJuTleoE62UU89uxVXA2vntKmjcmuJ4oGNC8VlrbGUD31llGAhUvMYd1gqm1C0DB85xv/SvrzYgKofr63CTLwW13Z6mBGFdbafsRgQ0M5j9ACapg61A2iPPJrsRXEK2kfxbD/EQZKcVJa464XGqhAdQckHrSbahVvRc+mcAiR/W3Xlxz4V8qRgZN+tgzYvC5f5kBMsyyYs31YbCjxPaw2BOqZepbMsUvPtSeMnTpEPPOPtLDx2p2Lx1iJRqMOt+RGlmKSbROBSZrmArDyiUBXr0OKOpMCuE8hZUZ63IW9gj462gMzrdaqPDY1qS39IF6mGq956tyu1IFjyAGX8pVEO5ag318JWm7ZulAypcIMb1J3BfmEnn1cPDJbmqL79S3RMRx26X56BXbor3Cj8oouRi7z84SURHeXRhhfbv+VMnhh+j0XCu59vfi+X3j5j80ktoq/YXGapHa3Cx7G5qPjWO5ommaWJIObifF5LbR2mDNPhhtLQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR11MB1953.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(316002)(83380400001)(66946007)(186003)(38100700002)(508600001)(31686004)(8936002)(31696002)(71200400001)(86362001)(110136005)(6512007)(6506007)(91956017)(26005)(122000001)(53546011)(36756003)(66446008)(38070700005)(64756008)(5660300002)(6486002)(2906002)(2616005)(76116006)(8676002)(54906003)(4326008)(66476007)(66556008)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?SjJ6dEUwVFc3WGpHRnN3RU1ib2xPdGpqZmxtSldOdHgwaG8xWUJabzA0Vkkv?=
- =?utf-8?B?YXM0OE05K0R5cGd1MEp1MnRYdDRveVhBK3A1VFJmK1JiL3pZVTBWYUtGOWF1?=
- =?utf-8?B?V092V1lmWmp2V2hvM0ZwcUQvcGwzZU53Nm16SDRuQkhnSE0xellZNkM4MkJi?=
- =?utf-8?B?NnNqazlRY3E2NFBuUzNwT1hPV3FOcktzaXRrNlQvSndYZUxIQW9nb1NqcUlu?=
- =?utf-8?B?OVRBaGtXZ1dDZXMzNGRqcXY3SGhheGJ3a1drRFBLZmZGQ3IrdXJBb3hFVm5P?=
- =?utf-8?B?UXNFV3N4UmF3Y3lJYklJcDZTbkFIMFFiNFZOZHNPMVhlMUU5RzVhRWgyck96?=
- =?utf-8?B?eEVuMGdPQ0dYTFJiUlB5Q0p3ZHlRZEVkZ3NlZGlveHpiQUo0SHlDbGl6RXlM?=
- =?utf-8?B?NjVOWXdxcjFFTnRmNWRQMVB4NGE3M1BYZnBTczRKMjR2OGt3VXpNTzZKcGdx?=
- =?utf-8?B?dDlob20xUysya1dISDNXRjZGVldibXppUDUrTUtiM3FrYTk3Ti96OXg5NW9v?=
- =?utf-8?B?SlJIUUdoaXd0OE1BWXNLR0lYMXlKalZ0OXNVWFhrQWVoSXZzVnBIVUtCZWpU?=
- =?utf-8?B?MVRKQlJvWnEyOFJKeEhsTWZ1VCtLM1B5MktuMHZXZ2dDd0dMMUpYZzc2c3Z0?=
- =?utf-8?B?djkwU1l5ZzcrWVN6dnVhaDllV0puMHV2bjFTWHhUR2JMckNMMUMzd1dJdm5x?=
- =?utf-8?B?TVBLMXNqalpicjRhL2ltcUVHUitjc2lka1NBV3VZQWFBc0I1TWpVd3ZxUmJ5?=
- =?utf-8?B?WHl2S0Z5SGFYaVdNd2x0bWtsU1BWdnNPcDErb244MHRZUkcrWXNzUjRhc0VR?=
- =?utf-8?B?THAwa0R1WTlUQy9DTlVPSGtqelJrWC9xM25oSEdxdjdpZlNoMXZmeUU4Z0pH?=
- =?utf-8?B?eGJnN2Rha2dHR1dlQndFY3Z2dDg3QUJnRGhvdTJCeUZaWlNPN3c2NmFoN1lh?=
- =?utf-8?B?RVJpN0R6SHVFODAvQkM5VkpBUlBCcnBkRXc4eWdjbk1FcWwzTnE1MVY2M3BD?=
- =?utf-8?B?V3ZXd09LL3VOK0V4L09US1IxelVMM2tHc1BmM21NRERENkNOUy9ydWNtSG9Y?=
- =?utf-8?B?T3g2SGIvWVQyeXZLQTFhajg0MXJTS0dsTkM2N210RHArWUh4c0haMVhPeUNO?=
- =?utf-8?B?TGhvMlp5Lzl4WkRkYlFiZVhRMS95d0VxcEFaZ3F3cnVRMHhMMVV0N3V5Y3p2?=
- =?utf-8?B?WStjQUJaUGhjY3RGL3lsMUhkN3EyV0JTY3I3QVVqR2hTWjhzalBVYy9DZXdw?=
- =?utf-8?B?WWE5UHZMY3FaM3BvYm4wVjluMDRjQ0dhclMwSVFWZkRqZzFoSkNVWG84NFV6?=
- =?utf-8?B?UWxDSnhNMS9yeHRMVW1IMVpPbDZDTlBxeHRWZ2VJekVFS2VsZnNtcFZxTjZK?=
- =?utf-8?B?T2V3V2JnVVA4Sk9GeVZDV04yZ09tUStWSFA5ZUdZKzBOQVd0WXBSNUpUSWht?=
- =?utf-8?B?ZTM3TnRDOFJMckQvalA5ZU9TaWZUckJHMHFzL1laVkNJNHZMNm1XZHlLcFZM?=
- =?utf-8?B?dElwMExnSEkzd2k3L1lJT2VsYzhFMEZQVDFsYmFyaVo2RWhoSlF4OXFZSnk1?=
- =?utf-8?B?ZmROUEtmNzJQQTR6TG5PaFdLUlNWZ1ZLQzU4L1VzOFI0L2VmekRpSWJxb1Ju?=
- =?utf-8?B?R2JEcVd5eGkvS29vdVpKc0Z0bW1ISU5vUGI4ZzZYTU1zVjlMdDdwRTVzRVJX?=
- =?utf-8?B?a08veWpSTTlIdG1TRnlUWkd6bU1SOE45VVhkVklNWGd5djBQdlFQSitGTXZV?=
- =?utf-8?B?OFJjeFRMdXZOcG5mQldENS9HVDR2QjFDMEtsNm56NmpKSDFXZ2hMWU1ESnlL?=
- =?utf-8?B?T1ZmSEk4WEN2aThDUUdHeEpVODN1SUlyR2N4R2RFaCtxeWVVWGtuQkRiRXVn?=
- =?utf-8?B?cmt1YTJVR3B0QVBoaTFIYzJkVWkrdkUvZnphTGt6bjhvdUc3NGpNeG1RWVR1?=
- =?utf-8?B?aEt1Y205SlpBMlp4UkhQdUx0dEhZcENQYU9abndvOGxSZU9aelRHL0ZOSWhw?=
- =?utf-8?B?WDlObXMzaWIrcUZJZTlBcWF0ajN2R3ZCRkRnNEFnSEh3cm9TRlJ6MFhOVlBT?=
- =?utf-8?B?QWRwU1l1RGlwL3dlQTVpVDZ3Z2RzWnFOS3lha2p5MjZvT2ozVzhLcmpZeldx?=
- =?utf-8?B?c2xxMjkyVUdHQ0UvK090ZUhOYzJOOEliMGJ0bU5mQ09VYVRmaFlPMXBrc1g4?=
- =?utf-8?B?TWJwWXI5N0hzUEkxdmhQWDJQRDljNGRXcFhkZFh3SkRnVzVwd2E5dmtZRjBT?=
- =?utf-8?B?M2VEek85bVpxMVpmMEVxbjFSeHhMQ1A5Y3pnRDB3NjdYN3RNQlBTOFBFUUpZ?=
- =?utf-8?B?SFZUdS80WWRQQWUrTCtwZTFSVzNNSS8xVGhzSjgva2Vwc2VkejgzWThDV0Jr?=
- =?utf-8?Q?RXnm7TciM1v6KF3k=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <56F269CCEA19054CB99F79DEF906BF86@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=dk8zUgPEAH8sJMme+gRlsmI7BdAAwGXVFJaTHtWa1SI=;
+        b=mta/miane2BOFpJdhcvpeFowyrBnBk5zwHfeHjZr2z6BfChJKKpKZ4FJDj9BzcODVL
+         YxdCJMy1VPdOhh4KAEy7BQwqxd5qnZ9mtMY3cNrAn0iIdLWHnjmo39+uEBBiT+A3Kabq
+         upZpgepVumA3A9OXtepOkvXxOaMQJZr6cL0WyxTwDQpZFV6KdrBaSMQc6SRyRe5DcXss
+         XSYmdsyT+j4hT63Y0ctmtoB7wusTrm5SD4wiJEJA9HTCx31UsvL125nwNd4n0hcO81Ug
+         Q7w4K0ffPps0h9YHUjjWEm9D0tIXusp+EO6NXsZmsEoWmhbM8J4smam4ZAl9URGNxFjw
+         1nKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=dk8zUgPEAH8sJMme+gRlsmI7BdAAwGXVFJaTHtWa1SI=;
+        b=s2DHCkjsjOOvO2S3eXrK+1rH2MmqeKNiXzhhXQETmxPweFZeKFKXB6nOnEiDdxg2vh
+         e6FblXjEcsQnCdU8rMIi1wgo1Og6HQZWcUyoME1VdCQ7cKEyEyAXBhCAL6NSbOa7/i9H
+         f9xKG0Kz458/+qJdjjp04Lx1lVSNIs50iRg4oyTPc/IQheqYKdM22i8GpNoLwhF0Jrce
+         cog6vv0mxCdx0wEPiDo4VHP3Avx7RtpwfTFfHo/etV9+o3fSRTbE/rUF/YMUl9LBorrY
+         7oeZtOOXwVYAUfBqIUXoOElwmhQB+rdR4VzlvTEMluhpDZfv91EDcnKGxN6VGCjYpEQs
+         bcTw==
+X-Gm-Message-State: AOAM532wtLHAfdI4Bll/Kbzq/6HZ8lTQBsBBVCQaP1tcDLKM71xuDkU3
+        XLA0TdKwtBIEOqzyP7/nKRGqp6hc+bZnPwcqtF8=
+X-Google-Smtp-Source: ABdhPJxmeVLWvogPIxDePVXNfI0jYsgb8fNDliBeKlAzcFDXEycCpJ+y2WQYz36rsQad9tP9zrB/8YYvoXKy5sLCv0o=
+X-Received: by 2002:a17:906:6a27:b0:708:1282:cbe9 with SMTP id
+ qw39-20020a1709066a2700b007081282cbe9mr26381041ejc.186.1654593264636; Tue, 07
+ Jun 2022 02:14:24 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN6PR11MB1953.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 08c7f23b-876c-4a9a-3460-08da485e479e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Jun 2022 08:18:19.1710
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vAXuwGlTUj95FuS/oKnk7Rmzrf9fmRPPBy2Y8bCJoYWppgdWSiGKxdMH1SL/0Pd54KcYHwcnyAd1SEuFNvnZbvj862jsB+dpGDDVawKhBBI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR1101MB2194
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a54:21cc:0:0:0:0:0 with HTTP; Tue, 7 Jun 2022 02:14:24 -0700 (PDT)
+Reply-To: robertbaileys_spende@aol.com
+From:   Robert Baileys <yusifmaigari222@gmail.com>
+Date:   Tue, 7 Jun 2022 11:14:24 +0200
+Message-ID: <CA+gykmAZtaUeaSSXNTUDVZEUaXpsVZtHM3-swzUV7Y6upJZG_g@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=6.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:630 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [yusifmaigari222[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [yusifmaigari222[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.3 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.6 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-T24gMDcuMDYuMjAyMiAwOTo0MiwgTHVrYXMgQnVsd2FobiB3cm90ZToNCj4gRVhURVJOQUwgRU1B
-SUw6IERvIG5vdCBjbGljayBsaW5rcyBvciBvcGVuIGF0dGFjaG1lbnRzIHVubGVzcyB5b3Uga25v
-dyB0aGUgY29udGVudCBpcyBzYWZlDQo+IA0KPiBDb21taXQgNmIyOTE2MTBkZDU3ICgibnZtZW06
-IG1pY3JvY2hpcC1vdHBjOiBhZGQgc3VwcG9ydCIpIGFkZHMgdGhlDQo+IE1pY3JvY2hpcCBvdHBj
-IGRyaXZlciBhbmQgYSBjb3JyZXNwb25kaW5nIE1BSU5UQUlORVJTIHNlY3Rpb24sIGJ1dCBzbGlw
-cw0KPiBpbiBhIHNsaWdodGx5IHdyb25nIGZpbGUgcGF0dGVybi4NCj4gDQo+IEhlbmNlLCAuL3Nj
-cmlwdHMvZ2V0X21haW50YWluZXIucGwgLS1zZWxmLXRlc3Q9cGF0dGVybnMgY29tcGxhaW5zIGFi
-b3V0IGENCj4gYnJva2VuIHJlZmVyZW5jZS4NCj4gDQo+IFJlY3RpZnkgdGhpcyBmaWxlIHBhdHRl
-cm4gaW4gTUlDUk9DSElQIE9UUEMgRFJJVkVSLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogTHVrYXMg
-QnVsd2FobiA8bHVrYXMuYnVsd2FobkBnbWFpbC5jb20+DQo+IC0tLQ0KPiBDbGF1ZGl1LCBwbGVh
-c2UgYWNrLg0KDQpBY2tlZC1ieTogQ2xhdWRpdSBCZXpuZWEgPGNsYXVkaXUuYmV6bmVhQG1pY3Jv
-Y2hpcC5jb20+DQoNClRoYW5rIHlvdSwgTHVrYXMhDQoNCg0KPiANCj4gU3Jpbml2YXMsIHBsZWFz
-ZSBwaWNrIHRoaXMgbWlub3Igbm9uLXVyZ2VudCBwYXRjaCBpbiB5b3VyIC1uZXh0IHRyZWUgb24N
-Cj4gdG9wIG9mIHRoZSBjb21taXQgYWJvdmUuIFRoYW5rcy4NCj4gDQo+ICBNQUlOVEFJTkVSUyB8
-IDIgKy0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0K
-PiANCj4gZGlmZiAtLWdpdCBhL01BSU5UQUlORVJTIGIvTUFJTlRBSU5FUlMNCj4gaW5kZXggNTcy
-ZjUwNzM5ZmIyLi4yODgzOTM1NjRhYmMgMTAwNjQ0DQo+IC0tLSBhL01BSU5UQUlORVJTDQo+ICsr
-KyBiL01BSU5UQUlORVJTDQo+IEBAIC0xMzExOSw3ICsxMzExOSw3IEBAIEw6ICAgICAgbGludXgt
-YXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnIChtb2RlcmF0ZWQgZm9yIG5vbi1zdWJzY3Jp
-YmVycykNCj4gIFM6ICAgICBTdXBwb3J0ZWQNCj4gIEY6ICAgICBEb2N1bWVudGF0aW9uL2Rldmlj
-ZXRyZWUvYmluZGluZ3MvbnZtZW0vbWljcm9jaGlwLHNhbWE3ZzUtb3RwYy55YW1sDQo+ICBGOiAg
-ICAgZHJpdmVycy9udm1lbS9taWNyb2NoaXAtb3RwYy5jDQo+IC1GOiAgICAgZHQtYmluZGluZ3Mv
-bnZtZW0vbWljcm9jaGlwLHNhbWE3ZzUtb3RwYy5oDQo+ICtGOiAgICAgaW5jbHVkZS9kdC1iaW5k
-aW5ncy9udm1lbS9taWNyb2NoaXAsc2FtYTdnNS1vdHBjLmgNCj4gDQo+ICBNSUNST0NISVAgUFdN
-IERSSVZFUg0KPiAgTTogICAgIENsYXVkaXUgQmV6bmVhIDxjbGF1ZGl1LmJlem5lYUBtaWNyb2No
-aXAuY29tPg0KPiAtLQ0KPiAyLjE3LjENCj4gDQoNCg==
+--=20
+Hallo, lieber Beg=C3=BCnstigter,
+
+Sie haben diese E-Mail von der Robert Bailey Foundation erhalten. Ich
+bin ein pensionierter Regierungsangestellter aus Harlem und ein
+Powerball-Lotterie-Jackpot-Gewinner von 343,8 Millionen Dollar. Ich
+bin der gr=C3=B6=C3=9Fte Jackpot-Gewinner in der Geschichte der New York Lo=
+ttery
+in Amerika. Ich habe diesen Wettbewerb am 27. Oktober 2018 gewonnen
+und m=C3=B6chte Ihnen mitteilen, dass Google in Kooperation mit Microsoft
+Ihre "E-Mail-Adresse" f=C3=BCr meine Anfrage hat und diese 3.000.000,00
+Millionen Euro kosten wird. Ich spende diese 3 Millionen Euro an Sie,
+um auch Wohlt=C3=A4tigkeitsorganisationen und armen Menschen in Ihrer
+Gemeinde zu helfen, damit wir die Welt zu einem besseren Ort f=C3=BCr alle
+machen k=C3=B6nnen. Bitte besuchen Sie die folgende Website f=C3=BCr weiter=
+e
+Informationen, damit Sie diesen 3 Mio. EUR Ausgaben nicht skeptisch
+gegen=C3=BCberstehen.
+https://nypost.com/2018/11/14/meet-the-winner-of-the-biggest-lottery-jackpo=
+t-in-new-york-history/Sie
+Weitere Best=C3=A4tigungen kann ich auch auf meinem Youtube suchen:
+https://www.youtube.com/watch?v=3DH5vT18Ysavc
+Bitte antworten Sie mir per E-Mail (robertbaileys_spende@aol.com).
+Sie m=C3=BCssen diese E-Mail sofort beantworten, damit die =C3=BCberweisend=
+e
+Bank mit dem Erhalt dieser Spende in H=C3=B6he von 3.000.000,00 Millionen
+Euro beginnen kann.
+Bitte kontaktieren Sie die untenstehende E-Mail-Adresse f=C3=BCr weitere
+Informationen, damit Sie diese Spende von der =C3=BCberweisenden Bank
+erhalten k=C3=B6nnen.
+
+E-Mail: robertbaileys_spende@aol.com
+
+Gr=C3=BC=C3=9Fe,
+Robert Bailey
+* * * * * * * * * * * * * * * *
+Powerball-Jackpot-Gewinner
+E-Mail: robertbaileys_spende@aol.com

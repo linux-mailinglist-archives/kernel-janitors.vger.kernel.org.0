@@ -2,45 +2,45 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8467F53FC09
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jun 2022 12:48:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 633AF53FBFA
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jun 2022 12:48:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241856AbiFGKst (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jun 2022 06:48:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42670 "EHLO
+        id S241742AbiFGKsX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jun 2022 06:48:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241862AbiFGKrd (ORCPT
+        with ESMTP id S241761AbiFGKsB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jun 2022 06:47:33 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96D05F339F;
-        Tue,  7 Jun 2022 03:46:41 -0700 (PDT)
+        Tue, 7 Jun 2022 06:48:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5732AED7B1;
+        Tue,  7 Jun 2022 03:46:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D5745B81F0C;
-        Tue,  7 Jun 2022 10:46:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A377DC34114;
-        Tue,  7 Jun 2022 10:46:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E699B6156A;
+        Tue,  7 Jun 2022 10:46:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B51C3411E;
+        Tue,  7 Jun 2022 10:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654598798;
-        bh=4sLZ5BLxpPRtzF03O8ywJPLV0cvQkKFtC0bybqn9p88=;
+        s=k20201202; t=1654598815;
+        bh=tm1TflPGmEDKpwON1qC2bgKQuglKGcgo+mlL9tjn+28=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=YsAqwwTHkOJHQEFoeGgkkdlXLhPkJ4VVN4aSFTB+nezqWlrhtLbSdUps1gSJh7JNd
-         ollHT9Slr9ePBNIrDu2awLCK3IEVy30z/DC5VY5pAcxUy6Y86zkVNKvZ0KF3FMQ2ay
-         /ucw+cnOgqgpkUUeqgIFI0/3TSKTPudOGLxM2X4zjzzZRXoGZYaLe3oS5NIjpgDdx2
-         sdKzuljcjm/SP104bdlhY6oqN5OAq1zIPjexWBjhXo+H/cAFIQOU1CWGS0J7KRy/5I
-         RqLz2g0idcCM8GqOc8X3JJ5E0g3bAOCJxvFo9eRyiIBjoEAdBHNUIVKpJ2pgKjyIlC
-         wJxAApMIkjBLg==
+        b=LENGS2wVb8Y+9BHDPiC+24SQKag1/003HSb8AxcA53DSzgbcIX1JMId6xZE8Js11n
+         7TNK1mmpSlBg3IHILW63qLKh+AZDCQMxi6SQ3jczaTmrXErUbYBN86e4e+j1SEY0kL
+         LxuE+8joHznqMzsOtfzPDkyWOtIhexnYg582u8P30K8OAr0jtWpEy4eyfJhMRfoD27
+         9OUoWJYAPJAnIGY1TeSL0mj9wcRMujskIJIj4zK8R6JaVAGoelgH+muJrdyL/JomT5
+         EumxoomfejAaJODzZXbyha0r9N8jJR0pKluxC7xdE8iekMzwNrXwNvypmDjby11hn+
+         iXDbbV2Z/CCeA==
 From:   Mark Brown <broonie@kernel.org>
-To:     Julia.Lawall@inria.fr
+To:     christophe.jaillet@wanadoo.fr, matthew.gerlach@linux.intel.com
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org
-In-Reply-To: <20220521111145.81697-13-Julia.Lawall@inria.fr>
-References: <20220521111145.81697-13-Julia.Lawall@inria.fr>
-Subject: Re: [PATCH] spi: fix typo in comment
-Message-Id: <165459879738.302078.9645268491215493172.b4-ty@kernel.org>
-Date:   Tue, 07 Jun 2022 11:46:37 +0100
+In-Reply-To: <0607bb59f4073f86abe5c585d35245aef0b045c6.1653805901.git.christophe.jaillet@wanadoo.fr>
+References: <0607bb59f4073f86abe5c585d35245aef0b045c6.1653805901.git.christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH] spi: spi-altera-dfl: Fix an error handling path
+Message-Id: <165459881400.302078.16808587662616763292.b4-ty@kernel.org>
+Date:   Tue, 07 Jun 2022 11:46:54 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -54,11 +54,15 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 21 May 2022 13:10:23 +0200, Julia Lawall wrote:
-> Spelling mistake (triple letters) in comment.
-> Detected with the help of Coccinelle.
+On Sun, 29 May 2022 08:31:53 +0200, Christophe JAILLET wrote:
+> The spi_alloc_master() call is not undone in all error handling paths.
+> Moreover, there is no .remove function to release the allocated memory.
 > 
+> In order to fix both this issues, switch to devm_spi_alloc_master().
 > 
+> This allows further simplification of the probe.
+> 
+> [...]
 
 Applied to
 
@@ -66,8 +70,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: fix typo in comment
-      commit: 657f8bd88cb5a968d907fd1c891cee52dc156caa
+[1/1] spi: spi-altera-dfl: Fix an error handling path
+      commit: 8e3ca32f46994e74b7f43c57731150b2aedb2630
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

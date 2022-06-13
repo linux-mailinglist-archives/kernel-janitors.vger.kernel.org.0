@@ -2,58 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3260F54887C
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jun 2022 18:01:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8016E5499F4
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jun 2022 19:27:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343881AbiFMPRf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Jun 2022 11:17:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37476 "EHLO
+        id S234667AbiFMR1p (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Jun 2022 13:27:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1387598AbiFMPPM (ORCPT
+        with ESMTP id S232375AbiFMR1X (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Jun 2022 11:15:12 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 908BF12088B;
-        Mon, 13 Jun 2022 05:33:32 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id s12so10903814ejx.3;
-        Mon, 13 Jun 2022 05:33:32 -0700 (PDT)
+        Mon, 13 Jun 2022 13:27:23 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44D9549242;
+        Mon, 13 Jun 2022 05:43:23 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id s1so6966666wra.9;
+        Mon, 13 Jun 2022 05:43:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id;
-        bh=VD9AusQPhhsv19ZmDVVBkmiyTKW+gPW1C2iR/TqV7/0=;
-        b=JZ6X4CGWWDBszUZ2NwNsM/JYojtlM1KcmH82DN3FVl/69G92+oG5fclDS3btw4+lSI
-         LwERbGexHq/RDZf/i4sBGW/rIElyWn8Oz3PkD29Y4GwWJsy4H1Sdsy7UfGoL8naaKU4+
-         +8SvZ84keSSSu/Y/9C1ARkwEv7T738bPkLlfLK/Fvzfyg5fEJXbMP+33uC9OPq4KgcRk
-         4V2bTougmnYBIwsbs3parJK07RlBy7rwedbOMsAQf99byX7JEutvjGqiVBDwXbNV8/Eg
-         jhWdJsGkv3Ca1Czv3gUXGZn5nd5+GlA0adEBBlxrejZ5x33evj8P59dV3Eb3gWPY0YCs
-         RWfA==
+        bh=gWZ2iuIrN0ujnQkPHV+TXRlSbNOjanWQAKWTOlhoEcw=;
+        b=m77Tk6N3ACPMUA59bi65hTpTPrRkAmreeEkyPDG3GSgXJ4ZskPgxVFTCgLrtL3XMIN
+         ptdPRIejAHUs/msgd9kwUcXEjXH9h7iZTcPwQxmlBnAUS7pH5Fm0NyuuqMXMP7CiLvVO
+         A9X9U3iJN+KG2ON0S31rL3jMCzil1eJebmUdSlTO0cApaAKzK6aiS/YCtN5nqUvbdiWe
+         gIf7Zmiz6VM37j6dsu/XmcwtVHHpYInnIywvwAg1s0q6KNVE7YG/xv2O93IgV/yg+P7Q
+         s2pNHc1o5iLoQm+lbRaHYNVnObrF+/BXhSd9zlqbOuRTur8kUpI7PWlWdET9InW86Eqd
+         fw+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=VD9AusQPhhsv19ZmDVVBkmiyTKW+gPW1C2iR/TqV7/0=;
-        b=nDBuV62CEf7MoUCuDl0uSiGy00eB/+YlTEnOm9DQIR6jWrfFSV0XPWCr80OMNLC13r
-         BoCsNRhRGb8dEXgVyAPAOyHr/fRY1m4Kc28xy8kG1EB01dgxPnFKheTk1ZkQ5y/oibGp
-         J5xs+zQqGroWtfALAKaGGzhIRmQTJXPyYLkjcr/Hppi8QQwC1IXgaWCQpyh+q6tKrc9k
-         1S5gqxus8G7c2c+xqRDoUeBXhLJhWMaZ4Ee1oWy8NSRJCa1bDOfW6sxsK1ElXMHWQEv8
-         iAugY2AUD24Dr6UDIhKAPVTj4Fsf/N4+uyb7OgC9ykujE74uyQ+Lxx1SdD1efH+J80GD
-         CDWw==
-X-Gm-Message-State: AOAM531BzPKbI6FBbT9/65exDH+aQGTQWPLfaTJUgVjkfR3VjT2DqfDD
-        flmOF6zL8AVmU9VOTaxgX8c=
-X-Google-Smtp-Source: ABdhPJw+RBhp5AwXRhr0zcDILCY+/pwvYIjbhjLDFxY3Qpacux2pQUqlC+Xrr++nZCJw0+2YDJ/vjQ==
-X-Received: by 2002:a17:906:b788:b0:711:fc54:e55e with SMTP id dt8-20020a170906b78800b00711fc54e55emr22200025ejb.270.1655123610787;
-        Mon, 13 Jun 2022 05:33:30 -0700 (PDT)
+        bh=gWZ2iuIrN0ujnQkPHV+TXRlSbNOjanWQAKWTOlhoEcw=;
+        b=5UXfS2fjCGSQkFlZKZMLo7c5axWa4m3Kt3jmYQXnhZE0ixUw/JXD/7+twL8O1TLAJN
+         fysoJ3KT6V4UlbZf/Guyheg0iyQ0QiS4Mt7heHEUw42PNDNNa2SrbwsiYMsFONH1jTTw
+         jCeAOjVXDp8RQeHeTySsRgLehHkBBcsBfy5IFQb+gi1ZWrm3i2SAR3BeRsCJXEx/Pl0p
+         RKbgtvHTK+oCOKrL0cn2sdZFbVNRQq6tSOZZUyeeG2PYuYKaYno/nQnAf/X3/pUgzgXu
+         r/77B0XdUgSXATWzNqMGiCvHR2BKKKmOB0/YTVFpjSWCnV4+I83C0sZtqBTe/K5fQ04x
+         PSnw==
+X-Gm-Message-State: AOAM530OEGRwbAcENhZcw5qSn79f/IVpN5gEzMcpo7Isd7uiWQu9DIm3
+        xygdv/9i86k6axmXGHGjHpg=
+X-Google-Smtp-Source: ABdhPJxmRpI3gbTnGIrNNYzB/skcfriE8YOSY4phl7jCU0+HLVMzMpV8RT5xLa1lCuYOs16Wh9CFCA==
+X-Received: by 2002:a5d:6c62:0:b0:218:3e13:4b17 with SMTP id r2-20020a5d6c62000000b002183e134b17mr38913538wrz.673.1655124201670;
+        Mon, 13 Jun 2022 05:43:21 -0700 (PDT)
 Received: from felia.fritz.box (200116b8260df50011e978c0f780de03.dip.versatel-1u1.de. [2001:16b8:260d:f500:11e9:78c0:f780:de03])
-        by smtp.gmail.com with ESMTPSA id p14-20020a170906a00e00b007101f6f0720sm3782221ejy.120.2022.06.13.05.33.30
+        by smtp.gmail.com with ESMTPSA id y3-20020adfd083000000b002103cfd2fbasm8383940wrh.65.2022.06.13.05.43.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jun 2022 05:33:30 -0700 (PDT)
+        Mon, 13 Jun 2022 05:43:21 -0700 (PDT)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>, linux-pwm@vger.kernel.org
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>, linux-pm@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: add include/dt-bindings/pwm to PWM SUBSYSTEM
-Date:   Mon, 13 Jun 2022 14:33:19 +0200
-Message-Id: <20220613123319.22964-1-lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: add include/dt-bindings/thermal to THERMAL
+Date:   Mon, 13 Jun 2022 14:43:09 +0200
+Message-Id: <20220613124309.28790-1-lukas.bulwahn@gmail.com>
 X-Mailer: git-send-email 2.17.1
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -65,32 +67,32 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Maintainers of the directory Documentation/devicetree/bindings/pwm
+Maintainers of the directory Documentation/devicetree/bindings/thermal
 are also the maintainers of the corresponding directory
-include/dt-bindings/pwm.
+include/dt-bindings/thermal.
 
-Add the file entry for include/dt-bindings/pwm to the appropriate
+Add the file entry for include/dt-bindings/thermal to the appropriate
 section in MAINTAINERS.
 
 Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
-Thierry, Lee, please pick this MAINTAINERS addition to your section.
+Rafael, Daniel, please pick this MAINTAINERS addition to your section.
 
  MAINTAINERS | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 9c67cd163cbb..ec2e764a22ee 100644
+index ec2e764a22ee..4fd2c1080aa5 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -16287,6 +16287,7 @@ F:	Documentation/driver-api/pwm.rst
- F:	drivers/gpio/gpio-mvebu.c
- F:	drivers/pwm/
- F:	drivers/video/backlight/pwm_bl.c
-+F:	include/dt-bindings/pwm/
- F:	include/linux/pwm.h
- F:	include/linux/pwm_backlight.h
- K:	pwm_(config|apply_state|ops)
+@@ -19858,6 +19858,7 @@ F:	Documentation/ABI/testing/sysfs-class-thermal
+ F:	Documentation/devicetree/bindings/thermal/
+ F:	Documentation/driver-api/thermal/
+ F:	drivers/thermal/
++F:	include/dt-bindings/thermal/
+ F:	include/linux/cpu_cooling.h
+ F:	include/linux/thermal.h
+ F:	include/uapi/linux/thermal.h
 -- 
 2.17.1
 

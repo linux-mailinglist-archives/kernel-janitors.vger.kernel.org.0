@@ -2,58 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9D8A548939
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jun 2022 18:03:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAA35549979
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jun 2022 19:04:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1386182AbiFMOzE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Jun 2022 10:55:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46692 "EHLO
+        id S242514AbiFMRER (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Jun 2022 13:04:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1386949AbiFMOyh (ORCPT
+        with ESMTP id S244014AbiFMRDK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Jun 2022 10:54:37 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3DE8CE5F9;
-        Mon, 13 Jun 2022 04:57:08 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id s1so6805772wra.9;
-        Mon, 13 Jun 2022 04:57:08 -0700 (PDT)
+        Mon, 13 Jun 2022 13:03:10 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 328F3E15C9;
+        Mon, 13 Jun 2022 05:02:18 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id m24so6818923wrb.10;
+        Mon, 13 Jun 2022 05:02:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id;
-        bh=6TuJuerUWJ8EtOROL8wReDLxoePQoYwCsoov/k8HMWg=;
-        b=gf9LBZYFHf0KNaMSaE7tF715h96Jnv2U9DTHOIX1cCAIYCWDQzAvUke7pFZjwLhzUq
-         sVeVobVZ0jPIphEKmLbjmpSC5FHi2qeEv2Z+V2myfcalV6E7DK+pe3JX/lXmgXFH9kOt
-         ntPg+5+S0pl//HDHNYXTaZYjbnIjTOcPxBrzTaGpGopYjVOpOU0w2uPBBPb8hE4L5+/C
-         LYjWQe7ThdziR8KideulKhoEoYWZyjQh+hc14xUq7ZQe0RdCaJRVLPttJKmiK+xEfF/K
-         52K2zdnD7bPEdCdyVRp+SnYC+pQ88eBJB9a25ljv+Ck89DPJNceRbuErlZ9V4Fy18gdK
-         /UNQ==
+        bh=iAGGMDO3RCjpuDnI12s4tp/U5muUk3K/RmYbixGZ5cY=;
+        b=j+Yp1Y4cfSfJ+AVrsnjA5ETWh4QdGa67V5H3ARF0m2zwsPeGShbVT/A0rxLFgS7AE0
+         B+p6QFJQAaE8fSt1zafzR9UZz4dHWbcKCDUXgl9LvHF+LNUyubjgj1wdxuibfUQVIhks
+         Sb7fIv4nDkYVEy2M3B9oaulLLD4zxcopEk7RNQnVkM/KPcx8zvoacWn8x7a54pyipETU
+         j+eWgGryN0jSxoU510/DRai6znER5XoTmB6XxjZVN0NBL903fgFPzJITO96udsNy2Zd7
+         sqSaHhLeI6KNgmBr1RVXlMqH2015r3QCdktca5AWw+QcpI4UU1BFPEoh+Jwg93RXshlW
+         HP6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=6TuJuerUWJ8EtOROL8wReDLxoePQoYwCsoov/k8HMWg=;
-        b=TinEZqPJ8PG7y9vMb+GHH+znz3eSEL/+m+ztbprgQCxKWyzmzbLAc+qrFvFT4bqpqp
-         ZAMGDdpwdUtAIHdhQ9UAtarRIZN6GyW6offehLQTJlJk1H/kKWC2YFw996O10vkpWSFN
-         MZy27hRr55QN8x6PyS9ZW1I2mH+eqBp9gIOGi9LYoVznsOquy+xZFio62LIJsui5dVnd
-         moMyledykwR0CusJgT71QHX8gTZwYRrSLsVSkarxe5x0jf/PN+gUV1MG2AObF6YaGbVR
-         smqd7Wjt5XT9VSz2U+Ljl0VTA8MtKXt4nplzJBbNA9IToHowVHFLUr0cMnW2tmznx8yw
-         lqVg==
-X-Gm-Message-State: AOAM533ZLxY8afySBGCAbpHcEawgU5qz9f67jv7EBkEb53DkXIwYyE0g
-        Hx1xqUdmXLSQwWINembOLwqtqqgBK6s=
-X-Google-Smtp-Source: ABdhPJw2cZFX7WimZ6Mnf7xBkyQlGQD4CktwSjYghR9IhrDJiyy6H5yezCDMK0B8BFcbsTyu8UtMGQ==
-X-Received: by 2002:a05:6000:226:b0:217:851a:4300 with SMTP id l6-20020a056000022600b00217851a4300mr42651926wrz.389.1655121418721;
-        Mon, 13 Jun 2022 04:56:58 -0700 (PDT)
+        bh=iAGGMDO3RCjpuDnI12s4tp/U5muUk3K/RmYbixGZ5cY=;
+        b=Jw6k0XYQ27MRtYqcQJb9Ddp4MI2hmz6IdJ85QQMEYEDVHy9vlfU2w8Z2xynWn3CMN8
+         sUzzZq+n56BPavFJ/Ygv7e7g9i1jLeUaLMUMeXXVYkmALK8hZW6DEgUSjnI9HnffL6u6
+         fRJ+HWdcMGRltHi8izdjLJZnZjukTtal4O67pqa9dkB/6486mDoDKQKbRm9cETmqeffv
+         ItV9WFZ3hHqwtqDpTy+btQ8Umsy7fz/sUUWHD8eYGsT9OyhzI3nE917S4Uqhnm6JbHmj
+         71fBpFzPFElfLT2GAnIOjz8Y1EV+DL2oKM0RBuoEwGYl9MGoi5hlaG/2BbUIcuNSvSQO
+         RoOQ==
+X-Gm-Message-State: AOAM532ka1v0xT8CLk5iMKNDeDN57NuUrgML3LApC43z3z6U876GTjFS
+        /8anK2GsKdrZ5YTzKO0Trkgh6QyASFo=
+X-Google-Smtp-Source: ABdhPJw6IDp5GNuZncI3s0NeFl8BYG40OMdVjI/u5bAvFe5hXAGcozpvJTybpIK+LUARmdlKWbENOg==
+X-Received: by 2002:a05:6000:12c8:b0:213:584:3d7 with SMTP id l8-20020a05600012c800b00213058403d7mr57282336wrx.125.1655121736420;
+        Mon, 13 Jun 2022 05:02:16 -0700 (PDT)
 Received: from felia.fritz.box (200116b8260df50011e978c0f780de03.dip.versatel-1u1.de. [2001:16b8:260d:f500:11e9:78c0:f780:de03])
-        by smtp.gmail.com with ESMTPSA id t1-20020a5d6a41000000b00218468314d7sm8330144wrw.62.2022.06.13.04.56.57
+        by smtp.gmail.com with ESMTPSA id q1-20020adff501000000b002117ef160fbsm8437077wro.21.2022.06.13.05.02.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jun 2022 04:56:58 -0700 (PDT)
+        Mon, 13 Jun 2022 05:02:16 -0700 (PDT)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-input@vger.kernel.org
+To:     Thomas Gleixner <tglx@linutronix.de>, Marc Zyngier <maz@kernel.org>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: add include/dt-bindings/input to INPUT DRIVERS
-Date:   Mon, 13 Jun 2022 13:56:54 +0200
-Message-Id: <20220613115654.28117-1-lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: add include/dt-bindings/interrupt-controller to IRQCHIP DRIVERS
+Date:   Mon, 13 Jun 2022 14:02:05 +0200
+Message-Id: <20220613120205.31311-1-lukas.bulwahn@gmail.com>
 X-Mailer: git-send-email 2.17.1
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -65,32 +64,33 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Maintainers of the directory Documentation/devicetree/bindings/input
-are also the maintainers of the corresponding directory
-include/dt-bindings/input.
+Maintainers of the directory
+Documentation/devicetree/bindings/interrupt-controller are also the
+maintainers of the corresponding directory
+include/dt-bindings/interrupt-controller.
 
-Add the file entry for include/dt-bindings/input to the appropriate
-section in MAINTAINERS.
+Add the file entry for include/dt-bindings/interrupt-controller to the
+appropriate section in MAINTAINERS.
 
 Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
-Dmitry, please pick this MAINTAINERS addition to your section.
+Thomas, Marc, please pick this MAINTAINERS addition to your section.
 
  MAINTAINERS | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 503b8042784e..262ed53d544a 100644
+index 262ed53d544a..30f80e8fe775 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -9815,6 +9815,7 @@ F:	Documentation/devicetree/bindings/input/
- F:	Documentation/devicetree/bindings/serio/
- F:	Documentation/input/
- F:	drivers/input/
-+F:	include/dt-bindings/input/
- F:	include/linux/input.h
- F:	include/linux/input/
- F:	include/uapi/linux/input-event-codes.h
+@@ -10490,6 +10490,7 @@ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git irq/core
+ F:	Documentation/devicetree/bindings/interrupt-controller/
+ F:	drivers/irqchip/
++F:	include/dt-bindings/interrupt-controller/
+ 
+ ISA
+ M:	William Breathitt Gray <vilhelm.gray@gmail.com>
 -- 
 2.17.1
 

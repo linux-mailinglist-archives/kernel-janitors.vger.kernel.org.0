@@ -2,109 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E4DC54C2B2
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Jun 2022 09:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28F7454C395
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Jun 2022 10:35:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234935AbiFOHfY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 Jun 2022 03:35:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42684 "EHLO
+        id S241474AbiFOIfT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 Jun 2022 04:35:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245205AbiFOHfW (ORCPT
+        with ESMTP id S239154AbiFOIfT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 Jun 2022 03:35:22 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2433F4756E;
-        Wed, 15 Jun 2022 00:35:21 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id j5-20020a05600c1c0500b0039c5dbbfa48so611343wms.5;
-        Wed, 15 Jun 2022 00:35:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=6231YElwpY0EMQw/jVrtaouMPdsWUXcvBmdiLPb1PQ4=;
-        b=YQiPihd7vfYxTOea4eaxk6vyRopNf5N4OX8VEVZW9Fw7eCPaaCqHGtFLvvCJBB9xiW
-         +EPPQbDSQ/wjQjzo3tpHCC88vX0TwD7lYgbIL4PHfR3Lq+wl6lR7mx/HwhXhJ0jOkI+G
-         ancgT5HSvQ3NXGBNOS/EmXaOafJWmxgaruoOmCXsGeXJNrNuPdSI5UfSwXKiDvEmf41b
-         qqRBRXynxr9t3F2RCvq1z5QBX8AiTtbacCj/H4f/NRIfZ4jHabwBbmyHvE108rmMM2wz
-         XmE+PSUZo+8oOXmM+veBs66DFSyrtenU5aWWCNKbkYzcB6wB0HiNJXYcs6/VWZN4cI8q
-         vfaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=6231YElwpY0EMQw/jVrtaouMPdsWUXcvBmdiLPb1PQ4=;
-        b=1Z48Api1k7kb+FV482jj0d46sqcfV8OtAfjcrZCBhgKJuytMEpKC1p2F9kB8uamgC4
-         x6dkMSMMO3bcoNsmR0QcRaIWbMfXr2tIvtr0d1X9npUrFODhkXvEjq25UMU/tv4DrTl0
-         vxdk97s6fauoU7CdiIuwSrSZIsERRbPdPQfFgqsxy6ZfNJQmdJnvxmvcto5TR40/c2hi
-         pMuenYJ9MtYL9OdIxuSs6dqaeyYJk0xIdCdpsDBmPC8iv/zO0cMDXkkHY/vkfLUiHmIj
-         cKaefpnnAzJfi5T9XsnnILHEnvRyX2uir4ls1aViIHm0SBLvzyzoargLIMrnVRJ2dsWO
-         U+kg==
-X-Gm-Message-State: AOAM531uAfT2roFh7DttIcWAStukLCRZJrZWhBQYaF8EodSKg37b7xIJ
-        mh9unOZWn95PSGpXV0RYjOCesmUBNGIQCfPG
-X-Google-Smtp-Source: ABdhPJxh39A5lnBvRYI/2TeMwxhzEyOmO3E10gV5vCOnbG6aQ091rRCB9B4vaiuLlJlnkIUtCS6w+w==
-X-Received: by 2002:a05:600c:1d1f:b0:39c:5350:c5a3 with SMTP id l31-20020a05600c1d1f00b0039c5350c5a3mr8084676wms.136.1655278519588;
-        Wed, 15 Jun 2022 00:35:19 -0700 (PDT)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id m17-20020adfc591000000b0020fff0ea0a3sm14224612wrg.116.2022.06.15.00.35.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jun 2022 00:35:18 -0700 (PDT)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Neal Liu <neal_liu@aspeedtech.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        linux-aspeed@lists.ozlabs.org, linux-usb@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] usb: gadget: ast2600: Fix a couple of spelling mistakes
-Date:   Wed, 15 Jun 2022 08:35:18 +0100
-Message-Id: <20220615073518.192827-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.35.3
+        Wed, 15 Jun 2022 04:35:19 -0400
+X-Greylist: delayed 1084 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 15 Jun 2022 01:35:18 PDT
+Received: from mail.forindustry.pl (mail.forindustry.pl [37.187.225.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CB4E11C17
+        for <kernel-janitors@vger.kernel.org>; Wed, 15 Jun 2022 01:35:18 -0700 (PDT)
+Received: by mail.forindustry.pl (Postfix, from userid 1002)
+        id 697ACA8442; Wed, 15 Jun 2022 08:06:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=forindustry.pl;
+        s=mail; t=1655280525;
+        bh=Vw5jk5D1DE7WK/GNf/MxRQNyAyPYcC0rMJLibxKTj58=;
+        h=Date:From:To:Subject:From;
+        b=i2qWh/JHceUbiF8PvpSpoxCJSNx8aJqL0di8kodkK/3KhSyvL+eh6ORYlhNzMxbTk
+         8mRo6TcEJEpRjbgUu9LuBuWHpkq5MHkV1AJRpdj5lrBdAdsQ9VfJ6O6jmFsh2aZYu+
+         C8phuOcFNHUQVvVoavSqrKUnPUVF49wk+f5AYbPLOdecV97eJH5c7m7XwQ/UVXuUMT
+         F29Y8qapyR0i0Tdn3YeCe25ohU7enMIr5P4AFu2/8WjqscWaGWjgfCadcvPJmDDtPq
+         2MQKuQ7ytcZRfrAGCI6nSVL9w7rTpQHtcetP+Vs4+BWWgWAbpufQFioZiKcVA7C3pi
+         DKPtshyyX4o+Q==
+Received: by mail.forindustry.pl for <kernel-janitors@vger.kernel.org>; Wed, 15 Jun 2022 08:05:58 GMT
+Message-ID: <20220615064500-0.1.3u.tozf.0.bsfra8bel6@forindustry.pl>
+Date:   Wed, 15 Jun 2022 08:05:58 GMT
+From:   =?UTF-8?Q? "Arkadiusz_Soko=C5=82owski" ?= 
+        <arkadiusz.sokolowski@forindustry.pl>
+To:     <kernel-janitors@vger.kernel.org>
+Subject: Koszty instalacji fotowoltaicznej
+X-Mailer: mail.forindustry.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There are a couple of spelling mistakes, one in a dev_warn message
-and another in a SETUP_DBG message. Fix these and remove an extraneous
-white space too.
+Dzie=C5=84 dobry,
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/usb/gadget/udc/aspeed_udc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+stworzyli=C5=9Bmy specjaln=C4=85 ofert=C4=99 dla firm, na kompleksow=C4=85=
+ obs=C5=82ug=C4=99 inwestycji w fotowoltaik=C4=99.
 
-diff --git a/drivers/usb/gadget/udc/aspeed_udc.c b/drivers/usb/gadget/udc/aspeed_udc.c
-index 1fc15228ff15..05cfcc4812b8 100644
---- a/drivers/usb/gadget/udc/aspeed_udc.c
-+++ b/drivers/usb/gadget/udc/aspeed_udc.c
-@@ -904,7 +904,7 @@ static void ast_udc_epn_handle_desc(struct ast_udc_dev *udc, u16 ep_num)
- 	int i;
- 
- 	if (list_empty(&ep->queue)) {
--		dev_warn(dev, "%s reqest queue empty !\n", ep->ep.name);
-+		dev_warn(dev, "%s request queue empty!\n", ep->ep.name);
- 		return;
- 	}
- 
-@@ -1036,7 +1036,7 @@ static void ast_udc_ep0_handle_setup(struct ast_udc_dev *udc)
- 
- 	memcpy_fromio(&crq, udc->creq, sizeof(crq));
- 
--	SETUP_DBG(udc, "SETEUP packet: %02x/%02x/%04x/%04x/%04x\n",
-+	SETUP_DBG(udc, "SETUP packet: %02x/%02x/%04x/%04x/%04x\n",
- 		  crq.bRequestType, crq.bRequest, le16_to_cpu(crq.wValue),
- 		  le16_to_cpu(crq.wIndex), le16_to_cpu(crq.wLength));
- 
--- 
-2.35.3
+Specjalizujemy si=C4=99 w zakresie doboru, monta=C5=BCu i serwisie instal=
+acji fotowoltaicznych, dysponujemy najnowocze=C5=9Bniejszymi rozwi=C4=85z=
+ania, kt=C3=B3re zapewni=C4=85 Pa=C5=84stwu oczekiwane rezultaty.
 
+Mo=C5=BCemy przygotowa=C4=87 dla Pa=C5=84stwa wst=C4=99pn=C4=85 kalkulacj=
+=C4=99 i przeanalizowa=C4=87 efekty mo=C5=BCliwe do osi=C4=85gni=C4=99cia=
+=2E
+
+Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
+temacie?
+
+Pozdrawiam,
+Arkadiusz Soko=C5=82owski

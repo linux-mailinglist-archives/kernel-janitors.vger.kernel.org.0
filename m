@@ -2,98 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 164EE550CCF
-	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Jun 2022 21:47:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33CD6550D17
+	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Jun 2022 23:25:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234474AbiFSTr2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 19 Jun 2022 15:47:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47752 "EHLO
+        id S233205AbiFSVZg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 19 Jun 2022 17:25:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234310AbiFSTr1 (ORCPT
+        with ESMTP id S229716AbiFSVZf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 19 Jun 2022 15:47:27 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 278FE62C0
-        for <kernel-janitors@vger.kernel.org>; Sun, 19 Jun 2022 12:47:25 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1o30tG-0006Ao-FN; Sun, 19 Jun 2022 21:47:22 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1o30tE-001VO6-1I; Sun, 19 Jun 2022 21:47:21 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1o30tE-00HR5y-SA; Sun, 19 Jun 2022 21:47:20 +0200
-Date:   Sun, 19 Jun 2022 21:47:17 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>, linux-pwm@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: add include/dt-bindings/pwm to PWM SUBSYSTEM
-Message-ID: <20220619194717.oey6dfhrcs6h4btv@pengutronix.de>
-References: <20220613123319.22964-1-lukas.bulwahn@gmail.com>
+        Sun, 19 Jun 2022 17:25:35 -0400
+Received: from smtp.smtpout.orange.fr (smtp05.smtpout.orange.fr [80.12.242.127])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22C0B656B
+        for <kernel-janitors@vger.kernel.org>; Sun, 19 Jun 2022 14:25:33 -0700 (PDT)
+Received: from pop-os.home ([90.11.190.129])
+        by smtp.orange.fr with ESMTPA
+        id 32QFoWEgkdfes32QFoKAEl; Sun, 19 Jun 2022 23:25:32 +0200
+X-ME-Helo: pop-os.home
+X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
+X-ME-Date: Sun, 19 Jun 2022 23:25:32 +0200
+X-ME-IP: 90.11.190.129
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Zheyu Ma <zheyuma97@gmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-media@vger.kernel.org
+Subject: [PATCH] media: tw686x: Fix an error handling path in tw686x_probe()
+Date:   Sun, 19 Jun 2022 23:25:29 +0200
+Message-Id: <c72fe5a6f5944820de52e4957bc1d804bd214a66.1655673905.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="2g4jtthgkkpixmm2"
-Content-Disposition: inline
-In-Reply-To: <20220613123319.22964-1-lukas.bulwahn@gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+The commit in Fixes is incomplete. It has moved some code in the probe but
+not all error handling path have been updated.
 
---2g4jtthgkkpixmm2
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Now, ff request_irq() fails we must release some resources.
 
-On Mon, Jun 13, 2022 at 02:33:19PM +0200, Lukas Bulwahn wrote:
-> Maintainers of the directory Documentation/devicetree/bindings/pwm
-> are also the maintainers of the corresponding directory
-> include/dt-bindings/pwm.
->=20
-> Add the file entry for include/dt-bindings/pwm to the appropriate
-> section in MAINTAINERS.
->=20
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Fixes: c8946454ed96 ("media: tw686x: Register the irq at the end of probe")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/media/pci/tw686x/tw686x-core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-LGTM
+diff --git a/drivers/media/pci/tw686x/tw686x-core.c b/drivers/media/pci/tw686x/tw686x-core.c
+index 384d38754a4b..af83ebf8eea4 100644
+--- a/drivers/media/pci/tw686x/tw686x-core.c
++++ b/drivers/media/pci/tw686x/tw686x-core.c
+@@ -337,12 +337,15 @@ static int tw686x_probe(struct pci_dev *pci_dev,
+ 			  dev->name, dev);
+ 	if (err < 0) {
+ 		dev_err(&pci_dev->dev, "unable to request interrupt\n");
+-		goto iounmap;
++		goto tw868x_free;
+ 	}
+ 
+ 	pci_set_drvdata(pci_dev, dev);
+ 	return 0;
+ 
++tw868x_free:
++	tw686x_video_free(dev);
++	tw686x_audio_free(dev);
+ iounmap:
+ 	pci_iounmap(pci_dev, dev->mmio);
+ free_region:
+-- 
+2.34.1
 
-Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---2g4jtthgkkpixmm2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmKvfUMACgkQwfwUeK3K
-7AkJgAf/T3lLqj8kvK25QYv3SAiiRwrGq1t1sXlWYbCYKqcDP/xDbfw7LW4qwAy4
-0aTtEgcdKez76ZcxkE/qWdcjU8GhpWV7HodBDBDNTwFzHWhZiBg7qIoUz1ah1CnV
-2PQtUFdnValY41EAClM8EL/V9/EqyLMupeKvkILkeksP2PXbHpL5AK9R9pv5W5sQ
-qo5qHWtw42WDj7r/K9DW6idqdJ/USk1SjcRw2+6H2fYvAwaC++INLTOEitUHAMS0
-w8DfH0E5uoVl/tWK+6tTJnreaKIo4dqTWcxkc6Vd0uUgfZKIJh40/nFLEsjUYVZL
-OXFsHGO3JI1sS7trHtvFculX6zDrGQ==
-=dlHo
------END PGP SIGNATURE-----
-
---2g4jtthgkkpixmm2--

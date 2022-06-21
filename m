@@ -2,108 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF487552EBD
-	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Jun 2022 11:41:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7986F552F19
+	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Jun 2022 11:48:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348992AbiFUJj2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 21 Jun 2022 05:39:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51190 "EHLO
+        id S1349299AbiFUJrl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 21 Jun 2022 05:47:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349192AbiFUJjY (ORCPT
+        with ESMTP id S1349266AbiFUJrk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 21 Jun 2022 05:39:24 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22670275D1
-        for <kernel-janitors@vger.kernel.org>; Tue, 21 Jun 2022 02:39:24 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id p69so11812930ybc.5
-        for <kernel-janitors@vger.kernel.org>; Tue, 21 Jun 2022 02:39:24 -0700 (PDT)
+        Tue, 21 Jun 2022 05:47:40 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F3E827B37;
+        Tue, 21 Jun 2022 02:47:39 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id c130-20020a1c3588000000b0039c6fd897b4so9012134wma.4;
+        Tue, 21 Jun 2022 02:47:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
-        b=h/jNG5hg7pw3qbZJsJ7/O7yTdyMF9oaAqqeSAK5vwrGEejYUjatvjXYi9CfRCdUN7+
-         KjP/WCFvT8I92O2z5wgpsaQ0jcsEwpBxXigAJAQS5SK+C8ThiuMQNrPDzM35CCqMOJ+w
-         GBkxduRioS7i6nHcyXthl3mZqwQerBFDpOn3TG72mc+LF3FY1dZ9YhOl0p4qsvUFchha
-         x6XZLIZ+Gczns9m2WYpDTzlG+cUGlJgXbqpd7Xq15GQCjfbyAKkYsmppFgoRrbgJW3EH
-         rErljVN0YQSRCbbwSNvPtoEWqk2L3NjeKPO58uL1LcwSvdWcUGuEt0lB/g4kmrSwWafe
-         yIfg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=K3ZCR9iVeq6ZAfU5TRz3a90s4e4BlA0vDBwbjjM5RfY=;
+        b=dkpM687CjGEtZhDZ8rCYb6sL/az4iSWToMOUg+fg5uLqGa7P6ahCru2Owl3HEpvPwX
+         Oi2/89PQEieIpg84jOUXJ6Y5Cpwan5pt5ljmadId3m5MbuBe8aDrPUBRkLJ1DwUs5vWH
+         Hb+UNstb7VY6U0dpCsXJ8mzrWHs2oKbbg8uQq2dSWJgaYjKUILISHN5l90u7VVYrZw7C
+         a2mbYQ1UCK2dxrxyamx/HQWb7akAs/5Zn1dBqO/ju2XEVFLnj1ttNHBVNzIpyuQmuUrS
+         xXmDCobmZKLeuP1mQInRZKtYBvlasJyz9NP6QUtJxDPiAIjJHGxG1fITu5HgBGY7Aj+h
+         2EiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
-        b=TYAPf3dRuIYtRB3RtGUd2/usOk7VZVh7TOmC2MTxrolIgPdDXCDvqa6oAeZ17bMu7Y
-         nLVKU39Yqwc+2NSZJv9ngaxcDWaY5g5NDfPS5+qQp6k4VOKZKO8tPz8ZPp+vv4OZHQCF
-         o6NjETCOo94/TWLFgVuyvalcrpcXQ6EkqksUCp5ITQ2OUGtLHhHjbxBgwGj53qoef2TI
-         UWQ7eJOrWSrk3INiH4wSswGzHW6KpCCP2IoXNXczfpAhUadsY+M01qjZr8S/+G8Q1NT+
-         qFyytqujlYrm//38m4JrlTD6OKjn7zWb8gCUOLiegTel5uMfJ/ct8lgp5kXbpolkdhaL
-         YcOg==
-X-Gm-Message-State: AJIora8OsLibFWEfyvf/+776ddrM5nZsDawpNQ9+nd43FTnMKLdsjQQT
-        DsS0D2eMGiE5ZB8HpzlUEubgQennpRpmxMWT3nA=
-X-Google-Smtp-Source: AGRyM1sanxJnrjzNvMQMrOlD8K2c656wwbNTXk8tdAjEGDFs09CqIR+mQnkI3ogcblPWOzX1AqvlQqvw7FWP0msTnxw=
-X-Received: by 2002:a05:6902:1205:b0:669:22dc:e8ad with SMTP id
- s5-20020a056902120500b0066922dce8admr8595434ybu.371.1655804362970; Tue, 21
- Jun 2022 02:39:22 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=K3ZCR9iVeq6ZAfU5TRz3a90s4e4BlA0vDBwbjjM5RfY=;
+        b=J3PisXJDyU3cpslpTuV/iLVzz79t1L/2OSOkwPLl5WhYlbKBm18JFGGd78OE8adv6J
+         aGjWz6Lqdl0jUz/YAshZaeA+L27WAqGyXMYyPqU8DDPRQ5ozDv9I7xtYlNgizWVsy7mx
+         MmN9Nn8wIqZbFi1QZ2oCs0fzPaS2yHdcfFuqGguSiX/9WuxC4e8vUbwW8VTSLwMJl4T2
+         I0IjF0GVh4aJJIf6ep8AH8JNZcZcGUOeM0KCP4ezhUvSb8osZYB+O/z2agOOvyPUkDBd
+         K1KV2be+cWR419SiHPdrbj02UsvhfrYmGOl1URKJWacWW8EFetjBHv746ST7c6YBZ8+a
+         OTZQ==
+X-Gm-Message-State: AJIora/h9uSw+iDYUK1zvI3KxYuFmWcpWYBZJ5ayh8wsmVjK6ZBV7zYU
+        FGn1zWuctY6PxFar26L9YLw=
+X-Google-Smtp-Source: AGRyM1sjQlqfYgzhZtmD5KyrTu1rLV5cg8wZwFoDW7+iQXmmb5YxwYnxnBrasq/IQhB/AjTjOu85qQ==
+X-Received: by 2002:a05:600c:3505:b0:39c:93d4:5eec with SMTP id h5-20020a05600c350500b0039c93d45eecmr28551855wmq.179.1655804857770;
+        Tue, 21 Jun 2022 02:47:37 -0700 (PDT)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id r15-20020adff70f000000b002185d79dc7fsm15323739wrp.75.2022.06.21.02.47.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jun 2022 02:47:37 -0700 (PDT)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] iio: adc: qcom-spmi-rradc: Fix spelling mistake "coherrency" -> "coherency"
+Date:   Tue, 21 Jun 2022 10:47:36 +0100
+Message-Id: <20220621094736.90436-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Received: by 2002:a05:7010:e10a:b0:2d9:e631:94d0 with HTTP; Tue, 21 Jun 2022
- 02:39:22 -0700 (PDT)
-Reply-To: dimitryedik@gmail.com
-From:   Dimitry Edik <lsbthdwrds@gmail.com>
-Date:   Tue, 21 Jun 2022 02:39:22 -0700
-Message-ID: <CAGrL05YaSev49ZJ7fa3MrewJ+V8jgEUTAvWTZ-J7LGC2S9d28w@mail.gmail.com>
-Subject: Dear Partner,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_MONEY_PERCENT,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:b2c listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [lsbthdwrds[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
-        *  2.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello Dear,
+There is a spelling mistake in a dev_err message. Fix it.
 
-My Name is Dimitry Edik from Russia A special assistance to my Russia
-boss who deals in oil import and export He was killed by the Ukraine
-soldiers at the border side. He supplied
-oil to the Philippines company and he was paid over 90 per cent of the
-transaction and the remaining $18.6 Million dollars have been paid into a
-Taiwan bank in the Philippines..i want a partner that will assist me
-with the claims. Is a (DEAL ) 40% for you and 60% for me
-I have all information for the claims.
-Kindly read and reply to me back is 100 per cent risk-free
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/iio/adc/qcom-spmi-rradc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yours Sincerely
-Dimitry Edik
+diff --git a/drivers/iio/adc/qcom-spmi-rradc.c b/drivers/iio/adc/qcom-spmi-rradc.c
+index 87f349782108..56a713766954 100644
+--- a/drivers/iio/adc/qcom-spmi-rradc.c
++++ b/drivers/iio/adc/qcom-spmi-rradc.c
+@@ -295,7 +295,7 @@ static int rradc_read(struct rradc_chip *chip, u16 addr, __le16 *buf, int len)
+ 	}
+ 
+ 	if (retry_cnt == RR_ADC_COHERENT_CHECK_RETRY)
+-		dev_err(chip->dev, "Retry exceeded for coherrency check\n");
++		dev_err(chip->dev, "Retry exceeded for coherency check\n");
+ 
+ 	return ret;
+ }
+-- 
+2.35.3
+

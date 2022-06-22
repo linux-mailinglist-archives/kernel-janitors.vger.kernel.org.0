@@ -2,61 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE2EC554E3E
-	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Jun 2022 17:03:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0022555529
+	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Jun 2022 22:00:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358619AbiFVPDi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 22 Jun 2022 11:03:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35794 "EHLO
+        id S1376938AbiFVUAh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 22 Jun 2022 16:00:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358889AbiFVPDa (ORCPT
+        with ESMTP id S1347203AbiFVUAf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 22 Jun 2022 11:03:30 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 899F531DE6
-        for <kernel-janitors@vger.kernel.org>; Wed, 22 Jun 2022 08:03:27 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id g8so15634237plt.8
-        for <kernel-janitors@vger.kernel.org>; Wed, 22 Jun 2022 08:03:27 -0700 (PDT)
+        Wed, 22 Jun 2022 16:00:35 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25872340D9;
+        Wed, 22 Jun 2022 13:00:35 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id d14so13374263pjs.3;
+        Wed, 22 Jun 2022 13:00:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=vhZEVnaGNBjosB86GDUW8b2wHjB/+QU31bPXl36TqFE=;
-        b=WAbWEL/oNK/UOovzR6YlHMKcA4dYcC7HgIpBKVf1Z6aLPQMKNkPnyRzXn5TSaGEloV
-         TmQy2vr1kA/RAc7OoDtpJdUyYpSrJCLeb/BH0kegC5/LiVrA2gfzMNL8MrgkT7uFR5NE
-         2sg1nSYNUGd9l1GQhQJbVP35/qf8AK++lJaYLJ8ao8KjU6cWvUkd/1yI0D3TJ1rBgo7m
-         l3ipwPsxTgsmzX2464N8ISPYKa+8bIVvokuqcL59gXmFQ/gTLHnGfbYSW+RRs9uHt8As
-         S504s37Wp7N0Dmac+HWTOQcaHD0jht+wf4g4pro9m1sMDyGhqkY9aD3omKDefUZbLwLo
-         sSzQ==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=H32edbNKPR2s6aSUbVdqXXgAauRhWuXF6JcIlX7te90=;
+        b=feubf9Ye8kXOE8iOKkdpqX0KE9jZIUPok3HnneyYIupwOdXmBMFRQ6MCrct/bk08zf
+         V1vCgwzR7VcDYC6/4S4iHZ1ADNQHYfNxsbo/mpNn5FWPN+OdcSumEHdrdrvgHeoQxb4v
+         F+oPTXO/G6jdnNBoLlkBMD6xMr9oCIx5wq4FVX8UNKEPylPOfZ4jkEVdVeeHzSSbD1js
+         Dny/3dyttzI2BJcLvx3w/hgn0sZFbTHG9Vjl7830viBY5BponYLOHTLDiUyjm83grEmg
+         nr3PWegsASmKLBWybAvzu4kKQsoYKsYnn4AhiZfRpTf/nly6ozUOMPq1s/AyMjOTpLoc
+         Pknw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=vhZEVnaGNBjosB86GDUW8b2wHjB/+QU31bPXl36TqFE=;
-        b=DFQ2zSkgJkNNJrByJSW8yNr0zbyQoqTGQAFsVrU9MFieDfknYYdxlPT7FCu5oPXDyG
-         o4GMRas1bqO7V8OMbFwWXkFkElG7KJamPeVKLAev8g0JUGfBdCh9zUQuWx6z9lhO6/7r
-         TMs6h3THhYeggi8Yg6FT0lZ96oxUEbjZNSBkmV8n1uDwX68FlMMbs4z6GIHmAEW9RcFR
-         I/2vtSLL2NXkE7cJvvt/m5GbcfeBr24TyIIFkd+5mGqHyU4UC6oY1L945HMtSEXtcy2q
-         lfDYUK6OWzzsJsIbGjU9ORXN0udVt60kXfRsgTUv1L1O9le8VwonpDIOA0yWuepZ6dO2
-         9YOA==
-X-Gm-Message-State: AJIora+v2fmLowezWlc6PdvUCO2DoczZMu7TTNKISIxO+OgyaRBklEcL
-        aOzk4VnEmAhdIKy3lvOg9vwnY0u4LgkX04mP3SI=
-X-Google-Smtp-Source: AGRyM1tTnjEKy1PAqxhIkhgJsM8EDdvdvX9csFM1KASrFrTyHF6cONT/3ZQhMAHd6iGBjCTq+R/HQPUDHcaDjJjyFps=
-X-Received: by 2002:a17:902:d481:b0:167:770b:67c with SMTP id
- c1-20020a170902d48100b00167770b067cmr35105233plg.77.1655910206648; Wed, 22
- Jun 2022 08:03:26 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=H32edbNKPR2s6aSUbVdqXXgAauRhWuXF6JcIlX7te90=;
+        b=CrxUrRMHOBm2vwl2k28aLdz8pu7vtFvcyFg5YzGXUglGImPE9Zlpug0ue0neGuYkSM
+         TNlgqnmMlWFO1+eHNjayFgOIvwFqOMA2m+BS9mo5EvdtDTFCu4DN0ILlJ9j/ShyhqZeV
+         ossrlVKry/PbhlNqLSmDMKslidxzrO+SwrpomgXhQsEgR+MKJxB0ixLmvvSSOS2V+BKV
+         gllltMTG1LxcvVLDWVymjO3LMrbp1znjN5gsLOFB0BxLcfI+n1T3PJJHL9nesiY7/EEq
+         p7/Rl1csg/hG+nCLZUK9Hx0oB7B8ZTyuxLxBCHnK/0pb8F9PrsWBcQDodK+jUIWTWA4c
+         Zeyg==
+X-Gm-Message-State: AJIora8j9iAI1sUyKfBhs0YKCAWolkw2uw0+LgZUCQY1r/CCMkqtneS/
+        p8HwMLlwiOX/u6/oLGS1L7k=
+X-Google-Smtp-Source: AGRyM1sKIvsd40oVsibGqLjkBwUaNFT9Ujo0yPK1ns7KcYb9oiQWsNq3WJQOoXR9ZfC0XJcbdj32ow==
+X-Received: by 2002:a17:902:f710:b0:15f:165f:b50b with SMTP id h16-20020a170902f71000b0015f165fb50bmr36578095plo.158.1655928034505;
+        Wed, 22 Jun 2022 13:00:34 -0700 (PDT)
+Received: from [172.30.1.37] ([14.32.163.5])
+        by smtp.gmail.com with ESMTPSA id u12-20020a170902714c00b001675991fb7fsm13125784plm.55.2022.06.22.13.00.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Jun 2022 13:00:33 -0700 (PDT)
+Message-ID: <45abff3f-201b-ba6e-fe9a-634fd4413229@gmail.com>
+Date:   Thu, 23 Jun 2022 05:00:30 +0900
 MIME-Version: 1.0
-Received: by 2002:a17:903:2308:b0:16a:1b3f:f74b with HTTP; Wed, 22 Jun 2022
- 08:03:26 -0700 (PDT)
-Reply-To: sales0212@asonmedsystemsinc.com
-From:   Prasad Ronni <lerwickfinance7@gmail.com>
-Date:   Wed, 22 Jun 2022 16:03:26 +0100
-Message-ID: <CAFkto5tMg+6s_ExUe9KSdLUYd-5dxWYs2fCGN8FGJofvS5QvsQ@mail.gmail.com>
-Subject: Service Needed.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.0 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH] extconn: remove extraneous space before a debug message
+Content-Language: en-US
+To:     Colin Ian King <colin.i.king@gmail.com>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220619084248.21395-1-colin.i.king@gmail.com>
+From:   Chanwoo Choi <cwchoi00@gmail.com>
+In-Reply-To: <20220619084248.21395-1-colin.i.king@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,11 +75,35 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On 22. 6. 19. 17:42, Colin Ian King wrote:
+> There is an extreneous space before a dev_dbg message, remove it.
+> 
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> ---
+>  drivers/extcon/extcon-palmas.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/extcon/extcon-palmas.c b/drivers/extcon/extcon-palmas.c
+> index d2c1a8b89c08..32f8b541770b 100644
+> --- a/drivers/extcon/extcon-palmas.c
+> +++ b/drivers/extcon/extcon-palmas.c
+> @@ -107,7 +107,7 @@ static irqreturn_t palmas_id_irq_handler(int irq, void *_palmas_usb)
+>  				(id_src & PALMAS_USB_ID_INT_SRC_ID_GND)) {
+>  		palmas_usb->linkstat = PALMAS_USB_STATE_ID;
+>  		extcon_set_state_sync(edev, EXTCON_USB_HOST, true);
+> -		dev_dbg(palmas_usb->dev, " USB-HOST cable is attached\n");
+> +		dev_dbg(palmas_usb->dev, "USB-HOST cable is attached\n");
+>  	}
+>  
+>  	return IRQ_HANDLED;
+
+Fix the wrong word on patch title and use captital letter of first char as following:
+- extconn: remove extraneous space before a debug message
+-> extcon: Remove extraneous space before a debug message
+
+Applied it.
+
 -- 
-Hi,
-
-Are you currently open to work as our executive company representative
-on contractual basis working remotely? If yes, we will be happy to
-share more details. Looking forward to your response.
-
-Regards,
+Best Regards,
+Samsung Electronics
+Chanwoo Choi

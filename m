@@ -2,99 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 935E3557502
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jun 2022 10:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E2EE557537
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jun 2022 10:19:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229864AbiFWIJ7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Jun 2022 04:09:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54084 "EHLO
+        id S229553AbiFWITJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Jun 2022 04:19:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229653AbiFWIJz (ORCPT
+        with ESMTP id S229572AbiFWITI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Jun 2022 04:09:55 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B184147560;
-        Thu, 23 Jun 2022 01:09:49 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id e5so10557390wma.0;
-        Thu, 23 Jun 2022 01:09:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=WUf4hh7XmxGqI1TyChD6Q9Q40vdp6ztxwpVVqyoKOb0=;
-        b=M/Ksx3wAMaMxEES700OFBcZXpRa4wc0oINeNKEcajTDoEYnhRbdBv4KdmPmYqil1rp
-         s67yY7qs7Z9uMQX9abv80e6zOAxDf0D4FQ9gS8Ga6gTnE2vJi86reVunCnB/mp9/pQNX
-         0plD3hZ2Om0IwBM8oJlmj9IJZ0h+C6PSU8pSut0A69n3kNt5ZW2TV9wEfEzQLC1agRLE
-         +d/BDuJsc7ByQwocxAPKAwfkXzenkyPNr1edj63us5r9waaF8KjiU8C4Fb4STONfOx86
-         mtkXTc5YDmD6uI+sZyTbh64Tn0D6Ey2JmdkqzHdBVvVuJQIlPIkk3XGshW5rM3RJKjgC
-         LKFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=WUf4hh7XmxGqI1TyChD6Q9Q40vdp6ztxwpVVqyoKOb0=;
-        b=JgSROAbTUpcCGWtZr/skmtehZ9CWqS5DhQlxnpr6rBdft70YTZ69DX8cY4cLMaRVVU
-         vOomEEO8/E20UursnBdfgH9bH01CqYjG9jcDZNFRQZJJ39XMqoPIZ9Idn9CPoT7U07Er
-         kXGJJtru4rLMG5E7010Ip7bjDgMylksNS6spkVQPRbdGjoBD37j6rvubia0xCSspWpJv
-         xP85D4aD6NkOuKQxeNjL+VCFGyYCevGbPY71LwfiB7avsVZI2+bKiMukQ5ftN29ReRUi
-         IIDqnNOAPeMHbs35y7+XkKyzRyoaUf3X5pw/KlplxeNijeuha+ylM8qC+I9FQk4JLQPP
-         EJ6A==
-X-Gm-Message-State: AJIora++1uq0HIfjH2RuavKRKXifZgq/W2qUsCeHpOaEFUmDEF6i6+Zp
-        b+DVACCwHnVod1gdvkQUp7k=
-X-Google-Smtp-Source: AGRyM1tQCbkUDkb6HTKJP5xcbeP5k2VYytY3SaNTGGVmqI0KWdLDTOTW45BA4TJBrtuUMuOyZy642Q==
-X-Received: by 2002:a05:600c:6020:b0:39c:5cec:da86 with SMTP id az32-20020a05600c602000b0039c5cecda86mr2610353wmb.75.1655971788177;
-        Thu, 23 Jun 2022 01:09:48 -0700 (PDT)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id k17-20020a5d6e91000000b0021a39f5ba3bsm21009445wrz.7.2022.06.23.01.09.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jun 2022 01:09:47 -0700 (PDT)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Xinhui.Pan@amd.com, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/amdgpu/display: Fix spelling mistake "supporing" -> "supporting"
-Date:   Thu, 23 Jun 2022 09:09:46 +0100
-Message-Id: <20220623080946.19116-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.35.3
+        Thu, 23 Jun 2022 04:19:08 -0400
+X-Greylist: delayed 471 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 23 Jun 2022 01:19:07 PDT
+Received: from mail.determinedfia.pl (mail.determinedfia.pl [46.183.184.113])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 544B147AFA
+        for <kernel-janitors@vger.kernel.org>; Thu, 23 Jun 2022 01:19:07 -0700 (PDT)
+Received: by mail.determinedfia.pl (Postfix, from userid 1001)
+        id A62304612B; Thu, 23 Jun 2022 10:11:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=determinedfia.pl;
+        s=mail; t=1655971874;
+        bh=+v4TvgfMAIUHw3t+0TocdWSYyD3KeMvveWgkr5HZO0U=;
+        h=Date:From:To:Subject:From;
+        b=lFnN5T+enqeq1vMu2eQoG5D4kvtBDAox6595PqOewDpf4nKjFRqGuxMmDrTkUoYYc
+         nLO22mmyTritR61tYWAKaTdD/fLEAPBxE43SWZ53bLrTg39duVlDztDSsfgNTCFNbe
+         VIAgfgwL/cJoykFAnDMfUuuovk6BVaYPHkZRH0nA7XXneHbvk9qkATQkKMN8PgNE0D
+         IFccl1iBJNVcIFNHozeDE3wS3v6VkqgoO4txFrxqp6GBkdjKMH/VxxdYrrAcbg3aGQ
+         IZnv94YM/3cQHcvc7+Xr2BaQbrRN+LCZujqfPwYPG5Urn5MhupC/GjsEi0LBLhcQxH
+         3gRjHnWG07hKQ==
+Received: by mail.determinedfia.pl for <kernel-janitors@vger.kernel.org>; Thu, 23 Jun 2022 08:10:39 GMT
+Message-ID: <20220623084500-0.1.46.147co.0.4djsr8s07b@determinedfia.pl>
+Date:   Thu, 23 Jun 2022 08:10:39 GMT
+From:   "Adam Furgalski" <adam.furgalski@determinedfia.pl>
+To:     <kernel-janitors@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
+X-Mailer: mail.determinedfia.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is a spelling mistake in a dml_print message. Fix it.
+Dzie=C5=84 dobry,
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-index 7f144adb1e36..7d536c2f4477 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-@@ -1098,7 +1098,7 @@ static void DISPCLKDPPCLKDCFCLKDeepSleepPrefetchParametersWatermarksAndPerforman
- 				if (mode_lib->vba.ImmediateFlipRequirement[k] != dm_immediate_flip_not_required && v->ImmediateFlipSupportedForPipe[k] == false) {
- 					v->ImmediateFlipSupported = false;
- #ifdef __DML_VBA_DEBUG__
--					dml_print("DML::%s: Pipe %0d not supporing iflip\n", __func__, k);
-+					dml_print("DML::%s: Pipe %0d not supporting iflip\n", __func__, k);
- #endif
- 				}
- 			}
--- 
-2.35.3
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+
+
+Pozdrawiam
+Adam Furgalski

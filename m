@@ -2,67 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0952560127
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Jun 2022 15:21:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB91456020F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Jun 2022 16:07:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233720AbiF2NUV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Jun 2022 09:20:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53422 "EHLO
+        id S233910AbiF2OGN convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Jun 2022 10:06:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230192AbiF2NUT (ORCPT
+        with ESMTP id S233610AbiF2OGJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Jun 2022 09:20:19 -0400
-Received: from www2055.sakura.ne.jp (www2055.sakura.ne.jp [59.106.171.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D047E33A35;
-        Wed, 29 Jun 2022 06:20:17 -0700 (PDT)
-Received: from fsav412.sakura.ne.jp (fsav412.sakura.ne.jp [133.242.250.111])
-        by www2055.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 25TDD7rj066634;
-        Wed, 29 Jun 2022 22:13:07 +0900 (JST)
-        (envelope-from 1955@kkden.co.jp)
-Received: from www2055.sakura.ne.jp (59.106.171.65)
- by fsav412.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav412.sakura.ne.jp);
- Wed, 29 Jun 2022 22:13:07 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav412.sakura.ne.jp)
-Received: from www2055.sakura.ne.jp (localhost [127.0.0.1])
-        by www2055.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 25TDD5Nl066609;
-        Wed, 29 Jun 2022 22:13:07 +0900 (JST)
-        (envelope-from 1955@kkden.co.jp)
-Received: (from kkden@localhost)
-        by www2055.sakura.ne.jp (8.15.2/8.15.2/Submit) id 25TDD5BD066608;
-        Wed, 29 Jun 2022 22:13:05 +0900 (JST)
-        (envelope-from 1955@kkden.co.jp)
-Message-Id: <202206291313.25TDD5BD066608@www2055.sakura.ne.jp>
-X-Authentication-Warning: www2055.sakura.ne.jp: kkden set sender to 1955@kkden.co.jp using -f
-Subject: THIS IS VERY CONFIDENTIAL
-From:   Steve Dibenedetto <1955@kkden.co.jp>
-To:     stevedibenedetto177@gmail.com
+        Wed, 29 Jun 2022 10:06:09 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36DE72AE36
+        for <kernel-janitors@vger.kernel.org>; Wed, 29 Jun 2022 07:06:03 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1o6YKP-0003Ah-2N; Wed, 29 Jun 2022 16:06:01 +0200
+Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1o6YKH-003Pob-GV; Wed, 29 Jun 2022 16:05:57 +0200
+Received: from pza by lupine with local (Exim 4.94.2)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1o6YKK-0009xY-Fi; Wed, 29 Jun 2022 16:05:56 +0200
+Message-ID: <b2a6aa583e4e523ebf52fe7dc82bc1d2bbbc2f10.camel@pengutronix.de>
+Subject: Re: [PATCH] MAINTAINERS: rectify entry for SYNOPSYS AXS10x RESET
+ CONTROLLER DRIVER
+From:   Philipp Zabel <p.zabel@pengutronix.de>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Wed, 29 Jun 2022 16:05:56 +0200
+In-Reply-To: <20220601082239.12009-1-lukas.bulwahn@gmail.com>
+References: <20220601082239.12009-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
-Date:   Wed, 29 Jun 2022 22:13:05 +0900
-Content-Type: text/plain; charset="ISO-2022-JP"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=1.3 required=5.0 tests=BAYES_50,SPF_HELO_NONE,
-        SPF_NONE,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE autolearn=no
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Mi, 2022-06-01 at 10:22 +0200, Lukas Bulwahn wrote:
+> Commit 820f722c05dd ("dt-bindings: reset: snps,axs10x-reset: Convert to
+> yaml") converts snps,axs10x-reset.txt to yaml, but misses to adjust its
+> reference in MAINTAINERS.
+> 
+> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains about a
+> broken reference.
+> 
+> Repair this file reference in SYNOPSYS AXS10x RESET CONTROLLER DRIVER.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-Hello,
+Thank you, applied to reset/fixes.
 
-My name is Steve Dibenedetto.
-I apologize to have contacted you this way without a direct relationship. There is an opportunity to collaborate with me in the sourcing of some materials needed by our company for production of the different medicines we are researching.
-
-I'm aware that this might be totally outside your professional specialization, but it will be a great source for generating extra revenue. I  discovered a manufacturer who can supply us at a lower rate than our company's previous purchases.
-I will give you more specific details when/if I receive feedback from you showing interest.
-
-Warm Regards  
-Steve Dibenedetto
-Production & Control Manager,
-Green Field Laboratories
-Gothic House, Barker Gate,
-Nottingham, NG1 1JU,
-United Kingdom.
+regards
+Philipp

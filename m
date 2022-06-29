@@ -2,143 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39CDB55FFE1
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Jun 2022 14:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0952560127
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Jun 2022 15:21:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229777AbiF2Mci (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Jun 2022 08:32:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34648 "EHLO
+        id S233720AbiF2NUV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Jun 2022 09:20:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233249AbiF2Mcf (ORCPT
+        with ESMTP id S230192AbiF2NUT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Jun 2022 08:32:35 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21B38E73
-        for <kernel-janitors@vger.kernel.org>; Wed, 29 Jun 2022 05:32:34 -0700 (PDT)
-Received: from canpemm500006.china.huawei.com (unknown [172.30.72.53])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4LY16v2ZnTz9sv4;
-        Wed, 29 Jun 2022 20:31:51 +0800 (CST)
-Received: from [10.174.179.200] (10.174.179.200) by
- canpemm500006.china.huawei.com (7.192.105.130) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 29 Jun 2022 20:32:31 +0800
-Subject: Re: [cocci] [PATCH] scripts/coccinelle/free: add NULL test before
- dev_{put, hold} functions
-To:     Markus Elfring <Markus.Elfring@web.de>, <cocci@inria.fr>,
-        <kernel-janitors@vger.kernel.org>
-CC:     Julia Lawall <Julia.Lawall@inria.fr>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Fabian Frederick <fabf@skynet.be>,
-        Yajun Deng <yajun.deng@linux.dev>,
-        "David S. Miller" <davem@davemloft.net>,
-        Phil Edworthy <phil.edworthy@renesas.com>
-References: <20220616013253.520310-1-william.xuanziyang@huawei.com>
- <32da2d32-9554-de90-62ca-c4be456ad31a@web.de>
-From:   "Ziyang Xuan (William)" <william.xuanziyang@huawei.com>
-Message-ID: <6b3eac2c-6e24-46e0-c548-dc87f666709b@huawei.com>
-Date:   Wed, 29 Jun 2022 20:32:31 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        Wed, 29 Jun 2022 09:20:19 -0400
+Received: from www2055.sakura.ne.jp (www2055.sakura.ne.jp [59.106.171.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D047E33A35;
+        Wed, 29 Jun 2022 06:20:17 -0700 (PDT)
+Received: from fsav412.sakura.ne.jp (fsav412.sakura.ne.jp [133.242.250.111])
+        by www2055.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 25TDD7rj066634;
+        Wed, 29 Jun 2022 22:13:07 +0900 (JST)
+        (envelope-from 1955@kkden.co.jp)
+Received: from www2055.sakura.ne.jp (59.106.171.65)
+ by fsav412.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav412.sakura.ne.jp);
+ Wed, 29 Jun 2022 22:13:07 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav412.sakura.ne.jp)
+Received: from www2055.sakura.ne.jp (localhost [127.0.0.1])
+        by www2055.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 25TDD5Nl066609;
+        Wed, 29 Jun 2022 22:13:07 +0900 (JST)
+        (envelope-from 1955@kkden.co.jp)
+Received: (from kkden@localhost)
+        by www2055.sakura.ne.jp (8.15.2/8.15.2/Submit) id 25TDD5BD066608;
+        Wed, 29 Jun 2022 22:13:05 +0900 (JST)
+        (envelope-from 1955@kkden.co.jp)
+Message-Id: <202206291313.25TDD5BD066608@www2055.sakura.ne.jp>
+X-Authentication-Warning: www2055.sakura.ne.jp: kkden set sender to 1955@kkden.co.jp using -f
+Subject: THIS IS VERY CONFIDENTIAL
+From:   Steve Dibenedetto <1955@kkden.co.jp>
+To:     stevedibenedetto177@gmail.com
 MIME-Version: 1.0
-In-Reply-To: <32da2d32-9554-de90-62ca-c4be456ad31a@web.de>
-Content-Type: text/plain; charset="utf-8"
+Date:   Wed, 29 Jun 2022 22:13:05 +0900
+Content-Type: text/plain; charset="ISO-2022-JP"
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [10.174.179.200]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- canpemm500006.china.huawei.com (7.192.105.130)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=1.3 required=5.0 tests=BAYES_50,SPF_HELO_NONE,
+        SPF_NONE,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> I find the patch subject improvable.
-> You would like to detect the remaining usage of redundant null pointer checks
-> before selected function calls.
-> Thus it would be nice if the corresponding description can become clearer
-> another bit, wouldn't it?
 
-Sorry, I did not get your mean. Did you mean I should point out the selected function?
+Hello,
 
-And the following is one warning, what would be like as your suggestion?
+My name is Steve Dibenedetto.
+I apologize to have contacted you this way without a direct relationship. There is an opportunity to collaborate with me in the sourcing of some materials needed by our company for production of the different medicines we are researching.
 
-./drivers/infiniband/core/lag.c:98:2-10: WARNING: NULL check before dev_{put, hold} functions is not needed.
+I'm aware that this might be totally outside your professional specialization, but it will be a great source for generating extra revenue. I  discovered a manufacturer who can supply us at a lower rate than our company's previous purchases.
+I will give you more specific details when/if I receive feedback from you showing interest.
 
->
->
->> Since commit b37a46683739 ("netdevice: add the case if dev is NULL"),
->> NULL check before dev_{put, hold} functions is not needed.
->>
->> Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
->> ---
->>  scripts/coccinelle/free/ifnulldev_put.cocci | 54 +++++++++++++++++++++
->
-> How do you think about to achieve further collateral evolution?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b37a466837393af72fe8bcb8f1436410f3f173f3
->
-> Will it become feasible to combine any more source code analysis approaches?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/scripts/coccinelle/free/ifnullfree.cocci?id=8c23f235a6a8ae43abea215812eb9d8cf4dd165e#n2
->
->
->> +// Comments: -
->
-> Can such a line be omitted?
->
-It's ok.
->
->> +@r2 depends on patch@
->> +expression E;
->> +@@
->> +- if (E != NULL)
->> +(
->> +  __dev_put(E);
->> +|
->> +  dev_put(E);
->> +|
->> +  dev_put_track(E, ...);
->> +|
->> +  __dev_hold(E);
->> +|
->> +  dev_hold(E);
->> +|
->> +  dev_hold_track(E, ...);
->> +)
->
-> Did you order the case distinctions in the SmPL disjunction according to
-> the call frequencies of the mentioned function names?
-
-No, no any special, just list the related functions.
-
->
-> Otherwise, I imagine that another software design option can be considered for
-> the application of nested disjunctions by the means of the semantic patch language.
->
-> Code variant:
->
-> @r2 depends on patch@
-> expression E;
-> @@
-> -if (E != NULL)
-> (
-> (__dev_put
-> |dev_put
-> |__dev_hold
-> |dev_hold
-> )(E)
-> |
-> (dev_put_track
-> |dev_hold_track
-> )(E, ...)
-> )
-> ;
-It's ok.
->
-> Regards,
-> Markus
->
-> .
+Warm Regards  
+Steve Dibenedetto
+Production & Control Manager,
+Green Field Laboratories
+Gothic House, Barker Gate,
+Nottingham, NG1 1JU,
+United Kingdom.

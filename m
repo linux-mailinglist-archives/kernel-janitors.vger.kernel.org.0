@@ -2,151 +2,131 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC94B56423A
-	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Jul 2022 21:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21BC156426C
+	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Jul 2022 21:13:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230081AbiGBTAA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 2 Jul 2022 15:00:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52874 "EHLO
+        id S231358AbiGBTN0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 2 Jul 2022 15:13:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229668AbiGBS77 (ORCPT
+        with ESMTP id S229468AbiGBTNZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 2 Jul 2022 14:59:59 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10F4C63CA;
-        Sat,  2 Jul 2022 11:59:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656788399; x=1688324399;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=liQng1oi5pVFzQvSZ7Grrfdjo3Vt/r0DpAmqCyflPt8=;
-  b=GmiEvPpzcgwd2MUqXiZa4kz9Kq0uAoz3/6ccp4S8NcAtv6n30wQqxuYQ
-   9KqNdccACtUVdgUxtX78PWGgcRjdGCnY/788BTV2hQohRxbu4IYwMUAF1
-   xcz5Rxm2oqvr2FXxHX1SqCIlHeBm76AiZ52KVSXL6HG45a+XmcM/Rfw6I
-   MKs//01fJLWV44xJQZZqnWrjBKEbqN9VPaAfVQ+sQk9t7Li+eoDV5K7uA
-   8ajf3ffUwGKhZ/Tv3+eFiFFgP9Nx/ObsKKXLru8L2uwlO2ksy6KMaMWI2
-   1vuoFEWY+cbweK8oB2G1/7wuJm9nd1cmUbXavHKRM0uc0l/NhXa2UPMDn
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10396"; a="282893153"
-X-IronPort-AV: E=Sophos;i="5.92,240,1650956400"; 
-   d="scan'208";a="282893153"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2022 11:59:58 -0700
-X-IronPort-AV: E=Sophos;i="5.92,240,1650956400"; 
-   d="scan'208";a="718968459"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2022 11:59:54 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1o7iLP-0013q3-0M;
-        Sat, 02 Jul 2022 21:59:51 +0300
-Date:   Sat, 2 Jul 2022 21:59:50 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        Sat, 2 Jul 2022 15:13:25 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9099E2701;
+        Sat,  2 Jul 2022 12:13:20 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id t21so5463126pfq.1;
+        Sat, 02 Jul 2022 12:13:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=bNbs1WSuB65484dd7qrhb9iZC6Pp1XxllCs2PT2eL2g=;
+        b=JEVH5slh/Ly8dUngVAk/c9UdoOlwYEayDEzUpCLCi3nxr6mGsGFkH6OkeyMosyf4EA
+         AlFhWXI/M1jwPflkMkD1B26J794H6y1Z4piTdLaMDNsrKs3b8WnS+1N1+bsiwk+JfgYT
+         n7bhqTUjrprQhXwRnIjw4LJa25rQLIFeuiOemELrqsnmDGX7dhNmAoOKjiQgokbOtR9K
+         MnfLb8EJkMaI9UcrPifQRIk+cXqyxth8xYf/JGTunkheJPLzicYL9PJd4VReVTHSQA1v
+         ym6r6kX/Ax+3cqrmau5myiDGwfDm2UF1RxJRgHSvq8WDLLg+a3HvCPXTZ1Gq3E8X8FMn
+         pHBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=bNbs1WSuB65484dd7qrhb9iZC6Pp1XxllCs2PT2eL2g=;
+        b=dI/31xeqI4VCklbfBI5o2uZxcjF+4CZyL+Q2IJ7QgBM1JRRUIb0YrT3EGZKkBkRX99
+         gHZDERN6b0BUZT5Cf2QqSk4/iyJJzJzcbPn3g+VAvJJIReJSNWYWD/CKQPQJlrbtsCnk
+         RkKJdl8vZuV+vjyhdtTKbHBdnIn1ncsCk9cZSo09/ZRq15dwIHhSb0e66c5HX83i9EUB
+         AAFBg/VNgA9PODzOD9xTBdpBYw+UWMQ3wNK49/vz1kLsW4MEoRagInl1wZeEtmwA9fhU
+         sciJ0rkG15hCHk0OOAawqZx/5/5q0LqFLktbzgRyD50pQkfbUkoRez64pypSPjsb2BbT
+         vZkw==
+X-Gm-Message-State: AJIora9H3yHutWUpkAHv9h+jFYsGRLn0t2jmatLdmRdF2ftISKAPBDOi
+        onX8lVczppMYqRmIbHvc6kAjHlBMkNU=
+X-Google-Smtp-Source: AGRyM1vGBunOmWhcC4HG4ED/gjzh8urYHFdeNqUa4ITfA7z5h+7yfkSLAzfFEQoh/9K1q1FiAz64Ow==
+X-Received: by 2002:a62:7b95:0:b0:525:8304:2f16 with SMTP id w143-20020a627b95000000b0052583042f16mr25998748pfc.33.1656789200025;
+        Sat, 02 Jul 2022 12:13:20 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id h18-20020a170902f7d200b001624cd63bbbsm17765796plw.133.2022.07.02.12.13.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Jul 2022 12:13:17 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Sat, 2 Jul 2022 12:13:16 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
 To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     agk@redhat.com, snitzer@kernel.org, dm-devel@redhat.com,
-        vneethv@linux.ibm.com, oberpar@linux.ibm.com, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        almaz.alexandrovich@paragon-software.com, yury.norov@gmail.com,
-        linux@rasmusvillemoes.dk, linux-s390@vger.kernel.org,
-        ntfs3@lists.linux.dev, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 3/4] bitmap: Introduce bitmap_size()
-Message-ID: <YsCVpifccOebP3Ot@smile.fi.intel.com>
-References: <cover.1656785856.git.christophe.jaillet@wanadoo.fr>
- <98f5d3d855a9c687ccc035edf62016b02a6876b7.1656785856.git.christophe.jaillet@wanadoo.fr>
+Cc:     Ed Brindley <kernel@maidavale.org>,
+        Denis Pauk <pauk.denis@gmail.com>,
+        Jean Delvare <jdelvare@suse.com>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH v2] hwmon: (asus_wmi_sensors) Save a few bytes of memory
+Message-ID: <20220702191316.GA3131040@roeck-us.net>
+References: <e23cea6c489fabb109a61e8a33d146a6b74c0529.1656741926.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <98f5d3d855a9c687ccc035edf62016b02a6876b7.1656785856.git.christophe.jaillet@wanadoo.fr>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <e23cea6c489fabb109a61e8a33d146a6b74c0529.1656741926.git.christophe.jaillet@wanadoo.fr>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Jul 02, 2022 at 08:29:36PM +0200, Christophe JAILLET wrote:
-> The new bitmap_size() function returns the size, in bytes, of a bitmap.
+On Sat, Jul 02, 2022 at 08:05:54AM +0200, Christophe JAILLET wrote:
+> The first 'for' loop of asus_wmi_configure_sensor_setup() only computes
+> the number and type of sensors that exist in the system.
 > 
-> Remove the already existing bitmap_size() functions and macro in some
-> files.
-> These files already use the bitmap API and will use the new function
-> in bitmap.h automatically.
-
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
+> Here, the 'temp_sensor' structure is only used to store the data collected
+> by asus_wmi_sensor_info(). There is no point in using a devm_ variant for
+> this allocation. This wastes some memory for no good reason.
+> 
+> Use the stack instead.
+> 
 > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+
+Applied to hwmon-next.
+
+Thanks,
+Guenter
+
 > ---
->  drivers/md/dm-clone-metadata.c | 5 -----
->  include/linux/bitmap.h         | 6 ++++++
->  lib/math/prime_numbers.c       | 2 --
->  3 files changed, 6 insertions(+), 7 deletions(-)
+> v1 -> v2: Use the stack instead of kmalloc/kfree to simplify even more the
+>           code (Guenter Roeck)
+> ---
+>  drivers/hwmon/asus_wmi_sensors.c | 12 +++++-------
+>  1 file changed, 5 insertions(+), 7 deletions(-)
 > 
-> diff --git a/drivers/md/dm-clone-metadata.c b/drivers/md/dm-clone-metadata.c
-> index c43d55672bce..47c1fa7aad8b 100644
-> --- a/drivers/md/dm-clone-metadata.c
-> +++ b/drivers/md/dm-clone-metadata.c
-> @@ -465,11 +465,6 @@ static void __destroy_persistent_data_structures(struct dm_clone_metadata *cmd)
+> diff --git a/drivers/hwmon/asus_wmi_sensors.c b/drivers/hwmon/asus_wmi_sensors.c
+> index 9e935e34c998..6e8a908171f0 100644
+> --- a/drivers/hwmon/asus_wmi_sensors.c
+> +++ b/drivers/hwmon/asus_wmi_sensors.c
+> @@ -514,22 +514,20 @@ static int asus_wmi_configure_sensor_setup(struct device *dev,
+>  	int i, idx;
+>  	int err;
 >  
->  /*---------------------------------------------------------------------------*/
->  
-> -static size_t bitmap_size(unsigned long nr_bits)
-> -{
-> -	return BITS_TO_LONGS(nr_bits) * sizeof(long);
-> -}
+> -	temp_sensor = devm_kcalloc(dev, 1, sizeof(*temp_sensor), GFP_KERNEL);
+> -	if (!temp_sensor)
+> -		return -ENOMEM;
 > -
->  static int __dirty_map_init(struct dirty_map *dmap, unsigned long nr_words,
->  			    unsigned long nr_regions)
->  {
-> diff --git a/include/linux/bitmap.h b/include/linux/bitmap.h
-> index f091a1664bf1..f66fb98a4126 100644
-> --- a/include/linux/bitmap.h
-> +++ b/include/linux/bitmap.h
-> @@ -48,6 +48,7 @@ struct device;
->   *  bitmap_equal(src1, src2, nbits)             Are *src1 and *src2 equal?
->   *  bitmap_intersects(src1, src2, nbits)        Do *src1 and *src2 overlap?
->   *  bitmap_subset(src1, src2, nbits)            Is *src1 a subset of *src2?
-> + *  bitmap_size(nbits)                          Size, in bytes, of a bitmap
->   *  bitmap_empty(src, nbits)                    Are all bits zero in *src?
->   *  bitmap_full(src, nbits)                     Are all bits set in *src?
->   *  bitmap_weight(src, nbits)                   Hamming Weight: number set bits
-> @@ -124,6 +125,11 @@ unsigned long *bitmap_alloc_node(unsigned int nbits, gfp_t flags, int node);
->  unsigned long *bitmap_zalloc_node(unsigned int nbits, gfp_t flags, int node);
->  void bitmap_free(const unsigned long *bitmap);
->  
-> +static __always_inline size_t bitmap_size(unsigned long nbits)
-> +{
-> +	return BITS_TO_LONGS(nbits) * sizeof(unsigned long);
-> +}
+>  	for (i = 0; i < sensor_data->wmi.sensor_count; i++) {
+> -		err = asus_wmi_sensor_info(i, temp_sensor);
+> +		struct asus_wmi_sensor_info sensor;
 > +
->  /* Managed variants of the above. */
->  unsigned long *devm_bitmap_alloc(struct device *dev,
->  				 unsigned int nbits, gfp_t flags);
-> diff --git a/lib/math/prime_numbers.c b/lib/math/prime_numbers.c
-> index d42cebf7407f..d3b64b10da1c 100644
-> --- a/lib/math/prime_numbers.c
-> +++ b/lib/math/prime_numbers.c
-> @@ -6,8 +6,6 @@
->  #include <linux/prime_numbers.h>
->  #include <linux/slab.h>
+> +		err = asus_wmi_sensor_info(i, &sensor);
+>  		if (err)
+>  			return err;
 >  
-> -#define bitmap_size(nbits) (BITS_TO_LONGS(nbits) * sizeof(unsigned long))
-> -
->  struct primes {
->  	struct rcu_head rcu;
->  	unsigned long last, sz;
-> -- 
-> 2.34.1
-> 
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> -		switch (temp_sensor->data_type) {
+> +		switch (sensor.data_type) {
+>  		case TEMPERATURE_C:
+>  		case VOLTAGE:
+>  		case CURRENT:
+>  		case FAN_RPM:
+>  		case WATER_FLOW:
+> -			type = asus_data_types[temp_sensor->data_type];
+> +			type = asus_data_types[sensor.data_type];
+>  			if (!nr_count[type])
+>  				nr_types++;
+>  			nr_count[type]++;

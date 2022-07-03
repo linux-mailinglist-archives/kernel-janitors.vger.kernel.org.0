@@ -2,105 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7E99564854
-	for <lists+kernel-janitors@lfdr.de>; Sun,  3 Jul 2022 17:21:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAE79564861
+	for <lists+kernel-janitors@lfdr.de>; Sun,  3 Jul 2022 17:23:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232618AbiGCPVD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 3 Jul 2022 11:21:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35106 "EHLO
+        id S232674AbiGCPXs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 3 Jul 2022 11:23:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230446AbiGCPVD (ORCPT
+        with ESMTP id S231226AbiGCPXr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 3 Jul 2022 11:21:03 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2F408F;
-        Sun,  3 Jul 2022 08:21:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656861662; x=1688397662;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=jXW12Ga9G65nqsGYdHBdlWQ5IJhoQ1DN2e8R+iyO4VE=;
-  b=hk/DyHciJM43sj1vk/J/swjmBjYo7E5A2DOKeMwRRGO2NiDWKNbzGitB
-   TpMXFuqxNrpgWQmhbplFPN1uxQgRQbTZHTzzvek/3JZe2PiWRbfhLVmB1
-   FsxA5BVa0+gwSLkVMZ1EZRWyQJ8Y8zUU1nLmq92EwAHqqkTBOX1EzhXXw
-   X6h5Os2mURtjstKAmNEdYw8114nF0ve2LJaceQ4jr8isKGXb4lN3QDGoD
-   N1Z+11C4X5jEjybf4fMq27Z4CJWRx8u3L3RTZXnUJp/CjuJIpVBcd4M4Y
-   ngZ2VJR3Yz23HV5f+Y/4I6+/iwfsaM/Z2Vi4d3KVfCQBkVLLI4Z4GhYfX
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10397"; a="344639160"
-X-IronPort-AV: E=Sophos;i="5.92,241,1650956400"; 
-   d="scan'208";a="344639160"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2022 08:21:01 -0700
-X-IronPort-AV: E=Sophos;i="5.92,241,1650956400"; 
-   d="scan'208";a="542233739"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2022 08:20:57 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1o81P4-0014Px-0j;
-        Sun, 03 Jul 2022 18:20:54 +0300
-Date:   Sun, 3 Jul 2022 18:20:53 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Yury Norov <yury.norov@gmail.com>, agk@redhat.com,
-        snitzer@kernel.org, dm-devel@redhat.com, vneethv@linux.ibm.com,
-        oberpar@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, almaz.alexandrovich@paragon-software.com,
-        linux@rasmusvillemoes.dk, linux-s390@vger.kernel.org,
-        ntfs3@lists.linux.dev, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 3/4] bitmap: Introduce bitmap_size()
-Message-ID: <YsGz1Xp0RDM5ZhVY@smile.fi.intel.com>
-References: <cover.1656785856.git.christophe.jaillet@wanadoo.fr>
- <98f5d3d855a9c687ccc035edf62016b02a6876b7.1656785856.git.christophe.jaillet@wanadoo.fr>
- <YsC0GpltMVaCPhkJ@yury-laptop>
- <4dc5d50a-2291-1d3a-efac-3f6378a15d69@wanadoo.fr>
+        Sun, 3 Jul 2022 11:23:47 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DE8662D0
+        for <kernel-janitors@vger.kernel.org>; Sun,  3 Jul 2022 08:23:45 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id t19so11120831lfl.5
+        for <kernel-janitors@vger.kernel.org>; Sun, 03 Jul 2022 08:23:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=mukokvmdIYpshRi5srsoqv5gXvSOoxDOJ4frz1F7EBQzpUjeBseIHiMGHty8LXGnOH
+         /jYvbKXT5CnJTtMbEDPgS2L/e/r2F9ATpW8Xh6Mk4NzLkoYhvEf8I32owGuFsPJDWFNQ
+         8O0i0jlT9OagmEdeDszyJVUWeAkP+KNW3XJ2z7oSLmDYUeOMM5EfkfuzfWJ5UGUcJul4
+         euZh5l3Z6bea3dPEMPGLtFVe7x05fB13Z2y5r8DOGf6YocVw0gEqrzpbxHMTcKjb1+IW
+         MAnDWnvB5oBRF2O4MY2yUWzgKrzXnluGpxoHjIfIXN1pU5+/ir9gekUkgjpJXYWvRfUX
+         vX+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=RQ1zpGOSzjLzAAVpH589nY3uSHIBplwT9m/TIKtk930uB8PMGRG2/hD1ZDhKufmxrJ
+         7W/zu4j0whTGcQNPQ1mvHNpnk4JoyokmNZtWV8w8PEPgQ97zkNldKcpio32hkfTXNR1V
+         S2iUVhU2OX+7YU6JyFIw+svInmMptOJPhd+3huclUNynMiwUqX8pNQ/0VlmPZ6qoqbXu
+         IAp0XzBy8TQbr6YeolduhfiE3bD8lw1L/ZSqFLtfuMdrLwd6zU/9cehne8PvgbzZqnu1
+         gyE6CDkeZcw+m5etKkj01i5yIWvfTBDrIx6IrV//61quGJPXOYOTs75qgd1SMWk957Bf
+         YoHw==
+X-Gm-Message-State: AJIora8V77EdUJTMTdmlSUDtr+x7uQ1Rg/NEQy9aujBgldpbbA0zZvD6
+        rx6WM677gojJRAD0vkv0+q66TWqpgxZAajiWYCY=
+X-Google-Smtp-Source: AGRyM1utCJB7ZoDJQ64n+8J/Au73Jkb/q7Pco8JII0n00n6o16sngOZcotTlV4ykgPN7W3E2oeljDQ8EjiP9Y0LIcAU=
+X-Received: by 2002:a05:6512:32c2:b0:47f:86b2:a657 with SMTP id
+ f2-20020a05651232c200b0047f86b2a657mr16343161lfg.672.1656861823808; Sun, 03
+ Jul 2022 08:23:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4dc5d50a-2291-1d3a-efac-3f6378a15d69@wanadoo.fr>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Received: by 2002:a05:6504:1343:b0:1d5:b05e:ef1d with HTTP; Sun, 3 Jul 2022
+ 08:23:43 -0700 (PDT)
+Reply-To: jam6es@yahoo.com
+From:   qu <quaaa6@gmail.com>
+Date:   Sun, 3 Jul 2022 08:23:43 -0700
+Message-ID: <CAE+6RbcmZ9Ginc9XTWA+4YYZkWhC839OF87CX_Yj3w0JX3WBPA@mail.gmail.com>
+Subject: =?UTF-8?Q?=C2=BFEst=C3=A1s_ah=C3=AD_para_hablar_conmigo_para_obtener_m=C3=A1s_?=
+        =?UTF-8?Q?informaci=C3=B3n_sobre_la_transferencia=2C_por_favor=3F?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
-
-On Sun, Jul 03, 2022 at 08:50:19AM +0200, Christophe JAILLET wrote:
-> Le 02/07/2022 à 23:09, Yury Norov a écrit :
-> > On Sat, Jul 02, 2022 at 08:29:36PM +0200, Christophe JAILLET wrote:
-
-...
-
-> > This should be dropped, for sure, and kmalloc() at line 128 should be
-> > replaced with bitmap_alloc().
-> 
-> This kmalloc() is for a structure and a flexible array.
-> 
-> You mean re-arranging the code to allocate the structure alone at first,
-> then the bitmap?
-
-It's one way, but it will increase fragmentation of memory. The other one
-as it seems to me is to name a new API properly, i.e. bitmap_size_to_bytes().
-
-In such case you won't need renames to begin with. And then would be able
-to convert driver-by-driver in cases of duplicated code.
-
-I think that's what confused Yuri and I kinda agree that bitmap_size() should
-return bits, and not bytes. Also argument for pure bitmap_size() would be
-bitmap itself, but we have no way to detect the length of bitmap because we
-are using POD and not a specific data structure for it.
-
--- 
-With Best Regards,
-Andy Shevchenko
 
 

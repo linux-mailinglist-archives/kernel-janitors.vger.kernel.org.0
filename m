@@ -2,155 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E22DB565145
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Jul 2022 11:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C61E56514F
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Jul 2022 11:50:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233208AbiGDJtg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 Jul 2022 05:49:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43532 "EHLO
+        id S233935AbiGDJt7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 Jul 2022 05:49:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232644AbiGDJtg (ORCPT
+        with ESMTP id S233943AbiGDJt5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 Jul 2022 05:49:36 -0400
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2081E2AD9;
-        Mon,  4 Jul 2022 02:49:35 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id l144so3426422ybl.5;
-        Mon, 04 Jul 2022 02:49:35 -0700 (PDT)
+        Mon, 4 Jul 2022 05:49:57 -0400
+Received: from mail-yw1-x1143.google.com (mail-yw1-x1143.google.com [IPv6:2607:f8b0:4864:20::1143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DF192AD9
+        for <kernel-janitors@vger.kernel.org>; Mon,  4 Jul 2022 02:49:54 -0700 (PDT)
+Received: by mail-yw1-x1143.google.com with SMTP id 00721157ae682-31caffa4a45so5146927b3.3
+        for <kernel-janitors@vger.kernel.org>; Mon, 04 Jul 2022 02:49:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=upxJ9MJ8gsVDlXDiuKX4+gbfevRMZmGiVadxBV+kpe8=;
-        b=qpHNh54MzgRw/unTs6ylIG6lsq0QzcEUzvY+KsDq+HVjI7Jeoy22/FDGFzk62XnWZq
-         pRXixYTwJaB2+72PZyhVEebJnEgQK/wovb6AB3Qi8YwUZ5x0mh8p+F8eUK9TIH/DeH+o
-         051TXq25MjKoz+zRqzBHqD9mZr/dYcVtzBjSGnXvYaejkZRfekks6tiRn33g6s1VMf6z
-         nHPP2a+YQ+/ZL6Vzaa3wntbjRl6pfO1dqTWZRUstwgyLbHozFt2CPubQ85gm5KNW5ech
-         yCRwCdu3KbbXoyjmYFxijPOj0lACMBnzlgB5rZrJ5qpxDXc+203vzEhNV5erIntoBmKf
-         zyOw==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=E61+1ZXk0XLFmLKS8+LHaQBAQCUVSplsnRDmkf+keqM=;
+        b=pPVgJzn0l7WCALlprPBh0UkhLNiJiYW3VkIbneiWwZzExEW2PkGSolGt2kU5X5PSap
+         M7jlDf71GDTHGfNtio8ojK/Tiv1Zsj8v+auLe1fCW9d/dAtH8IJT9EHTchQewfwmurTW
+         wS18sa8yBa0hNj6arat6dVrxjSFfu7p1TyNdEcLg++5wFXp6AkjEJPjzXmPYyiKj6LpR
+         acYinupynn/osQLB1aHbMVbuWmJcc9myVFN0VfJAWZrww45+fStou3oVB7d2zbjL29fa
+         JiReTwz6ycT/B2MI5n96mCu36B0q5t9gA5O3rgQwmhu2wTDuwWNhZNa0RQzzbzmHavSd
+         7YUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=upxJ9MJ8gsVDlXDiuKX4+gbfevRMZmGiVadxBV+kpe8=;
-        b=76a2vQSYnG7xor+x2mYihYess3dvlwTVaZXUmpj7lnuLnl+R/gFxiJQPQmH4+xfmAA
-         Az1Vdq2MybC7G8M+crPPYkGow9Ool+CsV/oUQxCkAE6Z6zFY6urUwUZDXIuV6xx6glBL
-         I5+MKV1WtgEqM1iqaI3lrE9B9RMIFkXvl6znyq2m0fx8vmYFGM9XSRdqTYJM40ureIsQ
-         bXrs/o6CApMqKUIedzNucWKxQQWLMIyEUlRZ4G2NSwcQAev9UZpe8PeuX/qqWWGHvJpg
-         B46f3zG1SDNWE2+cLDz/3o/o1mymd7Ejj9L5gO5zYJd3SEO7zfNI0aGyRUZfBeIaGiIf
-         JR5w==
-X-Gm-Message-State: AJIora+fo9uladoZgWkKib6U+AuHC6aSuqA5zyRrexej4x6wjvVYYoTa
-        FHyXQ9XRlfWR79xQvM9oA666vEICQe/nImQ5gNo=
-X-Google-Smtp-Source: AGRyM1uuTnlo8UbsTNpCu9w7y6Imn3pGteU2AlhpEORjfZffq++K3qlqc72uL681GfWtLoni83k3M/c8Qd4oL79LzwE=
-X-Received: by 2002:a25:5809:0:b0:66c:8709:3611 with SMTP id
- m9-20020a255809000000b0066c87093611mr28080763ybb.608.1656928174292; Mon, 04
- Jul 2022 02:49:34 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=E61+1ZXk0XLFmLKS8+LHaQBAQCUVSplsnRDmkf+keqM=;
+        b=R9on8bbEGJNUvLRPLolRXsVuyb/ydN4SeeB+Bd+mLyswoGExzKzXMQYBFNycqYtgHj
+         Nss18CpLGWhc99hKqMtAd33YkCe1L72N5D2q2DTJQC/MaY1mpmA1EZn7dQ4xzjIq18Dc
+         kiY4fLsBmpjWVGbA3EsNPe2smRbPboXTriuOYdD5kYeJjuza4sAXzu+xSP+lynLzdutd
+         XEjSP7QTorgtdJ38GEWfxHbDLrFLa+56QRxaXPfAbk9zqEPCUg6WmR8uorznerYwHwVf
+         69WR7o8B++re8UvFFf+LKXT38u4v1qwS0UMfTnm6zkrT5xQ3zK4dGcP2Pz93JpnXoJ6V
+         L/2g==
+X-Gm-Message-State: AJIora91JD3jjVCp/jO/rRlosDMTWvgh29JHMmwUl+Pi0wDBiV9BUJxE
+        frRlJcWzwYzl49zvuFIuNPQ1/VV3LWERuU84+js=
+X-Google-Smtp-Source: AGRyM1tO0khrh8548MvwXdCch/DX7SNlysETTnVE+pXiiyx40TvtgNvwhfNqxvEPQrvRr17Zb3aAbzqAY3GZoOrR+XI=
+X-Received: by 2002:a81:174e:0:b0:31c:88f9:55fb with SMTP id
+ 75-20020a81174e000000b0031c88f955fbmr8537054ywx.74.1656928192952; Mon, 04 Jul
+ 2022 02:49:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220627151819.22694-1-lukas.bulwahn@gmail.com>
- <20220627151819.22694-8-lukas.bulwahn@gmail.com> <20220628091647.xf5cygybqemwprgb@numero86.vaga.pv.it>
-In-Reply-To: <20220628091647.xf5cygybqemwprgb@numero86.vaga.pv.it>
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Date:   Mon, 4 Jul 2022 11:49:23 +0200
-Message-ID: <CAKXUXMzAzT6c=Atwbnif0MQg50B9UpG6_rV65_OvkaJPTzaPcw@mail.gmail.com>
-Subject: Re: [RFC PATCH 07/11] docs: it_IT: align to submitting-drivers removal
-To:     Federico Vaga <federico.vaga@vaga.pv.it>
-Cc:     Jonathan Corbet <corbet@lwn.net>, Alex Shi <alexs@kernel.org>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Hu Haowen <src.res@email.cn>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        linux-doc-tw-discuss@lists.sourceforge.net,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-hwmon@vger.kernel.org,
-        kernel-janitors <kernel-janitors@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Received: by 2002:a05:7010:5286:b0:2e2:3648:8c0d with HTTP; Mon, 4 Jul 2022
+ 02:49:52 -0700 (PDT)
+Reply-To: hj505432@gmail.com
+From:   "Barrister. Ben Waidhofer" <musamuhammadyusuf2@gmail.com>
+Date:   Mon, 4 Jul 2022 02:49:52 -0700
+Message-ID: <CAEfE=vHFLZAUhbcgKT8YMs617KOaFVQA5iyBO4So984fcuzhQg@mail.gmail.com>
+Subject: Investment offer
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jun 28, 2022 at 11:16 AM Federico Vaga <federico.vaga@vaga.pv.it> w=
-rote:
->
-> On Mon, Jun 27, 2022 at 05:18:15PM +0200, Lukas Bulwahn wrote:
-> >Adjust the Italian translation to the removal of submitting-drivers in t=
-he
-> >English kernel documentation.
-> >
-> >Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> >---
-> > .../it_IT/kernel-hacking/hacking.rst             |  3 +--
-> > .../translations/it_IT/process/5.Posting.rst     |  5 ++---
-> > .../translations/it_IT/process/8.Conclusion.rst  |  3 +--
-> > .../translations/it_IT/process/howto.rst         |  3 +--
-> > .../translations/it_IT/process/index.rst         |  1 -
-> > .../it_IT/process/submitting-drivers.rst         | 16 ----------------
-> > .../it_IT/process/submitting-patches.rst         |  6 ++----
-> > 7 files changed, 7 insertions(+), 30 deletions(-)
-> > delete mode 100644 Documentation/translations/it_IT/process/submitting-=
-drivers.rst
-> >
-> >diff --git a/Documentation/translations/it_IT/kernel-hacking/hacking.rst=
- b/Documentation/translations/it_IT/kernel-hacking/hacking.rst
-> >index d5c521327f6a..4bec4669cf48 100644
-> >--- a/Documentation/translations/it_IT/kernel-hacking/hacking.rst
-> >+++ b/Documentation/translations/it_IT/kernel-hacking/hacking.rst
-> >@@ -795,8 +795,7 @@ anche per avere patch pulite, c'=C3=A8 del lavoro am=
-ministrativo da fare:
-> >    di un semplice impegno su una parte del codice.
-> >
-> > -  Infine, non dimenticatevi di leggere
-> >-   ``Documentation/process/submitting-patches.rst`` e possibilmente anc=
-he
-> >-   ``Documentation/process/submitting-drivers.rst``.
-> >+   ``Documentation/process/submitting-patches.rst``.
-> >
-> > Trucchetti del kernel
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >diff --git a/Documentation/translations/it_IT/process/5.Posting.rst b/Do=
-cumentation/translations/it_IT/process/5.Posting.rst
-> >index 1476d51eb5e5..a036f38fc82e 100644
-> >--- a/Documentation/translations/it_IT/process/5.Posting.rst
-> >+++ b/Documentation/translations/it_IT/process/5.Posting.rst
-> >@@ -16,9 +16,8 @@ e di procedure per la pubblicazione delle patch; segui=
-rle render=C3=A0 la vita
-> > pi=C3=B9 facile a tutti quanti.  Questo documento cercher=C3=A0 di copr=
-ire questi
-> > argomenti con un ragionevole livello di dettaglio; pi=C3=B9 informazion=
-i possono
-> > essere trovare nella cartella 'Documentation', nei file
-> >-:ref:`translations/it_IT/process/submitting-patches.rst <it_submittingp=
-atches>`,
-> >-:ref:`translations/it_IT/process/submitting-drivers.rst <it_submittingd=
-rivers>`, e
-> >-:ref:`translations/it_IT/process/submit-checklist.rst <it_submitcheckli=
-st>`.
-> >+:ref:`translations/it_IT/process/submitting-patches.rst <it_submittingp=
-atches>`
-> >+e :ref:`translations/it_IT/process/submit-checklist.rst <it_submitcheck=
-list>`.
->
-> Fixing plural. The final correct statement must be:
->
-> nel file :ref:`translations/it_IT/process/submitting-patches.rst <it_subm=
-ittingpatches>`.
->
-> Notice 'nei file' -> 'nel file'
->
->
+                                                 Barrister. Ben Waidhofer.
+                                                    Chambers & Partners.
+                                                       42 Parker Street
+                                                            London
+                                                         WC2B 5PQ.
 
-Are you sure about this proposed change here? In my patch, I just
-changed the enumeration from three objects (submittingpatches,
-submittingdrivers, submitchecklist) to two objects (submittingpatches,
-submitchecklist).
 
-So, it should stay plural, right?
+......I am the above named person from the stated law firm in London. I act
+for Mr. Andrew Walker, a former loyalist and a personal Friend to the
+President of Russia Vladimir Putin presently in London; he flew into
+the UK months ago before the invasion of Ukraine by Russian government.
+The sum of $3.5b was deposited in a Private bank in Switzerland for
+the procurement of MIC war equipment from North Korea to fight the
+war, but he has decided to back out of the initial plan to divert part
+of the fund for investment in a viable venture.
 
-Lukas
+There is a need for a matured and trusted individual or corporate
+organization to receive part of the fund. All the needed documentation
+will be perfected here in London.
+
+You are at liberty to respond for more detail.
+
+Thanks.
+Regards,
+Barrister. Ben Waidhofer

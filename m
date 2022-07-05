@@ -2,25 +2,25 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF52F5677E1
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Jul 2022 21:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A3285677EC
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Jul 2022 21:38:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231717AbiGETeQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Jul 2022 15:34:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35794 "EHLO
+        id S232894AbiGETi2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Jul 2022 15:38:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229525AbiGETeO (ORCPT
+        with ESMTP id S233308AbiGETg6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Jul 2022 15:34:14 -0400
-Received: from smtp.smtpout.orange.fr (smtp10.smtpout.orange.fr [80.12.242.132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8EEE1261E
-        for <kernel-janitors@vger.kernel.org>; Tue,  5 Jul 2022 12:34:13 -0700 (PDT)
+        Tue, 5 Jul 2022 15:36:58 -0400
+Received: from smtp.smtpout.orange.fr (smtp03.smtpout.orange.fr [80.12.242.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3166B18344
+        for <kernel-janitors@vger.kernel.org>; Tue,  5 Jul 2022 12:36:57 -0700 (PDT)
 Received: from pop-os.home ([90.11.190.129])
         by smtp.orange.fr with ESMTPA
-        id 8oJGowQqjsiIK8oJGosnsD; Tue, 05 Jul 2022 21:34:12 +0200
+        id 8oLtojYQmeg3p8oLtoGrDv; Tue, 05 Jul 2022 21:36:55 +0200
 X-ME-Helo: pop-os.home
 X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Tue, 05 Jul 2022 21:34:12 +0200
+X-ME-Date: Tue, 05 Jul 2022 21:36:55 +0200
 X-ME-IP: 90.11.190.129
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 To:     Edward Cree <ecree.xilinx@gmail.com>,
@@ -32,15 +32,15 @@ To:     Edward Cree <ecree.xilinx@gmail.com>,
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         netdev@vger.kernel.org
-Subject: [PATCH] sfc/siena: Use the bitmap API to allocate bitmaps
-Date:   Tue,  5 Jul 2022 21:34:08 +0200
-Message-Id: <717ba530215f4d7ce9fedcc73d98dba1f70d7f71.1657049636.git.christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] sfc: falcon: Use the bitmap API to allocate bitmaps
+Date:   Tue,  5 Jul 2022 21:36:51 +0200
+Message-Id: <c62c1774e6a34bc64323ce526b385aa87c1ca575.1657049799.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -53,23 +53,23 @@ It is less verbose and it improves the semantic.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/net/ethernet/sfc/siena/farch.c | 6 ++----
+ drivers/net/ethernet/sfc/falcon/farch.c | 6 ++----
  1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/sfc/siena/farch.c b/drivers/net/ethernet/sfc/siena/farch.c
-index cce23803c652..89ccd65c978b 100644
---- a/drivers/net/ethernet/sfc/siena/farch.c
-+++ b/drivers/net/ethernet/sfc/siena/farch.c
-@@ -2778,7 +2778,7 @@ void efx_farch_filter_table_remove(struct efx_nic *efx)
- 	enum efx_farch_filter_table_id table_id;
+diff --git a/drivers/net/ethernet/sfc/falcon/farch.c b/drivers/net/ethernet/sfc/falcon/farch.c
+index 2c91792cec01..c64623c2e80c 100644
+--- a/drivers/net/ethernet/sfc/falcon/farch.c
++++ b/drivers/net/ethernet/sfc/falcon/farch.c
+@@ -2711,7 +2711,7 @@ void ef4_farch_filter_table_remove(struct ef4_nic *efx)
+ 	enum ef4_farch_filter_table_id table_id;
  
- 	for (table_id = 0; table_id < EFX_FARCH_FILTER_TABLE_COUNT; table_id++) {
+ 	for (table_id = 0; table_id < EF4_FARCH_FILTER_TABLE_COUNT; table_id++) {
 -		kfree(state->table[table_id].used_bitmap);
 +		bitmap_free(state->table[table_id].used_bitmap);
  		vfree(state->table[table_id].spec);
  	}
  	kfree(state);
-@@ -2822,9 +2822,7 @@ int efx_farch_filter_table_probe(struct efx_nic *efx)
+@@ -2740,9 +2740,7 @@ int ef4_farch_filter_table_probe(struct ef4_nic *efx)
  		table = &state->table[table_id];
  		if (table->size == 0)
  			continue;

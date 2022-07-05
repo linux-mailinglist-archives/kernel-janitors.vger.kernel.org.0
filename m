@@ -2,104 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D930C5667C6
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Jul 2022 12:21:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DBA156683C
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Jul 2022 12:40:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232349AbiGEKVp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Jul 2022 06:21:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44322 "EHLO
+        id S232386AbiGEKkt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Jul 2022 06:40:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232322AbiGEKVf (ORCPT
+        with ESMTP id S231840AbiGEKkq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Jul 2022 06:21:35 -0400
-X-Greylist: delayed 600 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Jul 2022 03:21:32 PDT
-Received: from mg.ssi.bg (mg.ssi.bg [193.238.174.37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6147E140C7;
-        Tue,  5 Jul 2022 03:21:32 -0700 (PDT)
-Received: from mg.ssi.bg (localhost [127.0.0.1])
-        by mg.ssi.bg (Proxmox) with ESMTP id 804B728C44;
-        Tue,  5 Jul 2022 13:06:01 +0300 (EEST)
-Received: from ink.ssi.bg (unknown [193.238.174.40])
-        by mg.ssi.bg (Proxmox) with ESMTP id 1D85628BBA;
-        Tue,  5 Jul 2022 13:05:58 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [178.16.129.10])
-        by ink.ssi.bg (Postfix) with ESMTPS id 23C2E3C0437;
-        Tue,  5 Jul 2022 13:05:56 +0300 (EEST)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-        by ja.ssi.bg (8.17.1/8.16.1) with ESMTP id 265A5tFs007839;
-        Tue, 5 Jul 2022 13:05:56 +0300
-Date:   Tue, 5 Jul 2022 13:05:54 +0300 (EEST)
-From:   Julian Anastasov <ja@ssi.bg>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-cc:     Simon Horman <horms@verge.net.au>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, netdev@vger.kernel.org,
-        lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org
-Subject: Re: [PATCH] netfilter: ipvs: Use the bitmap API to allocate
- bitmaps
-In-Reply-To: <420d8b70560e8711726ff639f0a55364e212ff26.1656962678.git.christophe.jaillet@wanadoo.fr>
-Message-ID: <b69d7ba1-22f8-80c3-c870-debd7aaf4cea@ssi.bg>
-References: <420d8b70560e8711726ff639f0a55364e212ff26.1656962678.git.christophe.jaillet@wanadoo.fr>
+        Tue, 5 Jul 2022 06:40:46 -0400
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 64A3B15736;
+        Tue,  5 Jul 2022 03:40:44 -0700 (PDT)
+Received: from uucp (helo=alpha)
+        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+        id 1o8fz0-0002Jv-00; Tue, 05 Jul 2022 12:40:42 +0200
+Received: by alpha.franken.de (Postfix, from userid 1000)
+        id 7ACEBC0230; Tue,  5 Jul 2022 12:22:37 +0200 (CEST)
+Date:   Tue, 5 Jul 2022 12:22:37 +0200
+From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:     Colin Ian King <colin.i.king@gmail.com>
+Cc:     linux-mips@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][V2] MIPS: PCI: Remove leading space in info message,
+ rename pci
+Message-ID: <20220705102237.GD9951@alpha.franken.de>
+References: <20220620115549.39177-1-colin.i.king@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220620115549.39177-1-colin.i.king@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-	Hello,
-
-On Mon, 4 Jul 2022, Christophe JAILLET wrote:
-
-> Use bitmap_zalloc()/bitmap_free() instead of hand-writing them.
+On Mon, Jun 20, 2022 at 12:55:49PM +0100, Colin Ian King wrote:
+> There is an info message with an extraneous leading space. Remove it.
+> Also rename pci to PCI.
 > 
-> It is less verbose and it improves the semantic.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-
-	Looks good to me for -next! Thanks!
-
-Acked-by: Julian Anastasov <ja@ssi.bg>
-
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 > ---
->  net/netfilter/ipvs/ip_vs_mh.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+> V2: make pci uppercase
+> ---
+>  arch/mips/pci/fixup-lemote2f.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/net/netfilter/ipvs/ip_vs_mh.c b/net/netfilter/ipvs/ip_vs_mh.c
-> index da0280cec506..e3d7f5c879ce 100644
-> --- a/net/netfilter/ipvs/ip_vs_mh.c
-> +++ b/net/netfilter/ipvs/ip_vs_mh.c
-> @@ -174,8 +174,7 @@ static int ip_vs_mh_populate(struct ip_vs_mh_state *s,
+> diff --git a/arch/mips/pci/fixup-lemote2f.c b/arch/mips/pci/fixup-lemote2f.c
+> index 632ff2daa338..790d674cd80a 100644
+> --- a/arch/mips/pci/fixup-lemote2f.c
+> +++ b/arch/mips/pci/fixup-lemote2f.c
+> @@ -80,7 +80,7 @@ int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
+>  		}
+>  		return dev->irq;
+>  	} else {
+> -		printk(KERN_INFO " strange pci slot number.\n");
+> +		printk(KERN_INFO "strange PCI slot number.\n");
 >  		return 0;
 >  	}
->  
-> -	table = kcalloc(BITS_TO_LONGS(IP_VS_MH_TAB_SIZE),
-> -			sizeof(unsigned long), GFP_KERNEL);
-> +	table = bitmap_zalloc(IP_VS_MH_TAB_SIZE, GFP_KERNEL);
->  	if (!table)
->  		return -ENOMEM;
->  
-> @@ -227,7 +226,7 @@ static int ip_vs_mh_populate(struct ip_vs_mh_state *s,
->  	}
->  
->  out:
-> -	kfree(table);
-> +	bitmap_free(table);
->  	return 0;
 >  }
->  
 > -- 
-> 2.34.1
+> 2.35.3
 
-Regards
+applied to mips-next.
 
---
-Julian Anastasov <ja@ssi.bg>
+Thomas.
 
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]

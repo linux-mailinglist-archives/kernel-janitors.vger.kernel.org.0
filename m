@@ -2,87 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4A3E56987D
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Jul 2022 05:00:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CAEF569C9D
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Jul 2022 10:08:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234930AbiGGDAW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Jul 2022 23:00:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60488 "EHLO
+        id S235139AbiGGIFy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 Jul 2022 04:05:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234906AbiGGDAS (ORCPT
+        with ESMTP id S234328AbiGGIFu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Jul 2022 23:00:18 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A3692F3BF;
-        Wed,  6 Jul 2022 20:00:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B368DB81FF1;
-        Thu,  7 Jul 2022 03:00:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 144EEC341D4;
-        Thu,  7 Jul 2022 03:00:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1657162815;
-        bh=i48NrE/vFNFSuqXPKlsGMWYna9TAb9tFN3I8/qt+QcU=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=BDtSXzYvWFM9aYhF/+tWuSfrJPX2LboOM9P11f24OmrWS2CWFTgfKL0WGjhHXD53N
-         uLMzxGdy4eg6tj9qk0ekCoEzlYbjrpt7HdDq/Ygmd6F8gTB8jU//3A2Nnp29EQei2a
-         Sq/tJnjkFxFVnVyou8495Yxziwfb1gP6vk4+N2sYpdLtyNrMHo1TlSEZVJsjQObanr
-         bjKgaejSBI8fa4+xHO5paE6T4pbAfxQtqiIWRNzmIrvPShcXJG2NgHl51sjUJTWXo/
-         0kuXFvJCGoAob3tRZN31AaFbeOCn6TJd6gYwGX2PgCGaXj8D+bgSr4SNy672Xvfadl
-         wKVjttG7kB6qg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id E6552E45BE2;
-        Thu,  7 Jul 2022 03:00:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Thu, 7 Jul 2022 04:05:50 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99EA225C5;
+        Thu,  7 Jul 2022 01:05:49 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id o4so25157488wrh.3;
+        Thu, 07 Jul 2022 01:05:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=fT8yeQg+Dwj7jLKoZKRv3i/G9RY+Y7eY8PKDxd9w8hA=;
+        b=ZeTCv2aBHlwKcpvH4HrdTxO8SeNk80W9HL97yV67/wJ160DEhooyCRtBgbDrppemtk
+         rV6+QX8xoIJr8eVj6vh7+G/4YCHeEuY3zh4lrYdNlgr4OSyAZVDuFiGZtr1ZLUYqHAmN
+         rnxXx5QNT/gOY9hFMPKyOMsWHYNMC0pwWFA1Uuxmbqhy8o097do+q+Ez/vZt0iREtUCS
+         leGctn0ZYFrcveuNipCgDEQrUz+jq8//9faMlhnhfJaCW4lCXNbXkeeyHJYuT++RUSTa
+         m6/b0Z/cIwqSd4wqYRR05trgLGNbci6mjwwI755OuI93ucyT5gJcHKefGH1CA+UhTWlL
+         wi1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=fT8yeQg+Dwj7jLKoZKRv3i/G9RY+Y7eY8PKDxd9w8hA=;
+        b=j49w3+z8kUNtaEOytMpafeaMQzsZEdPxGE9rUBkrmYao87sQFLYRUwT5Z8xQ18wMgt
+         oBiZreg2xuz6Z845KonX6TcK1IeZmNDFhGzekubS0VYRhPMMqvfEv2b7efMbQ4vv8mXw
+         wSeXeZI/lXFGOzsM90CfvsdjRdTddU9PQYLiTOXHUoX+PxLNze+OsUTYzlJvtvS5lnaW
+         rbgSZ96drpxY/ydSgotBVmfJvQYeK3mcqYaoZ3ps8A6URmV//eV550vR07inZW38xaQ2
+         fs+Nm1AVYFU6DJIRhw+/izw/Ulo2Dy4YmTCwIlAeR+44X7uvR6jErenxvJwp3/705xdR
+         r9FQ==
+X-Gm-Message-State: AJIora8CTzlsFMYrDTi8ghDXJ4BAT5ois6+pb5bwCnYCVtgft39S2chQ
+        zhdh6ctm1QATZkEwnvQynG0=
+X-Google-Smtp-Source: AGRyM1sVEaAi/ACaCFuYmX/AjTVaucTEZ2FSvQb4EKGdf+bATvP2UhtY7kxzVh1XxGYT2IHaHfKtEw==
+X-Received: by 2002:a05:6000:1a41:b0:20e:687f:1c3 with SMTP id t1-20020a0560001a4100b0020e687f01c3mr41709333wry.415.1657181148039;
+        Thu, 07 Jul 2022 01:05:48 -0700 (PDT)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id p41-20020a05600c1da900b003a0231af43csm14640482wms.48.2022.07.07.01.05.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Jul 2022 01:05:47 -0700 (PDT)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H . Peter Anvin" <hpa@zytor.com>, linux-crypto@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] crypto: x86/blowfish: remove redundant assignment to variable nytes
+Date:   Thu,  7 Jul 2022 09:05:46 +0100
+Message-Id: <20220707080546.151730-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 1/2] qed: Use the bitmap API to allocate bitmaps
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <165716281494.11165.14076578722724177412.git-patchwork-notify@kernel.org>
-Date:   Thu, 07 Jul 2022 03:00:14 +0000
-References: <d61ec77ce0b92f7539c6a144106139f8d737ec29.1657053343.git.christophe.jaillet@wanadoo.fr>
-In-Reply-To: <d61ec77ce0b92f7539c6a144106139f8d737ec29.1657053343.git.christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     aelior@marvell.com, manishc@marvell.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        netdev@vger.kernel.org
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
+Variable nbytes is being assigned a value that is never read, it is
+being re-assigned in the next statement in the while-loop. The
+assignment is redundant and can be removed.
 
-This series was applied to netdev/net-next.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
+Cleans up clang scan-build warnings, e.g.:
+arch/x86/crypto/blowfish_glue.c:147:10: warning: Although the value
+stored to 'nbytes' is used in the enclosing expression, the value
+is never actually read from 'nbytes'
 
-On Tue,  5 Jul 2022 22:36:16 +0200 you wrote:
-> Use bitmap_zalloc()/bitmap_free() instead of hand-writing them.
-> 
-> It is less verbose and it improves the semantic.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->  drivers/net/ethernet/qlogic/qed/qed_rdma.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ arch/x86/crypto/blowfish_glue.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Here is the summary with links:
-  - [1/2] qed: Use the bitmap API to allocate bitmaps
-    https://git.kernel.org/netdev/net-next/c/291dbea16c71
-  - [2/2] qed: Use bitmap_empty()
-    https://git.kernel.org/netdev/net-next/c/7ed5f2454acf
-
-You are awesome, thank you!
+diff --git a/arch/x86/crypto/blowfish_glue.c b/arch/x86/crypto/blowfish_glue.c
+index ba06322c1e39..019c64c1340a 100644
+--- a/arch/x86/crypto/blowfish_glue.c
++++ b/arch/x86/crypto/blowfish_glue.c
+@@ -144,7 +144,7 @@ static int cbc_encrypt(struct skcipher_request *req)
+ 
+ 	err = skcipher_walk_virt(&walk, req, false);
+ 
+-	while ((nbytes = walk.nbytes)) {
++	while (walk.nbytes) {
+ 		nbytes = __cbc_encrypt(ctx, &walk);
+ 		err = skcipher_walk_done(&walk, nbytes);
+ 	}
+@@ -225,7 +225,7 @@ static int cbc_decrypt(struct skcipher_request *req)
+ 
+ 	err = skcipher_walk_virt(&walk, req, false);
+ 
+-	while ((nbytes = walk.nbytes)) {
++	while (walk.nbytes) {
+ 		nbytes = __cbc_decrypt(ctx, &walk);
+ 		err = skcipher_walk_done(&walk, nbytes);
+ 	}
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.35.3
 

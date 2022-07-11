@@ -2,128 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E25C56D6E2
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jul 2022 09:35:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30E2356D86D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Jul 2022 10:41:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230047AbiGKHfH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Jul 2022 03:35:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53918 "EHLO
+        id S230432AbiGKIlG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Jul 2022 04:41:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229697AbiGKHfF (ORCPT
+        with ESMTP id S230240AbiGKIkr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Jul 2022 03:35:05 -0400
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 528BC1A05C;
-        Mon, 11 Jul 2022 00:35:01 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R841e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046051;MF=chengyou@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0VIyDJnm_1657524897;
-Received: from 30.43.105.92(mailfrom:chengyou@linux.alibaba.com fp:SMTPD_---0VIyDJnm_1657524897)
-          by smtp.aliyun-inc.com;
-          Mon, 11 Jul 2022 15:34:58 +0800
-Message-ID: <670c57a2-6432-80c9-cdc0-496d836d7bf0@linux.alibaba.com>
-Date:   Mon, 11 Jul 2022 15:34:56 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.11.0
-Subject: Re: [PATCH 1/2] RDMA/erdma: Use the bitmap API to allocate bitmaps
-Content-Language: en-US
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Kai Shen <kaishen@linux.alibaba.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>
+        Mon, 11 Jul 2022 04:40:47 -0400
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D401B21E2E;
+        Mon, 11 Jul 2022 01:40:07 -0700 (PDT)
+Received: from uucp (helo=alpha)
+        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+        id 1oAoxa-0006eA-00; Mon, 11 Jul 2022 10:40:06 +0200
+Received: by alpha.franken.de (Postfix, from userid 1000)
+        id 95B8DC0344; Mon, 11 Jul 2022 10:37:35 +0200 (CEST)
+Date:   Mon, 11 Jul 2022 10:37:35 +0200
+From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-rdma@vger.kernel.org
-References: <2764b6e204b32ef8c198a5efaf6c6bc4119f7665.1657301795.git.christophe.jaillet@wanadoo.fr>
-From:   Cheng Xu <chengyou@linux.alibaba.com>
-In-Reply-To: <2764b6e204b32ef8c198a5efaf6c6bc4119f7665.1657301795.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        linux-mips@vger.kernel.org
+Subject: Re: [PATCH] MIPS: math-emu: Use the bitmap API to allocate bitmaps
+Message-ID: <20220711083735.GA6084@alpha.franken.de>
+References: <dd954ccb2472019c64da0dd3a90d7b39a2fadc98.1656960999.git.christophe.jaillet@wanadoo.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dd954ccb2472019c64da0dd3a90d7b39a2fadc98.1656960999.git.christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On 7/9/22 1:37 AM, Christophe JAILLET wrote:
-> Use [devm_]bitmap_zalloc()/bitmap_free() instead of hand-writing them.
+On Mon, Jul 04, 2022 at 08:56:52PM +0200, Christophe JAILLET wrote:
+> Use bitmap_zalloc()/bitmap_free() instead of hand-writing them.
 > 
 > It is less verbose and it improves the semantic.
 > 
 > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > ---
->  drivers/infiniband/hw/erdma/erdma_cmdq.c | 7 +++----
->  drivers/infiniband/hw/erdma/erdma_main.c | 9 ++++-----
->  2 files changed, 7 insertions(+), 9 deletions(-)
+>  arch/mips/math-emu/dsemul.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
 > 
-
-Hi Christophe,
-
-Thanks for your two patches of erdma.
-
-The erdma code your got is our first upstreaming code, so I would like to squash your
-changes into the relevant commit in our next patchset to make the commit history cleaner.
-
-BTW, the coding style in the patches is OK, but has a little differences with clang-format's
-result. I will use the format from clang-format to minimize manual adjustments.
- 
-Thanks,
-Cheng Xu
- 
-
-> diff --git a/drivers/infiniband/hw/erdma/erdma_cmdq.c b/drivers/infiniband/hw/erdma/erdma_cmdq.c
-> index 0cf5032d4b78..0489838d9717 100644
-> --- a/drivers/infiniband/hw/erdma/erdma_cmdq.c
-> +++ b/drivers/infiniband/hw/erdma/erdma_cmdq.c
-> @@ -78,10 +78,9 @@ static int erdma_cmdq_wait_res_init(struct erdma_dev *dev,
->  		return -ENOMEM;
+> diff --git a/arch/mips/math-emu/dsemul.c b/arch/mips/math-emu/dsemul.c
+> index e2d46cb93ca9..e02bd20b60a6 100644
+> --- a/arch/mips/math-emu/dsemul.c
+> +++ b/arch/mips/math-emu/dsemul.c
+> @@ -82,11 +82,8 @@ static int alloc_emuframe(void)
 >  
->  	spin_lock_init(&cmdq->lock);
-> -	cmdq->comp_wait_bitmap =
-> -		devm_kcalloc(&dev->pdev->dev,
-> -			     BITS_TO_LONGS(cmdq->max_outstandings),
-> -			     sizeof(unsigned long), GFP_KERNEL);
-> +	cmdq->comp_wait_bitmap = devm_bitmap_zalloc(&dev->pdev->dev,
-> +						    cmdq->max_outstandings,
-> +						    GFP_KERNEL);
->  	if (!cmdq->comp_wait_bitmap) {
->  		devm_kfree(&dev->pdev->dev, cmdq->wait_pool);
->  		return -ENOMEM;
-> diff --git a/drivers/infiniband/hw/erdma/erdma_main.c b/drivers/infiniband/hw/erdma/erdma_main.c
-> index 27484bea51d9..7e1e27acb404 100644
-> --- a/drivers/infiniband/hw/erdma/erdma_main.c
-> +++ b/drivers/infiniband/hw/erdma/erdma_main.c
-> @@ -423,9 +423,8 @@ static int erdma_res_cb_init(struct erdma_dev *dev)
->  	for (i = 0; i < ERDMA_RES_CNT; i++) {
->  		dev->res_cb[i].next_alloc_idx = 1;
->  		spin_lock_init(&dev->res_cb[i].lock);
-> -		dev->res_cb[i].bitmap =
-> -			kcalloc(BITS_TO_LONGS(dev->res_cb[i].max_cap),
-> -				sizeof(unsigned long), GFP_KERNEL);
-> +		dev->res_cb[i].bitmap = bitmap_zalloc(dev->res_cb[i].max_cap,
-> +						      GFP_KERNEL);
->  		/* We will free the memory in erdma_res_cb_free */
->  		if (!dev->res_cb[i].bitmap)
->  			goto err;
-> @@ -435,7 +434,7 @@ static int erdma_res_cb_init(struct erdma_dev *dev)
+>  	/* Ensure we have an allocation bitmap */
+>  	if (!mm_ctx->bd_emupage_allocmap) {
+> -		mm_ctx->bd_emupage_allocmap =
+> -			kcalloc(BITS_TO_LONGS(emupage_frame_count),
+> -					      sizeof(unsigned long),
+> -				GFP_ATOMIC);
+> -
+> +		mm_ctx->bd_emupage_allocmap = bitmap_zalloc(emupage_frame_count,
+> +							    GFP_ATOMIC);
+>  		if (!mm_ctx->bd_emupage_allocmap) {
+>  			idx = BD_EMUFRAME_NONE;
+>  			goto out_unlock;
+> @@ -206,7 +203,7 @@ void dsemul_mm_cleanup(struct mm_struct *mm)
+>  {
+>  	mm_context_t *mm_ctx = &mm->context;
 >  
->  err:
->  	for (j = 0; j < i; j++)
-> -		kfree(dev->res_cb[j].bitmap);
-> +		bitmap_free(dev->res_cb[j].bitmap);
->  
->  	return -ENOMEM;
->  }
-> @@ -445,7 +444,7 @@ static void erdma_res_cb_free(struct erdma_dev *dev)
->  	int i;
->  
->  	for (i = 0; i < ERDMA_RES_CNT; i++)
-> -		kfree(dev->res_cb[i].bitmap);
-> +		bitmap_free(dev->res_cb[i].bitmap);
+> -	kfree(mm_ctx->bd_emupage_allocmap);
+> +	bitmap_free(mm_ctx->bd_emupage_allocmap);
 >  }
 >  
->  static const struct ib_device_ops erdma_device_ops = {
+>  int mips_dsemul(struct pt_regs *regs, mips_instruction ir,
+> -- 
+> 2.34.1
+
+applied to mips-next.
+
+Thomas.
+
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]

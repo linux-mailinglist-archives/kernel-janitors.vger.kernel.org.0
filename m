@@ -2,93 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 063265744AE
-	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Jul 2022 07:46:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36F6F57473A
+	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Jul 2022 10:38:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231980AbiGNFqF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 14 Jul 2022 01:46:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50620 "EHLO
+        id S236702AbiGNIiF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 14 Jul 2022 04:38:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230024AbiGNFqF (ORCPT
+        with ESMTP id S236738AbiGNIhP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 14 Jul 2022 01:46:05 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE5C02AC73;
-        Wed, 13 Jul 2022 22:46:03 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id bf9so1039226lfb.13;
-        Wed, 13 Jul 2022 22:46:03 -0700 (PDT)
+        Thu, 14 Jul 2022 04:37:15 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5293C402C3
+        for <kernel-janitors@vger.kernel.org>; Thu, 14 Jul 2022 01:37:13 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id r10so1579919wrv.4
+        for <kernel-janitors@vger.kernel.org>; Thu, 14 Jul 2022 01:37:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vafiOnArmMbdFkw12ZkX8srj9GjEXyE3zEfZk0yyph8=;
-        b=iscXerRkiLLlWMBAYhA8TXE3h5olodsXQDUzlHDh96YOfEf9JHeUR+yq2hn7Jw8R+o
-         +x0HBvlToMU1Z0tcb5vFSAq+GeNVPnsQ3bLdfsHvHjbd63WfPatdE9fqKOUh6PuS6vzI
-         GphVb+HXRxyzKuR9NQiE50Maoti75bkQJ5hT2pI/rC38aOZJxveWEmorzhD2HgznRnwz
-         1PbKIfBtF1dB3yv15M04ZNafaJLYTYip2kwpyq+HoUPTLZjjLv52Dy0taETre4Trom62
-         Mjt++h/NXMnQu/osLBh5kJ3XyfzTYO75O8bnDtRVMJzE14lSkPN17Bq8t9wY11r2uZkL
-         ABrA==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
+        b=gaDZ6UkvWmoGLPkb5BiwWKXrxZqJRKNx4T2fn6EvGAM0nTMCvTzxyP4EuJ913j6Iv+
+         SvMX4/pvx4tmhR/0cDdL9pbkcCOAwg/dZQZJjKvYYHG5zoS6pTup2xrhZON7aPFodE61
+         jbdbe7f5x1iqsxnbqtRGk5VVyYe+GfguXyW53v/Jtk7m9BRLrugVau1mwPBhoM15I1rO
+         FgfB/JoMGOti2QefdfOSOcdpcygQeBiN0idXo3yCL6hW5Cz+uWpratECqWcSagxAB5xP
+         zT+sUZ3pJE3RjDVpLi/6z/hZ8yL43zLlaxwdm4ILJ3e9Bke6wVp5k2l7GAKtdogOGzmZ
+         5LQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vafiOnArmMbdFkw12ZkX8srj9GjEXyE3zEfZk0yyph8=;
-        b=1fWE8NC9CVrMImU2SJ/RNAvgJW2SY4vPqtPNQClx2NaIyqJ1VPlRImETzza5vsWHn/
-         erhrJHUQcYANUFRnkJ2JeJ34scQwnsUuww4qc188/IOElnH9uut6AU7sTF8p0eK6kTRN
-         olGDVk56xgVRSyhM0+V07vWVqHO7b2jZuiXDEPgYeHLgtbUNAzsZCeSQc4X8iWqF/lyN
-         p/AIXW0HBhX5s/PXlt7IWiCvrB1fyUzB9Snp1wHl5I85FHe3FRk1dtgDrR9kT12xzOdj
-         zmQu5ukFT4hDjKrclgV6rF4k9wIr88kfehobL8J/xMAtsFFyX72IPD9YTxzuxSdxTvUa
-         l5pQ==
-X-Gm-Message-State: AJIora+hec+euTJmG6AxsnM1tbCk9Nrh4jrOVpQ14cdJ4P7iCWwbaTlv
-        wp95nDVx0C6nmOfInXf1J9yWWeiGFU7hkx0JU4fpbVZKG5fblw==
-X-Google-Smtp-Source: AGRyM1vuz7AcEk7yBbzuHjGT3m6seyH+2XU8NoxGTDIkTqbgJg+QqUcC/DHrl4m2eAzwLfUoHy7fWhQUUwenxJxrSa8=
-X-Received: by 2002:a05:6512:3c98:b0:489:dee3:51d0 with SMTP id
- h24-20020a0565123c9800b00489dee351d0mr4038695lfv.606.1657777562004; Wed, 13
- Jul 2022 22:46:02 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
+        b=KzxfOmoiHHH8pzcQS9yESbPXj9jJFZT3FBXMyS8b7wNzqDorzlenpv2TshBqhc8JVG
+         XMO+bPlfZU9LcJTI0sZSA+7G4u24S5GqWZaNFXG4TQYchVZzdvouuXXpTRP5Xkx4aVwr
+         CrKs3ZiurNxAU+T6FXj15LJJbgRuI+G/e0GOiDKP7FFWO0nTKYgoFJlGwwDUqJYMyGc7
+         HwU9WqW/bf3jAFt7RsE5faHib5CSTVV7ARd9GhdsMiWj0T1dSAyKrETaTrr2XIEWV68Q
+         HcIZ7aiKToN+vRFMtwxA2zV4Nm95SQ0ZItUp3NEKLdv1l6klDcpCntdM4lR0VsqmWhvZ
+         yYeA==
+X-Gm-Message-State: AJIora+zkc+eOnk98yU3Ilydogo46qQP+zi9LYFgYZRjRV8zUHh56qOs
+        7JRgu31uG2srqfR/sIMqbPC2B/Ld9StDcX1LPrjPbW0e2Z/mrg==
+X-Google-Smtp-Source: AGRyM1vX4Zd9WIWDxqKGtP81mt11peMiDiT310/qUqT5enM4eeA2HoIqQaHp0s5sIeDBZVZu8TIFwya2pg7lDHDFDeo=
+X-Received: by 2002:a05:6512:4004:b0:48a:12dc:7f63 with SMTP id
+ br4-20020a056512400400b0048a12dc7f63mr2033540lfb.131.1657787820892; Thu, 14
+ Jul 2022 01:37:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220704122537.3407-1-lukas.bulwahn@gmail.com> <87sfn44wk4.fsf@meer.lwn.net>
-In-Reply-To: <87sfn44wk4.fsf@meer.lwn.net>
-From:   Alex Shi <seakeel@gmail.com>
-Date:   Thu, 14 Jul 2022 13:45:25 +0800
-Message-ID: <CAJy-AmnkRRqC25N1imgqRCHymh8J4ZE=LYx=-3tG4bhAggViSA@mail.gmail.com>
-Subject: Re: [PATCH 00/11] docs: remove submitting-drivers.rst
-To:     Jonathan Corbet <corbet@lwn.net>
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Federico Vaga <federico.vaga@vaga.pv.it>,
-        Alex Shi <alexs@kernel.org>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Hu Haowen <src.res@email.cn>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-doc-tw-discuss@lists.sourceforge.net,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-hwmon@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
+Received: by 2002:a2e:9041:0:0:0:0:0 with HTTP; Thu, 14 Jul 2022 01:37:00
+ -0700 (PDT)
+Reply-To: abdwabbomaddahm@gmail.com
+From:   Abdwabbo Maddah <abdwabbomaddah746@gmail.com>
+Date:   Thu, 14 Jul 2022 09:37:00 +0100
+Message-ID: <CAFC-3ieta-vbGq7=-xp9Wgp2Sr8SYhFWTPWR2J6JsyQ_pZJxLQ@mail.gmail.com>
+Subject: Get back to me... URGENT
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:42f listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4833]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [abdwabbomaddah746[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [abdwabbomaddah746[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Alex, can you fix the remaining references in zh_CN?
->
-> For zh_TW I'm wondering ... that is increasingly looking like an
-> unmaintained drive-by submission.  I suppose we can just brute-force
-> remove the references, but I once again find myself wondering about the
-> value of this translation.  Is there anybody out there who cares about
-> it who could fix this up properly?
-
-Hi Jon,
-
-Both zh_CN and zh_TW were fixed on
-https://lore.kernel.org/linux-doc/20220714054013.214031-1-alexs@kernel.org/T/#u
-
-Sorry for the issue
-
-Thanks
-Alex
+-- 
+Dear,
+I had sent you a mail but i don't think you received it that's why am
+writing you again.It is important you get back to me as soon as you
+can.
+Abd-Wabbo Maddah

@@ -2,107 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4882D5789DC
-	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Jul 2022 20:55:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 475E3578A60
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Jul 2022 21:13:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231495AbiGRSzS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 Jul 2022 14:55:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50284 "EHLO
+        id S235395AbiGRTNO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 Jul 2022 15:13:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229647AbiGRSzR (ORCPT
+        with ESMTP id S235472AbiGRTNN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 Jul 2022 14:55:17 -0400
-Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDDC62F038
-        for <kernel-janitors@vger.kernel.org>; Mon, 18 Jul 2022 11:55:16 -0700 (PDT)
-Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-10cf9f5b500so25065272fac.2
-        for <kernel-janitors@vger.kernel.org>; Mon, 18 Jul 2022 11:55:16 -0700 (PDT)
+        Mon, 18 Jul 2022 15:13:13 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2C5C2F662
+        for <kernel-janitors@vger.kernel.org>; Mon, 18 Jul 2022 12:13:12 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id z132so10113863iof.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 18 Jul 2022 12:13:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
-        b=jKPGJydhTUOyZkqTwIzXkKPrbHwKFTeIQ9mP2UjeRWeOc1u9pwe8t/0wfH08ImITWd
-         85au7tUFMUnG0bqn/ZrRYeol4R2YfRMb3YkMTKmMvcUH0PXpuw3BA1XdxKbfOdtKE4QO
-         g77PJdeyKiISX89wF8Hmyv6jIfhfPru6HE9APMGaWFYb7tdZGNdc7cLTDG3goqy+ItKe
-         DiNPHqdRNZjOVj/mqwcYQexGsEW/0ZEWy4SCi7LQOaLX9qTqqccKCIHrBpgK4oIm6WCJ
-         o3OhMJfNCb7qw94TfCVRFkOa2qe6q6LzCr44bVHeKJAYfGYPaFwrl2eVXXE8UNQL6ep/
-         Oohg==
+        d=kernel-dk.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:in-reply-to:references:subject:message-id:date
+         :mime-version:content-transfer-encoding;
+        bh=HZhWrFGJ/60u+arYGfm5slhhzNJ7cejuyjajN1Mdj4w=;
+        b=jKusduWGP6hIWEpTg4Vx1MmpMKz3PJXf4JjUrMzeUhwyusH4jyR2vDphpzG3sDDCdh
+         eMpxKCumpoHQJGizZmCT6gT5q3yElOy6JuXq4/eCuS0LyAdBL6KpwXGjG3GYhh2NBwRR
+         u51EAaoZfek2kmBs7FF71rMPZlK53bU7ARxn/zr+rvO2z/+nlyp8JK1QvWU/g+JGh6gc
+         aL0n3ov6bymEHsij4eG6KtcsS5ShnFio/nzra0vZ0Lw97hqTB4b4fCUT+jPKn8QGU0dZ
+         uf8/A4euC94uErqv4Yvqi6SzwTBdtpu92sllaA97YooiBH8ZgbIKZBivaj2nMTcECAye
+         Fk4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
-        b=WoMZD30PLTVB0VsTDsJM6NDElTBfb1RTYk4S8FERzKYVFO3J1mko/dKkFZ0cmuPvCQ
-         OA79X//wllDTHicg2K7g2CyJwWpOwItI2bC6JneesdHWsy/UbXZTLMnh2YZVvckfRHna
-         0iytSDOnpjUiF5pewMLhnpoD85fTuXlFyTeANeLrfGXIrdMGe4smpKp+J6IMp5Qft2w4
-         Efjvpig1RDpIUq7IoLUw8B7Mo5i9DQQ5CUOhLvIr2P/hYXL1z81wrHDTnvdB1Rtw3bcs
-         eqAuINhbTP9qRjGFlZmfIUiQqwgO+1l6Hgo8S2i+umgBkWdl5CWmcZgyuNmhgG5Sjp0X
-         fmIw==
-X-Gm-Message-State: AJIora+Irjjx5mxGg7vELF+LbkcBk/+9C8Dvs1T3K1DsKa8X4klpVKLK
-        nTmkzFdfV+oSqNqJI+jHWnGyStdD2V7jACVQviovR+7fx+8=
-X-Google-Smtp-Source: AGRyM1vWOSU5aL1EJHPCeeo23sW5XVJ5aUKBjVcBmcuswqCzn+sbfNfdhd8MxzsX9GP3mjK+A7Ahj+PVJGiPm7Lqx84=
-X-Received: by 2002:a54:4683:0:b0:33a:5a4c:ace with SMTP id
- k3-20020a544683000000b0033a5a4c0acemr6957496oic.256.1658170504815; Mon, 18
- Jul 2022 11:55:04 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject
+         :message-id:date:mime-version:content-transfer-encoding;
+        bh=HZhWrFGJ/60u+arYGfm5slhhzNJ7cejuyjajN1Mdj4w=;
+        b=w34tGcnfew5jSROf3zipTXPHf+0kG/Qr+PmdPxegOaDVcqTLmC7YSAixtDoWLvIyL6
+         bAd1E3UfxCmhJFlNoHtTWxfiil/uRY5q47KtFZDRjVTazCqApzhuHOWKGj/nO8zYnuZQ
+         og35Uk5QmXQlbJpAtY3o9tzfZIxyictwSqjgY3+0OYiXqAuSMxaDoekV3aSEdQBtF/yS
+         WCdswFWn/KUFKJI9HjYRV8wDqFy5KuLdfxsFDG1D57qfJLFX9vBjbJlV3/bOnwSsnGMh
+         Qn1sGhxbo4VOTHUa1xE235rR0vCB3wD00CPXu/SS+oLsPwo8HX3Q34VSSv0rhET+UGxz
+         euCw==
+X-Gm-Message-State: AJIora+vocbzynTnpyKgLTNSESNT8C7kEePw1tB31peKdWeZf9PZS53X
+        tvMOaYHadD+TMu1pMsImXz22OA==
+X-Google-Smtp-Source: AGRyM1s822w+3NlRMHNv2p+54NOtHEFOjsQYORLCx1GXCWLhF87bC27lCIYpxKZHjYHKNOuFX6ixGg==
+X-Received: by 2002:a5d:9383:0:b0:67b:adc2:c053 with SMTP id c3-20020a5d9383000000b0067badc2c053mr13697774iol.102.1658171592442;
+        Mon, 18 Jul 2022 12:13:12 -0700 (PDT)
+Received: from [127.0.1.1] ([207.135.234.126])
+        by smtp.gmail.com with ESMTPSA id p123-20020a022981000000b0033eb2f2ccfasm5817730jap.43.2022.07.18.12.13.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Jul 2022 12:13:12 -0700 (PDT)
+From:   Jens Axboe <axboe@kernel.dk>
+To:     dan.carpenter@oracle.com, ming.lei@redhat.com
+Cc:     linux-block@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <YtVAgedTsQVK1oTM@kili>
+References: <YtVAgedTsQVK1oTM@kili>
+Subject: Re: [PATCH 1/3] ublk_drv: fix an IS_ERR() vs NULL check
+Message-Id: <165817159186.144718.1786091988428260978.b4-ty@kernel.dk>
+Date:   Mon, 18 Jul 2022 13:13:11 -0600
 MIME-Version: 1.0
-Received: by 2002:a05:6850:b093:b0:314:5f48:8afc with HTTP; Mon, 18 Jul 2022
- 11:55:03 -0700 (PDT)
-Reply-To: lilywilliam989@gmail.com
-From:   Lily William <gonwse11@gmail.com>
-Date:   Mon, 18 Jul 2022 10:55:03 -0800
-Message-ID: <CALtkzuuCfWb0wSGh=3YjEs5bFkr_rGmeULBR_pJfE7wZjv++1Q@mail.gmail.com>
-Subject: Hi Dear,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2001:4860:4864:20:0:0:0:2a listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [lilywilliam989[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [gonwse11[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [gonwse11[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dear,
+On Mon, 18 Jul 2022 14:14:09 +0300, Dan Carpenter wrote:
+> The blk_mq_alloc_disk_for_queue() doesn't return error pointers, it
+> returns NULL on error.
+> 
+> 
 
-My name is Dr Lily William from the United States.I am a French and
-American nationality (dual) living in the U.S and sometimes in France
-for Work Purpose.
+Applied, thanks!
 
-I hope you consider my friend request. I will share some of my pics
-and more details about myself when I get your response.
+[1/3] ublk_drv: fix an IS_ERR() vs NULL check
+      commit: fe3333f6953848f1c24e91a1cf70eed026dc3a86
 
-Thanks
+Best regards,
+-- 
+Jens Axboe
 
-With love
-Lily
+

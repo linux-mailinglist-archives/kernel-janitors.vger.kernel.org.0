@@ -2,88 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86BA857882E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Jul 2022 19:16:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4882D5789DC
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Jul 2022 20:55:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233316AbiGRRQn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 Jul 2022 13:16:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37794 "EHLO
+        id S231495AbiGRSzS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 Jul 2022 14:55:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233100AbiGRRQm (ORCPT
+        with ESMTP id S229647AbiGRSzR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 Jul 2022 13:16:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13F942C12D;
-        Mon, 18 Jul 2022 10:16:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9501E61582;
-        Mon, 18 Jul 2022 17:16:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28F3C341C0;
-        Mon, 18 Jul 2022 17:16:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658164600;
-        bh=d6KscDVDrA9I+4PRxjkUn0b5XrvScwDW2osOQpnQ+Bo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MyhWEdauYWHUif85Fr9+YI50paUINVAGUmbWkG/jkMAAuMNX7OTsCK7EKr8xwTsg5
-         sCW/PsdcWfsBKxP5XsIZ0ldDLyJUjN5cf1uxBY7PclGgySBbMYA0Pnadw45TFTEYoP
-         jgyVNL7oed9ykgEgZEDRK5m6rPENqOJDZyl56cqfJABXQUONYC6ar2Dt/ehGI7Vn6E
-         9sZvTrq3KZCvDqmzuWNeLEe+wMys8M2KSvs/bwqe4DkdNxqwcaqE1yhEgKC6STJgiJ
-         6OZz5eftGZs4JnqNRdhwxocO0E58Ex9gfEk5+m7ZMrbPLMcALIG13EsBYsN18jMKJ9
-         F9VGhWmlfxjDA==
-Date:   Mon, 18 Jul 2022 10:16:40 -0700
-From:   "Darrick J. Wong" <djwong@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Dave Chinner <dchinner@redhat.com>,
-        Chandan Babu R <chandan.babu@oracle.com>,
-        Allison Henderson <allison.henderson@oracle.com>,
-        linux-xfs@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] xfs: delete unnecessary NULL checks
-Message-ID: <YtWVeOjhL5R+CEJQ@magnolia>
-References: <YtVCOtQ7PCRfjXY6@kili>
+        Mon, 18 Jul 2022 14:55:17 -0400
+Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDDC62F038
+        for <kernel-janitors@vger.kernel.org>; Mon, 18 Jul 2022 11:55:16 -0700 (PDT)
+Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-10cf9f5b500so25065272fac.2
+        for <kernel-janitors@vger.kernel.org>; Mon, 18 Jul 2022 11:55:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
+        b=jKPGJydhTUOyZkqTwIzXkKPrbHwKFTeIQ9mP2UjeRWeOc1u9pwe8t/0wfH08ImITWd
+         85au7tUFMUnG0bqn/ZrRYeol4R2YfRMb3YkMTKmMvcUH0PXpuw3BA1XdxKbfOdtKE4QO
+         g77PJdeyKiISX89wF8Hmyv6jIfhfPru6HE9APMGaWFYb7tdZGNdc7cLTDG3goqy+ItKe
+         DiNPHqdRNZjOVj/mqwcYQexGsEW/0ZEWy4SCi7LQOaLX9qTqqccKCIHrBpgK4oIm6WCJ
+         o3OhMJfNCb7qw94TfCVRFkOa2qe6q6LzCr44bVHeKJAYfGYPaFwrl2eVXXE8UNQL6ep/
+         Oohg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
+        b=WoMZD30PLTVB0VsTDsJM6NDElTBfb1RTYk4S8FERzKYVFO3J1mko/dKkFZ0cmuPvCQ
+         OA79X//wllDTHicg2K7g2CyJwWpOwItI2bC6JneesdHWsy/UbXZTLMnh2YZVvckfRHna
+         0iytSDOnpjUiF5pewMLhnpoD85fTuXlFyTeANeLrfGXIrdMGe4smpKp+J6IMp5Qft2w4
+         Efjvpig1RDpIUq7IoLUw8B7Mo5i9DQQ5CUOhLvIr2P/hYXL1z81wrHDTnvdB1Rtw3bcs
+         eqAuINhbTP9qRjGFlZmfIUiQqwgO+1l6Hgo8S2i+umgBkWdl5CWmcZgyuNmhgG5Sjp0X
+         fmIw==
+X-Gm-Message-State: AJIora+Irjjx5mxGg7vELF+LbkcBk/+9C8Dvs1T3K1DsKa8X4klpVKLK
+        nTmkzFdfV+oSqNqJI+jHWnGyStdD2V7jACVQviovR+7fx+8=
+X-Google-Smtp-Source: AGRyM1vWOSU5aL1EJHPCeeo23sW5XVJ5aUKBjVcBmcuswqCzn+sbfNfdhd8MxzsX9GP3mjK+A7Ahj+PVJGiPm7Lqx84=
+X-Received: by 2002:a54:4683:0:b0:33a:5a4c:ace with SMTP id
+ k3-20020a544683000000b0033a5a4c0acemr6957496oic.256.1658170504815; Mon, 18
+ Jul 2022 11:55:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YtVCOtQ7PCRfjXY6@kili>
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6850:b093:b0:314:5f48:8afc with HTTP; Mon, 18 Jul 2022
+ 11:55:03 -0700 (PDT)
+Reply-To: lilywilliam989@gmail.com
+From:   Lily William <gonwse11@gmail.com>
+Date:   Mon, 18 Jul 2022 10:55:03 -0800
+Message-ID: <CALtkzuuCfWb0wSGh=3YjEs5bFkr_rGmeULBR_pJfE7wZjv++1Q@mail.gmail.com>
+Subject: Hi Dear,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2001:4860:4864:20:0:0:0:2a listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [lilywilliam989[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [gonwse11[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [gonwse11[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jul 18, 2022 at 02:21:30PM +0300, Dan Carpenter wrote:
-> These NULL check are no long needed after commit 2ed5b09b3e8f ("xfs:
-> make inode attribute forks a permanent part of struct xfs_inode").
-> 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Hi Dear,
 
-Looks correct,
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+My name is Dr Lily William from the United States.I am a French and
+American nationality (dual) living in the U.S and sometimes in France
+for Work Purpose.
 
---D
+I hope you consider my friend request. I will share some of my pics
+and more details about myself when I get your response.
 
-> ---
->  fs/xfs/libxfs/xfs_inode_fork.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/fs/xfs/libxfs/xfs_inode_fork.c b/fs/xfs/libxfs/xfs_inode_fork.c
-> index 7c34184448e6..fa699f3792bf 100644
-> --- a/fs/xfs/libxfs/xfs_inode_fork.c
-> +++ b/fs/xfs/libxfs/xfs_inode_fork.c
-> @@ -724,8 +724,7 @@ xfs_ifork_verify_local_attr(
->  
->  	if (fa) {
->  		xfs_inode_verifier_error(ip, -EFSCORRUPTED, "attr fork",
-> -				ifp ? ifp->if_u1.if_data : NULL,
-> -				ifp ? ifp->if_bytes : 0, fa);
-> +				ifp->if_u1.if_data, ifp->if_bytes, fa);
->  		return -EFSCORRUPTED;
->  	}
->  
-> -- 
-> 2.35.1
-> 
+Thanks
+
+With love
+Lily

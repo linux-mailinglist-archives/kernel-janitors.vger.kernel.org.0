@@ -2,195 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4C7257A544
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Jul 2022 19:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3628557A5C3
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Jul 2022 19:50:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239476AbiGSR2d (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 Jul 2022 13:28:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53596 "EHLO
+        id S238343AbiGSRuV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 Jul 2022 13:50:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239478AbiGSR21 (ORCPT
+        with ESMTP id S236840AbiGSRuU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 Jul 2022 13:28:27 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 899885A2EC
-        for <kernel-janitors@vger.kernel.org>; Tue, 19 Jul 2022 10:28:14 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id e15so17395151wro.5
-        for <kernel-janitors@vger.kernel.org>; Tue, 19 Jul 2022 10:28:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=JGWTrJ/A2ihWU/Ug7aQjRrDit++Zh+gpJdGLbqVf1ag=;
-        b=aQcLJHLSmAz57vMuBvrLAMuiJ9nsj6bTyOPDKgofJNdmDLyZvDjGqvPFf8eyewoclH
-         l1l5WETYZVlZ8uJmvS1H1ti0C5X06q29fxB0wCYYKPJxZfRH94Xb1Mn5EMR6/0o1UY8j
-         145zovNXLJSR4DnmMp+8wX78v/m524bvc3tJ+FzQf0nT7yT7yXfSyHDUUj3Hy0aaa4lA
-         2P6GzyXXUlsVQ6hDfqddxLzfkhz8yvCLArXMHBH3qtEjNqAPGY+Meno0NzZjndBqiLbZ
-         KocO65DubKojur00kb9JuLMzyBK5C5SHKSqew69Pcn4b2KCT1iox6ILhl/V1vBrI7fDX
-         yCBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=JGWTrJ/A2ihWU/Ug7aQjRrDit++Zh+gpJdGLbqVf1ag=;
-        b=FqbmH5wJ6sdHIt36s/tDdhV/fane6M66B0b33y6gFGPK+ksMrfzEMhB3lI4K6Jnhmk
-         F01iwEbv2vK9TyAXXdvY/4ak81OGmRGWbINdhciVK2DptD+OeUfjgGKcQI+xQlxZ+d7p
-         DZy0agFlhuAswyycQCQmfNxsd/+a9muCqhO+YEuZC43+dg1vypbC0SDTLsauITvRU6++
-         jd/r11r9iILqlMVs+vooaeiMEggTK8idmRZfWRREqLYaum7xLzHAKqKyBx0gtffdofU7
-         G50XImGbEwaTsDB7QtBqj9ur6GJIfYEISv7NBHo3JXf+eI51LyKbnp5zpHxl1+7jetZF
-         RQQw==
-X-Gm-Message-State: AJIora9kbp55OQne8r9avvfSY4IeR/SLFRXH7/ak3gsMvcidGUa44Ssp
-        NGMN3xz6vVOPdbC3hNNTi5ZwGeqZK7bULcxwlmPBKw==
-X-Google-Smtp-Source: AGRyM1tBJsBbqZfOaPheraq2qdKwFMuN2cYbU2/3gDb2ExcHHWknED0R67mCoawJmgennwfCC5j2IF55QsfrJAGvaF0=
-X-Received: by 2002:a5d:5a82:0:b0:21e:2899:60bd with SMTP id
- bp2-20020a5d5a82000000b0021e289960bdmr5795825wrb.80.1658251692855; Tue, 19
- Jul 2022 10:28:12 -0700 (PDT)
+        Tue, 19 Jul 2022 13:50:20 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25AA7DEED;
+        Tue, 19 Jul 2022 10:50:17 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A76C4B81C6D;
+        Tue, 19 Jul 2022 17:50:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3782FC341CB;
+        Tue, 19 Jul 2022 17:50:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1658253015;
+        bh=CsBUUSUY2k0tJQ7QMwrEaKhGV30EKp8Ch1G8yux4MVo=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=bU5dXIO4zWfRIlile8se53wlDZlgl0JkgDsjbLOdZ8//41fiK5cte/SCf0Nne+bMF
+         BUDleGozmd/CS8XNJn/tZAEv8mesNmzyCTOg8prZ0DIDxqqfFdmIvF+F/ZYNDk4Pwx
+         zZ6vAIxhFPHon72SMKF/QrHb7Ps7psbbWxUG0/jqvRjnARHu2Xx5ASgV2MpDXPE5Sm
+         NsMdoES7mQiyyGng7qtpT9FaZV3My/EYaEZunS+mwtv0pp8kR95Kf/TtiTJJUvY8Ww
+         0IptFF4kOFnZRf1S/yfLxeCYaJ0z1sMD7uYmrGSQMqsPtoLph7AoRPDEBCChjwWTz4
+         THekbVJmNJIXQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 1CED8E451BA;
+        Tue, 19 Jul 2022 17:50:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <YtZ9Yu6HSQ2sT+O/@kili>
-In-Reply-To: <YtZ9Yu6HSQ2sT+O/@kili>
-From:   Yosry Ahmed <yosryahmed@google.com>
-Date:   Tue, 19 Jul 2022 10:27:36 -0700
-Message-ID: <CAJD7tkYCSY1C_iif4dxF9O3dAgZV4u8o9DFGsqeTyaq_FTT+mQ@mail.gmail.com>
-Subject: Re: [PATCH] selftests: memcg: uninitialized variable in test_memcg_reclaim()
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] selftests/bpf: fix a test for snprintf() overflow
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <165825301511.17492.5558494324495598478.git-patchwork-notify@kernel.org>
+Date:   Tue, 19 Jul 2022 17:50:15 +0000
+References: <YtZ+aD/tZMkgOUw+@kili>
+In-Reply-To: <YtZ+aD/tZMkgOUw+@kili>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Johannes Weiner <hannes@cmpxchg.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Shakeel Butt <shakeelb@google.com>,
-        Muchun Song <songmuchun@bytedance.com>,
-        Tejun Heo <tj@kernel.org>, Zefan Li <lizefan.x@bytedance.com>,
-        Shuah Khan <shuah@kernel.org>,
-        David Rientjes <rientjes@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Cgroups <cgroups@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
-        linux-kselftest@vger.kernel.org, kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Cc:     andrii@kernel.org, kafai@fb.com, daniel@iogearbox.net,
+        song@kernel.org, yhs@fb.com, john.fastabend@gmail.com,
+        kpsingh@kernel.org, sdf@google.com, haoluo@google.com,
+        jolsa@kernel.org, mykolal@fb.com, shuah@kernel.org,
+        hengqi.chen@gmail.com, quentin@isovalent.com, memxor@gmail.com,
+        bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan!
+Hello:
 
-On Tue, Jul 19, 2022 at 2:46 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> The "fd" is used on the clean up path without ever being initialized.
->
-> Fixes: eae3cb2e87ff ("selftests: cgroup: add a selftest for memory.reclaim")
+This patch was applied to bpf/bpf-next.git (master)
+by Alexei Starovoitov <ast@kernel.org>:
 
-Thanks for fixing this :)
-
+On Tue, 19 Jul 2022 12:50:32 +0300 you wrote:
+> The snprintf() function returns the number of bytes which *would*
+> have been copied if there were space.  In other words, it can be
+> > sizeof(pin_path).
+> 
+> Fixes: c0fa1b6c3efc ("bpf: btf: Add BTF tests")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> I kind of went over kill on fixing this as if it were real code which
-> matters.  :P
->
->  .../selftests/cgroup/test_memcontrol.c        | 23 +++++++++++--------
->  1 file changed, 13 insertions(+), 10 deletions(-)
->
-> diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-> index 8833359556f3..08681699c2f9 100644
-> --- a/tools/testing/selftests/cgroup/test_memcontrol.c
-> +++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-> @@ -658,18 +658,18 @@ static int test_memcg_reclaim(const char *root)
->
->         memcg = cg_name(root, "memcg_test");
->         if (!memcg)
-> -               goto cleanup;
-> +               return KSFT_FAIL;
+> 
+> [...]
 
-Nit: Just goto free here as well, free ignores NULLs anyway. It's
-easier to have fewer return paths and more consistent with other
-tests.
+Here is the summary with links:
+  - selftests/bpf: fix a test for snprintf() overflow
+    https://git.kernel.org/bpf/bpf-next/c/c5d22f4cfe8d
 
->
->         if (cg_create(memcg))
-> -               goto cleanup;
-> +               goto free_memcg;
->
->         current = cg_read_long(memcg, "memory.current");
->         if (current != 0)
-> -               goto cleanup;
-> +               goto destroy_memcg;
->
->         fd = get_temp_fd();
->         if (fd < 0)
-> -               goto cleanup;
-> +               goto destroy_memcg;
->
->         cg_run_nowait(memcg, alloc_pagecache_50M_noexit, (void *)(long)fd);
->
-> @@ -697,7 +697,7 @@ static int test_memcg_reclaim(const char *root)
->                         fprintf(stderr,
->                                 "failed to allocate %ld for memcg reclaim test\n",
->                                 expected_usage);
-> -                       goto cleanup;
-> +                       goto close;
->                 }
->         }
->
-> @@ -717,7 +717,7 @@ static int test_memcg_reclaim(const char *root)
->                  * not reclaim the full amount.
->                  */
->                 if (to_reclaim <= 0)
-> -                       goto cleanup;
-> +                       goto close;
->
->
->                 snprintf(buf, sizeof(buf), "%ld", to_reclaim);
-> @@ -729,7 +729,7 @@ static int test_memcg_reclaim(const char *root)
->                          */
->                         current = cg_read_long(memcg, "memory.current");
->                         if (!values_close(current, MB(30), 3) && current > MB(30))
-> -                               goto cleanup;
-> +                               goto close;
->                         break;
->                 }
->
-> @@ -738,14 +738,17 @@ static int test_memcg_reclaim(const char *root)
->                         continue;
->
->                 /* We got an unexpected error or ran out of retries. */
-> -               goto cleanup;
-> +               goto close;
->         }
->
->         ret = KSFT_PASS;
-> -cleanup:
-> +
-> +close:
-> +       close(fd);
-> +destroy_memcg:
->         cg_destroy(memcg);
-> +free_memcg:
->         free(memcg);
-> -       close(fd);
->
->         return ret;
->  }
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Nit: keep the cleanup_* naming for labels to make it obvious and to be
-consistent with the rest of the file (e.g. cleanup_free,
-cleanup_memcg, cleanup_file/cleanup_all). See
-test_memcg_subtree_control().
 
-I would honestly have one label to cleanup the memcg. Calling
-cg_destroy() on a non-existent memcg should be fine. rmdir() will just
-fail silently. All other tests do this and it's easier to read when we
-have fewer return paths. My advice would be cleanup_file and
-cleanup_memcg labels.
-
-Thanks!
-
-With these nits:
-Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
-
-> --
-> 2.35.1
->

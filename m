@@ -2,86 +2,143 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CEF357B924
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Jul 2022 17:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 557AD57B9A8
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Jul 2022 17:31:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235004AbiGTPFh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 Jul 2022 11:05:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42428 "EHLO
+        id S234711AbiGTPbl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 Jul 2022 11:31:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbiGTPFg (ORCPT
+        with ESMTP id S234179AbiGTPbk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 Jul 2022 11:05:36 -0400
-X-Greylist: delayed 251 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 20 Jul 2022 08:05:33 PDT
-Received: from vern.gendns.com (vern.gendns.com [98.142.107.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4279411C14;
-        Wed, 20 Jul 2022 08:05:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=ZfQyOsBYMPAchfb9RIgin1ZPAG//moE/GIBgoK5KNGE=; b=dpua5mNPC3u7y1wfwGMhWUHoNf
-        vebV7vrK4KoHi26ZBq2KA64BHl414nnXlIS8VXc3iscCpXSCB4oyGaIgmrp5oMksiOlgg8/mTz/2Y
-        QI4AYJEh0wp9Ubpq2nrN18kQNA/1W6Twf/CumelIwBopXRSmw08dTfUWKX8xpMrbmwXWOo+3mJk9C
-        fKPKg8i9Y2NqayvoJoS3WOc48Quj4uUN6j7x+wAARsBwm+EtG4ZIbgzcxOftjUJdC+ggTRccJCQcA
-        ByH9O+/5TpxbTgxzE7Wtj3NDGCUETIcGN8kUGiSVGXT22u2uiK/Y/+viOieQymH4/u3/ygjUEJrsg
-        Zjz1bmsw==;
-Received: from [2600:1700:4830:1658::fb2] (port=48194)
-        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.95)
-        (envelope-from <david@lechnology.com>)
-        id 1oEBGM-0003w5-CZ;
-        Wed, 20 Jul 2022 11:05:30 -0400
-Message-ID: <6f72d1ec-6624-8fc3-6848-ece1035e27de@lechnology.com>
-Date:   Wed, 20 Jul 2022 10:05:28 -0500
+        Wed, 20 Jul 2022 11:31:40 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7864F5F99C
+        for <kernel-janitors@vger.kernel.org>; Wed, 20 Jul 2022 08:31:39 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id i206so32687205ybc.5
+        for <kernel-janitors@vger.kernel.org>; Wed, 20 Jul 2022 08:31:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=benyossef-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=0pTlSpxv4exsrmTqfZ5kdf5cK1c62hSiqFaA91m5Jlw=;
+        b=xbg0a6l0ukJ3gm2QUsZry1N+T2uDbJ/t7gM35DtyK8xTwFDEpJ/CgaTrBLNuywvIMt
+         pP+csdQ/uRRtgFptpuw3mbGa/vOp7ZPSXHoSMLr1HUGJjx7HE16iNslKTXta6yTN2xij
+         gVWjbZaU1ras9rxmiQackODz5Jw3gZiVrCsKXtrHpif0qkkMDISghcv7Ih1DSDvS1OVd
+         n7uf/aLgJ/LmpG58pkynXgEGzTLhz20S33olOx59J442bSKcQqfO06KLa4gMlo4P6CeW
+         9F9usiuamLUU5f3IbTpegEO1DE5cSKjGEvgLc1rivPX4M8DtNmdicV04een+Cd1Q0Aur
+         bZsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=0pTlSpxv4exsrmTqfZ5kdf5cK1c62hSiqFaA91m5Jlw=;
+        b=vrYCNKxglIyhQaMFpNAFzIA5ol5NuF5biniVW1/FRmNHeXEzP4wAMAA6pd4V0bB0hn
+         VKQBwq0ZPaF9PBV9PnEQ2AuUMFRtHP+sjxPdeKqr9E0buPlnAo3TJjLg1z63eBr/Myk7
+         pr8WXSa4qtC2GdItc67fX7jY7VA4ZncBAoS0kBZtJHcHhD+qHqqNp2O7fo8v+lRXt8iz
+         uX+qzfoiTZxbW+Ya49i3tgu0UsRkF1THRekoD9xEU+tQGLPev/RdaH6mpax4yeKV8ybl
+         2SUsjBPBf7gNgg0RusbU6WlOwIp7cKybZTUwXMTkr+ZLPdPK/a3TEuL6kQfwVx5ebzJu
+         jCzg==
+X-Gm-Message-State: AJIora9xvB5QTUwdrExCw+C0Q2Rwhvj/ljYV1P+cYijGTD0du5/aTPS3
+        SiUUk6I2SZkAvwTz2dXXeh/liqX7SOLENy+Xdh+iOg==
+X-Google-Smtp-Source: AGRyM1vfgKge2FP7ohRgsJX8BJYOJrEA9DPEsIsss1QJmRkXI8cZ1gaM01fvHf0F/QwRgwy8mu7jGiFHrGguCjBgySw=
+X-Received: by 2002:a25:dd0:0:b0:670:85ee:166a with SMTP id
+ 199-20020a250dd0000000b0067085ee166amr6849957ybn.539.1658331098621; Wed, 20
+ Jul 2022 08:31:38 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH] clk: davinci: remove PLL and PSC clocks for DaVinci
- DM644x and DM646x
-Content-Language: en-US
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Sekhar Nori <nsekhar@ti.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220720082934.17741-1-lukas.bulwahn@gmail.com>
-From:   David Lechner <david@lechnology.com>
-In-Reply-To: <20220720082934.17741-1-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <f47cdaa7067af0ae2eeeca52cee2176cdc449a22.1658323697.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <f47cdaa7067af0ae2eeeca52cee2176cdc449a22.1658323697.git.christophe.jaillet@wanadoo.fr>
+From:   Gilad Ben-Yossef <gilad@benyossef.com>
+Date:   Wed, 20 Jul 2022 18:31:27 +0300
+Message-ID: <CAOtvUMe3AFbKUCR4L3=Zm9_UxVJNRqxjcU+CR5LHG3B=y839fg@mail.gmail.com>
+Subject: Re: [PATCH v2] crypto: ccree - Remove a useless dma_supported() call
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Linux kernel mailing list <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Christoph Hellwig <hch@infradead.org>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 7/20/22 3:29 AM, Lukas Bulwahn wrote:
-> Commit 7dd33764486d ("ARM: davinci: Delete DM644x board files") and commit
-> b4aed01de486 ("ARM: davinci: Delete DM646x board files") removes the
-> support for DaVinci DM644x and DM646x boards.
-> 
-> Hence, remove the PLL and PSC clock descriptions for those boards as well.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Hi,
+
+
+On Wed, Jul 20, 2022 at 4:29 PM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
+>
+> There is no point in calling dma_supported() before calling
+> dma_set_coherent_mask(). This function already calls dma_supported() and
+> returns an error (-EIO) if it fails.
+>
+> So remove the superfluous dma_supported() call.
+>
+> Moreover, setting a larger DMA mask will never fail when setting a smalle=
+r
+> one will succeed, so the whole "while" loop can be removed as well. (see
+> [1])
+>
+> While at it, fix the name of the function reported in a dev_err().
+>
+> [1]: https://lore.kernel.org/all/YteQ6Vx2C03UtCkG@infradead.org/
+>
+> Suggested-by: Christoph Hellwig <hch@infradead.org>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > ---
+>  drivers/crypto/ccree/cc_driver.c | 13 +++----------
+>  1 file changed, 3 insertions(+), 10 deletions(-)
 
-Reviewed-by: David Lechner <david@lechnology.com>
+Acked-by: Gilad Ben-Yossef <gilad@benyossef.com>
+
+Thank you,
+Gilad
+
+>
+> diff --git a/drivers/crypto/ccree/cc_driver.c b/drivers/crypto/ccree/cc_d=
+river.c
+> index 7d1bee86d581..cadead18b59e 100644
+> --- a/drivers/crypto/ccree/cc_driver.c
+> +++ b/drivers/crypto/ccree/cc_driver.c
+> @@ -372,17 +372,10 @@ static int init_cc_resources(struct platform_device=
+ *plat_dev)
+>                 dev->dma_mask =3D &dev->coherent_dma_mask;
+>
+>         dma_mask =3D DMA_BIT_MASK(DMA_BIT_MASK_LEN);
+> -       while (dma_mask > 0x7fffffffUL) {
+> -               if (dma_supported(dev, dma_mask)) {
+> -                       rc =3D dma_set_coherent_mask(dev, dma_mask);
+> -                       if (!rc)
+> -                               break;
+> -               }
+> -               dma_mask >>=3D 1;
+> -       }
+> -
+> +       rc =3D dma_set_coherent_mask(dev, dma_mask);
+>         if (rc) {
+> -               dev_err(dev, "Failed in dma_set_mask, mask=3D%llx\n", dma=
+_mask);
+> +               dev_err(dev, "Failed in dma_set_coherent_mask, mask=3D%ll=
+x\n",
+> +                       dma_mask);
+>                 return rc;
+>         }
+>
+> --
+> 2.34.1
+>
 
 
+--=20
+Gilad Ben-Yossef
+Chief Coffee Drinker
+
+values of =CE=B2 will give rise to dom!

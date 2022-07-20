@@ -2,72 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5688357B78D
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Jul 2022 15:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD91357B934
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Jul 2022 17:10:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232126AbiGTNcT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 Jul 2022 09:32:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57750 "EHLO
+        id S232355AbiGTPKK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 Jul 2022 11:10:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230522AbiGTNcS (ORCPT
+        with ESMTP id S233075AbiGTPKJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 Jul 2022 09:32:18 -0400
-Received: from smtp.smtpout.orange.fr (smtp-23.smtpout.orange.fr [80.12.242.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF75E6590
-        for <kernel-janitors@vger.kernel.org>; Wed, 20 Jul 2022 06:32:17 -0700 (PDT)
-Received: from [192.168.1.18] ([90.11.190.129])
-        by smtp.orange.fr with ESMTPA
-        id E9o9ojg4KgXAiE9o9oZBCH; Wed, 20 Jul 2022 15:32:15 +0200
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Wed, 20 Jul 2022 15:32:15 +0200
-X-ME-IP: 90.11.190.129
-Message-ID: <a66632a1-9cde-1b3c-afa9-8f63bd4a9cf0@wanadoo.fr>
-Date:   Wed, 20 Jul 2022 15:32:07 +0200
+        Wed, 20 Jul 2022 11:10:09 -0400
+Received: from vern.gendns.com (vern.gendns.com [98.142.107.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 322EB289;
+        Wed, 20 Jul 2022 08:10:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=3KSfFl2VG3+nl2ie2xVTPjp2f54MPugBn50jpJsYfJo=; b=XObB/kq1bhuNwm1c6HUL6FB8sh
+        z8rOB1C7g4wZvj07laYvfxG2DY2MnojaeTKNmXxzVbcyqeE9V5FZ2kK0YthxP0PYejXXSdrhF1+ro
+        hyD1vCQrSq4uXqske8gw5pvlYmf8VDTFLCNO/rBXYYE67bEC9QWnzllLhAgXdwipIlWxGIne6GdWj
+        vHs6DqZ0ZZCA8LribtVf1kBTnsEVzd1MOXLbVvlBdFyotRYcyFhfvUUq3vC3QG9wG2OY3AsVOlBx1
+        /35s2vkVSpHfXA+G9WpE0gW0l0eQ7cknirPF7GgVOKO4q2j+CRqavBJYBCjuFkfaju/xMjUabCkoJ
+        khIejlHA==;
+Received: from [2600:1700:4830:1658::fb2] (port=48190)
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <david@lechnology.com>)
+        id 1oEBCJ-0002vx-FK;
+        Wed, 20 Jul 2022 11:01:19 -0400
+Message-ID: <0e63b732-57ba-e7b3-3b2e-1e75bebba7d2@lechnology.com>
+Date:   Wed, 20 Jul 2022 10:01:17 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.1
-Subject: Re: [PATCH 2/3] ocfs2: Remove a useless spinlock
+Subject: Re: [PATCH] MAINTAINERS: add header file to TI DAVINCI SERIES CLOCK
+ DRIVER
 Content-Language: en-US
-To:     Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc:     David.Laight@ACULAB.COM, jlbec@evilplan.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mark@fasheh.com, ocfs2-devel@oss.oracle.com
-References: <bd6796635e58f9c47cf857573c3b9474a00ce26a.1658224839.git.christophe.jaillet@wanadoo.fr>
- <8ba7004d330cbe5f626539a8a3bff696d0c4285e.1658224839.git.christophe.jaillet@wanadoo.fr>
- <7b644e5d32d74d3d90dfc5b1786ae5b9@AcuMS.aculab.com>
- <29c3fbdd-7695-46c5-bb75-fe358c574ab3@wanadoo.fr>
- <07c924de-78bf-c993-ce73-635af71f4edd@linux.alibaba.com>
- <f313cb6f-de75-2447-eebc-5c240bc243a2@wanadoo.fr>
- <65e6bbcb-2c33-2e43-1826-a62387572310@linux.alibaba.com>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <65e6bbcb-2c33-2e43-1826-a62387572310@linux.alibaba.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Sekhar Nori <nsekhar@ti.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220720110026.9173-1-lukas.bulwahn@gmail.com>
+From:   David Lechner <david@lechnology.com>
+In-Reply-To: <20220720110026.9173-1-lukas.bulwahn@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 20/07/2022 à 11:48, Joseph Qi a écrit :
+On 7/20/22 6:00 AM, Lukas Bulwahn wrote:
+> While creating a patch submission on the davinci clock drivers, I noticed
+> that the header file include/linux/clk/davinci.h belongs to the section
+> TI DAVINCI SERIES CLOCK DRIVER.
 > 
-> These code are introduced long time ago...
-> Refer to commit b4df6ed8db0c "[PATCH] ocfs2: fix orphan recovery
-> deadlock", I guess it plays a role 'barrier' and make sure test node map
-> is executed prior than signal orphan recovery thread. In other words, to
-> serialize evict inode and orphan recovery.
+> Add a file entry for this header file in TI DAVINCI SERIES CLOCK DRIVER.
 > 
-> Thanks,
-> Joseph
-> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
 
-Ok, so just leave it as-is.
+Reviewed-by: David Lechner <david@lechnology.com>
 
-Should I resend the serie without this patch, or can 1/3 and 3/3 be 
-applied as-is?
-
-CJ

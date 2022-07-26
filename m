@@ -2,182 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC531581654
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jul 2022 17:24:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4240F58170E
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Jul 2022 18:13:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230149AbiGZPYM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Jul 2022 11:24:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53248 "EHLO
+        id S234016AbiGZQNz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Jul 2022 12:13:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236499AbiGZPYL (ORCPT
+        with ESMTP id S229725AbiGZQNy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 Jul 2022 11:24:11 -0400
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45D406365
-        for <kernel-janitors@vger.kernel.org>; Tue, 26 Jul 2022 08:24:10 -0700 (PDT)
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26QEEZiv017237;
-        Tue, 26 Jul 2022 15:24:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : content-type : mime-version; s=corp-2022-7-12;
- bh=+i7pPniGJ20bBX28h+dbEY1+wM/frZoHEYGjv5f3CHQ=;
- b=zJvkWeFNTpnXhsuGqRtPT6Vf7yY3wwEkIivnml0NdisKdamPShL3C8CeJiRZpywdZPv+
- NNodI2/wqXJMhlqXxQWWrOOhHYn8HLa4qeknyzfYfDB1+p86UX9aQRLBLLLSBlkH5LEO
- 53Bs5PSl2XSN//UyVRSvpdVXao/g3YnXjdZ8wjZ1nKtKr7gOBKkXcW5MGRFCuG3YzMGV
- FOSJWF3sR5B6B0qMG4HsWXUmzVw26TR9/jS7mYsxhZ7I1Zp4o5EF6rT+IB6BORquxLxQ
- nNLGGzNQ0itNEpSqZqTsc2NaXnDiIe/ozGx1mxC6h2rglzyWRZzFYemSpOn5E77QYpLE bg== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3hg94ger9e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 26 Jul 2022 15:24:00 +0000
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 26QETm0w016588;
-        Tue, 26 Jul 2022 15:23:59 GMT
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2176.outbound.protection.outlook.com [104.47.56.176])
-        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3hh650ndsh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 26 Jul 2022 15:23:59 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=J6JcWapDFC+V7bDIhXVg2cZDo4ixW299RrItN9zl/yyD0rr+7xLPG2z0xt9Ot2FZFjiwB7rZ4JYtcDkPpPJtW9Rrw5igiH/gT6U9ZDidZTlMKwP/QVo5OGX5htw7CaREJIgorB9qa4ami+7o4jVrGnSBGLUQ2xBDIQNviW8umin3MJrkjpmcTn7kuBYx7Ih9S2awAeqioVajnycFi2MBvnW3pzDx7aFCfkz3pdksfLxga/dzhGfUXE7kh2VaTx8Rzu3N2lkTb2JTlMCt4A/6TQhIkPTeV28oESg+mAeusI+saQzO8mOmnp1ShEwtImar6rIf8AcJtUhcHl2UfcOPXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+i7pPniGJ20bBX28h+dbEY1+wM/frZoHEYGjv5f3CHQ=;
- b=heNWCB2EZGHqJOa9RzFY5TpOfoATSWp0zyKF3qK7gGDWfkZuwQp8rd2jtEcEQIJ514GSe6DNgT5HzLPr7JpHM9iklfuoaMHRQltK8/hxFiUjECeyu4d7beswAjC0vD6Imna/R+dqEJVKAcSSSk1O1WlMEuW/Sz+eTx4nM6wwDvtHfag8ODnDloSn6vvR99MXtdH7Nzh1H6U74J2jQwSD0bvQp/xg6w/UlpUv0zGRnXQwV9melJ8dFXhHUqp3Y892i86PHjiUaMmsPzUMswSPN/uAP3ubccQu/eb799zCbVm6cv5ec1nFdFJAvIaCM9IcunEycz/d7yNaVbmxUKS26A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        Tue, 26 Jul 2022 12:13:54 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E11F1222A6
+        for <kernel-janitors@vger.kernel.org>; Tue, 26 Jul 2022 09:13:53 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id d10so13634428pfd.9
+        for <kernel-janitors@vger.kernel.org>; Tue, 26 Jul 2022 09:13:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+i7pPniGJ20bBX28h+dbEY1+wM/frZoHEYGjv5f3CHQ=;
- b=mEMGogeQg9vkY8+pcWbihbi8SosOJ5xs74bnNDsB/yVzp6MGjpPZoQmOTX+yq8ud/FnOAAk4MlDGxoFnAZVkJTabSigGBKbymdKSAHIkEIglrT8V5HYi8TBHiCD4l/VVtLzp0xfzcForsuWOz514Sz2Wvsjd4SAnunIUR47pxbc=
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28) by IA1PR10MB6219.namprd10.prod.outlook.com
- (2603:10b6:208:3a4::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5458.23; Tue, 26 Jul
- 2022 15:23:57 +0000
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::24dc:9f9a:c139:5c97]) by MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::24dc:9f9a:c139:5c97%4]) with mapi id 15.20.5458.025; Tue, 26 Jul 2022
- 15:23:57 +0000
-Date:   Tue, 26 Jul 2022 18:23:41 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Harry Wentland <harry.wentland@amd.com>,
-        Fangzhi Zuo <Jerry.Zuo@amd.com>
-Cc:     Leo Li <sunpeng.li@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Fangzhi Zuo <Jerry.Zuo@amd.com>, Wayne Lin <Wayne.Lin@amd.com>,
-        Lyude Paul <lyude@redhat.com>,
-        Mikita Lipski <mikita.lipski@amd.com>,
-        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
-        Roman Li <Roman.Li@amd.com>, Claudio Suarez <cssk@net-c.es>,
-        Ian Chen <ian.chen@amd.com>, Hersen Wu <hersenxs.wu@amd.com>,
-        amd-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] drm/amd/display: Fix apply_synaptics_fifo_reset_wa()
-Message-ID: <YuAG/ekcSSFqdeMU@kili>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-ClientProxiedBy: ZR0P278CA0174.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:45::20) To MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28)
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=2geObz/qPbQ0zmW0zjdppN56rmNh6IuNe6i2t19UWOo=;
+        b=Rt9fgl5bro43McYvqHzz/+frXK4LzU7jzC5TYwXrlDZ+Y104g0z+vFvroXSdKc/njX
+         RHH32uunrRXXvVwcxSxiS8RoFxTs+jY7BreaiUZ7ZubMf+Q7FAGJVVGOZVC191UUzVzM
+         dOwrbWtu7DpDkBgo7UZIrp5VKDJmleOc66amyrSbxfCmySawyWmlSgZ3A62/WGxE8NSc
+         klPM3Q+jghE4gyrPJiRbH1fjCxyhpN2I5/jCTVRl+Mrg7Np+aUH605Smt2Wkz3UtA0sQ
+         U0vyWv1eYdUx+ku8lXeq0uhMZuxob/aqIn+zloLC0uZR5+9rHMFvQue/81TNJkqEOtH5
+         Oh8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=2geObz/qPbQ0zmW0zjdppN56rmNh6IuNe6i2t19UWOo=;
+        b=Kuo9XnwmZQqLx6ayTaCvBFMFc64jwuEOpvyq0lgh9dXqBgpC5OO2geuk4RhiHQtTtT
+         dNPkTViKJ1CeUkqrrVsWtkltm9zfFMjamMG8UF5Io7YUy4TOpPGIw1WvZp2pkT3at7uf
+         k33bm2vgfwWF3PLQMPhGGcS6/k2T9VdLYdbkVZmiwWqiVZoy/15pruLpKdumq7X/LHkp
+         nlGGMQHDJ5rMhUYWeivRcwfhK5SvnEo9A5jPk3/+LVQaA7x6twV8omEAl12IQt6NOtb6
+         aOTC57Gc4Stwx1CsH1Oszsry7WDo7xxiwAT3SY+AylN7Qlq9fAZk2e2CWTTSFDv/kzOE
+         rXyw==
+X-Gm-Message-State: AJIora+B9Xjzu+jYyZEKycRsUPGkBcN0vVpMxDDioxTEK2jL7u6mxYUb
+        AWqIFn2QwABMWab/p3YCEi3MDPNu9eKQN/ens3PwoRn6nboXnW1P
+X-Google-Smtp-Source: AGRyM1tM1WXjX1qyBeNgdVfOZaathJcU+MReshQiI5oXGLN4CZZNNh1gXsXq2vp5m8sRzt45C5Xeu2DqvgP4RDxZnIo=
+X-Received: by 2002:a67:cb11:0:b0:355:84b2:5c58 with SMTP id
+ b17-20020a67cb11000000b0035584b25c58mr5062179vsl.43.1658852022650; Tue, 26
+ Jul 2022 09:13:42 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e09f936c-3a7b-4f2c-8eef-08da6f1adb80
-X-MS-TrafficTypeDiagnostic: IA1PR10MB6219:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Q3TamLNQhRwKOLl5/jDQ6OLnvffTOFgnYPTjUwIiTvRfaXW+8ck7Vy+dQkJfi2nIyerOrLPwToCt+vH9UzrWv36BLmELkt5lEX0Gqn+N0x4yp6o4h3QMohquC/L6NBDFFeN51UXqAypZvXvLBhcUE2rMIwxETImkCnLmZCOw4b/Mb8//MXFewNok1GmcMQg/bX8SNxw1Xw/fvOlLGPt/jSV77gSwxWFqm5uiJrIevwzC0kl1LRFbVed/n8A+dmbPNDP/P7Vb7xmzf/A/AK15lz9aKQR7g34kkLpzuhXaqKYg9pyoUN6CrYuZvV7WnEjuLHPfDeZpIQ2t6N9tm6w02OWEWWZGPNaPtUi0CThxnFCNGSJAcPYuqLzc+87M6n9E7QqzsYt3V/Gc2dLDsvyBZSlOG7JkdA09+M1vABbTQaq0/ibYfeSor72vWld25pe19VH6a7kUVGhV4ssorzaAw0mNQ9Yq0GaWxNKHdPZio713TROBXfTll8DjPG6apjSS0omUAzGrXJcIdfM7kVNNaqARfVcUJ0g4h7sW3UsQoKNbzLz9ZTPUwrJRg4PRNStBXfTvYaqwAKgsrz4h+I34toXAskRRaGU3dO5VUXapnWmHphIGy2oaaEpB5+oZn1SvtbP5cW9CZD1YzpH2kHuwBCxtk3L6qj3TyEjymTYX9LrMY1H15lCDKIFONeMK4BfIFtXIM/j35nON/ly4YgfGbcxHbJ99qQH/zVqXuRaPpOBVW2DQPXMA/tShFh5G6IHalD+K0JP5JP8xcLzfsHZuE1AXle3iCw4S53i+hlR6NcY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(7916004)(39860400002)(136003)(376002)(396003)(346002)(366004)(33716001)(2906002)(316002)(54906003)(110136005)(52116002)(6506007)(6486002)(478600001)(41300700001)(6666004)(44832011)(66476007)(66946007)(7416002)(8676002)(5660300002)(66556008)(4744005)(4326008)(8936002)(83380400001)(86362001)(38100700002)(38350700002)(6512007)(9686003)(186003)(26005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?hYncGiKNLES3YERw6mobtzRYrc5MsPhq3y+O7XDS3UAoUwiyWG4n5H26Vltq?=
- =?us-ascii?Q?3pEEfHkoGbdUWMfYdlYnjM+4aUtr2h3TRUpPSfg1t8WgeAzoV/ES6e4LWjY1?=
- =?us-ascii?Q?4mmx17bUBf0OFu1Vre+AOn/bpEOWp1SAahPUIUTkkG4+IquHxBFTPL9cCQkc?=
- =?us-ascii?Q?dlHGW+IM/WB/3kdzbIuk+enbe55ZOuuhkueAbJxh1rZw1lthtVP62nnYcf7I?=
- =?us-ascii?Q?YckhjaQ7JTmCwvQmTsG75MVh6TC6pv7r65Oyd/G3/ExtwdeI8nInsHnv3zbk?=
- =?us-ascii?Q?9y3DwWqXR3dpjtLRUlY9sBktTklQj6Et41mkC5H8u/I+fmh+sfGa1Xh7maU2?=
- =?us-ascii?Q?f9GsfvXaLJaakVfPHPdj7WGskDKfE4YzVPxyQ/qEC9pUAvYR7/WFcb1z8JLm?=
- =?us-ascii?Q?3MfmGd9n3LoZWsLcZ3vDgkumKqpM2HrrOU6IRmN8pe9h2fUgKRPvtLT51Gwj?=
- =?us-ascii?Q?XFXfMJp4z8DfZRj1ZcuzwMwCxRAJ4NL9jKFjCUxQboPLvkMpCBKkjgONj1Ac?=
- =?us-ascii?Q?QpyGf+XtEplll8SWP9ooOkLQ1S7DMGEMHGbuYbtqxhm9NMRTZyg5O/VkOQTW?=
- =?us-ascii?Q?fpV51gJPTrKJrs+8zePaaGLnTzX2rQp/I2fDe1zsPaJAM1gY2cVivjQEMUpl?=
- =?us-ascii?Q?h/6Ef17TSwOksiQDmfVam2Dc7k0le84mbzw6EEcEdos6hip7FvQU+HHtZXu+?=
- =?us-ascii?Q?Z41LfJIb2vD4btxmHg+XCm/4ylO3yMRd4PSrb+6f4bOsSHIayFdtQ63fHkt8?=
- =?us-ascii?Q?RDuh4fXL0Buvup1HF/a+v4/tWSniBTDqOKLBgJYaX8C3OsKYDcUxBF0Mqyph?=
- =?us-ascii?Q?jK5X9pnQ50fBJ2UHZoYOYyh33iahor9MFpkfkEH5T9wY3qIXyiUdDNtrfM4j?=
- =?us-ascii?Q?NBe9e+iWeNdN9zKCCNgrgW8D9RJN+EmvhAlnNCwUP9TzpBdHgfYaj+8aGr55?=
- =?us-ascii?Q?dzSGlKPLr4V87cNWW3nal3KvLynHbQb2HN7/qprUggiYkvBUKshDqb3uAFcB?=
- =?us-ascii?Q?ke8uOcuDajlZVn2XOddMNgRMGCBvdbkFR74Au1xo0NXqt9gaE9wXVa9XpZVC?=
- =?us-ascii?Q?yo33TF+u0+ln8gH/2b34kvWyNdoQ6Yk4trE4r4VrWynVOj6M0eeCrnNLxoIi?=
- =?us-ascii?Q?B1WGUYeHbTIYTnUQmE/0bHn5GV9KgpdaReSL0blrnmLA/JiJqSe7sLycUL6y?=
- =?us-ascii?Q?8WqO7HJUrbTJg+yZD++4On34mkJ8LRNohkUjobwaLWsnPZUBmJfKfiaHOl1v?=
- =?us-ascii?Q?E/iZinhK4f8xd0GAOEDotTihzjUOXhQQrSBbLpvL/Hv/UcpuENeUpxTnDYbb?=
- =?us-ascii?Q?taspEJAa5Q6GktleQvTcMhZE+bRHtvZLCLrVRiwjunEVTy0ZeddTBzkQ9HrZ?=
- =?us-ascii?Q?YmsXPUhKkX0EYcZq7VQzDtmiJU3U1DOUGO3IKAfs/HSEyDgpLULJQDKV3vrs?=
- =?us-ascii?Q?NHEgRO7mmmP5wqaP6QXkVX57s73Fqf4UjJRoXU6gJoL/HLCaiNVlixORFnUA?=
- =?us-ascii?Q?/OCx1kqVZNIpnwMDLmU9o6qSB0UlWsNGC94lCpJPP2DNDdO7PqgMxVDTWsKv?=
- =?us-ascii?Q?3BXmeuNMtMEPSVJFmSbeN8LszmSSMqNtKc+BC87+8ecBwZ3ZD6bEbli/Iijl?=
- =?us-ascii?Q?PA=3D=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e09f936c-3a7b-4f2c-8eef-08da6f1adb80
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jul 2022 15:23:57.1470
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 26IRn3dVtTVeiCAwVBbLp+Z6+I+9Gt7ad+OXNGX0gGAImT8aUDaJDHIMeEJJZ/jGdrM2NS0IVR+QNAdTAI7Dz5vS5ZK3TPLwhZlISKBwA4k=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB6219
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-26_04,2022-07-26_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0 bulkscore=0
- adultscore=0 mlxscore=0 mlxlogscore=999 spamscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2206140000
- definitions=main-2207260059
-X-Proofpoint-GUID: sLcbd3ifPkI0PeZ6vYKtKU7dWTSEJXyY
-X-Proofpoint-ORIG-GUID: sLcbd3ifPkI0PeZ6vYKtKU7dWTSEJXyY
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a67:ea88:0:0:0:0:0 with HTTP; Tue, 26 Jul 2022 09:13:40
+ -0700 (PDT)
+Reply-To: cfc.ubagroup09@gmail.com
+From:   Kristalina Georgieva <ubagroup.tgo12@gmail.com>
+Date:   Tue, 26 Jul 2022 09:13:40 -0700
+Message-ID: <CADnAz76iUa+_xww5v1cdHuTFQKQA-8BC8Y_kWFDP_dd52VX+uA@mail.gmail.com>
+Subject: =?UTF-8?Q?GOWY_T=C3=84ZELIK?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,UNDISC_FREEM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is a stray return which accidentally turns the last part of the
-function into dead code.
+Hormatly pe=C3=BDdalanyjy,
+Bu haty size bir a=C3=BD =C3=B6=C5=88 iberipdim, =C3=BD=C3=B6ne sizden e=C5=
+=9Fitmedim, =C3=BDok
+Al=C3=BDandygy=C5=88yza ynan=C3=BDaryn we =C5=9Fonu=C5=88 =C3=BC=C3=A7inem =
+size =C3=BDene iberdim,
+Ilki bilen men dolandyryjy m=C3=BCdir Kristalina Georgi=C3=BDewa we
+Halkara Wal=C3=BDuta Gaznasyny=C5=88 prezidenti.
 
-Fixes: 2ca97adccdc9 ("drm/amd/display: Add Synaptics Fifo Reset Workaround")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-From static analysis.  Untested.
+Aslynda, t=C3=B6weregind=C3=A4ki =C3=A4hli p=C3=A4sgel=C3=A7ilikleri we mes=
+eleleri g=C3=B6zden ge=C3=A7irdik
+doly d=C3=A4l amaly=C5=88yz we t=C3=B6legleri =C3=BDerine =C3=BDetirip bilm=
+ezligi=C5=88iz
+opsi=C3=BDalary =C3=BC=C3=A7in size gar=C5=9Fy t=C3=B6leg t=C3=B6len=C3=BD=
+=C3=A4r
+=C3=B6=C5=88ki ge=C3=A7irimler, tassyklamak =C3=BC=C3=A7in sahypamyza giri=
+=C5=88 38
+=C2=B0 53=E2=80=B256 =E2=80=B3 N 77 =C2=B0 2 =E2=80=B2 39 =E2=80=B3 W.
 
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c | 1 -
- 1 file changed, 1 deletion(-)
+Biz direktorlar ge=C5=88e=C5=9Fi, B=C3=BCtind=C3=BCn=C3=BD=C3=A4 banky we P=
+ul gaznasy
+Wa=C5=9Fington, Halkara Halkara Pul Gaznasy, B=C3=B6l=C3=BCm bilen bilelikd=
+e
+Amerikany=C5=88 Birle=C5=9Fen =C5=9Etatlaryny=C5=88 Gazna we k=C3=A4bir be=
+=C3=BDleki der=C5=88ew guramalary
+Amerikany=C5=88 Birle=C5=9Fen =C5=9Etatlarynda degi=C5=9Flidir. sargyt etdi
+Da=C5=9Fary =C3=BDurt t=C3=B6leg t=C3=B6leg b=C3=B6l=C3=BCmimiz, United Ban=
+k
+Afrika Lome Togo, size $ VISA karto=C3=A7kasy bermek =C3=BC=C3=A7in
+Gaznadan has k=C3=B6p pul almak =C3=BC=C3=A7in gaznadan 1,5 million.
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-index a0154a5f7183..0d200e276e67 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-@@ -671,7 +671,6 @@ static void apply_synaptics_fifo_reset_wa(struct drm_dp_aux *aux)
- 		return;
- 
- 	data[0] |= (1 << 1); // set bit 1 to 1
--		return;
- 
- 	if (!execute_synaptics_rc_command(aux, false, 0x31, 4, 0x221198, data))
- 		return;
--- 
-2.35.1
+Der=C5=88ewimizi=C5=88 dowamynda g=C3=B6zledik
+t=C3=B6legi=C5=88izi=C5=88 korrumpirlenen i=C5=9Fg=C3=A4rler tarapyndan gij=
+ikdirilendigine alada bildiri=C5=88
+seri=C5=9Fd=C3=A4=C5=88izi hasaby=C5=88yza g=C3=B6n=C3=BCkdirm=C3=A4ge syna=
+ny=C5=9F=C3=BDan Banky=C5=88
+hususy.
 
+Bu g=C3=BCn bolsa gaznany=C5=88yzy=C5=88 Karta berilendigini habar ber=C3=
+=BD=C3=A4ris
+UBA Bank tarapyndan VISA we eltip berm=C3=A4ge ta=C3=BDyn. Indi
+UBA Bank m=C3=BCdiri bilen habarla=C5=9Fy=C5=88, ady jenap Toni
+Elumelu, E-po=C3=A7ta: (cfc.ubagroup09@gmail.com)
+bankomat VISA karty=C5=88yzy n=C3=A4dip almalydygyny a=C3=BDtmak =C3=BC=C3=
+=A7in.
+
+Hormatlamak bilen,
+
+Hanym Kristalina Georgi=C3=BDewa

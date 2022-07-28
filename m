@@ -2,63 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99F70583CD8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jul 2022 13:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48203583DE8
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Jul 2022 13:44:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235501AbiG1LGA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Jul 2022 07:06:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36554 "EHLO
+        id S235978AbiG1LoW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Jul 2022 07:44:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234621AbiG1LF6 (ORCPT
+        with ESMTP id S236101AbiG1LoW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Jul 2022 07:05:58 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB14F65D1;
-        Thu, 28 Jul 2022 04:05:57 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id z16so1648247wrh.12;
-        Thu, 28 Jul 2022 04:05:57 -0700 (PDT)
+        Thu, 28 Jul 2022 07:44:22 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30B296591
+        for <kernel-janitors@vger.kernel.org>; Thu, 28 Jul 2022 04:44:21 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id y11so2443142lfs.6
+        for <kernel-janitors@vger.kernel.org>; Thu, 28 Jul 2022 04:44:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=yhZlWwZ2aQAcb5Ac/P4g7OKOOl/DwgChSFhZXGIU0iI=;
-        b=lnpFIPYzXyhASIKtJmQSmzazL7sezgW4TaTlf/Br8zzBAFwQ6G2hTOMlm5M6aqqNtL
-         mS8y/SBeyzSgU3q+jsMMECFP7IIRYkFLjL/V0Z27JO4oH4yHyoE3rbKc1/OPva1QvbCt
-         N0Dm1AuFaqoxxvPS3fxaPGaMt2N4+hRz+/Wf00OtKsJ68e6jGU3bBRqF1IRPlkZ64Wmm
-         0rfaDTEU8ouIq2kP6M7fFKimqyB/qbwdSpYKFxmD23s+bw92jAwFlYqTYE2WTs9v+y37
-         Kbae7pFBEmNOePixp+ZmacyZNubWczrvQWc3lqmolwV00cNziM7zFEGM9IDgD9eDOIdE
-         F+lQ==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=tbXP8qNprGm58AEISDfBUgGwntYkFNWKEaIhjBXeL5Y=;
+        b=esxMVpWf7Ufk58lF0ldIcDSVr5QyRlOOu7fM0kl4YwnV5Vpr3L9RxQ6e2shda+3p5T
+         anWabe2tUmuF197IvT7ZJkXHwAphqfxjJHhhG8AqwW3AxTfmDAk9+mbnX1rTe+W07qcr
+         iIaldCEKZiMGxnKzD0pjfoQDFG16v+3Dw5AJv4co3fpgUu9jAmIt1UoRNxePn12sb8Fm
+         IwI1IrMeaeNHgGXfoSN8rpAxfgmk3xHUlwnFlWTwO4+oqeZkbit28U/hmF4joT1SO3Jr
+         atgsaFQ8FmeveNNYRv4ffpDnZhcACv8GHUx1bZZxisrjRzOS2ZSeGpNIXNv4a43oYmSV
+         DDeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=yhZlWwZ2aQAcb5Ac/P4g7OKOOl/DwgChSFhZXGIU0iI=;
-        b=w+8J2anpuFHBBrXWgdCMuGlnRr1lFEa7DFWAFVyb9x1fXcpAlTwXXssyAKQSfKWnBp
-         MbdRTOilvsSzOQVS6ZyR8dBWsZdhxDNgm5InAhqLdUnhDJBPOC8iwTdsE+pyCV7RDEp/
-         xYcG0k6nO/vsI9xbarkjneajxCvGYtBvfWN/eGh60y7FljF91ZOh2l0UArjeFGblC3z+
-         uE3+IJjYqMqWInEtVqfQiKe/WeNxk9d3CrjzVrMlYO9WO0IJQXHo2RY7ZsyQ9GXV4CRX
-         zNWSSbqUwWHERZ+GIMejBDhv2AE2SpXmzm8b/DftfwOTf/s77Urww1MxnhOPj1M/ODWA
-         SDaQ==
-X-Gm-Message-State: AJIora/DqhUn6/Uv6Rr1B9bGr44DMaliMEwWgFYdoKuufQgvzwoD7DRh
-        Qw8qEtVjeHnuHGvEkcaDtU8=
-X-Google-Smtp-Source: AGRyM1v5rxVvmv/o67Tfzlr3gPbJIGiXB4xPfw0q0uV5+CNkpbEXDCRbqDSUDOaBCn+qZnHQwaWZxw==
-X-Received: by 2002:adf:fbc6:0:b0:21e:3960:45b3 with SMTP id d6-20020adffbc6000000b0021e396045b3mr16407847wrs.92.1659006356252;
-        Thu, 28 Jul 2022 04:05:56 -0700 (PDT)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id a6-20020a5d53c6000000b0021ea5b1c781sm701021wrw.49.2022.07.28.04.05.55
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=tbXP8qNprGm58AEISDfBUgGwntYkFNWKEaIhjBXeL5Y=;
+        b=oNuf8tPqvbzHxhSC4d8zGejh4Tp5Z+CDTD5jaaWn6HmUmVP+E8vlopP/AooY+f63Zm
+         IVBOQVQ3wDQaogeZapiEPJ1HwQHRMPaSCk4PR6z1irPFwmsmfEFZhURHfyx7x5LJ0fJX
+         uPyAY4HGIdrhpp8vhTgg31O5k3Bk+H2Vw4aABeWhLA8eXGA+vdT8Smt/ced0NyjHiWby
+         0nOmWYlrn/SFxWuP6VOqRc+ragWbllBbDNn6PvDMiRYMNyjQJup0H3bcjjrRa/LcXdh6
+         yS3ya96NVS1PusW4fq8GzOLQvLWWOQj6SxKykyS5XqZVcwPNYTwVp2TFL8R0agOSZNkd
+         fUeg==
+X-Gm-Message-State: AJIora9qVtEdQO4YQ50yVTJoV3n9XtP3rkqcr2a9HMOBPddyVN2Z5BF1
+        qEzaUgvSMMy5bFbLSFYJsEM=
+X-Google-Smtp-Source: AGRyM1tEOsvAfwLqoLibNHpjwJhC83hvw9zfhdQw7Y85VRUWXN1y5KpC76gcjsEyggJXeii+igNP7A==
+X-Received: by 2002:a05:6512:3691:b0:48a:81ff:343d with SMTP id d17-20020a056512369100b0048a81ff343dmr9863235lfs.553.1659008659563;
+        Thu, 28 Jul 2022 04:44:19 -0700 (PDT)
+Received: from mobilestation ([95.79.140.178])
+        by smtp.gmail.com with ESMTPSA id u21-20020ac25195000000b0047fa16f71e6sm167045lfi.30.2022.07.28.04.44.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Jul 2022 04:05:55 -0700 (PDT)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Marco Felsch <m.felsch@pengutronix.de>,
-        Philipp Zabel <p.zabel@pengutronix.de>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] reset: tps380x: Fix spelling mistake "Voltags" -> "Voltage"
-Date:   Thu, 28 Jul 2022 12:05:54 +0100
-Message-Id: <20220728110554.18320-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.35.3
+        Thu, 28 Jul 2022 04:44:18 -0700 (PDT)
+Date:   Thu, 28 Jul 2022 14:44:17 +0300
+From:   Serge Semin <fancer.lancer@gmail.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
+        Dave Jiang <dave.jiang@intel.com>, ntb@lists.linux.dev,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] NTB: ntb_tool: uninitialized heap data in tool_fn_write()
+Message-ID: <20220728114417.hkhnv4lkqy6uzqq3@mobilestation>
+References: <YthJQqfMCb47jHbG@kili>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YthJQqfMCb47jHbG@kili>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -69,24 +71,57 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is a spelling mistake in the MODULE_DESCRIPTION text. Fix it.
+On Wed, Jul 20, 2022 at 09:28:18PM +0300, Dan Carpenter wrote:
+> The call to:
+> 
+> 	ret = simple_write_to_buffer(buf, size, offp, ubuf, size);
+> 
+> will return success if it is able to write even one byte to "buf".
+> The value of "*offp" controls which byte.  This could result in
+> reading uninitialized data when we do the sscanf() on the next line.
+> 
+> This code is not really desigined to handle partial writes where
+> *offp is non-zero and the "buf" is preserved and re-used between writes.
+> Just ban partial writes and replace the simple_write_to_buffer() with
+> copy_from_user().
+> 
+> Fixes: 578b881ba9c4 ("NTB: Add tool test client")
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/reset/reset-tps380x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Looks good. Thanks.
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
 
-diff --git a/drivers/reset/reset-tps380x.c b/drivers/reset/reset-tps380x.c
-index e07f5865fe30..09d511f069ba 100644
---- a/drivers/reset/reset-tps380x.c
-+++ b/drivers/reset/reset-tps380x.c
-@@ -122,5 +122,5 @@ static struct platform_driver tps380x_reset_driver = {
- module_platform_driver(tps380x_reset_driver);
- 
- MODULE_AUTHOR("Marco Felsch <kernel@pengutronix.de>");
--MODULE_DESCRIPTION("TI TPS380x Supply Voltags Supervisor and Reset Driver");
-+MODULE_DESCRIPTION("TI TPS380x Supply Voltage Supervisor and Reset Driver");
- MODULE_LICENSE("GPL v2");
--- 
-2.35.3
+-Sergey
 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/ntb/test/ntb_tool.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/ntb/test/ntb_tool.c b/drivers/ntb/test/ntb_tool.c
+> index b7bf3f863d79..5ee0afa621a9 100644
+> --- a/drivers/ntb/test/ntb_tool.c
+> +++ b/drivers/ntb/test/ntb_tool.c
+> @@ -367,14 +367,16 @@ static ssize_t tool_fn_write(struct tool_ctx *tc,
+>  	u64 bits;
+>  	int n;
+>  
+> +	if (*offp)
+> +		return 0;
+> +
+>  	buf = kmalloc(size + 1, GFP_KERNEL);
+>  	if (!buf)
+>  		return -ENOMEM;
+>  
+> -	ret = simple_write_to_buffer(buf, size, offp, ubuf, size);
+> -	if (ret < 0) {
+> +	if (copy_from_user(buf, ubuf, size)) {
+>  		kfree(buf);
+> -		return ret;
+> +		return -EFAULT;
+>  	}
+>  
+>  	buf[size] = 0;
+> -- 
+> 2.35.1
+> 
+> 

@@ -2,25 +2,25 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7264F58B0EC
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Aug 2022 22:51:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1B5A58B0F5
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Aug 2022 22:55:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237711AbiHEUv4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Aug 2022 16:51:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60674 "EHLO
+        id S237744AbiHEUzm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Aug 2022 16:55:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232791AbiHEUvz (ORCPT
+        with ESMTP id S234587AbiHEUzg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Aug 2022 16:51:55 -0400
-Received: from smtp.smtpout.orange.fr (smtp08.smtpout.orange.fr [80.12.242.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E1D14D0F
-        for <kernel-janitors@vger.kernel.org>; Fri,  5 Aug 2022 13:51:52 -0700 (PDT)
+        Fri, 5 Aug 2022 16:55:36 -0400
+Received: from smtp.smtpout.orange.fr (smtp07.smtpout.orange.fr [80.12.242.129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EBBB13E3C
+        for <kernel-janitors@vger.kernel.org>; Fri,  5 Aug 2022 13:55:36 -0700 (PDT)
 Received: from pop-os.home ([90.11.190.129])
         by smtp.orange.fr with ESMTPA
-        id K4IPokAJ0sKAkK4IPorqln; Fri, 05 Aug 2022 22:51:50 +0200
+        id K4M1oAZJDoEdDK4M1o1VPQ; Fri, 05 Aug 2022 22:55:34 +0200
 X-ME-Helo: pop-os.home
 X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Fri, 05 Aug 2022 22:51:50 +0200
+X-ME-Date: Fri, 05 Aug 2022 22:55:34 +0200
 X-ME-IP: 90.11.190.129
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 To:     Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
@@ -28,9 +28,9 @@ To:     Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] perf/arm_pmu_platform: Fix an error message related to dev_err_probe() usage
-Date:   Fri,  5 Aug 2022 22:51:12 +0200
-Message-Id: <aaebe9c12fcdb29f48fe19737cb5abee888fbb20.1659732652.git.christophe.jaillet@wanadoo.fr>
+Subject: [PATCH v2] perf/arm_pmu_platform: Fix an error message related to dev_err_probe() usage
+Date:   Fri,  5 Aug 2022 22:55:30 +0200
+Message-Id: <aaeba9c12ccdb29f48fe19137cb5abeea85fbb24.1659732652.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -52,6 +52,9 @@ Fixes: 11fa1dc8020a ("perf/arm_pmu_platform: Use dev_err_probe() for IRQ errors"
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
 Untested, but I can't see how it could work.
+
+v1 --> v2
+  - fix a typo in the comment
 ---
  drivers/perf/arm_pmu_platform.c | 7 +++++--
  1 file changed, 5 insertions(+), 2 deletions(-)
@@ -67,7 +70,7 @@ index 513de1f54e2d..02cca4b8f0fd 100644
 -	if (num_irqs < 0)
 -		return dev_err_probe(dev, num_irqs, "unable to count PMU IRQs\n");
 +	if (num_irqs < 0) {
-+		/* dev_err_probe() does not handle dev_pm, so hard-code the prefix */
++		/* dev_err_probe() does not handle dev_fmt, so hard-code the prefix */
 +		return dev_err_probe(dev, num_irqs,
 +				     "hw perfevents: unable to count PMU IRQs\n");
 +	}

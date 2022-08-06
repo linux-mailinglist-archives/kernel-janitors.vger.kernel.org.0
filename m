@@ -2,36 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57BE158B7F0
-	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Aug 2022 21:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B60BE58B7FA
+	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Aug 2022 21:42:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232878AbiHFTda (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 6 Aug 2022 15:33:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55590 "EHLO
+        id S232650AbiHFTmj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 6 Aug 2022 15:42:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232007AbiHFTd2 (ORCPT
+        with ESMTP id S231939AbiHFTmj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 6 Aug 2022 15:33:28 -0400
-Received: from smtp.smtpout.orange.fr (smtp07.smtpout.orange.fr [80.12.242.129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 619D512760
-        for <kernel-janitors@vger.kernel.org>; Sat,  6 Aug 2022 12:33:26 -0700 (PDT)
+        Sat, 6 Aug 2022 15:42:39 -0400
+Received: from smtp.smtpout.orange.fr (smtp09.smtpout.orange.fr [80.12.242.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44D2D3892
+        for <kernel-janitors@vger.kernel.org>; Sat,  6 Aug 2022 12:42:38 -0700 (PDT)
 Received: from pop-os.home ([90.11.190.129])
         by smtp.orange.fr with ESMTPA
-        id KPY3oeSDngtndKPY3oXiEg; Sat, 06 Aug 2022 21:33:24 +0200
+        id KPgyot1A2sKAkKPgyouG6I; Sat, 06 Aug 2022 21:42:36 +0200
 X-ME-Helo: pop-os.home
 X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Sat, 06 Aug 2022 21:33:24 +0200
+X-ME-Date: Sat, 06 Aug 2022 21:42:36 +0200
 X-ME-IP: 90.11.190.129
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+To:     Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        alsa-devel@alsa-project.org
-Subject: [PATCH] ASoC: tlv320adcx140: Fix a typo in a comment
-Date:   Sat,  6 Aug 2022 21:33:22 +0200
-Message-Id: <63efe8fe4e25a8ac386762d2d7cfe9bb9482333f.1659814389.git.christophe.jaillet@wanadoo.fr>
+        linux-btrfs@vger.kernel.org
+Subject: [PATCH] btrfs: qgroup: Fix a typo in a comment
+Date:   Sat,  6 Aug 2022 21:42:34 +0200
+Message-Id: <c81a4f359ff8a1443168b9c308dcd621ba24e5c5.1659814948.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -44,24 +43,27 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-s/TLV320ADCX104/TLV320ADCX140/
+Add a missing 'r'.
+s/qgoup/qgroup/
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- sound/soc/codecs/tlv320adcx140.h | 2 +-
+ fs/btrfs/qgroup.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/tlv320adcx140.h b/sound/soc/codecs/tlv320adcx140.h
-index d7d4e3a88b5c..795b5f7194e6 100644
---- a/sound/soc/codecs/tlv320adcx140.h
-+++ b/sound/soc/codecs/tlv320adcx140.h
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
--// TLV320ADCX104 Sound driver
-+// TLV320ADCX140 Sound driver
- // Copyright (C) 2020 Texas Instruments Incorporated - https://www.ti.com/
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index db723c0026bd..6d6eebaed730 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -275,7 +275,7 @@ static int __add_relation_rb(struct btrfs_qgroup *member, struct btrfs_qgroup *p
+ }
  
- #ifndef _TLV320ADCX140_H
+ /*
+- * Add relation specified by two qgoup ids.
++ * Add relation specified by two qgroup ids.
+  *
+  * Must be called with qgroup_lock held.
+  *
 -- 
 2.34.1
 

@@ -2,41 +2,42 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 926E458B65C
-	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Aug 2022 17:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8751858B67A
+	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Aug 2022 17:31:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231787AbiHFPVe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 6 Aug 2022 11:21:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43358 "EHLO
+        id S231646AbiHFPbK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 6 Aug 2022 11:31:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231553AbiHFPVc (ORCPT
+        with ESMTP id S232753AbiHFPaw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 6 Aug 2022 11:21:32 -0400
-Received: from smtp.smtpout.orange.fr (smtp08.smtpout.orange.fr [80.12.242.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EBE1E0AE
-        for <kernel-janitors@vger.kernel.org>; Sat,  6 Aug 2022 08:21:29 -0700 (PDT)
+        Sat, 6 Aug 2022 11:30:52 -0400
+Received: from smtp.smtpout.orange.fr (smtp09.smtpout.orange.fr [80.12.242.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D6A555A9
+        for <kernel-janitors@vger.kernel.org>; Sat,  6 Aug 2022 08:30:51 -0700 (PDT)
 Received: from pop-os.home ([90.11.190.129])
         by smtp.orange.fr with ESMTPA
-        id KLcFoPzRS4lbwKLcFoQo1p; Sat, 06 Aug 2022 17:21:27 +0200
+        id KLlIo37cWbJVVKLlIo44vm; Sat, 06 Aug 2022 17:30:50 +0200
 X-ME-Helo: pop-os.home
 X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Sat, 06 Aug 2022 17:21:27 +0200
+X-ME-Date: Sat, 06 Aug 2022 17:30:50 +0200
 X-ME-IP: 90.11.190.129
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+To:     pablo@netfilter.org, kadlec@netfilter.org, fw@strlen.de
+Cc:     netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] netfilter: Fix a typo in a comment
-Date:   Sat,  6 Aug 2022 17:21:26 +0200
+Subject: [RESEND PATCH] netfilter: Fix a typo in a comment
+Date:   Sat,  6 Aug 2022 17:30:47 +0200
 Message-Id: <ad0d4d6fc856ace94130a0e6ab60c9a297f0a87d.1659799260.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -46,6 +47,12 @@ s/_IPT_LOG_H/_IP6T_LOG_H/
 While at it add some surrounding space to ease reading.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Resend including the netfilter maintainers.
+
+Does MAINTAINERS need some adjustement?
+  ./scripts/get_maintainer.pl --nogit --nogit-fallback --norolestats --nol include/uapi/linux/netfilter_ipv6/ip6t_LOG.h
+doesn't find anything.
 ---
  include/uapi/linux/netfilter_ipv6/ip6t_LOG.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

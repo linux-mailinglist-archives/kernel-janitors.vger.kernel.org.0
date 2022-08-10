@@ -2,75 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF46558E31C
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Aug 2022 00:19:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F92D58E68E
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Aug 2022 07:08:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229909AbiHIWT1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 9 Aug 2022 18:19:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41754 "EHLO
+        id S229693AbiHJFIA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Aug 2022 01:08:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230238AbiHIWTR (ORCPT
+        with ESMTP id S230383AbiHJFHm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 9 Aug 2022 18:19:17 -0400
-Received: from mail-ua1-x92d.google.com (mail-ua1-x92d.google.com [IPv6:2607:f8b0:4864:20::92d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CB4427B06
-        for <kernel-janitors@vger.kernel.org>; Tue,  9 Aug 2022 15:19:16 -0700 (PDT)
-Received: by mail-ua1-x92d.google.com with SMTP id 5so5169265uay.5
-        for <kernel-janitors@vger.kernel.org>; Tue, 09 Aug 2022 15:19:16 -0700 (PDT)
+        Wed, 10 Aug 2022 01:07:42 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3610E83F02;
+        Tue,  9 Aug 2022 22:07:39 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id w19so25699175ejc.7;
+        Tue, 09 Aug 2022 22:07:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
-        bh=ej3T27wdcOl5hgxFKEEvscpLUDARFbq7IX1O4+1Fbq8=;
-        b=Z2zG9V0L+NdjYWw7XcVhjijeI3G/JwlN+Wr8/BMC9KvmoSvUaYWHvHkvZLbX2fxPiF
-         pl24ka9ZTBtxD0bxKjByr0hiz/nZLY0tNXCUvkB8zgMsAc19H3d2o3q8kQT/2Xld+qFn
-         XVYiqhjeHGpeFkL41kTBI34LvDDsxi8DaXOIsaSsPDXCQhTi9KNIlLU26gJbPHrId4ZF
-         XzHKuoYO9hIBGiALkPbJhiKqUtz/FlkHLXXPAypSYjwCQYTrQf/CxIRVPWfSdW4UXEA9
-         jih7XkET9+49pBAxoW1ufryewl8qJ+/km/GEx0SOYe0+lW03mS0OWD1IwaqzuzwIlH4z
-         3Mow==
+        h=message-id:date:subject:cc:to:from:from:to:cc;
+        bh=VbxQoe6fQMjbmMOpKGDHrB2IUNlWA7xE7c6RSpLy3Nw=;
+        b=IC7qDwj3uhTT/tFcQhX0fl7EMLGTEXGn5oBMYiSuK2Mlf8TK/1vbV1vtnOGgnf5dt7
+         PIW9KtfwJjkiVzT2qnmm15x0hvLxc6edoBw+yw5XxQxy4MrmKwkDrJOUsAnLN6qi8Lvh
+         ygKmYs2LsXBhzP8VN0k6HSklP9GJHeSfjUveBAgL08trFsbKIp6pF4zuqiZtwQv1nR/M
+         7XcLqDPUUv8/2hZbHDr+HiMz6NuhWE0aOGU9j3BZpwlgoWlFTZOrxvUeyk+wG88l0PFx
+         8emfmV2xOpJa7WgWKj5xHL46rWQF4LBpc3wKzDezENR+Mwwb4q5rH6crmhQAdYfr8GLZ
+         1dQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc;
-        bh=ej3T27wdcOl5hgxFKEEvscpLUDARFbq7IX1O4+1Fbq8=;
-        b=CNTeq/QwcuoT+ehB7ZflHFFD/taBbyark+B0YTDuy+wCjJhRDuPXnA/pnMI6t9k49U
-         +eOCESaw0WzNXuP7k0ntciAnPN9jZM4JCnx9uKJneCjntk4N2c7YgFzJPNOn/qtEF6eN
-         P95HUHbXOC3ufKA0MygIdaYX9R25ZoiDGM4PUoMnugtvcx0dev6JfXxQAUjLu+4X5Eg0
-         d1YV7hjo4ZSycweDh8nQHE4QQ6xENNLB88H/4rXl32PySYezzCuYTMdphNXGGMBYGMBX
-         mfFVelgKRvi49NGRwQ+96Vpl+0ffsVRUPCB3Oo1S5kpzVMlLWg+hl2/k97NdOvG/AcFa
-         5Dwg==
-X-Gm-Message-State: ACgBeo2+HrOryLMzyY6fjw5E0MeWLEV9zciHgfU/W5TAWUS75AAk2qXt
-        1OpaaVyWJ8vZ1PfTBEmyfu2mKspIIMC2MedS5xE=
-X-Google-Smtp-Source: AA6agR5Q5CLWgHty5izNxlgM0tVr3ZuK/IKwxU85pSpZtaWEDsgNZyQPtWUcHM6/nAClqyMHmrl2YBEPjciW34/kjB0=
-X-Received: by 2002:ab0:6287:0:b0:38c:5a1d:109 with SMTP id
- z7-20020ab06287000000b0038c5a1d0109mr8469226uao.29.1660083555570; Tue, 09 Aug
- 2022 15:19:15 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:ab0:437:0:0:0:0:0 with HTTP; Tue, 9 Aug 2022 15:19:14 -0700 (PDT)
-Reply-To: wijh555@gmail.com
-From:   "Prof. Chin Guang" <confianzayrentabilidad@gmail.com>
-Date:   Tue, 9 Aug 2022 15:19:14 -0700
-Message-ID: <CANrrfX4aP+ksiT=9A1Q7ezDS73wESxOFhv1jNLcTeDLX+qQ_6Q@mail.gmail.com>
-Subject: Good Day,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
+        bh=VbxQoe6fQMjbmMOpKGDHrB2IUNlWA7xE7c6RSpLy3Nw=;
+        b=bAUZwQyrkJz4OkfJOfpnu/ryVRqNlH0MUiUpK6xQ9jmwLrnyXcsd3Oq05Uj5eukxyZ
+         UbjT1ouxEL2JmHFDChS+sRNQPFM6IN4l9MsvVgGlZn9AWfo/wN0Xwe11hFI6U9gX7UzA
+         ldwvJd11ce+nr/JS0Nv1+jVzosMaJYuVR/DbEMEJUygvy9GsawsZdYz7505zDUh78twZ
+         tm5lUQnFeyj9m9TMjKs0dvveNug0Kc1ACX+t7z1A+lrzZgXkllV28GR4iOY0+45MML7J
+         orJuzl2TqSX42n9yzTigSEohPtCfcJWdUPHqix4JdV8PW9dARc2jo19deqaija8qjvt+
+         woQw==
+X-Gm-Message-State: ACgBeo0BkEPtHrZF+ZltOa1Rzh1j/lQ89KmCi6gSWW8uQrcnBMsf2x2n
+        dT9DZoCxQEvtDXwgGM79W4I=
+X-Google-Smtp-Source: AA6agR4Ilc9Mmk6bCf71q9Y4U7vONUnnGKet9rfY352UzgsL/7b2MdbpGf+DD7cnLyWAO/IqoW1hNA==
+X-Received: by 2002:a17:907:608b:b0:731:8a9d:5a2d with SMTP id ht11-20020a170907608b00b007318a9d5a2dmr5099609ejc.443.1660108057768;
+        Tue, 09 Aug 2022 22:07:37 -0700 (PDT)
+Received: from felia.fritz.box (200116b826504800504e9aff21bf95aa.dip.versatel-1u1.de. [2001:16b8:2650:4800:504e:9aff:21bf:95aa])
+        by smtp.gmail.com with ESMTPSA id ew12-20020a056402538c00b0043bbbaa323dsm7009781edb.0.2022.08.09.22.07.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Aug 2022 22:07:37 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        xen-devel@lists.xenproject.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H . Peter Anvin" <hpa@zytor.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH 0/4] update the xen config fragments
+Date:   Wed, 10 Aug 2022 07:07:08 +0200
+Message-Id: <20220810050712.9539-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
--- 
-Hello,
-We the Board Directors believe you are in good health, doing great and
-with the hope that this mail will meet you in good condition, We are
-privileged and delighted to reach you via email" And we are urgently
-waiting to hear from you. and again your number is not connecting.
+Dear xen maintainers,
 
-Sincerely,
-Prof. Chin Guang
+here are three patches to update the xen config fragments to the currently
+existing configs.
+
+The fourth patch is just an addition to MAINTAINERS that I saw reasonable
+after get_maintainers did not point to the XEN subsystem.
+
+It applies cleanly on next-20220810.
+
+Lukas
+
+Lukas Bulwahn (4):
+  xen: x86: set the config XEN_512GB after config change
+  xen: remove XEN_SCRUB_PAGES in xen.config
+  xen: move XEN_BALLOON_MEMORY_HOTPLUG to generic config
+  MAINTAINERS: add xen config fragments to XEN HYPERVISOR sections
+
+ MAINTAINERS                 | 2 ++
+ arch/x86/configs/xen.config | 5 +----
+ kernel/configs/xen.config   | 2 +-
+ 3 files changed, 4 insertions(+), 5 deletions(-)
+
+-- 
+2.17.1
+

@@ -2,82 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C209594F8D
-	for <lists+kernel-janitors@lfdr.de>; Tue, 16 Aug 2022 06:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8922C595451
+	for <lists+kernel-janitors@lfdr.de>; Tue, 16 Aug 2022 09:59:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229828AbiHPE1n (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 16 Aug 2022 00:27:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38064 "EHLO
+        id S231768AbiHPH7w (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 16 Aug 2022 03:59:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229744AbiHPE11 (ORCPT
+        with ESMTP id S231431AbiHPH7a (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 16 Aug 2022 00:27:27 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5964B1A6CD6;
-        Mon, 15 Aug 2022 18:06:10 -0700 (PDT)
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4M6Cb15V6RzmVpd;
-        Tue, 16 Aug 2022 09:03:57 +0800 (CST)
-Received: from kwepemm600010.china.huawei.com (7.193.23.86) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 16 Aug 2022 09:06:08 +0800
-Received: from [10.174.178.31] (10.174.178.31) by
- kwepemm600010.china.huawei.com (7.193.23.86) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 16 Aug 2022 09:06:07 +0800
-Subject: Re: [PATCH] NFS: Fix missing unlock in nfs_unlink()
-To:     <trond.myklebust@hammerspace.com>, <anna@kernel.org>
-CC:     <linux-nfs@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        <neilb@suse.de>
-References: <20220812011440.3602849-1-sunke32@huawei.com>
-From:   Sun Ke <sunke32@huawei.com>
-Message-ID: <5e947976-0808-1d32-e170-d85ef73972e7@huawei.com>
-Date:   Tue, 16 Aug 2022 09:06:06 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+        Tue, 16 Aug 2022 03:59:30 -0400
+Received: from out30-56.freemail.mail.aliyun.com (out30-56.freemail.mail.aliyun.com [115.124.30.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2C133ECF6;
+        Mon, 15 Aug 2022 22:16:21 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0VMOlAPD_1660626976;
+Received: from B-P7TQMD6M-0146.local(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0VMOlAPD_1660626976)
+          by smtp.aliyun-inc.com;
+          Tue, 16 Aug 2022 13:16:18 +0800
+Date:   Tue, 16 Aug 2022 13:16:16 +0800
+From:   Gao Xiang <hsiangkao@linux.alibaba.com>
+To:     Sun Ke <sunke32@huawei.com>
+Cc:     xiang@kernel.org, chao@kernel.org, linux-erofs@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        yinxin.x@bytedance.com
+Subject: Re: [PATCH] erofs: fix error return code in
+ erofs_fscache_meta_read_folio and erofs_fscache_read_folio
+Message-ID: <YvsoIFzRlGpqNZKg@B-P7TQMD6M-0146.local>
+References: <20220815034829.3940803-1-sunke32@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <20220812011440.3602849-1-sunke32@huawei.com>
-Content-Type: text/plain; charset="gbk"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.31]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemm600010.china.huawei.com (7.193.23.86)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220815034829.3940803-1-sunke32@huawei.com>
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-friendly ping...
-
-ÔÚ 2022/8/12 9:14, Sun Ke Ð´µÀ:
-> Add the missing unlock before goto.
+On Mon, Aug 15, 2022 at 11:48:29AM +0800, Sun Ke wrote:
+> If erofs_fscache_alloc_request fail and then goto out, it will return 0.
+> it should return a negative error code instead of 0.
 > 
-> Fixes: 3c59366c207e ("NFS: don't unhash dentry during unlink/rename")
+> Fixes: d435d53228dd ("erofs: change to use asynchronous io for fscache readpage/readahead")
 > Signed-off-by: Sun Ke <sunke32@huawei.com>
-> ---
->   fs/nfs/dir.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-> index dbab3caa15ed..1b879584d4fe 100644
-> --- a/fs/nfs/dir.c
-> +++ b/fs/nfs/dir.c
-> @@ -2484,8 +2484,10 @@ int nfs_unlink(struct inode *dir, struct dentry *dentry)
->   	 */
->   	error = -ETXTBSY;
->   	if (WARN_ON(dentry->d_flags & DCACHE_NFSFS_RENAMED) ||
-> -	    WARN_ON(dentry->d_fsdata == NFS_FSDATA_BLOCKED))
-> +	    WARN_ON(dentry->d_fsdata == NFS_FSDATA_BLOCKED)) {
-> +		spin_unlock(&dentry->d_lock);
->   		goto out;
-> +	}
->   	if (dentry->d_fsdata)
->   		/* old devname */
->   		kfree(dentry->d_fsdata);
-> 
+
+Minor, I tried to apply this patch by updating the patch title into
+"erofs: fix error return code in erofs_fscache_{meta_,}read_folio"
+
+since the original patch title is too long.
+
+Thanks,
+Gao Xiang

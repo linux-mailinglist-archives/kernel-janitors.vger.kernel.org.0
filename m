@@ -2,82 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 294D959AF1D
-	for <lists+kernel-janitors@lfdr.de>; Sat, 20 Aug 2022 19:23:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0E4159B99D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Aug 2022 08:33:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232541AbiHTRWm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 20 Aug 2022 13:22:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58280 "EHLO
+        id S233195AbiHVGci (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 22 Aug 2022 02:32:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229605AbiHTRWl (ORCPT
+        with ESMTP id S233232AbiHVGc3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 20 Aug 2022 13:22:41 -0400
-Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF12140E3C;
-        Sat, 20 Aug 2022 10:22:40 -0700 (PDT)
-Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-324ec5a9e97so195033467b3.7;
-        Sat, 20 Aug 2022 10:22:40 -0700 (PDT)
+        Mon, 22 Aug 2022 02:32:29 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 026D1286FF
+        for <kernel-janitors@vger.kernel.org>; Sun, 21 Aug 2022 23:32:18 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id l33-20020a05600c1d2100b003a645240a95so3064294wms.1
+        for <kernel-janitors@vger.kernel.org>; Sun, 21 Aug 2022 23:32:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=CsaY3CDWeiwKSPR4Rcjp0cpeUs3s2HX5HO3h9taF0tw=;
-        b=MT0HlFwnjDPFvzp+hOYa42GnudTLD7ok2Mu4xn+bz2+Iy2xrK/Pek1o4nXuIS1KLbb
-         CrGAucSQM679EdGBhUuj/To6l/jCjH/VEpW32ZKUp4WqxFOdMRE1oGn4Qv3q4TTrr0I6
-         UQX+JND5SbbdHooAx7wtYaNUXOgIlnM6OfoBB92ttrHfOx98D11UJMYx4cFy8cBYSCrS
-         q5cGSvd05A9MLa1VRh+gzg+P2zBwF3kzYJjZwEe0H7SPTWblv9Xve6rk4TnUWRzp3s9/
-         hXgGfB7Vs/HQ29L2VC74VkP+1DtSjFLM/j2NJqg0BJqfu4THC7KM6Tp6VKKi2LoqJ6ZK
-         SRkQ==
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
+        bh=o31t8HDG7QptfeLJ+04Jkz8j9NFHlDWTE2XxPfy4mY4=;
+        b=irZObN1eltJOx3RhmXoVx+SqMw2ylRDjCL9UpnvBqOYkXsfa0zfc8gQMX++2ozeENA
+         oUPBy1vKzLfnGYlo0m8FmoFZIftspFaobH80NatCz3HKITTnyeb/5+IussCPaM3ix+7C
+         +drIiDFCd2uY35Q28zXDEE078jqZbb+d7onnkjnDcB3tIUcNAFotECVcVTV1Adn39/3U
+         bUoWwrqoPFwFyoM8XHC4KX/I6DyvjmeDSNDar1AuAvv0HUORMLH7PxexW81lOj64C2/2
+         ax/Ka+CI5+hlQdOq8/JhiLSd3WiKiZNhZdP+VPLuCEaaVasEQwZTviwCeL1qHeT2te/n
+         KYTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=CsaY3CDWeiwKSPR4Rcjp0cpeUs3s2HX5HO3h9taF0tw=;
-        b=RfUDpUz2nJsSihx9UZlvIiLuNehxZMI7lu3D1gL0zCRawdXe4En7yoCiIm0AmkPCxU
-         lmz2V7z+XJRQqeEM8i8vzk2i6odLEbv8aabFriJpNHh5E2yjhQuTrcKi1C+fnoW8Ktk4
-         GWeGoxpjb02JeVkCTL+zF0Cw96XA91NgZGYrOFh7wvGwHpwW+Zd4Q7Gtz3hcmcr5xVxY
-         JQ4NKaNeByLovu77kE5XSPbJjBZApIYvhoPxY56ssZP51spvnuu068WZRVAD0cVqCtaD
-         77UNaLIXEx7xma6HNzVlmxoeBIZ0JwwaeumZIlrQKaP/a3pM5Nwocmja0SU1TtVsBi+b
-         HFdw==
-X-Gm-Message-State: ACgBeo3ATb+Y7xFVLMLu+HW9Jal/H6oSQFpsLxOCkTTEMwOGNdhpPUhw
-        sczTVAsLhrzheQeBbljAQZJVIB3gs3cU1E+yFKk=
-X-Google-Smtp-Source: AA6agR4LAyg80MpHiV53F5gZNZAmkdSJKWpf5d1cYiA8RAMxAt9xg6AW8EmhIEC+20A7rHMWdL/U2pJ22jTFg3leE3g=
-X-Received: by 2002:a81:a1d6:0:b0:339:c126:e6cf with SMTP id
- y205-20020a81a1d6000000b00339c126e6cfmr2460710ywg.15.1661016159969; Sat, 20
- Aug 2022 10:22:39 -0700 (PDT)
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc;
+        bh=o31t8HDG7QptfeLJ+04Jkz8j9NFHlDWTE2XxPfy4mY4=;
+        b=7vYdSzxaUVrM53oVmF9fPaEtxj/7NJ8R8S+53DvHSpHmnYKl2W8CgBjRJufeX601pY
+         sIZTm3QGA7m17mPBFKEhMpgc1grvgCA6HfuM18Mw03gyFKofhh0afc8hWKKhEQ6rsLOm
+         JiE4lsFZbgjvyu3czgrdioKG4CKZaOARemdN1qV9F/RvrRbmxkM+3y0QQoNOBtSv/erY
+         sdCCPCNQAWTvlJkABQjsJsjfdzJ5Kdx7iiptn0fFYWrM83A7IsfVCGamJflf+yQS/CtN
+         ycRdTGXXeXs8sII4m5scNgjDiicMAUzHCBPBSYGePcUL4f1sQ1nHWhECkODC2s2fPkWA
+         /xng==
+X-Gm-Message-State: ACgBeo2lt8puYBpTnmBTQvLgaJp2NX4OCK8tw3sgZiavPH3+ZcsgT61a
+        Fz4fI1hOleFSQuKjVUnK3k51YQDKUHAeTOqNmzU=
+X-Google-Smtp-Source: AA6agR5256tAvfVJJO0CQj9RF4tqybY0R03VAdi4u2vcjxkoZrb/NBSUotfOfLcq9p1Xs6FjvMmoSzFmOU8vM+F0gg8=
+X-Received: by 2002:a05:600c:35cc:b0:3a6:f08:9b1 with SMTP id
+ r12-20020a05600c35cc00b003a60f0809b1mr10838510wmq.22.1661149936586; Sun, 21
+ Aug 2022 23:32:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <be4b863bacf323521ba3a02efdc4fca9cdedd1a6.1659855351.git.christophe.jaillet@wanadoo.fr>
-In-Reply-To: <be4b863bacf323521ba3a02efdc4fca9cdedd1a6.1659855351.git.christophe.jaillet@wanadoo.fr>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Sat, 20 Aug 2022 19:22:29 +0200
-Message-ID: <CAFBinCB=JR1MtF3VX7qnf_puwB5dQ1u1ppMTpvSd4oAxLkV91w@mail.gmail.com>
-Subject: Re: [PATCH] mmc: meson-gx: Fix an error handling path in meson_mmc_probe()
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org
+Received: by 2002:a5d:5444:0:0:0:0:0 with HTTP; Sun, 21 Aug 2022 23:32:15
+ -0700 (PDT)
+Reply-To: maddahabdwabbo@gmail.com
+From:   Abd-jaafari Maddah <sheishenalyeshmanbetovichu@gmail.com>
+Date:   Sun, 21 Aug 2022 23:32:15 -0700
+Message-ID: <CALX-7+1qNb9UdqGCv4rX3wWOU+RrnU8o4moJ8+T0+0Vqx2_04w@mail.gmail.com>
+Subject: Why No Response Yet?
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Aug 7, 2022 at 8:56 AM Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
->
-> The commit in Fixes has introduced a new error handling which should goto
-> the existing error handling path.
-> Otherwise some resources leak.
->
-> Fixes: 19c6beaa064c ("mmc: meson-gx: add device reset")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+-- 
+Dear,
+I had sent you a mail but i don't think you received it that's why am writing
+you again,it's important we discuss.
+Am waiting,
+Abd-Jafaari Maddah

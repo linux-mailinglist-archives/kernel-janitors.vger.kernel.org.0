@@ -2,43 +2,41 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37F7C59F4E4
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Aug 2022 10:18:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B74659F523
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Aug 2022 10:25:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235608AbiHXISj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Aug 2022 04:18:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55952 "EHLO
+        id S235905AbiHXIZb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Aug 2022 04:25:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235498AbiHXISd (ORCPT
+        with ESMTP id S235726AbiHXIZR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Aug 2022 04:18:33 -0400
-Received: from smtp.smtpout.orange.fr (smtp05.smtpout.orange.fr [80.12.242.127])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 446C8861C8
-        for <kernel-janitors@vger.kernel.org>; Wed, 24 Aug 2022 01:18:31 -0700 (PDT)
+        Wed, 24 Aug 2022 04:25:17 -0400
+Received: from smtp.smtpout.orange.fr (smtp-14.smtpout.orange.fr [80.12.242.14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C51B9923FD
+        for <kernel-janitors@vger.kernel.org>; Wed, 24 Aug 2022 01:25:16 -0700 (PDT)
 Received: from pop-os.home ([90.11.190.129])
         by smtp.orange.fr with ESMTPA
-        id QlamoIOe1ez1rQlamoU0BV; Wed, 24 Aug 2022 10:18:29 +0200
+        id QlhJo5ZO7EkSDQlhKo6H5V; Wed, 24 Aug 2022 10:25:15 +0200
 X-ME-Helo: pop-os.home
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 24 Aug 2022 10:18:29 +0200
+X-ME-Date: Wed, 24 Aug 2022 10:25:15 +0200
 X-ME-IP: 90.11.190.129
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Conor Dooley <conor.dooley@microchip.com>,
-        Daire McNamara <daire.mcnamara@microchip.com>,
-        Alessandro Zummo <a.zummo@towertech.it>,
+To:     Alessandro Zummo <a.zummo@towertech.it>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-riscv@lists.infradead.org, linux-rtc@vger.kernel.org
-Subject: [PATCH] rtc: mpfs: Use devm_clk_get_enabled() helper
-Date:   Wed, 24 Aug 2022 10:18:25 +0200
-Message-Id: <e55c959f2821a2c367a4c5de529a638b1cc6b8cd.1661329086.git.christophe.jaillet@wanadoo.fr>
+        linux-rtc@vger.kernel.org
+Subject: [PATCH] rtc: k3: Use devm_clk_get_enabled() helper
+Date:   Wed, 24 Aug 2022 10:25:11 +0200
+Message-Id: <601288834ab71c0fddde7eedd8cdb8001254ed7e.1661329498.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -53,61 +51,74 @@ The devm_clk_get_enabled() helper:
 This simplifies the code, the error handling paths and avoid the need of
 a dedicated function used with devm_add_action_or_reset().
 
-That said, mpfs_rtc_init_clk() is the same as devm_clk_get_enabled(), so
-use this function directly instead.
-
-This also fixes an (unlikely) unchecked devm_add_action_or_reset() error.
-
 Based on my test with allyesconfig, this reduces the .o size from:
    text	   data	    bss	    dec	    hex	filename
-   5330	   2208	      0	   7538	   1d72	drivers/rtc/rtc-mpfs.o
+   12843	   4804	     64	  17711	   452f	drivers/rtc/rtc-ti-k3.o
 down to:
-   5074	   2208	      0	   7282	   1c72	drivers/rtc/rtc-mpfs.o
+   12523	   4804	     64	  17391	   43ef	drivers/rtc/rtc-ti-k3.o
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
 devm_clk_get_enabled() is new and is part of 6.0-rc1
 ---
- drivers/rtc/rtc-mpfs.c | 19 +------------------
- 1 file changed, 1 insertion(+), 18 deletions(-)
+ drivers/rtc/rtc-ti-k3.c | 22 ++++------------------
+ 1 file changed, 4 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/rtc/rtc-mpfs.c b/drivers/rtc/rtc-mpfs.c
-index 944ad1036516..2a479d44f198 100644
---- a/drivers/rtc/rtc-mpfs.c
-+++ b/drivers/rtc/rtc-mpfs.c
-@@ -193,23 +193,6 @@ static int mpfs_rtc_alarm_irq_enable(struct device *dev, unsigned int enabled)
- 	return 0;
- }
+diff --git a/drivers/rtc/rtc-ti-k3.c b/drivers/rtc/rtc-ti-k3.c
+index 68e50c6a72f1..ba23163cc042 100644
+--- a/drivers/rtc/rtc-ti-k3.c
++++ b/drivers/rtc/rtc-ti-k3.c
+@@ -515,21 +515,12 @@ static struct nvmem_config ti_k3_rtc_nvmem_config = {
  
--static inline struct clk *mpfs_rtc_init_clk(struct device *dev)
--{
--	struct clk *clk;
--	int ret;
--
--	clk = devm_clk_get(dev, "rtc");
--	if (IS_ERR(clk))
--		return clk;
--
--	ret = clk_prepare_enable(clk);
--	if (ret)
--		return ERR_PTR(ret);
--
--	devm_add_action_or_reset(dev, (void (*) (void *))clk_disable_unprepare, clk);
--	return clk;
--}
--
- static irqreturn_t mpfs_rtc_wakeup_irq_handler(int irq, void *dev)
+ static int k3rtc_get_32kclk(struct device *dev, struct ti_k3_rtc *priv)
  {
- 	struct mpfs_rtc_dev *rtcdev = dev;
-@@ -251,7 +234,7 @@ static int mpfs_rtc_probe(struct platform_device *pdev)
- 	/* range is capped by alarm max, lower reg is 31:0 & upper is 10:0 */
- 	rtcdev->rtc->range_max = GENMASK_ULL(42, 0);
+-	int ret;
+ 	struct clk *clk;
  
--	clk = mpfs_rtc_init_clk(&pdev->dev);
-+	clk = devm_clk_get_enabled(&pdev->dev, "rtc");
+-	clk = devm_clk_get(dev, "osc32k");
++	clk = devm_clk_get_enabled(dev, "osc32k");
  	if (IS_ERR(clk))
  		return PTR_ERR(clk);
  
+-	ret = clk_prepare_enable(clk);
+-	if (ret)
+-		return ret;
+-
+-	ret = devm_add_action_or_reset(dev, (void (*)(void *))clk_disable_unprepare, clk);
+-	if (ret)
+-		return ret;
+-
+ 	priv->rate_32k = clk_get_rate(clk);
+ 
+ 	/* Make sure we are exact 32k clock. Else, try to compensate delay */
+@@ -544,24 +535,19 @@ static int k3rtc_get_32kclk(struct device *dev, struct ti_k3_rtc *priv)
+ 	 */
+ 	priv->sync_timeout_us = (u32)(DIV_ROUND_UP_ULL(1000000, priv->rate_32k) * 4);
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static int k3rtc_get_vbusclk(struct device *dev, struct ti_k3_rtc *priv)
+ {
+-	int ret;
+ 	struct clk *clk;
+ 
+ 	/* Note: VBUS isn't a context clock, it is needed for hardware operation */
+-	clk = devm_clk_get(dev, "vbus");
++	clk = devm_clk_get_enabled(dev, "vbus");
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
+ 
+-	ret = clk_prepare_enable(clk);
+-	if (ret)
+-		return ret;
+-
+-	return devm_add_action_or_reset(dev, (void (*)(void *))clk_disable_unprepare, clk);
++	return 0;
+ }
+ 
+ static int ti_k3_rtc_probe(struct platform_device *pdev)
 -- 
 2.34.1
 

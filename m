@@ -2,119 +2,152 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84C9F5A4B6B
-	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Aug 2022 14:18:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 372045A4E9E
+	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Aug 2022 15:53:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231927AbiH2MSY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 29 Aug 2022 08:18:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46832 "EHLO
+        id S229698AbiH2Nxq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 29 Aug 2022 09:53:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231171AbiH2MR5 (ORCPT
+        with ESMTP id S229932AbiH2Nxl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 29 Aug 2022 08:17:57 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 466E114D25;
-        Mon, 29 Aug 2022 05:01:19 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id w19so4827952ljj.7;
-        Mon, 29 Aug 2022 05:01:19 -0700 (PDT)
+        Mon, 29 Aug 2022 09:53:41 -0400
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CDDF97511;
+        Mon, 29 Aug 2022 06:53:40 -0700 (PDT)
+Received: by mail-pg1-x531.google.com with SMTP id c24so7734051pgg.11;
+        Mon, 29 Aug 2022 06:53:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=6Y6slmLiEStk3SAV5P2VBUiGfRCGd21AEadH/l3GXUg=;
-        b=KLBfc+M/JLXURCR3AOZ3shzI4eXZOAoneqUu0gAJca1EcbP7U3snYwCyrFyj8zZ9Vs
-         Z0q6ZvRwX76HwYowuMtf0QzxuAuxRE9d2nkGXLVO/x6jwhELI9bJTihTTvk+GM4CQ7pt
-         q5NEJrQluBi6i7tpAgjVtYaSuafdrA3UJUZ47ZUnKivtkpxs3q7orVa7IJLfA6k0BCdG
-         lGVsuX7uH1A1LWoiSMuMVfgbaWBX59//A4ryyxMnlCqZUdPXyhnadwx1dWhV8+yH3FKL
-         14Tc3a2ob2TlXSwXAEVulvBTN6b8pbwrJYYcZNSUUL/1uNqs3xxDE9X3keYdMOMmeb65
-         vytQ==
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc;
+        bh=ENR6zXlzprDZixSeKqPFK+t4TDIeg7JZE6a8SVGK308=;
+        b=AWq+ofH1oIUg8rs4W95LjB2cXM5FY8EUmeMiY0qYklZnsdd07ZYpo8K8WstNc4XzYR
+         9+HdvZbOnuGit7LFpT++pBAMTAj8geXLb50DDLDrI/ajmVZaveD13FT0dKcFb1ZTLdoI
+         mzvfPWrSNePUTV9AcCFs7iODJeTZol49M7xI7BuwTd3QtL7Ui5zyAfwkTl7L4i5l08qF
+         kKGCk1E14eAe2Xqd5zn+nGxU4e9Lec+XvSA4sSqyTvcCIi4y+5wXmpeF2FAfusE01NWL
+         WYwASqFjUaUQU+vjZVdIAYFpEk7yroAtGWPEotsnuR0Yu+8L4zIX7kXaJmlFQ2ZJVB9j
+         e4Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=6Y6slmLiEStk3SAV5P2VBUiGfRCGd21AEadH/l3GXUg=;
-        b=QSlvFhykn9TBy6ZaZwhzSHgxq9/IN0euPsS4wCxHaWyYInfXs7Jut7NYFrbywgN2Q4
-         CEec6YHWqrkTyvLrzoMmK1MI3WOuA8blT3dr74IsdpXUY26k5VHsXhEth7gAymUoWJjT
-         qfZ5nPgo5Vh8llaPx8yg4djOCsjk42hqi3mabZ3HSmRuBfyXbA1WgY6NKcweSnF3DV1T
-         ygL+PusifJ8AuieL6iPZqyndReqlk69ndgiG4kxMdojCU+AJ4b5aWIj0hG0Wyuzt5bcO
-         2Ym7QyyuAFDpqP9CqpMEkYTpE53w7y7UdYPTb3SV/cX7e9IAwV799UjnvLqQnsgmgZ9a
-         MICg==
-X-Gm-Message-State: ACgBeo0LqDmPIv/E5INaiLO9MfQY3gjMrxH3NbOaG4GWsYUn6bOXD2Gs
-        7KwPmr3hC+DElDwaff/YOuFeqZrYmt0=
-X-Google-Smtp-Source: AA6agR7wUOBv831RR9vPXNVN1xlDyiMTFsmanmANwV+5egTSjVEgQmKduYuE3lZVG+8ZkGMeNnGbZQ==
-X-Received: by 2002:adf:ed50:0:b0:225:4c37:5346 with SMTP id u16-20020adfed50000000b002254c375346mr6030765wro.207.1661771919256;
-        Mon, 29 Aug 2022 04:18:39 -0700 (PDT)
-Received: from [192.168.0.30] ([47.62.125.55])
-        by smtp.gmail.com with ESMTPSA id j18-20020a05600c191200b003a5c1e916c8sm30268815wmq.1.2022.08.29.04.18.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Aug 2022 04:18:38 -0700 (PDT)
-Message-ID: <a8c87417-f37e-7c7a-a4a4-c5a01118e7a8@gmail.com>
-Date:   Mon, 29 Aug 2022 13:18:37 +0200
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc;
+        bh=ENR6zXlzprDZixSeKqPFK+t4TDIeg7JZE6a8SVGK308=;
+        b=pAg7qlHbubVD+B9LAImf371LLMy04WWnMa2kdVJRrO/NdJl70TkuD2nWlsV9yecrPL
+         yy6G6Fd4TT+hVYYPaAaZppI00s/uELPRiJ5nL++W8RoJ2q2KKA0V0qJAd1pSEW7I+/xq
+         P2y544MGt0U9ko/AFAmTZehrwMddmbpvXU3Nb/iLHMVQ6m8dQCLFgeE7DGglM63VnfS9
+         Mc+c67Q79EW2fk14q0eRF0yjVFaJVaTecR6KE6gm1BJaF67HObfQxCa9cA5RBIjOAst3
+         4NVuq9xwCKwoBmIwDRbTOY9n/GLn9AVnHkUXVAa5rR78WOMvcVKYCTd+uXSZQvbmU2yq
+         /3XQ==
+X-Gm-Message-State: ACgBeo0HwKF483nf0oR4UciqxQuMaiVTFS+j9e20IwM6a/dKvDbgxHl4
+        MfwZzu0y7kCs2mom1+7yQLmADoY5lKukbg==
+X-Google-Smtp-Source: AA6agR75x82sSQ1XzmeJ6rgPwMc/ySBDjGhGNtf9HiwPGJGdolFJkT7h2+H3BNLmp+SYhltmGNeC0Q==
+X-Received: by 2002:a63:4547:0:b0:41d:ba0a:870a with SMTP id u7-20020a634547000000b0041dba0a870amr14272003pgk.216.1661781219647;
+        Mon, 29 Aug 2022 06:53:39 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id k13-20020a170902c40d00b001743ba85d39sm7612123plk.110.2022.08.29.06.53.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Aug 2022 06:53:39 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Mon, 29 Aug 2022 06:53:38 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Lars Povlsen <lars.povlsen@microchip.com>,
+        Steen Hegelund <Steen.Hegelund@microchip.com>,
+        UNGLinuxDriver@microchip.com, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] hwmon: (sparx5) Use devm_clk_get_enabled() helper
+Message-ID: <20220829135338.GA229655@roeck-us.net>
+References: <cfe4c965074b5ecbe03830b05e038b4594c7b970.1661336689.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-Subject: Re: [PATCH 4/4] spi: mt7621: Remove 'clk' from 'struct mt7621_spi'
-Content-Language: en-US
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        broonie@kernel.org, gregkh@linuxfoundation.org, neil@brown.name,
-        blogic@openwrt.org
-Cc:     linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <cover.1661599671.git.christophe.jaillet@wanadoo.fr>
- <76ed0ef91479498b9a2d5ef539f80851cffdb4ea.1661599671.git.christophe.jaillet@wanadoo.fr>
-From:   Matthias Brugger <matthias.bgg@gmail.com>
-In-Reply-To: <76ed0ef91479498b9a2d5ef539f80851cffdb4ea.1661599671.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cfe4c965074b5ecbe03830b05e038b4594c7b970.1661336689.git.christophe.jaillet@wanadoo.fr>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On 27/08/2022 13:42, Christophe JAILLET wrote:
-> The 'clk' field in 'struct mt7621_spi' is useless, remove it.
+On Wed, Aug 24, 2022 at 12:25:13PM +0200, Christophe JAILLET wrote:
+> The devm_clk_get_enabled() helper:
+>    - calls devm_clk_get()
+>    - calls clk_prepare_enable() and registers what is needed in order to
+>      call clk_disable_unprepare() when needed, as a managed resource.
+> 
+> This simplifies the code, the error handling paths and avoid the need of
+> a dedicated function used with devm_add_action_or_reset().
+> 
+> Based on my test with allyesconfig, this reduces the .o size from:
+>    text	   data	    bss	    dec	    hex	filename
+>    2419	   1472	      0	   3891	    f33	drivers/hwmon/sparx5-temp.o
+> down to:
+>    2155	   1472	      0	   3627	    e2b	drivers/hwmon/sparx5-temp.o
 > 
 > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-IMHO should be part of patch 2/4.
+Applied to hwmon-next.
 
-Regards,
-Matthias
+Thanks,
+Guenter
 
 > ---
->   drivers/spi/spi-mt7621.c | 4 +---
->   1 file changed, 1 insertion(+), 3 deletions(-)
+> devm_clk_get_enabled() is new and is part of 6.0-rc1
+> ---
+>  drivers/hwmon/sparx5-temp.c | 19 +------------------
+>  1 file changed, 1 insertion(+), 18 deletions(-)
 > 
-> diff --git a/drivers/spi/spi-mt7621.c b/drivers/spi/spi-mt7621.c
-> index 114f98dcae5e..c4cc8e2f85e2 100644
-> --- a/drivers/spi/spi-mt7621.c
-> +++ b/drivers/spi/spi-mt7621.c
-> @@ -55,7 +55,6 @@ struct mt7621_spi {
->   	void __iomem		*base;
->   	unsigned int		sys_freq;
->   	unsigned int		speed;
-> -	struct clk		*clk;
->   	int			pending_write;
->   };
->   
-> @@ -361,9 +360,8 @@ static int mt7621_spi_probe(struct platform_device *pdev)
->   
->   	rs = spi_controller_get_devdata(master);
->   	rs->base = base;
-> -	rs->clk = clk;
->   	rs->master = master;
-> -	rs->sys_freq = clk_get_rate(rs->clk);
-> +	rs->sys_freq = clk_get_rate(clk);
->   	rs->pending_write = 0;
->   	dev_info(&pdev->dev, "sys_freq: %u\n", rs->sys_freq);
->   
+> diff --git a/drivers/hwmon/sparx5-temp.c b/drivers/hwmon/sparx5-temp.c
+> index 98be48e3a22a..04fd8505e5d6 100644
+> --- a/drivers/hwmon/sparx5-temp.c
+> +++ b/drivers/hwmon/sparx5-temp.c
+> @@ -26,13 +26,6 @@ struct s5_hwmon {
+>  	struct clk *clk;
+>  };
+>  
+> -static void s5_temp_clk_disable(void *data)
+> -{
+> -	struct clk *clk = data;
+> -
+> -	clk_disable_unprepare(clk);
+> -}
+> -
+>  static void s5_temp_enable(struct s5_hwmon *hwmon)
+>  {
+>  	u32 val = readl(hwmon->base + TEMP_CFG);
+> @@ -113,7 +106,6 @@ static int s5_temp_probe(struct platform_device *pdev)
+>  {
+>  	struct device *hwmon_dev;
+>  	struct s5_hwmon *hwmon;
+> -	int ret;
+>  
+>  	hwmon = devm_kzalloc(&pdev->dev, sizeof(*hwmon), GFP_KERNEL);
+>  	if (!hwmon)
+> @@ -123,19 +115,10 @@ static int s5_temp_probe(struct platform_device *pdev)
+>  	if (IS_ERR(hwmon->base))
+>  		return PTR_ERR(hwmon->base);
+>  
+> -	hwmon->clk = devm_clk_get(&pdev->dev, NULL);
+> +	hwmon->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+>  	if (IS_ERR(hwmon->clk))
+>  		return PTR_ERR(hwmon->clk);
+>  
+> -	ret = clk_prepare_enable(hwmon->clk);
+> -	if (ret)
+> -		return ret;
+> -
+> -	ret = devm_add_action_or_reset(&pdev->dev, s5_temp_clk_disable,
+> -				       hwmon->clk);
+> -	if (ret)
+> -		return ret;
+> -
+>  	s5_temp_enable(hwmon);
+>  
+>  	hwmon_dev = devm_hwmon_device_register_with_info(&pdev->dev,

@@ -2,80 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A2475A881B
-	for <lists+kernel-janitors@lfdr.de>; Wed, 31 Aug 2022 23:29:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69ED05A8A59
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Sep 2022 03:11:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232179AbiHaV3b (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 31 Aug 2022 17:29:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57314 "EHLO
+        id S232112AbiIABL6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 31 Aug 2022 21:11:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231955AbiHaV3a (ORCPT
+        with ESMTP id S230437AbiIABL5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 31 Aug 2022 17:29:30 -0400
-X-Greylist: delayed 513 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 31 Aug 2022 14:29:27 PDT
-Received: from smtpout14.timeweb.ru (smtpout14.timeweb.ru [92.53.116.149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A249BF5CEE
-        for <kernel-janitors@vger.kernel.org>; Wed, 31 Aug 2022 14:29:27 -0700 (PDT)
-Received: from [192.168.0.60] (helo=smtp.timeweb.ru)
-        by smtp-spam.timeweb.ru with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <mail@teamaa.ru>)
-        id 1oTV8f-008MQc-CN; Thu, 01 Sep 2022 00:20:45 +0300
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=teamaa.ru;
-         s=dkim; h=Message-Id:Reply-To:Date:From:To:Subject:Content-Description:
-        Content-Transfer-Encoding:MIME-Version:Content-Type:Sender:Cc:Content-ID:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=L/iBE3XRBm9q6CjlHSlI6cK+dhwMbJPzYyJVxsZnQFo=; b=JoQzJZocnwMx3vjfIiSBBxNV20
-        46hM0BVsnwT8BnjNzscXDfbllmBOGu/iDsO2GK/sb6CxfiyYZj1QVnCjCUSi1N5xKaiWbks4DfC1s
-        ogxmwWptuIqvua6tc0I+H/18tX+ML0n4XsjP1j5IcT2ss1J+koLJXWvdfphe8JyMrZsg=;
-Received: from [84.17.42.34] (helo=[192.168.37.80])
-        by smtp.timeweb.ru with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.90_1)
-        (envelope-from <mail@teamaa.ru>)
-        id 1oTV8f-0000RB-0y; Thu, 01 Sep 2022 00:20:45 +0300
-Content-Type: text/plain; charset="iso-8859-1"
+        Wed, 31 Aug 2022 21:11:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0848DC09E;
+        Wed, 31 Aug 2022 18:11:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5552961CD5;
+        Thu,  1 Sep 2022 01:11:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A264FC433D6;
+        Thu,  1 Sep 2022 01:11:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1661994715;
+        bh=K0IlwXuix3BvINpGFkVRnlr166FlxhMBm++Ywj0zDcg=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=G34RDrEQDBcZAlf3xZr+fmbay6EBPT7wXw8i/eixWy2rw2QH+3sXm/2Y9zIW/YXuJ
+         kWTwirpkoRZLHAhorbAL5UPGOcHN3M60pr7AwJf30GbHp/hObb79sOKG9jMOI2thHK
+         YXxRYbQVD46K95SfdZS/+6tvb6J1TTK48UyaQxVPfZUV1cH2F7eITXy4vSro7hi+Md
+         qRAtnBWebBdonZWHJ3xHDSfpUQayPp4zT1q1C9gW0RK5D7jtYrX6iyepfDaan/Yv7z
+         fS9rG9zpVtAqW+osYtsvmDdnZuipqWDQwuN7S2bbIgYTJ4NjJZ3jmpT6RS+UzgjNI0
+         Wk5T8FjGKiQ3Q==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: PFC0032022?
-To:     Recipients <mail@teamaa.ru>
-From:   "OST Mark" <mail@teamaa.ru>
-Date:   Wed, 31 Aug 2022 14:20:37 -0700
-Reply-To: contact@panolateam.com
-Message-Id: <E1oTV8f-0000RB-0y@smtp.timeweb.ru>
-X-Spam-Status: No, score=3.3 required=5.0 tests=BAYES_99,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,
-        T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR,T_SPF_TEMPERROR autolearn=no
+In-Reply-To: <20220720082934.17741-1-lukas.bulwahn@gmail.com>
+References: <20220720082934.17741-1-lukas.bulwahn@gmail.com>
+Subject: Re: [PATCH] clk: davinci: remove PLL and PSC clocks for DaVinci DM644x and DM646x
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     David Lechner <david@lechnology.com>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Sekhar Nori <nsekhar@ti.com>, linux-clk@vger.kernel.org
+Date:   Wed, 31 Aug 2022 18:11:53 -0700
+User-Agent: alot/0.10
+Message-Id: <20220901011155.A264FC433D6@smtp.kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Score: 9.8 (+++++++++)
-X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Bonjour
+Quoting Lukas Bulwahn (2022-07-20 01:29:34)
+> Commit 7dd33764486d ("ARM: davinci: Delete DM644x board files") and commit
+> b4aed01de486 ("ARM: davinci: Delete DM646x board files") removes the
+> support for DaVinci DM644x and DM646x boards.
+>=20
+> Hence, remove the PLL and PSC clock descriptions for those boards as well.
+>=20
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
 
-Wir bieten flexible Darlehen und Finanzierungen f=FCr verschiedene Gesch=E4=
-ftsprojekte unter Umgehung der =FCblichen strengen Verfahren ohne Vorabgeb=
-=FChr.
-
-Dieses Finanzierungsprogramm erm=F6glicht einem Kunden eine niedrige Zinsr=
-=FCckzahlung von nur 2 % pro Jahr f=FCr einen Zeitraum von 1 bis 30 Jahren =
-und eine tilgungsfreie Zeit von sechs Monaten.
-
-Sollten Sie an einer unserer Finanzierungsoptionen interessiert sein, z=F6g=
-ern Sie bitte nicht, uns f=FCr weitere Informationen zu kontaktieren.
--------------------------------------------------------------------------
-We offer Personal/business loans at 2% interest rate without any upfront pa=
-yment. Should you be interested? Do not hesitate to contact us for more det=
-ails.
-
-Thanks, =
-
--------------------------------------------------------------------------
-With kind regards,
-Your Sales Team
+Applied to clk-next

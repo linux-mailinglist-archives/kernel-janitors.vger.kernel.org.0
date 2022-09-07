@@ -2,100 +2,114 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C2C15B05B6
-	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Sep 2022 15:51:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0098E5B06F3
+	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Sep 2022 16:33:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230013AbiIGNvW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 7 Sep 2022 09:51:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34920 "EHLO
+        id S230045AbiIGOd1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 7 Sep 2022 10:33:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229780AbiIGNvP (ORCPT
+        with ESMTP id S229732AbiIGOdB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 7 Sep 2022 09:51:15 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 544CDA99C3;
-        Wed,  7 Sep 2022 06:51:00 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id bq9so7592052wrb.4;
-        Wed, 07 Sep 2022 06:51:00 -0700 (PDT)
+        Wed, 7 Sep 2022 10:33:01 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CF6FB3B24
+        for <kernel-janitors@vger.kernel.org>; Wed,  7 Sep 2022 07:32:27 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id e18so20006593edj.3
+        for <kernel-janitors@vger.kernel.org>; Wed, 07 Sep 2022 07:32:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=X0NRHzznEcchSri4bCoSt9nkeOdHiBAQ/5Pmte/Gyz8=;
-        b=ZPGwmIXS/RcexDoa8uMC7Qrips3KiSqFH87cKBNHhTwrJyIbh+Gf46xHCuFlLz+D3r
-         QJzjxWDnL/3wJ7vvsBEY1Rran3hIRJ8T7Apfg60js9xFLWTwZC8gcSHlapGLt6euwmcP
-         wgNbvaxAKs/vl4DLQhzcnhAGxCj/OE1Nk8s5SsnoNQWY6ejjOfEbQcy1ij3+q6g7/rNs
-         TGJ58yWg6fzHraOr7SAeKQyA5u0e1YJddwnU+sTLMYwvUCsuWPWsUM8CsZYsjyyqnDWT
-         yBluKmdQc2i0pGvqpwH6/P1b+GDm9tvhHj33kDMuK8pjZ951VJygmrra4x9ZDpFAx2Dq
-         S92Q==
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
+        b=UtFlTSGHQz81OSpK49QGakNczTrN7BvVDcdecb2PlQLSH6U6g6YnfIOwEhF4HyopVw
+         xF3rEa1JazWxVmoA4IZ4APHTWslJfRg5yYhTgDCuueeGynL8ZQ8rlmQ1XFto97Lt71ZJ
+         j3Ra7mPDPEuM/14t68TI6JbC26x0Okvn0tFLgQTeFpImczwoq6TYczyXFG/k8mY/UwUL
+         n4rphtthc3JujA/DBbZnDH2NqlI3e1mX42kS7zoBsDbrZwgnwP4UWzhHEqiLlccbumw3
+         Wu+X+CCk1Fp6KNp6XYfEMT802FX63wwwnC1iqf8dYPeJE0BVyNRj/Y77DpMb+lFAEfsS
+         NjnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=X0NRHzznEcchSri4bCoSt9nkeOdHiBAQ/5Pmte/Gyz8=;
-        b=PAFxZx2/kiiDouWB0+Fx/J82o9DDwoVsXjVpROJ+EFC4IGYFbEI/ar1SRGIcup0JT5
-         5TVeXztfyWH8T1PxMUUy8LH98tau7Qu2Mw5H3WdgI55vMx1ebVGZ5E6HA1EhF4fJESqq
-         7/gff0xzkM94x9Wqahyiu/3S5/JTK2raBmzFwKgCCO8LTfW9LvKx8j3E25h/Fsi56uO6
-         Mx73dOj0Gh/pt0gfpKjvmsNag7zytRtPlKs7wmhd1gnYVpQn0qxc7LcFrS3u8l6K3q06
-         YHE/UDZ8oroGBlhNDHA8Oilj9zKcTYIoygO3mIolSdENlHzkOWuFJO4d+AF4vwXiOGnS
-         j+uA==
-X-Gm-Message-State: ACgBeo0kCfzN0ardTj9uyj8c/lY+9VU54bfZZTsoy+8K/T8gBnvZ+698
-        7vb31h8eGR/wX4eeJD0RVaM=
-X-Google-Smtp-Source: AA6agR4RIMi9kvzI07nLVq88uJNBG/3Xnr/HatQQvRnewBFmASe0IG6eGxKCiJYiFkdZ1OToecCSkg==
-X-Received: by 2002:a05:6000:1867:b0:21f:f2cf:74a8 with SMTP id d7-20020a056000186700b0021ff2cf74a8mr2224870wri.344.1662558657922;
-        Wed, 07 Sep 2022 06:50:57 -0700 (PDT)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id w3-20020a05600018c300b002206203ed3dsm18379698wrq.29.2022.09.07.06.50.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Sep 2022 06:50:57 -0700 (PDT)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Bernie Thompson <bernie@plugable.com>,
-        Helge Deller <deller@gmx.de>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] fbdev: remove redundant initialization to variable identical
-Date:   Wed,  7 Sep 2022 14:50:56 +0100
-Message-Id: <20220907135056.679617-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.37.1
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
+        b=ObP2ugjg7JyQ4fkzY+SanvFdIJuRr/tL7vsrmMdGhT7JrBDfp9gczERNIX6v/L5KxS
+         mBND5HzxWcppSXmxZpBilNJNKVf9gy2MP+xBC7+PwtAIQBx70psjChwCFawrejkYAVXV
+         xZEtZJRlKzHbKC4aqUdcDYMcsPhwkiF+KPbt5RHCTyVl82VXzsPz2kJ24DC3oddWDzx7
+         iZMVBJ/r6fTJ3kc3SNUqfYnKL2OnCuHo/XCTYiKCENQuAcimrV1K93niG4AOT2DcD/cV
+         365YzR3YAHimEljp68ELbUlfm9sueltZfT0t3nudR8mhYxNu5OEcu/TftMsYyz10L5tq
+         25yA==
+X-Gm-Message-State: ACgBeo3erO7qVQIZPpBbm3saXEZk163J2uOzHGtors1tKc9bfOZvW79U
+        BMlkQHGYJElfpThmRZ9ABAbtGU0r+MHUnTe1JM8=
+X-Google-Smtp-Source: AA6agR4u/dbCsJbsVZIBLL6h1UPerJ2TE45jgxUgoCjVrPyl8+wsl025ctgdSe/t/2vkl2wcEplmUnwM80u8Z9eZepA=
+X-Received: by 2002:a05:6402:51d1:b0:44b:ea34:6c0a with SMTP id
+ r17-20020a05640251d100b0044bea346c0amr3314952edd.369.1662561145430; Wed, 07
+ Sep 2022 07:32:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a54:3fc4:0:0:0:0:0 with HTTP; Wed, 7 Sep 2022 07:32:24 -0700 (PDT)
+Reply-To: lumar.casey@outlook.com
+From:   LUMAR CASEY <miriankushrat@gmail.com>
+Date:   Wed, 7 Sep 2022 16:32:24 +0200
+Message-ID: <CAO4StN1OR4tXWWJAZ10p+-rJJ7qOsU8FxVS9cWv=PiegDVtnsA@mail.gmail.com>
+Subject: ATTENTION/PROPOSAL
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=6.8 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM,UNDISC_MONEY,UPPERCASE_75_100 autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:544 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [miriankushrat[at]gmail.com]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 UPPERCASE_75_100 message body is 75-100% uppercase
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  0.0 ADVANCE_FEE_4_NEW_MONEY Advance Fee fraud and lots of money
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The variable identical is being initialized with a value that is never
-read. The variable is being re-assigned later on. The initialization is
-redundant and can be removed.
+ATTENTION
 
-Cleans up clang scan-build warning:
-drivers/video/fbdev/udlfb.c:373:6: warning: Value stored to 'identical'
-during its initialization is never read [deadcode.DeadStores]
+BUSINESS PARTNER,
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/video/fbdev/udlfb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I AM LUMAR CASEY WORKING WITH AN INSURANCE FINANCIAL INSTITUTE, WITH
+MY POSITION AND PRIVILEGES I WAS ABLE TO SOURCE OUT AN OVER DUE
+PAYMENT OF 12.8 MILLION POUNDS THAT IS NOW SECURED WITH A SHIPPING
+DIPLOMATIC OUTLET.
 
-diff --git a/drivers/video/fbdev/udlfb.c b/drivers/video/fbdev/udlfb.c
-index c863244ef12c..216d49c9d47e 100644
---- a/drivers/video/fbdev/udlfb.c
-+++ b/drivers/video/fbdev/udlfb.c
-@@ -370,7 +370,7 @@ static int dlfb_trim_hline(const u8 *bback, const u8 **bfront, int *width_bytes)
- 	const unsigned long *back = (const unsigned long *) bback;
- 	const unsigned long *front = (const unsigned long *) *bfront;
- 	const int width = *width_bytes / sizeof(unsigned long);
--	int identical = width;
-+	int identical;
- 	int start = width;
- 	int end = width;
- 
--- 
-2.37.1
+I AM SEEKING YOUR PARTNERSHIP TO RECEIVE THIS CONSIGNMENT AS AS MY
+PARTNER TO INVEST THIS FUND INTO A PROSPEROUS INVESTMENT VENTURE IN
+YOUR COUNTRY.
 
+I AWAIT YOUR REPLY TO ENABLE US PROCEED WITH THIS BUSINESS PARTNERSHIP TOGETHER.
+
+REGARDS,
+
+LUMAR CASEY

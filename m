@@ -2,71 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BD245B2ED7
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Sep 2022 08:27:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 001B45B2EFB
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Sep 2022 08:31:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230462AbiIIG0x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Sep 2022 02:26:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47604 "EHLO
+        id S231146AbiIIGat (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Sep 2022 02:30:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230426AbiIIG0w (ORCPT
+        with ESMTP id S231144AbiIIGao (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Sep 2022 02:26:52 -0400
-Received: from mail.nfschina.com (mail.nfschina.com [124.16.136.209])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 647481269F7;
-        Thu,  8 Sep 2022 23:26:50 -0700 (PDT)
-Received: from localhost (unknown [127.0.0.1])
-        by mail.nfschina.com (Postfix) with ESMTP id 6EDC61E80D5E;
-        Fri,  9 Sep 2022 14:25:19 +0800 (CST)
-X-Virus-Scanned: amavisd-new at test.com
-Received: from mail.nfschina.com ([127.0.0.1])
-        by localhost (mail.nfschina.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id qC0r7odWaN2A; Fri,  9 Sep 2022 14:25:16 +0800 (CST)
-Received: from localhost.localdomain (unknown [180.167.10.98])
-        (Authenticated sender: yuzhe@nfschina.com)
-        by mail.nfschina.com (Postfix) with ESMTPA id 50AF21E80D06;
-        Fri,  9 Sep 2022 14:25:16 +0800 (CST)
-From:   Yu Zhe <yuzhe@nfschina.com>
-To:     rafal@milecki.pl, bcm-kernel-feedback-list@broadcom.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, liqiong@nfschina.com,
-        Yu Zhe <yuzhe@nfschina.com>
-Subject: [PATCH] net: broadcom: bcm4908enet: add platform_get_irq_byname error checking
-Date:   Fri,  9 Sep 2022 14:25:45 +0800
-Message-Id: <20220909062545.16696-1-yuzhe@nfschina.com>
-X-Mailer: git-send-email 2.11.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        Fri, 9 Sep 2022 02:30:44 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC041ED98E;
+        Thu,  8 Sep 2022 23:30:36 -0700 (PDT)
+Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.56])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4MP5cc4l9GzQj7k;
+        Fri,  9 Sep 2022 14:26:56 +0800 (CST)
+Received: from kwepemm600010.china.huawei.com (7.193.23.86) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 9 Sep 2022 14:30:34 +0800
+Received: from [10.174.178.31] (10.174.178.31) by
+ kwepemm600010.china.huawei.com (7.193.23.86) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 9 Sep 2022 14:30:33 +0800
+Subject: Re: [PATCH 1/2] phy: usb: Fix potential NULL dereference in
+ sp_usb_phy_probe()
+To:     Greg KH <gregkh@linuxfoundation.org>
+CC:     <vincent.sunplus@gmail.com>, <kishon@ti.com>, <vkoul@kernel.org>,
+        <p.zabel@pengutronix.de>, <linux-usb@vger.kernel.org>,
+        <linux-phy@lists.infradead.org>, <kernel-janitors@vger.kernel.org>
+References: <20220909013546.2259545-1-sunke32@huawei.com>
+ <20220909013546.2259545-2-sunke32@huawei.com> <YxrRlCytfPobnjSv@kroah.com>
+From:   Sun Ke <sunke32@huawei.com>
+Message-ID: <027f9ef7-b447-b685-d190-01ff1d45c46a@huawei.com>
+Date:   Fri, 9 Sep 2022 14:30:32 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
+MIME-Version: 1.0
+In-Reply-To: <YxrRlCytfPobnjSv@kroah.com>
+Content-Type: text/plain; charset="gbk"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.178.31]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemm600010.china.huawei.com (7.193.23.86)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The platform_get_irq_byname() function returns negative error codes on error,
-check it.
 
-Signed-off-by: Yu Zhe <yuzhe@nfschina.com>
----
- drivers/net/ethernet/broadcom/bcm4908_enet.c | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bcm4908_enet.c b/drivers/net/ethernet/broadcom/bcm4908_enet.c
-index c131d8118489..d985056db6c2 100644
---- a/drivers/net/ethernet/broadcom/bcm4908_enet.c
-+++ b/drivers/net/ethernet/broadcom/bcm4908_enet.c
-@@ -705,6 +705,8 @@ static int bcm4908_enet_probe(struct platform_device *pdev)
- 		return netdev->irq;
- 
- 	enet->irq_tx = platform_get_irq_byname(pdev, "tx");
-+	if (enet->irq_tx < 0)
-+		return enet->irq_tx;
- 
- 	err = dma_set_coherent_mask(dev, DMA_BIT_MASK(32));
- 	if (err)
--- 
-2.11.0
+ÔÚ 2022/9/9 13:39, Greg KH Ð´µÀ:
+> On Fri, Sep 09, 2022 at 09:35:45AM +0800, Sun Ke wrote:
+>> platform_get_resource_byname() may fail and return NULL, so we should
+>> better check it s return value to avoid a NULL pointer dereference
+>> a bit later in the code.
+>>
+>> Fixes: 99d9ccd97385 ("phy: usb: Add USB2.0 phy driver for Sunplus SP7021")
+>> Signed-off-by: Sun Ke <sunke32@huawei.com>
+>> ---
+>>   drivers/phy/sunplus/phy-sunplus-usb2.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/drivers/phy/sunplus/phy-sunplus-usb2.c b/drivers/phy/sunplus/phy-sunplus-usb2.c
+>> index 5269968b3060..d73a8a421d9c 100644
+>> --- a/drivers/phy/sunplus/phy-sunplus-usb2.c
+>> +++ b/drivers/phy/sunplus/phy-sunplus-usb2.c
+>> @@ -249,11 +249,15 @@ static int sp_usb_phy_probe(struct platform_device *pdev)
+>>   	usbphy->dev = &pdev->dev;
+>>   
+>>   	usbphy->phy_res_mem = platform_get_resource_byname(pdev, IORESOURCE_MEM, "phy");
+> 
+> How can this fail on this system?
+> 
+>> +	if (!usbphy->phy_res_mem)
+>> +		return -EINVAL;
+>>   	usbphy->phy_regs = devm_ioremap_resource(&pdev->dev, usbphy->phy_res_mem);
+>>   	if (IS_ERR(usbphy->phy_regs))
+>>   		return PTR_ERR(usbphy->phy_regs);
+>>   
+>>   	usbphy->moon4_res_mem = platform_get_resource_byname(pdev, IORESOURCE_MEM, "moon4");
+> 
+> Same here, how can this fail?
+> Have you seen these failures happen in real systems?
 
+No, just code review.
+
+Thanks,
+Sun Ke
+> 
+> thanks,
+> 
+> greg k-h
+> .
+> 

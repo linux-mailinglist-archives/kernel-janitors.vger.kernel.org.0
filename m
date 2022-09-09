@@ -2,58 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F6FE5B340B
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Sep 2022 11:34:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD1BC5B360D
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Sep 2022 13:09:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232148AbiIIJch (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Sep 2022 05:32:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44180 "EHLO
+        id S229777AbiIILJc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Sep 2022 07:09:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231696AbiIIJcI (ORCPT
+        with ESMTP id S229589AbiIILJb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Sep 2022 05:32:08 -0400
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8FFA6B176;
-        Fri,  9 Sep 2022 02:29:54 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.30.67.143])
-        by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4MP9dL5r23z6S2mb;
-        Fri,  9 Sep 2022 17:27:50 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.102.38])
-        by APP2 (Coremail) with SMTP id Syh0CgA3inOBBxtjV_RbAg--.16776S4;
-        Fri, 09 Sep 2022 17:29:38 +0800 (CST)
-From:   Wei Yongjun <weiyongjun@huaweicloud.com>
-To:     Vincent Shih <vincent.sunplus@gmail.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>
-Cc:     Wei Yongjun <weiyongjun1@huawei.com>, linux-usb@vger.kernel.org,
-        linux-phy@lists.infradead.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH -next] phy: usb: sunplus: Fix return value check in update_disc_vol()
-Date:   Fri,  9 Sep 2022 09:47:09 +0000
-Message-Id: <20220909094709.1790970-1-weiyongjun@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-CM-TRANSID: Syh0CgA3inOBBxtjV_RbAg--.16776S4
-X-Coremail-Antispam: 1UD129KBjvdXoW7Gw4DXF1ktF1xWFWDWF4fuFg_yoWkAFb_ur
-        yfKr17Jw4DKFnFvrWDAw4IvryIvFs8XFyFgw40qFy5AFyUtrnay3Z7uFyfuF1fZ3yUCr92
-        k3ZrZ343A34xWjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUbokYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E6xAIw20E
-        Y4v20xvaj40_JrC_JFWl1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
-        A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x02
-        67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-        0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-        x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-        0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Y
-        z7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zV
-        AF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4l
-        IxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWrZr1j6s
-        0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsG
-        vfC2KfnxnUUI43ZEXa7IU1zuWJUUUUU==
-X-CM-SenderInfo: 5zhl50pqjm3046kxt4xhlfz01xgou0bp/
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        Fri, 9 Sep 2022 07:09:31 -0400
+Received: from wnew3-smtp.messagingengine.com (wnew3-smtp.messagingengine.com [64.147.123.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 743BB62E1;
+        Fri,  9 Sep 2022 04:09:28 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailnew.west.internal (Postfix) with ESMTP id 1486F2B059B1;
+        Fri,  9 Sep 2022 07:09:25 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute3.internal (MEProxy); Fri, 09 Sep 2022 07:09:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm1; t=1662721765; x=1662725365; bh=wqSZnyFI/c
+        l/mPByp5iGdJ8icj1uq3tpAsMYxesXc90=; b=JNCUOHygKHzw5ymEwgIx150ccZ
+        kk3QcAxPZ+kBSPmdW6jFGXpxAjxmEeG0M6d57nMRbAoHaCqHoE+FBWHfNpOeLwBs
+        /mPuqtbvd/1IPDbHrQuUxW5yCDGLAoB2om5QEevKLcUZVQYafKN1g6jZbmhwHLOu
+        0HRA6C+WddeqcV+7yTAaDTKC7uE2YRZYNsPxH2KSdrzIovQgodn9vw1xR87nCG+W
+        KPYRz8ti9cnn/qzN8glQRQibQH2l1HmUfIA2qVa5UgrX/L1qAkJdpn9gAKjxC3Ks
+        SIdQUbZKUYYQjMI+lOUwNGQgo3vZPc4FYLNL3mkZQP6Adk+Ua83PVyjTJQyA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm2; t=1662721765; x=1662725365; bh=wqSZnyFI/cl/mPByp5iGdJ8icj1u
+        q3tpAsMYxesXc90=; b=NcnoBpow2qM+ovsG2uQ1UBwQb5Coksk8+GOfbMClmXg0
+        FljMyHsOsV/d4c2jkdzcmMrS2dB9O4m2MafmQaN7+qU8HuJK7d2K++DLiICuLM2y
+        AjcE4yKVEsPIlL52TJa57qkn2k9qeBsuhvHX5alkWuvvcLRv0wOUjJzb8d836EGo
+        F/KD5NIL8QMwpvF5G6UbyM0UHVuQPX7ZmSljDoIFpGPeaKEsv8wxuVziYA/Mq6AL
+        AUzrsvFBNWDvi84l76doHdoBRON5BMvjWLQKymPY0D6dPOHzwqS91ZBhGP94gs+3
+        yWnpDzgYO8/dcTsXF9pcTpg4Ajh7Ere3cJRjMUriXA==
+X-ME-Sender: <xms:5R4bY4GaqDmt3X-LJ-uV8Zcyr7ZBZR-NmmXwK3Kgf75UWFViN9SQ3g>
+    <xme:5R4bYxXLe5wUEH8ByBurgfVYAMPzogSUu2s6bS8sgxCTXaY0NKVYElWrRz4Vw1bco
+    W8mW2HX1LXeLyrxkTQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfedthedgfeejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:5R4bYyKu5j3kSAt9BrZFBOj8MBqapEHrpfOZjwAiyNhZaKRGdpro4g>
+    <xmx:5R4bY6Ec5uNpaboa5u0lOfhinRTwp9OIPIF7MMPIYGNvn2WkJnk6VA>
+    <xmx:5R4bY-WaYgUrlM9_vLjYf5DX1sz3ev5uymLjtLvtFVpsaTXoPZPTDQ>
+    <xmx:5R4bYwKi5QKMiJ_n2x8PmIi78ZHDXfR-pJPa3AoM33UYbxvq50eFoaVECX8>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 0E194B60086; Fri,  9 Sep 2022 07:09:24 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-927-gf4c98c8499-fm-20220826.002-gf4c98c84
+Mime-Version: 1.0
+Message-Id: <21359abe-c3c9-4aa8-8ebf-75ff64cb1935@www.fastmail.com>
+In-Reply-To: <20220909090343.21886-1-lukas.bulwahn@gmail.com>
+References: <20220909090343.21886-1-lukas.bulwahn@gmail.com>
+Date:   Fri, 09 Sep 2022 13:09:03 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Lukas Bulwahn" <lukas.bulwahn@gmail.com>,
+        "Michael Ellerman" <mpe@ellerman.id.au>,
+        "Nicholas Piggin" <npiggin@gmail.com>,
+        "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+        "Damien Le Moal" <damien.lemoal@opensource.wdc.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-ide@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] powerpc: select HAVE_PATA_PLATFORM in PPC instead of creating a
+ PPC dependency
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,36 +88,43 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
+On Fri, Sep 9, 2022, at 11:03 AM, Lukas Bulwahn wrote:
+> Commit cc18e0fea790 ("LIBATA: Add HAVE_PATA_PLATFORM to select
+> PATA_PLATFORM driver") introduces config HAVE_PATA_PLATFORM, and expects
+> that all architectures simply select this config when the architecture
+> supports using the PATA_PLATFORM driver.
+>
+> This is properly implemented already for all architectures except for the
+> powerpc architecture. Implement this for powerpc now.
+>
+> Adjust the config of the powerpc architecture to use the config
+> HAVE_PATA_PLATFORM and simplify the config PATA_PLATFORM to not mention
+> any specific architecture anymore.
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+>  arch/powerpc/Kconfig | 1 +
+>  drivers/ata/Kconfig  | 2 +-
+>  2 files changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 39d71d7701bd..2575e21b6e6b 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -237,6 +237,7 @@ config PPC
+>  	select HAVE_MOD_ARCH_SPECIFIC
+>  	select HAVE_NMI				if PERF_EVENTS || (PPC64 && PPC_BOOK3S)
+>  	select HAVE_OPTPROBES
+> +	select HAVE_PATA_PLATFORM
+>  	select HAVE_PERF_EVENTS
+>  	select HAVE_PERF_EVENTS_NMI		if PPC64
+>  	select HAVE_PERF_REGS
 
-In case of error, the function nvmem_cell_read() returns ERR_PTR()
-and never returns NULL. The NULL test in the return value check
-should be replaced with IS_ERR().
+I don't see a single powerpc machine that creates a
+ name="pata_platform" platform_device. I suspect this was
+only needed bwfore 2007 commit 9cd55be4d223 ("[POWERPC] pasemi:
+Move electra-ide to pata_of_platform"), so the "|| PPC"
+bit should just get removed without adding the HAVE_PATA_PLATFORM
+bit.
 
-Fixes: 99d9ccd97385 ("phy: usb: Add USB2.0 phy driver for Sunplus SP7021")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/phy/sunplus/phy-sunplus-usb2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/phy/sunplus/phy-sunplus-usb2.c b/drivers/phy/sunplus/phy-sunplus-usb2.c
-index 5269968b3060..b932087c55b2 100644
---- a/drivers/phy/sunplus/phy-sunplus-usb2.c
-+++ b/drivers/phy/sunplus/phy-sunplus-usb2.c
-@@ -92,13 +92,13 @@ static int update_disc_vol(struct sp_usbphy *usbphy)
- 	otp_v = nvmem_cell_read(cell, &otp_l);
- 	nvmem_cell_put(cell);
- 
--	if (otp_v) {
-+	if (!IS_ERR(otp_v)) {
- 		set = *(otp_v + 1);
- 		set = (set << (sizeof(char) * 8)) | *otp_v;
- 		set = (set >> usbphy->disc_vol_addr_off) & J_DISC;
- 	}
- 
--	if (!otp_v || set == 0)
-+	if (IS_ERR(otp_v) || set == 0)
- 		set = OTP_DISC_LEVEL_DEFAULT;
- 
- 	val = readl(usbphy->phy_regs + CONFIG7);
-
+       Arnd

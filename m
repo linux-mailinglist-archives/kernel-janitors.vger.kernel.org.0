@@ -2,109 +2,168 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD4CD5B2EB7
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Sep 2022 08:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B505B5B2EF7
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Sep 2022 08:31:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229679AbiIIGVb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Sep 2022 02:21:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33834 "EHLO
+        id S230431AbiIIGan (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Sep 2022 02:30:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229572AbiIIGV2 (ORCPT
+        with ESMTP id S230504AbiIIGak (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Sep 2022 02:21:28 -0400
-Received: from mail-oa1-x44.google.com (mail-oa1-x44.google.com [IPv6:2001:4860:4864:20::44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E10DB1098C8
-        for <kernel-janitors@vger.kernel.org>; Thu,  8 Sep 2022 23:21:27 -0700 (PDT)
-Received: by mail-oa1-x44.google.com with SMTP id 586e51a60fabf-1278624b7c4so1523516fac.5
-        for <kernel-janitors@vger.kernel.org>; Thu, 08 Sep 2022 23:21:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date;
-        bh=ZwPxd8LtjEuPX3lP8M/ewsRzKiwOr4k1fCds3gC7Jk4=;
-        b=XVs1INvHXkpPGUOwUrp6CpqpW/2cAOUyT9O4F/XAxsY7FCJig9tRd3OxIFv3pgOX+6
-         sQk2HY267V+QdPlzZqk7vTVnHt+S4oGztTjTuhhSsNe//aEqrqt6E3QrbZjlQpSptdcd
-         sfmCVN2mPZEYkvb9KyfOzCSm5IlxniJIMbHICt1NE9aBIZFhFaho1XSo+vw84ZeefuSZ
-         pjwUO5CI8V+1ZmWnHEwOL5e+PzFkt/q3jnYGtuVpZc8NNPayAua9VuEsr13sadhSc4Oy
-         RA/n5PJMqoOdL6nI9tP5q5H+6eyHDPSp21lIOVKmFXqsWkCSXUr2zYqskSmo9HvcSZri
-         /ilQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=ZwPxd8LtjEuPX3lP8M/ewsRzKiwOr4k1fCds3gC7Jk4=;
-        b=hEHke4IJWR3sffyHxDiVT95YEeKBu88nmtoA/DT8SNoxyXKs2JURtYZsswmWHlgtpb
-         XqNdHPDlZNoUxFZ7XMxtUwIDKOmCcD8rRAfhLj88pZaJ9xezM4EjGXPmwRCCHnoDC3wF
-         uxta/unCrp1plgBSqIYpGKQux9BYnkzcpUWePH7lRa3tDuR+6wbHxEUYGpfKv3w8B/qc
-         WZXofxIC42IxGtW+AFechlQRHpZ6QC9BecR/QykOfqNj0fPo7LoJFJUk5IDI7wk2tYCs
-         5ir74zNWvia3x9rjMeOWBEEQSuPZO66g5ciBSZKH9qHN5BFDD1ldxVrwcaD6DRFm5EF8
-         nefQ==
-X-Gm-Message-State: ACgBeo1PTMpMYVNOXFCFwrlh2xXEMzydesBxC+r1OG4mIpw2D2kJsUh+
-        YVkEFnAxjqWuPBnRJbqUEa0bKPlUvyirGGo1nl8=
-X-Google-Smtp-Source: AA6agR5dSi7GcWoW99/eKsPN8BiqZ06Ox8DXrIZssWpkNK9LloKS4jC8B//ehyILIor6tXLNhujApgeLEBhGfpJxdWw=
-X-Received: by 2002:a05:6870:562c:b0:127:bbe4:3f35 with SMTP id
- m44-20020a056870562c00b00127bbe43f35mr4109337oao.284.1662704486339; Thu, 08
- Sep 2022 23:21:26 -0700 (PDT)
+        Fri, 9 Sep 2022 02:30:40 -0400
+Received: from condef-04.nifty.com (condef-04.nifty.com [202.248.20.69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68317C0E56;
+        Thu,  8 Sep 2022 23:30:33 -0700 (PDT)
+Received: from conssluserg-02.nifty.com ([10.126.8.81])by condef-04.nifty.com with ESMTP id 2896Mmfb024092;
+        Fri, 9 Sep 2022 15:22:48 +0900
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44]) (authenticated)
+        by conssluserg-02.nifty.com with ESMTP id 2896MLgs017587;
+        Fri, 9 Sep 2022 15:22:22 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com 2896MLgs017587
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1662704542;
+        bh=5gq83gYMVKdRU9r4hYVd7D4iDUbndUfSB3Fa4VRbM4A=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=AnqLwOKSyV1yvR9h2eklSSZLeceed6RdO2Gf/5J9GCEA+KUZUte/VCxEIe566Bx5W
+         z8xGHUohBHNbDCpQR9FliNJVlObeKgjMNVNlLKRwdkMeLCGNNA/MDArrpocDwVPu4I
+         eNfzeSKSR+NdTMp11/S5g7cpZ6tOJRciR8UnV1BN68Rw4rY4mWjT99JxjYDUHg17Ad
+         cPk8Ge+dVWYT1ujNt1x5J1TofMVley7cGfi5zO0B8sqk3LvbMYQDS32So6+cvHaCOe
+         DGToSLfQpqXjB8JIck1Rum68RwwzfeeVjcnf6pn73m1fME0xswf2zUwYNbtz4zgXdV
+         4jYavkTsmmSNw==
+X-Nifty-SrcIP: [209.85.160.44]
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-1225219ee46so1552109fac.2;
+        Thu, 08 Sep 2022 23:22:22 -0700 (PDT)
+X-Gm-Message-State: ACgBeo0yPPs3YxI6cvYrJhlck57Le/hA/iP/bJKsYio+0xFk5ymYYs7W
+        EMlblvPKVdsKybTm7vl7pP7nG60g2NNk0k/7bCU=
+X-Google-Smtp-Source: AA6agR5EfzPia/RtqfbgAaGxxK9GzsmSY41Hz6mLA8v9uVa6Dj7ot+FeljQw/MpvxviU07INWGgyx2GDfngU3/ZEkp4=
+X-Received: by 2002:a05:6870:c58b:b0:10b:d21d:ad5e with SMTP id
+ ba11-20020a056870c58b00b0010bd21dad5emr3918880oab.287.1662704541192; Thu, 08
+ Sep 2022 23:22:21 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6358:6f15:b0:b5:cc21:cff4 with HTTP; Thu, 8 Sep 2022
- 23:21:25 -0700 (PDT)
-Reply-To: stefanopessina14@gmail.com
-From:   Stefano Pessina <ekereuke50@gmail.com>
-Date:   Thu, 8 Sep 2022 23:21:25 -0700
-Message-ID: <CAEqfuO2WBqyhketF6b4_BqX8eU3FcXoUvZoWy=s2v_SkgoJikQ@mail.gmail.com>
-Subject: Donation
-To:     undisclosed-recipients:;
+References: <20220908104337.11940-1-lukas.bulwahn@gmail.com> <20220908104337.11940-2-lukas.bulwahn@gmail.com>
+In-Reply-To: <20220908104337.11940-2-lukas.bulwahn@gmail.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Fri, 9 Sep 2022 15:21:44 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQzPo3WuxEa4PpEQ3BEmzLgFP1Zbn0mnU+jFzf-+Rk0Jg@mail.gmail.com>
+Message-ID: <CAK7LNAQzPo3WuxEa4PpEQ3BEmzLgFP1Zbn0mnU+jFzf-+Rk0Jg@mail.gmail.com>
+Subject: Re: [PATCH 1/6] arm: make config ARM_PATCH_PHYS_VIRT visible with EXPERT
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        X86 ML <x86@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Peter Chen <peter.chen@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb <linux-usb@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2001:4860:4864:20:0:0:0:44 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [stefanopessina14[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [ekereuke50[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [ekereuke50[at]gmail.com]
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  0.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Thu, Sep 8, 2022 at 7:43 PM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+>
+> Commit 6a108a14fa35 ("kconfig: rename CONFIG_EMBEDDED to CONFIG_EXPERT")
+> introduces CONFIG_EXPERT to carry the previous intent of CONFIG_EMBEDDED
+> and just gives that intent a much better name. That has been clearly a good
+> and long overdue renaming, and it is clearly an improvement to the kernel
+> build configuration that has shown to help managing the kernel build
+> configuration in the last decade.
+>
+> However, rather than bravely and radically just deleting CONFIG_EMBEDDED,
+> this commit gives CONFIG_EMBEDDED a new intended semantics, but keeps it
+> open for future contributors to implement that intended semantics:
+>
+>     A new CONFIG_EMBEDDED option is added that automatically selects
+>     CONFIG_EXPERT when enabled and can be used in the future to isolate
+>     options that should only be considered for embedded systems (RISC
+>     architectures, SLOB, etc).
+>
+> Since then, this CONFIG_EMBEDDED implicitly had two purposes:
+>
+>   - It can make even more options visible beyond what CONFIG_EXPERT makes
+>     visible. In other words, it may introduce another level of enabling the
+>     visibility of configuration options: always visible, visible with
+>     CONFIG_EXPERT and visible with CONFIG_EMBEDDED.
+>
+>   - Set certain default values of some configurations differently,
+>     following the assumption that configuring a kernel build for an
+>     embedded system generally starts with a different set of default values
+>     compared to kernel builds for all other kind of systems.
+>
+> Considering the first purpose, at the point in time where CONFIG_EMBEDDED
+> was renamed to CONFIG_EXPERT, CONFIG_EXPERT already made 130 more options
+> become visible throughout all different menus for the kernel configuration.
+> Over the last decade, this has gradually increased, so that currently, with
+> CONFIG_EXPERT, roughly 170 more options become visible throughout all
+> different menus for the kernel configuration. In comparison, currently with
+> CONFIG_EMBEDDED enabled, just seven more options are visible, one in x86,
+> one in arm, and five for the ChipIdea Highspeed Dual Role Controller.
+>
+> As the numbers suggest, these two levels of enabling the visibility of even
+> more configuration options---beyond what CONFIG_EXPERT enables---never
+> evolved to a good solution in the last decade. In other words, this
+> additional level of visibility of configuration option with CONFIG_EMBEDDED
+> compared to CONFIG_EXPERT has since its introduction never become really
+> valuable. It requires quite some investigation to actually understand what
+> is additionally visible and it does not differ significantly in complexity
+> compared to just enabling CONFIG_EXPERT. This CONFIG_EMBEDDED---or any
+> other config to show more detailed options beyond CONFIG_EXPERT---is
+> unlikely to be valuable unless somebody puts significant effort in
+> identifying how such visibility options can be properly split and creating
+> clear criteria, when some config option is visible with CONFIG_EXPERT and
+> when some config option is visible only with some further option enabled
+> beyond CONFIG_EXPERT, such as CONFIG_EMBEDDED attempted to do. For now, it
+> is much more reasonable to simply make those additional seven options that
+> visible with CONFIG_EMBEDDED, visible with CONFIG_EXPERT, and then remove
+> CONFIG_EMBEDDED. If anyone spends significant effort in structuring the
+> visibility of config options, they may re-introduce suitable new config
+> options simply as they see fit.
+>
+> Make the config ARM_PATCH_PHYS_VIRT visible when CONFIG_EXPERT is enabled.
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+
+
+Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
+
+> ---
+>  arch/arm/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 4adfa5dd3556..4b212ab1b281 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -243,7 +243,7 @@ config ARCH_MTD_XIP
+>         bool
+>
+>  config ARM_PATCH_PHYS_VIRT
+> -       bool "Patch physical to virtual translations at runtime" if EMBEDDED
+> +       bool "Patch physical to virtual translations at runtime" if EXPERT
+>         default y
+>         depends on !XIP_KERNEL && MMU
+>         help
+> --
+> 2.17.1
+>
+
+
 -- 
-I am Stefano Pessina, an  Italian business tycoon, investor, and
-philanthropist. the vice chairman, chief executive officer (CEO), and
-the single largest shareholder of Walgreens Boots Alliance. I gave
-away 25 percent of my personal wealth to charity. And I also pledged
-to give away the rest of 25% this year 2022 to Individuals.. I have
-decided to donate $2,200,000.00 to you. If you are interested in my
-donation, do contact me for more info
+Best Regards
+Masahiro Yamada

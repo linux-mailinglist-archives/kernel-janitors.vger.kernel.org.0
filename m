@@ -2,103 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 001B45B2EFB
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Sep 2022 08:31:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A26DC5B2F64
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Sep 2022 09:00:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231146AbiIIGat (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Sep 2022 02:30:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57002 "EHLO
+        id S230155AbiIIG77 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Sep 2022 02:59:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231144AbiIIGao (ORCPT
+        with ESMTP id S230481AbiIIG76 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Sep 2022 02:30:44 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC041ED98E;
-        Thu,  8 Sep 2022 23:30:36 -0700 (PDT)
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4MP5cc4l9GzQj7k;
-        Fri,  9 Sep 2022 14:26:56 +0800 (CST)
-Received: from kwepemm600010.china.huawei.com (7.193.23.86) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 9 Sep 2022 14:30:34 +0800
-Received: from [10.174.178.31] (10.174.178.31) by
- kwepemm600010.china.huawei.com (7.193.23.86) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 9 Sep 2022 14:30:33 +0800
-Subject: Re: [PATCH 1/2] phy: usb: Fix potential NULL dereference in
- sp_usb_phy_probe()
-To:     Greg KH <gregkh@linuxfoundation.org>
-CC:     <vincent.sunplus@gmail.com>, <kishon@ti.com>, <vkoul@kernel.org>,
-        <p.zabel@pengutronix.de>, <linux-usb@vger.kernel.org>,
-        <linux-phy@lists.infradead.org>, <kernel-janitors@vger.kernel.org>
-References: <20220909013546.2259545-1-sunke32@huawei.com>
- <20220909013546.2259545-2-sunke32@huawei.com> <YxrRlCytfPobnjSv@kroah.com>
-From:   Sun Ke <sunke32@huawei.com>
-Message-ID: <027f9ef7-b447-b685-d190-01ff1d45c46a@huawei.com>
-Date:   Fri, 9 Sep 2022 14:30:32 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+        Fri, 9 Sep 2022 02:59:58 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81F5C31EF3
+        for <kernel-janitors@vger.kernel.org>; Thu,  8 Sep 2022 23:59:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 926EBB82350
+        for <kernel-janitors@vger.kernel.org>; Fri,  9 Sep 2022 06:59:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D411C433C1;
+        Fri,  9 Sep 2022 06:59:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662706794;
+        bh=NjnETBEQovFTHW/atuk0epV1j9ubAlRp1T2wsPCQGs0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=FzGQZ/+Gnbsqio4Xxee9bwn59GpYnV3pdfpVRBm2cSnqmKIoo7JDr7OOZ6dP2bQmw
+         IPbykM6K+kGdeTnfLY5R8h9H+ZhTSlpjJreTuebeComEykTksfLnTJPdmOrMoZLcQm
+         vvtDtC/NgLjctJJFd4m4J2vx1syQ9LsiU24DqYsnlOyDocLTVndtuE9G2gR9utto5Y
+         t9od9fsfDx6+48lUujj0CmstVeugcv8OVwg19tW3BhJe82iF25pZROd2nRjCQp2I+M
+         O0+jvYqhtEQ8drg+PISf0P2gGdv1LE3f0EwT+R/SzTSAaPKMaGGryiJrObVD8zn2gY
+         f8clRYqE5CJ8g==
+Date:   Fri, 9 Sep 2022 07:59:49 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] mfd: mt6370: add bounds checking to regmap_read/write
+ functions
+Message-ID: <YxrkZX36wzVlzq5u@google.com>
+References: <Yv8ezribLQbq5ggv@kili>
+ <CAHp75VcotcJzqc4iSwNTKcvF3vAYz6VUuMrsj7LF6mi6Xu8D=Q@mail.gmail.com>
+ <20220822125705.GD2695@kadam>
+ <YxmSTH5ETSC0D3Rp@google.com>
+ <Yxm7eztkQKDPU/Kl@kadam>
 MIME-Version: 1.0
-In-Reply-To: <YxrRlCytfPobnjSv@kroah.com>
-Content-Type: text/plain; charset="gbk"; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.31]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemm600010.china.huawei.com (7.193.23.86)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <Yxm7eztkQKDPU/Kl@kadam>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Thu, 08 Sep 2022, Dan Carpenter wrote:
 
+> On Thu, Sep 08, 2022 at 07:57:16AM +0100, Lee Jones wrote:
+> > On Mon, 22 Aug 2022, Dan Carpenter wrote:
+> > 
+> > > On Fri, Aug 19, 2022 at 09:27:13AM +0300, Andy Shevchenko wrote:
+> > > > On Fri, Aug 19, 2022 at 8:25 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> > > > >
+> > > > > It looks like there are a potential out of bounds accesses in the
+> > > > > read/write() functions.  Also can "len" be negative?  Let's check for
+> > > > > that too.
+> > > > 
+> > > > ...
+> > > > 
+> > > > > Fixes: ab9905c5e38e ("mfd: mt6370: Add MediaTek MT6370 support")
+> > > > 
+> > > > > From static analysis.  This code is obviously harmless however it may
+> > > > > not be required.  The regmap range checking is slightly complicated and
+> > > > > I haven't remembered where all it's done.
+> > > > 
+> > > > Exactement! I do not think this Fixes anything, I believe you are
+> > > > adding a dead code. So, can you do deeper analysis?
+> > > 
+> > > I spent a long time looking at this code before I sent it and I've
+> > > spent a long time looking at it today.
+> > > 
+> > > Smatch said that these values come from the user, but now it seems
+> > > less clear to me and I have rebuilt the DB so I don't have the same
+> > > information I was looking at earlier.
+> > > 
+> > > So I can't see if these come from the user but neither can I find any
+> > > bounds checking.
+> > 
+> > What's the consensus please?
+> 
+> Let's drop it.  I think it's not required.
 
-‘⁄ 2022/9/9 13:39, Greg KH –¥µ¿:
-> On Fri, Sep 09, 2022 at 09:35:45AM +0800, Sun Ke wrote:
->> platform_get_resource_byname() may fail and return NULL, so we should
->> better check it s return value to avoid a NULL pointer dereference
->> a bit later in the code.
->>
->> Fixes: 99d9ccd97385 ("phy: usb: Add USB2.0 phy driver for Sunplus SP7021")
->> Signed-off-by: Sun Ke <sunke32@huawei.com>
->> ---
->>   drivers/phy/sunplus/phy-sunplus-usb2.c | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/drivers/phy/sunplus/phy-sunplus-usb2.c b/drivers/phy/sunplus/phy-sunplus-usb2.c
->> index 5269968b3060..d73a8a421d9c 100644
->> --- a/drivers/phy/sunplus/phy-sunplus-usb2.c
->> +++ b/drivers/phy/sunplus/phy-sunplus-usb2.c
->> @@ -249,11 +249,15 @@ static int sp_usb_phy_probe(struct platform_device *pdev)
->>   	usbphy->dev = &pdev->dev;
->>   
->>   	usbphy->phy_res_mem = platform_get_resource_byname(pdev, IORESOURCE_MEM, "phy");
-> 
-> How can this fail on this system?
-> 
->> +	if (!usbphy->phy_res_mem)
->> +		return -EINVAL;
->>   	usbphy->phy_regs = devm_ioremap_resource(&pdev->dev, usbphy->phy_res_mem);
->>   	if (IS_ERR(usbphy->phy_regs))
->>   		return PTR_ERR(usbphy->phy_regs);
->>   
->>   	usbphy->moon4_res_mem = platform_get_resource_byname(pdev, IORESOURCE_MEM, "moon4");
-> 
-> Same here, how can this fail?
-> Have you seen these failures happen in real systems?
+Dropped.
 
-No, just code review.
-
-Thanks,
-Sun Ke
-> 
-> thanks,
-> 
-> greg k-h
-> .
-> 
+-- 
+Lee Jones [ÊùéÁêºÊñØ]

@@ -2,126 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6788F5B8A9A
-	for <lists+kernel-janitors@lfdr.de>; Wed, 14 Sep 2022 16:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EB695B8DED
+	for <lists+kernel-janitors@lfdr.de>; Wed, 14 Sep 2022 19:15:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230035AbiINOdp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 14 Sep 2022 10:33:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57052 "EHLO
+        id S229809AbiINRPL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 14 Sep 2022 13:15:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230146AbiINOdh (ORCPT
+        with ESMTP id S229727AbiINRPK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 14 Sep 2022 10:33:37 -0400
-X-Greylist: delayed 178 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 14 Sep 2022 07:33:35 PDT
-Received: from wnew1-smtp.messagingengine.com (wnew1-smtp.messagingengine.com [64.147.123.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB5CB2C125;
-        Wed, 14 Sep 2022 07:33:35 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailnew.west.internal (Postfix) with ESMTP id 6A99E2B059AB;
-        Wed, 14 Sep 2022 10:33:34 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Wed, 14 Sep 2022 10:33:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm1; t=1663166013; x=1663169613; bh=0UwiLm9wU3
-        WSNfSxDyHppyIXzHYDWSLCX7HdL5pdjGA=; b=U8HqBi9PfsGkfsCdkrz12F+ZAc
-        0cDBzVgonGcmcjSkr4ufqkTjDbFfL+iykG8prjDotuDt9xGH1BidESVImJmytVUU
-        DGdHM+ct1xwQaeQ9jvRHGniTW49a4WSdOKqYuy40WAtuunl6xhqpHNkCeEZ9nwiJ
-        v/apP+JayoIOeb88koFTXLQGH1GHrHSwiprrv2gPNNg1mENDVPW0bnDgTaTl3iEN
-        LkJeowub6uYfqaogrZdkjwatc3N4sKVVHUYZjIqMDrTncNgoFyj1GLsAOW+Gbr+/
-        DdTkNyXr5wyJbixWuW88qeU7SfwBteAJ0/B1VpfMdVq8urlk7FvnxRoXK59g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm2; t=1663166013; x=1663169613; bh=0UwiLm9wU3WSNfSxDyHppyIXzHYD
-        WSLCX7HdL5pdjGA=; b=kY8PbjarEfWRSC0PCGKMCFhPOEFU9xjnQSuLRvepFcxi
-        MDZt5RTJvqtetLam3jL7Bf60+2rUoevFWdGTOKK5CYATmXtIWuO3gj3uDnQ7JTmX
-        mjh7gMEYza6vCcRLv/9XszYzFrduAi92m+IsHcQ3ghzs8JxGvfb/Y/LRqulDIKF0
-        Ow6jfbDoxVBs+xyVbbNKzqJ+cgwPPLjul2S2NukfBXm7kRvm63LOXnwaLJMa1uLD
-        ocR/sSBihW44Oi1QhfpCah0jXdEy630ICrVtN3Ks/lQJtlFOL2Iz9PxehI4tezo2
-        wsNpnsDTjp0G/GONo1NnxGuB5lzuAQEuI+WuBtBNpQ==
-X-ME-Sender: <xms:PeYhY1BXlZq-lyBD17CO7IH9CI99Pye-0rG4x254hPBM0KVMtgeHVw>
-    <xme:PeYhYzgpviN6BoUgB_LQOU1LaiGnDImFMfJEA0IbAiemhm9mE8nKL89M1TIJ0Zoup
-    WAngjyOlK4lApRxiiI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeduiedgkedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:PeYhYwk1AJiBkKNb89UF5LFcQNV48_6gWkk7cS1dnStA73FTEy2UEQ>
-    <xmx:PeYhY_wW7N7R6mGUh9ib165mLsFQ6_8JBPv9Ct3-JIFa-BFRqrpbuA>
-    <xmx:PeYhY6T1v_v2n5m6QaDruKwQ42IJgb1J_8ECPQfoyB6cxqOHt7Z_MA>
-    <xmx:PeYhY3RxZC-g3EuWJDHOaERaVasqOCdnWjnXyDSqda5UNjdv_HdoetjRuKo>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 7A394B60086; Wed, 14 Sep 2022 10:33:33 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-934-g6274855a4c-fm-20220913.002-g6274855a
-Mime-Version: 1.0
-Message-Id: <0485fd4d-21f3-4972-8667-91959180e60f@www.fastmail.com>
-In-Reply-To: <20220914142713.29351-2-lukas.bulwahn@gmail.com>
-References: <20220914142713.29351-1-lukas.bulwahn@gmail.com>
- <20220914142713.29351-2-lukas.bulwahn@gmail.com>
-Date:   Wed, 14 Sep 2022 16:33:13 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Lukas Bulwahn" <lukas.bulwahn@gmail.com>,
-        "Linus Walleij" <linus.walleij@linaro.org>,
-        "Russell King" <linux@armlinux.org.uk>,
-        "Catalin Marinas" <catalin.marinas@arm.com>,
-        "Will Deacon" <will@kernel.org>,
-        "Damien Le Moal" <damien.lemoal@opensource.wdc.com>,
-        linux-arm-kernel@lists.infradead.org, linux-ide@vger.kernel.org
+        Wed, 14 Sep 2022 13:15:10 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C016D27CC9;
+        Wed, 14 Sep 2022 10:15:08 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id v185-20020a1cacc2000000b003b42e4f278cso12933494wme.5;
+        Wed, 14 Sep 2022 10:15:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=MUUM7KwzU+2KZkzhKF9P1/j81tXXvszfc0LUASC7ZGA=;
+        b=bRGqzBulJ+h3aIK0GSYu1WGuD5E1GKrDaNVoqbN9x6qq2eM6+4zcGuC3IqvXqCsmPp
+         AtaoY84k3Ba73psWci1jKHZi4UD4ctih2nShAjtbpBzh37b3J3S2F/KWUwlM2374Au4g
+         lWValPIYyouOXq0gAzbd4QfdJ5DgZjShNZKtccpQzNXKrvk00h5OmDW0+S0gVgTwKvxB
+         6UBpM+Rnm4BjYMl28L2qBzq3PB4XZ7SxSMPyMo5nzU/ZgTk/EHqJ3WO/Yj75gbm7sNaz
+         4+b1lL7DBdAQTon+NMFP5Tu82E+FXIoq0oR8oW3s0mo6dYKluDTtxTsduHZTd9NuwN6K
+         w3BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=MUUM7KwzU+2KZkzhKF9P1/j81tXXvszfc0LUASC7ZGA=;
+        b=JtjtKn66sCLWsRf2n7inzGBh7xcN3Ki7xST0Sp1HTvFRScoU5HhUGYozleTvsctshb
+         tgAgHzRwM9GW+V2++M8KcE8VI4GIG1fh/TyLjLFXS5tw60hlQ93aUBb8iCERM2BkdjZ1
+         94M+jfz8+vbG4ZjtZFplDl/jzQPGtv5SvQ5yH/E5WGyr6qFfcl3eX3p3dFMKQ+e/NZ3G
+         s4qKo68kjdyCyQZQOtUTN/yfIi3YVaMF3KzEamlOPk5/1NPclgaJqQT9tEqlTtoSgnaU
+         9LQtHi9+NkVFP7kA0vrTZr09l5HOuPYJdTJ57T2WryW5UYhBu2cEXUEaUcQ82YIIazmB
+         H7IQ==
+X-Gm-Message-State: ACgBeo0jmpanKyU0obzfMfJMsu8vr8GT17OzRDy3XCmEy0Qhv5BcEbqG
+        +ESNYu6NxGFdEL/mwsGsX/k=
+X-Google-Smtp-Source: AA6agR6Rc0CCCWkOiOfheIsc8ANCtg+0ygZPaJ3PLf9IFqpYv7zMPhIFVAi0bPlzLhkr2GM/6vsOOw==
+X-Received: by 2002:a05:600c:1546:b0:3a6:a99:aa7 with SMTP id f6-20020a05600c154600b003a60a990aa7mr3738358wmg.109.1663175707237;
+        Wed, 14 Sep 2022 10:15:07 -0700 (PDT)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id bv7-20020a0560001f0700b0022a53fe201fsm11769459wrb.68.2022.09.14.10.15.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Sep 2022 10:15:06 -0700 (PDT)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Felix Kuehling <Felix.Kuehling@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Xinhui.Pan@amd.com, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] ata: make PATA_PLATFORM selectable only for suitable
- architectures
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Subject: [PATCH][next] drm/amdkfd: Fix spelling mistake "detroyed" -> "destroyed"
+Date:   Wed, 14 Sep 2022 18:15:05 +0100
+Message-Id: <20220914171505.54154-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.37.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Sep 14, 2022, at 4:27 PM, Lukas Bulwahn wrote:
-> It is currently possible to select "Generic platform device PATA support"
-> in two situations:
->
->   - architecture allows the generic platform device PATA support and
->     indicates that with "select HAVE_PATA_PLATFORM".
->   - if the user claims to be an EXPERT by setting CONFIG_EXPERT to yes
->
-> However, there is no use case to have Generic platform device PATA support
-> in a kernel build if the architecture definition, i.e., the selection of
-> configs by an architecture, does not support it.
->
-> If the architecture definition is wrong, i.e., it just misses a 'select
-> HAVE_PATA_PLATFORM', then even an expert that configures the kernel build
-> should not just fix that by overruling the claimed support by an
-> architecture. If the architecture definition is wrong, the expert should
-> just provide a patch to correct the architecture definition instead---in
-> the end, if the user is an expert, sending a quick one-line patch should
-> not be an issue.
->
-> In other words, I do not see the deeper why an expert can overrule the
-> architecture definition in this case, as the expert may not overrule the
-> config selections defined by the architecture in the large majority
-> ---or probably all other (modulo some mistakes)---of similar cases.
->
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+There is a spelling mistake in a pr_debug message. Fix it.
 
-Sounds reasonable. My best guess about the intention of the EXPERT
-dependency is that it would be used for users with third-party
-board files or dts files referencing these. We can't really help
-users with out-of-tree boardfiles, and the external dts case would
-be covered by your patch 1/2.
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+index 7522bf2d2f57..c70c026c9a93 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+@@ -898,7 +898,7 @@ static vm_fault_t svm_migrate_to_ram(struct vm_fault *vmf)
+ 		return VM_FAULT_SIGBUS;
+ 	}
+ 	if (!mmget_not_zero(svm_bo->eviction_fence->mm)) {
+-		pr_debug("addr 0x%lx of process mm is detroyed\n", addr);
++		pr_debug("addr 0x%lx of process mm is destroyed\n", addr);
+ 		return VM_FAULT_SIGBUS;
+ 	}
+ 
+-- 
+2.37.1
+

@@ -2,51 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D214A604622
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Oct 2022 15:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89193604582
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Oct 2022 14:39:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229924AbiJSM76 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 Oct 2022 08:59:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44400 "EHLO
+        id S233181AbiJSMjA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 Oct 2022 08:39:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232757AbiJSM6v (ORCPT
+        with ESMTP id S233182AbiJSMik (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 Oct 2022 08:58:51 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63DFEB4F;
-        Wed, 19 Oct 2022 05:42:08 -0700 (PDT)
+        Wed, 19 Oct 2022 08:38:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BAD2EAA;
+        Wed, 19 Oct 2022 05:19:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F2DBCB822CE;
-        Wed, 19 Oct 2022 12:05:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3379FC433D7;
-        Wed, 19 Oct 2022 12:05:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 11BF16174B;
+        Wed, 19 Oct 2022 12:10:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88008C433D7;
+        Wed, 19 Oct 2022 12:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666181107;
-        bh=F/vs8b7abjKQcTaqlC59wWBxEf22jzV2p9r8gJVIZGE=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=E+NPxH+NYowTYhFvZA/si/KHWYqSmzmJUZSDAPHP3oaYblp6TcgreK0gD16Sb2KuV
-         2yXfcvSM9i/vdsolg6CMdMSqygf3/mTElc7vXfEqyaOs6WCaPEOH+kQjATgDDbPMwI
-         ydvoF66VcwKUbmzxRdoEQ1iYoiaCdYfIka0gZg1dzvIR5S/n9miXjFqW/q76rQk6GT
-         JapIr8CTHoYjP8t419TzGTskGgJrRwUHXt3yM31BhZEI53aiCPe9x6iVzTTq7XkwmK
-         FdkU3nlAOoCCG881txjNg4BGmBdWMSPZsFQO52Y6V7BXAgqyJLZO38F4nEmhY25n6x
-         YPunp94YoomwQ==
+        s=k20201202; t=1666181454;
+        bh=GWr+pXdg4KAo4cm6ndECUvEjk2iIp9Udlw6HdytD74s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=OjRgwK82xNTsABYyqlr8BKxalnQQsibfZTFAOamdK5hDwR/68+Cx2S/zX6i0MRQxp
+         T0crx1/UCoUvIBNb08r6YB6S4aOpA66cGj52RwxQ+sJvET2GGqMSuAUuvmXNiVG3s9
+         aTeXZ09DXkIm0Dzuy1OdMxVuMRQtL+f1fG1jaMUGy0nraMtyM1UNyQEaJPyahI4Rvz
+         F5IHTKOhmBdG8PqB7zX5baQBOCj/Kg/fJCl9rUVecEFATYO+YzWltUuLB1vZ9FWG7w
+         fN2ccE5iOoMFtTTcFjTAMxbjneGFbgD5mMaSvT/GYdNPn+MkRjLoedlJMPoYg6wLc3
+         j9FS/IlvurxGg==
+Date:   Wed, 19 Oct 2022 13:10:49 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Liam Girdwood <lgirdwood@gmail.com>, alsa-devel@alsa-project.org,
-        Colin Ian King <colin.i.king@gmail.com>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20221018152928.942186-1-colin.i.king@gmail.com>
-References: <20221018152928.942186-1-colin.i.king@gmail.com>
-Subject: Re: [PATCH] ASoC: twl4030: make read-only array ramp_base static const
-Message-Id: <166618110593.80223.11956786873062777747.b4-ty@kernel.org>
-Date:   Wed, 19 Oct 2022 13:05:05 +0100
+To:     Colin Ian King <colin.i.king@gmail.com>
+Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, linux-mips@vger.kernel.org,
+        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next][V2] ASoC: codecs: jz4725b: Fix spelling mistake
+ "Sourc" -> "Source", "Routee" -> "Route"
+Message-ID: <Y0/pSVbueZYXBsmA@sirena.org.uk>
+References: <20221019071639.1003730-1-colin.i.king@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.10.0-dev-fc921
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="RSRYBU1FRm2IiFjJ"
+Content-Disposition: inline
+In-Reply-To: <20221019071639.1003730-1-colin.i.king@gmail.com>
+X-Cookie: I like your SNOOPY POSTER!!
 X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -56,37 +60,30 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 18 Oct 2022 16:29:28 +0100, Colin Ian King wrote:
-> Don't populate the read-only array ramp_base on the stack but
-> instead make it static const. Also makes the object code a
-> little smaller.
-> 
-> 
 
-Applied to
+--RSRYBU1FRm2IiFjJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+On Wed, Oct 19, 2022 at 08:16:39AM +0100, Colin Ian King wrote:
+> There are two spelling mistakes in codec routing description. Fix it.
 
-Thanks!
+Bit disappionting that people didn't notice the errors during boot
+there...
 
-[1/1] ASoC: twl4030: make read-only array ramp_base static const
-      commit: 67860d2a8e0db7783f680f6f1c1600ed34ed3a97
+--RSRYBU1FRm2IiFjJ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-----BEGIN PGP SIGNATURE-----
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmNP6UgACgkQJNaLcl1U
+h9AMAAf/QC3eZNYr9/3n2kIr05IslQ40odVk7BW7aJxsPlGbyo3UWe9aVyLNxPFg
+ButRyaxZyFUaLjORA4747at7NxfUw6dkCBeq9WxQvLkOryJVmZIWVNhIDPDnquqP
+Ze6pexDoUZsvlEaVkJXd28PXKgQSjI6tLyQTG0y+wM4Xv5L05ISaSZtku0eZM28z
+DmG8fGdquHZFUZOVKQWu+Ny1G3sSkdrBkBUJcSkGVdn7TWIklLVqNuy4w3pq+0RF
+rviZ2Wo0NMzE5ksTXv2+t/UIYzNWjv/K0jcNVB16EnEqfI1pFDQJZyrKDrF1YyQu
+6Up7a5YP6VPCJgs3A3yWVpWcFahADw==
+=c0mZ
+-----END PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+--RSRYBU1FRm2IiFjJ--

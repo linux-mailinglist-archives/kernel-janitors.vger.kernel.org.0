@@ -2,61 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A205860B5D2
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Oct 2022 20:41:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D22260B9F0
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Oct 2022 22:23:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232196AbiJXSlD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Oct 2022 14:41:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59426 "EHLO
+        id S234066AbiJXUXZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Oct 2022 16:23:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232213AbiJXSkd (ORCPT
+        with ESMTP id S233085AbiJXUWn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Oct 2022 14:40:33 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C0FC1759A;
-        Mon, 24 Oct 2022 10:22:23 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id k8so8624610wrh.1;
-        Mon, 24 Oct 2022 10:22:23 -0700 (PDT)
+        Mon, 24 Oct 2022 16:22:43 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF2FCEBD;
+        Mon, 24 Oct 2022 11:38:23 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id j15so7007872wrq.3;
+        Mon, 24 Oct 2022 11:38:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jYf7cTB4wDVQpysigBRvPC/XQ9ZNHdrnvPwPX4mSzYs=;
-        b=ZtbjaQFrkNjsUuUy2r1veI7zdJmUQBlKdcg8EY691iFQsz4/fvFVeHJL0JZ5Z5+WMe
-         8t24dv6AwIwCv71gQfgEOwq0jm9Q6LJ9rAVawleQ/KrrNErlGgEcEJkorwXT5Boy8n5c
-         GwX02Jh7vMyjQR3cF65f0siOmQUp/wcjTCzKnslrriz5psty1cJ3U5FWABv7MDzInSeY
-         ZzxH+kpCsf8c3vEcZp5nP2WfO9QfUjkBN3xt/1MQrDUTpirv82tDA8fvChKCOi4ozdoB
-         42ztCXuut/sb/17z2BhpuZ2DyGxBw/6cjHdY1aT7lKl2JlIgYIkLnl3Jxt7mV/vHXNkf
-         1o6Q==
+        bh=dJnt2GP1pm08BDpQHAhmkmMOzHCfFoZgxhdL+wvVQI0=;
+        b=gtZvIN8K3k7r1uHwhEc7+/ToiepvXrRLoYCsg65dKsJr7+zp+7Rd4BFPZHYq6xmI/s
+         U+BDXTd/r9PFSVMu/yjZ4Sf07IW0+jlWi5BvINZdqDm7Y7z4eQR2TmQ6RwSPTAdoTQQ9
+         jlARxJ/PCtHlhQUtJC0b66o3+iM/th1/2R2yyBOOVgiXpWltxMzpg0iH2T11K9+PdsH/
+         E6CT8BeZgFfsW1cADQNx54JCen+tOKsRze5ykzfigG/1Lghwvzyt39qVHE4SUCPGAbUx
+         p2pN82oHtzogmLIxs9vJScr2XN1xZHXZYehB8JEPVtddts4gJdARWTKXjZstKe6ZfFVD
+         6Xqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jYf7cTB4wDVQpysigBRvPC/XQ9ZNHdrnvPwPX4mSzYs=;
-        b=avGNW09O+bSG6GhzuZL+QJ4ZhIOxmdNRL/uXWf3YKK/y11CflDu4B95MaJYZhQI5Qc
-         60kBeZExamxwHid97nML6UvwOAnpJZJuflZggQBykocGssUq/aQPanOzfCNMrosjEXTe
-         3phNjgWfuJ5I5YoQch4fDi3bjii7kmDoqZI8zedP38CIsbHUe7FPB47b/xcVQ0Kw03q7
-         BBwqy4wrZFUKPP2vCDRb85LDcIQ9Byal4T+anw8bZbSE+RNfOdcWAZ6QUnscxNaFkDmL
-         gWGnLLHgNbR4K4bZw9VwTVPZTt0dajwjc7XcciejY2aDqs3Bqh2Z4OckO3mhgkcUmKqz
-         dR1g==
-X-Gm-Message-State: ACrzQf3AoFD13izflUJ7MkqBh7VP/jv7pd0WiuqSZ6HGgW9eIiETKMYr
-        b4FOosuRBYjA3aGQPprnvyzvN6wDti/DClDF
-X-Google-Smtp-Source: AMsMyM6aq2UQDlHmeTkXIJvJ9kWzInvPWV2UA72I3i2TsH9IXL+6obK98pW6NhB5zlKTxgDbROWQAg==
-X-Received: by 2002:a05:6000:788:b0:22e:412b:7959 with SMTP id bu8-20020a056000078800b0022e412b7959mr21871223wrb.491.1666627863318;
-        Mon, 24 Oct 2022 09:11:03 -0700 (PDT)
+        bh=dJnt2GP1pm08BDpQHAhmkmMOzHCfFoZgxhdL+wvVQI0=;
+        b=3JwS7y9uEWRqhjI6bK7MrBztLA6eyfQsKvfY9/KUpJ7wx5uSQyY/ThkqskjTFFBWhC
+         9tcHyT6Q6cOIW77HE9pU6buqxSJH9WzkpGAX7+ySP1UzRF+qmyAGeerCGi2ZpaLTCCF4
+         s5yY/6VCnXIBO4yqr+qijCmv2mDxONEi9+ZdfjYCkrLish3XsfH4nSVQq0rYgFXtu5Tp
+         KyrVrgjUXgVQPnx1d8edJcLPSAk2kZZyT86FygIzihdgi4oPoMI4XlqbTJkBvEZELco3
+         Y5ppkKyAiAFXs/Cp8rsG+ZZxWQSlRAPxR6rRSfVeT+Uqmavv0Z/H3PWMifaW5SW0Y2lH
+         4qag==
+X-Gm-Message-State: ACrzQf2eUFmVHWCjybvIqRMM+WOR3uI6egmJT63egOV4LuwMgnJQS9Vu
+        Ka3GwU7ksgQPz50FD7we7kYUL0YCm+CdEVxo
+X-Google-Smtp-Source: AMsMyM4QQftM+1SbPAw/eMbzp1P4w7OUi/TXYHqvMABQeyIe0BWWf6rzp6zV9CjBu1IrRbbVd+x63Q==
+X-Received: by 2002:adf:d843:0:b0:236:6231:113b with SMTP id k3-20020adfd843000000b002366231113bmr7525187wrl.42.1666622102639;
+        Mon, 24 Oct 2022 07:35:02 -0700 (PDT)
 Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id r13-20020a05600c458d00b003c6f3f6675bsm8873808wmo.26.2022.10.24.09.11.02
+        by smtp.gmail.com with ESMTPSA id r2-20020adfe682000000b002366fb99cdasm3413379wrm.50.2022.10.24.07.35.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Oct 2022 09:11:02 -0700 (PDT)
+        Mon, 24 Oct 2022 07:35:02 -0700 (PDT)
 From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-input@vger.kernel.org
+To:     "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] HID: asus: Remove variable count
-Date:   Mon, 24 Oct 2022 17:11:02 +0100
-Message-Id: <20221024161102.2171702-1-colin.i.king@gmail.com>
+Subject: [PATCH] net: dl2k: remove variable tx_use
+Date:   Mon, 24 Oct 2022 15:35:01 +0100
+Message-Id: <20221024143501.2163720-1-colin.i.king@gmail.com>
 X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -71,43 +72,35 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Variable count is just being incremented and it's never used
+Variable tx_use is just being incremented and it's never used
 anywhere else. The variable and the increment are redundant so
 remove it.
 
 Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 ---
- drivers/hid/hid-asus.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/dlink/dl2k.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index b59c3dafa6a4..f99752b998f3 100644
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -219,14 +219,13 @@ static void asus_report_tool_width(struct asus_drvdata *drvdat)
+diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
+index 2c67a857a42f..db6615aa921b 100644
+--- a/drivers/net/ethernet/dlink/dl2k.c
++++ b/drivers/net/ethernet/dlink/dl2k.c
+@@ -814,7 +814,6 @@ rio_free_tx (struct net_device *dev, int irq)
  {
- 	struct input_mt *mt = drvdat->input->mt;
- 	struct input_mt_slot *oldest;
--	int oldid, count, i;
-+	int oldid, i;
+ 	struct netdev_private *np = netdev_priv(dev);
+ 	int entry = np->old_tx % TX_RING_SIZE;
+-	int tx_use = 0;
+ 	unsigned long flag = 0;
  
- 	if (drvdat->tp->contact_size < 5)
- 		return;
+ 	if (irq)
+@@ -839,7 +838,6 @@ rio_free_tx (struct net_device *dev, int irq)
  
- 	oldest = NULL;
- 	oldid = mt->trkid;
--	count = 0;
- 
- 	for (i = 0; i < mt->num_slots; ++i) {
- 		struct input_mt_slot *ps = &mt->slots[i];
-@@ -238,7 +237,6 @@ static void asus_report_tool_width(struct asus_drvdata *drvdat)
- 			oldest = ps;
- 			oldid = id;
- 		}
--		count++;
+ 		np->tx_skbuff[entry] = NULL;
+ 		entry = (entry + 1) % TX_RING_SIZE;
+-		tx_use++;
  	}
- 
- 	if (oldest) {
+ 	if (irq)
+ 		spin_unlock(&np->tx_lock);
 -- 
 2.37.3
 

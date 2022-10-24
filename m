@@ -2,61 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC21060B1CA
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Oct 2022 18:37:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFA3B60B46B
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Oct 2022 19:43:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234112AbiJXQhj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Oct 2022 12:37:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41126 "EHLO
+        id S233904AbiJXRn3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Oct 2022 13:43:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234306AbiJXQhL (ORCPT
+        with ESMTP id S231794AbiJXRnG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Oct 2022 12:37:11 -0400
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A50636879;
-        Mon, 24 Oct 2022 08:24:55 -0700 (PDT)
-Received: by mail-wr1-x433.google.com with SMTP id bs21so922108wrb.4;
-        Mon, 24 Oct 2022 08:24:54 -0700 (PDT)
+        Mon, 24 Oct 2022 13:43:06 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00A2DA50DF;
+        Mon, 24 Oct 2022 09:17:59 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id o4so8812687wrq.6;
+        Mon, 24 Oct 2022 09:17:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OLgc4/4C8v2jDtY+kMWIa5ZzBrBS7jfMBU2/F5ZQ5SM=;
-        b=B71lktSNCiRFQJrKXCWCN4QxfX/TYZNdY8OxVIsKF7q3E08na25TFcl1p34nsMRMan
-         Us3Vg9+DeUik8y0zahnES1/+u2RtqhicAQ9uLYs6A7VS1Rflhq2tGs+V39ktJag6tmix
-         Hjl/dRwIcr6w1puXUndLfmDKFOsAXmQktEt9f/NRegSFnkwFg69NMaHO82yG2EBRllXn
-         Q9biOxW3QzoHrH7EvxtZGl1wfEukyYRxVvDSsYcmXf1NE13LajLCgYTIyZSC9R5mDCws
-         CrtL6pJ5wdUDD14R6XJMfcKF4dmKAZQHbX6BPyJgtbT3T45fk5A7li5ALLXhkaadIX5+
-         vpHg==
+        bh=7aiClwPR9sAvkuS66cGq13emR+XEGSOWezje9CRd5Ko=;
+        b=AXE1YHREz/ElPMozg6VRmr+8PZ5DdwECsVZN7yJ4+M7mMjSuztlivbhKAGSPlpO8xS
+         mVyPlRhBrJ4UV7tEiyzPBNqT8sOhCp2I/SCgVpB2ffO6n7BhMASip8PXg85j18sD9ybG
+         VzqiFw2yKpDaaQ6tRZ6yhHM/qi4r1iRhKLjZUZhwOuXOjn+7buIwW8gmw/ppPFAQvXw5
+         SwhpwSCZauJoF3nJMna0pVro0QhhpmPydJ7MXabd7CbJDBUsvsVEerLJ2yzz7DOCig5c
+         m+K9nvR+SI3JHF3UE9QIseWkYn7rx74gahSTUQkqTV90/O5VJZ6M77gIkJz2V5Nr8Mf2
+         27RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=OLgc4/4C8v2jDtY+kMWIa5ZzBrBS7jfMBU2/F5ZQ5SM=;
-        b=AiXSEmtumLyTjFmGYKNAS3d98/fR7cxbzk4L1Cw9hooP5ivwNzUiB5Qdv+Uku7xgBQ
-         e8Ho6OOW2vBC2QrIXGcquJ3OlyO/QQqWUjX7AEvGwApJ2jCSPo3oqp8GAZU9gLwiRQw3
-         SBFkhtaptRX8UFWTQ0xnxyesdS517qG+JGQZRjYg42vpolGp1lAqAOSyw/MOZnjDc7hx
-         Yc1X1adjZ8HAAz+h1txmBdWi++sG5RlPpz6fgcUXSD5q0HfNscbzsVOgl5ibWcZPK/JA
-         DBFtwN7KI9fJSHZhvNFjYX2sWmJwzI1iXvCErqDSsgWLDKBIq7Gss8hKNbr6ei5rn2od
-         n4iQ==
-X-Gm-Message-State: ACrzQf2b6fJQHsCWVkGCVI0Odf6/RErU14WProTOmiEVMhrQs1COfB5D
-        OYIUR/09V0+HYNFUwy0V60eR3bVUuQnlr1ZU
-X-Google-Smtp-Source: AMsMyM74x8Xq7pcPJv3wMuHY0rzfdbCS1si0suzLihSkp26iytP0gSH5VGVeWMKinACC1WYjKtXVKA==
-X-Received: by 2002:adf:dc8a:0:b0:236:6372:551e with SMTP id r10-20020adfdc8a000000b002366372551emr7300862wrj.41.1666624436138;
-        Mon, 24 Oct 2022 08:13:56 -0700 (PDT)
+        bh=7aiClwPR9sAvkuS66cGq13emR+XEGSOWezje9CRd5Ko=;
+        b=OsatyBm0RJPxmdBfYKd2xJSrkiq02WOBO/t38SR0feOyDcaX+BXLnArTtHgaMEdbhW
+         23HreML8fEAKJ5Octm/ZsSW1NEmh4drGF8AZRa5CDs+kXVXUjoNMNgq74SfG31gmRIs3
+         yIbFgXCg2BP7GkqOPx3Cw8orYPUohXHWri9jQVKScLLaE+qA4hfGi0W8OtuNDo+r+SLK
+         xqh81EeZLeTUq66EnMijhnhvdtDyNkTP36CFk480cp6Dn1zOnXuZN9iOcRFmvP16h6et
+         VAyDCxzQtKxAxYGzID3e3oWFgTh0ko9LUtwrDXxndCvPv/eX/YuO3UBG23W2BzUnLHHQ
+         Lhwg==
+X-Gm-Message-State: ACrzQf3ZgWsxKlnX3FMjQpY0Yo0Lcyn0cSiLCMRIpu55GP3sGrJ8VWzI
+        0o1vNTTTHyA0O8S+hd0RkJBIdHsV9L9nK4Ga
+X-Google-Smtp-Source: AMsMyM79gyjjA1L/l7GuLr9GMJwmIUmhcGN19aJsAyi2OUBUUVgXjjYM2Ikso+u3DDCb8NxBRju7WQ==
+X-Received: by 2002:adf:e3c1:0:b0:236:6d5d:ffa2 with SMTP id k1-20020adfe3c1000000b002366d5dffa2mr5420960wrm.557.1666625995849;
+        Mon, 24 Oct 2022 08:39:55 -0700 (PDT)
 Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id az27-20020a05600c601b00b003c6c2ff7f25sm181093wmb.15.2022.10.24.08.13.55
+        by smtp.gmail.com with ESMTPSA id h17-20020a5d4311000000b002366ded5864sm4241575wrq.116.2022.10.24.08.39.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Oct 2022 08:13:55 -0700 (PDT)
+        Mon, 24 Oct 2022 08:39:55 -0700 (PDT)
 From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Slark Xiao <slark_xiao@163.com>, linux-media@vger.kernel.org
+To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] media: saa7164: remove variable cnt
-Date:   Mon, 24 Oct 2022 16:13:54 +0100
-Message-Id: <20221024151354.2166343-1-colin.i.king@gmail.com>
+Subject: [PATCH] ath9k: remove variable sent
+Date:   Mon, 24 Oct 2022 16:39:54 +0100
+Message-Id: <20221024153954.2168503-1-colin.i.king@gmail.com>
 X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -71,53 +75,35 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Variable cnt is just being incremented and it's never used
+Variable sent is just being incremented and it's never used
 anywhere else. The variable and the increment are redundant so
 remove it.
 
 Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 ---
- drivers/media/pci/saa7164/saa7164-core.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath9k/xmit.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/media/pci/saa7164/saa7164-core.c b/drivers/media/pci/saa7164/saa7164-core.c
-index d5f32e3ff544..01d75ef2342d 100644
---- a/drivers/media/pci/saa7164/saa7164-core.c
-+++ b/drivers/media/pci/saa7164/saa7164-core.c
-@@ -352,7 +352,7 @@ static void saa7164_work_enchandler(struct work_struct *w)
- 		container_of(w, struct saa7164_port, workenc);
- 	struct saa7164_dev *dev = port->dev;
+diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
+index ba271a10d4ab..39abb59d8771 100644
+--- a/drivers/net/wireless/ath/ath9k/xmit.c
++++ b/drivers/net/wireless/ath/ath9k/xmit.c
+@@ -1678,7 +1678,6 @@ void ath9k_release_buffered_frames(struct ieee80211_hw *hw,
+ 	struct ieee80211_tx_info *info;
+ 	struct list_head bf_q;
+ 	struct ath_buf *bf_tail = NULL, *bf = NULL;
+-	int sent = 0;
+ 	int i, ret;
  
--	u32 wp, mcb, rp, cnt = 0;
-+	u32 wp, mcb, rp;
+ 	INIT_LIST_HEAD(&bf_q);
+@@ -1707,7 +1706,6 @@ void ath9k_release_buffered_frames(struct ieee80211_hw *hw,
  
- 	port->last_svc_msecs_diff = port->last_svc_msecs;
- 	port->last_svc_msecs = jiffies_to_msecs(jiffies);
-@@ -405,7 +405,6 @@ static void saa7164_work_enchandler(struct work_struct *w)
+ 			bf_tail = bf;
+ 			nframes--;
+-			sent++;
+ 			TX_STAT_INC(sc, txq->axq_qnum, a_queued_hw);
  
- 		saa7164_work_enchandler_helper(port, rp);
- 		port->last_svc_rp = rp;
--		cnt++;
- 
- 		if (rp == mcb)
- 			break;
-@@ -429,7 +428,7 @@ static void saa7164_work_vbihandler(struct work_struct *w)
- 		container_of(w, struct saa7164_port, workenc);
- 	struct saa7164_dev *dev = port->dev;
- 
--	u32 wp, mcb, rp, cnt = 0;
-+	u32 wp, mcb, rp;
- 
- 	port->last_svc_msecs_diff = port->last_svc_msecs;
- 	port->last_svc_msecs = jiffies_to_msecs(jiffies);
-@@ -481,7 +480,6 @@ static void saa7164_work_vbihandler(struct work_struct *w)
- 
- 		saa7164_work_enchandler_helper(port, rp);
- 		port->last_svc_rp = rp;
--		cnt++;
- 
- 		if (rp == mcb)
- 			break;
+ 			if (an->sta && skb_queue_empty(&tid->retry_q))
 -- 
 2.37.3
 

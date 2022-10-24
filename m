@@ -2,278 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CDAF60AE2E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Oct 2022 16:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5C8460AE7D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Oct 2022 17:04:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235019AbiJXOwE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Oct 2022 10:52:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43130 "EHLO
+        id S230513AbiJXPEu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Oct 2022 11:04:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230445AbiJXOvr (ORCPT
+        with ESMTP id S231171AbiJXPEX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Oct 2022 10:51:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E302615FD5
-        for <kernel-janitors@vger.kernel.org>; Mon, 24 Oct 2022 06:29:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1666618065;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=dTJ78Wi/Bn4a7gXM5FhlU/stXOGbP+8r4N7PUdsa5sU=;
-        b=Mf4WMdpdV51eBlYCEeIZuxsFXVlXTS/yhxP1+PPBUq/tPkytxpcIEZ065lABhiDBFMfCfv
-        0ri3nzR8D5jYeZIOEWFI7I9dDsRmWql1kvuTp74PWTB8WL7IY8N0VFwYA8Flhjfxi3Xy6h
-        GTpdYEiwpzVEeVz55rkQpRq53Cv3kdI=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-124-2tYYGn9KMXGG3v9Fv5RZXQ-1; Mon, 24 Oct 2022 09:27:44 -0400
-X-MC-Unique: 2tYYGn9KMXGG3v9Fv5RZXQ-1
-Received: by mail-ed1-f70.google.com with SMTP id v13-20020a056402348d00b0045d36615696so9633076edc.14
-        for <kernel-janitors@vger.kernel.org>; Mon, 24 Oct 2022 06:27:43 -0700 (PDT)
+        Mon, 24 Oct 2022 11:04:23 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76235B448C
+        for <kernel-janitors@vger.kernel.org>; Mon, 24 Oct 2022 06:41:22 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id d24so8476084pls.4
+        for <kernel-janitors@vger.kernel.org>; Mon, 24 Oct 2022 06:41:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/Vr0nqHCGrm+b68s/C4QPay7OOdjkPPEqnfDL2I3xZ0=;
+        b=A1zile5aaiGOv1/6LYGIIS7rWZdNf/REZ+C9UBtfg9OfpCOGjXnhycbBfjdSe0JOyu
+         v5qzJjdxIPLQzNoFIOLcH8aiLZMksx3Tj6Nur9hpg9fEaWvP7WH1gT5ar8GPUQpgA5lJ
+         DioVkGo5QA/KPc7eezM0ezSfhiofM6Pb9FiueqjTZj7jQ/qNViyLM0EuJoUXoo8FQbGG
+         N7zpmFdBC9U18lnuezv9+We3fEpYv6ZvxzaOMEglGMbyGuOucIIcEoZ1vQEwbdbY0HRA
+         4C9EJiEr8dTf62+r9YQ3C5gn+n6uMmjDlqJSHPRWR60LM6ro/3Du7SUX9hoCoCevjEWv
+         qhdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dTJ78Wi/Bn4a7gXM5FhlU/stXOGbP+8r4N7PUdsa5sU=;
-        b=BBTA+R6RTKdeR3QvOwTghW0uniailb5pauExHW6zjhhWRvqvCVSPwHYhPP5Iuq8pzw
-         gIjFOzHbiq0AVIbgZtJxjL9rYNEXx2JwsxCB37IVMtJb++fEWzCc/Sb+FjeMTLmbg7U2
-         PqfvSyWPW8du4fyGMp1uzbfclTwxn8rlWXkUDsYbrnGACsaC3b4NG5VoI/7PPe5Ug0z6
-         J68XdyQPQtpJf1h2L7PikGBPZXpCvoZ+pCUqoH50zzursNaViM/p7OTqrAjAy/jNBb3O
-         w/JlPGacawt4zbf7FB7c0tttS3J0258jPVibrdfaRbQ0Pmrh7SxqsuoAWw6LNifZGapl
-         R0XA==
-X-Gm-Message-State: ACrzQf0i9a6hEaWWrEs6aNtNJrKnOwsH7nsorQ/XzMfnvGyldbIWBBns
-        t30LHyxNPrIEwKXoJp3gj227LEaN15NLr69Lgmc/LY3TpIASrd7+itNplJ0SlpBQViC2Cg/nyIC
-        gtdsA+kD6MTgQUY6yk28UhgjyUmYy
-X-Received: by 2002:a17:906:ef8c:b0:78d:96b9:a0ad with SMTP id ze12-20020a170906ef8c00b0078d96b9a0admr27988619ejb.529.1666618062845;
-        Mon, 24 Oct 2022 06:27:42 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM6PLjdH/SJdBXM7kRQutOhLpzW+wJVl2He++jL7fQe3kHCU8K+TJwxVcv/vyNeVOcmgxY6WUw==
-X-Received: by 2002:a17:906:ef8c:b0:78d:96b9:a0ad with SMTP id ze12-20020a170906ef8c00b0078d96b9a0admr27988610ejb.529.1666618062644;
-        Mon, 24 Oct 2022 06:27:42 -0700 (PDT)
-Received: from [10.40.98.142] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id p17-20020a05640210d100b00461c1804cdasm2100885edu.3.2022.10.24.06.27.41
+        bh=/Vr0nqHCGrm+b68s/C4QPay7OOdjkPPEqnfDL2I3xZ0=;
+        b=Le2ho9hPCK3RH12XmIDQaFKBPx8ep8C4fHT/Tk4Do8wCPkPADQuRUXA7sUZbI/X2Z3
+         V1MgdRmgpAETmZDkO4e9SMpuUtZrUScQScrW6OUkuDsUlYM0jQjhFquP8gG0So+4SfoC
+         52zXpowfyS2RCQ2ZPAr8chpz3QQf3LAkuahldq+NEwpoVxxQZljDrbt4ZswO/y6JzR2G
+         yJTgzE9sBZowiQBpzi2GUL7e89zZ72AhBGyZZJ5lZJI/bDM2fo1s46DmAN0hX2OQXvX2
+         T9LB4bix8Q1zCxml2lhoXbjP1hUl0C+ean/fuxltCHidRUsat556mgpNyh66ZNFJLHem
+         yGkA==
+X-Gm-Message-State: ACrzQf2cCJWv9doc6Ugf1a0aW6uws+IvW0LYzzOJsdKRC78WOUrmjj0I
+        afIgrkF5x01HC9Mw4F27u3/MGeGZg7bg7A==
+X-Google-Smtp-Source: AMsMyM5X+kIBxudaeRFmJTdkoXGBmNzB+x8RZi8q9kq8BLojbo3cknAZE5oULo3K676hCYZUJgRcwQ==
+X-Received: by 2002:a0c:9151:0:b0:4b1:8375:46d3 with SMTP id q75-20020a0c9151000000b004b1837546d3mr28530283qvq.122.1666618142903;
+        Mon, 24 Oct 2022 06:29:02 -0700 (PDT)
+Received: from [192.168.1.8] ([64.57.193.93])
+        by smtp.gmail.com with ESMTPSA id cn15-20020a05622a248f00b0034305a91aaesm12586522qtb.83.2022.10.24.06.29.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Oct 2022 06:27:42 -0700 (PDT)
-Message-ID: <116e3615-a0fc-3b88-18e1-c03c29bf78fd@redhat.com>
-Date:   Mon, 24 Oct 2022 15:27:41 +0200
+        Mon, 24 Oct 2022 06:29:02 -0700 (PDT)
+Message-ID: <a7693e48-f16f-9577-8685-417f21706d1b@linaro.org>
+Date:   Mon, 24 Oct 2022 09:29:00 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-Subject: Re: [PATCH] platform/x86/amd/pmf: pass the struct by reference
+ Thunderbird/102.4.0
+Subject: Re: [PATCH] pinctrl: samsung: remove variable pin
 Content-Language: en-US
-To:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Mark Gross <markgross@kernel.org>
-Cc:     kernel@collabora.com, kernel-janitors@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20221004081019.619193-1-usama.anjum@collabora.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20221004081019.619193-1-usama.anjum@collabora.com>
+To:     Colin Ian King <colin.i.king@gmail.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Tomasz Figa <tomasz.figa@gmail.com>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-gpio@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20221024131527.2156810-1-colin.i.king@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221024131527.2156810-1-colin.i.king@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
-
-On 10/4/22 10:10, Muhammad Usama Anjum wrote:
-> The out structure should be passed by reference instead of passing by
-> value. This saves the extra copy of the structure.
+On 24/10/2022 09:15, Colin Ian King wrote:
+> Variable pin is just being incremented and it's never used
+> anywhere else. The variable and the increment are redundant so
+> remove it.
 > 
-> Fixes: 1738061c9ec8 ("platform/x86/amd/pmf: Add support for CnQF")
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-
-Applied (minus the fixes tag as this is not a bug-fix):
-
-Thank you for your patch, I've applied this patch to my review-hans 
-branch:
-https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
-
-Note it will show up in my review-hans branch once I've pushed my
-local branch there, which might take a while.
-
-Once I've run some tests on this branch the patches there will be
-added to the platform-drivers-x86/for-next branch and eventually
-will be included in the pdx86 pull-request to Linus for the next
-merge-window.
-
-Regards,
-
-Hans
-
-
-
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 > ---
->  drivers/platform/x86/amd/pmf/cnqf.c | 92 ++++++++++++++---------------
->  1 file changed, 46 insertions(+), 46 deletions(-)
-> 
-> diff --git a/drivers/platform/x86/amd/pmf/cnqf.c b/drivers/platform/x86/amd/pmf/cnqf.c
-> index 668c7c0fea83..3f9731a2ac28 100644
-> --- a/drivers/platform/x86/amd/pmf/cnqf.c
-> +++ b/drivers/platform/x86/amd/pmf/cnqf.c
-> @@ -158,100 +158,100 @@ int amd_pmf_trans_cnqf(struct amd_pmf_dev *dev, int socket_power, ktime_t time_l
->  	return 0;
->  }
->  
-> -static void amd_pmf_update_trans_data(int idx, struct apmf_dyn_slider_output out)
-> +static void amd_pmf_update_trans_data(int idx, struct apmf_dyn_slider_output *out)
->  {
->  	struct cnqf_tran_params *tp;
->  
->  	tp = &config_store.trans_param[idx][CNQF_TRANSITION_TO_QUIET];
-> -	tp->time_constant = out.t_balanced_to_quiet;
-> +	tp->time_constant = out->t_balanced_to_quiet;
->  	tp->target_mode = CNQF_MODE_QUIET;
->  	tp->shifting_up = false;
->  
->  	tp = &config_store.trans_param[idx][CNQF_TRANSITION_FROM_BALANCE_TO_PERFORMANCE];
-> -	tp->time_constant = out.t_balanced_to_perf;
-> +	tp->time_constant = out->t_balanced_to_perf;
->  	tp->target_mode = CNQF_MODE_PERFORMANCE;
->  	tp->shifting_up = true;
->  
->  	tp = &config_store.trans_param[idx][CNQF_TRANSITION_FROM_QUIET_TO_BALANCE];
-> -	tp->time_constant = out.t_quiet_to_balanced;
-> +	tp->time_constant = out->t_quiet_to_balanced;
->  	tp->target_mode = CNQF_MODE_BALANCE;
->  	tp->shifting_up = true;
->  
->  	tp = &config_store.trans_param[idx][CNQF_TRANSITION_FROM_PERFORMANCE_TO_BALANCE];
-> -	tp->time_constant = out.t_perf_to_balanced;
-> +	tp->time_constant = out->t_perf_to_balanced;
->  	tp->target_mode = CNQF_MODE_BALANCE;
->  	tp->shifting_up = false;
->  
->  	tp = &config_store.trans_param[idx][CNQF_TRANSITION_FROM_TURBO_TO_PERFORMANCE];
-> -	tp->time_constant = out.t_turbo_to_perf;
-> +	tp->time_constant = out->t_turbo_to_perf;
->  	tp->target_mode = CNQF_MODE_PERFORMANCE;
->  	tp->shifting_up = false;
->  
->  	tp = &config_store.trans_param[idx][CNQF_TRANSITION_TO_TURBO];
-> -	tp->time_constant = out.t_perf_to_turbo;
-> +	tp->time_constant = out->t_perf_to_turbo;
->  	tp->target_mode = CNQF_MODE_TURBO;
->  	tp->shifting_up = true;
->  }
->  
-> -static void amd_pmf_update_mode_set(int idx, struct apmf_dyn_slider_output out)
-> +static void amd_pmf_update_mode_set(int idx, struct apmf_dyn_slider_output *out)
->  {
->  	struct cnqf_mode_settings *ms;
->  
->  	/* Quiet Mode */
->  	ms = &config_store.mode_set[idx][CNQF_MODE_QUIET];
-> -	ms->power_floor = out.ps[APMF_CNQF_QUIET].pfloor;
-> -	ms->power_control.fppt = out.ps[APMF_CNQF_QUIET].fppt;
-> -	ms->power_control.sppt = out.ps[APMF_CNQF_QUIET].sppt;
-> -	ms->power_control.sppt_apu_only = out.ps[APMF_CNQF_QUIET].sppt_apu_only;
-> -	ms->power_control.spl = out.ps[APMF_CNQF_QUIET].spl;
-> -	ms->power_control.stt_min = out.ps[APMF_CNQF_QUIET].stt_min_limit;
-> +	ms->power_floor = out->ps[APMF_CNQF_QUIET].pfloor;
-> +	ms->power_control.fppt = out->ps[APMF_CNQF_QUIET].fppt;
-> +	ms->power_control.sppt = out->ps[APMF_CNQF_QUIET].sppt;
-> +	ms->power_control.sppt_apu_only = out->ps[APMF_CNQF_QUIET].sppt_apu_only;
-> +	ms->power_control.spl = out->ps[APMF_CNQF_QUIET].spl;
-> +	ms->power_control.stt_min = out->ps[APMF_CNQF_QUIET].stt_min_limit;
->  	ms->power_control.stt_skin_temp[STT_TEMP_APU] =
-> -		out.ps[APMF_CNQF_QUIET].stt_skintemp[STT_TEMP_APU];
-> +		out->ps[APMF_CNQF_QUIET].stt_skintemp[STT_TEMP_APU];
->  	ms->power_control.stt_skin_temp[STT_TEMP_HS2] =
-> -		out.ps[APMF_CNQF_QUIET].stt_skintemp[STT_TEMP_HS2];
-> -	ms->fan_control.fan_id = out.ps[APMF_CNQF_QUIET].fan_id;
-> +		out->ps[APMF_CNQF_QUIET].stt_skintemp[STT_TEMP_HS2];
-> +	ms->fan_control.fan_id = out->ps[APMF_CNQF_QUIET].fan_id;
->  
->  	/* Balance Mode */
->  	ms = &config_store.mode_set[idx][CNQF_MODE_BALANCE];
-> -	ms->power_floor = out.ps[APMF_CNQF_BALANCE].pfloor;
-> -	ms->power_control.fppt = out.ps[APMF_CNQF_BALANCE].fppt;
-> -	ms->power_control.sppt = out.ps[APMF_CNQF_BALANCE].sppt;
-> -	ms->power_control.sppt_apu_only = out.ps[APMF_CNQF_BALANCE].sppt_apu_only;
-> -	ms->power_control.spl = out.ps[APMF_CNQF_BALANCE].spl;
-> -	ms->power_control.stt_min = out.ps[APMF_CNQF_BALANCE].stt_min_limit;
-> +	ms->power_floor = out->ps[APMF_CNQF_BALANCE].pfloor;
-> +	ms->power_control.fppt = out->ps[APMF_CNQF_BALANCE].fppt;
-> +	ms->power_control.sppt = out->ps[APMF_CNQF_BALANCE].sppt;
-> +	ms->power_control.sppt_apu_only = out->ps[APMF_CNQF_BALANCE].sppt_apu_only;
-> +	ms->power_control.spl = out->ps[APMF_CNQF_BALANCE].spl;
-> +	ms->power_control.stt_min = out->ps[APMF_CNQF_BALANCE].stt_min_limit;
->  	ms->power_control.stt_skin_temp[STT_TEMP_APU] =
-> -		out.ps[APMF_CNQF_BALANCE].stt_skintemp[STT_TEMP_APU];
-> +		out->ps[APMF_CNQF_BALANCE].stt_skintemp[STT_TEMP_APU];
->  	ms->power_control.stt_skin_temp[STT_TEMP_HS2] =
-> -		out.ps[APMF_CNQF_BALANCE].stt_skintemp[STT_TEMP_HS2];
-> -	ms->fan_control.fan_id = out.ps[APMF_CNQF_BALANCE].fan_id;
-> +		out->ps[APMF_CNQF_BALANCE].stt_skintemp[STT_TEMP_HS2];
-> +	ms->fan_control.fan_id = out->ps[APMF_CNQF_BALANCE].fan_id;
->  
->  	/* Performance Mode */
->  	ms = &config_store.mode_set[idx][CNQF_MODE_PERFORMANCE];
-> -	ms->power_floor = out.ps[APMF_CNQF_PERFORMANCE].pfloor;
-> -	ms->power_control.fppt = out.ps[APMF_CNQF_PERFORMANCE].fppt;
-> -	ms->power_control.sppt = out.ps[APMF_CNQF_PERFORMANCE].sppt;
-> -	ms->power_control.sppt_apu_only = out.ps[APMF_CNQF_PERFORMANCE].sppt_apu_only;
-> -	ms->power_control.spl = out.ps[APMF_CNQF_PERFORMANCE].spl;
-> -	ms->power_control.stt_min = out.ps[APMF_CNQF_PERFORMANCE].stt_min_limit;
-> +	ms->power_floor = out->ps[APMF_CNQF_PERFORMANCE].pfloor;
-> +	ms->power_control.fppt = out->ps[APMF_CNQF_PERFORMANCE].fppt;
-> +	ms->power_control.sppt = out->ps[APMF_CNQF_PERFORMANCE].sppt;
-> +	ms->power_control.sppt_apu_only = out->ps[APMF_CNQF_PERFORMANCE].sppt_apu_only;
-> +	ms->power_control.spl = out->ps[APMF_CNQF_PERFORMANCE].spl;
-> +	ms->power_control.stt_min = out->ps[APMF_CNQF_PERFORMANCE].stt_min_limit;
->  	ms->power_control.stt_skin_temp[STT_TEMP_APU] =
-> -		out.ps[APMF_CNQF_PERFORMANCE].stt_skintemp[STT_TEMP_APU];
-> +		out->ps[APMF_CNQF_PERFORMANCE].stt_skintemp[STT_TEMP_APU];
->  	ms->power_control.stt_skin_temp[STT_TEMP_HS2] =
-> -		out.ps[APMF_CNQF_PERFORMANCE].stt_skintemp[STT_TEMP_HS2];
-> -	ms->fan_control.fan_id = out.ps[APMF_CNQF_PERFORMANCE].fan_id;
-> +		out->ps[APMF_CNQF_PERFORMANCE].stt_skintemp[STT_TEMP_HS2];
-> +	ms->fan_control.fan_id = out->ps[APMF_CNQF_PERFORMANCE].fan_id;
->  
->  	/* Turbo Mode */
->  	ms = &config_store.mode_set[idx][CNQF_MODE_TURBO];
-> -	ms->power_floor = out.ps[APMF_CNQF_TURBO].pfloor;
-> -	ms->power_control.fppt = out.ps[APMF_CNQF_TURBO].fppt;
-> -	ms->power_control.sppt = out.ps[APMF_CNQF_TURBO].sppt;
-> -	ms->power_control.sppt_apu_only = out.ps[APMF_CNQF_TURBO].sppt_apu_only;
-> -	ms->power_control.spl = out.ps[APMF_CNQF_TURBO].spl;
-> -	ms->power_control.stt_min = out.ps[APMF_CNQF_TURBO].stt_min_limit;
-> +	ms->power_floor = out->ps[APMF_CNQF_TURBO].pfloor;
-> +	ms->power_control.fppt = out->ps[APMF_CNQF_TURBO].fppt;
-> +	ms->power_control.sppt = out->ps[APMF_CNQF_TURBO].sppt;
-> +	ms->power_control.sppt_apu_only = out->ps[APMF_CNQF_TURBO].sppt_apu_only;
-> +	ms->power_control.spl = out->ps[APMF_CNQF_TURBO].spl;
-> +	ms->power_control.stt_min = out->ps[APMF_CNQF_TURBO].stt_min_limit;
->  	ms->power_control.stt_skin_temp[STT_TEMP_APU] =
-> -		out.ps[APMF_CNQF_TURBO].stt_skintemp[STT_TEMP_APU];
-> +		out->ps[APMF_CNQF_TURBO].stt_skintemp[STT_TEMP_APU];
->  	ms->power_control.stt_skin_temp[STT_TEMP_HS2] =
-> -		out.ps[APMF_CNQF_TURBO].stt_skintemp[STT_TEMP_HS2];
-> -	ms->fan_control.fan_id = out.ps[APMF_CNQF_TURBO].fan_id;
-> +		out->ps[APMF_CNQF_TURBO].stt_skintemp[STT_TEMP_HS2];
-> +	ms->fan_control.fan_id = out->ps[APMF_CNQF_TURBO].fan_id;
->  }
->  
->  static int amd_pmf_check_flags(struct amd_pmf_dev *dev)
-> @@ -284,8 +284,8 @@ static int amd_pmf_load_defaults_cnqf(struct amd_pmf_dev *dev)
->  			return ret;
->  		}
->  
-> -		amd_pmf_update_mode_set(i, out);
-> -		amd_pmf_update_trans_data(i, out);
-> +		amd_pmf_update_mode_set(i, &out);
-> +		amd_pmf_update_trans_data(i, &out);
->  		amd_pmf_update_power_threshold(i);
->  
->  		for (j = 0; j < CNQF_MODE_MAX; j++) {
+>  drivers/pinctrl/samsung/pinctrl-s3c24xx.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+
+Thanks for the patch. The file is being in process of dropping (patchset
+is being reviewed), so I think we can skip all the fixes.
+
+Best regards,
+Krzysztof
 

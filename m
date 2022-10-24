@@ -2,65 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85E6460AE34
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Oct 2022 16:52:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D724060ADD5
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Oct 2022 16:36:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234607AbiJXOwm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Oct 2022 10:52:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35512 "EHLO
+        id S237091AbiJXOgR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Oct 2022 10:36:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233030AbiJXOwQ (ORCPT
+        with ESMTP id S237092AbiJXOgE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Oct 2022 10:52:16 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 645A9356E2;
-        Mon, 24 Oct 2022 06:29:53 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id v11so6587121wmd.1;
-        Mon, 24 Oct 2022 06:29:53 -0700 (PDT)
+        Mon, 24 Oct 2022 10:36:04 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61DFA43AD3;
+        Mon, 24 Oct 2022 06:10:57 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id l16-20020a05600c4f1000b003c6c0d2a445so6578837wmq.4;
+        Mon, 24 Oct 2022 06:10:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xC70jAVieGTzMnfL7IzZSmpj/LnjOjc/7R5G039BdH4=;
-        b=cxwnRuee9VdpxGyeEmF8k/HuqMe2jOY2jNiCnas50PQCqNiw1TVLQwe1WX0v/MXQfo
-         GR5sQ0qfyKRsqghWwvF8Ly/JgwWsYP8dishLvgkaS9S986ocrhWh7uxI9ReKikKJmtAv
-         SRbJ9L7b2EmcTxOQ3dsCQk6rOSECeS4oGtbzvh74BY0KwYAh2NsJoO9km72lQ6DFkgFe
-         +8XkcNlii2xPTTxe9ni3ooxJeYRZE1Ez4YIyhJZoqE9CZm24C7IURcwz26RVQIyluF0U
-         kMibKNSnkn7u9VqdCOqq4ye/dBo3Iu/Sz4tbZA9rbJk1kRv5GAr/al/5vM0c2z7MNGcD
-         WJ3g==
+        bh=4ckwP6SZrttFwr6q/sGcNYSFGy/msNDVyZpAOWEeZ8w=;
+        b=inKQ1QRQBd2kH0yamrljN5I7Tavh58rIwYt8BjFrJvvpqQnI87e5BM8m11dqOvATDX
+         O0dN7xO2ogwyzHdwfIIF/9S+5JTqPihCSDcaLTTRNaMh+rsvRYK3pxMESywxnoDdd9O3
+         Gbgvat5iOIZihcIdE5K7hGTgd9XXTmmb1P4Gq4FpQoG4Hdkx7MPWgBX+7/hacySY/7rk
+         DGJwIKStLujvhDDabIJd/RC3d6DwMrDVuu0ne2UI49WcRHy8ghSWPydJedtmkpc6ToCe
+         dujR1Bz3i65aZPdHRL27ttEwdIey8yWxuVKvKlbLE0kA8frWmyqkURU9Wzm8atEMgB6P
+         rSRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=xC70jAVieGTzMnfL7IzZSmpj/LnjOjc/7R5G039BdH4=;
-        b=IWH6jsJ6zjM2g/WQfZoq8fphvR91YgJiIbPQugS76zy9CYwIcMPGQ1sSoY8h4PFbla
-         afg9gKDENnp56XnbA294p5pu5SxcUfZO9Wi8pOimaswU2sfKWdj3DxxxFkuorHg1wOHr
-         4TxF00lMDkYPnSQJaG0aw/fqDDSswjjFep22fqOSxpEPmXjacb/Dnmj57R74EvFUyibL
-         OEEmas2I8qImm775j+AZbn1gKZ7U1i8Cbr9z2ce/la7c8PcQGBWtBQ2zb2qS00+MjiXc
-         GO0ZrkiNTPozCCVJwaX19pVoH3X3i8EdS81X83LLFYrdSO3BFCID34vqPFq4TRod+zc+
-         UHOQ==
-X-Gm-Message-State: ACrzQf0BDwwH6OqbSrTVfg9YKzgIpIpclvBP4QrCM8bQAXfdLKwVY1dP
-        sAz2bCXpeDPkP8TtyaDbIUozj1cysLtWQQ==
-X-Google-Smtp-Source: AMsMyM6DcAgzKC/cIzaK2ZMOgz1RyVjsweCP0E7jveVudP7Itkbi3YwYgpS97bkg0E0rGV4eu1qfNg==
-X-Received: by 2002:a05:600c:4e06:b0:3c6:ce02:ece4 with SMTP id b6-20020a05600c4e0600b003c6ce02ece4mr21217981wmq.58.1666616393256;
-        Mon, 24 Oct 2022 05:59:53 -0700 (PDT)
+        bh=4ckwP6SZrttFwr6q/sGcNYSFGy/msNDVyZpAOWEeZ8w=;
+        b=d6ZiKU8Bhr1x9bSRkxtDJShxVUt+XjlS1u4ih/J0Myir7nldHAoK6hWLPe7ki0Z55U
+         MNs8WX1q4zCgmfF/URsn9LaBlECBEE4gjpGm/dNAXCcToszRW9VXROXoJbrToYyy6Le4
+         jOSvBjhE7/9M6oqsLtL2DTFW/Gy+EtHG3V1do1eBJ+4q4X77lNSsSfuN8GYZcbrQg5hx
+         M2sATsKMDt9SqctndSx8UesnFFtVsPkyG54Qcd8C6leBdWktgG+2ClU4PAwQpUb0TSdL
+         /KGSSr/x/XAkUCStJuhiOmxYd3jS+xAcs3wkM8ECvjh9wSiPrdWu86LcOdzIkkv47qa3
+         HIPg==
+X-Gm-Message-State: ACrzQf1LwI/qxPvu9fWlBWwVyH2sMY+YsGYW3osjS0OKskUaJtRBonJG
+        oGuiXgZpSvM742yHECsbcfQ=
+X-Google-Smtp-Source: AMsMyM4Eux5p6QGnnjdVJQNbuM9tL3KSnsNRcKXNy+skLIDyzqy4y86gJPUNpqIBsvvckFcimdUQGg==
+X-Received: by 2002:a05:600c:4618:b0:3c6:bf28:ae64 with SMTP id m24-20020a05600c461800b003c6bf28ae64mr44399479wmo.51.1666616884152;
+        Mon, 24 Oct 2022 06:08:04 -0700 (PDT)
 Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id h42-20020a05600c49aa00b003a5537bb2besm10734058wmp.25.2022.10.24.05.59.52
+        by smtp.gmail.com with ESMTPSA id d1-20020adff2c1000000b0022ac1be009esm27228344wrp.16.2022.10.24.06.08.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Oct 2022 05:59:52 -0700 (PDT)
+        Mon, 24 Oct 2022 06:08:03 -0700 (PDT)
 From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Rasesh Mody <rmody@marvell.com>,
-        Sudarsana Kalluru <skalluru@marvell.com>,
-        GR-Linux-NIC-Dev@marvell.com,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        alsa-devel@alsa-project.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] bna: remove variable num_entries
-Date:   Mon, 24 Oct 2022 13:59:51 +0100
-Message-Id: <20221024125951.2155434-1-colin.i.king@gmail.com>
+Subject: [PATCH] ALSA: asihpi: remove variable loops
+Date:   Mon, 24 Oct 2022 14:08:03 +0100
+Message-Id: <20221024130803.2156295-1-colin.i.king@gmail.com>
 X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -75,35 +70,35 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Variable num_entries is just being incremented and it's never used
+Variable loops is just being incremented and it's never used
 anywhere else. The variable and the increment are redundant so
 remove it.
 
 Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 ---
- drivers/net/ethernet/brocade/bna/bfa_msgq.c | 2 --
+ sound/pci/asihpi/asihpi.c | 2 --
  1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/brocade/bna/bfa_msgq.c b/drivers/net/ethernet/brocade/bna/bfa_msgq.c
-index 47125f419530..fa40d5ec6f1c 100644
---- a/drivers/net/ethernet/brocade/bna/bfa_msgq.c
-+++ b/drivers/net/ethernet/brocade/bna/bfa_msgq.c
-@@ -202,7 +202,6 @@ static void
- __cmd_copy(struct bfa_msgq_cmdq *cmdq, struct bfa_msgq_cmd_entry *cmd)
- {
- 	size_t len = cmd->msg_size;
--	int num_entries = 0;
- 	size_t to_copy;
- 	u8 *src, *dst;
- 
-@@ -219,7 +218,6 @@ __cmd_copy(struct bfa_msgq_cmdq *cmdq, struct bfa_msgq_cmd_entry *cmd)
- 		BFA_MSGQ_INDX_ADD(cmdq->producer_index, 1, cmdq->depth);
- 		dst = (u8 *)cmdq->addr.kva;
- 		dst += (cmdq->producer_index * BFI_MSGQ_CMD_ENTRY_SIZE);
--		num_entries++;
+diff --git a/sound/pci/asihpi/asihpi.c b/sound/pci/asihpi/asihpi.c
+index 8de43aaa10aa..001786e2aba1 100644
+--- a/sound/pci/asihpi/asihpi.c
++++ b/sound/pci/asihpi/asihpi.c
+@@ -725,7 +725,6 @@ static void snd_card_asihpi_timer_function(struct timer_list *t)
+ 	unsigned int pcm_buf_dma_ofs, min_buf_pos = 0;
+ 	unsigned int remdata, xfercount, next_jiffies;
+ 	int first = 1;
+-	int loops = 0;
+ 	u16 state;
+ 	u32 buffer_size, bytes_avail, samples_played, on_card_bytes;
+ 	char name[16];
+@@ -806,7 +805,6 @@ static void snd_card_asihpi_timer_function(struct timer_list *t)
+ 			(unsigned long)frames_to_bytes(runtime,
+ 						runtime->control->appl_ptr)
+ 		);
+-		loops++;
  	}
+ 	pcm_buf_dma_ofs = min_buf_pos;
  
- }
 -- 
 2.37.3
 

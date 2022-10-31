@@ -2,83 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06AEC61352E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 31 Oct 2022 13:00:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A58B16138B8
+	for <lists+kernel-janitors@lfdr.de>; Mon, 31 Oct 2022 15:07:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231147AbiJaMAX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 31 Oct 2022 08:00:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33506 "EHLO
+        id S231434AbiJaOHu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 31 Oct 2022 10:07:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230403AbiJaMAS (ORCPT
+        with ESMTP id S230056AbiJaOHt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 31 Oct 2022 08:00:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E69F35588;
-        Mon, 31 Oct 2022 05:00:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Mon, 31 Oct 2022 10:07:49 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C70510B44;
+        Mon, 31 Oct 2022 07:07:48 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 83C92611C8;
-        Mon, 31 Oct 2022 12:00:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D3958C43140;
-        Mon, 31 Oct 2022 12:00:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667217616;
-        bh=S+twGuGOYDf7kP2wsyHW6PL3iq4P3hFaKpE8XvwADTY=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=NEjKiC0ntOJIGMQnd2Lvh7L7BFV6UNAkP6pV/K32ftwMHSUdrHIuwTSVJr3ahuhJq
-         tv2qLH78Xx6l71P65/RU9NmGmSqGF6veGZh76q7s8wZ5CLscucCehylRYQzhUf9oxo
-         iAWQ1yrjtW1Sx5u353RTyWvj0S2HywSjuKyaEpbpuOW+l+ft+UMtxraEHlwMSu9AXh
-         JvfLalPmCezDQvboOLXmXleIeAbyDEAEq6KWyuRqQj1vQ5KXMDvHTtetT4sqSl9t1y
-         gZI/gw+ayFUBiqk2LwDeygfG4ln7dB+taI0QWOF1EX+qiUUDJdSnh8qICPT7gvmpYd
-         S1flwr/q3R6+g==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id C0994E50D71;
-        Mon, 31 Oct 2022 12:00:16 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        by smtp-out1.suse.de (Postfix) with ESMTPS id EAC7A338A9;
+        Mon, 31 Oct 2022 14:07:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1667225266;
+        h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+         cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=DwrnfNb3Sm3mui32qBg0ljlM/3iexMemRjWpGGGpytw=;
+        b=QOm9gz2hretDm0cm7wE53QHLgV6BqPVVeeiMuBy321J50KGBF3sjT2ryCQFN86CrT/u4ui
+        nNK7C5KNd6xaXdg6RuJ5W2HbvffefG0Iew640jD3svB5F1zKXb9bceI+9MeSsWyW56xQjE
+        FnczWXh3qL+jQmIgfhW8l+jG2HKPjsw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1667225266;
+        h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+         cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=DwrnfNb3Sm3mui32qBg0ljlM/3iexMemRjWpGGGpytw=;
+        b=8DmmgQRoR01I87hPFd/NnMxahMz7dycpb9TXDU01yxULkPOjvVfTvQrqwi3N71DQt2EaAo
+        50bmdXA6L82u/HBA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A420413451;
+        Mon, 31 Oct 2022 14:07:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id e99yJrLWX2NIcAAAMHmgww
+        (envelope-from <dsterba@suse.cz>); Mon, 31 Oct 2022 14:07:46 +0000
+Date:   Mon, 31 Oct 2022 15:07:29 +0100
+From:   David Sterba <dsterba@suse.cz>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>,
+        Nikolay Borisov <nborisov@suse.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-btrfs@vger.kernel.org
+Subject: Re: [PATCH] btrfs: Fix a memory allocation failure test
+Message-ID: <20221031140729.GZ5824@suse.cz>
+Reply-To: dsterba@suse.cz
+References: <34dff6b621770b1f8078ce6c715b61c5908e1ad1.1667115312.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: mvneta: Remove unused variable i
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <166721761678.1563.9202612383294369590.git-patchwork-notify@kernel.org>
-Date:   Mon, 31 Oct 2022 12:00:16 +0000
-References: <20221028123624.529483-1-colin.i.king@gmail.com>
-In-Reply-To: <20221028123624.529483-1-colin.i.king@gmail.com>
-To:     Colin Ian King <colin.i.king@gmail.com>
-Cc:     thomas.petazzoni@bootlin.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <34dff6b621770b1f8078ce6c715b61c5908e1ad1.1667115312.git.christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_SOFTFAIL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello:
-
-This patch was applied to netdev/net-next.git (master)
-by David S. Miller <davem@davemloft.net>:
-
-On Fri, 28 Oct 2022 13:36:24 +0100 you wrote:
-> Variable i is just being incremented and it's never used anywhere else. The
-> variable and the increment are redundant so remove it.
+On Sun, Oct 30, 2022 at 08:35:28AM +0100, Christophe JAILLET wrote:
+> 'dip' is tested instead of 'dip->csums'.
+> Fix it.
 > 
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
->  drivers/net/ethernet/marvell/mvneta.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+> Fixes: 642c5d34da53 ("btrfs: allocate the btrfs_dio_private as part of the iomap dio bio")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Here is the summary with links:
-  - net: mvneta: Remove unused variable i
-    https://git.kernel.org/netdev/net-next/c/0cf9deb3005f
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Added to misc-next, thanks.

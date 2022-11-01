@@ -2,36 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 314996153E4
-	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Nov 2022 22:15:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1401A6153E8
+	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Nov 2022 22:15:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230211AbiKAVPm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 1 Nov 2022 17:15:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32838 "EHLO
+        id S230398AbiKAVPr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 1 Nov 2022 17:15:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230271AbiKAVPa (ORCPT
+        with ESMTP id S230274AbiKAVPb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 1 Nov 2022 17:15:30 -0400
+        Tue, 1 Nov 2022 17:15:31 -0400
 Received: from smtp.smtpout.orange.fr (smtp-16.smtpout.orange.fr [80.12.242.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6D741EC42
-        for <kernel-janitors@vger.kernel.org>; Tue,  1 Nov 2022 14:15:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1C7E1EEFF
+        for <kernel-janitors@vger.kernel.org>; Tue,  1 Nov 2022 14:15:16 -0700 (PDT)
 Received: from pop-os.home ([86.243.100.34])
         by smtp.orange.fr with ESMTPA
-        id pyanoKD2rsfCIpybJoWfJD; Tue, 01 Nov 2022 22:15:14 +0100
+        id pyanoKD2rsfCIpybKoWfJO; Tue, 01 Nov 2022 22:15:15 +0100
 X-ME-Helo: pop-os.home
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 01 Nov 2022 22:15:14 +0100
+X-ME-Date: Tue, 01 Nov 2022 22:15:15 +0100
 X-ME-IP: 86.243.100.34
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>
+To:     Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 10/30] clocksource/drivers/arm_arch_timer: Use kstrtobool() instead of strtobool()
-Date:   Tue,  1 Nov 2022 22:13:58 +0100
-Message-Id: <f430bb12e12eb225ab1206db0be64b755ddafbdc.1667336095.git.christophe.jaillet@wanadoo.fr>
+        greybus-dev@lists.linaro.org
+Subject: [PATCH 11/30] greybus: svc: Use kstrtobool() instead of strtobool()
+Date:   Tue,  1 Nov 2022 22:13:59 +0100
+Message-Id: <ebf1e6988a53a455990230a37cf759ee542ea7ec.1667336095.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1667336095.git.christophe.jaillet@wanadoo.fr>
 References: <cover.1667336095.git.christophe.jaillet@wanadoo.fr>
@@ -66,29 +65,29 @@ at [1].
 
 [1]: https://lore.kernel.org/all/cover.1667336095.git.christophe.jaillet@wanadoo.fr/
 ---
- drivers/clocksource/arm_arch_timer.c | 3 ++-
+ drivers/greybus/svc.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
-index a7ff77550e17..1af045b231fd 100644
---- a/drivers/clocksource/arm_arch_timer.c
-+++ b/drivers/clocksource/arm_arch_timer.c
-@@ -18,6 +18,7 @@
- #include <linux/clocksource.h>
- #include <linux/clocksource_ids.h>
- #include <linux/interrupt.h>
-+#include <linux/kstrtox.h>
- #include <linux/of_irq.h>
- #include <linux/of_address.h>
- #include <linux/io.h>
-@@ -97,7 +98,7 @@ static bool evtstrm_enable __ro_after_init = IS_ENABLED(CONFIG_ARM_ARCH_TIMER_EV
+diff --git a/drivers/greybus/svc.c b/drivers/greybus/svc.c
+index 56d2b44d6fef..16cced80867a 100644
+--- a/drivers/greybus/svc.c
++++ b/drivers/greybus/svc.c
+@@ -7,6 +7,7 @@
+  */
  
- static int __init early_evtstrm_cfg(char *buf)
- {
--	return strtobool(buf, &evtstrm_enable);
-+	return kstrtobool(buf, &evtstrm_enable);
- }
- early_param("clocksource.arm_arch_timer.evtstrm", early_evtstrm_cfg);
+ #include <linux/debugfs.h>
++#include <linux/kstrtox.h>
+ #include <linux/workqueue.h>
+ #include <linux/greybus.h>
+ 
+@@ -83,7 +84,7 @@ static ssize_t watchdog_store(struct device *dev,
+ 	int retval;
+ 	bool user_request;
+ 
+-	retval = strtobool(buf, &user_request);
++	retval = kstrtobool(buf, &user_request);
+ 	if (retval)
+ 		return retval;
  
 -- 
 2.34.1

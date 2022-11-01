@@ -2,46 +2,46 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63D1F615408
-	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Nov 2022 22:16:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FF7D61540C
+	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Nov 2022 22:16:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230489AbiKAVQi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 1 Nov 2022 17:16:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32940 "EHLO
+        id S231168AbiKAVQk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 1 Nov 2022 17:16:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230463AbiKAVQJ (ORCPT
+        with ESMTP id S230475AbiKAVQM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 1 Nov 2022 17:16:09 -0400
+        Tue, 1 Nov 2022 17:16:12 -0400
 Received: from smtp.smtpout.orange.fr (smtp-16.smtpout.orange.fr [80.12.242.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39C271DF25
-        for <kernel-janitors@vger.kernel.org>; Tue,  1 Nov 2022 14:15:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33B481EECD
+        for <kernel-janitors@vger.kernel.org>; Tue,  1 Nov 2022 14:15:34 -0700 (PDT)
 Received: from pop-os.home ([86.243.100.34])
         by smtp.orange.fr with ESMTPA
-        id pyanoKD2rsfCIpybaoWfM8; Tue, 01 Nov 2022 22:15:31 +0100
+        id pyanoKD2rsfCIpybcoWfMO; Tue, 01 Nov 2022 22:15:33 +0100
 X-ME-Helo: pop-os.home
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 01 Nov 2022 22:15:31 +0100
+X-ME-Date: Tue, 01 Nov 2022 22:15:33 +0100
 X-ME-IP: 86.243.100.34
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
+To:     Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         "H. Peter Anvin" <hpa@zytor.com>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        kvm@vger.kernel.org
-Subject: [PATCH 27/30] KVM: x86/mmu: Use kstrtobool() instead of strtobool()
-Date:   Tue,  1 Nov 2022 22:14:15 +0100
-Message-Id: <ae7bd1f18c6f2e2e5fe21b72b62a6ae192ef9501.1667336095.git.christophe.jaillet@wanadoo.fr>
+        xen-devel@lists.xenproject.org
+Subject: [PATCH 28/30] x86/xen: Use kstrtobool() instead of strtobool()
+Date:   Tue,  1 Nov 2022 22:14:16 +0100
+Message-Id: <e91af3c8708af38b1c57e0a2d7eb9765dda0e963.1667336095.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1667336095.git.christophe.jaillet@wanadoo.fr>
 References: <cover.1667336095.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,32 +67,54 @@ The last patch of the serie removes the definition of strtobool().
 You may not be in copy of the cover letter. So, if needed, it is available
 at [1].
 
-[1]:  https://lore.kernel.org/all/cover.1667336095.git.christophe.jaillet@wanadoo.fr/
+[1]: https://lore.kernel.org/all/cover.1667336095.git.christophe.jaillet@wanadoo.fr/
 ---
- arch/x86/kvm/mmu/mmu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/xen/enlighten_pv.c | 3 ++-
+ arch/x86/xen/setup.c        | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 6f81539061d6..aa45abce7586 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -42,6 +42,7 @@
- #include <linux/uaccess.h>
- #include <linux/hash.h>
- #include <linux/kern_levels.h>
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index 05170fc19083..9e1ac6a281e4 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -23,6 +23,7 @@
+ #include <linux/start_kernel.h>
+ #include <linux/sched.h>
+ #include <linux/kprobes.h>
 +#include <linux/kstrtox.h>
- #include <linux/kthread.h>
+ #include <linux/memblock.h>
+ #include <linux/export.h>
+ #include <linux/mm.h>
+@@ -113,7 +114,7 @@ static __read_mostly bool xen_msr_safe = IS_ENABLED(CONFIG_XEN_PV_MSR_SAFE);
+ static int __init parse_xen_msr_safe(char *str)
+ {
+ 	if (str)
+-		return strtobool(str, &xen_msr_safe);
++		return kstrtobool(str, &xen_msr_safe);
+ 	return -EINVAL;
+ }
+ early_param("xen_msr_safe", parse_xen_msr_safe);
+diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
+index cfa99e8f054b..0abccdab5bc6 100644
+--- a/arch/x86/xen/setup.c
++++ b/arch/x86/xen/setup.c
+@@ -7,6 +7,7 @@
  
- #include <asm/page.h>
-@@ -6641,7 +6642,7 @@ static int set_nx_huge_pages(const char *val, const struct kernel_param *kp)
- 		new_val = 1;
- 	else if (sysfs_streq(val, "auto"))
- 		new_val = get_nx_auto_mode();
--	else if (strtobool(val, &new_val) < 0)
-+	else if (kstrtobool(val, &new_val) < 0)
- 		return -EINVAL;
+ #include <linux/init.h>
+ #include <linux/sched.h>
++#include <linux/kstrtox.h>
+ #include <linux/mm.h>
+ #include <linux/pm.h>
+ #include <linux/memblock.h>
+@@ -85,7 +86,7 @@ static void __init xen_parse_512gb(void)
+ 	arg = strstr(xen_start_info->cmd_line, "xen_512gb_limit=");
+ 	if (!arg)
+ 		val = true;
+-	else if (strtobool(arg + strlen("xen_512gb_limit="), &val))
++	else if (kstrtobool(arg + strlen("xen_512gb_limit="), &val))
+ 		return;
  
- 	__set_nx_huge_pages(new_val);
+ 	xen_512gb_limit = val;
 -- 
 2.34.1
 

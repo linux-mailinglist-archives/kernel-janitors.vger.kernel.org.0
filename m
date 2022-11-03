@@ -2,98 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FD126184E0
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Nov 2022 17:39:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00161618738
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Nov 2022 19:15:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232418AbiKCQjX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Nov 2022 12:39:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34336 "EHLO
+        id S231228AbiKCSPA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Nov 2022 14:15:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230301AbiKCQjD (ORCPT
+        with ESMTP id S231208AbiKCSOz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Nov 2022 12:39:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FC3D1EC4A;
-        Thu,  3 Nov 2022 09:35:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D5E161F5D;
-        Thu,  3 Nov 2022 16:34:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8E7C433D6;
-        Thu,  3 Nov 2022 16:34:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667493294;
-        bh=/ccW2ZLYtie//iuE3Z0X9cbimEJCwup/DH2xpMNHLnI=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=UWukCzRGudBv919/sH+I74MEzypxqLqYpIvPo+K0bDcfXWiWyDMyD6iMuQPIhOtL0
-         j4uh5dfTRvuifo39nRCKLeELXdhbUdvDqp21GVSiXdyeYPTq93n+WF0rgsyWbgCfXD
-         SBXLEtYj4br6ie5vVw7sXYuK7VX9ER1WKdtTmoHv4fjpuDQft3x17gxRFgbtk+xi0b
-         Im+Y5+cO63sgDPY0pjSa3QvILW1IVRqPFAI4hfcCI4+l3d9bGe8h6OEh4OomJuuWoJ
-         JRp0TswL+av9oAc+vtrBb0x1OV0OrmhaqdYrH7EPDTDMHp8DMNF8tXUaLv/Ia2g7IF
-         sH9N9pR0bXD3A==
-From:   Mark Brown <broonie@kernel.org>
-To:     Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Brent Lu <brent.lu@intel.com>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        alsa-devel@alsa-project.org,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20221103120624.72583-1-colin.i.king@gmail.com>
-References: <20221103120624.72583-1-colin.i.king@gmail.com>
-Subject: Re: [PATCH] ASoC: Intel: cirrus-common: Make const array uid_strings static
-Message-Id: <166749329166.480833.13410330883416925257.b4-ty@kernel.org>
-Date:   Thu, 03 Nov 2022 16:34:51 +0000
+        Thu, 3 Nov 2022 14:14:55 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4A546352;
+        Thu,  3 Nov 2022 11:14:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1667499294; x=1699035294;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ue0QTPXG2gQ3H5WYfpdjU3OegguiiLtgstYnj9DUpMk=;
+  b=Q5CS9KiMWLdk+W0jDyHD4pLh1ZHlUOfagUR4e98pnRw6ZXA8v1dSlui6
+   nlowMBmlsCah41PVGDK8TX2EZu/HPCWCnBQ4K7K/v7pcuDwd8chNcCxA5
+   6DEs6EWptNAEUZabE0hqoVDUWz+RMFmY+WfK7ScW+i7Rso3zzw9/ZqinT
+   WtOI9Zvd8mWZ1jvlXILnu5s6KoT52XcpuCdYqd1dEfYBdrDjaG4CwP/9q
+   sI3QENRhrkIs0nmo3CCMWq/NURdNBZqkZ7nxSIbDexvYc39hlE5qvIr+1
+   oU3LbGEG32S4RKIrZWLIrzv/nQyDXWFlowKJBRQWeGDHvRhzeJ2/CNfYI
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10520"; a="290154427"
+X-IronPort-AV: E=Sophos;i="5.96,134,1665471600"; 
+   d="scan'208";a="290154427"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2022 11:14:54 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10520"; a="964033685"
+X-IronPort-AV: E=Sophos;i="5.96,134,1665471600"; 
+   d="scan'208";a="964033685"
+Received: from cmelone-mobl.amr.corp.intel.com (HELO [10.212.66.233]) ([10.212.66.233])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2022 11:14:53 -0700
+Message-ID: <cdb6baf9-dd36-39d1-937b-06be09da8242@linux.intel.com>
+Date:   Thu, 3 Nov 2022 10:24:46 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.10.0-dev-fc921
-X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.4.0
+Subject: Re: [PATCH] ASoC: Intel: cirrus-common: Make const array uid_strings
+ static
+Content-Language: en-US
+To:     Colin Ian King <colin.i.king@gmail.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, Brent Lu <brent.lu@intel.com>,
+        alsa-devel@alsa-project.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20221103120624.72583-1-colin.i.king@gmail.com>
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <20221103120624.72583-1-colin.i.king@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 3 Nov 2022 12:06:24 +0000, Colin Ian King wrote:
+On 11/3/22 8:06 AM, Colin Ian King wrote:
 > Don't populate the read-only const array uid_strings on the stack but
 > instead make it static. Also makes the object code a little smaller.
 > 
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+
+> ---
+>   sound/soc/intel/boards/sof_cirrus_common.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
+> diff --git a/sound/soc/intel/boards/sof_cirrus_common.c b/sound/soc/intel/boards/sof_cirrus_common.c
+> index 6e39eda77385..851c516c8f5b 100644
+> --- a/sound/soc/intel/boards/sof_cirrus_common.c
+> +++ b/sound/soc/intel/boards/sof_cirrus_common.c
+> @@ -155,7 +155,7 @@ static const char * const cs35l41_name_prefixes[] = { "WL", "WR", "TL", "TR" };
+>    */
+>   static int cs35l41_compute_codec_conf(void)
+>   {
+> -	const char * const uid_strings[] = { "0", "1", "2", "3" };
+> +	static const char * const uid_strings[] = { "0", "1", "2", "3" };
+>   	unsigned int uid, sz = 0;
+>   	struct acpi_device *adev;
+>   	struct device *physdev;
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: Intel: cirrus-common: Make const array uid_strings static
-      commit: b43d0c0a42b2c44da824b3de0364d73be722a8c7
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

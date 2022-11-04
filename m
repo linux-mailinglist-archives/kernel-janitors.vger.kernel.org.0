@@ -2,62 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CA70618E7C
-	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Nov 2022 03:55:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8983E618F7E
+	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Nov 2022 05:40:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230111AbiKDCze (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Nov 2022 22:55:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46080 "EHLO
+        id S229699AbiKDEkP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 4 Nov 2022 00:40:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbiKDCzc (ORCPT
+        with ESMTP id S229493AbiKDEkM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Nov 2022 22:55:32 -0400
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 125096158;
-        Thu,  3 Nov 2022 19:55:31 -0700 (PDT)
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 2A42tPtQ129948;
-        Thu, 3 Nov 2022 21:55:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1667530525;
-        bh=B9t7qPNCO06TJ2fCgJEfonJ1S5L5njnWZmCjfRGILCU=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=YAbbdJ8zNEoA6F3psX97SMhgxZ4FwRTSflPn+dbJB1TI6jA34PgdBWpJcFhw8vJ6O
-         x8/4EsaD52XJb6gs/v030sDKluVWGV/CcCt80rr0N+mDGfc1YDfq7f0PlCQDTy/Slk
-         CtoYMKPDCWE5yWVj0PipnJLGGfE9hJ0ZMZCzB15c=
-Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 2A42tPGG031425
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 3 Nov 2022 21:55:25 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Thu, 3 Nov
- 2022 21:55:24 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
- Frontend Transport; Thu, 3 Nov 2022 21:55:24 -0500
-Received: from localhost (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 2A42tO1N010780;
-        Thu, 3 Nov 2022 21:55:24 -0500
-From:   Nishanth Menon <nm@ti.com>
-To:     Santosh Shilimkar <ssantosh@kernel.org>,
-        <christophe.jaillet@wanadoo.fr>, <kristo@kernel.org>
-CC:     Nishanth Menon <nm@ti.com>, <kernel-janitors@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v2] firmware: ti_sci: Use devm_bitmap_zalloc when applicable
-Date:   Thu, 3 Nov 2022 21:55:24 -0500
-Message-ID: <166753051095.28029.3739907273009158243.b4-ty@ti.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <43ab1a7dd073d0d037d5d4bbbd5f8335de605826.1667457664.git.christophe.jaillet@wanadoo.fr>
-References: <43ab1a7dd073d0d037d5d4bbbd5f8335de605826.1667457664.git.christophe.jaillet@wanadoo.fr>
+        Fri, 4 Nov 2022 00:40:12 -0400
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFBA027913
+        for <kernel-janitors@vger.kernel.org>; Thu,  3 Nov 2022 21:40:10 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id l6so3566053pjj.0
+        for <kernel-janitors@vger.kernel.org>; Thu, 03 Nov 2022 21:40:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VHhq7f9BhY24T1T5sV6nTbvw95hjS6tddB46N4/JrJs=;
+        b=q61CJlag5GuvD6AvssWOA7BBqEgsuqQErgcTGMuGUkBAIWEwM9nZmwtIXkTGeDeHjI
+         Sw+f7p5acerlEmkfbbfIxqm5K1gB/3Gb6z2XVhwSi2u1m49ZByHVqwrZnHER2BuvVnE0
+         MAyHqcAg2Ca79V6Zb+1jvkhveQvR67DnLXMWUVNfMqCpwNlgZ/YJxWGI4IOZuzoV8j7d
+         t+Hb+ziCXhXSUjh6cJVrCuFjuZ77LWDVLDWwtRii6XmbMhqtNhFV70urzDOkRJ1f0Rzj
+         yPT8gbr2dZwsJtYNGhHgwpUNIL5xg/CR2RxN1woseGzx6tSLVTgItTkx8F7Ly5f/xfPm
+         kjPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VHhq7f9BhY24T1T5sV6nTbvw95hjS6tddB46N4/JrJs=;
+        b=V1w4o4TUnqC9Y/CH5z901DCqf7jOLXTpATXLktUh15lpmQmEjdqhJWq0MQ6KQK5ngk
+         wLJ2BzM7qmGxG3zqkw5h+SSt+txxqWUco4tUMk2BHvR5erb3V+9SeXQj7J20a4Sk1NFS
+         cdGUip1sVbipQG8s8LY+M8hWQoYTLAlJiQ0S7+oQAagPUoUM/6CQN353itw+3RE+WXPJ
+         wCOAz9SeWmKLw5rXBv4TZZliGmAfsWXMeKhIKZQF/VPpmKmHIBjlWHUryltl2I9K9gNT
+         4xV77cQIGz/lFha4JYL/QWMDWNIX0Ttcp3t1NNO5erNVa0Fhrs2ROTBa/MHuXO5LcyS2
+         Hubg==
+X-Gm-Message-State: ACrzQf33YsfC2yCDnSPiOYrvjCOy/Kffuoe3ccMto+yYA1cLK6yrEgCY
+        RfDnhdYJIKOJarnz4HCOq0OTIAI9exrVVg==
+X-Google-Smtp-Source: AMsMyM446Gb7kE9Mo4dZRb75fZ7IQcnvmWxa5gH04kpR6ALDlnPHcVI3oDuLeG9y5lgi7sByMb7MKw==
+X-Received: by 2002:a17:902:aa8b:b0:178:8f1d:6936 with SMTP id d11-20020a170902aa8b00b001788f1d6936mr33693293plr.168.1667536810325;
+        Thu, 03 Nov 2022 21:40:10 -0700 (PDT)
+Received: from localhost ([122.172.84.80])
+        by smtp.gmail.com with ESMTPSA id l7-20020a632507000000b0046f73d92ea5sm1462956pgl.90.2022.11.03.21.40.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Nov 2022 21:40:08 -0700 (PDT)
+Date:   Fri, 4 Nov 2022 10:10:03 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     "Colin King (gmail)" <colin.i.king@gmail.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: SPEAr: Make read-only array sys_clk_src static
+Message-ID: <20221104044003.vfuna4xnasknrltc@vireshk-i7>
+References: <20221103143654.85275-1-colin.i.king@gmail.com>
+ <20221103143807.tamhepos3cureoga@vireshk-i7>
+ <ef637642-7d0f-66b8-2225-b6f8609f037e@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ef637642-7d0f-66b8-2225-b6f8609f037e@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,41 +72,16 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Christophe JAILLET,
+On 03-11-22, 14:49, Colin King (gmail) wrote:
+> But really, this is kind of basic C level stuff. I suggest reading K&R 2nd
+> Edition, Section 4.6, last paragraph before exercise 4-11.
 
-On Thu, 3 Nov 2022 07:41:30 +0100, Christophe JAILLET wrote:
-> 'xfer_alloc_table' is a bitmap. So use 'devm_bitmap_zalloc()' to simplify
-> code and improve the semantic of the code.
-> 
-> While at it, remove a redundant 'bitmap_zero()' call.
-> 
-> 
+Yeah it is and I said this for the benefit of later readers of the commit log,
+who may not know the exact reason of the same:
 
-I have applied the following to branch ti-drivers-soc-next on [1].
-Thank you!
+"I am just looking for a valid answer in commit log".
 
-[1/1] firmware: ti_sci: Use devm_bitmap_zalloc when applicable
-      commit: 26507b033e84be6f821dc1693d667b5c809a7679
+Anyway, the patches look fine otherwise.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent up the chain during
-the next merge window (or sooner if it is a relevant bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-[1] git://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
 -- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
-
+viresh

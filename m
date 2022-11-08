@@ -2,70 +2,124 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C07AA6211AE
-	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Nov 2022 14:00:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 868E9621632
+	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Nov 2022 15:24:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234298AbiKHNAa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 8 Nov 2022 08:00:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43166 "EHLO
+        id S234496AbiKHOYK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 8 Nov 2022 09:24:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233383AbiKHNA3 (ORCPT
+        with ESMTP id S234365AbiKHOXl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 8 Nov 2022 08:00:29 -0500
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2DE113FB3
-        for <kernel-janitors@vger.kernel.org>; Tue,  8 Nov 2022 05:00:28 -0800 (PST)
-Received: by mail-pj1-x1034.google.com with SMTP id o7so13735877pjj.1
-        for <kernel-janitors@vger.kernel.org>; Tue, 08 Nov 2022 05:00:28 -0800 (PST)
+        Tue, 8 Nov 2022 09:23:41 -0500
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4211E5B86D;
+        Tue,  8 Nov 2022 06:23:02 -0800 (PST)
+Received: by mail-ej1-x632.google.com with SMTP id f27so39048163eje.1;
+        Tue, 08 Nov 2022 06:23:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=XETXBtTHxT8O9lEtIq5ncLGj9sYLhdrn4/5Cxvti7i/QBeK4+hmKuAyy2oXKq5qHml
-         VrWVtdTp5JHme9A7PLI6lvDvmwQAgtwrUY8RtbsBUbWqzdWSzefYx0v6FDT8dtfxu5UX
-         KelCmfxAwxEPkl520z7AVXWhhiBBTr7czuMlmYnmCvMG/Av3ZrfMJCVAH9s1+RjDa/+c
-         /MIv3xtGjX44JTcfJpxVLZbzsY2/SlMWf3iCObQln28KlCgaxqtnEhyudiIO9Ft/9xH5
-         3akibPs/URJsQkuLbIoyQ4SP/ED7A0nRtsU+d66IQXqklyG2WovfSCxuBjE+katZm/hf
-         B4gg==
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GZnCIJm+9B9Ff3S7OWyd9EMrH+oJEijKOQtTrhJPK+s=;
+        b=agAlO/bMjNZS419ehoNlmwo2Y3uNQo3ftrHa5OJ/v85dpmTW2ZHHGQiC/d2IInAH6Q
+         bXsfqUjpx6U4PYhKzxvNAGWYqVfyxrpZmgeCp4vXJXchbebK4Z8r9eRU2Lbyh7zP+9zB
+         OPgKlTmoMsW0FhFtUQX9eFr+L8Wutp/3Z6x4bOXxO41O/02ThSKw04jJZ9HxbXDgiiaw
+         f9LCjvKZ+1HEX5fU9JcsPdqZ1ue6P3KqOfqU4UEb9hhiXtw98Z5puryOztK7QlP/ievA
+         NQY3vq9hsbYWxf1oNyy4TwscGpGG4mOTgSH5IJnZxRGOHdRKEkValcr9dgsbQBJoH7SC
+         3dZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=yaBIbgsutTdlPsHH84UVusM+Vxpkyqsdv/QSkg5JIKn7igQgIbk5vxgwefkVNgJrsT
-         E+ah1bf3ubOOnP/51ZVDpi2vrbteHwSGOMTrzf8PHL91XKv3m/J+Lu9HS276WMoX3U2t
-         OdClEgF/AE8VwOlt0e+EFJCWSZPE8UnSG0hsVIhzX/y3lr7MGBFd6TcmbLykHe53/pCq
-         KMPUkxUmaViFGsr4YyByGf/TUwT+8ZoUUN3D+07PQlenVPfFey5L+z3/GaY2cIbYTc1P
-         5iZrTDhZFf4yZ+6/9dbHNPXDwA9/ImyfUj3fpCeOlUlOAqp+YQf9cn+iNXPehxtnM3rK
-         LGRg==
-X-Gm-Message-State: ACrzQf2ihh7qqBZX6HJMjJZKc897wU52U2+w6aqOUuWY43pG/RKgHSqO
-        kOVDKDhuoSlT/yfcERK2BF14qcqEBqK+Y0Li4Ps=
-X-Google-Smtp-Source: AMsMyM4ujiEJd+P/qX7JcyRZHqMlQY/Y1LyPpVOx0sZ+QLRUwhk5iLoU+/+SPHF4jZRZYeWrsrgQKPlcFRYKM3FCVOE=
-X-Received: by 2002:a17:90a:cf06:b0:212:d9ab:811b with SMTP id
- h6-20020a17090acf0600b00212d9ab811bmr58203396pju.65.1667912428115; Tue, 08
- Nov 2022 05:00:28 -0800 (PST)
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GZnCIJm+9B9Ff3S7OWyd9EMrH+oJEijKOQtTrhJPK+s=;
+        b=PO0T+aTsbCjYQ+a2Jg/iK2nES9Kr5IUp7mEhLYRZpyUwC6K4RibzJJqzlgdBkRHqHA
+         nAzX9+GJ9Q4CNC4U9VaeMu5PtqVmc50p1KxqRO/pkc56SXabQ26NnUel3nrqR8EuZMDI
+         VNQwGPEG/oCeU/9/vSy/HaBGmFN2hjhlWXGC371koCgIScatFze71pmWlXX5JYG+J3YN
+         JkH3FWFrWl44WgMjsK4nCDM02cvd4ot6lmlqqfYD1NeJnwY4jMCrzJEy7MvJTdzdKROd
+         RaJXkwB9nXAeP+WJhf2U3N9TLeA6IFOom0fATQKJvA1f1WmKQH7F7oH9u4KluFyGM+bA
+         pSrQ==
+X-Gm-Message-State: ACrzQf02z6gC8rI7aXJaG/mhwXHN0Y/QKsWma7ssSG6bGGV7+G2gjPaV
+        GQRAp220zXNtlWvigrq+rMA=
+X-Google-Smtp-Source: AMsMyM7a+rXh6egmJgCV4yYsRFUfXuNmozOuHYPfp6VM6AmrwLU5W5iyiq4aYfT7oDW/qdMpn2to/A==
+X-Received: by 2002:a17:907:a46:b0:782:1c1c:8141 with SMTP id be6-20020a1709070a4600b007821c1c8141mr54460080ejc.549.1667917380673;
+        Tue, 08 Nov 2022 06:23:00 -0800 (PST)
+Received: from orome (p200300e41f201d00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f20:1d00:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id q15-20020a17090676cf00b007ad94422cf6sm4635674ejn.198.2022.11.08.06.22.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Nov 2022 06:22:59 -0800 (PST)
+Date:   Tue, 8 Nov 2022 15:22:57 +0100
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Colin Ian King <colin.i.king@gmail.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Sameer Pujar <spujar@nvidia.com>, alsa-devel@alsa-project.org,
+        linux-tegra@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ASoC: tegra: Fix spelling mistake "fliter" -> "filter"
+Message-ID: <Y2pmQdxMIHl+vgIj@orome>
+References: <20221108111340.115387-1-colin.i.king@gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7022:6296:b0:46:e088:36ba with HTTP; Tue, 8 Nov 2022
- 05:00:27 -0800 (PST)
-Reply-To: mr.abraham022@gmail.com
-From:   "Mr.Abraham " <kojofofone@gmail.com>
-Date:   Tue, 8 Nov 2022 13:00:27 +0000
-Message-ID: <CAPFeOzqLTzkAmRpecpSgoBp-S20R3ucdMXCoAxBBj0KCW3h+ag@mail.gmail.com>
-Subject: Greeting
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_HK_NAME_FM_MR_MRS,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="pDY6F3p4Kn966Zak"
+Content-Disposition: inline
+In-Reply-To: <20221108111340.115387-1-colin.i.king@gmail.com>
+User-Agent: Mutt/2.2.7 (2022-08-07)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-My Greeting, Did you receive the letter i sent to you. Please answer me.
-Regard, Mr.Abraham
+
+--pDY6F3p4Kn966Zak
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Nov 08, 2022 at 11:13:40AM +0000, Colin Ian King wrote:
+> There is a spelling mistake in struct member fliter_structure.
+> Fix it.
+>=20
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> ---
+>  sound/soc/tegra/tegra210_mbdrc.c | 4 ++--
+>  sound/soc/tegra/tegra210_mbdrc.h | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
+
+I sometimes wonder how these come to be since it's an obvious typo yet
+people manage to make them at least twice. Auto-completion I suspect
+might play a role. Anyway, good catch:
+
+Acked-by: Thierry Reding <treding@nvidia.com>
+
+--pDY6F3p4Kn966Zak
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmNqZj8ACgkQ3SOs138+
+s6FbTw/+L/QE+HdaK/OuuLEzlBM6VWk+gYNy4BeBG5uOqysNd6MzrfjIEG9WS5lE
+SKcmYwhnYhBHcXtfvuDM31AwDkfEFSr+p35hzIRnGbUa/MZLxj3ufZad17adgfng
+xgjH0L7b3zYsX3+z29syehbF524PKApyURWbnQZNnKfLTmC1vagfOvcEvu5Zq7kz
+B4rFKeDjiSkJGcf5JtDh0D1/oFCTkzOgoC03N59AFWt42lHpGHNenZMQghMnvlrw
+t4mF03BhREWdSzB2LWpywH237eqtaG1+Ro2gEik9UR32bEO8V4Yb1occYpwilAxm
+wKO1uVryVoSgh5DLmzcifM5sWh1IS4QrORdGBXXnC4p5CDuS85Or0NQaou+t/TEa
+2Iqyovc8k7+S2CkQXjX7rGROqaG64El59mGDP38IhOuNp3nMcxXLkftOEXxJaxkl
+VSdzPmXysgm4hbPvXd6pdmAI6DOmAVYjy7ZgEt6xjVaHwGbjf96vAqPwA/tZtk2h
+SFTpCQfgqPt6CRQh/aEC4pdJun9RUUkAWw8GSAz+dX5OBkEG2tRKFTOBDVTxoKM9
+0zdxlQfn960VhHeF7Uus6PIgE9rliiN9uPWIHc95UlMkfC8Kqzj2ymAGxbfA90sJ
+BheR4Zp0zo0CNTY3baq03zxEYC5/I1hufNFmUy3HhARuRKF/IIs=
+=bwz6
+-----END PGP SIGNATURE-----
+
+--pDY6F3p4Kn966Zak--

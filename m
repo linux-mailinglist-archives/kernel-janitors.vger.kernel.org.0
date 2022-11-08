@@ -2,98 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26F1462165E
-	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Nov 2022 15:27:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF2F562176E
+	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Nov 2022 15:53:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234070AbiKHO1K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 8 Nov 2022 09:27:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36340 "EHLO
+        id S234222AbiKHOxs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 8 Nov 2022 09:53:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233742AbiKHO0Z (ORCPT
+        with ESMTP id S234191AbiKHOxo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 8 Nov 2022 09:26:25 -0500
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CEC521AC
-        for <kernel-janitors@vger.kernel.org>; Tue,  8 Nov 2022 06:25:13 -0800 (PST)
-Received: by mail-pj1-x102c.google.com with SMTP id b11so13947862pjp.2
-        for <kernel-janitors@vger.kernel.org>; Tue, 08 Nov 2022 06:25:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=qJPWO9SMfKs9CV4DzOtfpg0tG5L2kEZQtV/LBBChMrnKplvig/HcfOA36QzOFbaour
-         tgINSm9CFH0IH0weUkbi8oL7C5P0uFU99A+FANpQrOPV/x2at1b6HjUUAphEgu/Nt2rO
-         YdZzEeguInvIt6hR0YTDbuGc0g6QmBH3JOdUVEiMakuZ8pUv0rSqDGDPPz36WP9L+M70
-         Yi8Qvn61/fVJa/s6+O6bNGj9Vrx81J7VmEWQcrrTipgg1zMWjvYHOXsRX3Tp8F7t1isZ
-         URWNY0E6DDGhkUjSdRf6tRRt6Dm01iRomcQNGIBkoA7vu4q8ZFmcmXCe9DgPR3TaW/OT
-         odpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=QoAr75D0jmcLK3YHaZJTDMbUCRkRG3qnYIm2P89FWrTlGoLqOKh2moSklFGBJgdfGL
-         cROCTs1P2f+D3jhOiE2cYd2EqT2dyycJEfWw/RomO2Lu8K26PWix0pI4LzIbdY1a2lly
-         pOGnIzg8mzQiwm87GNZ+T+XhRDecRDVKbGIGRPtGx7l+lYzEqnKh/s7xjgD5J1C58MbY
-         qegEBsF8UR160QVq0j7mTVbWzFNYZ+wMANqvgJc5gf5GmJzYFBFY1T5EYydKdFng2HK6
-         7STlVAI/1Ab/MUQEjVxiDq1qxH0A8GNboqSIl9Ua7TVDeD2xrQUXkXFul6XQOyPTx8Y8
-         MuRQ==
-X-Gm-Message-State: ACrzQf1TOZM24n3YrTx+fn0SJifnvCP6xu9W00QOOEsy1cf/4Aspt63C
-        53I3zlSubMpI+WC5Rdr6kRq0JB3mKoULvGXicpk=
-X-Google-Smtp-Source: AMsMyM7xjnW3BCIcPmRXceI8CMPrgJsNpwknP0oXmxg9pb3hPM8UnVyASTbWsNqLc31U8nSLRepoWwOH4L/DHUye4LA=
-X-Received: by 2002:a17:90b:1d90:b0:213:c798:86f6 with SMTP id
- pf16-20020a17090b1d9000b00213c79886f6mr52558648pjb.84.1667917512394; Tue, 08
- Nov 2022 06:25:12 -0800 (PST)
+        Tue, 8 Nov 2022 09:53:44 -0500
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88AE1B74;
+        Tue,  8 Nov 2022 06:53:43 -0800 (PST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2A8EhLxb032609;
+        Tue, 8 Nov 2022 14:53:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=h4W95olN0LycfTNL87vNH5nWJi0C3cCQd2t4GI1g3Ao=;
+ b=HXOF/1pDIF80rRy1TtN8PLLvr90qthPe9yUfiFnMtICQyre1DwduAMQi01fNc4NKdF1v
+ EBvmqnocX0yL+iIagp5jCYy44HjCjrUDiZMqr1AH7eNSWqUdxAA+AxnwbaxDl40gP2qN
+ pX7LphOTSWz6R0wns8Jza4Ub+tMxLo3qgd1Q40bli0phRsI0+Z7tVFLAna1MuO6PWEA6
+ 5tXp2Q9SGiLmwrTb91Mrf8wwdhzzGrbLP5Re//Kbji/4IwQWDzQYhN1lyN2ugvXKJmVJ
+ lsNGWn7bQ107OXSEOBljUxTmqohOR9sl04LQL0kf38Dvi2+lI+jnImRLKypv2cz1WXTr SQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kqs4egcu7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 08 Nov 2022 14:53:41 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2A8EjrHd010071;
+        Tue, 8 Nov 2022 14:53:41 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kqs4egctd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 08 Nov 2022 14:53:40 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+        by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2A8EqKLF010058;
+        Tue, 8 Nov 2022 14:53:39 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+        by ppma06ams.nl.ibm.com with ESMTP id 3kngnccan6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 08 Nov 2022 14:53:39 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2A8ErZIn4915718
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 8 Nov 2022 14:53:35 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A5251AE04D;
+        Tue,  8 Nov 2022 14:53:35 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 152E8AE045;
+        Tue,  8 Nov 2022 14:53:32 +0000 (GMT)
+Received: from li-4a3a4a4c-28e5-11b2-a85c-a8d192c6f089.ibm.com (unknown [9.211.104.47])
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Tue,  8 Nov 2022 14:53:31 +0000 (GMT)
+Date:   Tue, 8 Nov 2022 15:53:27 +0100
+From:   Alexander Gordeev <agordeev@linux.ibm.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-s390@vger.kernel.org
+Subject: Re: [PATCH 26/30] s390/ipl: Use kstrtobool() instead of strtobool()
+Message-ID: <Y2ptZwUFdpR3Hxlm@li-4a3a4a4c-28e5-11b2-a85c-a8d192c6f089.ibm.com>
+References: <cover.1667336095.git.christophe.jaillet@wanadoo.fr>
+ <7766dac5969021bf7432e8c4f038db8afc996b8a.1667336095.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Received: by 2002:a05:7300:5388:b0:85:81c6:896c with HTTP; Tue, 8 Nov 2022
- 06:25:11 -0800 (PST)
-Reply-To: mr.abraham022@gmail.com
-From:   "Mr.Abraham" <davidkekeli11@gmail.com>
-Date:   Tue, 8 Nov 2022 14:25:11 +0000
-Message-ID: <CAPBO+FJ3Nhd2ncX9Z_fDUqYStiGQU821nC6EEFSDx5iCTdXkaQ@mail.gmail.com>
-Subject: Greeting
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:102c listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4997]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [mr.abraham022[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [davidkekeli11[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [davidkekeli11[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7766dac5969021bf7432e8c4f038db8afc996b8a.1667336095.git.christophe.jaillet@wanadoo.fr>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: -DM1x5yhenxVOr4HlphkT1EWcTX0Lfu1
+X-Proofpoint-ORIG-GUID: Po9WtIPhNzLNhdW9EYvJM1NifDKc-mne
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-07_11,2022-11-08_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 phishscore=0
+ spamscore=0 bulkscore=0 lowpriorityscore=0 mlxlogscore=643 impostorscore=0
+ priorityscore=1501 mlxscore=0 suspectscore=0 malwarescore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
+ definitions=main-2211080087
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-My Greeting, Did you receive the letter i sent to you. Please answer me.
-Regard, Mr.Abraham
+On Tue, Nov 01, 2022 at 10:14:14PM +0100, Christophe JAILLET wrote:
+> strtobool() is the same as kstrtobool().
+> However, the latter is more used within the kernel.
+> 
+> In order to remove strtobool() and slightly simplify kstrtox.h, switch to
+> the other function name.
+> 
+> While at it, include the corresponding header file (<linux/kstrtox.h>)
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+
+Applied, thanks!

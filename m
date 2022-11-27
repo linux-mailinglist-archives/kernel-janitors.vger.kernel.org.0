@@ -2,74 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC844639D67
-	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Nov 2022 22:52:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69611639D7F
+	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Nov 2022 23:07:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229521AbiK0VwR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 27 Nov 2022 16:52:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40574 "EHLO
+        id S229723AbiK0WHx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 27 Nov 2022 17:07:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229653AbiK0VwQ (ORCPT
+        with ESMTP id S229552AbiK0WHw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 27 Nov 2022 16:52:16 -0500
-Received: from smtp.smtpout.orange.fr (smtp-18.smtpout.orange.fr [80.12.242.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E090DBC35
-        for <kernel-janitors@vger.kernel.org>; Sun, 27 Nov 2022 13:52:14 -0800 (PST)
-Received: from pop-os.home ([86.243.100.34])
-        by smtp.orange.fr with ESMTPA
-        id zPZLoGIZNzQOKzPZLocc9q; Sun, 27 Nov 2022 22:52:12 +0100
-X-ME-Helo: pop-os.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 27 Nov 2022 22:52:12 +0100
-X-ME-IP: 86.243.100.34
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH] gpio: Do not include <linux/kernel.h> when not really needed.
-Date:   Sun, 27 Nov 2022 22:52:10 +0100
-Message-Id: <3f75784c57dc0682b5e1758daddd93fee6bb4b27.1669585920.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.34.1
+        Sun, 27 Nov 2022 17:07:52 -0500
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C00D24B
+        for <kernel-janitors@vger.kernel.org>; Sun, 27 Nov 2022 14:07:51 -0800 (PST)
+Received: by mail-yb1-xb31.google.com with SMTP id 205so11207014ybf.6
+        for <kernel-janitors@vger.kernel.org>; Sun, 27 Nov 2022 14:07:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=QTuQK++WvCw4AenD/ByjFB9xfaDXAXEdI7zL7dwhMYA=;
+        b=xRmt3Iwow88UXHBQ1h1i38Y7tjZvkahSpU0bdukn+sTbwlRW6DjdetXY6xZyB0vzgt
+         J0jGBR2Zc272ecTguS/7FeQhe0CbGXPm+4Nn2hswWY61EclZ7xwvQCTv2JW6ft6IEvOk
+         DmW0yXNKxwyIDMjt0xX26a9ncE6SG8YTKZtIEDzAi9bB5OCttGQGof697ndPNeKvZyNw
+         lF3jZH0Gidq6pxBsxQ0YTGskEXzsOekuYiA48fOukatjlG15ylaiAYoaBjzBy5l/M5Cj
+         ODGBulmgjFy/6Rb1EB/nHTC6r7vverT5/NEchhk9hbali5OZ+bcvDBpxj6bSs1nnc/cg
+         shSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QTuQK++WvCw4AenD/ByjFB9xfaDXAXEdI7zL7dwhMYA=;
+        b=Hv0XBp+l7iYNnyeKY1Qj2WraAsATfZodyfhtCac1WmFwTLerGRYpI1t6C31m87E1st
+         JHeioM6kkbEz3sNE6JDBOZPJ0qutSmyWjSGF4bAb22yjDGKqwoxFI4t5vYVcd7ZHGW0B
+         YDzNFuhd2ErqYCjctNQc13Xw71Njkd3hx/zO/ygtNTSkKfjT4PcO6zAvljuHzXHEAzSp
+         9jgxTa3E5ypGTMuT0vmi0sL8jcOb9rTelJPiKeRBWRI+/Qp7SIuV8Jdz9H0pZ8fkz7b9
+         DPOPKAazXkde+jMYv74CvYH3LR2BmasGXaObf4U7qSdRfh7b4mbdwHklYXr3koWDmXAy
+         owPw==
+X-Gm-Message-State: ANoB5pnsa5XMYfzzW+h5zEI+dPd42z+17mBdU36kZwcUJoORWjf31777
+        2fm9gKdL6dDNk5MgX6r8hpvBmUlfI96x3F9BPHcLLg==
+X-Google-Smtp-Source: AA0mqf4828ZPtJcTGa/IZef2ZjFxO4Gp3F1XLdaeCoJ+TITzHvqfT4VPRmT5o/R3Iu1aX9zy3Kf63CdiUHl6nAhnrtM=
+X-Received: by 2002:a25:d8d4:0:b0:6f0:36e2:5fc2 with SMTP id
+ p203-20020a25d8d4000000b006f036e25fc2mr21279966ybg.52.1669586870572; Sun, 27
+ Nov 2022 14:07:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <3f75784c57dc0682b5e1758daddd93fee6bb4b27.1669585920.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <3f75784c57dc0682b5e1758daddd93fee6bb4b27.1669585920.git.christophe.jaillet@wanadoo.fr>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 27 Nov 2022 23:07:39 +0100
+Message-ID: <CACRpkdZU3E_aFjC=yghzpyXPgyZGLa4xJTVr2jbLenGL1MManA@mail.gmail.com>
+Subject: Re: [PATCH] gpio: Do not include <linux/kernel.h> when not really needed.
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-<linux/kernel.h> is included only for using container_of().
-Include <linux/container_of.h> instead, it is much lighter.
+On Sun, Nov 27, 2022 at 10:52 PM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Not sure if the prefix should be gpio or gpiolib.
+> <linux/kernel.h> is included only for using container_of().
+> Include <linux/container_of.h> instead, it is much lighter.
+>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Let see if build-bots spot something which is inherit via kernel.h
----
- include/linux/of_gpio.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This is fine.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-diff --git a/include/linux/of_gpio.h b/include/linux/of_gpio.h
-index a5166eb93437..6db627257a7b 100644
---- a/include/linux/of_gpio.h
-+++ b/include/linux/of_gpio.h
-@@ -34,7 +34,7 @@ enum of_gpio_flags {
- 
- #ifdef CONFIG_OF_GPIO
- 
--#include <linux/kernel.h>
-+#include <linux/container_of.h>
- 
- /*
-  * OF GPIO chip for memory mapped banks
--- 
-2.34.1
+As Andy split out the container_of header file a year ago or
+so he certainly want to ACK this too.
 
+Yours,
+Linus Walleij

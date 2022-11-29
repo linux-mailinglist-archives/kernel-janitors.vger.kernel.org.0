@@ -2,70 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E2DD63C923
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Nov 2022 21:17:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08B1163CB20
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Nov 2022 23:39:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237307AbiK2URm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Nov 2022 15:17:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56830 "EHLO
+        id S236517AbiK2WjX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Nov 2022 17:39:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236977AbiK2URa (ORCPT
+        with ESMTP id S236570AbiK2WjF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Nov 2022 15:17:30 -0500
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 842E56DFE7
-        for <kernel-janitors@vger.kernel.org>; Tue, 29 Nov 2022 12:16:55 -0800 (PST)
-Received: by mail-lj1-x244.google.com with SMTP id d3so18593600ljl.1
-        for <kernel-janitors@vger.kernel.org>; Tue, 29 Nov 2022 12:16:55 -0800 (PST)
+        Tue, 29 Nov 2022 17:39:05 -0500
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5EDB391FA;
+        Tue, 29 Nov 2022 14:38:58 -0800 (PST)
+Received: by mail-wr1-x42d.google.com with SMTP id d1so24393758wrs.12;
+        Tue, 29 Nov 2022 14:38:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=RTPG0QP7LZ32cfCOAzofH8luZz3/nLG08vWek8mzscp0530F+mpXLsjo8AyYBl7WZ/
-         trvsIBBGpBC/0waQCRayrIpAjihCmK8DvtNYsGNLu23IOdgDog2+mW+2XU5vfrgjoggo
-         0UC9qZM53TJFAK4D9FVO1bsdWQ1S6/yJze86V5g8L/7MPIdOq27AISVKGmJEMzl6XovV
-         qwSS2sWaHXHelzDWozmz89Xawswa0PKnqhfR/hexK9NuRtVmOTtuRo/0G3hUxq3Ljt01
-         qrBRIKfkC+XjtqJlBXcPRreU8H6b40882alQXIuPb7sxZ3swdMecQcY9c1X5+JwXSXMA
-         GYqw==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jzd1y7/3VtA/Hnru2/D87vDSTFTR6fS36X/4ULjUqag=;
+        b=OdiGfjWYy+vziTOEML/WOPfHUhY5/7Wu19xuWjVxsRlpVwsZTjxqxP+AWB30y+Zh0O
+         Mf82A+w35WHGxHlSlHX8ZcRPb7KhvVvvc7iaX3Vq48P/gXTItDAnYvMGCuyytSuCPFis
+         DrswD/YpyqL1n/vOKLFrLpNqB0sz8J3KxCpwatpmENEogrY0xYO3EPFjZONZkmJDjWC4
+         TnIRpqhiSLmHjgeGCoJI1Ai5hG22lD53bEyaPwaYF6O3+3o2ruCpW9O6h8/uUOglWYpf
+         FWYJ0mUmR4RMyJnJGO0OV3jh528br8exLAwHi0+J8UCJIvSz2yOnvOvrndgA2e15FBJU
+         IPzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=sJyl3SDibXt0/5EZ15yFJ/YUd3hpDevRq7kTSSt3M+wjKDetgyBehrdQScdFucmF0g
-         AL4ifiChoQuCp8l0eXsEKdbzGdhMOwhaw8nOpSYlG12xtG6WobPuGl9PVQbO+dwuN+aO
-         a92+x2JGQbpjXJp5+3HmZY5kHV9hHi36fbe4DEP4uZg0xQSYe0Wz+bpQtRc5NYsLkOTA
-         Zth+TdHwsAYyMcmTN5RfVDTbZHB0+X+YxOwHY7+Z6sOwCXcGUL9pr6pnOtBosODfEf4t
-         /8sy45jJI0Zb/H5BuCFWp08aobIuJ94ynDNFTrwiPxEtcE9X+R/7TjSCO7cafQLmoFWK
-         B+vg==
-X-Gm-Message-State: ANoB5pmjItZJkgfvHEl7kQHU+qe7/NRf9ohBb0/8K0g1N3wde/LVYyey
-        LURSkArx8dO92PziYjxg0BgRTxtOKeRs6qWOByw=
-X-Google-Smtp-Source: AA0mqf7X10xZ2IKfzXS+xobLbfPRihwyjqP1Bjhi87KP9JDvAevgh3yTPH8Q3yt+uCQGQi0GCEqSbTam47nNan56pLw=
-X-Received: by 2002:a05:651c:50b:b0:26c:5db6:cd84 with SMTP id
- o11-20020a05651c050b00b0026c5db6cd84mr13186663ljp.114.1669753013602; Tue, 29
- Nov 2022 12:16:53 -0800 (PST)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jzd1y7/3VtA/Hnru2/D87vDSTFTR6fS36X/4ULjUqag=;
+        b=1bE+84ND7+WaiARLr5EuHDp337ZROHu4nZ6BqrOuHq6gtEzkUqIsIOkzxKZ8hAiWra
+         jYSpMOQgDmKuLU3qBoGDVSVL+rBfQKlsqjvkurChFpAqs6zhdVwB70VUu9c2anEQlrRW
+         BgjKtDQLyTB8eZTK9zFK4Ako1NJ9o3RZ6+ljWUySI012u1PiNn7CFQf6flD6TIUxB9Jb
+         HvlCpSUPQU6aBoL4d4xrRvXBG+d1Qo0XbISlyQcjI3tpsgkM5tTRSKlRYeSevnvQLl27
+         RXd/sJxe4FhDCYQoqihvFJZSHCPVDejdGEVg1IXxRyXwRtHHyeBa8ODacr2cneeZ2LRD
+         Dz0A==
+X-Gm-Message-State: ANoB5pmRHDCG5ZPv2B6RXDNK76w00KV+cWGASupjjPpcj2xiHenR56nB
+        DteMvGkEyJpK5U55WM6v5Hs=
+X-Google-Smtp-Source: AA0mqf66gF1k0TkON0nx4iEXcTPnz9Uru6KaHq/pKQPsATI/GjqlbGC+2jKZ5CmMzm1ViH6VTLYEpg==
+X-Received: by 2002:adf:fe47:0:b0:241:9aea:4396 with SMTP id m7-20020adffe47000000b002419aea4396mr37016699wrs.438.1669761537119;
+        Tue, 29 Nov 2022 14:38:57 -0800 (PST)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id s4-20020adfecc4000000b002421f89df39sm3594347wro.37.2022.11.29.14.38.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Nov 2022 14:38:56 -0800 (PST)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Colin Ian King <colin.i.king@gmail.com>,
+        Miaoqian Lin <linmq006@gmail.com>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] firmware: dmi-sysfs: make pr_info messages rate limited
+Date:   Tue, 29 Nov 2022 22:38:55 +0000
+Message-Id: <20221129223855.1005674-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Received: by 2002:a05:651c:a0a:0:0:0:0 with HTTP; Tue, 29 Nov 2022 12:16:52
- -0800 (PST)
-Reply-To: mr.abraham022@gmail.com
-From:   "Mr.Abraham" <chiogb00@gmail.com>
-Date:   Tue, 29 Nov 2022 20:16:52 +0000
-Message-ID: <CAAtWbkEAMQJDfs1SnRLup+F+=QL+vk1rnWR2uLOLtSa-JTS1nA@mail.gmail.com>
-Subject: hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-My Greeting, Did you receive the letter i sent to you. Please answer me.
-Regard, Mr.Abraham
+Currently if a process repeat repeatedly reads the dmi sysfs raw event log
+/sys/firmware/dmi/entries/15-0/system_event_log/raw_event_log when GPNV
+support is missing or using an unknown access method the kernel log gets
+spammed with info messages. Make the messages rate limited to reduce the
+message spamming. Triggered when running sudo stress-ng --sysfs -t 5m.
+
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/firmware/dmi-sysfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/firmware/dmi-sysfs.c b/drivers/firmware/dmi-sysfs.c
+index 66727ad3361b..9b6ce172175c 100644
+--- a/drivers/firmware/dmi-sysfs.c
++++ b/drivers/firmware/dmi-sysfs.c
+@@ -418,10 +418,10 @@ static ssize_t dmi_sel_raw_read_helper(struct dmi_sysfs_entry *entry,
+ 		return dmi_sel_raw_read_phys32(entry, &sel, state->buf,
+ 					       state->pos, state->count);
+ 	case DMI_SEL_ACCESS_METHOD_GPNV:
+-		pr_info("dmi-sysfs: GPNV support missing.\n");
++		pr_info_ratelimited("dmi-sysfs: GPNV support missing.\n");
+ 		return -EIO;
+ 	default:
+-		pr_info("dmi-sysfs: Unknown access method %02x\n",
++		pr_info_ratelimited("dmi-sysfs: Unknown access method %02x\n",
+ 			sel.access_method);
+ 		return -EIO;
+ 	}
+-- 
+2.38.1
+

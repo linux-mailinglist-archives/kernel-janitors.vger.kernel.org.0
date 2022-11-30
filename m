@@ -2,36 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C51F163D1F5
-	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Nov 2022 10:32:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA25863D1E9
+	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Nov 2022 10:31:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233978AbiK3JcW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 30 Nov 2022 04:32:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32798 "EHLO
+        id S234022AbiK3Jbo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 30 Nov 2022 04:31:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234394AbiK3Jb7 (ORCPT
+        with ESMTP id S233830AbiK3Jbb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 30 Nov 2022 04:31:59 -0500
+        Wed, 30 Nov 2022 04:31:31 -0500
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31BDC37234;
-        Wed, 30 Nov 2022 01:31:40 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D46C137231;
+        Wed, 30 Nov 2022 01:31:30 -0800 (PST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYqt1d1Sz4xZv;
-        Wed, 30 Nov 2022 20:31:38 +1100 (AEDT)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYqj38mfz4xQr;
+        Wed, 30 Nov 2022 20:31:29 +1100 (AEDT)
 From:   Michael Ellerman <patch-notifications@ellerman.id.au>
-To:     Frederic Barrat <fbarrat@linux.ibm.com>,
-        Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        kernel-janitors@vger.kernel.org
-In-Reply-To: <20220521111145.81697-82-Julia.Lawall@inria.fr>
-References: <20220521111145.81697-82-Julia.Lawall@inria.fr>
-Subject: Re: [PATCH] cxl: fix typo in comment
-Message-Id: <166980022351.3017288.3236938030136347338.b4-ty@ellerman.id.au>
-Date:   Wed, 30 Nov 2022 20:23:43 +1100
+To:     Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     linuxppc-dev@lists.ozlabs.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <7b8b5915a2c7c1616b33e8433ebe0a0bf07070a2.1665312579.git.christophe.jaillet@wanadoo.fr>
+References: <7b8b5915a2c7c1616b33e8433ebe0a0bf07070a2.1665312579.git.christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH] powerpc/sysdev: Remove some duplicate prefix in some messages
+Message-Id: <166980024656.3017288.14591621572057347121.b4-ty@ellerman.id.au>
+Date:   Wed, 30 Nov 2022 20:24:06 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -43,15 +44,21 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 21 May 2022 13:11:32 +0200, Julia Lawall wrote:
-> Spelling mistake (triple letters) in comment.
-> Detected with the help of Coccinelle.
+On Sun, 9 Oct 2022 12:49:50 +0200, Christophe JAILLET wrote:
+> At the beginning of the file, we have:
+>    #define pr_fmt(fmt) "xive: " fmt
 > 
+> So, there is no need to duplicate "XIVE:" in debug and error messages.
 > 
+> For the records, these useless prefix have been added in commit
+> 5af50993850a ("KVM: PPC: Book3S HV: Native usage of the XIVE interrupt
+> controller")
+> 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] cxl: fix typo in comment
-      https://git.kernel.org/powerpc/c/37195edebf479b94f1e20c2a83a29e4beebe7ff5
+[1/1] powerpc/sysdev: Remove some duplicate prefix in some messages
+      https://git.kernel.org/powerpc/c/2cb1dfac6f792f9e4a092793215f0d26e9f8d5b2
 
 cheers

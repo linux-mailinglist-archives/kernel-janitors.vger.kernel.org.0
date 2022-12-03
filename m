@@ -2,39 +2,42 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C323364169D
-	for <lists+kernel-janitors@lfdr.de>; Sat,  3 Dec 2022 13:19:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 266336417DF
+	for <lists+kernel-janitors@lfdr.de>; Sat,  3 Dec 2022 17:50:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229658AbiLCMTH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 3 Dec 2022 07:19:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33480 "EHLO
+        id S229839AbiLCQuC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 3 Dec 2022 11:50:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229629AbiLCMTD (ORCPT
+        with ESMTP id S229756AbiLCQt4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 3 Dec 2022 07:19:03 -0500
-Received: from smtp.smtpout.orange.fr (smtp-28.smtpout.orange.fr [80.12.242.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6847A1D0FB
-        for <kernel-janitors@vger.kernel.org>; Sat,  3 Dec 2022 04:18:59 -0800 (PST)
+        Sat, 3 Dec 2022 11:49:56 -0500
+Received: from smtp.smtpout.orange.fr (smtp-12.smtpout.orange.fr [80.12.242.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CA2C20BD3
+        for <kernel-janitors@vger.kernel.org>; Sat,  3 Dec 2022 08:49:50 -0800 (PST)
 Received: from pop-os.home ([86.243.100.34])
         by smtp.orange.fr with ESMTPA
-        id 1RTspiirkpJKl1RTtpLW6C; Sat, 03 Dec 2022 13:18:58 +0100
+        id 1VhypqniCap0Y1VhypzTXS; Sat, 03 Dec 2022 17:49:48 +0100
 X-ME-Helo: pop-os.home
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 03 Dec 2022 13:18:58 +0100
+X-ME-Date: Sat, 03 Dec 2022 17:49:48 +0100
 X-ME-IP: 86.243.100.34
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Jonathan Derrick <jonathan.derrick@linux.dev>
+To:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-block@vger.kernel.org
-Subject: [PATCH] block: sed-opal: Don't include <linux/kernel.h>
-Date:   Sat,  3 Dec 2022 13:18:49 +0100
-Message-Id: <a2de79b3de30fe70c457953af935dadd49441f00.1670069909.git.christophe.jaillet@wanadoo.fr>
+        netdev@vger.kernel.org
+Subject: [PATCH] packet: Don't include <linux/rculist.h>
+Date:   Sat,  3 Dec 2022 17:49:44 +0100
+Message-Id: <adc33d6c7dd01e29c848b9519b6a601219ba6780.1670086158.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -42,33 +45,36 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is no need to include <linux/kernel.h> here.
+There is no need to include <linux/rculist.h> here.
 
-Prefer the less invasive <linux/types.h> and <linux/compiler_types.h>
-which are needed in this .h file itself.
+Prefer the less invasive <linux/types.h> which is needed for 'hlist_head'.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
 Let see if build-bots agree with me!
----
- include/linux/sed-opal.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/sed-opal.h b/include/linux/sed-opal.h
-index 6f837bb6c715..87f981c70894 100644
---- a/include/linux/sed-opal.h
-+++ b/include/linux/sed-opal.h
-@@ -11,7 +11,9 @@
- #define LINUX_OPAL_H
+Just declaring 'struct mutex' and 'struct hlist_head' would also be an
+option.
+It would remove the need of any include, but is more likely to break
+something.
+---
+ include/net/netns/packet.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/net/netns/packet.h b/include/net/netns/packet.h
+index aae69bb43cde..74750865df36 100644
+--- a/include/net/netns/packet.h
++++ b/include/net/netns/packet.h
+@@ -5,8 +5,8 @@
+ #ifndef __NETNS_PACKET_H__
+ #define __NETNS_PACKET_H__
  
- #include <uapi/linux/sed-opal.h>
--#include <linux/kernel.h>
-+
-+#include <linux/compiler_types.h>		/* for __user */
+-#include <linux/rculist.h>
+ #include <linux/mutex.h>
 +#include <linux/types.h>
  
- struct opal_dev;
- 
+ struct netns_packet {
+ 	struct mutex		sklist_lock;
 -- 
 2.34.1
 

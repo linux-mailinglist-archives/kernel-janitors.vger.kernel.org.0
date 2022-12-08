@@ -2,77 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23E3C646FE8
-	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Dec 2022 13:41:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C17DD64710C
+	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Dec 2022 14:53:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229949AbiLHMlu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 8 Dec 2022 07:41:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43246 "EHLO
+        id S229738AbiLHNxL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 8 Dec 2022 08:53:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229568AbiLHMls (ORCPT
+        with ESMTP id S229612AbiLHNxK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 8 Dec 2022 07:41:48 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B00F58000;
-        Thu,  8 Dec 2022 04:41:48 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id ED05AB823A1;
-        Thu,  8 Dec 2022 12:41:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE46C433D6;
-        Thu,  8 Dec 2022 12:41:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670503305;
-        bh=dMXfN+dLPHMlr3tBQTVs8tArv5agk8+7shaxgICP7cM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WLpkQSwKeuifV1wHpWPjzlu7yRwXMDOMdMa2PAtYMnxABzQn0MtAW0YDsAj0sMuwc
-         C9F36/oEPh/05y9gVgTEifbhrgQwN/tSRZFGCBxGqJhw12b0Tp3Ryi2Bcl0QQV2NRs
-         U+O0y53tuAO/f+UMdl2ED65aWjfq7fhMdv7h66nkXboHYAgl6dRd2VPomZWaUsGJVa
-         0TPbm8MQLdOhlRNIztYHyZN23CbaYrnPyCp+BUdCA7IE9Dx2eSm9RahhIvEqJXphgS
-         EyZvE4Bn1bEEV5Hl3m7L8x6fsuQ7NSiv3db9VXoCJYjtwIhs5ZhBvaz5x44uoSoSfG
-         VgGHH7LmS3Ixw==
-Date:   Thu, 8 Dec 2022 12:41:40 +0000
-From:   Lee Jones <lee@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 2/2] mfd: qcom_rpm: Use devm_of_platform_populate() to
- simplify code
-Message-ID: <Y5HbhJCBFXWIIAid@google.com>
-References: <e39752476d02605b2be46cab7115f71255ce13a8.1668949256.git.christophe.jaillet@wanadoo.fr>
- <fd997dc92b9cee219e9c55e22959a94f4bbf570b.1668949256.git.christophe.jaillet@wanadoo.fr>
+        Thu, 8 Dec 2022 08:53:10 -0500
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ECC83204C;
+        Thu,  8 Dec 2022 05:53:09 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id j5-20020a05600c410500b003cfa9c0ea76so1050719wmi.3;
+        Thu, 08 Dec 2022 05:53:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2v8l5THJ19GAjS4O893x/pYLkkbHLYw6NG1nL55YPFc=;
+        b=AL19aAA79DEHlxU2LBDbITcgE09dwsxmvXgb6m3ikkCGqlcqc7LNc1YT+vU0WEdmMU
+         IXdkiJEFU3UWYfJSx6oxzZbgiozELKNpcbq7iG+o2g1Q31ou0UX65S8nkCwoRwLKH7IS
+         J0lhIkXCny3lTS7iU/t7yAPz7F89klF3sgBJMCEt0LaTeAkSKduMCXW3nBYjl0Gg2G59
+         +1RvMbKeKU6j3xBBpv63Ax2oQpK/2ExCIylx3H1Ub6tmkxyZBzzQ2+VPt4V/Acxzgr2H
+         z6iNrBMHcrwuJjguz+Ykd96gUCrIphHYoeu6TrtoBEqwK6a8fkmIqZ/BUE2GJQxiY3Wm
+         mj4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2v8l5THJ19GAjS4O893x/pYLkkbHLYw6NG1nL55YPFc=;
+        b=Vx/H7ltFBu8yPSD5xPNCwF499RSdsvv7wtWmnwp1CNF5sWJOs56Z6kZLZPVyem1dYa
+         eeRp41wpZSOluIsbsgbERwB8N6Qh6ZbKhhHOHsP4y2trxVwFR4g9RcKEWfaPUduRsuJq
+         Orx5TeDryltoH7agp49neXQJwGOjK4xcyVEf+8oF6Y6+ecFABRDLJ3F1Or0QvV9jCXz9
+         b7LdN8uZWWwgu5xYihHQFM8SZhVf3WxE9aVC2A4ba0bkXF5hzXxhXKVvCHOEh13aMp9q
+         QGtZURXCUGcGSZXJnfgMgXwbGGz0r7Yqqwv3h0+nBPpHOxnthojghfuMLPhVOt2Q+hwR
+         N6yQ==
+X-Gm-Message-State: ANoB5pnFfXMyor+cb9mAGnhoDLqttslKVk0sUjpAs6+Oz12uFjGFLI8D
+        N4kzuidAiEocAoqsH1UgR0F0ZN06ooCCbcvOOf4=
+X-Google-Smtp-Source: AA0mqf6Bi3YvmAgQHC3Yt6sL/8Ifia4RSL0RqODEeiOHDgXMgNNldxonwBXOgCAjtOx5rpss4/Fs1Q==
+X-Received: by 2002:a05:600c:1e08:b0:3c6:e63d:b89c with SMTP id ay8-20020a05600c1e0800b003c6e63db89cmr1974812wmb.11.1670507587793;
+        Thu, 08 Dec 2022 05:53:07 -0800 (PST)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id t64-20020a1c4643000000b003cfa622a18asm4994319wma.3.2022.12.08.05.53.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Dec 2022 05:53:07 -0800 (PST)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] selftest: Fix spelling mistake "eith" -> "with"
+Date:   Thu,  8 Dec 2022 13:53:05 +0000
+Message-Id: <20221208135305.2445846-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <fd997dc92b9cee219e9c55e22959a94f4bbf570b.1668949256.git.christophe.jaillet@wanadoo.fr>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 20 Nov 2022, Christophe JAILLET wrote:
+There is a spelling mistake in a ksft_test_result_fail message. Fix it.
 
-> Use devm_of_platform_populate() instead of hand-writing it.
-> This simplifies the code.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> This changes the order of the clean-ups if the .remove() function is called
-> but it looks fine to me.
-> ---
->  drivers/mfd/qcom_rpm.c | 12 +-----------
->  1 file changed, 1 insertion(+), 11 deletions(-)
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ tools/testing/selftests/capabilities/test_execve.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied, thanks.
-
+diff --git a/tools/testing/selftests/capabilities/test_execve.c b/tools/testing/selftests/capabilities/test_execve.c
+index df0ef02b4036..5cc2481507a6 100644
+--- a/tools/testing/selftests/capabilities/test_execve.c
++++ b/tools/testing/selftests/capabilities/test_execve.c
+@@ -288,7 +288,7 @@ static int do_tests(int uid, const char *our_path)
+ 				"PR_CAP_AMBIENT_RAISE isn't supported\n");
+ 		else
+ 			ksft_test_result_fail(
+-				"PR_CAP_AMBIENT_RAISE should have failed eith EPERM on a non-inheritable cap\n");
++				"PR_CAP_AMBIENT_RAISE should have failed with EPERM on a non-inheritable cap\n");
+ 		return 1;
+ 	}
+ 	ksft_test_result_pass(
 -- 
-Lee Jones [李琼斯]
+2.38.1
+

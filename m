@@ -2,69 +2,42 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDE24648BE2
-	for <lists+kernel-janitors@lfdr.de>; Sat, 10 Dec 2022 01:47:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D0FE648E73
+	for <lists+kernel-janitors@lfdr.de>; Sat, 10 Dec 2022 12:35:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229841AbiLJArk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Dec 2022 19:47:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40710 "EHLO
+        id S229779AbiLJLfi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 10 Dec 2022 06:35:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbiLJArj (ORCPT
+        with ESMTP id S229674AbiLJLfh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Dec 2022 19:47:39 -0500
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68014DD0;
-        Fri,  9 Dec 2022 16:47:37 -0800 (PST)
-Received: by mail-ej1-x632.google.com with SMTP id t17so15239637eju.1;
-        Fri, 09 Dec 2022 16:47:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uRnRrqGsFpngaI89ODUUTmQJOBbmZXvuzOkPrCLsszM=;
-        b=j7132LuMo5aHHPdlvEWbCPQmE1/OnzvHCr1zbaj91+ZEl3kRZLZtZP5WaRt8prNwsk
-         06SbQjIlWtRTafIoKdeQKKVPYqY/qiLJvbWSlHcx0QE9E6Ls+M9WzH6BYXss1X3S6SeF
-         oqHmen/fDSz3vy1aESM4VHRNCULDPpf1yeDAdZ2z0W22g1772tcHaZNO1Ya7CK+/K3zc
-         ISDz8RjQw0EGzvHGrFDUh4QFs5K3YzO+wre95dc4Eaf+y4YbBN4iBRzVbUYFNWJfGo/P
-         7XzSXNSnoc4brItBbDkwLsvSKwdtuUMGvJS6ELQpW8jAm6MI/LZHSLSml+9JCqutsok/
-         SjnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uRnRrqGsFpngaI89ODUUTmQJOBbmZXvuzOkPrCLsszM=;
-        b=ZShXGy+uvzokD0ijPwZQcwxkzYy8awyOyypfvTXg6XPVDHH9BTERv+8ZZoYXyQ11RS
-         1xR7fVVuj4tNe9oXNUQekp06YumuUH+MgMF/12NECerF/u/TFTi3Q64DQfqYUlz/7V0D
-         RmwzZFGazlcFRD3EQ2oiUp7sbi+Yw1HUG6RktVBGSBfJ4WMumN4IYEPp5w0IGQuyx9OB
-         diSV23F9MjbwM+8HuXnMQihBN3vnhqJW5EnCp6Xn9pd+9a8IpEMWmHP1FxE2unVFGdw2
-         nmI+qF3/APorYdfp28pITkSVgVKVd23ZgzRQZSY1tda56h6icQNlirlT+3eCifzw5NBR
-         D+xw==
-X-Gm-Message-State: ANoB5plk9k+B6fravfGgMb7BQaBuMH2kBJhrnJeXyU5WZAavuKGKFiz3
-        peIVS2U5E/DvOAE7gUIKfcPh2enRzly0yQ==
-X-Google-Smtp-Source: AA0mqf4FN60H3mOLSUeiSgAWP+9BKg3XqlbLAQ4LON1jjtFfV8L+aj0XkAgozjycPxluHPy4hPbijw==
-X-Received: by 2002:a17:907:3e91:b0:7c1:13b5:c434 with SMTP id hs17-20020a1709073e9100b007c113b5c434mr10137680ejc.35.1670633255959;
-        Fri, 09 Dec 2022 16:47:35 -0800 (PST)
-Received: from koshchanka.. (mm-144-58-120-178.brest.dynamic.pppoe.byfly.by. [178.120.58.144])
-        by smtp.gmail.com with ESMTPSA id 1-20020a170906318100b007c0688a68cbsm468739ejy.176.2022.12.09.16.47.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Dec 2022 16:47:35 -0800 (PST)
-From:   Uladzislau Koshchanka <koshchanka@gmail.com>
-To:     olteanv@gmail.com
-Cc:     netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Uladzislau Koshchanka <koshchanka@gmail.com>
-Subject: [PATCH] lib: packing: replace bit_reverse() with bitrev8()
-Date:   Sat, 10 Dec 2022 03:44:23 +0300
-Message-Id: <20221210004423.32332-1-koshchanka@gmail.com>
+        Sat, 10 Dec 2022 06:35:37 -0500
+Received: from smtp.smtpout.orange.fr (smtp-13.smtpout.orange.fr [80.12.242.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CBB61FCF6
+        for <kernel-janitors@vger.kernel.org>; Sat, 10 Dec 2022 03:35:35 -0800 (PST)
+Received: from pop-os.home ([86.243.100.34])
+        by smtp.orange.fr with ESMTPA
+        id 3y8gpaJiRNF1W3y8gp0xrM; Sat, 10 Dec 2022 12:35:32 +0100
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 10 Dec 2022 12:35:32 +0100
+X-ME-IP: 86.243.100.34
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Michal Januszewski <spock@gentoo.org>,
+        Helge Deller <deller@gmx.de>,
+        Antonino Daplas <adaplas@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: [PATCH v2 1/2] video: fbdev: uvesafb: Fixes an error handling path in uvesafb_probe()
+Date:   Sat, 10 Dec 2022 12:35:22 +0100
+Message-Id: <0eba6acb70fa1270d8cf798afd11ce342aa7e8e1.1670671944.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221209220651.i43mxhz5aczhhjgs@skbuf>
-References: <20221209220651.i43mxhz5aczhhjgs@skbuf>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,68 +45,39 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove bit_reverse() function.  Instead use bitrev8() from linux/bitrev.h +
-bitshift.  Reduces code-repetition.
+If an error occurs after a successful uvesafb_init_mtrr() call, it must be
+undone by a corresponding arch_phys_wc_del() call, as already done in the
+remove function.
 
-Signed-off-by: Uladzislau Koshchanka <koshchanka@gmail.com>
+This has been added in the remove function in commit 63e28a7a5ffc
+("uvesafb: Clean up MTRR code")
+
+Fixes: 8bdb3a2d7df4 ("uvesafb: the driver core")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- lib/Kconfig   |  1 +
- lib/packing.c | 16 ++--------------
- 2 files changed, 3 insertions(+), 14 deletions(-)
+Unsure about the Fixes tag, maybe it is 63e28a7a5ffc
 
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 9bbf8a4b2108..cc969ef58a2a 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -24,6 +24,7 @@ config LINEAR_RANGES
- 
- config PACKING
- 	bool "Generic bitfield packing and unpacking"
-+	select BITREVERSE
- 	default n
- 	help
- 	  This option provides the packing() helper function, which permits
-diff --git a/lib/packing.c b/lib/packing.c
-index 9a72f4bbf0e2..a96169237ae6 100644
---- a/lib/packing.c
-+++ b/lib/packing.c
-@@ -7,6 +7,7 @@
- #include <linux/bitops.h>
- #include <linux/errno.h>
- #include <linux/types.h>
-+#include <linux/bitrev.h>
- 
- static int get_le_offset(int offset)
- {
-@@ -29,19 +30,6 @@ static int get_reverse_lsw32_offset(int offset, size_t len)
- 	return word_index * 4 + offset;
- }
- 
--static u64 bit_reverse(u64 val, unsigned int width)
--{
--	u64 new_val = 0;
--	unsigned int bit;
--	unsigned int i;
--
--	for (i = 0; i < width; i++) {
--		bit = (val & (1 << i)) != 0;
--		new_val |= (bit << (width - i - 1));
--	}
--	return new_val;
--}
--
- static void adjust_for_msb_right_quirk(u64 *to_write, int *box_start_bit,
- 				       int *box_end_bit, u8 *box_mask)
- {
-@@ -49,7 +37,7 @@ static void adjust_for_msb_right_quirk(u64 *to_write, int *box_start_bit,
- 	int new_box_start_bit, new_box_end_bit;
- 
- 	*to_write >>= *box_end_bit;
--	*to_write = bit_reverse(*to_write, box_bit_width);
-+	*to_write = bitrev8(*to_write) >> (8 - box_bit_width);
- 	*to_write <<= *box_end_bit;
- 
- 	new_box_end_bit   = box_bit_width - *box_start_bit - 1;
+Change in v2:
+  - add arch_phys_wc_del() at the right place in the error handling path
+
+v1 (a long time ago!):
+https://lore.kernel.org/all/dd2a4806d3a570ab84947806f38a494454fd0245.1622994310.git.christophe.jaillet@wanadoo.fr/
+---
+ drivers/video/fbdev/uvesafb.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/video/fbdev/uvesafb.c b/drivers/video/fbdev/uvesafb.c
+index 00d789b6c0fa..0e3cabbec4b4 100644
+--- a/drivers/video/fbdev/uvesafb.c
++++ b/drivers/video/fbdev/uvesafb.c
+@@ -1758,6 +1758,7 @@ static int uvesafb_probe(struct platform_device *dev)
+ out_unmap:
+ 	iounmap(info->screen_base);
+ out_mem:
++	arch_phys_wc_del(par->mtrr_handle);
+ 	release_mem_region(info->fix.smem_start, info->fix.smem_len);
+ out_reg:
+ 	release_region(0x3c0, 32);
 -- 
 2.34.1
 

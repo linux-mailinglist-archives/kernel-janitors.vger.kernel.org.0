@@ -2,81 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC076659BDE
-	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Dec 2022 21:21:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 372DF6598AB
+	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Dec 2022 14:24:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235441AbiL3UVB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 30 Dec 2022 15:21:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49176 "EHLO
+        id S235008AbiL3NX4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 30 Dec 2022 08:23:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbiL3UVA (ORCPT
+        with ESMTP id S231439AbiL3NXr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 30 Dec 2022 15:21:00 -0500
-X-Greylist: delayed 20637 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 30 Dec 2022 12:20:54 PST
-Received: from mail.vacuumatic.cc (vacuumatic.cc [163.123.140.34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9135513F5F
-        for <kernel-janitors@vger.kernel.org>; Fri, 30 Dec 2022 12:20:54 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.vacuumatic.cc (Postfix) with ESMTP id 101BB70E2436;
-        Fri, 30 Dec 2022 05:01:31 -0500 (EST)
-Received: from mail.vacuumatic.cc ([127.0.0.1])
-        by localhost (mail.vacuumatic.cc [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id cynFY2o2Z0ac; Fri, 30 Dec 2022 05:01:29 -0500 (EST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.vacuumatic.cc (Postfix) with ESMTP id DFF9E70E243C;
-        Fri, 30 Dec 2022 05:01:24 -0500 (EST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.vacuumatic.cc DFF9E70E243C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vacuumatic.cc;
-        s=BD5E5048-7767-11ED-9AB1-AEF27DAD29AF; t=1672394485;
-        bh=8OSRQtZ/XGMt0m+/MV768q5oZkUB/T254Ol9zod/hVE=;
-        h=Date:From:Message-ID:MIME-Version;
-        b=WeoYhDOWjGlSfZuUOtOg1rlx5UrP1P6zr477TnSGSi02FB9JjNzjzjThZPn0W5FdD
-         lVvUgtwz8Ms0kKnuCS2fjGIytZCtouox2F81vvWi4rBDlWygHueX5cbJYV0Il4eYfE
-         GKGreVK9C2+uVAXooeBZz6UmZ+bjMbfOLRw+LvVygS7rySAHDNiH4Sy8YmZzfD2ba+
-         9Fi+AIDYvjx5g9ySvTJECXpks1KpwKyKz92JOmg4P87U2fCKJnTxl+8N+DzMG6YqCd
-         CtsJE2CoQSP8Z/74gd2iwgfB3w1AZHW6Ez6W7W5i5LOPK1J6LwjGQuEWgVMD4SWFCs
-         2KJQT0VDHszlw==
-X-Virus-Scanned: amavisd-new at vacuumatic.cc
-Received: from mail.vacuumatic.cc ([127.0.0.1])
-        by localhost (mail.vacuumatic.cc [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id zdrtsw8KqHRu; Fri, 30 Dec 2022 05:01:24 -0500 (EST)
-Received: from mail.vacuumatic.cc (mail.vacuumatic.cc [163.123.140.34])
-        by mail.vacuumatic.cc (Postfix) with ESMTP id 3D11970E2407;
-        Fri, 30 Dec 2022 05:01:19 -0500 (EST)
-Date:   Fri, 30 Dec 2022 05:01:19 -0500 (EST)
-From:   Lukas Reinhardt <support@vacuumatic.cc>
-Reply-To: Lukas Reinhardt <lukreinhard1@vivaldi.net>
-Message-ID: <589343552.268530.1672394479175.JavaMail.zimbra@vacuumatic.cc>
-In-Reply-To: <1397014707.241670.1672348232055.JavaMail.zimbra@vacuumatic.cc>
-References: <1397014707.241670.1672348232055.JavaMail.zimbra@vacuumatic.cc>
-Subject: 3% IR Loan Offer
+        Fri, 30 Dec 2022 08:23:47 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF81D1AD9C;
+        Fri, 30 Dec 2022 05:23:45 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4878061172;
+        Fri, 30 Dec 2022 13:23:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FFC8C433D2;
+        Fri, 30 Dec 2022 13:23:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1672406624;
+        bh=NqmqGbk5hNMzGGcEm4dJNpuxoV4wFsE7sNHS+ETbSqw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=jO61gvfKtXf+0r3Va55qQpluFxWwsQ/h/hi6h5D31HrsyUkm0FRcX9BU4gKmfaThg
+         cl7n+oAnzEWMq+3pW6lOlIL+1Id1yJstOrpABJYr6U/032CQJaLwnVbGLsr1iTi+8Q
+         I7x/gcmobqcsIYB8M3zXttLV+vnn5CXdRP5mJhThKunawto9a0j7l5VWFZEmRu9caY
+         QUL8qPVq9d8drPJxWL2VkEZZsH/gIHkNMf2jLAz2sTfFplu4jlVz3w/acrSAHvYZwr
+         oplcFo7WdZagkGFrxLdRyPKwNkRGb/2CwBzd6jcmVMvLt97PLeKbLOXkQS1p0TOd0v
+         DTBQRgzstEk8A==
+From:   Lorenzo Pieralisi <lpieralisi@kernel.org>
+To:     linux-pci@vger.kernel.org, Rob Herring <robh@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
+Cc:     Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] PCI: dwc: adjust to recent removal of PCI_MSI_IRQ_DOMAIN
+Date:   Fri, 30 Dec 2022 14:23:38 +0100
+Message-Id: <167240660288.752172.35470572785572794.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20221215103452.23131-1-lukas.bulwahn@gmail.com>
+References: <20221215103452.23131-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [163.123.140.34]
-X-Mailer: Zimbra 8.8.15_GA_4484 (zclient/8.8.15_GA_4484)
-Thread-Topic: 3% IR Loan Offer
-Thread-Index: u96i7u0zPj8LOsjj2ctwnSi+vmZefzDYlUSl
-X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MISSING_HEADERS,
-        RCVD_IN_MSPIKE_H2,RCVD_IN_VALIDITY_RPBL,REPLYTO_WITHOUT_TO_CC,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
+On Thu, 15 Dec 2022 11:34:52 +0100, Lukas Bulwahn wrote:
+> Commit a474d3fbe287 ("PCI/MSI: Get rid of PCI_MSI_IRQ_DOMAIN") removes the
+> config PCI_MSI_IRQ_DOMAIN and makes all previous references to that config
+> then refer to PCI_MSI instead.
+> 
+> Commit ba6ed462dcf4 ("PCI: dwc: Add Baikal-T1 PCIe controller support")
+> adds the config PCIE_BT1, which following the previous default pattern
+> depends on the config PCI_MSI_IRQ_DOMAIN.
+> 
+> [...]
 
-We are a Kuwait Based Investment company offering corporate and personal loans at 3% interest rate for the duration of 10 years. We also give 1% commission to brokers, who introduce project owners for finance or other opportunities.
+Applied to pci/dwc, thanks!
 
-Please get back to me if you are interested in more details.
+[1/1] PCI: dwc: adjust to recent removal of PCI_MSI_IRQ_DOMAIN
+      https://git.kernel.org/lpieralisi/pci/c/3c9686173220
 
-
-Best Regards,
-Mr.Lukas Reinhardt
-Assistant Secretary
-General Global Financial Investment.
+Thanks,
+Lorenzo

@@ -2,118 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86FB565F3E7
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Jan 2023 19:44:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E1D865F53B
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Jan 2023 21:32:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234812AbjAESoJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Jan 2023 13:44:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58704 "EHLO
+        id S234755AbjAEUbe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Jan 2023 15:31:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234735AbjAESoH (ORCPT
+        with ESMTP id S234237AbjAEUbE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Jan 2023 13:44:07 -0500
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 154221054D;
-        Thu,  5 Jan 2023 10:44:06 -0800 (PST)
-Received: by mail-wr1-x436.google.com with SMTP id az7so12627175wrb.5;
-        Thu, 05 Jan 2023 10:44:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=R5VFmITpcq980NC7BHDSxAFwvqy7pS4EajnFTTRxXo8=;
-        b=KwmlitPYUG0nvLmz8rNf3rqtW8HM76f8nSBVunCIkaSBPwbAvZxYZzHGK3PwNwR7aP
-         fXmL4M+I2ETLzUWtEaUP9ZgpU40ro0a++SN8LS/D/grUAMzOWx6pMpjTO2xBTma+fF+p
-         8Z3nxBZ+cC1pRdAij++ZrS7CSicWYw5vryfLTNzHWibH4C2JwL/mO05ngE6FAeKFTJPp
-         7117FL10SSEFxQmIZmC6nSjOs4c24ZGqcR7nqVsYXQU9BeeIsdoNF9Bm4KRUmUoNNXC8
-         SmTSY6Ry8x2RKUASJo4qsQmKlVlyA07StKm5osrTpfbX+VlP9JLQW2BgFMmSPB+jWHEV
-         wp5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=R5VFmITpcq980NC7BHDSxAFwvqy7pS4EajnFTTRxXo8=;
-        b=bU649uZNiyAxsI/wt+12O4I2nDUwEnAruxKftYohPFRZMkUJL8ywPAK7GktKWRa7kj
-         TGMYvZ4Wlde637ne3+UEHZv/4Uy0cRkJuEhHE78NDhsT+q2hZ2GL/LOLh3N/CtYp+R/j
-         m1OFGA+XLapQ7d/M1KKCTvq4o5OM2YyfFOfFnVEquzzn8sSeAspsxNAvfFnbPAQQya9I
-         IXdW28bRy/OOE1N57eErb13iawlpmP6BrxMUKLfDHW3Rz3OFvX8H32VTCimgRtcNiM2n
-         Ty3HqcWjgXNXKnMQ8HWs0nU7JHmQ9VXFDI9cAJXhOXJTYejZ53WRee130AGrgJvK3m3P
-         5QAA==
-X-Gm-Message-State: AFqh2kqBfzirxGPXOdYrQWfGOT+HZumjgZdo4wPRJxiyo1+7UpcdD9pQ
-        WlPovBXrGypbMZ5IazZokyg=
-X-Google-Smtp-Source: AMrXdXupHpSiCAPJMry8NhE3IeKFncHiPo3XY0ysiysKAVmAVt/UICl6Oja6cqmdM/4eTxSax6ktpw==
-X-Received: by 2002:adf:db11:0:b0:242:6055:dee3 with SMTP id s17-20020adfdb11000000b002426055dee3mr31114213wri.63.1672944244668;
-        Thu, 05 Jan 2023 10:44:04 -0800 (PST)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id b14-20020a05600010ce00b0023c8026841csm37004971wrx.23.2023.01.05.10.44.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Jan 2023 10:44:04 -0800 (PST)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Dafna Hirschfeld <dafna@fastmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Heiko Stuebner <heiko@sntech.de>, linux-media@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] media: rkisp1: make a few const arrays static
-Date:   Thu,  5 Jan 2023 18:44:03 +0000
-Message-Id: <20230105184403.63419-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.30.2
+        Thu, 5 Jan 2023 15:31:04 -0500
+Received: from email.pdamkotamalang.com (unknown [114.4.39.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 162916338A;
+        Thu,  5 Jan 2023 12:31:04 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by email.pdamkotamalang.com (Postfix) with ESMTP id C6D48139D53;
+        Fri,  6 Jan 2023 03:24:28 +0700 (WIB)
+Received: from email.pdamkotamalang.com ([127.0.0.1])
+        by localhost (email.pdamkotamalang.com [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id a-LvmMomYNEt; Fri,  6 Jan 2023 03:24:28 +0700 (WIB)
+Received: from localhost (localhost [127.0.0.1])
+        by email.pdamkotamalang.com (Postfix) with ESMTP id 8B9B3139D6E;
+        Fri,  6 Jan 2023 03:24:28 +0700 (WIB)
+DKIM-Filter: OpenDKIM Filter v2.9.2 email.pdamkotamalang.com 8B9B3139D6E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pdamkotamalang.com;
+        s=62829964-9E69-11EB-BD22-25F53CE53079; t=1672950268;
+        bh=esox1GoxVQJW59HRUBvaPTukA/9qNhV3fwI/h3ErfWE=;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
+         From:Date:Reply-To:Message-Id;
+        b=lAGGclCLubqDylawqEF7GRO7ky/gdR7Y46C/eZuAo3YUIczcOSCr0k0qJnG0qgwct
+         cnQ//YtX/QmIS549qofv2C/eFmGNUFJZsfMQ+oeObiE1smb44HeAQhH1NnNtQKguiZ
+         vH/VekC+zLXZpv3CXStxK/Y5LRpf2HFbSS5MWPVo=
+X-Virus-Scanned: amavisd-new at email.pdamkotamalang.com
+Received: from email.pdamkotamalang.com ([127.0.0.1])
+        by localhost (email.pdamkotamalang.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id tebdln23W84g; Fri,  6 Jan 2023 03:24:28 +0700 (WIB)
+Received: from [192.168.100.49] (unknown [138.199.59.202])
+        by email.pdamkotamalang.com (Postfix) with ESMTPSA id 2A821139D53;
+        Fri,  6 Jan 2023 03:24:09 +0700 (WIB)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: RE:
+To:     Recipients <lpse@pdamkotamalang.com>
+From:   Susanne Klatten <lpse@pdamkotamalang.com>
+Date:   Thu, 05 Jan 2023 23:23:50 +0300
+Reply-To: belillrobertlee608@gmail.com
+Message-Id: <20230105202415.2A821139D53@email.pdamkotamalang.com>
+X-Spam-Status: Yes, score=7.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,PDS_RDNS_DYNAMIC_FP,RCVD_IN_SBL_CSS,
+        RCVD_IN_XBL,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [114.4.39.122 listed in zen.spamhaus.org]
+        *  0.4 RCVD_IN_XBL RBL: Received via a relay in Spamhaus XBL
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [belillrobertlee608[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  1.0 RDNS_DYNAMIC Delivered to internal network by host with
+        *      dynamic-looking rDNS
+        *  0.0 PDS_RDNS_DYNAMIC_FP RDNS_DYNAMIC with FP steps
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Don't populate the const arrays on the stack, instead make them
-static. Also makes the object code smaller.
+Nazywam sie Jeff Bezos, dyrektor generalny Amazon, w tej notatce informuje =
+swiat o moim zamiarze rozdania mojej fortuny w wysokosci 124 miliard=F3w do=
+lar=F3w mojego majatku szczesliwcom w calym kraju i na calym swiecie.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- .../platform/rockchip/rkisp1/rkisp1-capture.c     | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+Tw=F3j e-mail zostal losowo wybrany, aby dolaczyc do os=F3b, kt=F3re beda b=
+eneficjentami tego projektu charytatywnego. kazda osoba otrzyma 1 200 000 0=
+0 $.
 
-diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-capture.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-capture.c
-index d4540684ea9a..d1d1fdce03e3 100644
---- a/drivers/media/platform/rockchip/rkisp1/rkisp1-capture.c
-+++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-capture.c
-@@ -1131,10 +1131,12 @@ static void rkisp1_try_fmt(const struct rkisp1_capture *cap,
- 	const struct rkisp1_capture_config *config = cap->config;
- 	const struct rkisp1_capture_fmt_cfg *fmt;
- 	const struct v4l2_format_info *info;
--	const unsigned int max_widths[] = { RKISP1_RSZ_MP_SRC_MAX_WIDTH,
--					    RKISP1_RSZ_SP_SRC_MAX_WIDTH };
--	const unsigned int max_heights[] = { RKISP1_RSZ_MP_SRC_MAX_HEIGHT,
--					     RKISP1_RSZ_SP_SRC_MAX_HEIGHT};
-+	static const unsigned int max_widths[] = {
-+		RKISP1_RSZ_MP_SRC_MAX_WIDTH, RKISP1_RSZ_SP_SRC_MAX_WIDTH
-+	};
-+	static const unsigned int max_heights[] = {
-+		RKISP1_RSZ_MP_SRC_MAX_HEIGHT, RKISP1_RSZ_SP_SRC_MAX_HEIGHT
-+	};
- 
- 	fmt = rkisp1_find_fmt_cfg(cap, pixm->pixelformat);
- 	if (!fmt) {
-@@ -1336,8 +1338,9 @@ void rkisp1_capture_devs_unregister(struct rkisp1_device *rkisp1)
- 
- static int rkisp1_register_capture(struct rkisp1_capture *cap)
- {
--	const char * const dev_names[] = {RKISP1_MP_DEV_NAME,
--					  RKISP1_SP_DEV_NAME};
-+	static const char * const dev_names[] = {
-+		RKISP1_MP_DEV_NAME, RKISP1_SP_DEV_NAME
-+	};
- 	struct v4l2_device *v4l2_dev = &cap->rkisp1->v4l2_dev;
- 	struct video_device *vdev = &cap->vnode.vdev;
- 	struct rkisp1_vdev_node *node;
--- 
-2.30.2
+https://www.cnbc.com/amp/2022/11/14/jeff-bezos-says-he-plans-to-give-away-m=
+ost-of-his-124-billion-fortune.html
 
+Skontaktuj sie z Agentem Panem Robertem, aby dowiedziec sie, jak postepowac.
+E-mail: belillrobertlee608@gmail.com
+
+Z wyrazami szacunku.

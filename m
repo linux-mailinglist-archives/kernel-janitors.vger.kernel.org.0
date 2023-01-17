@@ -2,92 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 601B866E0B1
-	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Jan 2023 15:30:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3886066E14F
+	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Jan 2023 15:51:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232719AbjAQOaN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 17 Jan 2023 09:30:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48458 "EHLO
+        id S230253AbjAQOvx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 17 Jan 2023 09:51:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232674AbjAQO3t (ORCPT
+        with ESMTP id S230219AbjAQOvu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 17 Jan 2023 09:29:49 -0500
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD6DC7EFE
-        for <kernel-janitors@vger.kernel.org>; Tue, 17 Jan 2023 06:28:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=KBPszgjzplClG0cwDr3W6UdY1Eclt0wUxk3LPzSt3sI=; b=yuGvaC1mDnQ7na7r240ACruiua
-        HG3wXc7fVYv+9F1LKzxOCKS7H+DmQs9s2ADsBXX5c+yxXhoA9qVZdgSfkRsQhsEUSn99C6WV+1ega
-        uNi++SN2QEl5hms+WgCMBVd8mLd2ZjIqfvUWle8nLuInBXrHSrf7DOaKtXsfiRPLw/so=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1pHmxI-002KaL-SC; Tue, 17 Jan 2023 15:28:52 +0100
-Date:   Tue, 17 Jan 2023 15:28:52 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Dan Carpenter <error27@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>
-Cc:     kernel-janitors@vger.kernel.org
-Subject: Re: [bug report] net: mdio: Add dedicated C45 API to MDIO bus drivers
-Message-ID: <Y8awpAHzwLWBwepC@lunn.ch>
-References: <Y8auKyhinOCcLqn2@kili>
+        Tue, 17 Jan 2023 09:51:50 -0500
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85C4A3B3DB;
+        Tue, 17 Jan 2023 06:51:49 -0800 (PST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out2.suse.de (Postfix) with ESMTP id 453B0688C5;
+        Tue, 17 Jan 2023 14:51:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1673967108; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=hTVeN2Bi9Z9fSTLDdrvLfcxsXOF6CNTVmA7ARmZ4o3Q=;
+        b=qxg4Q5qN/+xs80/V3voVIOMVPWX4qnwvTIgAzVkzlaCbfjTbCP6NQBf4gcCODirCddL58d
+        7QZojPW59Pj+DfNqtFUoRtttKoqNuuwvdImH4VDkjDLlwnoX/n9HsqoqRtvHmwlrt1X5Pp
+        lV9pA6pyFNMtVFnDTtOVOaAFOOXvO3c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1673967108;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=hTVeN2Bi9Z9fSTLDdrvLfcxsXOF6CNTVmA7ARmZ4o3Q=;
+        b=HBpePNQTd+YVmdzaVz+mdNDmd0EXkdiNXWYxPLfPzD2CgdpqN8H8ZLzyh12Ij/90Pyjzy0
+        jHRaQh0p+0wKjbAA==
+Received: from pobox.suse.cz (pobox.suse.cz [10.100.2.14])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by relay2.suse.de (Postfix) with ESMTPS id 226142C141;
+        Tue, 17 Jan 2023 14:51:48 +0000 (UTC)
+Date:   Tue, 17 Jan 2023 15:51:52 +0100 (CET)
+From:   Miroslav Benes <mbenes@suse.cz>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+cc:     linux@rasmusvillemoes.dk, mcgrof@kernel.org,
+        gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2] kernel/params.c: Use kstrtobool() instead of
+ strtobool()
+In-Reply-To: <a0abd4f77374428bd3c9dd8b69b2afe52544c994.1673687215.git.christophe.jaillet@wanadoo.fr>
+Message-ID: <alpine.LSU.2.21.2301171550500.24433@pobox.suse.cz>
+References: <a0abd4f77374428bd3c9dd8b69b2afe52544c994.1673687215.git.christophe.jaillet@wanadoo.fr>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y8auKyhinOCcLqn2@kili>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jan 17, 2023 at 05:18:19PM +0300, Dan Carpenter wrote:
-> Hello Andrew Lunn,
+On Sat, 14 Jan 2023, Christophe JAILLET wrote:
 
-Adding Florian
+> strtobool() is the same as kstrtobool().
+> However, the latter is more used within the kernel.
+> 
+> In order to remove strtobool() and slightly simplify kstrtox.h, switch to
+> the other function name.
+> 
+> While at it, include the corresponding header file (<linux/kstrtox.h>)
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-> The patch 4e4aafcddbbf: "net: mdio: Add dedicated C45 API to MDIO bus
-> drivers" from Jan 9, 2023, leads to the following Smatch static
-> checker warning:
-> 
-> drivers/net/phy/mdio_bus.c:1003 mdiobus_c45_read() warn: sleeping in atomic context
-> drivers/net/phy/mdio_bus.c:1104 mdiobus_c45_write() warn: sleeping in atomic context
-> 
-> drivers/net/phy/mdio_bus.c
->     993  * @regnum: register number to read
->     994  *
->     995  * NOTE: MUST NOT be called from interrupt context,
->     996  * because the bus read/write functions may wait for an interrupt
->     997  * to conclude the operation.
->     998  */
->     999 int mdiobus_c45_read(struct mii_bus *bus, int addr, int devad, u32 regnum)
->     1000 {
->     1001         int retval;
->     1002 
-> --> 1003         mutex_lock(&bus->mdio_lock);
->                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> This takes a mutex.
-> 
->     1004         retval = __mdiobus_c45_read(bus, addr, devad, regnum);
->     1005         mutex_unlock(&bus->mdio_lock);
->     1006 
->     1007         return retval;
->     1008 }
-> 
-> The problematic call tree is:
-> 
-> b44_ioctl() <- disables preempt
-> -> phy_mii_ioctl()
->    -> mdiobus_c45_read()
+Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 
-This seems like an old bug which my change has brought to light. I
-believe MDIO operations have always been blocking. So i would say
-b44_ioctl should not be taking a spinlock here.
+Luis, will you take it through your modules tree?
 
-	  Andrew
+M

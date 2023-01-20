@@ -2,99 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 628F86751C3
-	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Jan 2023 10:55:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1528675291
+	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Jan 2023 11:33:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229533AbjATJzm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 20 Jan 2023 04:55:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46900 "EHLO
+        id S230018AbjATKdy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 20 Jan 2023 05:33:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbjATJzl (ORCPT
+        with ESMTP id S230017AbjATKdv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 20 Jan 2023 04:55:41 -0500
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9BFAA733D;
-        Fri, 20 Jan 2023 01:54:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674208498; x=1705744498;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+nvvEu/BOUFSCsUyjF17UjmDZnCUyvy9snQzL3mM8lQ=;
-  b=WzFqsynfQ/gwu1dYtEwTJXhFbY4ERg4lW9EhACGSrcTPaSzHli5v02tn
-   cPl7XRg4oIqvuqTizr/nF9a+ACzm4mq/EHRw1Wv5zc7U+lgapGaL9cIHB
-   Mwn59zElV0NBADZi+ZEogfA46kl4J7D8RK7NuNwTMZFE43iIsH+wQ/sJ2
-   Op37oXx2JcjoPBFWT9uUhoO0v9RGpAZUALrA7jKVNiu0eGatdixP/AOHk
-   PiiZeOHYaTiMv9ALs2qRHnTYybbulIvQQYms65mAoJgYiT7E9GEY/cFR2
-   zhHmUpqt0VAbChftHfi0jhSnoLLZnKwG9hokBnPNA6AhobvaYPw1FDkqE
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="305912520"
-X-IronPort-AV: E=Sophos;i="5.97,231,1669104000"; 
-   d="scan'208";a="305912520"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2023 01:54:58 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="834364601"
-X-IronPort-AV: E=Sophos;i="5.97,231,1669104000"; 
-   d="scan'208";a="834364601"
-Received: from joe-255.igk.intel.com (HELO localhost) ([10.91.220.57])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2023 01:54:56 -0800
-Date:   Fri, 20 Jan 2023 10:54:54 +0100
-From:   Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-To:     Colin Ian King <colin.i.king@gmail.com>
-Cc:     Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-        Oded Gabbay <ogabbay@kernel.org>,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
+        Fri, 20 Jan 2023 05:33:51 -0500
+Received: from formenos.hmeau.com (helcar.hmeau.com [216.24.177.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0718D93CA;
+        Fri, 20 Jan 2023 02:33:42 -0800 (PST)
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+        id 1pIoi9-002BZU-5l; Fri, 20 Jan 2023 18:33:30 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 20 Jan 2023 18:33:29 +0800
+Date:   Fri, 20 Jan 2023 18:33:29 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Weili Qian <qianweili@huawei.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] accel/ivpu: Fix spelling mistake "tansition" ->
- "transition"
-Message-ID: <20230120095454.GA56856@linux.intel.com>
-References: <20230120092842.79238-1-colin.i.king@gmail.com>
+Subject: Re: [PATCH] crypto: hisilicon - remove redundant config PCI
+ dependency for some CRYPTO_DEV_HISI configs
+Message-ID: <Y8pt+eTq/wwFWjw3@gondor.apana.org.au>
+References: <20230111120203.822-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230120092842.79238-1-colin.i.king@gmail.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230111120203.822-1-lukas.bulwahn@gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jan 20, 2023 at 09:28:42AM +0000, Colin Ian King wrote:
-> There are spelling mistakes in two ivpu_err error messages. Fix them.
+On Wed, Jan 11, 2023 at 01:02:03PM +0100, Lukas Bulwahn wrote:
+> While reviewing dependencies in some Kconfig files, I noticed the redundant
+> dependency "depends on PCI && PCI_MSI". The config PCI_MSI has always,
+> since its introduction, been dependent on the config PCI. So, it is
+> sufficient to just depend on PCI_MSI, and know that the dependency on PCI
+> is implicitly implied.
 > 
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-
-
+> Reduce the dependencies of configs CRYPTO_DEV_HISI_SEC2,
+> CRYPTO_DEV_HISI_QM, CRYPTO_DEV_HISI_ZIP and CRYPTO_DEV_HISI_HPRE.
+> 
+> No functional change and effective change of Kconfig dependendencies.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 > ---
->  drivers/accel/ivpu/ivpu_hw_mtl.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/accel/ivpu/ivpu_hw_mtl.c b/drivers/accel/ivpu/ivpu_hw_mtl.c
-> index b59b1f472b40..62bfaa9081c4 100644
-> --- a/drivers/accel/ivpu/ivpu_hw_mtl.c
-> +++ b/drivers/accel/ivpu/ivpu_hw_mtl.c
-> @@ -608,7 +608,7 @@ static int ivpu_boot_d0i3_drive(struct ivpu_device *vdev, bool enable)
->  
->  	ret = REGB_POLL_FLD(MTL_BUTTRESS_VPU_D0I3_CONTROL, INPROGRESS, 0, TIMEOUT_US);
->  	if (ret) {
-> -		ivpu_err(vdev, "Failed to sync before D0i3 tansition: %d\n", ret);
-> +		ivpu_err(vdev, "Failed to sync before D0i3 transition: %d\n", ret);
->  		return ret;
->  	}
->  
-> @@ -621,7 +621,7 @@ static int ivpu_boot_d0i3_drive(struct ivpu_device *vdev, bool enable)
->  
->  	ret = REGB_POLL_FLD(MTL_BUTTRESS_VPU_D0I3_CONTROL, INPROGRESS, 0, TIMEOUT_US);
->  	if (ret)
-> -		ivpu_err(vdev, "Failed to sync after D0i3 tansition: %d\n", ret);
-> +		ivpu_err(vdev, "Failed to sync after D0i3 transition: %d\n", ret);
->  
->  	return ret;
->  }
-> -- 
-> 2.30.2
-> 
+>  drivers/crypto/hisilicon/Kconfig | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

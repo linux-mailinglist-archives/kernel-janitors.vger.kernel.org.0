@@ -2,123 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BFAD67D1D8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Jan 2023 17:39:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2785667D51C
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Jan 2023 20:10:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231944AbjAZQjX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Jan 2023 11:39:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50304 "EHLO
+        id S232469AbjAZTKh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Jan 2023 14:10:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231852AbjAZQjW (ORCPT
+        with ESMTP id S232511AbjAZTKc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Jan 2023 11:39:22 -0500
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F7934A202
-        for <kernel-janitors@vger.kernel.org>; Thu, 26 Jan 2023 08:39:19 -0800 (PST)
-Received: by mail-wr1-x432.google.com with SMTP id t18so2390049wro.1
-        for <kernel-janitors@vger.kernel.org>; Thu, 26 Jan 2023 08:39:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WcIULWf1hJO2aSG6ip1Q2Tbo7KEX8l8vfq1u07hQEUU=;
-        b=nTJd3UqQHJYIgHfYtrJfyHF3jy6yesQbAxKnBfhlrW7ZZYv5vss1/BwpzGKnU//+pW
-         zpEWqlJSU1UJSI1ZnMW1/fpJO+yHRhfSOrbz1DMeeefUw11iYpnJNzq7lutcwL4sdVQA
-         M8u0eJoyy7W8bYrQw3m8zo2lACqWAzDw3gWKispcuaQug6tcfxcDGjBfRUSmloFUhxGM
-         Sw/XwIM7yxzH/86FHVCW4XrLFoPQQKBIX3LLkuUfneMt47tO5zFJRor1KAkP1FlI503l
-         rgytrxiJuJYtCArZvzsNUT3M8ZVe4MODcWS2KQ1S65g210VjD1EB76AaowZCvsQ/VBqY
-         zIkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WcIULWf1hJO2aSG6ip1Q2Tbo7KEX8l8vfq1u07hQEUU=;
-        b=rq+wq5Wjz1N9ZI5O8gDSqp22Ig7hVDCt946HNwMIj+ku3UT32R95y4Bm/QL3kznola
-         e+8yDUyN8zF+2rW0KbcAhVnllAc1Fq5yKd/LapvRmvtsEmU6je7bQ2lYoVvUe5FFViMX
-         /RhZ3BNWa+KUF+puHRbG+Xv5wGLUrSy6c7jy0yP8MD96eezDlRnLVCRVhlMdG9lV2otS
-         u1u5afLl6QqAcM1iteZx5+0Ql8bKW9CR69vaC49q06NE2PWsx8AemkDEJzFXsuc5KXG/
-         0LQIk7UzhUwceSvNLgIs72OaCNL9UWojlNr79IEV+RiqaYEEfh3gIqSCvbnXy8+F3Cu4
-         uSBQ==
-X-Gm-Message-State: AFqh2krG+wz3FHQID5Pv2HLJu7QBHJgm5+0EEMO6EnAkBIUpQTJsNTkT
-        183QiflKDLYaw9UT32+seNg=
-X-Google-Smtp-Source: AMrXdXsrjgrGETIMbiJakho1CzIks0SH953VqlAvOj6xcJEoDaMM1z2UyXPlB7L/3oOwE6z5TxzZag==
-X-Received: by 2002:a05:6000:1f95:b0:2bc:371a:8a2 with SMTP id bw21-20020a0560001f9500b002bc371a08a2mr32915198wrb.37.1674751157968;
-        Thu, 26 Jan 2023 08:39:17 -0800 (PST)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id l16-20020adffe90000000b002b8fe58d6desm1716079wrr.62.2023.01.26.08.39.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Jan 2023 08:39:17 -0800 (PST)
-Date:   Thu, 26 Jan 2023 19:39:06 +0300
-From:   Dan Carpenter <error27@gmail.com>
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     Jaroslav Kysela <perex@perex.cz>,
-        Maxime Ripard <mripard@kernel.org>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] ALSA: pci: lx6464es: fix a debug loop
-Message-ID: <Y9KsqpFRrlhX57WJ@kadam>
-References: <Y9JIGt0HT8mLkUXF@kili>
- <878rhptq36.wl-tiwai@suse.de>
+        Thu, 26 Jan 2023 14:10:32 -0500
+X-Greylist: delayed 655 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 26 Jan 2023 11:10:27 PST
+Received: from sp14.canonet.ne.jp (sp14.canonet.ne.jp [210.134.168.91])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 15729558C
+        for <kernel-janitors@vger.kernel.org>; Thu, 26 Jan 2023 11:10:26 -0800 (PST)
+Received: from csp14.canonet.ne.jp (unknown [172.21.160.134])
+        by sp14.canonet.ne.jp (Postfix) with ESMTP id 593FF1E06D1;
+        Fri, 27 Jan 2023 03:59:29 +0900 (JST)
+Received: from echeck14.canonet.ne.jp ([172.21.160.124])
+        by csp4 with ESMTP
+        id L7T7pIVMeVjWJL7T7p2fUK; Fri, 27 Jan 2023 03:59:29 +0900
+X-CNT-CMCheck-Reason: "undefined", "v=2.4 cv=WsmVjfTv c=1 sm=1 tr=0
+ ts=63d2cd91 cx=g_jp:t_eml p=jICtXCb1Bd4A:10 p=QA8zHFxAwLBQ4A9MkZgA:9
+ p=WKcvGfCz9DfGexK3dBCb:22 a=puqJfqqrwnhV2n3dwg+kWg==:117
+ a=yr9NA9NbXb0B05yJHQEWeQ==:17 a=PlGk70OYzacA:10 a=kj9zAlcOel0A:10
+ a=RvmDmJFTN0MA:10 a=x7bEGLp0ZPQA:10 a=CjuIK1q_8ugA:10 a=0iaRBTTaEecA:10
+ a=xo5jKAKm-U-Zyk2_beg_:22"
+X-CNT-CMCheck-Score: 100.00
+Received: from echeck14.canonet.ne.jp (localhost [127.0.0.1])
+        by esets.canonet.ne.jp (Postfix) with ESMTP id 0FF3B1C020D;
+        Fri, 27 Jan 2023 03:59:29 +0900 (JST)
+X-Virus-Scanner: This message was checked by ESET Mail Security
+        for Linux/BSD. For more information on ESET Mail Security,
+        please, visit our website: http://www.eset.com/.
+Received: from smtp14.canonet.ne.jp (unknown [172.21.160.104])
+        by echeck14.canonet.ne.jp (Postfix) with ESMTP id B3E721C0255;
+        Fri, 27 Jan 2023 03:59:28 +0900 (JST)
+Received: from daime.co.jp (webmail.canonet.ne.jp [210.134.169.250])
+        by smtp14.canonet.ne.jp (Postfix) with ESMTPA id EFA6815F967;
+        Fri, 27 Jan 2023 03:59:27 +0900 (JST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <878rhptq36.wl-tiwai@suse.de>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Message-ID: <20230126185927.00004E36.0162@daime.co.jp>
+Date:   Fri, 27 Jan 2023 03:59:27 +0900
+From:   "Mrs Alice Walton" <daime@daime.co.jp>
+To:     <INQUIRY@daime.co.jp>
+Reply-To: <alicewaltton1@gmail.com>
+Subject: INQUIRY
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+ORGANIZATION: Mrs Alice Walton
+X-MAILER: Active! mail
+X-EsetResult: clean, %VIRUSNAME%
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1674759569;VERSION=7944;MC=148868544;TRN=0;CRV=0;IPC=210.134.169.250;SP=4;SIPS=1;PI=5;F=0
+X-I-ESET-AS: RN=0;RNP=
+X-ESET-Antispam: OK
+X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        LOCALPART_IN_SUBJECT,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_MR_MRS,
+        UNRESOLVED_TEMPLATE,XPRIO_SHORT_SUBJ autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5163]
+        *  1.1 LOCALPART_IN_SUBJECT Local part of To: address appears in
+        *      Subject
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [alicewaltton1[at]gmail.com]
+        *  1.3 UNRESOLVED_TEMPLATE Headers contain an unresolved template
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 T_HK_NAME_MR_MRS No description available.
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+        *  1.0 XPRIO_SHORT_SUBJ Has X Priority header + short subject
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jan 26, 2023 at 01:53:01PM +0100, Takashi Iwai wrote:
-> On Thu, 26 Jan 2023 10:30:02 +0100,
-> Dan Carpenter wrote:
-> > 
-> > This loop accidentally reuses the "i" iterator for both the inside and
-> > the outside loop.  The value of MAX_STREAM_BUFFER is 5.  I believe that
-> > chip->rmh.stat_len is in the 2-12 range.  If the value of .stat_len is
-> > 4 or more then it will loop exactly one time, but if it's less then it
-> > is a forever loop.
-> > 
-> > Fixes: 8e6320064c33 ("ALSA: lx_core: Remove useless #if 0 .. #endif")
-> > Signed-off-by: Dan Carpenter <error27@gmail.com>
-> > ---
-> >  sound/pci/lx6464es/lx_core.c | 12 +++++-------
-> >  1 file changed, 5 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/sound/pci/lx6464es/lx_core.c b/sound/pci/lx6464es/lx_core.c
-> > index d3f58a3d17fb..7c1b380a54c0 100644
-> > --- a/sound/pci/lx6464es/lx_core.c
-> > +++ b/sound/pci/lx6464es/lx_core.c
-> > @@ -493,13 +493,11 @@ int lx_buffer_ask(struct lx6464es *chip, u32 pipe, int is_capture,
-> >  		dev_dbg(chip->card->dev,
-> >  			"CMD_08_ASK_BUFFERS: needed %d, freed %d\n",
-> >  			    *r_needed, *r_freed);
-> > -		for (i = 0; i < MAX_STREAM_BUFFER; ++i) {
-> > -			for (i = 0; i != chip->rmh.stat_len; ++i)
-> > -				dev_dbg(chip->card->dev,
-> > -					"  stat[%d]: %x, %x\n", i,
-> > -					    chip->rmh.stat[i],
-> > -					    chip->rmh.stat[i] & MASK_DATA_SIZE);
-> > -		}
-> > +		for (i = 0; i < chip->rmh.stat_len; ++i)
-> 
-> Judging from the previous lines, the access over MAX_STREAM_BUFFER
-> might be unsafe.  So I guess a more safer change would be something
-> like:
-> 
-> 		for (i = 0; i < MAX_STREAM_BUFFER && chip->rmh.stat_len; ++i)
 
-&& i < chip->rmh.stat_len
+Greetings,
 
-TBH, I'd prefer to just delete all this code since it used be ifdef 0.
+I trust you are well. I sent you an email yesterday, I just want to confirm if you received it.
+Please let me know as soon as possible,
 
-But I'll resend as you have suggested.
+Regard
+Mrs Alice Walton
 
-regards,
-dan carpenter
 

@@ -2,93 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2785667D51C
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Jan 2023 20:10:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 035BE67D8E7
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Jan 2023 23:56:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232469AbjAZTKh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Jan 2023 14:10:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54050 "EHLO
+        id S233128AbjAZW4D (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Jan 2023 17:56:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232511AbjAZTKc (ORCPT
+        with ESMTP id S233103AbjAZW4B (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Jan 2023 14:10:32 -0500
-X-Greylist: delayed 655 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 26 Jan 2023 11:10:27 PST
-Received: from sp14.canonet.ne.jp (sp14.canonet.ne.jp [210.134.168.91])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 15729558C
-        for <kernel-janitors@vger.kernel.org>; Thu, 26 Jan 2023 11:10:26 -0800 (PST)
-Received: from csp14.canonet.ne.jp (unknown [172.21.160.134])
-        by sp14.canonet.ne.jp (Postfix) with ESMTP id 593FF1E06D1;
-        Fri, 27 Jan 2023 03:59:29 +0900 (JST)
-Received: from echeck14.canonet.ne.jp ([172.21.160.124])
-        by csp4 with ESMTP
-        id L7T7pIVMeVjWJL7T7p2fUK; Fri, 27 Jan 2023 03:59:29 +0900
-X-CNT-CMCheck-Reason: "undefined", "v=2.4 cv=WsmVjfTv c=1 sm=1 tr=0
- ts=63d2cd91 cx=g_jp:t_eml p=jICtXCb1Bd4A:10 p=QA8zHFxAwLBQ4A9MkZgA:9
- p=WKcvGfCz9DfGexK3dBCb:22 a=puqJfqqrwnhV2n3dwg+kWg==:117
- a=yr9NA9NbXb0B05yJHQEWeQ==:17 a=PlGk70OYzacA:10 a=kj9zAlcOel0A:10
- a=RvmDmJFTN0MA:10 a=x7bEGLp0ZPQA:10 a=CjuIK1q_8ugA:10 a=0iaRBTTaEecA:10
- a=xo5jKAKm-U-Zyk2_beg_:22"
-X-CNT-CMCheck-Score: 100.00
-Received: from echeck14.canonet.ne.jp (localhost [127.0.0.1])
-        by esets.canonet.ne.jp (Postfix) with ESMTP id 0FF3B1C020D;
-        Fri, 27 Jan 2023 03:59:29 +0900 (JST)
-X-Virus-Scanner: This message was checked by ESET Mail Security
-        for Linux/BSD. For more information on ESET Mail Security,
-        please, visit our website: http://www.eset.com/.
-Received: from smtp14.canonet.ne.jp (unknown [172.21.160.104])
-        by echeck14.canonet.ne.jp (Postfix) with ESMTP id B3E721C0255;
-        Fri, 27 Jan 2023 03:59:28 +0900 (JST)
-Received: from daime.co.jp (webmail.canonet.ne.jp [210.134.169.250])
-        by smtp14.canonet.ne.jp (Postfix) with ESMTPA id EFA6815F967;
-        Fri, 27 Jan 2023 03:59:27 +0900 (JST)
+        Thu, 26 Jan 2023 17:56:01 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C1C52DE7F
+        for <kernel-janitors@vger.kernel.org>; Thu, 26 Jan 2023 14:55:58 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3708861977
+        for <kernel-janitors@vger.kernel.org>; Thu, 26 Jan 2023 22:55:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FBA7C433D2;
+        Thu, 26 Jan 2023 22:55:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1674773757;
+        bh=lUlV7aiI0si0/W517FBDa/HeRq2i5wQgYiZ8e4/VPhs=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=NJ8I2pTHBLWb9hqw76GjVnV6JAeuMwrghH7OCL69Ywnzcw0hma9owHEn0ajjkcR+2
+         LDPToCsgG14hdUcA1a71FHfrreEjFtpjY5lyDWaTsJp2yLsyJDgyMG36v/SwuT+D0a
+         hXXGPROBCuaiQoTpNbVqWtw2TE/G3+H39NbPP91qI24Y9LGZrpht/e8kQXcx6jUp/V
+         4OM2AJpgoMtuOjANAvLc3QL806WDoHVtRAu3jjbhqGgs+9I62knDXsh2kxSgtFqrH8
+         Blumk/pfW4u8siG8Ljt3B/8XnxVu2GBLuAtuShCCoGgRFQxP3RlzKIusfqZ4ngyacJ
+         qIKP5PQHppuEg==
+From:   Mark Brown <broonie@kernel.org>
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Dan Carpenter <error27@gmail.com>
+Cc:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Trevor Wu <trevor.wu@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        alsa-devel@alsa-project.org, linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org
+In-Reply-To: <Y9JHSwcfdNcfMjjt@kili>
+References: <Y9JHSwcfdNcfMjjt@kili>
+Subject: Re: [PATCH] ASoC: mediatek: mt8188: remove some dead code
+Message-Id: <167477375499.524795.3525968034845691950.b4-ty@kernel.org>
+Date:   Thu, 26 Jan 2023 22:55:54 +0000
 MIME-Version: 1.0
-Message-ID: <20230126185927.00004E36.0162@daime.co.jp>
-Date:   Fri, 27 Jan 2023 03:59:27 +0900
-From:   "Mrs Alice Walton" <daime@daime.co.jp>
-To:     <INQUIRY@daime.co.jp>
-Reply-To: <alicewaltton1@gmail.com>
-Subject: INQUIRY
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-ORGANIZATION: Mrs Alice Walton
-X-MAILER: Active! mail
-X-EsetResult: clean, %VIRUSNAME%
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1674759569;VERSION=7944;MC=148868544;TRN=0;CRV=0;IPC=210.134.169.250;SP=4;SIPS=1;PI=5;F=0
-X-I-ESET-AS: RN=0;RNP=
-X-ESET-Antispam: OK
-X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        LOCALPART_IN_SUBJECT,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_MR_MRS,
-        UNRESOLVED_TEMPLATE,XPRIO_SHORT_SUBJ autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5163]
-        *  1.1 LOCALPART_IN_SUBJECT Local part of To: address appears in
-        *      Subject
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [alicewaltton1[at]gmail.com]
-        *  1.3 UNRESOLVED_TEMPLATE Headers contain an unresolved template
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 T_HK_NAME_MR_MRS No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-        *  1.0 XPRIO_SHORT_SUBJ Has X Priority header + short subject
-X-Spam-Level: ******
+X-Mailer: b4 0.12.0
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Thu, 26 Jan 2023 12:26:35 +0300, Dan Carpenter wrote:
+> We know that "irq < 0", so delete the unnecessary check.
+> 
+> 
 
-Greetings,
+Applied to
 
-I trust you are well. I sent you an email yesterday, I just want to confirm if you received it.
-Please let me know as soon as possible,
+   broonie/sound.git for-next
 
-Regard
-Mrs Alice Walton
+Thanks!
 
+[1/1] ASoC: mediatek: mt8188: remove some dead code
+      commit: aa326917f58fa577bfba8976da214080bdec2699
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

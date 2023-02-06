@@ -2,101 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D89B168BF18
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Feb 2023 15:00:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D06A68BF12
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Feb 2023 15:00:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230136AbjBFOAY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Feb 2023 09:00:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41430 "EHLO
+        id S229875AbjBFOAV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Feb 2023 09:00:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231139AbjBFN73 (ORCPT
+        with ESMTP id S231138AbjBFN7Z (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Feb 2023 08:59:29 -0500
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03F3CD528;
-        Mon,  6 Feb 2023 05:58:50 -0800 (PST)
-Received: by mail-wr1-f53.google.com with SMTP id j25so6911149wrc.4;
-        Mon, 06 Feb 2023 05:58:49 -0800 (PST)
+        Mon, 6 Feb 2023 08:59:25 -0500
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40A3BD525
+        for <kernel-janitors@vger.kernel.org>; Mon,  6 Feb 2023 05:58:43 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id hn2-20020a05600ca38200b003dc5cb96d46so10816695wmb.4
+        for <kernel-janitors@vger.kernel.org>; Mon, 06 Feb 2023 05:58:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=zpGZ0SKXKOge6HnxdkWMSdwz/l7mvDMZXx0r+zMmH6I=;
-        b=ayBkd5SxKmxbth+Yy2we/29UalD+V2nIW98P3VjtfRSovsUSdEriYKfCyrLNnAIqKV
-         5DxkIDIJxv++JZigdua25s2wxJtbbesDydxUYrDe1uNbBkDYn9Gc7xvcump0eMjLN/u5
-         +z8ONnIXoAul+Cv2xxQJEpRETQloVFwFCD+AII+V58gxoGaRKx+bZvJrmqDxFDOw0A7C
-         crV8afUth14o0Nn8boldTFgMdfQaMGXTqyhRJgomWTPXW/p6cyz8c6DNg64r2L/o3HCT
-         pbhgRHUoyatlPBiNq1gmvGvoBbNDfWvE4x+gmctj8QNVVMkSStDB9yo8kXwBzPcwh9CR
-         xLrw==
+        bh=u9BgtJ4so9KwHhE8rorYQ5JnQdesAnEyOYjdic9MTfc=;
+        b=RTout/ggpHfdGBZVfYR89ad+hgiP0Eb6NEBtrAjuAZtS5HlHGYlt6HOQf1A7UqrBue
+         qm/ZfeS8bs/s1nRE4MgBhcyVDZq+4NwvPL1zY/CtaNolQkoypGoGzrYohc1woRsIiQYw
+         Z1rhjxBtZaEVphFcZshQsVn9D9jUd/po6Gt9fbDlYNM8bCbQKaoySCIYJUCoB2JrWJAG
+         7fG0TQ5ldCXIE0zL0bE0MYj1Gs4WQ2RT5d07F5hsbe+nBlPIXqqMAn3hpEnFrAWz7x19
+         ixvApe1G/mC87L/adlORLPJGgwjDzVRhyDfWL6dx19TLTq9nMdSie81kj14F2O1Lim4T
+         PWew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zpGZ0SKXKOge6HnxdkWMSdwz/l7mvDMZXx0r+zMmH6I=;
-        b=Zitm4HosRPxdGzLWrectphmFaaIN/t3aa9vyboM1Xsjnqy52CqHFT4BdzyZ6QR0sjg
-         uovWsfScU8ziCH5AOrQ589IrorhnHIVwsvzkmyCxUCfkeV8BJZLJXvwlFWlSQiIXWEYi
-         g64ogXLF0N7c/nfRmB1MKhHW1Zjp+9Tvh3E7R6PJjTb2i2/cuVZpgndwGSaux9vd44Sg
-         oruPvnULHR6dwqwVRVL0RRXlWVZnoxR7eIc32XW1GAwGECZuBBBaFfqt5r3uLDFlzvJu
-         M2Z3XabaPlRpreIuQuGLTg9139Ny8rHQnXnb3+AdFdVm1hA4Rd+Sn/yvl0aegFqqQByB
-         CEkg==
-X-Gm-Message-State: AO0yUKW8fm1PPx4vR090CfaHE+OAi7k9csbOakYquO8mozHOk5/GHE67
-        ZfdR4aTU125XprD13PSXWouOC9JKAtY=
-X-Google-Smtp-Source: AK7set/oAJw/wZouRHq2oiPHaQjLsZsQDOu0rNiek7XTsirfs/qg6NCpaXQfJdRm42EY8M07IIfbrA==
-X-Received: by 2002:a05:6000:186a:b0:2c3:9851:e644 with SMTP id d10-20020a056000186a00b002c39851e644mr22129707wri.63.1675691929628;
-        Mon, 06 Feb 2023 05:58:49 -0800 (PST)
+        bh=u9BgtJ4so9KwHhE8rorYQ5JnQdesAnEyOYjdic9MTfc=;
+        b=S2zlbxZ2FaGAOjYxnFwl3KqSmSFtdryMimAzPMulJs0ftfChRGhmyLWx90CyBVPwao
+         vsqBN78qo4YK0mdmER0rITS6KjuN5uNRAUpyw47aTNkCBr3ncTt1BAbf+z3uQGpCt60y
+         klnIxp5NNckqPqIiGIKMVxY3pcazly6lIte8VtgaEm7mOGvZNf0Wu8l4t0zUhAPSNWkZ
+         LwJ68W0c3IG+/glU2i4H510vIMox6XxkTX67iW0abWQP7ZHvVGtbcyItdXzzm4DMq5K9
+         bmydcdVvRxcgIF0f2XaBtfmpVE2qIhSCUMJxHxHEpSUtbB+BL6bxXBQwzTgbz+Bmd4Nx
+         NXuA==
+X-Gm-Message-State: AO0yUKVyBMCy4Q3wYyISidjl8FJRaZ7K7Z0PvoSQEvsxSTmuGh3e+uJ/
+        2J08Nsl33CNdLL8iu+bg12w=
+X-Google-Smtp-Source: AK7set/lsRA0W5X4iJwzoXeGyM8eEf3KsDdv4IP8UG2N0ozVzaPlKmjU1xAsfIAkmUt8JS6LFE+2Dw==
+X-Received: by 2002:a05:600c:1d96:b0:3dd:af7a:53db with SMTP id p22-20020a05600c1d9600b003ddaf7a53dbmr19346118wms.11.1675691921772;
+        Mon, 06 Feb 2023 05:58:41 -0800 (PST)
 Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id a4-20020a5d5084000000b002c3db0eec5fsm7200088wrt.62.2023.02.06.05.58.48
+        by smtp.gmail.com with ESMTPSA id j33-20020a05600c1c2100b003db0ad636d1sm18549148wms.28.2023.02.06.05.58.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Feb 2023 05:58:49 -0800 (PST)
-Date:   Mon, 6 Feb 2023 16:18:32 +0300
+        Mon, 06 Feb 2023 05:58:41 -0800 (PST)
+Date:   Mon, 6 Feb 2023 16:58:37 +0300
 From:   Dan Carpenter <error27@gmail.com>
-To:     Jamal Hadi Salim <jhs@mojatatu.com>,
-        Kees Cook <keescook@chromium.org>
-Cc:     Cong Wang <xiyou.wangcong@gmail.com>,
-        Jiri Pirko <jiri@resnulli.us>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH net-next] net: sched: sch: Fix off by one in
- htb_activate_prios()
-Message-ID: <Y+D+KN18FQI2DKLq@kili>
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Weidong Wang <wangweidong.a@awinic.com>
+Cc:     Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Colin Ian King <colin.i.king@gmail.com>,
+        Bruce zhao <zhaolei@awinic.com>, Nick Li <liweilei@awinic.com>,
+        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] ASoC: codecs: aw88395: Uninitialized variable bug in
+ aw_dev_parse_dev_type_v1()
+Message-ID: <Y+EHjQ0+QCAXxmlh@kili>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The > needs be >= to prevent an out of bounds access.
+The "cur_scene_id" variable is never initialized.  It needs to be set
+to zero for the code to work.
 
-Fixes: de5ca4c3852f ("net: sched: sch: Bounds check priority")
+Fixes: 4345865b003b ("ASoC: codecs: ACF bin parsing and check library file for aw88395")
 Signed-off-by: Dan Carpenter <error27@gmail.com>
 ---
- net/sched/sch_htb.c | 2 +-
+Presumably this code was tested with CONFIG_CC_HAS_AUTO_VAR_INIT_ZERO=y
+or whatever to automatically initialize it to zero or it would have died
+specatularly.  ;)
+
+ sound/soc/codecs/aw88395/aw88395_lib.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
-index cc28e41fb745..92f2975b6a82 100644
---- a/net/sched/sch_htb.c
-+++ b/net/sched/sch_htb.c
-@@ -433,7 +433,7 @@ static void htb_activate_prios(struct htb_sched *q, struct htb_class *cl)
- 		while (m) {
- 			unsigned int prio = ffz(~m);
- 
--			if (WARN_ON_ONCE(prio > ARRAY_SIZE(p->inner.clprio)))
-+			if (WARN_ON_ONCE(prio >= ARRAY_SIZE(p->inner.clprio)))
- 				break;
- 			m &= ~(1 << prio);
+diff --git a/sound/soc/codecs/aw88395/aw88395_lib.c b/sound/soc/codecs/aw88395/aw88395_lib.c
+index 64dde972f3f0..d7c31a202adc 100644
+--- a/sound/soc/codecs/aw88395/aw88395_lib.c
++++ b/sound/soc/codecs/aw88395/aw88395_lib.c
+@@ -769,7 +769,7 @@ static int aw_dev_parse_dev_type_v1(struct aw_device *aw_dev,
+ {
+ 	struct aw_cfg_dde_v1 *cfg_dde =
+ 		(struct aw_cfg_dde_v1 *)((char *)prof_hdr + prof_hdr->hdr_offset);
+-	int cur_scene_id;
++	int cur_scene_id = 0;
+ 	unsigned int i;
+ 	int ret;
  
 -- 
 2.35.1

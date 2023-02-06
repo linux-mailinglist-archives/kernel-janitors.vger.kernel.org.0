@@ -2,95 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D180E68B889
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Feb 2023 10:22:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0726668BF14
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Feb 2023 15:00:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230147AbjBFJWe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Feb 2023 04:22:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59142 "EHLO
+        id S229526AbjBFOAW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Feb 2023 09:00:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229657AbjBFJWc (ORCPT
+        with ESMTP id S230257AbjBFN72 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Feb 2023 04:22:32 -0500
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E6A64C2C;
-        Mon,  6 Feb 2023 01:22:32 -0800 (PST)
-Received: by mail-wr1-x42b.google.com with SMTP id h16so9671559wrz.12;
-        Mon, 06 Feb 2023 01:22:31 -0800 (PST)
+        Mon, 6 Feb 2023 08:59:28 -0500
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60A4B28D32;
+        Mon,  6 Feb 2023 05:58:46 -0800 (PST)
+Received: by mail-wr1-f50.google.com with SMTP id h3so2607881wrp.10;
+        Mon, 06 Feb 2023 05:58:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BD90p+X206Tt8csl0mMp4SNnxg6nMR0oaLUQGe511sI=;
-        b=eCEhXIe6vHUbsv2ZS5k4osNE8CLLVAiIDoPfSRECMaiPEPNDsiYVUyc00TZ9vhN0IF
-         1qyeUTw2E7Qcc+F1qATEEbtKGsEfThQzDhkYtioIe9DxzMaJ0Y30gUk87AW+KEFWEwwf
-         LTeGpyATtgOErYw4hSmKy6i/hjBV2A2fOFOo+Yw6CWdd/kJYYTZITYzpNJ+Ibk1nsBod
-         iqliW/15mSGSXIFPkEQ6f+vuOatCjW7aAAZlaEUgNKjhO/h6E7yJh6K2wCtzNEBZa+6u
-         D8aSxzdmdSPNwqw/ExsgCshPZnzOGWDl2hwMOz9Jo5+2SgjQ0gPG6yHJRM/sMNC50icW
-         88Og==
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tzPi/t0MR9S08ss12Dlv57UTudCb600vUEwyip7OnS0=;
+        b=TC5PNFuJzf6Cg3YH99Kqmm8xtZ4ritJRKvCS46f+X7qwkOL2fPC20CRZ6y5nhmF/8i
+         /C/h2V+j8wlukHdz+ZAsmJmMctevSecB0P91cc/z02u7QF8YiMwvR922WSMLN+lrD6ss
+         xCiLHNlztoSvtZqLkr+iXKt0km4Cc5VXwaOtEIedEgwSO7r92grNJX+amPByKYGRUOQz
+         jIautBhd6shdLjy2dsImqamz28q1wZ3fjRAGhytah4DJUAIMiiVQCPldozbv/4jArxKw
+         QAzmKL1oP/GQUjCCM6IdZNhC8YVrU2pRHBIBGt5EgjJ8ZTgEa/mDMopXCoGOufsjJjx/
+         9O4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BD90p+X206Tt8csl0mMp4SNnxg6nMR0oaLUQGe511sI=;
-        b=cT5hVb/yZyg/z/5wrpKPoNyxO4b7fSLVce4nkqDhcsDiVmOoaPnXsjFfUIUXqQEv2Y
-         Vc8YBrf0Po8co95q7pTkDCU5w/OxD9pxsOCTHWz/WlXD76QAeW+tybh86xyq/h/ltI/m
-         90Q2PtN6WwOUl+w1ba3HWyxgwcf19c9/2tp1YdY9o2dEnFjb0a5hG3wFkPuuKVIZCG53
-         qUVc4LX+aGAwuFEhw5BHmETu4HikGN4y5azJgeIYb/Eo1FD7pb2HEc6T0rcOOtYZes9g
-         Iqd85dSepyVvoc60S9JrrDTdH+vL0RdoplVDKw2bwEDUldd5eg77Iu1o6JprmlXJ68su
-         4//Q==
-X-Gm-Message-State: AO0yUKVK3uI1BTDWHAF2L+2dyb0gQIsbLzSrf4IYs0wQSul0Z+CsskvQ
-        YXSJC/MM5cHRkz/r6OXC/jdo8iBTA9j6WA==
-X-Google-Smtp-Source: AK7set8pXKNJVlEeOZ1sXarKDziiuN/UDiR+aCfWSmWxOP3jhobHWvWgD+7s9Mmp98J22VcUtpn1dA==
-X-Received: by 2002:a05:6000:a0e:b0:2bf:b389:ae6 with SMTP id co14-20020a0560000a0e00b002bfb3890ae6mr18940435wrb.42.1675675350565;
-        Mon, 06 Feb 2023 01:22:30 -0800 (PST)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id a17-20020a5d53d1000000b002c3ebbc9248sm1325248wrw.66.2023.02.06.01.22.29
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tzPi/t0MR9S08ss12Dlv57UTudCb600vUEwyip7OnS0=;
+        b=fcjzoCtIJv9xRRzpO0hTP4LsaOFGCmViot/CEZ+Se2FaR2p33qxw2lD8/krxOGNaNS
+         aps8w4ia68IIKwGzoYYsVF7t/3rpqayIRU0OQqaHiB8hriBFQNY0TgjRbGI7u+sUwate
+         pZNif6Xo2AhzfOB0xu/Jv1AG5gM60ElckIj8JBjM2w2cCyC77lNnQbWQleqA7bIEtCM0
+         4+cQC3s3uPWqi/e+gE9U6xmQsPlKTQI5jYKdg8PUj1gUdnpdD2wUo279nrYt8TOF/+ue
+         TVLVFuRP8g5JpueASqq7419d9Vg21xb2W+BwQv6JqDkhiXhHfVz4z85/MMjogxiTx6ne
+         Ce8w==
+X-Gm-Message-State: AO0yUKUzl1x3f/Q892gvuNf6EI5w++af8xbNB1gj0CHOOdjDObOCCM7a
+        yJasQaTCU9nBj+uSz95pVsKtaGnMilM=
+X-Google-Smtp-Source: AK7set9k8HwJpaxPB5d+chZ86tHz5LwoNdMs5kzx0i/ERbDFkRWeCWEK6BgR6gRDVE8EI1VL8VwAow==
+X-Received: by 2002:a05:6000:1ce:b0:2bf:bf32:70c with SMTP id t14-20020a05600001ce00b002bfbf32070cmr15541835wrx.47.1675691925869;
+        Mon, 06 Feb 2023 05:58:45 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id o5-20020a5d62c5000000b002c3e1e1dcd7sm5430684wrv.104.2023.02.06.05.58.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Feb 2023 01:22:30 -0800 (PST)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
-        bpf@vger.kernel.org, linux-kselftest@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] selftests/bpf: Fix spelling mistake "detecion" -> "detection"
-Date:   Mon,  6 Feb 2023 09:22:29 +0000
-Message-Id: <20230206092229.46416-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.30.2
+        Mon, 06 Feb 2023 05:58:45 -0800 (PST)
+Date:   Mon, 6 Feb 2023 16:15:48 +0300
+From:   Dan Carpenter <error27@gmail.com>
+To:     Jiri Slaby <jirislaby@kernel.org>, Felix Fietkau <nbd@openwrt.org>
+Cc:     Nick Kossifidis <mickflemm@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] ath5k: fix an off by one check in
+ ath5k_eeprom_read_freq_list()
+Message-ID: <Y+D9hPQrHfWBJhXz@kili>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is a spelling mistake in a literal string. Fix it.
+This loop checks that i < max at the start of loop but then it does
+i++ which could put it past the end of the array.  It's harmless to
+check again and prevent a potential out of bounds.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Fixes: 1048643ea94d ("ath5k: Clean up eeprom parsing and add missing calibration data")
+Signed-off-by: Dan Carpenter <error27@gmail.com>
 ---
- tools/testing/selftests/bpf/xdp_features.c | 2 +-
+
+ drivers/net/wireless/ath/ath5k/eeprom.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/xdp_features.c b/tools/testing/selftests/bpf/xdp_features.c
-index 10fad1243573..fce12165213b 100644
---- a/tools/testing/selftests/bpf/xdp_features.c
-+++ b/tools/testing/selftests/bpf/xdp_features.c
-@@ -57,7 +57,7 @@ static void sig_handler(int sig)
+diff --git a/drivers/net/wireless/ath/ath5k/eeprom.c b/drivers/net/wireless/ath/ath5k/eeprom.c
+index d444b3d70ba2..58d3e86f6256 100644
+--- a/drivers/net/wireless/ath/ath5k/eeprom.c
++++ b/drivers/net/wireless/ath/ath5k/eeprom.c
+@@ -529,7 +529,7 @@ ath5k_eeprom_read_freq_list(struct ath5k_hw *ah, int *offset, int max,
+ 		ee->ee_n_piers[mode]++;
  
- const char *argp_program_version = "xdp-features 0.0";
- const char argp_program_doc[] =
--"XDP features detecion application.\n"
-+"XDP features detection application.\n"
- "\n"
- "XDP features application checks the XDP advertised features match detected ones.\n"
- "\n"
+ 		freq2 = (val >> 8) & 0xff;
+-		if (!freq2)
++		if (!freq2 || i >= max)
+ 			break;
+ 
+ 		pc[i++].freq = ath5k_eeprom_bin2freq(ee,
 -- 
-2.30.2
+2.35.1
 

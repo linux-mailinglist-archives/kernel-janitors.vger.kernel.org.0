@@ -2,107 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E81696967F5
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Feb 2023 16:24:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AB11696869
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Feb 2023 16:48:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232602AbjBNPYy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Feb 2023 10:24:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43902 "EHLO
+        id S233069AbjBNPsZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Feb 2023 10:48:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233528AbjBNPYq (ORCPT
+        with ESMTP id S233005AbjBNPsY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Feb 2023 10:24:46 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35E062B60B;
-        Tue, 14 Feb 2023 07:24:38 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DBA62B81BFA;
-        Tue, 14 Feb 2023 15:24:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC0FC433EF;
-        Tue, 14 Feb 2023 15:24:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676388275;
-        bh=hHNCMMKRLHJy05248W2d4GXueax2ArtVMUz/DS2OwBg=;
-        h=Subject:From:To:Cc:Date:From;
-        b=sNgjTCAivxJNVxtja0NXdz8pVXMqA82EZ1P4KOSzgibVwKwNzPsPQZ1+RtDGREZuz
-         9B4dWcj7FApYwVAngCp6uNlRjlrel11dAd5NfH1bo3AHvtkaHI8mcmyKMV3NZujm+J
-         NMhffC2lBHKfMtJYJIqujR5vrB3fih/QR9441YgaDvcEAZvbXa5eWeIErh9/fBWdbw
-         JHmUogSfh5AkAXF2PW1+ZUaIeV+nLQkqjZkUg7r2FhovkYdtWYgXvOJmNZQOTMofKV
-         5wgJRlK7oHLgLXXNZmbTQkqyVJV0J86oEoK3xc3Q67nov6tSwQLor8nGdXnfJz4bJj
-         q2jj7ECxpjh3A==
-Subject: [PATCH] NFSD: Clean up nfsd_symlink()
-From:   Chuck Lever <cel@kernel.org>
-To:     colin.i.king@gmail.com, error27@gmail.com
-Cc:     jlayton@redhat.com, linux-nfs@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Tue, 14 Feb 2023 10:24:34 -0500
-Message-ID: <167638827427.6570.12643671133126504826.stgit@bazille.1015granger.net>
-User-Agent: StGit/1.5
+        Tue, 14 Feb 2023 10:48:24 -0500
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F5095BAC;
+        Tue, 14 Feb 2023 07:47:54 -0800 (PST)
+Received: by mail-wr1-x42d.google.com with SMTP id o15so12810658wrc.9;
+        Tue, 14 Feb 2023 07:47:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tRR037kJulgwhYLTLVS64RUcLKjXsyaAdjVztOdmt4c=;
+        b=LHcslZJDJ8pOVmIPMgFS3RKX/ECo8AvXW1x8gcuyrSEHrMGizuufRmRzlUGBqID/Ty
+         ZJDtUoCT7Fk9ZbhcrcK3U6xcUm9D+scmCVBkdbPJ35VSSlXwWdibTIFwGvYNflz6vOdl
+         8Y4fc+imZQUula0TczQZhUmtD+ipQH0bm4eK4t6ffmOJ7fFlBiZmA8SNy5Hqyzjvp55o
+         93YTUF2rD27wLAlrH9bxJm1r873qQ2DDgZmS2pOakTkdIVYvhFZ34ebL6GdgsDAbNnik
+         iH4DLaD7PLbDdynEDAk1SKLkuNNMF5UlmVz6UcrWW2F8Q4bQrB6rJHlaRyzw9/xFpZ56
+         eFzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tRR037kJulgwhYLTLVS64RUcLKjXsyaAdjVztOdmt4c=;
+        b=H7oIqP0+1rJAfWTJw5ZD7Kb4Cy5pt3wKzxKsQXdRYoSTee5xs0i8ixmhW5/qBELtO7
+         +aZa525q/wrYkFA987Y2ipb1BHjyYJlmmh7WEPvqQ//Suhu0g493M5/HGC0thnOCNHPh
+         bh4WcLTfGjE+Rh7UF7oep3HlwF+cWBq1cphXO8hJyNEEO5NDEe/yZK70H77zqCkDh6oX
+         PZpr2f1NUTZS1JB/XC2e8On8FpiHTvnE2BYKM5gGOiJU4D0LlH3SXXo3VlsQhlE+KTAr
+         jAwQfuhSzHFr9LKH8cx0KrdYcyUJUAmTSI72eBUBu9mgE1xhVsTbjKx001lArut6yBuW
+         ocLg==
+X-Gm-Message-State: AO0yUKUHgoV18Ny6YO2fsXYb4Bt3ArmYAo0lEfKUtnS7dw7MGgubF48a
+        PxEeu3vH77Pbgw+dZPljDMM=
+X-Google-Smtp-Source: AK7set+CwGvIpahHplmQw/Wo46JqvON9hV+HVgYZg3zRz4apZODEa3REh9eIYNJv1wNVaguy//1UOw==
+X-Received: by 2002:adf:fac4:0:b0:2c5:5357:60b8 with SMTP id a4-20020adffac4000000b002c5535760b8mr2183612wrs.48.1676389659383;
+        Tue, 14 Feb 2023 07:47:39 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id e1-20020adfe381000000b002c54f39d34csm8894545wrm.111.2023.02.14.07.47.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Feb 2023 07:47:38 -0800 (PST)
+Date:   Tue, 14 Feb 2023 18:42:37 +0300
+From:   Dan Carpenter <error27@gmail.com>
+To:     Frank Sae <Frank.Sae@motor-comm.com>
+Cc:     Peter Geis <pgwipeout@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH net-next] net: phy: Uninitialized variables in
+ yt8531_link_change_notify()
+Message-ID: <Y+ur7SAUjidrMwkz@kili>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Chuck Lever <chuck.lever@oracle.com>
+These booleans are never set to false, but are just used uninitialized.
 
-The pointer dentry is assigned a value that is never read, the
-assignment is redundant and can be removed.
-
-Cleans up clang-scan warning:
-fs/nfsd/nfsctl.c:1231:2: warning: Value stored to 'dentry' is
-never read [deadcode.DeadStores]
-       dentry = ERR_PTR(ret);
-
-No need to initialize "int ret = -ENOMEM;" either.
-
-These are vestiges of nfsd_mkdir(), from whence I copied
-nfsd_symlink().
-
-Reported-by: Colin Ian King <colin.i.king@gmail.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 4ac94f728a58 ("net: phy: Add driver for Motorcomm yt8531 gigabit ethernet phy")
+Signed-off-by: Dan Carpenter <error27@gmail.com>
 ---
- fs/nfsd/nfsctl.c |   11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+Applies to net-next.
 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index 04474b8ccf0a..7b8f17ee5224 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1214,22 +1214,17 @@ static void nfsd_symlink(struct dentry *parent, const char *name,
+ drivers/net/phy/motorcomm.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+index ee7c37dfdca0..119a54d6c65d 100644
+--- a/drivers/net/phy/motorcomm.c
++++ b/drivers/net/phy/motorcomm.c
+@@ -1534,9 +1534,9 @@ static void yt8531_link_change_notify(struct phy_device *phydev)
  {
- 	struct inode *dir = parent->d_inode;
- 	struct dentry *dentry;
--	int ret = -ENOMEM;
-+	int ret;
+ 	struct device_node *node = phydev->mdio.dev.of_node;
+ 	bool tx_clk_adj_enabled = false;
+-	bool tx_clk_1000_inverted;
+-	bool tx_clk_100_inverted;
+-	bool tx_clk_10_inverted;
++	bool tx_clk_1000_inverted = false;
++	bool tx_clk_100_inverted = false;
++	bool tx_clk_10_inverted = false;
+ 	u16 val = 0;
+ 	int ret;
  
- 	inode_lock(dir);
- 	dentry = d_alloc_name(parent, name);
- 	if (!dentry)
--		goto out_err;
-+		goto out;
- 	ret = __nfsd_symlink(d_inode(parent), dentry, S_IFLNK | 0777, content);
- 	if (ret)
--		goto out_err;
-+		dput(dentry);
- out:
- 	inode_unlock(dir);
--	return;
--out_err:
--	dput(dentry);
--	dentry = ERR_PTR(ret);
--	goto out;
- }
- #else
- static inline void nfsd_symlink(struct dentry *parent, const char *name,
-
+-- 
+2.35.1
 

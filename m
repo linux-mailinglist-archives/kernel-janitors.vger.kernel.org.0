@@ -2,63 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0F4C69686C
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Feb 2023 16:48:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96DAD696868
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Feb 2023 16:48:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233248AbjBNPsb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Feb 2023 10:48:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35444 "EHLO
+        id S232664AbjBNPsN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Feb 2023 10:48:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233163AbjBNPs1 (ORCPT
+        with ESMTP id S232347AbjBNPsL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Feb 2023 10:48:27 -0500
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12057E38C;
-        Tue, 14 Feb 2023 07:47:57 -0800 (PST)
-Received: by mail-wm1-x32d.google.com with SMTP id j29-20020a05600c1c1d00b003dc52fed235so11956375wms.1;
-        Tue, 14 Feb 2023 07:47:56 -0800 (PST)
+        Tue, 14 Feb 2023 10:48:11 -0500
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0107F2B62F;
+        Tue, 14 Feb 2023 07:47:43 -0800 (PST)
+Received: by mail-wm1-x332.google.com with SMTP id f47-20020a05600c492f00b003dc584a7b7eso13976658wmp.3;
+        Tue, 14 Feb 2023 07:47:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=AWHllFyKrR+xZQxHI6mDR0G17o8Ie4DvLljLVm9vbJ4=;
-        b=OjBhCm7Ms7Kjj1WLp7I+kjsuqw7ZbG2qmA7L0ubPUOBQqvMSQ98MY0SXhwpy0cp3CV
-         LkA1ncAZsO8eqNL7hfHaTB7RfTKasHZ4b264BwYrYcKvfYpcyS+eQuJ5J8KeYyDRjrGT
-         xCjWRNA1PRWepGaKIIUD7Xo4fwh0k/7VFdb7EQgTwcsejqtA/huPjSY9rlg+eZJTxjIV
-         U9mCww++VeMwuHiA9bL8fiYzAj8zKUiCIYzTE+RuPvYRD3HPKkC+oEqQfd6rETFVaWjM
-         qZP+D0kUappl0Nhf3Gf+/kjbZnlE/UWPHcnarFpKFhO05cj0kkk/8eEOAffOtGh+OYQU
-         yR+Q==
+        bh=Fm2/SUb2lF2wvyRiNYJZC21IgBGnaGjbT93F/GV9Cow=;
+        b=dAwjA/sWLsNkKtFXv5yQdJAP/9IOFaPgMAcbYfAqJ/Z3T8ZQFYI3qF12D6mxYQnfhU
+         fYx+ow1LVC4kpWW1BPF26MZEu7O15lkxOBLQvfcBB2GWhEL307OnukTq4Igjei7SfPRa
+         nux81I5euviiuBiUE8JT76lF7deo5rHIwzyyJ2uIMziT4HNBSIz3m7IoJq84FIo2w/4F
+         T5PMncbR0+vclVA3VNxcbzqZsUDMf6CwEItgrbDh/JuQmYCEHBV5SP+4EpvtbX4WMMU7
+         S44wsnM8xXUjHJdAjB8kyXZC16aQaF2rIiu6Bxl+ozsCV3111IxgvX5RMpDhPi/hugQz
+         69Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AWHllFyKrR+xZQxHI6mDR0G17o8Ie4DvLljLVm9vbJ4=;
-        b=JgUTUV+ynaYFhFHpoK0F6zpc0g6zEEDn7W9YTkNHiovCOZc6420qgWl4QWh4jOCMPA
-         LJ4DlTlrcOVKmFGp7axN1bby+xortW3eU+z6VtOFmkrCo9ShCRV2dgJL55eRC38m64+H
-         0SC0zmCww0seOT+wsVduh/2Z3/xwyBgDsm6dshL9AuwSvNlZYByOGiTVN8tviIShtfJE
-         vyolavje7iiFoVUtqndV2AeAe3We0pNe4s5BwD+3/C5cMyljuWbV8ZE7N0bOvButwObS
-         kMKnKlXbqV4l8cGSGh7d3X9C6bczufLA0I1WuAMBTb7rBFXWK9nG6Px0EGq4o3KhBZrS
-         FXIQ==
-X-Gm-Message-State: AO0yUKXe+cR8e9z4aIrfNL+NhP932BNLs49m2QQW3o757nNmgHz0zjQB
-        wBWbf6sW4NNdOt/b2H7KAVsWIbabRbTvAQ==
-X-Google-Smtp-Source: AK7set9R3FCNQIaiuE2OnUjkdq2NvcG9+wDyE1yEn/T+DAfAZmaun4y3AdvzakKbIZuZoZ6/WJcqxg==
-X-Received: by 2002:a05:600c:2e96:b0:3da:50b0:e96a with SMTP id p22-20020a05600c2e9600b003da50b0e96amr2351231wmn.29.1676389663859;
-        Tue, 14 Feb 2023 07:47:43 -0800 (PST)
+        bh=Fm2/SUb2lF2wvyRiNYJZC21IgBGnaGjbT93F/GV9Cow=;
+        b=aBKJtWZ3wy6LBZLkMLTc3g+wvqG8faBGiwgydVT7DSYb3D5F6OmsZc5dcRiyFfS9jO
+         Zl/YiFdgaB1cQlGo9A2cqbGjcf3pKHTicAnBeYo/2kFXc6PrfeU3NNbnEBdvpKvFxQKC
+         jh1HkSz9r0uML7WWGfkGIO0nb+1Ue7HPMTbSTkSGCJisUP4K5pGDE+9y7WOTsSlW6iL1
+         ePLpWcnwCXuD3Uw29LbT/BErZQCz8+u0qGtGxGOdRK3XqRBYmHiT9ZCUT33fmxZt9CD3
+         vmCpqxBZloLaRsvKmau068mnGGEyu2y4+oCTKd2diJCTk2nif092Mtkqqw0a4VGCgSEg
+         ZHfQ==
+X-Gm-Message-State: AO0yUKUTY/ggrsAVOuYjFWHZHiirxsmQrIsOec9R/CDS5+Nef9kAwyTK
+        tvOZkE5sf4i7slE701kXPC4=
+X-Google-Smtp-Source: AK7set+TIQE1j9EuKB5ZbCEey4WQc0C6Jv98jIuoeZU2ESTqJg08IqO6lXAJs9YUTbynGCyaFBFI3w==
+X-Received: by 2002:a05:600c:511f:b0:3df:9858:c03a with SMTP id o31-20020a05600c511f00b003df9858c03amr13268wms.15.1676389654849;
+        Tue, 14 Feb 2023 07:47:34 -0800 (PST)
 Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id a3-20020a05600c224300b003db01178b62sm20652159wmm.40.2023.02.14.07.47.42
+        by smtp.gmail.com with ESMTPSA id be7-20020a05600c1e8700b003dff2b493c8sm22283715wmb.36.2023.02.14.07.47.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Feb 2023 07:47:43 -0800 (PST)
-Date:   Tue, 14 Feb 2023 18:43:38 +0300
+        Tue, 14 Feb 2023 07:47:34 -0800 (PST)
+Date:   Tue, 14 Feb 2023 18:47:30 +0300
 From:   Dan Carpenter <error27@gmail.com>
-To:     Steve Wise <larrystevenwise@gmail.com>
-Cc:     Potnuri Bharat Teja <bharat@chelsio.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] iw_cxgb4: potential NULL dereference in
- c4iw_fill_res_cm_id_entry()
-Message-ID: <Y+usKuWIKr4dimZh@kili>
+To:     Haibo Chen <haibo.chen@nxp.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] iio: adc: imx93: fix a signedness bug in imx93_adc_read_raw()
+Message-ID: <Y+utEvjfjQRQo2QB@kili>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -73,33 +75,52 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This condition needs to match the previous "if (epcp->state == LISTEN) {"
-exactly to avoid a NULL dereference of either "listen_ep" or "ep". The
-problem is that "epcp" has been re-assigned so just testing
-"if (epcp->state == LISTEN) {" a second time is not sufficient.
+The problem is these lines:
 
-Fixes: 116aeb887371 ("iw_cxgb4: provide detailed provider-specific CM_ID information")
+	ret = vref_uv = regulator_get_voltage(adc->vref);
+	if (ret < 0)
+
+The "ret" variable is type long and "vref_uv" is u32 so that means
+the condition can never be true on a 64bit system.  A negative error
+code from regulator_get_voltage() would be cast to a high positive
+u32 value and then remain a high positive value when cast to a long.
+
+The "ret" variable only ever stores ints so it should be declared as
+an int.  We can delete the "vref_uv" variable and use "ret" directly.
+
+Fixes: 7d02296ac8b8 ("iio: adc: add imx93 adc support")
 Signed-off-by: Dan Carpenter <error27@gmail.com>
 ---
-From static analysis, not from testing.  It's possible that the current
-code works but this change makes it more Obviously Correct[tm].
+ drivers/iio/adc/imx93_adc.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
- drivers/infiniband/hw/cxgb4/restrack.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/infiniband/hw/cxgb4/restrack.c b/drivers/infiniband/hw/cxgb4/restrack.c
-index ff645b955a08..fd22c85d35f4 100644
---- a/drivers/infiniband/hw/cxgb4/restrack.c
-+++ b/drivers/infiniband/hw/cxgb4/restrack.c
-@@ -238,7 +238,7 @@ int c4iw_fill_res_cm_id_entry(struct sk_buff *msg,
- 	if (rdma_nl_put_driver_u64_hex(msg, "history", epcp->history))
- 		goto err_cancel_table;
+diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
+index d8de8284e13d..8c68f0cd48f2 100644
+--- a/drivers/iio/adc/imx93_adc.c
++++ b/drivers/iio/adc/imx93_adc.c
+@@ -236,8 +236,7 @@ static int imx93_adc_read_raw(struct iio_dev *indio_dev,
+ {
+ 	struct imx93_adc *adc = iio_priv(indio_dev);
+ 	struct device *dev = adc->dev;
+-	long ret;
+-	u32 vref_uv;
++	int ret;
  
--	if (epcp->state == LISTEN) {
-+	if (listen_ep) {
- 		if (rdma_nl_put_driver_u32(msg, "stid", listen_ep->stid))
- 			goto err_cancel_table;
- 		if (rdma_nl_put_driver_u32(msg, "backlog", listen_ep->backlog))
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+@@ -253,10 +252,10 @@ static int imx93_adc_read_raw(struct iio_dev *indio_dev,
+ 		return IIO_VAL_INT;
+ 
+ 	case IIO_CHAN_INFO_SCALE:
+-		ret = vref_uv = regulator_get_voltage(adc->vref);
++		ret = regulator_get_voltage(adc->vref);
+ 		if (ret < 0)
+ 			return ret;
+-		*val = vref_uv / 1000;
++		*val = ret / 1000;
+ 		*val2 = 12;
+ 		return IIO_VAL_FRACTIONAL_LOG2;
+ 
 -- 
 2.35.1
 

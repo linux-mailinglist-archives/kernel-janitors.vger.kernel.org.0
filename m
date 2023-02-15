@@ -2,83 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D2BC697A6B
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Feb 2023 12:09:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94B77697AC9
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Feb 2023 12:31:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229817AbjBOLJB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 Feb 2023 06:09:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50468 "EHLO
+        id S233444AbjBOLbi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 Feb 2023 06:31:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229503AbjBOLJA (ORCPT
+        with ESMTP id S233036AbjBOLbh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 Feb 2023 06:09:00 -0500
-Received: from smtp.smtpout.orange.fr (smtp-20.smtpout.orange.fr [80.12.242.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00C1D28D36
-        for <kernel-janitors@vger.kernel.org>; Wed, 15 Feb 2023 03:08:55 -0800 (PST)
-Received: from pop-os.home ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id SFebpT64kwevESFebpYEea; Wed, 15 Feb 2023 12:08:54 +0100
-X-ME-Helo: pop-os.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 15 Feb 2023 12:08:54 +0100
-X-ME-IP: 86.243.2.178
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-mtd@lists.infradead.org
-Subject: [PATCH] mtd: nand: mxic-ecc: Fix mxic_ecc_data_xfer_wait_for_completion() when irq is used
-Date:   Wed, 15 Feb 2023 12:08:45 +0100
-Message-Id: <beddbc374557e44ceec897e68c4a5d12764ddbb9.1676459308.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.34.1
+        Wed, 15 Feb 2023 06:31:37 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9064910F0;
+        Wed, 15 Feb 2023 03:31:36 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DE33F61B23;
+        Wed, 15 Feb 2023 11:31:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51ECC433D2;
+        Wed, 15 Feb 2023 11:31:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1676460695;
+        bh=5TAYEJH09LJv4kHX38MSdb0hT+72Ljn17p1+0e1ea7c=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Ich2KCPrUUpQAyMk65Nj7qAwATF7dKnYYsw4vHmHlfxSW9pKLSKJCQvNQU7pMygtO
+         R4mgSTSfc8wbxBvNONrY3h0w3QYMbf2MPD6QGouCZ3woAkg+Bwhz/G/MLB8LK6XMFJ
+         mLUznTRf5wcokRkStbl9eOxpMU7AiZrTyW2bz+xdxjWML/CJ0bb8+h+wYvT2DHcuWp
+         KJBrJOlO4V1aW/6UXLBiodti1OWrwxuakDiABaBa6zfDYYLjAp1TNp/Yw/Fw/boSed
+         rdLlRFZfuAbPKQznxEytRuEUWQgV8Z0cajPafNZiisjgP+gdR01A0bwY+7iUnaOJlV
+         S6LqJpumZhdGA==
+Date:   Wed, 15 Feb 2023 13:31:31 +0200
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Jason Gunthorpe <jgg@ziepe.ca>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-rdma@vger.kernel.org
+Subject: Re: [PATCH] RDMA/restrack: Reorder fields in 'struct
+ rdma_restrack_entry'
+Message-ID: <Y+zCkwTgevj0zDFK@unreal>
+References: <d47800d9fd5ac7c33d01af04b12b6d43ad23c96e.1676379187.git.christophe.jaillet@wanadoo.fr>
+ <Y+uH0k0OBzPip1P8@ziepe.ca>
+ <75480cf9-8d06-7a7d-4624-6ddbb7d6053a@wanadoo.fr>
+ <Y+uiLCB7H2xVvQZW@ziepe.ca>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <Y+uiLCB7H2xVvQZW@ziepe.ca>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-wait_for_completion_timeout() and readl_poll_timeout() don't handle their
-return value the same way.
+On Tue, Feb 14, 2023 at 11:01:00AM -0400, Jason Gunthorpe wrote:
+> On Tue, Feb 14, 2023 at 03:34:21PM +0100, Christophe JAILLET wrote:
+> > Le 14/02/2023 à 14:08, Jason Gunthorpe a écrit :
+> > > On Tue, Feb 14, 2023 at 01:53:52PM +0100, Christophe JAILLET wrote:
+> > > > diff --git a/include/rdma/restrack.h b/include/rdma/restrack.h
+> > > > index 8b7c46daeb07..da53fefe6f9e 100644
+> > > > --- a/include/rdma/restrack.h
+> > > > +++ b/include/rdma/restrack.h
+> > > > @@ -80,6 +80,10 @@ struct rdma_restrack_entry {
+> > > >   	 * query stage.
+> > > >   	 */
+> > > >   	u8			no_track : 1;
+> > > > +	/**
+> > > > +	 * @user: user resource
+> > > > +	 */
+> > > > +	bool			user;
+> > > 
+> > > Can we combine this into the bitfield above?
+> > > 
+> > > Jason
+> > > 
+> > Hi,
+> > 
+> > and even above, we have
+> > 	bool	valid;
+> > 
+> > I wanted to keep the changes as minimal as possible, but I can change them
+> > all in a single bitfield.
+> 
+> IIRC it needs to be checked, I vaugely remember valid can't be a
+> bitfield because it is an atomic
 
-wait_for_completion_timeout() returns 0 on time out (and >0 in all other
-cases)
-readl_poll_timeout() returns 0 on success and -ETIMEDOUT upon a timeout.
+I don't remember anything like this.
 
-In order for the error handling path to work in both cases, the logic
-against wait_for_completion_timeout() needs to be inverted.
-
-Fixes: 48e6633a9fa2 ("mtd: nand: mxic-ecc: Add Macronix external ECC engine support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Compile tested only.
-
-This is really spurious.
-If I'm right, this means that it never worked!
-
-Can any one with the hardware test?
----
- drivers/mtd/nand/ecc-mxic.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/mtd/nand/ecc-mxic.c b/drivers/mtd/nand/ecc-mxic.c
-index 8afdca731b87..6b487ffe2f2d 100644
---- a/drivers/mtd/nand/ecc-mxic.c
-+++ b/drivers/mtd/nand/ecc-mxic.c
-@@ -429,6 +429,7 @@ static int mxic_ecc_data_xfer_wait_for_completion(struct mxic_ecc_engine *mxic)
- 		mxic_ecc_enable_int(mxic);
- 		ret = wait_for_completion_timeout(&mxic->complete,
- 						  msecs_to_jiffies(1000));
-+		ret = ret ? 0 : -ETIMEDOUT;
- 		mxic_ecc_disable_int(mxic);
- 	} else {
- 		ret = readl_poll_timeout(mxic->regs + INTRPT_STS, val,
--- 
-2.34.1
-
+Thanks

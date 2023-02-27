@@ -2,102 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D09D06A2D18
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Feb 2023 03:09:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DFA36A3611
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Feb 2023 02:03:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229589AbjBZCJR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 25 Feb 2023 21:09:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36932 "EHLO
+        id S229529AbjB0BDu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Feb 2023 20:03:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229540AbjBZCJP (ORCPT
+        with ESMTP id S229507AbjB0BDt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 25 Feb 2023 21:09:15 -0500
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92A611041C;
-        Sat, 25 Feb 2023 18:09:14 -0800 (PST)
-Received: by mail-io1-xd30.google.com with SMTP id f14so1214263iow.5;
-        Sat, 25 Feb 2023 18:09:14 -0800 (PST)
+        Sun, 26 Feb 2023 20:03:49 -0500
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE3CFB457
+        for <kernel-janitors@vger.kernel.org>; Sun, 26 Feb 2023 17:03:47 -0800 (PST)
+Received: by mail-lf1-x12c.google.com with SMTP id k14so6470059lfj.7
+        for <kernel-janitors@vger.kernel.org>; Sun, 26 Feb 2023 17:03:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=zOiw7v4d0b1KPpG9R/9yiqx5BWikVuJtMLZ9Bzv3kSo=;
-        b=k+yMM7OX2Vq1cfpvwqtoq1c2EUROQBBVjl3ijtcoyhwuSOIBRGGC4N+G3mnkyTuLGR
-         DCbHX2YI/bH0kNvM8g2nLmO8kV3h4WGNmQIdqLXI8C/5MqTd/zGJwh6T0F0YiYSkDxqR
-         HrAixy5lA+PS6Z+hMXrB5ZQUSlpWE2ptOTd23u3NBHIQ1Psr3/kSAHVkLsS9KC19IbzQ
-         U7O436YrEHzpxwSlUmW1Kx4oOZQ8Tov54qKH1/PDhy/wHfFrLbHMKgovXSN8JxpJDIr1
-         GNENh4oT94YSVAOSzlY1WTNbCuwR2xKH4ImghicSABzEge7lnX66moQnucgURb5j9U5j
-         q72A==
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=weYNpobTz7e34lKnlfhxYchHcnpoQgNkJdKwW1l0gho=;
+        b=Bg075geJRtLuk5nD33/cHYbxzauamLadOVEFdrO289zAmE3h2RG2Jlc10oLzP0aFlv
+         9ULN6HxpTLct7w30955hFlDvGU/53vTcyAoqiegyfxmRdooh57F3JX0uXZLVG52cADDp
+         pbUIOE0nXPd1/JLwzQT4PW8wVHn9a2eQ+7Ntf6BvV2WdAUQSj8/dRyndTpLCo4VEuVgX
+         7KYXFq6IaRK6zXhv1SGp3EnmYQmjr4ezx4PCnwb8O/GpVTYSFK41X9swkjbTcLdT2zEL
+         OFj5vQOMcoj5szGnljIgASkScI/NMp+7GgcBOyAUO+XTz2ljIkt0EZqeC/J8ql4XFfCR
+         B4Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zOiw7v4d0b1KPpG9R/9yiqx5BWikVuJtMLZ9Bzv3kSo=;
-        b=ULmB8JlkKBXa/NKO0/yg5//syzDJj0bvNBX9R8RpwZYcSVKFS6x5bdmxXZBUgHiy2z
-         fQUAIodN0BUKPCT5tMZL1zVna85H3LylBlIC0RsafoxeHnQJwfJ0p9wNnUGgWsFkzv9B
-         ySikpi+9JFpbVCEXUcb01s8tptfFxq1in0SJJ/+yFUbvEWgubPoqUffW32qj9i5w5IWi
-         IwhCHNRj6fRGSbQdOXV/cMolhFGloimaNTBvoT58OmfOoFXIyObxUjiGLA1zAqujuXsz
-         0NorbXC7o4ZiN9xw3AZ6zHyj4Tefcwv/o/GZP6lK8KoAE1c7bpFm7frC29iH5JzZwRZi
-         DtvQ==
-X-Gm-Message-State: AO0yUKWwymZ8fa/nm4Os7fNH9XfnyE/O5w9KRvm8C2advbLA2FeXl6R1
-        N5rDu9JHaKHazTgTjf5DhfDnosuSJ2Pn48URXvPqHoa8XrEOIrgG
-X-Google-Smtp-Source: AK7set/CAIQiJKl/9sFKTHtLe+J96h6rAxuX1mBEyeygUXcd0YNkvyyyyO+qiU5URQMYF7lDmYcLSIB4aXSMQMhoeWM=
-X-Received: by 2002:a05:6602:399c:b0:74c:deb9:538 with SMTP id
- bw28-20020a056602399c00b0074cdeb90538mr398320iob.0.1677377353864; Sat, 25 Feb
- 2023 18:09:13 -0800 (PST)
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=weYNpobTz7e34lKnlfhxYchHcnpoQgNkJdKwW1l0gho=;
+        b=TcGFyDPsN8JSJD9uvMtOgkQOR2zEBOiib1POZuMOCz2AcZJlJVBS5fUtZY6eqaZjgH
+         3NHTWp81RrYZhNITX1GiBMY6sJOzwx3+hazPMmA49YzthoaqYq3V2jD4ZDFxbIcNm2L0
+         HJfGmEipp0p1eS1MoKOYBH4ifksQSJ3On3dVcP3tFrDL20DVzvYzgaOfnZe451xGtPqs
+         BnTgERsjWQ9ltv8AW2RtPO1GqO4SRkHnr28c4tCM5SvUNa/9bbT1u98swcC3+TyLldMP
+         zTAQzGMctTq4BthBZihMS5lyMV4/G7htxFrQEYx3qlBP81N2q7ufD8v/JqMbxDBPTMM1
+         mP9g==
+X-Gm-Message-State: AO0yUKWjLBAFVme0VfgaMlDJ0PH2XwluCT6h9kIXqZXHcAOsx3NVfgae
+        dIDkaJpw0bey5g2JA1Cs6O/UJT1WtR8eCjQBFQ0=
+X-Google-Smtp-Source: AK7set+8B2eXY795400Ygu65cTPLrxfKe9xyDBnQCL3BplyEWYhocag/7r+D61SM7SGjuSIaII2D2WAXHIihef4q8m4=
+X-Received: by 2002:a05:6512:73:b0:4d5:ca42:e43a with SMTP id
+ i19-20020a056512007300b004d5ca42e43amr6997518lfo.3.1677459825939; Sun, 26 Feb
+ 2023 17:03:45 -0800 (PST)
 MIME-Version: 1.0
-References: <20211213185625.546358-1-colin.i.king@gmail.com>
-In-Reply-To: <20211213185625.546358-1-colin.i.king@gmail.com>
-From:   Matt Turner <mattst88@gmail.com>
-Date:   Sat, 25 Feb 2023 21:09:02 -0500
-Message-ID: <CAEdQ38GpkM8mZJ2oiADjCgKfEmavCrq9mcYErqPf-CHvWZX84g@mail.gmail.com>
-Subject: Re: [PATCH] alpha: osf_sys: reduce kernel log spamming on invalid
- osf_mount call typenr
-To:     Colin Ian King <colin.i.king@gmail.com>
-Cc:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        linux-alpha@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Received: by 2002:a89:b8f:0:b0:187:2c43:10df with HTTP; Sun, 26 Feb 2023
+ 17:03:45 -0800 (PST)
+From:   Adel Aldoseri <adelaldoseri1@gmail.com>
+Date:   Sun, 26 Feb 2023 17:03:45 -0800
+Message-ID: <CAECeVmTV+NDTVNWw8ORBv88TT99RyCvZkwkZbzTFMdcDQ15cQQ@mail.gmail.com>
+Subject: We finance viable projects only
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=3.6 required=5.0 tests=BAYES_99,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Dec 13, 2021 at 10:58 PM Colin Ian King <colin.i.king@gmail.com> wrote:
->
-> Calling the osf_mount system call with an invalid typenr value will
-> spam the kernel log with error messages. Reduce the spamming by making
-> it a ratelimited printk.  Issue found when exercising with the stress-ng
-> enosys system call stressor.
->
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
->  arch/alpha/kernel/osf_sys.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/alpha/kernel/osf_sys.c b/arch/alpha/kernel/osf_sys.c
-> index 8bbeebb73cf0..2367a385d726 100644
-> --- a/arch/alpha/kernel/osf_sys.c
-> +++ b/arch/alpha/kernel/osf_sys.c
-> @@ -521,7 +521,7 @@ SYSCALL_DEFINE4(osf_mount, unsigned long, typenr, const char __user *, path,
->                 break;
->         default:
->                 retval = -EINVAL;
-> -               printk("osf_mount(%ld, %x)\n", typenr, flag);
-> +               printk_ratelimited("osf_mount(%ld, %x)\n", typenr, flag);
->         }
->
->         return retval;
-> --
-> 2.33.1
->
+Attention: Sir
 
-Thanks for the patch! This was included in my pull request today and
-is now upstream in Linus' tree.
+Our Company is willing, ready to help you grow your network and offer
+you Loan funds to complete and fund your existing Projects. We can
+send you our Company Terms and Condition after review of your project
+plan and executive summary of your project, if you are serious and
+Interested contact us for further Information:
+
+
+Best regards,
+
+Adel Aldoseri

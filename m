@@ -2,87 +2,118 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AB9A6A44BD
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Feb 2023 15:38:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CF466A473F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Feb 2023 17:45:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230024AbjB0Oiz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Feb 2023 09:38:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49426 "EHLO
+        id S229909AbjB0QpG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Feb 2023 11:45:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229996AbjB0Oiy (ORCPT
+        with ESMTP id S229557AbjB0QpF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Feb 2023 09:38:54 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFF1C1ACDB;
-        Mon, 27 Feb 2023 06:38:49 -0800 (PST)
-Received: from pendragon.ideasonboard.com (85-76-78-34-nat.elisa-mobile.fi [85.76.78.34])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9F41C56A;
-        Mon, 27 Feb 2023 15:38:47 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1677508728;
-        bh=flL3K74FpmQhbfYWrxtIBKmRyaIm0PL2gw4qy434ZP4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RZDkwCgfR/ZjHWQxvkQiEwJAqsxC3NWoKOgQsAILaOfXPOZ8SgnHxmyRulFSvLO1g
-         DP8EZ4QST+GAmivQm2aMRlpexQ/E2CsRQvpAQ4F8h9fQqQF+S8Pu3Zd0XGpiBufQRT
-         6rschwE3fyKsHdrhaDAFUkl+fmOzGkofwa/WTq2s=
-Date:   Mon, 27 Feb 2023 16:38:17 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Dan Carpenter <error27@gmail.com>
-Cc:     Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org,
+        Mon, 27 Feb 2023 11:45:05 -0500
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2720F941;
+        Mon, 27 Feb 2023 08:45:03 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id az36so4666072wmb.1;
+        Mon, 27 Feb 2023 08:45:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FeOcTqXDkf0doKsprZO7fxvXxR/92ra2xU2rS73dpcc=;
+        b=N1OuYy7nsQ5OY3PZLh6lT9+FHQdTlvdZDP8GDtlTUNgnOwNTFQt7tOo3wv7yL5Ts9F
+         DPkFbelV+lIWaakHs5dPEL82nMCQlRW82iWwEYGe9fSvLEEKpn4w8JDyzopc2Wy0TS8U
+         agNNWNdy28WaZ27DqQYSH49e3wyvRviIxw7HeueW+jyu8jKhdm04d74rILX7LHlxI57C
+         5f3ai0AVdCThBRFJeH4PXh7j9haHSOccftRuBkBlRdnHeGWQLp+E6FWo1BmTiC0pH90z
+         687Z9Zedbw7yPM00fCk8M9/r3HnRH3uUObz0qsMH21WFpWUqgxfQPDQA+bSATQTCLhaD
+         PgRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FeOcTqXDkf0doKsprZO7fxvXxR/92ra2xU2rS73dpcc=;
+        b=MAQmHjMQ9o+cJLTWfj/tU+quxj4I+CnBSXdRvaEppYvUfuZk0bXMHnTMUuO3xcz68H
+         sq0ccQwOT+4TeMbDuUf75xq6asxOiBO47/NJTfgXTg5TzLmSqrMOVj2gEXgpeSQvwVcq
+         xjOD5M0v7UUqTG6csWv/CIPyVeVuGxTkMqPGuhoWcLLN+z8GjU8SNZ9te8UY3rCRwyPk
+         tKSiefLmx34ETzA1hu19V6ogqq7vRI7kVK+LWhnPx2YGuGWzjtNQUcoQOLlVdBQCY7un
+         H0tCNph840EecnbVXDiguEXHPWwR44IVhUexKALKJAxmA2Dn3SMkYUszvpctON4yIsWs
+         PJ7A==
+X-Gm-Message-State: AO0yUKVinndaw5sACoRq6E6lJBUWcXkayBzh9HOvdmT/0T7B+MmyPNOo
+        fXJT3znYhsTA6dteveAbTd8=
+X-Google-Smtp-Source: AK7set8HnVjiWkfm607XdfjPyYQyWoO811MLCbol1ln1f8JVz2wkg1XtQo2q9iMxPx0Avd+r1QUrfQ==
+X-Received: by 2002:a05:600c:a4c:b0:3ea:e582:48dd with SMTP id c12-20020a05600c0a4c00b003eae58248ddmr9905860wmq.34.1677516302316;
+        Mon, 27 Feb 2023 08:45:02 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id t23-20020a1c7717000000b003daf672a616sm9546376wmi.22.2023.02.27.08.45.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Feb 2023 08:45:01 -0800 (PST)
+Date:   Mon, 27 Feb 2023 13:27:53 +0300
+From:   Dan Carpenter <error27@gmail.com>
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     Javier Martinez Canillas <javierm@redhat.com>,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] drm: rcar-du: Fix a NULL vs IS_ERR() bug
-Message-ID: <Y/zAWdgjKQjvdmXr@pendragon.ideasonboard.com>
-References: <Y/yAw6sHu82OnOWj@kili>
+Subject: Re: [PATCH] fbdev: chipsfb: Fix error codes in chipsfb_pci_init()
+Message-ID: <Y/yFqWWbw7RsCN4v@kadam>
+References: <Y/yA53V/rW8g1Zlm@kili>
+ <2673f515-9516-de13-3e59-4d473165010d@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y/yAw6sHu82OnOWj@kili>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <2673f515-9516-de13-3e59-4d473165010d@suse.de>
+X-Spam-Status: No, score=-0.3 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
-
-Thank you for the patch.
-
-On Mon, Feb 27, 2023 at 01:06:59PM +0300, Dan Carpenter wrote:
-> The drmm_encoder_alloc() function returns error pointers.  It never
-> returns NULL.  Fix the check accordingly.
+On Mon, Feb 27, 2023 at 11:13:19AM +0100, Thomas Zimmermann wrote:
+> Hi
 > 
-> Fixes: 7a1adbd23990 ("drm: rcar-du: Use drmm_encoder_alloc() to manage encoder")
-> Signed-off-by: Dan Carpenter <error27@gmail.com>
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-
-> ---
->  drivers/gpu/drm/rcar-du/rcar_du_encoder.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> Am 27.02.23 um 11:07 schrieb Dan Carpenter:
+> > The error codes are not set on these error paths.
+> > 
+> > Fixes: 145eed48de27 ("fbdev: Remove conflicting devices on PCI bus")
+> > Signed-off-by: Dan Carpenter <error27@gmail.com>
 > 
-> diff --git a/drivers/gpu/drm/rcar-du/rcar_du_encoder.c b/drivers/gpu/drm/rcar-du/rcar_du_encoder.c
-> index b1787be31e92..7ecec7b04a8d 100644
-> --- a/drivers/gpu/drm/rcar-du/rcar_du_encoder.c
-> +++ b/drivers/gpu/drm/rcar-du/rcar_du_encoder.c
-> @@ -109,8 +109,8 @@ int rcar_du_encoder_init(struct rcar_du_device *rcdu,
->  	renc = drmm_encoder_alloc(&rcdu->ddev, struct rcar_du_encoder, base,
->  				  &rcar_du_encoder_funcs, DRM_MODE_ENCODER_NONE,
->  				  NULL);
-> -	if (!renc)
-> -		return -ENOMEM;
-> +	if (IS_ERR(renc))
-> +		return PTR_ERR(renc);
->  
->  	renc->output = output;
->  
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+> 
+> with the comments below addressed.
+> 
+> > ---
+> >   drivers/video/fbdev/chipsfb.c | 14 ++++++++++----
+> >   1 file changed, 10 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/video/fbdev/chipsfb.c b/drivers/video/fbdev/chipsfb.c
+> > index cc37ec3f8fc1..98398789528a 100644
+> > --- a/drivers/video/fbdev/chipsfb.c
+> > +++ b/drivers/video/fbdev/chipsfb.c
+> > @@ -358,16 +358,21 @@ static int chipsfb_pci_init(struct pci_dev *dp, const struct pci_device_id *ent)
+> >   	if (rc)
+> >   		return rc;
+> > -	if (pci_enable_device(dp) < 0) {
+> > +	rc = pci_enable_device(dp);
+> > +	if (rc < 0) {
+> >   		dev_err(&dp->dev, "Cannot enable PCI device\n");
+> >   		goto err_out;
+> >   	}
+> > -	if ((dp->resource[0].flags & IORESOURCE_MEM) == 0)
+> > +	if ((dp->resource[0].flags & IORESOURCE_MEM) == 0) {
+> > +		rc = -EINVAL;
+> 
+> I think ENODEV is more appropriate. And it's the default value from the
+> original code.
 
--- 
-Regards,
+Sorry, I read the original code and my mind saw -EINVAL where it was
+actually -ENODEV as you say.  Will resend.
 
-Laurent Pinchart
+regards,
+dan carpenter
+

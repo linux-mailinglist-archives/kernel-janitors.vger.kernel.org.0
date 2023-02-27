@@ -2,156 +2,118 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BC896A3F3F
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Feb 2023 11:13:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 328466A3F70
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Feb 2023 11:27:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230019AbjB0KN2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Feb 2023 05:13:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54350 "EHLO
+        id S229779AbjB0K1Y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Feb 2023 05:27:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229947AbjB0KN1 (ORCPT
+        with ESMTP id S230078AbjB0K1T (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Feb 2023 05:13:27 -0500
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2BA9113C8;
-        Mon, 27 Feb 2023 02:13:21 -0800 (PST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id A34041F8D9;
-        Mon, 27 Feb 2023 10:13:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1677492800; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
+        Mon, 27 Feb 2023 05:27:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24CF22055B
+        for <kernel-janitors@vger.kernel.org>; Mon, 27 Feb 2023 02:26:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1677493598;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=hyqifWMnIihxVxu2aPn4a3Z9GcWS0luycqzlGHRRrn4=;
-        b=d99jIcOpEtbiAnyNLIW2t+4dcNOSiPw5s2BPeiNyG2wZ8zQooAvsYCllkmmG/Kv9XnwHBX
-        2Cq0aCBQmVk3UrVOuT2O5lHOMePldqnP2ZNK9NCSQk4lH4o3imT5eI7RqpL2XjaW6uZ6Ch
-        RiahWDs0D4OgKDEik82yeaA+8svcJXA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1677492800;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=hyqifWMnIihxVxu2aPn4a3Z9GcWS0luycqzlGHRRrn4=;
-        b=FdVyH4nsUYAmglJvx7okCMpVBiDDp8itsPAF/QNbzq1svc7Y+9eb88gsUpTHFEzN1gAHHI
-        fnDegI1vKOVzVoAQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 819F713A43;
-        Mon, 27 Feb 2023 10:13:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id Z9Z5HkCC/GM+bgAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Mon, 27 Feb 2023 10:13:20 +0000
-Message-ID: <2673f515-9516-de13-3e59-4d473165010d@suse.de>
-Date:   Mon, 27 Feb 2023 11:13:19 +0100
+        bh=ORysGkdK/Pguqa6KzjHxllcwhbHEv5qK0Wn8PNtiKpA=;
+        b=fq83vbvrGJB3LZ4t98xZfuvnnU/P+zPLqjbm/XBlXjn/vRH9eJgkeo1dF6o8tZxHYoQP2q
+        3Xne85ZRZdX8kO5YiG093/92Famd4KGa8axFcI5eiWBUsh/D/jq98nIeFygiB1nx3EoblD
+        ci4J2PhhtrmY5EhJIcW2rwz0oz9Q+f4=
+Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
+ [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-209-OAn7PJ7bMWaBY1E4R9kbww-1; Mon, 27 Feb 2023 05:26:36 -0500
+X-MC-Unique: OAn7PJ7bMWaBY1E4R9kbww-1
+Received: by mail-vs1-f72.google.com with SMTP id v13-20020a0561020f0d00b0041f24dc9c47so5161319vss.9
+        for <kernel-janitors@vger.kernel.org>; Mon, 27 Feb 2023 02:26:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ORysGkdK/Pguqa6KzjHxllcwhbHEv5qK0Wn8PNtiKpA=;
+        b=g8Bgw2A/bbV3x8oHWidKDe23yP2SgxJnio0JBDYxy1t/bsYu1orKO8wL6MsrvQyF8q
+         m4CxGcZPjIYhaUtXcaXmTzjCz4lz5WOB7fT8ISYceBOGyyXW80fT8YEgz4W+vZAU5v0o
+         Mg9suF358jdhlpjhr7vIekBxGZVjluwYny6LjBpATTjni2cu6PWX+OeVJWOEIDv8o5YD
+         uEfgGta26lhkVibd+8KJbhCkXU0LrK2e1ClLYbqAB0tWC4LunZExWPBsTKLugeHW7vP8
+         qxJ2gPbL99RkYbVNSEb8jEcwXJHL6u88CaWVCCFjdmuCINDKEz8B+Be2fnhSp8zNoEyl
+         geLA==
+X-Gm-Message-State: AO0yUKXf76hRcZsWENISafLvFLDBlLkrh2aMTIxvuomtbZw7uCrxK8fr
+        fwX5ezISu/DuTAreAPCQcdc1SC/3RZ91S0j8tBizOixc443e3TNbhv72bPffsZb/gAnjmxQyUQv
+        Xq19DiY6hZeJAtKBrEppdiVKoAj0U1pC8ZG1+PvQuwNYb
+X-Received: by 2002:a1f:bf16:0:b0:413:1498:e843 with SMTP id p22-20020a1fbf16000000b004131498e843mr7165640vkf.0.1677493596353;
+        Mon, 27 Feb 2023 02:26:36 -0800 (PST)
+X-Google-Smtp-Source: AK7set992JZJfczXidh5nXBnsu5o2gkRvL073x6tl2UuRSKy8og8GT5X66IeGe+wctC68z1nH/ku6NujpNQ8OHcKkJ8=
+X-Received: by 2002:a1f:bf16:0:b0:413:1498:e843 with SMTP id
+ p22-20020a1fbf16000000b004131498e843mr7165626vkf.0.1677493596036; Mon, 27 Feb
+ 2023 02:26:36 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] fbdev: chipsfb: Fix error codes in chipsfb_pci_init()
-Content-Language: en-US
+References: <Y/yAzR6sWvPedLej@kili>
+In-Reply-To: <Y/yAzR6sWvPedLej@kili>
+From:   Eric Curtin <ecurtin@redhat.com>
+Date:   Mon, 27 Feb 2023 10:26:20 +0000
+Message-ID: <CAOgh=FyxFuENe6SgJB7aUwPS-ZB_51q6a=zWEcZSAsGqX034hA@mail.gmail.com>
+Subject: Re: [PATCH] cpufreq: apple-soc: Fix an IS_ERR() vs NULL check
 To:     Dan Carpenter <error27@gmail.com>
-Cc:     Javier Martinez Canillas <javierm@redhat.com>,
-        Yang Yingliang <yangyingliang@huawei.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org
-References: <Y/yA53V/rW8g1Zlm@kili>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <Y/yA53V/rW8g1Zlm@kili>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------FdrI51bCTG0C9tJkYvxuMCBX"
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Cc:     Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Marc Zyngier <maz@kernel.org>, asahi@lists.linux.dev,
+        linux-pm@vger.kernel.org, kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------FdrI51bCTG0C9tJkYvxuMCBX
-Content-Type: multipart/mixed; boundary="------------gW0bBC9K44XeVzYvFXtgy5Lj";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Dan Carpenter <error27@gmail.com>
-Cc: Javier Martinez Canillas <javierm@redhat.com>,
- Yang Yingliang <yangyingliang@huawei.com>, linux-fbdev@vger.kernel.org,
- dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-Message-ID: <2673f515-9516-de13-3e59-4d473165010d@suse.de>
-Subject: Re: [PATCH] fbdev: chipsfb: Fix error codes in chipsfb_pci_init()
-References: <Y/yA53V/rW8g1Zlm@kili>
-In-Reply-To: <Y/yA53V/rW8g1Zlm@kili>
+On Mon, 27 Feb 2023 at 10:16, Dan Carpenter <error27@gmail.com> wrote:
+>
+> The of_iomap() function returns NULL if it fails.  It never returns
+> error pointers.  Fix the check accordingly.
+>
+> Fixes: 6286bbb40576 ("cpufreq: apple-soc: Add new driver to control Apple SoC CPU P-states")
+> Signed-off-by: Dan Carpenter <error27@gmail.com>
+> ---
 
---------------gW0bBC9K44XeVzYvFXtgy5Lj
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Nice catch!
 
-SGkNCg0KQW0gMjcuMDIuMjMgdW0gMTE6MDcgc2NocmllYiBEYW4gQ2FycGVudGVyOg0KPiBU
-aGUgZXJyb3IgY29kZXMgYXJlIG5vdCBzZXQgb24gdGhlc2UgZXJyb3IgcGF0aHMuDQo+IA0K
-PiBGaXhlczogMTQ1ZWVkNDhkZTI3ICgiZmJkZXY6IFJlbW92ZSBjb25mbGljdGluZyBkZXZp
-Y2VzIG9uIFBDSSBidXMiKQ0KPiBTaWduZWQtb2ZmLWJ5OiBEYW4gQ2FycGVudGVyIDxlcnJv
-cjI3QGdtYWlsLmNvbT4NCg0KUmV2aWV3ZWQtYnk6IFRob21hcyBaaW1tZXJtYW5uIDx0emlt
-bWVybWFubkBzdXNlLmRlPg0KDQp3aXRoIHRoZSBjb21tZW50cyBiZWxvdyBhZGRyZXNzZWQu
-DQoNCj4gLS0tDQo+ICAgZHJpdmVycy92aWRlby9mYmRldi9jaGlwc2ZiLmMgfCAxNCArKysr
-KysrKysrLS0tLQ0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspLCA0IGRl
-bGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvdmlkZW8vZmJkZXYvY2hp
-cHNmYi5jIGIvZHJpdmVycy92aWRlby9mYmRldi9jaGlwc2ZiLmMNCj4gaW5kZXggY2MzN2Vj
-M2Y4ZmMxLi45ODM5ODc4OTUyOGEgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvdmlkZW8vZmJk
-ZXYvY2hpcHNmYi5jDQo+ICsrKyBiL2RyaXZlcnMvdmlkZW8vZmJkZXYvY2hpcHNmYi5jDQo+
-IEBAIC0zNTgsMTYgKzM1OCwyMSBAQCBzdGF0aWMgaW50IGNoaXBzZmJfcGNpX2luaXQoc3Ry
-dWN0IHBjaV9kZXYgKmRwLCBjb25zdCBzdHJ1Y3QgcGNpX2RldmljZV9pZCAqZW50KQ0KPiAg
-IAlpZiAocmMpDQo+ICAgCQlyZXR1cm4gcmM7DQo+ICAgDQo+IC0JaWYgKHBjaV9lbmFibGVf
-ZGV2aWNlKGRwKSA8IDApIHsNCj4gKwlyYyA9IHBjaV9lbmFibGVfZGV2aWNlKGRwKTsNCj4g
-KwlpZiAocmMgPCAwKSB7DQo+ICAgCQlkZXZfZXJyKCZkcC0+ZGV2LCAiQ2Fubm90IGVuYWJs
-ZSBQQ0kgZGV2aWNlXG4iKTsNCj4gICAJCWdvdG8gZXJyX291dDsNCj4gICAJfQ0KPiAgIA0K
-PiAtCWlmICgoZHAtPnJlc291cmNlWzBdLmZsYWdzICYgSU9SRVNPVVJDRV9NRU0pID09IDAp
-DQo+ICsJaWYgKChkcC0+cmVzb3VyY2VbMF0uZmxhZ3MgJiBJT1JFU09VUkNFX01FTSkgPT0g
-MCkgew0KPiArCQlyYyA9IC1FSU5WQUw7DQoNCkkgdGhpbmsgRU5PREVWIGlzIG1vcmUgYXBw
-cm9wcmlhdGUuIEFuZCBpdCdzIHRoZSBkZWZhdWx0IHZhbHVlIGZyb20gdGhlIA0Kb3JpZ2lu
-YWwgY29kZS4NCg0KPiAgIAkJZ290byBlcnJfZGlzYWJsZTsNCj4gKwl9DQo+ICAgCWFkZHIg
-PSBwY2lfcmVzb3VyY2Vfc3RhcnQoZHAsIDApOw0KPiAtCWlmIChhZGRyID09IDApDQo+ICsJ
-aWYgKGFkZHIgPT0gMCkgew0KPiArCQlyYyA9IC1FSU5WQUw7DQoNClNhbWUgaGVyZS4NCg0K
-QmVzdCByZWdhcmRzDQpUaG9tYXMNCg0KPiAgIAkJZ290byBlcnJfZGlzYWJsZTsNCj4gKwl9
-DQo+ICAgDQo+ICAgCXAgPSBmcmFtZWJ1ZmZlcl9hbGxvYygwLCAmZHAtPmRldik7DQo+ICAg
-CWlmIChwID09IE5VTEwpIHsNCj4gQEAgLTQxNyw3ICs0MjIsOCBAQCBzdGF0aWMgaW50IGNo
-aXBzZmJfcGNpX2luaXQoc3RydWN0IHBjaV9kZXYgKmRwLCBjb25zdCBzdHJ1Y3QgcGNpX2Rl
-dmljZV9pZCAqZW50KQ0KPiAgIA0KPiAgIAlpbml0X2NoaXBzKHAsIGFkZHIpOw0KPiAgIA0K
-PiAtCWlmIChyZWdpc3Rlcl9mcmFtZWJ1ZmZlcihwKSA8IDApIHsNCj4gKwlyYyA9IHJlZ2lz
-dGVyX2ZyYW1lYnVmZmVyKHApOw0KPiArCWlmIChyYyA8IDApIHsNCj4gICAJCWRldl9lcnIo
-JmRwLT5kZXYsIkMmVCA2NTU1MCBmcmFtZWJ1ZmZlciBmYWlsZWQgdG8gcmVnaXN0ZXJcbiIp
-Ow0KPiAgIAkJZ290byBlcnJfdW5tYXA7DQo+ICAgCX0NCg0KLS0gDQpUaG9tYXMgWmltbWVy
-bWFubg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0KU1VTRSBTb2Z0d2FyZSBTb2x1dGlv
-bnMgR2VybWFueSBHbWJIDQpNYXhmZWxkc3RyLiA1LCA5MDQwOSBOw7xybmJlcmcsIEdlcm1h
-bnkNCihIUkIgMzY4MDksIEFHIE7DvHJuYmVyZykNCkdlc2Now6RmdHNmw7xocmVyOiBJdm8g
-VG90ZXYNCg==
+Reviewed-by: Eric Curtin <ecurtin@redhat.com>
 
---------------gW0bBC9K44XeVzYvFXtgy5Lj--
+Is mise le meas/Regards,
 
---------------FdrI51bCTG0C9tJkYvxuMCBX
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+Eric Curtin
 
------BEGIN PGP SIGNATURE-----
+>  drivers/cpufreq/apple-soc-cpufreq.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/cpufreq/apple-soc-cpufreq.c b/drivers/cpufreq/apple-soc-cpufreq.c
+> index c11d22fd84c3..021f423705e1 100644
+> --- a/drivers/cpufreq/apple-soc-cpufreq.c
+> +++ b/drivers/cpufreq/apple-soc-cpufreq.c
+> @@ -189,8 +189,8 @@ static int apple_soc_cpufreq_find_cluster(struct cpufreq_policy *policy,
+>         *info = match->data;
+>
+>         *reg_base = of_iomap(args.np, 0);
+> -       if (IS_ERR(*reg_base))
+> -               return PTR_ERR(*reg_base);
+> +       if (!*reg_base)
+> +               return -ENOMEM;
+>
+>         return 0;
+>  }
+> --
+> 2.39.1
+>
+>
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmP8gj8FAwAAAAAACgkQlh/E3EQov+Ch
-aA/9GbcwRxWxkxz+JmD6gL6BryzEVqW4wkZXiqt2GKcu5eUz6LVa+29r1XpLtqUbpZ5a99+bCgau
-tw0zaUD4ZHosZNmzXK3NfRCQTIpQzdyuaS4m3x/rhnsumQHlxvFtRzC5TlT62bmC6cwAErrEOWoG
-vMQFJffgmogF5RlnvAg7UgMp/potuVqhzuh/GPsi7tq14NNLUSGs2j7FDWwt8iOzo6xhOIncFii8
-dEHWJd1T/2cH+jasyrljoR3WRHo+dbp5xEmJX0ZJJwtA3X9HMUPeX+jH8GW0LIy85DJphkCG7aVY
-woxMopK4qVx+WsS4SK2uTrA2nQFfrkxxnRyftl+HC72JXHUxIlQWKaxN3Argm1nTVgNm6kXCdluU
-WINleE1YPUpo+FczxEtL3lXgun0oqJkb7YNgQjIeQ0uOX44ClPilmRL/VZj1SgNLcmpRg+1+LcZ6
-yBtfIO1kskFo2uAREC7FmV4JttDk0n38/+B49ArZJFaM6g7ezk1osVOYMVqO7Bky5giDUWJHf3Z8
-/GOp98ntyPijdlxGdeodX0ujT7WNa2u0tzALFLLHLbvLmW1DL94xkhZYQakdJ1vUoSsTqrOA6Hcl
-z1mzJT9Wa6QHD24/BpYGKv8XiL7yoEp17JyRhWx02ylA/MgbBAIx7aIGGh5x0s40bcM7QtlLz0Yi
-CqE=
-=9rdz
------END PGP SIGNATURE-----
-
---------------FdrI51bCTG0C9tJkYvxuMCBX--

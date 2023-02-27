@@ -2,78 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DFA36A3611
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Feb 2023 02:03:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40A946A3F14
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Feb 2023 11:03:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229529AbjB0BDu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 Feb 2023 20:03:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49268 "EHLO
+        id S229941AbjB0KDx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Feb 2023 05:03:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229507AbjB0BDt (ORCPT
+        with ESMTP id S229595AbjB0KDv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 Feb 2023 20:03:49 -0500
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE3CFB457
-        for <kernel-janitors@vger.kernel.org>; Sun, 26 Feb 2023 17:03:47 -0800 (PST)
-Received: by mail-lf1-x12c.google.com with SMTP id k14so6470059lfj.7
-        for <kernel-janitors@vger.kernel.org>; Sun, 26 Feb 2023 17:03:47 -0800 (PST)
+        Mon, 27 Feb 2023 05:03:51 -0500
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37FAF76A7;
+        Mon, 27 Feb 2023 02:03:31 -0800 (PST)
+Received: by mail-wr1-x431.google.com with SMTP id j2so5537902wrh.9;
+        Mon, 27 Feb 2023 02:03:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=weYNpobTz7e34lKnlfhxYchHcnpoQgNkJdKwW1l0gho=;
-        b=Bg075geJRtLuk5nD33/cHYbxzauamLadOVEFdrO289zAmE3h2RG2Jlc10oLzP0aFlv
-         9ULN6HxpTLct7w30955hFlDvGU/53vTcyAoqiegyfxmRdooh57F3JX0uXZLVG52cADDp
-         pbUIOE0nXPd1/JLwzQT4PW8wVHn9a2eQ+7Ntf6BvV2WdAUQSj8/dRyndTpLCo4VEuVgX
-         7KYXFq6IaRK6zXhv1SGp3EnmYQmjr4ezx4PCnwb8O/GpVTYSFK41X9swkjbTcLdT2zEL
-         OFj5vQOMcoj5szGnljIgASkScI/NMp+7GgcBOyAUO+XTz2ljIkt0EZqeC/J8ql4XFfCR
-         B4Gg==
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4kWm37Ixl905qbNIzKjmoOPdiZM9qfGzX7zoFG4LKFs=;
+        b=nGuceni+LvNZpQjYuwGLrsqUz9oolJ7gyVYKUj3vd8/kJXwrTDdfapCTfwAeVIvP0L
+         tFKMXfqaTNFnms2aB8p7OElqogKZhpc8ASyRNEYbGvpb4dq4COkVWovqb3HGpV5LaZZ3
+         0FNHd0wGvmkFP5frzjF9YsbYrKE0rR4BIoiI2l3pg0QJ0k2k/UxlhA7vmh71D+uqbNIb
+         zya82D1JxYJnCQ64Nu3NYIy0CeDE3Gk4/L3srfyP+xQVN64tLXV3dIGJZIMVoU1+7PP/
+         4beVnfceIWzhL5trofCLdkuHCGyXBEGsu7pyPNfzCMpsGe6RLu4uvb99d6Okt7DUTVCP
+         BI0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=weYNpobTz7e34lKnlfhxYchHcnpoQgNkJdKwW1l0gho=;
-        b=TcGFyDPsN8JSJD9uvMtOgkQOR2zEBOiib1POZuMOCz2AcZJlJVBS5fUtZY6eqaZjgH
-         3NHTWp81RrYZhNITX1GiBMY6sJOzwx3+hazPMmA49YzthoaqYq3V2jD4ZDFxbIcNm2L0
-         HJfGmEipp0p1eS1MoKOYBH4ifksQSJ3On3dVcP3tFrDL20DVzvYzgaOfnZe451xGtPqs
-         BnTgERsjWQ9ltv8AW2RtPO1GqO4SRkHnr28c4tCM5SvUNa/9bbT1u98swcC3+TyLldMP
-         zTAQzGMctTq4BthBZihMS5lyMV4/G7htxFrQEYx3qlBP81N2q7ufD8v/JqMbxDBPTMM1
-         mP9g==
-X-Gm-Message-State: AO0yUKWjLBAFVme0VfgaMlDJ0PH2XwluCT6h9kIXqZXHcAOsx3NVfgae
-        dIDkaJpw0bey5g2JA1Cs6O/UJT1WtR8eCjQBFQ0=
-X-Google-Smtp-Source: AK7set+8B2eXY795400Ygu65cTPLrxfKe9xyDBnQCL3BplyEWYhocag/7r+D61SM7SGjuSIaII2D2WAXHIihef4q8m4=
-X-Received: by 2002:a05:6512:73:b0:4d5:ca42:e43a with SMTP id
- i19-20020a056512007300b004d5ca42e43amr6997518lfo.3.1677459825939; Sun, 26 Feb
- 2023 17:03:45 -0800 (PST)
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4kWm37Ixl905qbNIzKjmoOPdiZM9qfGzX7zoFG4LKFs=;
+        b=VVmW+IAkz2iP0jQRp0Xe62LklbP4adA2i9NtqXqgHiATdfbUw4oEeNbCOrJurXTTYj
+         srGRzUboVc4leKN+B1gead9d6XBgvrU/jLzVg6NvEgY3OVcLWb4geIf3QgRqCNgxnF67
+         4nVCgSrlv2METZfmkJqIvpjCPBM0XBUceJgXsYL8xWHlxMK01DFf3YUPYTCBQilKBnfn
+         Qfz66t0a+5pf95mmqODv5hv4TbD9gjCpX1BeJkHSclhBuSSCNWoB68Jl+daJyrN5bdpr
+         4ovol8oH/PGdZpW4Stqd5+dvITJ6oYVyKekjtDu4lhCMggCwI7fJlEBuONHbf4IiJmfJ
+         zaug==
+X-Gm-Message-State: AO0yUKWKxDDuNLWswBTUh1RoSWyGLyuR26G0le21T4b3e0iiIezMwwuM
+        qqCwpcG0ngrgNqWAbashblU=
+X-Google-Smtp-Source: AK7set+4nIYPmwmJ/R4nDrRJ13s//9CahcGEUYiZZQyNeCoA1RWY2zXaWtsdLjvS3318MLcA0jBzWg==
+X-Received: by 2002:adf:ce08:0:b0:2c5:5b9d:70ee with SMTP id p8-20020adfce08000000b002c55b9d70eemr19500975wrn.22.1677492209582;
+        Mon, 27 Feb 2023 02:03:29 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id e15-20020a5d594f000000b002c5d3f0f737sm6613343wri.30.2023.02.27.02.03.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Feb 2023 02:03:28 -0800 (PST)
+Date:   Mon, 27 Feb 2023 13:03:22 +0300
+From:   Dan Carpenter <error27@gmail.com>
+To:     Oleksij Rempel <linux@rempel-privat.de>
+Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH net] net: phy: unlock on error in phy_probe()
+Message-ID: <Y/x/6kHCjnQHqOpF@kili>
 MIME-Version: 1.0
-Received: by 2002:a89:b8f:0:b0:187:2c43:10df with HTTP; Sun, 26 Feb 2023
- 17:03:45 -0800 (PST)
-From:   Adel Aldoseri <adelaldoseri1@gmail.com>
-Date:   Sun, 26 Feb 2023 17:03:45 -0800
-Message-ID: <CAECeVmTV+NDTVNWw8ORBv88TT99RyCvZkwkZbzTFMdcDQ15cQQ@mail.gmail.com>
-Subject: We finance viable projects only
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=3.6 required=5.0 tests=BAYES_99,DKIM_SIGNED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Attention: Sir
+If genphy_c45_read_eee_adv() fails then we need to do a reset and unlock
+the &phydev->lock mutex before returning.
 
-Our Company is willing, ready to help you grow your network and offer
-you Loan funds to complete and fund your existing Projects. We can
-send you our Company Terms and Condition after review of your project
-plan and executive summary of your project, if you are serious and
-Interested contact us for further Information:
+Fixes: 3eeca4e199ce ("net: phy: do not force EEE support")
+Signed-off-by: Dan Carpenter <error27@gmail.com>
+---
+ drivers/net/phy/phy_device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 3f8a64fb9d71..9e9fd8ff00f6 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -3146,7 +3146,7 @@ static int phy_probe(struct device *dev)
+ 	 */
+ 	err = genphy_c45_read_eee_adv(phydev, phydev->advertising_eee);
+ 	if (err)
+-		return err;
++		goto out;
+ 
+ 	/* There is no "enabled" flag. If PHY is advertising, assume it is
+ 	 * kind of enabled.
+-- 
+2.39.1
 
-Best regards,
-
-Adel Aldoseri

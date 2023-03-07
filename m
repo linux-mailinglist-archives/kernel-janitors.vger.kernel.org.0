@@ -2,81 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B801E6ADC7C
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Mar 2023 11:57:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 993216ADB39
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Mar 2023 10:58:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229574AbjCGK4a (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Mar 2023 05:56:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42000 "EHLO
+        id S231178AbjCGJ56 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Mar 2023 04:57:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230372AbjCGK4E (ORCPT
+        with ESMTP id S230484AbjCGJ5k (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Mar 2023 05:56:04 -0500
-X-Greylist: delayed 2357 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Mar 2023 02:56:00 PST
-Received: from 7.mo575.mail-out.ovh.net (7.mo575.mail-out.ovh.net [46.105.63.230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F33D4A1FD
-        for <kernel-janitors@vger.kernel.org>; Tue,  7 Mar 2023 02:55:59 -0800 (PST)
-Received: from director8.ghost.mail-out.ovh.net (unknown [10.109.138.246])
-        by mo575.mail-out.ovh.net (Postfix) with ESMTP id 4C1D81FEC7
-        for <kernel-janitors@vger.kernel.org>; Tue,  7 Mar 2023 09:41:16 +0000 (UTC)
-Received: from ghost-submission-6684bf9d7b-jr9mk (unknown [10.110.208.235])
-        by director8.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 011EC1FDEE;
-        Tue,  7 Mar 2023 09:41:15 +0000 (UTC)
-Received: from RCM-web8.webmail.mail.ovh.net ([151.80.29.22])
-        by ghost-submission-6684bf9d7b-jr9mk with ESMTPSA
-        id UzyDO7sGB2STSQEALa529g
-        (envelope-from <rafal@milecki.pl>); Tue, 07 Mar 2023 09:41:15 +0000
+        Tue, 7 Mar 2023 04:57:40 -0500
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A033570B8;
+        Tue,  7 Mar 2023 01:57:36 -0800 (PST)
+Received: by mail-ed1-x536.google.com with SMTP id s11so49920941edy.8;
+        Tue, 07 Mar 2023 01:57:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678183055;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jJQB/5gXipfe1LU3X5YR10NL53UE8w0mr0UyzsB03S8=;
+        b=KgForhX7LM+oAiVt4CMKCwzpS5UjfFx+wa0BXt8jHwe4HGGLchHyxDx1JwtjhlMLLT
+         te6qYLEimW3JJIYuiWxca+4xwipsprmTbjweRbqPMPez2Ji7tC+Qb30OAydugxB7RXvc
+         MHmxdti6v0oXo0opMGL/ONHwhcDmI7jK0Fp/m93CPpRnpFU3WbZe06EIfioIrv7utSWw
+         VZc7KL3aly+WaCTVXTaTi3ikbgqIy4JFaYL2TugKsXybFQtHgazymY5zMF/0HauldZ8U
+         1R1gqoCCjkRu9QEVG1UA3I24W5Rt3Gy0SXC6MaRCJg1QenbZpH4ZOrVbXOfpYi70Va3d
+         1BBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678183055;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jJQB/5gXipfe1LU3X5YR10NL53UE8w0mr0UyzsB03S8=;
+        b=kM/qkZGRNYJ7jgE1xbg6wi8ZXZKsBBmCtK0nVaViZyxKGX6e6GJNLd43bK6ZlovJlt
+         Qw5PGIxNProege9rZf241VcFGWjPlacfnYjvk4wx0OpKGmswOTGhneW/EZEfeiQljewl
+         n8PJP1C8tCq/SrXGcrrzy0B8FkxNiqPUbfelmpUiIKo5D0DnjQyY5pE3NMHH6JKhooQf
+         JT0kDjsjVMS/goRmxqYhfMKrNOkzTessKM/6P1RrsTzlTMD9GYFSCY42gQkGd8lSjAXA
+         BZqtxeThXPbt68oLAIlh1d/YOMB2L/ZGdfXe7sMh12IJ7NgVfkSV+J0EqpVp34mYtPgr
+         TW0Q==
+X-Gm-Message-State: AO0yUKX9AdLF6qR8oagOqefC/iOuRsMENrs5wmcNmOsFrtIrFkD5zsYk
+        +Q9aeoAqg6opyZtx3PBfKSBeSXbOMJ0=
+X-Google-Smtp-Source: AK7set8YRCPqJl/SKCS3F9pCBfL7k/OKqg2EWwsuALLrsybrjJ8XFz2YkuY03YTcWtjFO9ltIsLKbw==
+X-Received: by 2002:aa7:cf90:0:b0:4bc:502e:e7de with SMTP id z16-20020aa7cf90000000b004bc502ee7demr12996835edx.32.1678183054977;
+        Tue, 07 Mar 2023 01:57:34 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id d27-20020a50f69b000000b004acb696a0f6sm6435229edn.91.2023.03.07.01.57.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Mar 2023 01:57:34 -0800 (PST)
+Date:   Tue, 7 Mar 2023 12:51:27 +0300
+From:   Dan Carpenter <error27@gmail.com>
+To:     Jack Morgenstein <jackm@dev.mellanox.co.il>
+Cc:     Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+        Roland Dreier <rolandd@cisco.com>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] RDMA/mlx: prevent shift wrapping in set_user_sq_size()
+Message-ID: <a8dfbd1d-c019-4556-930b-bab1ded73b10@kili.mountain>
 MIME-Version: 1.0
-Date:   Tue, 07 Mar 2023 10:41:15 +0100
-From:   =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Pavel Machek <pavel@ucw.cz>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-leds@vger.kernel.org,
-        William Zhang <william.zhang@broadcom.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] leds: bcm63138: refer to ARCH_BCMBCA instead of
- ARCH_BCM4908
-In-Reply-To: <20230307082936.16631-1-lukas.bulwahn@gmail.com>
-References: <20230307082936.16631-1-lukas.bulwahn@gmail.com>
-User-Agent: Roundcube Webmail/1.4.13
-Message-ID: <9e448d3d42b4b3029e4b8993f2272e4c@milecki.pl>
-X-Sender: rafal@milecki.pl
-X-Originating-IP: 194.187.74.233
-X-Webmail-UserID: rafal@milecki.pl
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 485262861866281947
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrvddutddgtddvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggffhffvvefujghffgfkgihitgfgsehtjehjtddtredvnecuhfhrohhmpeftrghfrghlucfoihhlvggtkhhiuceorhgrfhgrlhesmhhilhgvtghkihdrphhlqeenucggtffrrghtthgvrhhnpeetheelfefgjedutdeivdduvdethffhhedulefggeeitdejudfhkeetjeekieejgfenucfkphepuddvjedrtddrtddruddpudelgedrudekjedrjeegrddvfeefpdduhedurdektddrvdelrddvvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoehrrghfrghlsehmihhlvggtkhhirdhplheqpdhnsggprhgtphhtthhopedupdhrtghpthhtohepkhgvrhhnvghlqdhjrghnihhtohhrshesvhhgvghrrdhkvghrnhgvlhdrohhrghdpoffvtefjohhsthepmhhoheejhedpmhhouggvpehsmhhtphhouhht
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2023-03-07 09:29, Lukas Bulwahn wrote:
-> diff --git a/drivers/leds/blink/Kconfig b/drivers/leds/blink/Kconfig
-> index 945c84286a4e..bdcb7377cd4e 100644
-> --- a/drivers/leds/blink/Kconfig
-> +++ b/drivers/leds/blink/Kconfig
-> @@ -1,10 +1,10 @@
->  config LEDS_BCM63138
->  	tristate "LED Support for Broadcom BCM63138 SoC"
->  	depends on LEDS_CLASS
-> -	depends on ARCH_BCM4908 || ARCH_BCM_5301X || BCM63XX || COMPILE_TEST
-> +	depends on ARCH_BCMBCA || ARCH_BCM_5301X || BCM63XX || COMPILE_TEST
->  	depends on HAS_IOMEM
->  	depends on OF
-> -	default ARCH_BCM4908
-> +	default ARCH_BCMBCA
->  	help
->  	  This option enables support for LED controller that is part of
->  	  BCM63138 SoC. The same hardware block is known to be also used
+The ucmd->log_sq_bb_count variable is controlled by the user so this
+shift can wrap.  Fix it by using check_shl_overflow() in the same way
+that it was done in commit 515f60004ed9 ("RDMA/hns: Prevent undefined
+behavior in hns_roce_set_user_sq_size()").
 
-William: do we want LEDS_BCM63138 default on all BCMBCA devices?
+Fixes: 839041329fd3 ("IB/mlx4: Sanity check userspace send queue sizes")
+Signed-off-by: Dan Carpenter <error27@gmail.com>
+---
+ drivers/infiniband/hw/mlx4/qp.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/infiniband/hw/mlx4/qp.c b/drivers/infiniband/hw/mlx4/qp.c
+index 884825b2e5f7..456656617c33 100644
+--- a/drivers/infiniband/hw/mlx4/qp.c
++++ b/drivers/infiniband/hw/mlx4/qp.c
+@@ -447,9 +447,13 @@ static int set_user_sq_size(struct mlx4_ib_dev *dev,
+ 			    struct mlx4_ib_qp *qp,
+ 			    struct mlx4_ib_create_qp *ucmd)
+ {
++	u32 cnt;
++
+ 	/* Sanity check SQ size before proceeding */
+-	if ((1 << ucmd->log_sq_bb_count) > dev->dev->caps.max_wqes	 ||
+-	    ucmd->log_sq_stride >
++	if (check_shl_overflow(1, ucmd->log_sq_bb_count, &cnt) ||
++	    cnt > dev->dev->caps.max_wqes)
++		return -EINVAL;
++	if (ucmd->log_sq_stride >
+ 		ilog2(roundup_pow_of_two(dev->dev->caps.max_sq_desc_sz)) ||
+ 	    ucmd->log_sq_stride < MLX4_IB_MIN_SQ_STRIDE)
+ 		return -EINVAL;
+-- 
+2.39.1
+

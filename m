@@ -2,89 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AFBC6AFFDF
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Mar 2023 08:38:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E2856B0284
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Mar 2023 10:12:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229685AbjCHHit (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Mar 2023 02:38:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39864 "EHLO
+        id S230244AbjCHJMz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Mar 2023 04:12:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229868AbjCHHip (ORCPT
+        with ESMTP id S230211AbjCHJMw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Mar 2023 02:38:45 -0500
-X-Greylist: delayed 204 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Mar 2023 23:38:11 PST
-Received: from h-241.webit.at (h-241.webit.at [213.208.138.241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ACD3212B1
-        for <kernel-janitors@vger.kernel.org>; Tue,  7 Mar 2023 23:38:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=winischhofer.net; s=rsa1; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=np2VeMjbFObtnEPKwHULGC9atl9R6YcO1ecS1ymUv9w=; b=NUwKJgdS/D7HyEhaJ8BQic2610
-        7+RzyW6H8ns30uSFexbfPEAN/sZmaUUhdOrMqW6MOsmLpfXt2V8OJ4TZN9gL6jmeInz+uWDFvoD76
-        ZH0lD4Cvw/nABr5LHHynklz8et3O2M0VWK53cd7qFfOeFvoXt3SGiPKiMlJdOT9IyMwU=;
-Message-ID: <59fee461-5aa5-dc66-2470-df55eaf0fe76@winischhofer.net>
-Date:   Wed, 8 Mar 2023 08:33:39 +0100
+        Wed, 8 Mar 2023 04:12:52 -0500
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB0EBA3378;
+        Wed,  8 Mar 2023 01:12:48 -0800 (PST)
+Received: by mail-wr1-x432.google.com with SMTP id e13so14612544wro.10;
+        Wed, 08 Mar 2023 01:12:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678266766;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=42Tebu01feBjjmnfdSuFij+fK1V/+T2ggLj9HPy2k2A=;
+        b=BwDGpmRLGGevxzbXxe2kQZVQzqxqnTsPC4MmBdNBicw4Ha3q09zO3ROZuY2CP3MZFo
+         2e9V1irp3BVx47yDhZ0t8WzO1/SqRUSkpQmx2GHDZERkkg/TynusNYg+Gjb+L7r1lXe5
+         zpHZ2HU/TmvK+F/nBUd7SsGwgC3JkIzXldgttq3Cpdj5NnhY7MEunMbAWK2koJlY7e2r
+         k/2ymkZzT+SazxQ6JRbFA83bLgX20mZfqJC5qfVavU0uDpYTih9zVxsjdbpYFfKo9dKi
+         J0p4wt8ByIj9fFxsSapw3jrgyvxsNdnJiAlB1LvEmNT5rHMuC8mdwhgk62eQB/scLRqj
+         g4Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678266766;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=42Tebu01feBjjmnfdSuFij+fK1V/+T2ggLj9HPy2k2A=;
+        b=klgEMDqCnZi1hDK7NwnxEyJXvDiooI/gJ44c7eIM+ySRtJ3TRisfwpMp0Z5CVWDblK
+         HaUMkbiCCMpnDtpx/QjKib7xWf+IN6jAREp5jb3jhCtNEV27fxp09C1GezZlG2jZ8MdL
+         VDW70y4JRJYgZeb6tKDfz7k2iBWN9sOPo1uFwNXe3ut0ExY0UO14w4t3Jy0b2tEaPhEl
+         Nnzic/IUbL4EL7+DOEk4Tj3Y1viWJzFKvSoZsF29wH9j1oLLBlcLIQaggryIJ5xZ8QT5
+         UrEa/eV/myv1NlQ7hd+djN4CyCN9fucMupDymaF6k7/7d1lEPD1azkQoygYDr6QGvl+2
+         V8sg==
+X-Gm-Message-State: AO0yUKWVk2UUvRIFw+lQ+QJvLH4JskwRUypYGgLz09TkKkwBBp3SZVLh
+        dslkGITIidh/1HK8CVKzKIw=
+X-Google-Smtp-Source: AK7set/AePNSu3Roc2C/uKr4V6FQ6Lp8IK+7vZyXjHle7GZFLuXe/Nyr48LLqEhLqoBv9kpSBlX9TA==
+X-Received: by 2002:adf:e34c:0:b0:2ca:8995:38d with SMTP id n12-20020adfe34c000000b002ca8995038dmr12132661wrj.16.1678266766567;
+        Wed, 08 Mar 2023 01:12:46 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id z17-20020a5d44d1000000b002c58ca558b6sm14567141wrr.88.2023.03.08.01.12.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Mar 2023 01:12:44 -0800 (PST)
+Date:   Wed, 8 Mar 2023 12:12:37 +0300
+From:   Dan Carpenter <error27@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Irina Tirdea <irina.tirdea@intel.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] iio: magn: bmc150: add a lower bounds in
+ bmc150_magn_write_raw()
+Message-ID: <94939714-a232-4107-8741-8867038b03ae@kili.mountain>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:91.0)
- Gecko/20100101 Thunderbird/91.13.1
-Subject: Re: [PATCH] MAINTAINERS: orphan SIS FRAMEBUFFER DRIVER
-Content-Language: en-US
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Helge Deller <deller@gmx.de>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230308071921.10963-1-lukas.bulwahn@gmail.com>
-From:   Thomas Winischhofer <thomas@winischhofer.net>
-In-Reply-To: <20230308071921.10963-1-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+The "val" variable comes from the user via iio_write_channel_info().
+This code puts an upper bound on "val" but it doesn't check for
+negatives so Smatch complains.  I don't think either the bounds
+checking is really required, but it's just good to be conservative.
 
-Confirm.
+Fixes: 5990dc970367 ("iio: magn: bmc150_magn: add oversampling ratio")
+Signed-off-by: Dan Carpenter <error27@gmail.com>
+---
+ drivers/iio/magnetometer/bmc150_magn.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-/Thomas
+diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
+index 06d5a1ef1fbd..c625416b8bcf 100644
+--- a/drivers/iio/magnetometer/bmc150_magn.c
++++ b/drivers/iio/magnetometer/bmc150_magn.c
+@@ -537,7 +537,7 @@ static int bmc150_magn_write_raw(struct iio_dev *indio_dev,
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+-		if (val > data->max_odr)
++		if (val < 0 || val > data->max_odr)
+ 			return -EINVAL;
+ 		mutex_lock(&data->mutex);
+ 		ret = bmc150_magn_set_odr(data, val);
+-- 
+2.39.1
 
-
-On 08.03.23 08:19, Lukas Bulwahn wrote:
-> This was triggered by the fact that the webpage:
-> 
->   http://www.winischhofer.net/linuxsisvga.shtml
-> 
-> cannot be reached anymore.
-> 
-> Thomas Winischhofer is still reachable at the given email address, but he
-> has not been active since 2005.
-> 
-> Mark the SIS FRAMEBUFFER DRIVER as orphan to reflect the current state.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
->  MAINTAINERS | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 5d8f46f35aa4..354577534aef 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -19191,9 +19191,7 @@ W:	http://www.brownhat.org/sis900.html
->  F:	drivers/net/ethernet/sis/sis900.*
->  
->  SIS FRAMEBUFFER DRIVER
-> -M:	Thomas Winischhofer <thomas@winischhofer.net>
-> -S:	Maintained
-> -W:	http://www.winischhofer.net/linuxsisvga.shtml
-> +S:	Orphan
->  F:	Documentation/fb/sisfb.rst
->  F:	drivers/video/fbdev/sis/
->  F:	include/video/sisfb.h

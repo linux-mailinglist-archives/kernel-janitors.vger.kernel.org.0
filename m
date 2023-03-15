@@ -2,70 +2,49 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A38C6BD405
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Mar 2023 16:39:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C4E26BDAEA
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Mar 2023 22:27:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231734AbjCPPjA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Mar 2023 11:39:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51834 "EHLO
+        id S229977AbjCPV11 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Mar 2023 17:27:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231689AbjCPPil (ORCPT
+        with ESMTP id S229838AbjCPV1Z (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Mar 2023 11:38:41 -0400
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF28BE2756
-        for <kernel-janitors@vger.kernel.org>; Thu, 16 Mar 2023 08:36:56 -0700 (PDT)
-Received: by mail-il1-x134.google.com with SMTP id y12so1211300ilq.4
-        for <kernel-janitors@vger.kernel.org>; Thu, 16 Mar 2023 08:36:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20210112.gappssmtp.com; s=20210112; t=1678980957; x=1681572957;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sYar2ybeVJqnai5t6j9VGmRtR2ovUMfBI/dkWezXyWc=;
-        b=sVk1JuZmFUhd1tlBehU7iFt3sVXohrn+jnAzxsEhXyW1rV3rTUKOwK9OK1Sh1mDfzd
-         Kdv9QjNsZcBRnPUFaxFo+MZqaO/wdpiUCKcD0WaWhPqnh8kAVh2LV8rzxLXlt/nl0ZkI
-         zmuuw653yy4/0bfN11ybpCc2F1GxYJUez5q3lorEpqZmPHRWANi9M5ZirtBDnQaQV313
-         h3yoZbRmcM/85ydvtqPw4hElb0MKrZBkT5NK+SHPVpIXcq/POirSUbuXiM63Nt1VDxJQ
-         tmJwN2tMboNaBqDwf6Ag8Rl5xWxtCDFYcmMQQgdpU8duQc+zZpHZfsl8DtrjYmguNLfo
-         5SFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678980957; x=1681572957;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sYar2ybeVJqnai5t6j9VGmRtR2ovUMfBI/dkWezXyWc=;
-        b=OIjyTt8tRxmZlV1SNy6peny+CF7QtZbR+pJT/IuuitSA9D3Ny0UwJTbxPujCyeekTy
-         VXclw68ETaj5Z2/fsKcMRzqoQwgdEXmdVar5Gsn0zbmtS9HkBhA8L5T40ixEtAW1mZ3p
-         4Il+fDijRR9nL82UM208lcr+GYaagdkSHjyATpfa4u/1LCsDod6DN6wPBwsLYX+ti5Se
-         4xDqGOU/oMHhkEVHvDAfCy8edhkpKM+VitPwtZtg/2hjlrSVezeoX/nmfxMJn62f5fPD
-         l6uMX4T8Gv6QETBiSqJ2w3wRYQuAzs16IdgiWn0ZNxAerIp/7os+qo+RH0KmZ2EQ0+bd
-         Lceg==
-X-Gm-Message-State: AO0yUKWDLEo43gua/RzwkS6jPf4npjOjwVCx6nYllD5RFxTllGgdGxG3
-        Fe/CBWiKo9vUhQ5tPRYbIoJ3MA==
-X-Google-Smtp-Source: AK7set/W9ggxEyvzAzMZ4ShGBmfvBVdryiJ14kkiBwYaN78df/A1Lz33twWv8A/A/Ldki12xG+KOpg==
-X-Received: by 2002:a92:d64f:0:b0:323:10c5:899e with SMTP id x15-20020a92d64f000000b0032310c5899emr4228071ilp.1.1678980957025;
-        Thu, 16 Mar 2023 08:35:57 -0700 (PDT)
-Received: from [127.0.0.1] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id t8-20020a056638204800b004050d92f6d4sm726970jaj.50.2023.03.16.08.35.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Mar 2023 08:35:56 -0700 (PDT)
-From:   Jens Axboe <axboe@kernel.dk>
-To:     Arnd Bergmann <arnd@arndb.de>, linux-block@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230316111630.4897-1-lukas.bulwahn@gmail.com>
-References: <20230316111630.4897-1-lukas.bulwahn@gmail.com>
-Subject: Re: [PATCH] block: remove obsolete config BLOCK_COMPAT
-Message-Id: <167898095613.31557.5292857532580529637.b4-ty@kernel.dk>
-Date:   Thu, 16 Mar 2023 09:35:56 -0600
+        Thu, 16 Mar 2023 17:27:25 -0400
+Received: from sragenkab.go.id (mail.sragenkab.go.id [103.172.109.4])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 88ECBE41C2
+        for <kernel-janitors@vger.kernel.org>; Thu, 16 Mar 2023 14:27:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sragenkab.go.id;
+         h=mime-version:content-type:content-transfer-encoding:date:from
+        :to:subject:reply-to:message-id; q=dns/txt; s=dkim1; bh=QGcIAmD5
+        O/Y9qXzDV8MxyimbsW3+rMaQ/kz75GzBHbk=; b=s/4306Hr0CRFrQneVNpgBYm1
+        0OwWlTCumTaArtvKMInsiq91LDY30bwQoc3Yqbl2iG0028dtJsFD6KtRxu4nU6Un
+        8ssrDwyizN2o9H4BlfANUb6nIl2Iqrn6ZLvBxojv9hZ4a95uYqEmbrsWg2Rm8+jL
+        sPPIo8iepvxHv+T2Tp3knWeaSho+AThUekvUxpwC0TSZpNTbzLSvEthUJ9Sf69vM
+        P/JmGvyQREIdGKk/NiwwNsUkgHitgXLfxNXyWJztdzoJsHs0MiyVt94oKR47idfN
+        8IFAZgrZgSvuTOAYFHwv2vrw7DdaQokp8pNwzwYeuzDATkWS76fl/NrLVuCUng==
+Received: (qmail 67657 invoked from network); 15 Mar 2023 02:20:27 -0000
+Received: from localhost (HELO mail2.sragenkab.go.id) (127.0.0.1)
+  by localhost with SMTP; 15 Mar 2023 02:20:27 -0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-2eb1a
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Date:   Tue, 14 Mar 2023 19:20:25 -0700
+From:   Ibrahim Tafa <jurnalsukowati@sragenkab.go.id>
+To:     undisclosed-recipients:;
+Subject: LOAN OPPORTUNITY AT LOW-INTEREST RATE.!
+Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
+Mail-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
+Message-ID: <e79ef4b1d556b9a61e5b0c7702d0b4f5@sragenkab.go.id>
+X-Sender: jurnalsukowati@sragenkab.go.id
+User-Agent: Roundcube Webmail/0.8.1
+X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        SUBJ_ALL_CAPS,UNDISC_MONEY autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -73,25 +52,18 @@ List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
-On Thu, 16 Mar 2023 12:16:30 +0100, Lukas Bulwahn wrote:
-> Before commit bdc1ddad3e5f ("compat_ioctl: block: move
-> blkdev_compat_ioctl() into ioctl.c"), the config BLOCK_COMPAT was used to
-> include compat_ioctl.c into the kernel build. With this commit, the code
-> is moved into ioctl.c and included with the config COMPAT. So, since then,
-> the config BLOCK_COMPAT has no effect and any further purpose.
-> 
-> Remove this obsolete config BLOCK_COMPAT.
-> 
-> [...]
 
-Applied, thanks!
-
-[1/1] block: remove obsolete config BLOCK_COMPAT
-      commit: 8f0d196e4dc137470bbd5de98278d941c8002fcb
-
-Best regards,
 -- 
-Jens Axboe
+Greetings,
+   I am contacting you based on the Investment/Loan opportunity for 
+companies in need of financing a project/business, We have developed a 
+new method of financing that doesn't take long to receive financing from 
+our clients.
+    If you are looking for funds to finance your project/Business or if 
+you are willing to work as our agent in your country to find clients in 
+need of financing and earn commissions, then get back to me for more 
+details.
 
-
-
+Regards,
+Ibrahim Tafa
+ABIENCE INVESTMENT GROUP FZE, United Arab Emirates

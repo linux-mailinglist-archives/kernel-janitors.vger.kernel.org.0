@@ -2,106 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24C8E6BAA57
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Mar 2023 09:02:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F28936BABC4
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Mar 2023 10:11:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231578AbjCOICA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 Mar 2023 04:02:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41256 "EHLO
+        id S232062AbjCOJK7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 Mar 2023 05:10:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231313AbjCOIBx (ORCPT
+        with ESMTP id S230266AbjCOJKN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 Mar 2023 04:01:53 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC1546772F;
-        Wed, 15 Mar 2023 01:01:46 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id bi20so2016037wmb.2;
-        Wed, 15 Mar 2023 01:01:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678867305;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7bY7uM2WUrQr++XXrQWRw8Isupq/sx4rHRa6AGV7kwM=;
-        b=aJZBZt8+qQGUmGLRg1lShIpbmXGwdzVJDh3Wn+oX8FI8DsNFQyZqOuNwutOzqkAf/f
-         bdEh0KrCFSwMbrw02U+tZnq0Cdw3eZtImTe038zXGsZg1bDS2e3KXXH/ISoX/kk5769T
-         uaGXya5wmwCqyF+cwVxfSZDexQGzVca6GGasgq1VrW/geHnXeTYb5yLOtQJlMgrw310H
-         IkXUASDUD8Hg/L8LcfeyDPxvJ9CR66i6JMA/UZZAIPGsdrPsSKjE8MUuj3l67VH+OjiF
-         vGkGGox5UM7SRruncy9rwcSrujdP9x96Ofv6EhlUrrtqivgu7HAzW22QipqbJrwWmfmf
-         n7pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678867305;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7bY7uM2WUrQr++XXrQWRw8Isupq/sx4rHRa6AGV7kwM=;
-        b=2Bk5hDE8oxWFqw9Kja0nK+W5CjuXzveaTm2VC3dy+d6UarTfmIl5Lp6DyNycjmbyhr
-         lkF7v0Ylkgb5Rk0a9s+4t4h1CLuKrSRCPq6HlJHbhf7WWL06ONVUywS5TOR4rQPsnaHM
-         /p4X6i2BTDJ6t/reahi2YB2ux7S756TZNwMkiuzbnYtBbWS3z2oU5nNR3PSZ1ia1il+n
-         uu+Acojg8UHCCJhCPnMiq1tofDoJoxEP7gtr815s/LKQ4w7jXyFGJXubjmMqAMyeEszf
-         DQ+Ax//Fd5MZMfrX3yW2Xcvvc6ayqY8R7nOgiDMVftt7HnOQqTAATXvzhJ75A5Te5OlR
-         DxWA==
-X-Gm-Message-State: AO0yUKV6E6ZX9JKkFge7Z3pZKAOAHVcBTPLS0k9QnHw7yB6i64JBcmLc
-        UAGGMyj/hNCWleBuYJ0MsEg=
-X-Google-Smtp-Source: AK7set/lqTfii/x9kup6SsaRh721b/XRSN95Hv9u4L+njZPWQwhfJ7r4py/nOuzdql3dN/3kumtAXg==
-X-Received: by 2002:a05:600c:190a:b0:3e0:6c4:6a38 with SMTP id j10-20020a05600c190a00b003e006c46a38mr16519683wmq.33.1678867304741;
-        Wed, 15 Mar 2023 01:01:44 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id k18-20020a05600c1c9200b003dc434b39c7sm5957812wms.0.2023.03.15.01.01.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Mar 2023 01:01:43 -0700 (PDT)
-Date:   Wed, 15 Mar 2023 11:01:39 +0300
-From:   Dan Carpenter <error27@gmail.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Alexander Lobakin <aleksander.lobakin@intel.com>,
-        Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Ariel Elior <aelior@marvell.com>,
-        Manish Chopra <manishc@marvell.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>, kernel@collabora.com,
-        kernel-janitors@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] qede: remove linux/version.h and linux/compiler.h
-Message-ID: <e90eb551-3b56-4c34-be8d-3d2187a1f81c@kili.mountain>
-References: <20230303185351.2825900-1-usama.anjum@collabora.com>
- <20230303155436.213ee2c0@kernel.org>
- <df8a446a-e8a9-3b3d-fd0f-791f0d01a0c9@collabora.com>
- <ZAdoivY94Y5dfOa4@corigine.com>
- <1107bc10-9b14-98f4-3e47-f87188453ce7@collabora.com>
- <8a90dca3-af66-5348-72b9-ac49610f22ce@intel.com>
- <ee08333d-d39d-45c6-9e6e-6328855d3068@kili.mountain>
- <20230313114538.74e6caca@kernel.org>
+        Wed, 15 Mar 2023 05:10:13 -0400
+Received: from mail.ettrick.pl (mail.ettrick.pl [141.94.21.111])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8047A2CFC7
+        for <kernel-janitors@vger.kernel.org>; Wed, 15 Mar 2023 02:10:12 -0700 (PDT)
+Received: by mail.ettrick.pl (Postfix, from userid 1002)
+        id AC411A2D72; Wed, 15 Mar 2023 09:05:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ettrick.pl; s=mail;
+        t=1678871153; bh=KHux3km3Civcx5ChslOYQZwQRBjoJa4kWJfGcMIuN6w=;
+        h=Date:From:To:Subject:From;
+        b=sMZ8E6QUo8uvYajs61K4T0oqHsICKUf1V5fHbInXqfVCi0lZT4YREPVQ7bWTQ5N7c
+         AlKXnZ9+jCOqIn8bBgtwZOYpmJrqnYuZGA/LtJ10y2viLhDSe7r2LEYFDh3CI5Z9Ki
+         XavppcaFXoGJz54tbCkfZlYPqi0hJo1AK1FL0sz1T1eoIxJQ3H+TzIHD96TPdnPhLV
+         NvVPG1E/ifF5G9O4HnTC/MnQ+CNKVVw8shLVdx70ojF/IaHM9YttLPtuXOvtTNbZSu
+         UT3nBstpl3nGflUK2p0onbPVInm23qBSZj7Hf4uRKUX5yv+nGmwWidNZSPJSsfbsir
+         FTBD0+02IFJyQ==
+Received: by mail.ettrick.pl for <kernel-janitors@vger.kernel.org>; Wed, 15 Mar 2023 09:05:47 GMT
+Message-ID: <20230315074500-0.1.9e.3crps.0.k18rjye2xp@ettrick.pl>
+Date:   Wed, 15 Mar 2023 09:05:47 GMT
+From:   "Norbert Karecki" <norbert.karecki@ettrick.pl>
+To:     <kernel-janitors@vger.kernel.org>
+Subject: Fotowoltaika - nowe warunki
+X-Mailer: mail.ettrick.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230313114538.74e6caca@kernel.org>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS,URIBL_ABUSE_SURBL,URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
+        *      blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [URIs: ettrick.pl]
+        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
+        *      blocklist
+        *      [URIs: ettrick.pl]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [141.94.21.111 listed in zen.spamhaus.org]
+        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
+        *      blocklist
+        *      [URIs: ettrick.pl]
+        *  1.2 URIBL_ABUSE_SURBL Contains an URL listed in the ABUSE SURBL
+        *      blocklist
+        *      [URIs: ettrick.pl]
+        * -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+        *      [score: 0.0000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Mar 13, 2023 at 11:45:38AM -0700, Jakub Kicinski wrote:
-> Reality check for me - this is really something that should
-> be handled by our process scripts, right? get_maintainer/
-> /checkpatch ? Or that's not a fair expectation.
+Dzie=C5=84 dobry,
 
-If it could be automated some way, that would help a lot.
+chcia=C5=82bym poinformowa=C4=87, i=C5=BC mog=C4=85 Pa=C5=84stwo uzyska=C4=
+=87 dofinansowanie na systemy fotowoltaiczne w ramach nowej edycji progra=
+mu M=C3=B3j Pr=C4=85d.
 
-There are a bunch of things which have confused me in the past such as
-how RDMA and the net trees interact.  Also the Mellanox tree, I used to
-think Mellanox maintainers collect patches and send git pulls but
-apparently for fixes they prefer if you collect them from mailing list?
+Program zapewnia 6000 z=C5=82 dofinansowania na instalacj=C4=99 paneli i =
+16 000 z=C5=82 na magazyn energii, ni=C5=BCsze cen pr=C4=85du i mo=C5=BCl=
+iwo=C5=9B=C4=87 odliczenia koszt=C3=B3w zwi=C4=85zanych z instalacj=C4=85=
+ fotowoltaiki w ramach rozliczenia PIT (tzw. ulga termomodernizacyjna).
 
-I'm looking at my process now and I can see that I was dumb when I set
-this up.  Just doing a fetch and switching between git trees was taking
-4 minutes but I can cut it down to 30 seconds.  So some of this was my
-fault.
+Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
+temacie?
 
-regards,
-dan carpenter
+
+Pozdrawiam,
+Norbert Karecki

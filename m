@@ -2,156 +2,125 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82DF36C2924
-	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Mar 2023 05:26:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DFFE6C2A8E
+	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Mar 2023 07:39:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229685AbjCUE0v (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 21 Mar 2023 00:26:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33906 "EHLO
+        id S230362AbjCUGjU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 21 Mar 2023 02:39:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbjCUE0u (ORCPT
+        with ESMTP id S229927AbjCUGjS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 21 Mar 2023 00:26:50 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABE9926587;
-        Mon, 20 Mar 2023 21:26:48 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id cn12so9269400edb.4;
-        Mon, 20 Mar 2023 21:26:48 -0700 (PDT)
+        Tue, 21 Mar 2023 02:39:18 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11CE6DBC3
+        for <kernel-janitors@vger.kernel.org>; Mon, 20 Mar 2023 23:39:07 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id l15-20020a05600c4f0f00b003ed58a9a15eso8794439wmq.5
+        for <kernel-janitors@vger.kernel.org>; Mon, 20 Mar 2023 23:39:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679372807;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B7LU1YRsXhbsqmPzCrst4NJ9fxlJXbbFdC3pa6Aj3+g=;
-        b=KgpA/xvxWtTEC+5M243SNSSdQ/sR5n8aNFQoCvZB980MdYygUQ3vXzNPhDGv+OEZHU
-         dJ8Vz0raQjqD76uK2yidCiOhvAH8/mLJrnkDZMFlCWLuWkWS7J0OVpyXsuxUwsg0nuMn
-         5yLRwbKNtmjoBK2L/3peR99Cl76PmC+Fpb5ZUUdHMHzmA858hwdrTIx6GHngMZlTKFx3
-         ryOsDFwKGAa/5fIw+vXxDPfSFz71jBUWNJb2wTnNW5NcqmIa3yZHq8ZpfTs4Y45x5qOq
-         qWbb6fMfAJsDFbdSFWpvnCvD2eiiiZTwTwmkMcX3/L3P8nXQsZwpgsB6ZsisfNzJCIkj
-         V8eA==
+        d=gmail.com; s=20210112; t=1679380746;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=k2x3KMifqt64fuH2SN7GNi8R/2HnyOseMgBW/UypRh0=;
+        b=YtSrk0NxH6LgK0Du77Im5HweToS2JLVLz4zwNTxt0V2yfupJrGZ4jpHXSAKr4Md/jm
+         4EGaFO6lHdHxqzCQZSypyyVKaR1kQUU4SUsQFmi6xQXGjAmrIqpG8eYKbWdh6WijQODn
+         BFEzHwFdFeS4o62JXW4bFthcBLcJvzdJ7xXy8GQ/WpQcAfqjXxzuBgW7+a3k8vXuuocd
+         S804IYebYIgOl8jjlgHXKPY0GTO+JSXmobPKhDuSjfR1v+OYyyZwpyFEpdvT8voMk9Xn
+         KSFd7YkSlSVto2YHeANwdXIhcUXbXn3KSQWEwmzsKTBdFeuwV47j4HRTFMPURAw5la5W
+         HLQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679372807;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=B7LU1YRsXhbsqmPzCrst4NJ9fxlJXbbFdC3pa6Aj3+g=;
-        b=B1Ejq/aL7P/XXaMLTU8Cr3wEwp7N4g/mHd8z6rvq8u5zoclkr10+NNgbhue8XBLWyc
-         quHLcqzkCZF9se2my7p2fpHY3/O7fhseb6KQSnPb9nA1Xqx5IsAOqcxuRp4bTjuzAA6G
-         d5rJXFZs4lIMsjKKbUH3/ByGa5QylW7PN1/EqXzfZUBIusadteIEBiJP+oXcUZS0A8Tg
-         xnw2/jLynVh7IkXxP5IBqjlXP4kdDztWYQ7ri/h58X/MuHnbnJ5bMThnjWk7oTVpC2//
-         6a5TupnXKw28p9vdiyekArgZ8o0sHGgsLgb8U9xM34MyY6QPhQgjCFyeRCV8KDMdG3RR
-         bWBw==
-X-Gm-Message-State: AO0yUKViqCEjX9jI/g9Au6ioYWZP0kM3tBgr2AngXo97GZILeeO//UXl
-        Qug2sXJ/1ZHSSQfgAbMpHholUSOwY95Sww==
-X-Google-Smtp-Source: AK7set/w/ExYAxonQFR20l6IlWAqcYeWwQuLWKpIzZRcDzIPrF57OQOXOYBsPxDLANdchya0fH5i5A==
-X-Received: by 2002:a17:906:5e43:b0:932:4990:2563 with SMTP id b3-20020a1709065e4300b0093249902563mr1496687eju.24.1679372807043;
-        Mon, 20 Mar 2023 21:26:47 -0700 (PDT)
-Received: from felia.fritz.box ([2a02:810d:2a40:1104:6c2c:25d2:96b3:40e6])
-        by smtp.gmail.com with ESMTPSA id s17-20020a170906961100b009316783c92csm5290434ejx.12.2023.03.20.21.26.46
+        d=1e100.net; s=20210112; t=1679380746;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k2x3KMifqt64fuH2SN7GNi8R/2HnyOseMgBW/UypRh0=;
+        b=F9w6SVmCSyVFsaVNEtQlstIQyb7sypOSbiQ+68lFSU4tJgzyQ2U7dbSyuxsRutXTh7
+         mxv3gxxNNBjSqIOFvMuxEIHcwmGmO0sMrwIwLvjogNPy1ZBCfHWUi5uMW88RWGG4OYQq
+         aX7BXFu1GYVzFGF7+cT916bWxTjF6xaqdUCKpu90Nc7N/Wif5y2huH85GhA1UUm2yf/R
+         LOR6Qz1RSy8vx1TIWdZuNwhiedZF6qmAq0Ps+7c2hGay1rZHPuswRWzVlxdfFQcHdIpt
+         O8rxUosZOc3A03lOdrb1J3cx6G1yYfV6ryVpmDcxYv4F9qUpAOwDIE9UajWViMrtpjht
+         V15w==
+X-Gm-Message-State: AO0yUKW3MFsF1qY2yXX1odHYrG1OHCMIhZY2t2yUaT7MGgTNZt9QOYsy
+        vMYir1Jhzh/71fjv0ZsBHLEnje0l9tY=
+X-Google-Smtp-Source: AK7set/KA+1XLFB6ccuNzuHD3DAW3WXj7868sB1iOXpHjxBUyAT3E+xm5XAAXqSGE76I3kfd6SK6cQ==
+X-Received: by 2002:a7b:c383:0:b0:3dc:5b88:e6dd with SMTP id s3-20020a7bc383000000b003dc5b88e6ddmr1415492wmj.10.1679380746030;
+        Mon, 20 Mar 2023 23:39:06 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id v15-20020a05600c444f00b003edddce5b00sm6602940wmn.12.2023.03.20.23.39.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Mar 2023 21:26:46 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Owen Chen <owen.chen@mediatek.com>,
-        Mars Cheng <mars.cheng@mediatek.com>,
-        Macpaul Lin <macpaul.lin@mediatek.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] clk: mediatek: Remove unused configs with COMMON_CLK_MT6765 prefix
-Date:   Tue, 21 Mar 2023 05:26:41 +0100
-Message-Id: <20230321042641.21592-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Mon, 20 Mar 2023 23:39:05 -0700 (PDT)
+Date:   Wed, 15 Mar 2023 16:55:06 +0300
+From:   Dan Carpenter <error27@gmail.com>
+To:     quan@os.amperecomputing.com
+Cc:     kernel-janitors@vger.kernel.org
+Subject: [bug report] misc: smpro-errmon: Add dimm training failure syndrome
+Message-ID: <21218ec0-144e-419e-81e0-600ac28d951f@kili.mountain>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=1.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_96_XX,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit 1aca9939bf72 ("clk: mediatek: Add MT6765 clock support") adds
-fourteen configs with COMMON_CLK_MT6765 prefix, but only uses seven of them
-to configure inclusion of drivers.
+Hello Quan Nguyen,
 
-Remove the seven unused COMMON_CLK_MT6765 configs.
+The patch c2c99326cc01: "misc: smpro-errmon: Add dimm training
+failure syndrome" from Mar 10, 2023, leads to the following Smatch
+static checker warning:
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
- drivers/clk/mediatek/Kconfig | 42 ------------------------------------
- 1 file changed, 42 deletions(-)
+	drivers/misc/smpro-errmon.c:491 smpro_dimm_syndrome_read()
+	warn: missing error code? 'ret'
 
-diff --git a/drivers/clk/mediatek/Kconfig b/drivers/clk/mediatek/Kconfig
-index 2d14855dd37e..ec87762bfb18 100644
---- a/drivers/clk/mediatek/Kconfig
-+++ b/drivers/clk/mediatek/Kconfig
-@@ -144,12 +144,6 @@ config COMMON_CLK_MT6765_CAMSYS
-        help
-          This driver supports MediaTek MT6765 camsys clocks.
- 
--config COMMON_CLK_MT6765_GCESYS
--       bool "Clock driver for MediaTek MT6765 gcesys"
--       depends on COMMON_CLK_MT6765
--       help
--         This driver supports MediaTek MT6765 gcesys clocks.
--
- config COMMON_CLK_MT6765_MMSYS
-        bool "Clock driver for MediaTek MT6765 mmsys"
-        depends on COMMON_CLK_MT6765
-@@ -168,48 +162,12 @@ config COMMON_CLK_MT6765_VCODECSYS
-        help
-          This driver supports MediaTek MT6765 vcodecsys clocks.
- 
--config COMMON_CLK_MT6765_MFGSYS
--       bool "Clock driver for MediaTek MT6765 mfgsys"
--       depends on COMMON_CLK_MT6765
--       help
--         This driver supports MediaTek MT6765 mfgsys clocks.
--
- config COMMON_CLK_MT6765_MIPI0ASYS
-        bool "Clock driver for MediaTek MT6765 mipi0asys"
-        depends on COMMON_CLK_MT6765
-        help
-          This driver supports MediaTek MT6765 mipi0asys clocks.
- 
--config COMMON_CLK_MT6765_MIPI0BSYS
--       bool "Clock driver for MediaTek MT6765 mipi0bsys"
--       depends on COMMON_CLK_MT6765
--       help
--         This driver supports MediaTek MT6765 mipi0bsys clocks.
--
--config COMMON_CLK_MT6765_MIPI1ASYS
--       bool "Clock driver for MediaTek MT6765 mipi1asys"
--       depends on COMMON_CLK_MT6765
--       help
--         This driver supports MediaTek MT6765 mipi1asys clocks.
--
--config COMMON_CLK_MT6765_MIPI1BSYS
--       bool "Clock driver for MediaTek MT6765 mipi1bsys"
--       depends on COMMON_CLK_MT6765
--       help
--         This driver supports MediaTek MT6765 mipi1bsys clocks.
--
--config COMMON_CLK_MT6765_MIPI2ASYS
--       bool "Clock driver for MediaTek MT6765 mipi2asys"
--       depends on COMMON_CLK_MT6765
--      help
--         This driver supports MediaTek MT6765 mipi2asys clocks.
--
--config COMMON_CLK_MT6765_MIPI2BSYS
--       bool "Clock driver for MediaTek MT6765 mipi2bsys"
--       depends on COMMON_CLK_MT6765
--       help
--         This driver supports MediaTek MT6765 mipi2bsys clocks.
--
- config COMMON_CLK_MT6779
- 	tristate "Clock driver for MediaTek MT6779"
- 	depends on (ARCH_MEDIATEK && ARM64) || COMPILE_TEST
--- 
-2.17.1
+drivers/misc/smpro-errmon.c
+    477 static ssize_t smpro_dimm_syndrome_read(struct device *dev, struct device_attribute *da,
+    478                                         char *buf, unsigned int slot)
+    479 {
+    480         struct smpro_errmon *errmon = dev_get_drvdata(dev);
+    481         unsigned int data;
+    482         int ret;
+    483 
+    484         ret = regmap_read(errmon->regmap, BOOTSTAGE, &data);
+    485         if (ret)
+    486                 return ret;
+    487 
+    488         /* check for valid stage */
+    489         data = (data >> 8) & 0xff;
+    490         if (data != DIMM_SYNDROME_STAGE)
+--> 491                 return ret;
 
+Please either return 0; or return -ERROR_SOMETHING;
+
+    492 
+    493         /* Write the slot ID to retrieve Error Syndrome */
+    494         ret = regmap_write(errmon->regmap, DIMM_SYNDROME_SEL, slot);
+    495         if (ret)
+    496                 return ret;
+    497 
+    498         /* Read the Syndrome error */
+    499         ret = regmap_read(errmon->regmap, DIMM_SYNDROME_ERR, &data);
+    500         if (ret || !data)
+                           ^^^^^
+This is incorrect.  I have been meaning to add a static checker warning
+for code like this.  It looks like the intent was:
+
+	if (ret)
+		return ret;
+	if (!data)
+		return -EINVAL;
+
+To be honest, I would be tempted to just delete the check for zero and
+print a zero in the sysfs_emit().
+
+    501                 return ret;
+    502 
+    503         return sysfs_emit(buf, "%04x\n", data);
+    504 }
+
+regards,
+dan carpenter

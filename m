@@ -2,68 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B52676BE64C
-	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Mar 2023 11:12:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A237E6BE65A
+	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Mar 2023 11:16:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229523AbjCQKMd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 17 Mar 2023 06:12:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48350 "EHLO
+        id S229948AbjCQKQ1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 17 Mar 2023 06:16:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229554AbjCQKMc (ORCPT
+        with ESMTP id S229599AbjCQKQ1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 17 Mar 2023 06:12:32 -0400
-Received: from sragenkab.go.id (mail.sragenkab.go.id [103.172.109.4])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 67C00359D
-        for <kernel-janitors@vger.kernel.org>; Fri, 17 Mar 2023 03:12:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sragenkab.go.id;
-         h=mime-version:content-type:content-transfer-encoding:date:from
-        :to:subject:reply-to:message-id; q=dns/txt; s=dkim1; bh=QGcIAmD5
-        O/Y9qXzDV8MxyimbsW3+rMaQ/kz75GzBHbk=; b=A8eZMZ7CvUGDZLuSt/X66RzL
-        YL8BdBzFe1pBDPQNcka7Po9LWBlD3l41dpYNpiUXuysJFw+DsYeoFSRz6SFwTKBv
-        9iUrCn4c7Y4G6EI2oCnwcLGMbbQpqYqs6+gUN2jD8KPtK/s1oQRytT1LVGiHv0vw
-        Xd/7xlQwHCSXcoklgzQlGv1/MMIEQibxqnQdrnQXWlM8SbMGDzdXRmJF0vNXcEfR
-        vimV4IMgdj+jER6Kf0XeQQTKFExEwgog8Ml1yV61EqExYXKHFoUrlPsdG8CWdMz2
-        7RRwHQqWpnX6URn96Zf+tVwK6mWYqClmZy1shBXx8/oGDuWhrJC1D4ccgKFD6g==
-Received: (qmail 87676 invoked from network); 14 Mar 2023 21:19:26 -0000
-Received: from localhost (HELO mail2.sragenkab.go.id) (127.0.0.1)
-  by localhost with SMTP; 14 Mar 2023 21:19:26 -0000
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 14 Mar 2023 14:19:25 -0700
-From:   Ibrahim Tafa <jurnalsukowati@sragenkab.go.id>
-To:     undisclosed-recipients:;
-Subject: LOAN OPPORTUNITY AT LOW-INTEREST RATE
-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
-Mail-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
-Message-ID: <55264f0c46876a4351ef76813871d122@sragenkab.go.id>
-X-Sender: jurnalsukowati@sragenkab.go.id
-User-Agent: Roundcube Webmail/0.8.1
-X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS,SUBJ_ALL_CAPS,UNDISC_MONEY,URIBL_BLOCKED autolearn=no
+        Fri, 17 Mar 2023 06:16:27 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E97467ABD;
+        Fri, 17 Mar 2023 03:16:25 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id y4so18404052edo.2;
+        Fri, 17 Mar 2023 03:16:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679048184;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=svJFXvAXFyAIcInqGbm4Qf5TecWoXKKIsaHq6MM4eZI=;
+        b=dd0XOFKbObM0OqDj3C3ozoIWWuOdjZ9qxGglWCqtbiO8PVIGCnfup8xOTx2I1ea/PW
+         kxy/8IvQ/2kzRKhl1A4Xgur3+tA3tyvJ3Q23dqVSK/D92Xz6MPEmqHr2X9Sx7OH62Q8W
+         hS3JZRgMcJbvRI/bfjztmpVCjMlUsdOJYp9EqEW1pbnMa09jwEQ7Xh8xc3EHLMYVI/M5
+         cSw0lsmvMwkOSvCh5XRkVwl96wcTJY/xb0Vrg5Ov+Ek8kcJCd2GHA+1HExV7hoElIqI2
+         u2II0fGTPWQVg/OO+bbX1D5cJhhsXS6ufa+TFLmE4S0YoqbAa+zgFMNPKMUIVboolHfB
+         7+sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679048184;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=svJFXvAXFyAIcInqGbm4Qf5TecWoXKKIsaHq6MM4eZI=;
+        b=4xmtUqV3+yRzgzWpA9A8Fc2YORWr96mpZlWEbMT7bsQp5PRNRkbhQ+1kOH7Pt1rVQT
+         Mu9QddgQOpgPyPra7OXXHAVRfyz7JO99BRa5g8dHUrORZNUyLtmBi4dmVOaOTPsl+H85
+         9R4uxZZLHzjbByQEqU1Y2TRGkiVNE6cMGnJ7ZgBZ5j56qWSoBA3pBdamEZwXq+6jpMdd
+         8MIw4UWCeCEhXF4T9s9fhEsjRZBmxSlQdVdzXdatsbeshwjGw5FwNj/6kZbAVsymrhPO
+         8uvIVvNCKs4aYdNvaB+TmrdyRz+fuMCzWzX/hK8PWmSLpvgwha1g3lpE9cvula0BT8ls
+         C2mA==
+X-Gm-Message-State: AO0yUKVFt7vFmxtAG2e5ko19RrykCNgCF7M9GeLIUNRZRUPn5tjXvQF6
+        io8o0g8Wsqk8SjPEuCQlccI=
+X-Google-Smtp-Source: AK7set+m5SyqhsthHi/VvwpRA9srp+RZ5TiVPoLk/CugtVR5huROGYhlTugcDR6IHeYidL/AoaqRVg==
+X-Received: by 2002:aa7:d3d4:0:b0:4ac:bbaa:867a with SMTP id o20-20020aa7d3d4000000b004acbbaa867amr2308986edr.24.1679048184337;
+        Fri, 17 Mar 2023 03:16:24 -0700 (PDT)
+Received: from felia.fritz.box ([2a02:810d:2a40:1104:d59c:b746:d2ef:469])
+        by smtp.gmail.com with ESMTPSA id a18-20020a50c312000000b004c06f786602sm841028edb.85.2023.03.17.03.16.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Mar 2023 03:16:24 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Dou Liyang <douly.fnst@cn.fujitsu.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
+Cc:     "H . Peter Anvin" <hpa@zytor.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] x86/Kconfig: Remove obsolete config X86_32_SMP
+Date:   Fri, 17 Mar 2023 11:16:21 +0100
+Message-Id: <20230317101621.14413-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Commit 0f08c3b22996 ("x86/smp: Reduce code duplication") removes the only
+use of CONFIG_X86_32_SMP.
 
+Remove the obsolete config X86_32_SMP.
 
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+ arch/x86/Kconfig | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 453f462f6c9c..cacf51420c45 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -377,10 +377,6 @@ config HAVE_INTEL_TXT
+ 	def_bool y
+ 	depends on INTEL_IOMMU && ACPI
+ 
+-config X86_32_SMP
+-	def_bool y
+-	depends on X86_32 && SMP
+-
+ config X86_64_SMP
+ 	def_bool y
+ 	depends on X86_64 && SMP
 -- 
-Greetings,
-   I am contacting you based on the Investment/Loan opportunity for 
-companies in need of financing a project/business, We have developed a 
-new method of financing that doesn't take long to receive financing from 
-our clients.
-    If you are looking for funds to finance your project/Business or if 
-you are willing to work as our agent in your country to find clients in 
-need of financing and earn commissions, then get back to me for more 
-details.
+2.17.1
 
-Regards,
-Ibrahim Tafa
-ABIENCE INVESTMENT GROUP FZE, United Arab Emirates

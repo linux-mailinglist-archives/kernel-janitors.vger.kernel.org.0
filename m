@@ -2,128 +2,126 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D07806C9EA6
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Mar 2023 10:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51CF56C9EAB
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Mar 2023 10:55:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232638AbjC0Iyb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Mar 2023 04:54:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58418 "EHLO
+        id S233430AbjC0IzG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Mar 2023 04:55:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232660AbjC0Ixy (ORCPT
+        with ESMTP id S233133AbjC0IyX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Mar 2023 04:53:54 -0400
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E2C16EAF
-        for <kernel-janitors@vger.kernel.org>; Mon, 27 Mar 2023 01:49:22 -0700 (PDT)
-Received: by mail-wm1-x334.google.com with SMTP id r19-20020a05600c459300b003eb3e2a5e7bso4671122wmo.0
-        for <kernel-janitors@vger.kernel.org>; Mon, 27 Mar 2023 01:49:22 -0700 (PDT)
+        Mon, 27 Mar 2023 04:54:23 -0400
+Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBCD68A6F
+        for <kernel-janitors@vger.kernel.org>; Mon, 27 Mar 2023 01:50:03 -0700 (PDT)
+Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-17997ccf711so8501567fac.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 27 Mar 2023 01:50:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112; t=1679906960;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=UDSqP7fpfKlKQVx/rVKsTS5+4DHlxYXGctzY/lz+9Ho=;
-        b=5UJ/GXirQ7wgMEFINuifffVu8CODx5qLiO9QZwxXCtKEKM+75oZAu25XvAjTf3Mukd
-         lVDHLQTo0AOOQcN5NlWIUSvcKvN32YA5hJUWuvNjyFXAByF1uiR2VcvlikFKLYKEBmOn
-         eDx+RS9fSjaPFpSvMY1eVdj5AlrPgGKU31/9RH/tg2j1jU4AbH43wXOmYH7I2SbnW74s
-         7py0fyyDHwvalOsnobnGpmz4MyKAxZWgrhDqMGcGyEgoifsfAdrikkoSAaPvNKx7TImx
-         qNZcc3t1JrP9dMg1sXC70lpblPv+C9p97e4IDNGsXPmZvdqFu1e0O8EuVXhAqEIk+Pst
-         rXEA==
+        d=gmail.com; s=20210112; t=1679907003;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IE0Q22t9nDUcBAUVsmYKmeg+5EtHh5OHc8AXl8b80GM=;
+        b=BbKXn+y5lTlEYqQqkgsDydANlz4Hym2WeW/OPVlVJuyFF99JhlrjLE9QfrlPAb2Fws
+         IS1JS9RM7jgmV/ceMp0SRy3O34Ntio0kx4aG3riRa66fnE5ZwFebl+m8GGE075AfEG7o
+         N0G6aPN6+8lrJAseavIYcSZAiB2/BGhSySZ56GR07BA4OvcJJfmck0p5F6SynL4IhH4+
+         5PoYfGCnnj1o5hEI4mBKB3FPoh06vX0PCLuGySwE6wmV3+8/kTzeUoLcba5aivo9yfAw
+         SmQNxtlCP+De6N18U+GD7B7jAWxeWBfPb1yNJeU2AVSTzK0NpqiW96fewWiKcea8knmG
+         IEzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679906960;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UDSqP7fpfKlKQVx/rVKsTS5+4DHlxYXGctzY/lz+9Ho=;
-        b=QXaTm1j3gDLBMO2qqdgQGDF4pPyWi6HmgPLRGoPI0izHMtP3gIKhszN3vu35msxfIz
-         KMQyn0YtMYcEN3ZTTORqUJD1Vb9kALc8dFdtuX8bpYrrwsjVasY1j2GMNI6DbdCFrirn
-         +4JVXY259Tgxhb3daqaO9KMIJtsvZCt8iM20xgnNIRpGn6xNxaQnAf/5qvE92MQ4hCPZ
-         33+7JKe1F8nreojh53dMGRzJeu+6qDYAoqk2mMURf762xAbNLhLq/7izbP5s/iA+BRG+
-         Dn2o8qGohdpV/gcc+uoF7WWEeWDXtAXRiFyuzqgUyJkVCzkH8a0SKIT6qwoiYyR8k+Gu
-         0PtA==
-X-Gm-Message-State: AAQBX9dgK0s15MKadPOjuaax8sU2WT7vmA1BB2qiOaj9oYFFKLs0cA46
-        fauiHtyMBTmbnjjpieUbiPyDRw==
-X-Google-Smtp-Source: AKy350a1+/eDpxejUWxQfz4ZUV5XMrdV2fNL9j9I2+FCSXACd1jk3wa03RjMGPX4FF4onxWuoaOJcA==
-X-Received: by 2002:a7b:c852:0:b0:3ef:64b4:b081 with SMTP id c18-20020a7bc852000000b003ef64b4b081mr4840082wml.39.1679906960535;
-        Mon, 27 Mar 2023 01:49:20 -0700 (PDT)
-Received: from localhost (laubervilliers-658-1-213-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
-        by smtp.gmail.com with ESMTPSA id v9-20020a05600c444900b003ef5deb4188sm8001026wmn.17.2023.03.27.01.49.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Mar 2023 01:49:20 -0700 (PDT)
-References: <8dab942d6ce47657a9c038295959be80bb2ee09e.1679834598.git.christophe.jaillet@wanadoo.fr>
-User-agent: mu4e 1.8.13; emacs 28.2
-From:   Jerome Brunet <jbrunet@baylibre.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org
-Subject: Re: [PATCH] ASoC: meson: Use the devm_clk_get_optional() helper
-Date:   Mon, 27 Mar 2023 10:45:44 +0200
-In-reply-to: <8dab942d6ce47657a9c038295959be80bb2ee09e.1679834598.git.christophe.jaillet@wanadoo.fr>
-Message-ID: <1jy1nio9yo.fsf@starbuckisacylon.baylibre.com>
+        d=1e100.net; s=20210112; t=1679907003;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IE0Q22t9nDUcBAUVsmYKmeg+5EtHh5OHc8AXl8b80GM=;
+        b=aQqO0NzlDPLPLspj5Gf6v6IuRIFoxvbadQ81t8e4jclheU25RVfu16ka39tf7wYkvX
+         r0wYo7BXQC72KQd5b9uQdn12tDz1KPgbjdkPrmFlC0Ut+ewbEfw7KzTmjyA/A4MDHiTe
+         bgwZcEuzOMmbBfFvOeRzXeQ1dFCOfbLKvLhORqGjDOygiPp6BFHfUIrjoeKB6t+9ApYj
+         dYyWw4B8Z1J4xVLunMKwBz8FVNu2cbG4K9wUgdcouzR1fuwT/O3PiMCVwCnvhv/QFpyQ
+         fsRDBYtjVR7AmOWjGZ85xUy6HBsoWrcHSaAQDnCXue26JBjzL1ipLI7qy2I0zvXesVBL
+         91mw==
+X-Gm-Message-State: AO0yUKVuMD/oZJvr5GzJFKVgVQcuacL5Wj0HgSS/AVRvV7HLCCc6LBdK
+        Q3yPSiWiT63+tsmx08+ClIb71U8JIMru87n+PCQ=
+X-Google-Smtp-Source: AK7set++fsvWogS/uNVLieWiuL0rsOf8y1LTglktwUFHYLfF2Tag764Y/SqIMsW6ht5l7AqGFFIatIZlYzi1CMtltt8=
+X-Received: by 2002:a05:6870:1096:b0:177:8c4d:1ecd with SMTP id
+ 22-20020a056870109600b001778c4d1ecdmr3639555oaq.10.1679907002949; Mon, 27 Mar
+ 2023 01:50:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:6358:b001:b0:10e:d722:2b3f with HTTP; Mon, 27 Mar 2023
+ 01:50:02 -0700 (PDT)
+Reply-To: annamalgorzata587@gmail.com
+From:   "Leszczynska Anna Malgorzata." <maaryy442@gmail.com>
+Date:   Mon, 27 Mar 2023 01:50:02 -0700
+Message-ID: <CAF9wmiM4-7SF8EXxbc8Mg7D8j-jFfA7HtotKtTpT9WKQoiGM-Q@mail.gmail.com>
+Subject: Mrs. Leszczynska Anna Malgorzata.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.0 required=5.0 tests=ADVANCE_FEE_5_NEW,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2001:4860:4864:20:0:0:0:36 listed in]
+        [list.dnswl.org]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [maaryy442[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [maaryy442[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [annamalgorzata587[at]gmail.com]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.8 ADVANCE_FEE_5_NEW Appears to be advance fee fraud (Nigerian
+        *      419)
+        *  2.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+-- 
+I am Mrs. Leszczynska Anna Malgorzatafrom  from Germany Presently
+admitted  in one of the hospitals here in Ivory Coast.
 
-On Sun 26 Mar 2023 at 14:43, Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+I and my late husband do not have any child that is why I am donating
+this money to you having known my condition that I will join my late
+husband soonest.
 
-> Use devm_clk_get_optional() instead of hand writing it.
-> This saves some loC and improves the semantic.
->
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+I wish to donate towards education and the less privileged I ask for
+your assistance. I am suffering from colon cancer I have some few
+weeks to live according to my doctor.
 
-Thx.
+The money should be used for this purpose.
+Motherless babies
+Children orphaned by aids.
+Destitute children
+Widows and Widowers.
+Children who cannot afford education.
 
-Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
+My husband stressed the importance of education and the less
+privileged I feel that this is what he would have wanted me to do with
+the money that he left for charity.
 
+These services bring so much joy to the kids. Together we are
+transforming lives and building brighter futures - but without you, it
+just would not be possible.
 
-> ---
->  sound/soc/meson/axg-tdm-interface.c | 13 ++++---------
->  1 file changed, 4 insertions(+), 9 deletions(-)
->
-> diff --git a/sound/soc/meson/axg-tdm-interface.c b/sound/soc/meson/axg-tdm-interface.c
-> index 7624aafe9009..5e5e4c56d505 100644
-> --- a/sound/soc/meson/axg-tdm-interface.c
-> +++ b/sound/soc/meson/axg-tdm-interface.c
-> @@ -496,7 +496,7 @@ static int axg_tdm_iface_probe(struct platform_device *pdev)
->  	struct device *dev = &pdev->dev;
->  	struct snd_soc_dai_driver *dai_drv;
->  	struct axg_tdm_iface *iface;
-> -	int ret, i;
-> +	int i;
->  
->  	iface = devm_kzalloc(dev, sizeof(*iface), GFP_KERNEL);
->  	if (!iface)
-> @@ -533,14 +533,9 @@ static int axg_tdm_iface_probe(struct platform_device *pdev)
->  	 * At this point, ignore the error if mclk is missing. We'll
->  	 * throw an error if the cpu dai is master and mclk is missing
->  	 */
-> -	iface->mclk = devm_clk_get(dev, "mclk");
-> -	if (IS_ERR(iface->mclk)) {
-> -		ret = PTR_ERR(iface->mclk);
-> -		if (ret == -ENOENT)
-> -			iface->mclk = NULL;
-> -		else
-> -			return dev_err_probe(dev, ret, "failed to get mclk\n");
-> -	}
-> +	iface->mclk = devm_clk_get_optional(dev, "mclk");
-> +	if (IS_ERR(iface->mclk))
-> +		return dev_err_probe(dev, PTR_ERR(iface->mclk), "failed to get mclk\n");
->  
->  	return devm_snd_soc_register_component(dev,
->  					&axg_tdm_iface_component_drv, dai_drv,
+Sincerely,
 
+Mrs. Leszczynska Anna Malgorzata.

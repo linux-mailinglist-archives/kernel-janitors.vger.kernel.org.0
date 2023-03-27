@@ -2,126 +2,191 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51CF56C9EAB
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Mar 2023 10:55:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A16E6C9F0D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Mar 2023 11:12:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233430AbjC0IzG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Mar 2023 04:55:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58958 "EHLO
+        id S232907AbjC0JMI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Mar 2023 05:12:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233133AbjC0IyX (ORCPT
+        with ESMTP id S232339AbjC0JMG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Mar 2023 04:54:23 -0400
-Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBCD68A6F
-        for <kernel-janitors@vger.kernel.org>; Mon, 27 Mar 2023 01:50:03 -0700 (PDT)
-Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-17997ccf711so8501567fac.0
-        for <kernel-janitors@vger.kernel.org>; Mon, 27 Mar 2023 01:50:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679907003;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IE0Q22t9nDUcBAUVsmYKmeg+5EtHh5OHc8AXl8b80GM=;
-        b=BbKXn+y5lTlEYqQqkgsDydANlz4Hym2WeW/OPVlVJuyFF99JhlrjLE9QfrlPAb2Fws
-         IS1JS9RM7jgmV/ceMp0SRy3O34Ntio0kx4aG3riRa66fnE5ZwFebl+m8GGE075AfEG7o
-         N0G6aPN6+8lrJAseavIYcSZAiB2/BGhSySZ56GR07BA4OvcJJfmck0p5F6SynL4IhH4+
-         5PoYfGCnnj1o5hEI4mBKB3FPoh06vX0PCLuGySwE6wmV3+8/kTzeUoLcba5aivo9yfAw
-         SmQNxtlCP+De6N18U+GD7B7jAWxeWBfPb1yNJeU2AVSTzK0NpqiW96fewWiKcea8knmG
-         IEzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679907003;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IE0Q22t9nDUcBAUVsmYKmeg+5EtHh5OHc8AXl8b80GM=;
-        b=aQqO0NzlDPLPLspj5Gf6v6IuRIFoxvbadQ81t8e4jclheU25RVfu16ka39tf7wYkvX
-         r0wYo7BXQC72KQd5b9uQdn12tDz1KPgbjdkPrmFlC0Ut+ewbEfw7KzTmjyA/A4MDHiTe
-         bgwZcEuzOMmbBfFvOeRzXeQ1dFCOfbLKvLhORqGjDOygiPp6BFHfUIrjoeKB6t+9ApYj
-         dYyWw4B8Z1J4xVLunMKwBz8FVNu2cbG4K9wUgdcouzR1fuwT/O3PiMCVwCnvhv/QFpyQ
-         fsRDBYtjVR7AmOWjGZ85xUy6HBsoWrcHSaAQDnCXue26JBjzL1ipLI7qy2I0zvXesVBL
-         91mw==
-X-Gm-Message-State: AO0yUKVuMD/oZJvr5GzJFKVgVQcuacL5Wj0HgSS/AVRvV7HLCCc6LBdK
-        Q3yPSiWiT63+tsmx08+ClIb71U8JIMru87n+PCQ=
-X-Google-Smtp-Source: AK7set++fsvWogS/uNVLieWiuL0rsOf8y1LTglktwUFHYLfF2Tag764Y/SqIMsW6ht5l7AqGFFIatIZlYzi1CMtltt8=
-X-Received: by 2002:a05:6870:1096:b0:177:8c4d:1ecd with SMTP id
- 22-20020a056870109600b001778c4d1ecdmr3639555oaq.10.1679907002949; Mon, 27 Mar
- 2023 01:50:02 -0700 (PDT)
+        Mon, 27 Mar 2023 05:12:06 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75FD8CA;
+        Mon, 27 Mar 2023 02:12:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679908325; x=1711444325;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=zwYVDyBScBvmHn6CqlqF0q715WS9mRUwOHAV6jvv1tU=;
+  b=eWzasY2q5wXr/GLXINR8kskI0FE6ujbf60JPPNRevQwqvMddVh+vMKS1
+   G24fWP4sPD9psAAzNwK0ultlms7FRYwc/r/5uI5L3Hz7hKDr6qPOs7oYT
+   IbOUs0Evnbm0cgox+6lNH+HKuCqsuCgC5unaJ2lygip02ESSm1+QW5iAZ
+   dVrYsNNDRi0kwS9Y1xil2eECfjGqt/UhSDAX5hB5zTrUvaG4WqxKJdFmT
+   HPYeYSzvEmdY8JOS8koOTLcaWaYQrcYyC3WHunlQqvCXZ6MANfNz8KtKo
+   e/m7SAmnj7U9I2Q7f9QD91uMAWkK5X6e96bq1DEe8oZnkVDI0XnXND07l
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10661"; a="324102834"
+X-IronPort-AV: E=Sophos;i="5.98,294,1673942400"; 
+   d="scan'208";a="324102834"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2023 02:12:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10661"; a="857594201"
+X-IronPort-AV: E=Sophos;i="5.98,294,1673942400"; 
+   d="scan'208";a="857594201"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.63.101])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2023 02:11:59 -0700
+Message-ID: <d691d740-c172-a5cb-e4f0-5bc5687c8464@intel.com>
+Date:   Mon, 27 Mar 2023 12:11:54 +0300
 MIME-Version: 1.0
-Received: by 2002:a05:6358:b001:b0:10e:d722:2b3f with HTTP; Mon, 27 Mar 2023
- 01:50:02 -0700 (PDT)
-Reply-To: annamalgorzata587@gmail.com
-From:   "Leszczynska Anna Malgorzata." <maaryy442@gmail.com>
-Date:   Mon, 27 Mar 2023 01:50:02 -0700
-Message-ID: <CAF9wmiM4-7SF8EXxbc8Mg7D8j-jFfA7HtotKtTpT9WKQoiGM-Q@mail.gmail.com>
-Subject: Mrs. Leszczynska Anna Malgorzata.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.0 required=5.0 tests=ADVANCE_FEE_5_NEW,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM,UNDISC_MONEY
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2001:4860:4864:20:0:0:0:36 listed in]
-        [list.dnswl.org]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [maaryy442[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [maaryy442[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [annamalgorzata587[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.8 ADVANCE_FEE_5_NEW Appears to be advance fee fraud (Nigerian
-        *      419)
-        *  2.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.9.0
+Subject: Re: [PATCH resent] perf/x86/amd/uncore: Fix exception handling in
+ amd_uncore_cpu_up_prepare()
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        kernel-janitors@vger.kernel.org, linux-perf-users@vger.kernel.org,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Sandipan Das <sandipan.das@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Zhouyi Zhou <zhouzhouyi@gmail.com>, x86@kernel.org
+Cc:     cocci@inria.fr, LKML <linux-kernel@vger.kernel.org>
+References: <f9303bdc-b1a7-be5e-56c6-dfa8232b8b55@web.de>
+ <ab860edf-79ca-2035-c5a3-d25be6fd9dac@web.de>
+ <3a35fb28-5937-72f8-b2e8-b1d9899b5e43@web.de>
+Content-Language: en-US
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <3a35fb28-5937-72f8-b2e8-b1d9899b5e43@web.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
--- 
-I am Mrs. Leszczynska Anna Malgorzatafrom  from Germany Presently
-admitted  in one of the hospitals here in Ivory Coast.
+On 25/03/23 16:15, Markus Elfring wrote:
+> Date: Fri, 17 Mar 2023 13:13:14 +0100
+> 
+> The label “fail” was used to jump to another pointer check despite of
+> the detail in the implementation of the function “amd_uncore_cpu_up_prepare”
+> that it was determined already that the corresponding variable contained
+> a null pointer (because of a failed function call in two cases).
+> 
+> 1. Thus return directly after a call of the function “amd_uncore_alloc”
+>    failed in the first if branch.
+> 
+> 2. Use more appropriate labels instead.
+> 
+> 3. Reorder jump targets at the end.
+> 
+> 4. Delete a redundant check and kfree() call.
+> 
+> 5. Omit an explicit initialisation for the local variable “uncore_llc”.
+> 
+> 
+> This issue was detected by using the Coccinelle software.
+> 
+> Fixes: 39621c5808f5dda75d03dc4b2d4d2b13a5a1c34b ("perf/x86/amd/uncore: Use dynamic events array")
+> Fixes: 503d3291a937b726757c1f7c45fa02389d2f4324 ("perf/x86/amd: Try to fix some mem allocation failure handling")
 
-I and my late husband do not have any child that is why I am donating
-this money to you having known my condition that I will join my late
-husband soonest.
+Commit should be only the first 12 characters of the hash.
+Refer:	https://docs.kernel.org/process/submitting-patches.html
 
-I wish to donate towards education and the less privileged I ask for
-your assistance. I am suffering from colon cancer I have some few
-weeks to live according to my doctor.
+But this is not a fix. Redundant calls to kfree do not break
+anything.
 
-The money should be used for this purpose.
-Motherless babies
-Children orphaned by aids.
-Destitute children
-Widows and Widowers.
-Children who cannot afford education.
+Also avoid using the term "exception" since, in x86, exceptions are
+hardware events.  Better to just call it "error handling".
 
-My husband stressed the importance of education and the less
-privileged I feel that this is what he would have wanted me to do with
-the money that he left for charity.
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> ---
+>  arch/x86/events/amd/uncore.c | 20 +++++++++-----------
+>  1 file changed, 9 insertions(+), 11 deletions(-)
+> 
+> diff --git a/arch/x86/events/amd/uncore.c b/arch/x86/events/amd/uncore.c
+> index 83f15fe411b3..0a9b5cb97bb4 100644
+> --- a/arch/x86/events/amd/uncore.c
+> +++ b/arch/x86/events/amd/uncore.c
+> @@ -440,13 +440,13 @@ amd_uncore_events_alloc(unsigned int num, unsigned int cpu)
+> 
+>  static int amd_uncore_cpu_up_prepare(unsigned int cpu)
+>  {
+> -	struct amd_uncore *uncore_nb = NULL, *uncore_llc = NULL;
+> +	struct amd_uncore *uncore_nb = NULL, *uncore_llc;
+> 
+>  	if (amd_uncore_nb) {
+>  		*per_cpu_ptr(amd_uncore_nb, cpu) = NULL;
+>  		uncore_nb = amd_uncore_alloc(cpu);
+>  		if (!uncore_nb)
+> -			goto fail;
+> +			return -ENOMEM;
+>  		uncore_nb->cpu = cpu;
+>  		uncore_nb->num_counters = num_counters_nb;
+>  		uncore_nb->rdpmc_base = RDPMC_BASE_NB;
+> @@ -455,7 +455,7 @@ static int amd_uncore_cpu_up_prepare(unsigned int cpu)
+>  		uncore_nb->pmu = &amd_nb_pmu;
+>  		uncore_nb->events = amd_uncore_events_alloc(num_counters_nb, cpu);
+>  		if (!uncore_nb->events)
+> -			goto fail;
+> +			goto free_nb;
+>  		uncore_nb->id = -1;
+>  		*per_cpu_ptr(amd_uncore_nb, cpu) = uncore_nb;
+>  	}
+> @@ -464,7 +464,7 @@ static int amd_uncore_cpu_up_prepare(unsigned int cpu)
+>  		*per_cpu_ptr(amd_uncore_llc, cpu) = NULL;
+>  		uncore_llc = amd_uncore_alloc(cpu);
+>  		if (!uncore_llc)
+> -			goto fail;
+> +			goto check_uncore_nb;
+>  		uncore_llc->cpu = cpu;
+>  		uncore_llc->num_counters = num_counters_llc;
+>  		uncore_llc->rdpmc_base = RDPMC_BASE_LLC;
+> @@ -473,24 +473,22 @@ static int amd_uncore_cpu_up_prepare(unsigned int cpu)
+>  		uncore_llc->pmu = &amd_llc_pmu;
+>  		uncore_llc->events = amd_uncore_events_alloc(num_counters_llc, cpu);
+>  		if (!uncore_llc->events)
+> -			goto fail;
+> +			goto free_llc;
+>  		uncore_llc->id = -1;
+>  		*per_cpu_ptr(amd_uncore_llc, cpu) = uncore_llc;
+>  	}
+> 
+>  	return 0;
+> 
+> -fail:
+> +free_llc:
+> +	kfree(uncore_llc);
+> +check_uncore_nb:
+>  	if (uncore_nb) {
+>  		kfree(uncore_nb->events);
+> +free_nb:
+>  		kfree(uncore_nb);
+>  	}
+> 
+> -	if (uncore_llc) {
+> -		kfree(uncore_llc->events);
+> -		kfree(uncore_llc);
+> -	}
+> -
+>  	return -ENOMEM;
+>  }
+> 
+> --
+> 2.40.0
+> 
 
-These services bring so much joy to the kids. Together we are
-transforming lives and building brighter futures - but without you, it
-just would not be possible.
-
-Sincerely,
-
-Mrs. Leszczynska Anna Malgorzata.

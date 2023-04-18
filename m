@@ -2,58 +2,39 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 788086E5407
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Apr 2023 23:41:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 177E46E593F
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Apr 2023 08:19:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230416AbjDQVlt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Apr 2023 17:41:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41950 "EHLO
+        id S230364AbjDRGTX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Apr 2023 02:19:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230232AbjDQVls (ORCPT
+        with ESMTP id S230002AbjDRGTW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Apr 2023 17:41:48 -0400
-Received: from smtp.smtpout.orange.fr (smtp-18.smtpout.orange.fr [80.12.242.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 991577A91
-        for <kernel-janitors@vger.kernel.org>; Mon, 17 Apr 2023 14:41:17 -0700 (PDT)
-Received: from pop-os.home ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id oWb2plnaxzvWyoWb2pO3Ap; Mon, 17 Apr 2023 23:41:14 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=orange.fr;
-        s=t20230301; t=1681767674;
-        bh=hmKpFuD4ncU+rcAtBi5ifTB/BJFqTFHbSAvPEjZcz3w=;
-        h=From:To:Cc:Subject:Date;
-        b=Ndv3FWjnt02YRKTfsZ2vbwcNqVmy7vEKr+nkYGk6v06OlVMmVmfhdeZJH5u6X1xJH
-         CXMA0vfkC+bgSCUisSpkMH+DuB1yV/+g5/JPNWybSxeZyek7WyY/8Y5ZVCOaXjfl/A
-         2MaL1KMBkxxn9gDyThLO7YFz+GxhquOA5w5PbDUqF94R+7YH9PGWkr+fk4sqnaNRUg
-         nYNFVMlO3/5+l8wsG2P3L9ACpmg1uU+6j9AKq7nPrKGj/65+240vsDZxKhhSnCTM5/
-         PKpSAzzOxbsbBsy2zy8XIDoJYBdmmzj2i8ZlJ3qa4OmieEvMnxnbMDZXhiAxwJdgFP
-         DgmumidLM/epA==
-X-ME-Helo: pop-os.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 17 Apr 2023 23:41:14 +0200
-X-ME-IP: 86.243.2.178
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH] drm/amd/display: Fix a test dml32_rq_dlg_get_rq_reg()
-Date:   Mon, 17 Apr 2023 23:41:11 +0200
-Message-Id: <3ba86bbe8cca149774835659885ddf39034a4306.1681767659.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.34.1
+        Tue, 18 Apr 2023 02:19:22 -0400
+Received: from mail.peterfykh.hu (mail.peterfykh.hu [84.206.67.96])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F863A9B;
+        Mon, 17 Apr 2023 23:19:19 -0700 (PDT)
+Received: from mail.peterfykh.hu (localhost [127.0.0.1])
+        by mail.peterfykh.hu (Postfix) with ESMTP id 9CBEF1294;
+        Tue, 18 Apr 2023 02:38:57 +0200 (CEST)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Date:   Tue, 18 Apr 2023 02:38:57 +0200
+From:   MK <sebeszet@peterfykh.hu>
+To:     undisclosed-recipients:;
+Subject: Ciao raggio di sole, come stai?
+Reply-To: marion.K08@bahnhof.se
+Mail-Reply-To: marion.K08@bahnhof.se
+Message-ID: <662a6f65bfe354082dc5784325b026bc@peterfykh.hu>
+X-Sender: sebeszet@peterfykh.hu
+User-Agent: Roundcube Webmail/1.2.3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peterfykh.hu; s=mail; t=1681778346; bh=fjbGX19/dzRYgS93MEMNglp4qD1tq9BOA2bERI2rOtk=; h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Subject:Reply-To:Message-ID; b=b87sN3MNLTff6eSdF6a36ONNiZmIoB9XnuUNc5FnmL75VCOGvzrqxBGv5NvjPK3SRLj4HT/RVZy/ztLY5JZ2JEnMG3NdAJ6o6VzRG7I9f1bX9wxE00gzYLjWMvCyOApXxwRD93XQXheR2K00XuwR8ZWWO6rx9p4r/Zn1PhfWBJU=
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,30 +42,33 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-It is likely p1_min_meta_chunk_bytes was expected here, instead of
-min_meta_chunk_bytes.
+Mi dispiace disturbarti e invadere la tua privacy. Sono single,
+   solitario e bisognoso di un compagno premuroso, amorevole e romantico.
 
-Test the correct variable.
+Sono un ammiratore segreto e vorrei esplorare l'opportunità di farlo
+saperne di più l'uno sull'altro. So che è strano contattarti
+in questo modo e spero che tu possa perdonarmi. Sono una persona timida 
+e
+questo è l'unico modo in cui so di poter attirare la tua attenzione. 
+Voglio semplicemente
+per sapere cosa ne pensate e la mia intenzione non è di offendervi.
+Spero che possiamo essere amici se è quello che vuoi, anche se lo vorrei
+essere più di un semplice amico. So che hai alcune domande da fare
+chiedi e spero di poter soddisfare alcune delle tue curiosità con alcuni
+risposte.
 
-Fixes: dda4fb85e433 ("drm/amd/display: DML changes for DCN32/321")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- .../gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c   | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Credo nel detto che "per il mondo sei solo una persona,
+ma per qualcuno di speciale tu sei il mondo'. Tutto quello che voglio è 
+amore,
+cure e attenzioni romantiche da una compagna speciale quale sono io
+sperando saresti tu.
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c
-index 395ae8761980..9ba6cb67655f 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c
-@@ -116,7 +116,7 @@ void dml32_rq_dlg_get_rq_reg(display_rq_regs_st *rq_regs,
- 	else
- 		rq_regs->rq_regs_l.min_meta_chunk_size = dml_log2(min_meta_chunk_bytes) - 6 + 1;
- 
--	if (min_meta_chunk_bytes == 0)
-+	if (p1_min_meta_chunk_bytes == 0)
- 		rq_regs->rq_regs_c.min_meta_chunk_size = 0;
- 	else
- 		rq_regs->rq_regs_c.min_meta_chunk_size = dml_log2(p1_min_meta_chunk_bytes) - 6 + 1;
--- 
-2.34.1
+Spero che questo messaggio sia l'inizio di un lungo periodo
+comunicazione tra di noi, è sufficiente inviare una risposta a questo 
+messaggio, it
+mi renderà felice.
 
+
+Baci e abbracci,
+
+Mario.

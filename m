@@ -2,75 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92B8B6E58C4
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Apr 2023 07:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 071F46E590C
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Apr 2023 08:01:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230286AbjDRFtc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Apr 2023 01:49:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40950 "EHLO
+        id S229915AbjDRGBc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Apr 2023 02:01:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229589AbjDRFtb (ORCPT
+        with ESMTP id S229714AbjDRGBb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Apr 2023 01:49:31 -0400
-Received: from mail-ua1-x942.google.com (mail-ua1-x942.google.com [IPv6:2607:f8b0:4864:20::942])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB037469D
-        for <kernel-janitors@vger.kernel.org>; Mon, 17 Apr 2023 22:49:30 -0700 (PDT)
-Received: by mail-ua1-x942.google.com with SMTP id y21so9445518ual.3
-        for <kernel-janitors@vger.kernel.org>; Mon, 17 Apr 2023 22:49:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681796970; x=1684388970;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dQlu0Oc2Q0nPMBCNq5iTPUZpwrRZlsMdPt2zjra8+VI=;
-        b=mAT6sUq+UlkNN+qB/8Ek+Q2a5FcOMBEOJ0G9DxeAF2MvuQigyPn36nspW+YeWsROPq
-         cidibKNv7FW9oXyoPK1kdVsJM2dExHlFc38AR0t94WANnxtd3ARwA7Gszhq+Vll/RU3s
-         BGT5aEA72gmdBtr91KSPVvf/ApqX7akOxyoeG5jefWTJgjFg6vK5l+/k2BlSe+PmUzlj
-         wCZzxCpn7Uv4Y9DLlgjHK4VaTNzfxMsZ0MoQOGJlYda9aBYvVlkTGDRhfq9LkxJErP//
-         h3AQO1JYAo9pw5d5q6gMEDtieQVVZAdwP1KZ33CyL12iDuVjfdmI4HWph+MLWyYEVb8M
-         zrrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681796970; x=1684388970;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dQlu0Oc2Q0nPMBCNq5iTPUZpwrRZlsMdPt2zjra8+VI=;
-        b=NNBf5cu6B+8KLV5DVxupJ4CnqPPnf8RYHCHQz+zsu0eAAk/gbv43Rab6AAqAY1mb7A
-         cUlVU8jgZBdC90GNJRF0U/DLW7CEtkMsNKi12OH44UgGSkjiFIsspvQj3DhyQLqqwS3K
-         UhtCAVij0V3lMGim+ET/uU4bQZf/0Ht4j7nv1KY7J31YPjITW+jz8r9zffJktRWvm9iY
-         E+DRZoi4VOVk5wEs9tQ7zpSQCDNTZwKC/Sg/VwgCR9kk3C5vartrqfPKs3+Qx+Zn9X9B
-         cHGfOqnxfE+adrkUpK50gbX0uOqSXKMLtkLVd6FkyVGgMwVRXFl0+tElUPYgBkNBz5e1
-         cWgQ==
-X-Gm-Message-State: AAQBX9dX6hlRsywqhdn3MZGLw6Ln81kgr7rZQqzhoQS1PjUg3lSZl/r+
-        Duf3gwPrcUyfYIxnrsyvQVTk7QRX3MdtaLkf5hA=
-X-Google-Smtp-Source: AKy350YbYONhFj/QFepu2hLxcTvqfvV9e3DavpjUNBQj33EZJDDeD7Gwf2yZVEr/DEyEZV7qgUAOwlA6G3XwlBoiXxo=
-X-Received: by 2002:ac5:c92b:0:b0:443:813e:186d with SMTP id
- u11-20020ac5c92b000000b00443813e186dmr1977741vkl.1.1681796969922; Mon, 17 Apr
- 2023 22:49:29 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a59:dc45:0:b0:3c4:936f:80ba with HTTP; Mon, 17 Apr 2023
- 22:49:29 -0700 (PDT)
-Reply-To: mariamkouame01@hotmail.com
-From:   Mariam Kouame <mariamkouame1991@gmail.com>
-Date:   Mon, 17 Apr 2023 22:49:29 -0700
-Message-ID: <CAGjw6zB8u-8xxTu54BS+864aWW3KniRjRDLSw6f6D1r6KdB73A@mail.gmail.com>
-Subject: from mariam kouame
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+        Tue, 18 Apr 2023 02:01:31 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 464A02125;
+        Mon, 17 Apr 2023 23:01:30 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id D72091F8D5;
+        Tue, 18 Apr 2023 06:01:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1681797688; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=/lUtDdJ01nMGQCwdGQ6PYIWa8AuFDgIFbopJCtOcG2E=;
+        b=wdtO+nc7PpwoiQwbiN//ftSTk/xLX3rqG280rhTXsFwU9jR/bDEEIuuA1W5G0T/wcFDVWH
+        yDGA5zVQGRf19TFvCdDGssH8A8SML3o/nV/VEajfKZ8jW7L0wxwrhDBmpf9fe1mda44arm
+        voUjBHvRxJSamehKkA9CLeoSRXtmVzc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1681797688;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=/lUtDdJ01nMGQCwdGQ6PYIWa8AuFDgIFbopJCtOcG2E=;
+        b=cvMCxB9mQI4MVakfP8zOZmK9TRhg9y4R9ppB+6EMzN2DZ3+1187pVN/A57y2v/YqYTQ2k9
+        Tmvu90jpbNYJznAw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A903B139CC;
+        Tue, 18 Apr 2023 06:01:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id llkTKDgyPmRgNgAAMHmgww
+        (envelope-from <tiwai@suse.de>); Tue, 18 Apr 2023 06:01:28 +0000
+Date:   Tue, 18 Apr 2023 08:01:28 +0200
+Message-ID: <877cu9685j.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH] ALSA: hda/hdmi: Remove some dead code
+In-Reply-To: <91a31341f32d493bcc6c4515178ce0755ac1aa70.1681710069.git.christophe.jaillet@wanadoo.fr>
+References: <91a31341f32d493bcc6c4515178ce0755ac1aa70.1681710069.git.christophe.jaillet@wanadoo.fr>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dear,
+On Mon, 17 Apr 2023 07:41:48 +0200,
+Christophe JAILLET wrote:
+> 
+> These snd_BUG_ON() can never trigger, so just remove them to save a few
+> LoC.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> This patch is speculative. Maybe the other "if"s should be removed and the
+> error code returned instead.
+> 
+> I chose to remove these ones and the corresponding error code, because it
+> seems that it is already handled this way in hdmi_pcm_open().
+> 
+> I don't know the code enough, so it is only my guess.
+> 
+> Review with care :)
 
-Please grant me permission to share a very crucial discussion with
-you. I am looking forward to hearing from you at your earliest
-convenience.
+A sanity check is merely a sanity check, and we haven't got report
+hitting this, so this should be fine.  Let's cross fingers.
 
-Mrs. Mariam Kouame
+
+thanks,
+
+Takashi

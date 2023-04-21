@@ -2,89 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43B516EAA0B
-	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Apr 2023 14:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E9D86EBB08
+	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Apr 2023 21:48:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229921AbjDUMMz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 21 Apr 2023 08:12:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53878 "EHLO
+        id S229792AbjDVTsq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 22 Apr 2023 15:48:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229843AbjDUMMy (ORCPT
+        with ESMTP id S229776AbjDVTsp (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 21 Apr 2023 08:12:54 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CFB6D5B93
-        for <kernel-janitors@vger.kernel.org>; Fri, 21 Apr 2023 05:12:52 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4D07C1480;
-        Fri, 21 Apr 2023 05:13:36 -0700 (PDT)
-Received: from [10.57.82.85] (unknown [10.57.82.85])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6EEA63F587;
-        Fri, 21 Apr 2023 05:12:50 -0700 (PDT)
-Message-ID: <ac054e28-55fa-85c2-5865-3a44f8e7fa5e@arm.com>
-Date:   Fri, 21 Apr 2023 13:12:48 +0100
+        Sat, 22 Apr 2023 15:48:45 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF1F91FD8
+        for <kernel-janitors@vger.kernel.org>; Sat, 22 Apr 2023 12:48:43 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id ffacd0b85a97d-2f4c431f69cso1753736f8f.0
+        for <kernel-janitors@vger.kernel.org>; Sat, 22 Apr 2023 12:48:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1682192922; x=1684784922;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UQMSHOEXy4dd32S1UV0ZhNWB6VKkhN22gnwR9IMusl0=;
+        b=nHmMObR7x3FiUkaAPIlaQyocvvgn5cZjZnvZUAlj19vRreiBRr0OrjVYcp34NcAoNu
+         9cdqrSazGuGiOA7k/p+EN9YMJFHSFkLxHLQH2DwgDlnX4sM6jZa3oJyPytw1Mwy05Nto
+         d5dQO1GKskQ4xoRCKnZaysBDP4R17bnTwmnNFBcoMesrDyLesbWmpJIsImdGvku+Hp3X
+         2wtM6bY/iq7tieTgsAPDLaFtxkcbUyqtyThPb1eNAPyowHojVgKL9R3TP3oUvIeVy/Cq
+         JS/jFKMN/GdYACkctrawwhLvQrne6MhmV7qhNGmqQ9/+7qwGfUWEj9PSm0JxNLaFWXYH
+         Zgrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682192922; x=1684784922;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UQMSHOEXy4dd32S1UV0ZhNWB6VKkhN22gnwR9IMusl0=;
+        b=CunGkYQ3xivJhEbZhGaMx7x5fsA+G+WnCHRw5DoJdRKZiTJr5Gx6ierJxmJJWHvE7f
+         wWDpyfcXUE5vgixudT6BSLHLF/IKP3NZYmuKfSVxRz6K+VeFyWiFNox2Mjw2YIF1M1IS
+         10U9FKNAqSUE+uneCHJaqgcUpdKjLFSMzd5zK2lsOT7dlZvNYql5IpGs+tBy1Rg7KoET
+         QZVVv9Xmv/b69x8sPZlLnW04Gv7cW6o9xkpYkoVFrqCIT86QrMPf1xGLxgrpIHMWF0ec
+         Mf0rbP9WYrB74ghiTxKMioD7FpS7I6V16VlSA879Fu7Kz+dMJItQYjg/CUo9Q04WjCYt
+         5WUg==
+X-Gm-Message-State: AAQBX9eegIQEih5ID+FcmL0zKw6/zu7iNxVrUXJC/bgdPsgCMEIYo5QP
+        YTElcbjU0umOeblSKIcEj3Mm9w==
+X-Google-Smtp-Source: AKy350aLYJew3ugaktSPtVTFee5OZkYC67M5r+9LtUdpkJB3mKDc49tydAixWUKxvVGhL43y2CuajQ==
+X-Received: by 2002:adf:f3cb:0:b0:2f2:7adf:3c67 with SMTP id g11-20020adff3cb000000b002f27adf3c67mr6362132wrp.61.1682192922260;
+        Sat, 22 Apr 2023 12:48:42 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id u6-20020adff886000000b002f28de9f73bsm7159089wrp.55.2023.04.22.12.48.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Apr 2023 12:48:41 -0700 (PDT)
+Date:   Fri, 21 Apr 2023 15:39:45 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] wifi: rtw89: fix rtw89_read_chip_ver() for RTL8852B and
+ RTL8851B
+Message-ID: <3b1ed718-ce01-4a98-ae8b-3c042851c3f5@kili.mountain>
+References: <e4d912a2-37f8-4068-8861-7b9494ae731b@kili.mountain>
+ <7475bff70fd50c7e8527e66080e126b4eff440bb.camel@realtek.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.10.0
-Subject: Re: [PATCH] coresight: Fix signedness bug in
- tmc_etr_buf_insert_barrier_packet()
-To:     Dan Carpenter <dan.carpenter@linaro.org>
-Cc:     Mike Leach <mike.leach@linaro.org>, Leo Yan <leo.yan@linaro.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-References: <7d33e244-d8b9-4c27-9653-883a13534b01@kili.mountain>
-From:   Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <7d33e244-d8b9-4c27-9653-883a13534b01@kili.mountain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7475bff70fd50c7e8527e66080e126b4eff440bb.camel@realtek.com>
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_24_48,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan
-
-On 21/04/2023 11:42, Dan Carpenter wrote:
-> This code generates a Smatch warning:
+On Fri, Apr 21, 2023 at 11:48:43AM +0000, Ping-Ke Shih wrote:
+> On Fri, 2023-04-21 at 13:44 +0300, Dan Carpenter wrote:
+> > 
+> > The if statement is reversed so it will not record the chip version.
+> > This was detected using Smatch:
+> > 
+> >     drivers/net/wireless/realtek/rtw89/core.c:3593 rtw89_read_chip_ver()
+> >     error: uninitialized symbol 'val'.
 > 
->      drivers/hwtracing/coresight/coresight-tmc-etr.c:947 tmc_etr_buf_insert_barrier_packet()
->      error: uninitialized symbol 'bufp'.
+> I use smatch to check our driver regularly, but I can't find this error.
+> With the latest version v0.5.0-8321-g556064ca, I still can't find it.
+> Do I need to specify additional arguments? Thanks. 
 > 
-> The problem is that if tmc_sg_table_get_data() returns -EINVAL, then
-> when we test if "len < CORESIGHT_BARRIER_PKT_SIZE", the negative "len"
-> value is type promoted to a high unsigned long value which is greater
-> than CORESIGHT_BARRIER_PKT_SIZE.  Fix this bug by adding an explicit
-> check for error codes.
-> 
-> Fixes: 75f4e3619fe2 ("coresight: tmc-etr: Add transparent buffer management")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> ---
->   drivers/hwtracing/coresight/coresight-tmc-etr.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hwtracing/coresight/coresight-tmc-etr.c b/drivers/hwtracing/coresight/coresight-tmc-etr.c
-> index 918d461fcf4a..eaa296ced167 100644
-> --- a/drivers/hwtracing/coresight/coresight-tmc-etr.c
-> +++ b/drivers/hwtracing/coresight/coresight-tmc-etr.c
-> @@ -942,7 +942,7 @@ tmc_etr_buf_insert_barrier_packet(struct etr_buf *etr_buf, u64 offset)
->   
->   	len = tmc_etr_buf_get_data(etr_buf, offset,
->   				   CORESIGHT_BARRIER_PKT_SIZE, &bufp);
-> -	if (WARN_ON(len < CORESIGHT_BARRIER_PKT_SIZE))
-> +	if (WARN_ON(len < 0 || len < CORESIGHT_BARRIER_PKT_SIZE))
->   		return -EINVAL;
->   	coresight_insert_barrier_packet(bufp);
->   	return offset + CORESIGHT_BARRIER_PKT_SIZE;
 
+You need the cross function database (which takes like 9 hours to build).
 
-Thanks for the fix, I will send this as fixes at 6.4-rc1, as I have
-already sent the PULL request for 6.4
+~/smatch/smatch_scripts/build_kernel_data.sh
 
-Suzuki
+regards,
+dan carpenter
+

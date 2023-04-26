@@ -2,76 +2,137 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84EBF6EFBCE
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Apr 2023 22:40:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A32086EFBDB
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Apr 2023 22:49:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239830AbjDZUku (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Apr 2023 16:40:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57354 "EHLO
+        id S239691AbjDZUtH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Apr 2023 16:49:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239443AbjDZUks (ORCPT
+        with ESMTP id S234864AbjDZUtG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Apr 2023 16:40:48 -0400
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4977510DE
-        for <kernel-janitors@vger.kernel.org>; Wed, 26 Apr 2023 13:40:47 -0700 (PDT)
-Received: by mail-qt1-x82c.google.com with SMTP id d75a77b69052e-3ef69281e68so23955931cf.1
-        for <kernel-janitors@vger.kernel.org>; Wed, 26 Apr 2023 13:40:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682541646; x=1685133646;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JL3yT3Q33W5/BCQtgOVvz2cK4S2v0dqNTi6RS5aes9g=;
-        b=gzUhb84GEy0gACepsIceB4ZFm15ZccVw9XxAPAvv7m58nHuDgWZkz0Jk1VIitZjmSe
-         Iq85JvC6A7BhDLeiF1/+ILgAeJyRYh5KswdTEGjXleFDtE81p7Mh/yp0Ya4EsDi5Tug6
-         ZCq4s7feg5bZFJsMKqZ7HBZAcuG0/ZSW1MXl8W1rCw7SXDPrb3zfXbrFoWFCW+TS7pdE
-         id3lmGDuHRqVRxU2++kuQNRgOWXiB70FB8O4oyg4i7NrgAD6aKf2raxzLrBWx/9C/VM7
-         Z66eiS0gWuK/+ktqIyqMWNpjg4JlU8Nq+odw4oeEQz/jQiU6Jjim8C14c+PCC8T83xoW
-         LwUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682541646; x=1685133646;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JL3yT3Q33W5/BCQtgOVvz2cK4S2v0dqNTi6RS5aes9g=;
-        b=gbsvK9IEg4GPmiDUGMSakIbShQ8FOofw99CWiEyKEtY43tUA4iOqr/CXrAkVNBWEIW
-         nys3TBO1sP7t/TySPYeZ1xGY/K7/4Kxj7V+TMKAPAs9Dj1Nzhr1ymy8R53fTFys9kINS
-         vz3aiG+zYawSgyt8EaTIxibTgQmjNVFf5hTN6FG9dNfyZ8LD7Ksp3wyb4nveUpjzdxVh
-         g5pRpscP2Nb6tCtZju+x23ittGJa3hAmHv74Kyct0hXTUk+M+hIo8kXpqujNNddhOjoS
-         PEeyvyXHpmv5d8+xyFFTBTeig4SHqdi5Isp7luNKNuymCs4KmBBLCKXWGdue8YbArjCY
-         OvtA==
-X-Gm-Message-State: AAQBX9dESJv2M7c9sS5cyENyaKr0Gb1dc5GICrqsP8oGIz5N6bpySJ1s
-        4QC7wwVstkDjZO2RYzgfHBahN6/JirMw+Bj7CkJbNIreij/Z4VMo2+o=
-X-Google-Smtp-Source: AKy350Z+LUynoSgOOXoSuCL1UYJIhj6c1kRi8lzcDDWKucoNZL/FrdHjsgUyTS6+H2zCaPRaCrEtz/3WOpKaZt88CBw=
-X-Received: by 2002:a05:622a:345:b0:3e3:8ed5:a470 with SMTP id
- r5-20020a05622a034500b003e38ed5a470mr35537898qtw.1.1682541646326; Wed, 26 Apr
- 2023 13:40:46 -0700 (PDT)
+        Wed, 26 Apr 2023 16:49:06 -0400
+Received: from smtp.smtpout.orange.fr (smtp-19.smtpout.orange.fr [80.12.242.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89A2019F
+        for <kernel-janitors@vger.kernel.org>; Wed, 26 Apr 2023 13:49:04 -0700 (PDT)
+Received: from pop-os.home ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id rm4TpH0Nn0CGGrm4TpqSEV; Wed, 26 Apr 2023 22:49:02 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1682542142;
+        bh=kp67nxVyh8jZZFZ6p2tHHUiB/eOzKLK57FZQrJ+46xQ=;
+        h=From:To:Cc:Subject:Date;
+        b=ON2127XtGpB/s0nIKPSntB5hb2UXPGUjJbG0gWF4olqVv8Hsoq17f2CVZnTAqGjPb
+         qjEtnnos6bjixkIl2xHm7tJtBGnev6CIXjI+r/RBc8dW7NbISsUDUB7NnFCE6KypH0
+         lIxOQngLIcbBA0anyIK6DzecaH3umtqq7zENdXUXclYTy/DKWymYNq+2xETADox2Ln
+         6JknIAoEWjhca/1nWp+t0OEBIqnT9ohbdJV9S/ITns9T4XEIYLR/ptN58mKZkhsf7e
+         VCh/NJUXID8JMFj3swQEOh/pTUdav3oHh8fzy8uS4VOPC6FU2an3wKS4a6G2DNd03G
+         A+n8GaFpsjuBA==
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 26 Apr 2023 22:49:02 +0200
+X-ME-IP: 86.243.2.178
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH net-next] wifi: ath11k: Use list_count_nodes()
+Date:   Wed, 26 Apr 2023 22:48:59 +0200
+Message-Id: <941484caae24b89d20524b1a5661dd1fd7025492.1682542084.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Received: by 2002:a05:622a:1391:b0:3b8:6d45:da15 with HTTP; Wed, 26 Apr 2023
- 13:40:45 -0700 (PDT)
-Reply-To: klassoumark@gmail.com
-From:   Mark Klassou <georgerown101@gmail.com>
-Date:   Wed, 26 Apr 2023 20:40:45 +0000
-Message-ID: <CAHmBb7shSYieV_4jXDtgeZEF5osjcygCFUTm-Bz6TBNeRDyqHA@mail.gmail.com>
-Subject: Re
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=3.9 required=5.0 tests=BAYES_40,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Good Morning,
+ath11k_wmi_fw_stats_num_vdevs() and ath11k_wmi_fw_stats_num_bcn() really
+look the same as list_count_nodes(), so use the latter instead of hand
+writing it.
 
-I was only wondering if you got my previous email? I have been trying
-to reach you by email. Kindly get back to me swiftly, it is very
-important.
+The first ones use list_for_each_entry() and the other list_for_each(), but
+they both count the number of nodes in the list.
 
-Yours faithfully
-Mark Klassou.
+While at it, also remove to prototypes of non-existent functions.
+Based on the names and prototypes, it is likely that they should be
+equivalent to list_count_nodes().
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Un-tested
+---
+ drivers/net/wireless/ath/ath11k/wmi.c | 24 +-----------------------
+ drivers/net/wireless/ath/ath11k/wmi.h |  3 ---
+ 2 files changed, 1 insertion(+), 26 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index d0b59bc2905a..a55b5fe37ecf 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -6548,28 +6548,6 @@ int ath11k_wmi_pull_fw_stats(struct ath11k_base *ab, struct sk_buff *skb,
+ 				   &parse);
+ }
+ 
+-size_t ath11k_wmi_fw_stats_num_vdevs(struct list_head *head)
+-{
+-	struct ath11k_fw_stats_vdev *i;
+-	size_t num = 0;
+-
+-	list_for_each_entry(i, head, list)
+-		++num;
+-
+-	return num;
+-}
+-
+-static size_t ath11k_wmi_fw_stats_num_bcn(struct list_head *head)
+-{
+-	struct ath11k_fw_stats_bcn *i;
+-	size_t num = 0;
+-
+-	list_for_each_entry(i, head, list)
+-		++num;
+-
+-	return num;
+-}
+-
+ static void
+ ath11k_wmi_fw_pdev_base_stats_fill(const struct ath11k_fw_stats_pdev *pdev,
+ 				   char *buf, u32 *length)
+@@ -6880,7 +6858,7 @@ void ath11k_wmi_fw_stats_fill(struct ath11k *ar,
+ 	}
+ 
+ 	if (stats_id == WMI_REQUEST_BCN_STAT) {
+-		num_bcn = ath11k_wmi_fw_stats_num_bcn(&fw_stats->bcn);
++		num_bcn = list_count_nodes(&fw_stats->bcn);
+ 
+ 		len += scnprintf(buf + len, buf_len - len, "\n");
+ 		len += scnprintf(buf + len, buf_len - len, "%30s (%zu)\n",
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+index 92fddb77669c..91bc3e648ce1 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.h
++++ b/drivers/net/wireless/ath/ath11k/wmi.h
+@@ -6372,9 +6372,6 @@ int ath11k_wmi_send_pdev_set_regdomain(struct ath11k *ar,
+ 				       struct pdev_set_regdomain_params *param);
+ int ath11k_wmi_pull_fw_stats(struct ath11k_base *ab, struct sk_buff *skb,
+ 			     struct ath11k_fw_stats *stats);
+-size_t ath11k_wmi_fw_stats_num_peers(struct list_head *head);
+-size_t ath11k_wmi_fw_stats_num_peers_extd(struct list_head *head);
+-size_t ath11k_wmi_fw_stats_num_vdevs(struct list_head *head);
+ void ath11k_wmi_fw_stats_fill(struct ath11k *ar,
+ 			      struct ath11k_fw_stats *fw_stats, u32 stats_id,
+ 			      char *buf);
+-- 
+2.34.1
+

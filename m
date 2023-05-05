@@ -2,110 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C1DE6F7F02
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 May 2023 10:28:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBAD06F7F69
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 May 2023 10:55:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230063AbjEEI2r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 May 2023 04:28:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53102 "EHLO
+        id S230449AbjEEIzu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 May 2023 04:55:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231451AbjEEI2X (ORCPT
+        with ESMTP id S229658AbjEEIzs (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 May 2023 04:28:23 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84EB01A122;
-        Fri,  5 May 2023 01:27:18 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-64115eef620so17933997b3a.1;
-        Fri, 05 May 2023 01:27:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683275237; x=1685867237;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=el/Rn7qzup/497ytaREh2DImIqrYtRSHCU5jaoJYhms=;
-        b=Iyf4GbJlx14NUP+57ckxFwh5TzvX8eMEKwjajIAGWX4UjGhM/SAV61BJ6vUaIL/YjV
-         lKg8sk/u6zp4qHfTiyA2zwSnBu6sCg0FFsGuwFBregRmVW/ba8p0MUEHtVmZnyiE0F/G
-         q74XuzMO2Ek7aw571eR3OZpb9fiRP2Hc5EeEUoGmwgU2125XrVHc4NKanACv5myZhNOg
-         ygThbAaBC08/sYEXJ1aafJhqEkdBsFSSHuen7bVmtgfjWxSC4GRg4BonT2tKYjMAtS2W
-         yz4fk4KbX5r0R//jEFRUcnVYJSC9e3NZhsgLiV9F2CZMGBbw5Mm7V2EvN+R6WnoEDtmG
-         UojA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683275237; x=1685867237;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=el/Rn7qzup/497ytaREh2DImIqrYtRSHCU5jaoJYhms=;
-        b=dV8uY3xk24lfH7XU7YnQ5/ZFGpXzNxEVCwiuFq4i4rUydC2nUYlKZx774kQ2wPnF1t
-         gCf+wenfsDZDLySUygxcFPCqnfGwyaEBLbYIK6DQrL6DXhug39yuVoMul25qqdUQPinV
-         R2Kb2xEcDcPyN9IO3VPCzhSMJ/zmlw5I+NesJCzByrfplFt4haGThPDAD3Kv6yvOQJJZ
-         bD+BTzC82EMgYpx4S6GY4ycWV8mrrh6d2shYikYm7zxehNOoaqHd3eglaA/SXMy0ud0P
-         IkF4VSl9HvXxYTxugvEpoad5Mq8bCJx5BbXwBupx20SxV++ggTYqZaS6BUkLd8SfR1t0
-         +VkA==
-X-Gm-Message-State: AC+VfDyZNXC6gKLdfBvcCtP4yJCFKJ2cRLmV/lMx/JYmxAwzwch3WSqM
-        j0BevlcDx2ezg86SrLyNxdk=
-X-Google-Smtp-Source: ACHHUZ6U1yKFWRfgcLq5hhCullhfXhzyXSkcylWLS/d1geITMe7fLICBHN3EiylDtt7kpx3RmhVryw==
-X-Received: by 2002:a05:6a00:2d0b:b0:5a8:9858:750a with SMTP id fa11-20020a056a002d0b00b005a89858750amr1140902pfb.13.1683275237537;
-        Fri, 05 May 2023 01:27:17 -0700 (PDT)
-Received: from debian.me (subs32-116-206-28-14.three.co.id. [116.206.28.14])
-        by smtp.gmail.com with ESMTPSA id r15-20020a63440f000000b0051b8172fa68sm1068333pga.38.2023.05.05.01.27.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 May 2023 01:27:16 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 5473F106280; Fri,  5 May 2023 15:27:12 +0700 (WIB)
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Linux SCSI <linux-scsi@vger.kernel.org>,
-        Linux Documentation <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Kernel Janitors <kernel-janitors@vger.kernel.org>
-Cc:     Oliver Neukum <oliver@neukum.org>, Ali Akcaagac <aliakc@web.de>,
-        Jamie Lenehan <lenehan@twibble.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: [PATCH 3/3] Documentation: scsi: dc395x: Remove reference to 2.4 driver
-Date:   Fri,  5 May 2023 15:27:04 +0700
-Message-Id: <20230505082704.16228-4-bagasdotme@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230505082704.16228-1-bagasdotme@gmail.com>
-References: <20230505082704.16228-1-bagasdotme@gmail.com>
+        Fri, 5 May 2023 04:55:48 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85C5016340
+        for <kernel-janitors@vger.kernel.org>; Fri,  5 May 2023 01:55:47 -0700 (PDT)
+Received: from dggpemm500001.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4QCPYH1H1CzTkKq;
+        Fri,  5 May 2023 16:51:15 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Fri, 5 May 2023 16:55:45 +0800
+Message-ID: <14c59fcf-1ee2-7c02-b236-b649ce43987d@huawei.com>
+Date:   Fri, 5 May 2023 16:55:44 +0800
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=968; i=bagasdotme@gmail.com; h=from:subject; bh=+UknXRJJBadqLnLOgfRQbspacSVeqok6a0BQmw70Uac=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDCkhe29sL9oa+4xJVH2qyvINTQcWzubVu1eao9wwa1/Ak vqCefszO0pZGMS4GGTFFFkmJfI1nd5lJHKhfa0jzBxWJpAhDFycAjARTxlGhhlafzJCz4XcKGK4 N/XD5rj1f9wDcvVjWCo2ij7myw5+kczwT/HH1/uKnbzpdp/Zj0ofnPD5erGW/UFG7zULLWU9v3l P4AQA
-X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.1
+Subject: Re: [bug report] irqchip/mbigen: move to use bus_get_dev_root()
+Content-Language: en-US
+To:     Dan Carpenter <dan.carpenter@linaro.org>
+CC:     <gregkh@linuxfoundation.org>, Ming Lei <ming.lei@canonical.com>,
+        <kernel-janitors@vger.kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>
+References: <adb006bb-1352-4e9d-a763-66c0ac778201@kili.mountain>
+ <5154e620-7638-8bdd-a261-83ee7d5adfe5@huawei.com>
+ <08ee85b9-67cd-485a-9f1d-61d92aad6204@kili.mountain>
+From:   Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <08ee85b9-67cd-485a-9f1d-61d92aad6204@kili.mountain>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-8.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The 2.4 driver link returns 404. As no one runs 2.4 kernel anymore,
-remove the stale reference.
 
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
----
- Documentation/scsi/dc395x.rst | 4 ----
- 1 file changed, 4 deletions(-)
 
-diff --git a/Documentation/scsi/dc395x.rst b/Documentation/scsi/dc395x.rst
-index c413b629809bcd..a6320561543650 100644
---- a/Documentation/scsi/dc395x.rst
-+++ b/Documentation/scsi/dc395x.rst
-@@ -11,10 +11,6 @@ be safe to use. Testing with hard disks has not been done to any
- great degree and caution should be exercised if you want to attempt
- to use this driver with hard disks.
- 
--This is a 2.5 only driver. For a 2.4 driver please see the original
--driver (which this driver started from) at
--http://www.garloff.de/kurt/linux/dc395/
--
- Problems, questions and patches should be submitted to the `Linux SCSI
- mailing list <linux-scsi@vger.kernel.org>`_.
- 
--- 
-An old man doll... just what I always wanted! - Clara
+On 2023/5/4 22:46, Dan Carpenter wrote:
+> On Thu, May 04, 2023 at 07:56:07PM +0800, Kefeng Wang wrote:
+>>
+>>
+>> On 2023/5/4 15:34, Dan Carpenter wrote:
+>>> Hello Greg Kroah-Hartman,
+>>>
+>>> The patch fea087fc291b: "irqchip/mbigen: move to use
+>>> bus_get_dev_root()" from Mar 13, 2023, leads to the following Smatch
+>>> static checker warning:
+>>>
+>>> 	drivers/irqchip/irq-mbigen.c:258 mbigen_of_create_domain()
+>>> 	error: potentially dereferencing uninitialized 'child'.
+>>>
+>>> drivers/irqchip/irq-mbigen.c
+>>>       235 static int mbigen_of_create_domain(struct platform_device *pdev,
+>>>       236                                    struct mbigen_device *mgn_chip)
+>>>       237 {
+>>>       238         struct device *parent;
+>>>       239         struct platform_device *child;
+>>>       240         struct irq_domain *domain;
+>>>       241         struct device_node *np;
+>>>       242         u32 num_pins;
+>>>       243
+>>>       244         for_each_child_of_node(pdev->dev.of_node, np) {
+>>>       245                 if (!of_property_read_bool(np, "interrupt-controller"))
+>>>       246                         continue;
+>>>       247
+>>>       248                 parent = bus_get_dev_root(&platform_bus_type);
+>>>       249                 if (parent) {
+>>>
+>>> Smatch is concerned that "parent" can be NULL.  Probably unlikely in
+>>> real life.
+>>
+>> How about move bus_get_dev_root() out of the loop.
+>>
+> 
+> Sounds good to me, but I don't know this code at all.
+Post a patch[1], let's wait for review, and could you help to test it,
+man thanks.
 
+[1] 
+https://lore.kernel.org/all/20230505090654.12793-1-wangkefeng.wang@huawei.com/
+> 
+> regards,
+> dan carpenter
+> 

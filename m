@@ -2,61 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 793096FD63C
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 May 2023 07:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF0186FD796
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 May 2023 08:57:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233128AbjEJFiS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 May 2023 01:38:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42944 "EHLO
+        id S236166AbjEJG5g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 May 2023 02:57:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjEJFiR (ORCPT
+        with ESMTP id S236234AbjEJG5d (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 May 2023 01:38:17 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C55442719;
-        Tue,  9 May 2023 22:38:16 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-50bc0117683so12182560a12.1;
-        Tue, 09 May 2023 22:38:16 -0700 (PDT)
+        Wed, 10 May 2023 02:57:33 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C23D9468B;
+        Tue,  9 May 2023 23:57:23 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-94a342f7c4cso1206586866b.0;
+        Tue, 09 May 2023 23:57:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683697095; x=1686289095;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=IRV+sBk5PSnkH2cvQJEurZPQMXkcZOja4gthBlnfdvw=;
-        b=A1h54Fif7vGJHhX9m1f3Kshr1flFcjj5AzZ/ocnSu3BiLmXjzWi8eQZxj/rncY8miQ
-         0v27z+lMPwGBmHopVHW2+2J14kjpyubV1MgJlX+pboaAr0MZToQgz/2v2g3expkwDpKe
-         WZ3tAFfb7li10tp/88owAqkA0zPC+8hxwtaA6ff26GFvXDgrFw78JG7QQUH2LYdwFv5u
-         vN1FyOhDc6JeOVeA1f6OWLEPfCBTQVmdWhzybqZa7gw0D+OsML6oniiMpxYs4T4nzHQ6
-         JOlHgzkLxan/XMa7ezvhi7uRB3nazYJl74itRiBJ+qcoWns94wmL1BbIUw6l/93Qu5jR
-         rODA==
+        d=gmail.com; s=20221208; t=1683701842; x=1686293842;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vveK2ZwEVP6pIOwJJqSfnIDQO+L04gtFlGwkKv3HOX4=;
+        b=WOnJQCV4C9rm1yHcjMg2k85HEGI2F5xrOSYAxeIgBWWP4Y24mRXF1hA0ZLHCs55ZUR
+         kw5XSxZGgBIUIRqxyaLdgBsOqhaQk7AOnR/GODpwhZgWhAvpiZRcH0r5UD4DSbDuRPAz
+         MyiBrP7Jv4NKKDL89iKncAKpXeV6LaeAbzWshewZb+ijOTSDXOEpIc7JR7gPvfcoGD5U
+         ag2G/IyFBCSvgNY6AXT129B0vXhw0EiH6buG4GOvFkG6OvA+CN8UzzOVQVkITeYkaGzV
+         fQZyvY52OCe4DOkzYN9VdpR5l11gmZnkbtjLorxmrQr/lzdFdWn+i7NPqtp6h9Ipgl8J
+         OF8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683697095; x=1686289095;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IRV+sBk5PSnkH2cvQJEurZPQMXkcZOja4gthBlnfdvw=;
-        b=TLkqNKUsFgJO9oCgg0szbMQ8U1WFEULHsEBtlFNcWB/1CEKp0Mgr+HTUsi2NKNB1Hj
-         HyXhJIj7HpYUQl5g4boMbf8VkbsQNWvVu+SxOOJYk3zcQiVeCzP32ORWaGb4T1K56kdB
-         9X1wktJ/fnxCxZ6knmP8MqAj3Syd+10oKq1POX845PNPmpxI+dGmASiz3sajzN6hw6vc
-         tNPCZzLuLiGquMzfTIpMLdfhmPV4F7+aVR0jTt+4eKGTclGeUJHUQ0n6d0SxMV8/sA66
-         irXP6qnrxcGilP1P3oSoPXm0FHDYfa0ftu4yNPnkcmMkkQiW3zPo9AD62BR3WQy0Pq+T
-         TfTQ==
-X-Gm-Message-State: AC+VfDzqlEAnAOe8rkp5XJ4kA8SixYPC+hkrvVDUBHcC4iwkH2rlcrhc
-        JRwk9E7Kuu2FLo/OcDB5J29UONcxKqJKdpGRxE4=
-X-Google-Smtp-Source: ACHHUZ4ogjZtGrQXMJMKwEGu0G0AbD0KpYVERcNwR4arcIxdi5S+ollKjEgImzB7I/MuJA0JZh7eBw+2jTW/8V51pB4=
-X-Received: by 2002:a17:907:9808:b0:94f:4801:6d08 with SMTP id
- ji8-20020a170907980800b0094f48016d08mr15277609ejc.71.1683697095024; Tue, 09
- May 2023 22:38:15 -0700 (PDT)
-MIME-Version: 1.0
+        d=1e100.net; s=20221208; t=1683701842; x=1686293842;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vveK2ZwEVP6pIOwJJqSfnIDQO+L04gtFlGwkKv3HOX4=;
+        b=YIlPbTvbdTbmCK3h+r3+L5WvBdtsmIrDD2Ucje9JENUqm0UNm2243WDwS38KRKPnmL
+         YIA1rwMUpbF1FKIpEoh8dwjjvEx5ib6v2FWmNU3iYLe1Dki4XlIjQA466VEk9QR9wGcY
+         xEoKKf53eX1Z+ZvDo92dY/nWckxQeyDr/ELrhH5diE5KlcUoeu3KMgTYdOfhokPBLpBt
+         /FaCyJRXZGqJ/Pt15M/j7QBd89k+VuOhs9wTvOB6GTk3XlPQ9uxVNI5yIqX0dy9KZgLT
+         6n1QPqtw1b1zqFzPOw9caUSQMmZKBIMQnONULgGdzsU14R+IiuAEY57NiD47NxKHxzKg
+         h6qA==
+X-Gm-Message-State: AC+VfDz2h+JrVFrYR1moK0KAiz/Zt3VWOYDmFCDUIzkcYBbtezHyortb
+        23qdxb2AHcjdjFevTUb1mzM=
+X-Google-Smtp-Source: ACHHUZ7VKBCNZs8J8BL8xMiNZv7WhsIIUlyHFodS6SFnLKpsQrDV6M/Jk8ReZwf+4TQsPTykPlmAKg==
+X-Received: by 2002:a17:907:8a29:b0:965:f8b7:b0cd with SMTP id sc41-20020a1709078a2900b00965f8b7b0cdmr19409283ejc.25.1683701841954;
+        Tue, 09 May 2023 23:57:21 -0700 (PDT)
+Received: from felia.fritz.box ([2a02:810d:7e40:14b0:81b:847c:e4fd:f042])
+        by smtp.gmail.com with ESMTPSA id ka11-20020a170907990b00b0096602a5ab25sm2274018ejc.92.2023.05.09.23.57.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 May 2023 23:57:21 -0700 (PDT)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Date:   Wed, 10 May 2023 07:38:04 +0200
-Message-ID: <CAKXUXMy3_krgwHMS6TaDZhBePkaHTHigntwBD0WFxMJ=DtgWYA@mail.gmail.com>
-Subject: Situation of CONFIG_CLK_SUNXI_PRCM_SUN9I
-To:     Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        linux-sunxi@lists.linux.dev, linux-clk@vger.kernel.org,
-        kernel-janitors <kernel-janitors@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H . Peter Anvin" <hpa@zytor.com>
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH 0/2] Reworking configurability of X86_FEATURE_NAMES
+Date:   Wed, 10 May 2023 08:57:11 +0200
+Message-Id: <20230510065713.10996-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -67,25 +71,57 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dear Maxime,
+Dear Dave, dear Boris, dear x86 maintainers,
 
-with commit 49c726d55c1b ("clk: sunxi: Add Kconfig options"), you
-introduce various build configurations for Legacy clock support for
-Allwinner SoCs. Among them, you introduce the config
-CLK_SUNXI_PRCM_SUN9I in drivers/clk/sunxi/Kconfig, but this config is
-not used anywhere in the kernel tree.
 
-Can we just delete this config CLK_SUNXI_PRCM_SUN9I again, as it is
-not needed, or did you simply miss to adjust the Makefile for this
-option to be effective?
+as follow-up to the discussion on my initial patch on changing the
+visibility of X86_FEATURE_NAMES (see Link), here are two patches:
 
-I will gladly send a patch, once you could give me a quick pointer.
+Patch 1 simply makes the minimal one-line change to make X86_FEATURE_NAMES
+disappear from the prompt.
 
+Patch 2 is the more radical change to remove the whole config and see which
+code would generally be impacted; just as quick exploration.
+
+The diffstat shows we are getting rid of a bit of code throughout arch/x86,
+but the change and reduction is not too complex either:
+
+ arch/x86/Kconfig                  | 12 ------------
+ arch/x86/Kconfig.cpu              |  2 +-
+ arch/x86/boot/Makefile            |  2 --
+ arch/x86/boot/cpu.c               | 13 -------------
+ arch/x86/include/asm/cpufeature.h |  5 -----
+ arch/x86/kernel/cpu/Makefile      |  4 +---
+ arch/x86/kernel/cpu/common.c      |  4 ----
+ 7 files changed, 2 insertions(+), 40 deletions(-)
+
+Probably, you just want to pick patch 1 and wait for any complaints. Or if
+you are confident the compliants will not show up, simply apply both.
+
+Otherwise, I will put it on my list to come back in a year or two, and if
+there were no complaints till then, provide the updated patch to remove the
+X86_FEATURE_NAMES config then.
+
+Link: https://lore.kernel.org/all/20230509084007.24373-1-lukas.bulwahn@gmail.com/
 
 Best regards,
 
 Lukas
 
-Note: This is a resent email (see original email:
-https://lore.kernel.org/all/CAKXUXMzqCktKz7vGN4_QAp4n1SeP0-YHL19evmVSfseZOemd5g@mail.gmail.com/);
-now hopefully with an email address for Maxime that reaches Maxime.
+
+Lukas Bulwahn (2):
+  x86: make X86_FEATURE_NAMES non-configurable in prompt
+  x86: always build with X86_FEATURE_NAMES functionality
+
+ arch/x86/Kconfig                  | 12 ------------
+ arch/x86/Kconfig.cpu              |  2 +-
+ arch/x86/boot/Makefile            |  2 --
+ arch/x86/boot/cpu.c               | 13 -------------
+ arch/x86/include/asm/cpufeature.h |  5 -----
+ arch/x86/kernel/cpu/Makefile      |  4 +---
+ arch/x86/kernel/cpu/common.c      |  4 ----
+ 7 files changed, 2 insertions(+), 40 deletions(-)
+
+-- 
+2.17.1
+

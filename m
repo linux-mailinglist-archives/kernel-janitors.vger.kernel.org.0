@@ -2,85 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6ED997078B2
-	for <lists+kernel-janitors@lfdr.de>; Thu, 18 May 2023 05:59:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39D3170792A
+	for <lists+kernel-janitors@lfdr.de>; Thu, 18 May 2023 06:40:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229597AbjERD7R (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 17 May 2023 23:59:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57884 "EHLO
+        id S229727AbjEREkY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 18 May 2023 00:40:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbjERD7Q (ORCPT
+        with ESMTP id S229625AbjEREkX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 17 May 2023 23:59:16 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE92830E9
-        for <kernel-janitors@vger.kernel.org>; Wed, 17 May 2023 20:59:14 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2ac8d9399d5so16687061fa.1
-        for <kernel-janitors@vger.kernel.org>; Wed, 17 May 2023 20:59:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684382353; x=1686974353;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=+ICkI9RxfU9CXJISMRmfR9rrQObQEA6ISlslzsiv8Is=;
-        b=h8B+WlW/rQrgS2QLogtDA9+rbb5nvhOQ6GRx+uYxBouQL3gAMp1/SGKZa3PJYAul/2
-         YWrVWeWAz9xrFTi0Jdt2Q/0pAqOMXgCVeN6W2yEyeYpMnSNDdQIrZkC765rhu4a3CQym
-         TX14m3s+59Z/IWJm8CbChv7tS3xVqTllWU8HomdVGWv7KUoGSJFvLCPyyW4WWMSHt0a9
-         +ZzMd8TMyHhNd8h0Czb3bWsoCYHdSnqoihP/grlj9PXu9ZHMBNBgCy8arAWEVN9+g76I
-         Arf5DYMed9kQ1AiNmoX+9CrfubQgpOgJYjmbmLn/FW6tCpKzihSpEV0kfJnCdN7TjFYo
-         V5NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684382353; x=1686974353;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+ICkI9RxfU9CXJISMRmfR9rrQObQEA6ISlslzsiv8Is=;
-        b=YZ2pj+8feCMMcNbP46gXdDmCO5r2s+SnT4Qcrt4TRUDfP6SmscTfrZju1hNnPXgwm4
-         lEQbFuZSZKGOtkie7brNsiAYC796mfkaSfEtmxhjI19uh54N1H841FUZVwe5XVMZ0lfm
-         1vJNpEDSuSilHeuofLvsVBrVimFadmUpr2y8j/Gqnk7sxoXtEpmiQNLqIH5qyJj3yAF/
-         yNS2H8FcFLKrqOxT14R0GUuJAy6+n/yDOGKWZNV1DvJTr6Db2FR7pxg/jryAP5eXAuMX
-         WX5hEQGeOXOjxzMGBq9RDrTIO3pmS+iEU240RSH2nQgMfQZ6aUxWJe1isRX01Z269aia
-         3emg==
-X-Gm-Message-State: AC+VfDyTIqeDrHIzV2ehB2bbvn0b8mEtmyFiC3BXkrdiAWjDkMmpkwRy
-        AjfN0JTv3NPEzgPpMMseh4IvyZU39H3u6iUPph8=
-X-Google-Smtp-Source: ACHHUZ5QTkBEJrxzqOafhSWPVd9onmmvuwQMPGsGFUB4fJCQtz/L3zSnV5iURbU2Z45aQsIQl/qQM6wUp2WB159ibk8=
-X-Received: by 2002:a2e:854a:0:b0:2ad:d6cd:efdd with SMTP id
- u10-20020a2e854a000000b002add6cdefddmr6465421ljj.32.1684382352498; Wed, 17
- May 2023 20:59:12 -0700 (PDT)
+        Thu, 18 May 2023 00:40:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A69701BD2;
+        Wed, 17 May 2023 21:40:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D5F364D00;
+        Thu, 18 May 2023 04:40:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 90550C4339C;
+        Thu, 18 May 2023 04:40:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684384821;
+        bh=nti3XKfDu6OHjOeDxESq78YvWzofdVpLUXmq0Sk1hbQ=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=ISU+E69gGMn6fc69IsSO03wXmLqB+YpaafbpURA31u2lrC/Qac8OgNKKQ+1FW7YYL
+         QDAHZDHLwnHP2wvHE7tp2iIo+VRBXFxG+NLtl8Se1vceOxyd2hqBOqxYqwtxq/utO9
+         w5anzTn/sInRoQE7PCoPinar7/BzaSUzdS7+/gYqafK7Sb5/VxwE9YqlIAJp+MgG2W
+         8fzj4Lk2ioy7/LmUt2mYg15ci7/D7h1xW8c97V+m2zEcOo4qrf09+y+5HU1b/UImqp
+         sG3sAWSTo7OSu0/qEAfckPOSND0wCaQzmRUuuCF4a65MDPrkD15LOm9NdzIUbgjcMO
+         Bk0lliyrz/Kgw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 7C88BE54223;
+        Thu, 18 May 2023 04:40:21 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:ab3:63d4:0:b0:22f:3a39:53c4 with HTTP; Wed, 17 May 2023
- 20:59:11 -0700 (PDT)
-Reply-To: officialeuromillions@gmail.com
-From:   Euro Millions <pete.wetzlinger@gmail.com>
-Date:   Thu, 18 May 2023 04:59:11 +0100
-Message-ID: <CAAik_9SwHinrNOeuESs18AkLFbb-Te1tOR6OmUP8=UPPLLQWFA@mail.gmail.com>
-Subject: Aw
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: openvswitch: Use struct_size()
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <168438482150.9978.1427720181079235563.git-patchwork-notify@kernel.org>
+Date:   Thu, 18 May 2023 04:40:21 +0000
+References: <e7746fbbd62371d286081d5266e88bbe8d3fe9f0.1683388991.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <e7746fbbd62371d286081d5266e88bbe8d3fe9f0.1683388991.git.christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     pshelar@ovn.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, netdev@vger.kernel.org,
+        dev@openvswitch.org
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Herzlichen Gl=C3=BCckwunsch, Sie haben am 16.=C2=A0May,=C2=A02023 =E2=82=AC=
-650.000,00 bei den
-monatlichen Euro Millions/Google Promo-Gewinnspielen gewonnen.
+Hello:
 
-Bitte geben Sie die folgenden Informationen ein, damit Ihr
-Gewinnbetrag an Sie =C3=BCberwiesen werden kann.
-1.) Vollst=C3=A4ndiger Name:
-2.) Telefon- und Mobilfunknummern:
-3.) Postanschrift:
-4.) Beruf:
-5.) Geburtsdatum:
-6.) Geschlecht:
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Sat,  6 May 2023 18:04:16 +0200 you wrote:
+> Use struct_size() instead of hand writing it.
+> This is less verbose and more informative.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> It will also help scripts when __counted_by macro will be added.
+> See [1].
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] net: openvswitch: Use struct_size()
+    https://git.kernel.org/netdev/net-next/c/b50a8b0d57ab
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-Herr Anthony Deiderich
-Online-Koordinator

@@ -2,203 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CF45707BDD
-	for <lists+kernel-janitors@lfdr.de>; Thu, 18 May 2023 10:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C06C707C29
+	for <lists+kernel-janitors@lfdr.de>; Thu, 18 May 2023 10:37:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230101AbjERIWh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 18 May 2023 04:22:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52442 "EHLO
+        id S229920AbjERIhy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 18 May 2023 04:37:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230064AbjERIWe (ORCPT
+        with ESMTP id S229899AbjERIhx (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 18 May 2023 04:22:34 -0400
-X-Greylist: delayed 64 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 18 May 2023 01:22:32 PDT
-Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0729E2;
-        Thu, 18 May 2023 01:22:32 -0700 (PDT)
+        Thu, 18 May 2023 04:37:53 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48CF0172A
+        for <kernel-janitors@vger.kernel.org>; Thu, 18 May 2023 01:37:52 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-ba1815e12efso1452510276.3
+        for <kernel-janitors@vger.kernel.org>; Thu, 18 May 2023 01:37:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=inria.fr; s=dc;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=9a8jzjXs3MLamS6mM9bcSsKOIMzXsAYe3LUcbXx8VFc=;
-  b=blA/S39WDLdhEE2pUoGIYYSESevxG4BTk9EIDBPp6aCIj3DY5oigPl6e
-   w27Zdq3mmzrfYx3EdEd759UTKzeLDlBKZsJGIT9YqVABzfbnD4WbA0Suj
-   FlzRWy6ICUpKDDxZtkQAmJRTKTZiolhBDSHrpjUo0N0lnCgtfhSc9vl3l
-   g=;
-Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=julia.lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
-X-IronPort-AV: E=Sophos;i="5.99,284,1677538800"; 
-   d="scan'208";a="56393996"
-Received: from 231.85.89.92.rev.sfr.net (HELO hadrien) ([92.89.85.231])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2023 10:21:27 +0200
-Date:   Thu, 18 May 2023 10:21:26 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-cc:     Dan Carpenter <dan.carpenter@linaro.org>, smatch@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Julia Lawall <Julia.Lawall@lip6.fr>
-Subject: Re: devm_ on lists
-In-Reply-To: <a2866a55-f3b0-ff99-b17c-8f0fc9e55e9b@wanadoo.fr>
-Message-ID: <alpine.DEB.2.22.394.2305181009090.2858@hadrien>
-References: <db0e0930-d76c-426b-9d9b-366f97d7e167@kili.mountain> <a2866a55-f3b0-ff99-b17c-8f0fc9e55e9b@wanadoo.fr>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        d=gmail.com; s=20221208; t=1684399071; x=1686991071;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oDVdWICwavrWQ8UAVYhe8ynFXsBBW1vVQ7W08zgiq24=;
+        b=VbgXpjNVuoHCt8MpqwIxrQwpRpefKezlaIVlcGsHWbBbYjWCj/9auG0DsPl5eFVejK
+         zNvcuTbwjxqzk0MASruQ2hWUvJYwmCAcM5qJgQQ9nLnh2drXSO2xfDJXd7KMFW06PT+s
+         Pi5WpHxqgHgqhnBz6vb5RrqDgELqhVxDNB9cHE/DHxP2F3AoOvU94Wi2meKDuRBtjHJZ
+         8Hpk7yjRI/BCM1k0NTGAL4hJUplSQFxkJrCtvOylLuoECsvVqjaf2zmBg1n7KM6GYOiM
+         gh1TsxuiYFw60hZr/RnQ/wEtFteCtnvtXIOqhYvR2yT9oZo94UaI6qCC/nTuatBe4yuU
+         YWVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684399071; x=1686991071;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oDVdWICwavrWQ8UAVYhe8ynFXsBBW1vVQ7W08zgiq24=;
+        b=c41TNxkwZU1Klduxay+7cdL1/Y2IY8mNmr/CAYcjRc+ipybDWbeJMVY6nZcVmrWDTA
+         pPCjaCs+00yivMk4G19wBwKIAwq4o14l7s7dQffSD5+m4Yot3lYrLn6fzOf/CvwxC8GS
+         KjT4bVVYlij8Fnu1cfzowrEQVn7OWsGMAQTKzQ5PGIOFElK3G50dxt/qiMtJGKD4nYDy
+         YpDTmUeCfqqEYUN/EA31UZEOxjfddZd1Qu/Vhgb36qMAs5rn/yf6NANxTkllvP3pLt0S
+         B/3uvC91+4q9DF4JOKr2n7RpCc77aw6Cs8K0ahcmixH+xSKQRzxlPoiEgr6uPDejdpvV
+         aWpw==
+X-Gm-Message-State: AC+VfDwDNbx6+KRZO1+uJzIktiUvz7rIaNSW0FxUT35c0zFrbd8Mpxp8
+        VLpvSmK49w0b5aOV17jukHpmC86KzPgfh6uGt98=
+X-Google-Smtp-Source: ACHHUZ6u9nDw38a0Nbc+/LgQbJmRagDQwJeZBaE28n3YHjSo6TApu/gx63sEWYWN2wfkm9LC+4nG7ek4a0E+Gbe6XD0=
+X-Received: by 2002:a25:c08e:0:b0:ba6:9f1c:1292 with SMTP id
+ c136-20020a25c08e000000b00ba69f1c1292mr788885ybf.32.1684399071493; Thu, 18
+ May 2023 01:37:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-176162583-1684398086=:2858"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7108:3acc:b0:2fb:68dc:b886 with HTTP; Thu, 18 May 2023
+ 01:37:51 -0700 (PDT)
+Reply-To: ninacoulibaly03@hotmail.com
+From:   nina coulibaly <ninacoulibaly332@gmail.com>
+Date:   Thu, 18 May 2023 01:37:51 -0700
+Message-ID: <CAGYF=X4Ex_Y5wERRo-XSprWRfSW1RLz5CpLwHh1QAw4JwQaHkg@mail.gmail.com>
+Subject: from nina coulibaly
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Dear,
 
---8323329-176162583-1684398086=:2858
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+I am interested to invest with you in your country with total trust
+and i hope you will give me total support, sincerity and commitment.
+Please get back to me as soon as possible so that i can give you my
+proposed details of funding and others.
 
+Best Regards.
 
-
-On Thu, 18 May 2023, Christophe JAILLET wrote:
-
-> Le 18/05/2023 à 09:27, Dan Carpenter a écrit :
-> > I sometimes have more ideas than I can handle in a day and my mind
-> > resets every night so every morning I am a blank slate like that guy
-> > from that movie.
-> >
-> > So I'm going to start writing them down and adding a hashtag.
-> > #StaticCheckerIdeas  I'm going to CC kernel janitors until the Smatch
-> > list gets archived on lore.kernel.org
-> >
-> > There is a bug in ti_sci_probe() where it does:
-> >
-> > 	info = devm_kzalloc(dev, sizeof(*info), GFP_KERNEL);
-> > 	...
-> > 	list_add_tail(&info->node, &ti_sci_list);
-> > 	...
-> > 	return of_platform_populate(dev->of_node, NULL, NULL, dev);
-> >
-> > Idea 1:  If of_platform_populate() fails, then info freed but it's it's
-> > still on the the &ti_sci_list list.  Look for list_add of devm_ data
-> > and ensure that it's removed from the list before an error code.
-> >
-> > There are other lifetime issues surrounding devm_ data.  We need a
-> > list_del in the release function as well.
-> >
-> > Idea 2: The other error paths all have clean up so last error path
-> > should have clean up too.
-> >
-> > regards,
-> > dan carpenter
-> >
->
-> Nice!
->
-> A really naive:
-> @r@
-> expression m;
-> identifier alloc_fn =~ "devm_";
-> identifier list_fn =~ "list_add";
-> @@
->
-> *	m = alloc_fn(...);
-> 	...
-> *	list_fn(..., <+... m ...+>, ...);
->
->
-> also seems to give some decent results.
-> Written as-is, there is a lot of false positive, but is a start.
->
-> I'll give it a look.
-
-Here is an attempt that is a bit more defensive than Christophe's:
-
-@@
-identifier d =~ "devm";
-identifier x;
-expression e;
-int r != 0;
-global idexpression f;
-iterator i;
-@@
-
-
-*        e = d(...)
-         ...
-(
-*        list_add_tail(&e->x, &f)
-|
-*        list_add(&e->x, &f)
-)
-         ... when != list_del(&e->x)
-             when != i(...) { ... list_del(&e->x) ... }
-         return r;
-
-Perhaps Christophe's more general list_add pattern is a good idea.
-
-This has false positives when the return value is a variable that actually
-contains 0.  These false positives are easy to detect.
-
-This rule requires that the list is a global variable.  That constraint
-implies that the rule gives a small number of results that are "easy" to
-deal with.
-
-Afterwards, the question is what does one do to deal with them?  If you
-remove the line when != i(...) { ... list_del(&e->x) ... }, then one of
-the results does have a loop at the end of the function that deletes all
-the elements in the list.  That is fine as a solution if the list started
-out empty.  Otherwise, I guess one would have to collect another list of
-things added to the list along the way, to be able to remove them all in
-the failure case.
-
-If the list_add can be moved to a safer place, as Christophe suggests,
-then that also seems like a good solution.  But often the allocation and
-list_add are in a loop.
-
-There are a lot more results if one replaces the two occurrences of &f by
-... The typical result has the list being &a->b where a is a parameter.
-Then one would have to trace up the nested callers to check that they are
-all destroyed on failure.  That seems painful to do manually, and probably
-painful to do with Coccinelle.  Does there exist some smatch code to do
-that?
-
-julia
-
-
->
->
->
-> One of my first match is:diff -u -p drivers/perf/qcom_l2_pmu.c
-> /tmp/nothing/perf/qcom_l2_pmu.c
-> --- drivers/perf/qcom_l2_pmu.c
-> +++ /tmp/nothing/perf/qcom_l2_pmu.c
-> @@ -852,12 +852,10 @@ static int l2_cache_pmu_probe_cluster(st
->  		return err;
->  	}
->
-> -	cluster = devm_kzalloc(&pdev->dev, sizeof(*cluster), GFP_KERNEL);
->  	if (!cluster)
->  		return -ENOMEM;
->
->  	INIT_LIST_HEAD(&cluster->next);
-> -	list_add(&cluster->next, &l2cache_pmu->clusters);
->  	cluster->cluster_id = fw_cluster_id;
->
->  	irq = platform_get_irq(sdev, 0);
->
-> which looks like a real one.
->
-> list_add() should be at the very end of the probe in order not to "corrupt"
-> the l2cache_pmu list.
->
->
->
-> Adding Julia if she wishes to dig it a little more with coccinelle.
->
-> CJ
->
---8323329-176162583-1684398086=:2858--
+Mrs Nina Coulibaly

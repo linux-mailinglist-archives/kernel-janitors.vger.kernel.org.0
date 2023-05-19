@@ -2,124 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 611767091D6
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 May 2023 10:42:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AFBD7092DD
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 May 2023 11:20:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230433AbjESImT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 19 May 2023 04:42:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34880 "EHLO
+        id S230032AbjESJUy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 19 May 2023 05:20:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230435AbjESImR (ORCPT
+        with ESMTP id S229932AbjESJUv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 19 May 2023 04:42:17 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31CE5E5D
-        for <kernel-janitors@vger.kernel.org>; Fri, 19 May 2023 01:42:15 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id ffacd0b85a97d-30626f4d74aso1980362f8f.0
-        for <kernel-janitors@vger.kernel.org>; Fri, 19 May 2023 01:42:15 -0700 (PDT)
+        Fri, 19 May 2023 05:20:51 -0400
+Received: from mail-vs1-xe31.google.com (mail-vs1-xe31.google.com [IPv6:2607:f8b0:4864:20::e31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 536BD18C
+        for <kernel-janitors@vger.kernel.org>; Fri, 19 May 2023 02:20:50 -0700 (PDT)
+Received: by mail-vs1-xe31.google.com with SMTP id ada2fe7eead31-437e8282c1fso280330137.2
+        for <kernel-janitors@vger.kernel.org>; Fri, 19 May 2023 02:20:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684485733; x=1687077733;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Qj6uQgN1+vxh9RZBPkG03bBIocorGgNPBI/qslQJ5s8=;
-        b=FsxZ051YRylQq/5B4oscm9IUNqPtK0o/St+buTVwQzm+nnIlhcPRbnZ1EhwwSjOrou
-         NJ6/UnPeWArc04donPKQJt8JAALcSxZQ9eMU6jRp7vGkprLOzzmYOiIUoiOO6bFCZRKu
-         H0Xk88MYGfXQ5xTUff7hxGT/rdRJWs3B2T69dCV6ofeiPsoJLhdPcKlHz8rppCTgrCfu
-         Hy62FW1esfpeZHB8C/zVX16sKZ1FB9BaEpvNZGNs0GVJzRp/b/QDZWQ39AC4fdK3t0ZP
-         kf2D8uUC5WeW0YsVlOXpBHXYN1zmvxf5xVh46RtqZDzTkhLIF8Sl4rJ0xGL5sfn5L43C
-         LBIg==
+        d=gmail.com; s=20221208; t=1684488049; x=1687080049;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vrsFs7FLoRT0zD1iaY/s2AiDiUEaUePPr9gNb73ZaTo=;
+        b=qUo0Kcae+w8mvYN890TsKCQZwMAzl0mW5V0VI9yhCu/88A0irNabCf1eFEJhmN5xhl
+         4aAc8koT2IyCcF4qZg65m8Qg6CHJC2jrll6cOmHhUSc/9XJHXC/GuJnMi6t+rjEbkebX
+         cysmrz2QZUSUQjQHHU0OvamZ7s77knqsU9+5Y+D4lm01loMa9GbunicixFfdUcdRcRvU
+         lCSB0X+aQd9P3sG3NAtH5ax2D+uSi0Ye+PEQV9XkZQ+fKCQvcDk57oFmE3SZLa1SRFVz
+         vx5voRp8M+7Uc6uM3xIIR1LDj9pJE8rroJ6YGDysR1ii3NiHTNHWBmYg1R18A9J8tstj
+         xlUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684485733; x=1687077733;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1684488049; x=1687080049;
+        h=to:subject:message-id:date:from:reply-to:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qj6uQgN1+vxh9RZBPkG03bBIocorGgNPBI/qslQJ5s8=;
-        b=jHXq056ozCjIrlh5iihbnEqK49I/9o1gaZCa7kkWzVa9CyaiMWYI/J/wpbK8EZAqtx
-         cbfRL+AIRTy8sTl/DjIvQYCmrN/MkHwh8zHd536vEuTISLTR1n7vhk80vwtYB2C7JYUR
-         0tGaofNWQM+MeGKlIsDRnraunmBe5vZrjaoOm3WgKSfRz2wk5UZBRPpIq3HPOed65pMV
-         vjMQVleexNuqwl+vQvRCVJOpQQprQuv+nuGEITuBThzyZU/LpXCnZaRUcNWaXlIlLfXE
-         UlDrsewQ74BS5qUy4ucGP/OZ17pVB7BvkCEcvPro8Go6VwM+wXCtzW7BkMSNm5r+51mq
-         kHtQ==
-X-Gm-Message-State: AC+VfDydS/1ncZCtoM9LzIv9jmhQpI1tp/n7TUNfLKzMQKsjyu/dkmSg
-        VUIjiAhgrOSBbfpW5hlWOGsfuw==
-X-Google-Smtp-Source: ACHHUZ4pYqnT+QNSgIw7tLCyKnqAJpSKnRj3817DB9WLtNNuVND7AG9ya5U08W4gvbQi0+CNP9XOMg==
-X-Received: by 2002:adf:e64d:0:b0:307:979f:736e with SMTP id b13-20020adfe64d000000b00307979f736emr1344667wrn.55.1684485733660;
-        Fri, 19 May 2023 01:42:13 -0700 (PDT)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id x15-20020adfec0f000000b002cea9d931e6sm4624731wrn.78.2023.05.19.01.42.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 May 2023 01:42:13 -0700 (PDT)
-Message-ID: <50c285e2-2212-45c9-e62c-1b3804ec2cec@linaro.org>
-Date:   Fri, 19 May 2023 09:42:12 +0100
+        bh=vrsFs7FLoRT0zD1iaY/s2AiDiUEaUePPr9gNb73ZaTo=;
+        b=QF2cKGULxtYeacDA5xJB0M6YU/0KfmmMMHkmJsrdExxneZ2/x7cVdpPIIt2la+xCwz
+         UPn/s2mDILElnfcg3oy8S7OSiGTivU7wDpjJVKc6Ik1qC6z2U+CPdaCvc8c+j9uIi7iK
+         Ago5tqT2HtQR634eSe5zxAjOV7oen3d9hblKlK/iO2+iioI7Zzn2fN60zaxcNQdgu+OY
+         ul39bkvIEetq92KcOMR7tK0S+IY/1UwawxnEqt/UTCgHOEXqgadaoY1oD0hFUtC/W9Fy
+         +4x8yGkYZOiXkwr4zUmtFXTyO/khY5AmH5J2otcrQUU7SIkpl/P3T/gU2cz9NnVOEX1g
+         Po1Q==
+X-Gm-Message-State: AC+VfDwQtmkTkXESzJBAv9bm+nBX2iyz+CkYAabk++xqRL51+4TLog74
+        cb6WBqqQ6eS7pZWWvuZvdInp/iZLLlKhpOlBA/E=
+X-Google-Smtp-Source: ACHHUZ43t22GOxXMhl7F3mXITwezfoj77N1vKiNn81o62Y5syUtcLbRysis9DAfjI8JE4pYYbLWhc4z5af+yoUBHLLY=
+X-Received: by 2002:a67:f68f:0:b0:434:8873:f8a6 with SMTP id
+ n15-20020a67f68f000000b004348873f8a6mr459238vso.13.1684488049388; Fri, 19 May
+ 2023 02:20:49 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] MAINTAINERS: remove broken entries in QUALCOMM TYPEC PORT
- MANAGER DRIVER
-Content-Language: en-US
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230519041307.32322-1-lukas.bulwahn@gmail.com>
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20230519041307.32322-1-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Received: by 2002:a59:b925:0:b0:3d6:920e:48bd with HTTP; Fri, 19 May 2023
+ 02:20:48 -0700 (PDT)
+Reply-To: choipark90@yahoo.com
+From:   choi park <fi654827@gmail.com>
+Date:   Fri, 19 May 2023 10:20:48 +0100
+Message-ID: <CABQ7isioO=Vg0SeSHfgtXsLiSY85qqshCu1Z5Q6=9J6oKx5FRg@mail.gmail.com>
+Subject: investment partners
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 19/05/2023 05:13, Lukas Bulwahn wrote:
-> Commit a4422ff22142 ("usb: typec: qcom: Add Qualcomm PMIC Type-C driver")
-> adds the section QUALCOMM TYPEC PORT MANAGER DRIVER in MAINTAINERS with
-> two file entries for header files in include/dt-bindings/usb/typec/.
-> 
-> However, these files are not added to the repository with this commit or
-> any commit in the related patch series. Probably, these file entries are
-> just needless leftover after the work went through some refactoring.
-> 
-> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains about a
-> broken reference.
-> 
-> Remove the two file entries for non-existent header files.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
-> Bryan, please ack.
-> 
-> Greg, please pick this minor cleanup patch on your usb-next tree.
-> 
->   MAINTAINERS | 2 --
->   1 file changed, 2 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 3182992769aa..a987ed462d64 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17559,8 +17559,6 @@ L:	linux-usb@vger.kernel.org
->   S:	Maintained
->   F:	Documentation/devicetree/bindings/usb/qcom,pmic-*.yaml
->   F:	drivers/usb/typec/tcpm/qcom/
-> -F:	include/dt-bindings/usb/typec/qcom,pmic-pdphy.h
-> -F:	include/dt-bindings/usb/typec/qcom,pmic-typec.h
->   
->   QUALCOMM VENUS VIDEO ACCELERATOR DRIVER
->   M:	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-
-Oops
-
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+-- 
+Hello my friend how are you doing with your daily activities  I hope
+all is well, well I got your contact as I am searching for a reliable
+reputable person that can be trusted as my that client  Mrs Ma-Ri  Kim
+from  Hong Kong   Directed  me to get her someone that she will trust
+to invest part of her money outside Hong Kong   for her under aged
+child  if you are interested let me know I hoping to hear from you
+Mr Choi Park

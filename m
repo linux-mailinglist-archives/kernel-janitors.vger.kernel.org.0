@@ -2,119 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11BF4709582
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 May 2023 12:58:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD5AF709603
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 May 2023 13:14:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231686AbjESK6V (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 19 May 2023 06:58:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41584 "EHLO
+        id S229461AbjESLOX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 19 May 2023 07:14:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229763AbjESK6T (ORCPT
+        with ESMTP id S230302AbjESLOT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 19 May 2023 06:58:19 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB36110C3
-        for <kernel-janitors@vger.kernel.org>; Fri, 19 May 2023 03:58:16 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-3f42d937d2eso19190415e9.2
-        for <kernel-janitors@vger.kernel.org>; Fri, 19 May 2023 03:58:16 -0700 (PDT)
+        Fri, 19 May 2023 07:14:19 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEB2A10C6
+        for <kernel-janitors@vger.kernel.org>; Fri, 19 May 2023 04:14:17 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-965ddb2093bso501934366b.2
+        for <kernel-janitors@vger.kernel.org>; Fri, 19 May 2023 04:14:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684493895; x=1687085895;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XxgOnxMM/jMjGnPd9a1thhj/iw7hO2xaZ7M1qo3NZYg=;
-        b=bCO7u+Q011hkRNjgVIUsuJKMpZwPQZEwMRMpT2cVzaBkU2cVeNwyXtaRw1SC1PBA+w
-         QiJxuuAB+Wcwu+NP8ZXQmlROjFvtdkZxoanDqFSpq2LndPvLQ4M15sdatas0T1cDj4gQ
-         5ApylH0EPWhZhTgUnpWNDF7CEDyzeFd3KPaLU+bz2e9U4aQyibJmm4bXXaeI/g8MtoYU
-         ZyUo9XchT9RFoe5J9LW+0xCs8VDZPZEvUDQi0dShZNiudoD3mjXX0fvdrChwKr/qn9P0
-         9AKVSQeWzmvmaObi5D4+NKTvpPYgJmwCf8cb0HF/L7x7L0U+F1cUwmq9DjaUXfO84H6H
-         pF2Q==
+        d=gmail.com; s=20221208; t=1684494856; x=1687086856;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YmxaI1amCfTksu6ynk2557PwK0HJxrBQmYIx/Pz5hBs=;
+        b=pviExDcWLoo1q+E5mfEFFHa0FJB16aIk1ZZnWn6meJki09hox1bLGNZd36uVzbalpp
+         0me1ktVzf34dxp7BcUGGzozR5s8FH9HCRZyu6lAtZNZhQUpf4wAIc76xL+mlsOOUDIlz
+         Raq7WsROSxl1oP+Wu8K3u7jPXv7twPdSaAR6ap4XcvIcZ9F22oadBcyMPmHXituZsho0
+         5VgRRHEug4sVKuxwfDy2fVcL4RouBxNdyBzxjZauLiEp3nriBv1R07hQoP/3mMsRt1JA
+         wuOTytnsekcYIEV6t4q9EGZfB6NY0WGhEwXNh7sP1h7pnlo1VRZkTUB65/cuY1l+T/nT
+         XGvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684493895; x=1687085895;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XxgOnxMM/jMjGnPd9a1thhj/iw7hO2xaZ7M1qo3NZYg=;
-        b=CDJ0449lnQ8+mnydeVEiqhtB6RIPsOUePWwEgc2byTzkrSwY4Px8xPMVvd1ewfomtZ
-         u6ady453JFecqUzwJsKtY8E30u2002onNhVoB8fJLZ4HOHztGR9OplK0685Hp5/3+Daa
-         l+1QnJm2YzFrPv2CFF8KN6qiTfoyOV7TXNT3ML3VLb2nsMki9Ap5lJrofz45Hw8qQVEh
-         MaBDrLT/hpmjrfPXPpsJxAbIjDmWhxftmIbL6PbhQ9qDv/V4AvenTpg8sXtkAMJIzGUB
-         reH+gQTqdrRWg0K8sc4RsZKl58EFRrRXxTLP9k+S9YlmokO4waK6siZx8IMnKtlK0O9c
-         knOQ==
-X-Gm-Message-State: AC+VfDxpHGUiNAjOKgu6pZ+vMckzcHE8epSI+s2AM92VEaq8+fllYJRI
-        1jFqqRgiePJU/Hpg8bUP1T1tFDIVcW60FNX3soY=
-X-Google-Smtp-Source: ACHHUZ5Jkz/tisFg9BRWiG5aFVV9XmZ2Daa6Xp+YaPTVsrIurgnXC8HO/LlOr/DT1q8KJVKReSwS2Q==
-X-Received: by 2002:a7b:cc8e:0:b0:3f4:1dd9:e9de with SMTP id p14-20020a7bcc8e000000b003f41dd9e9demr1272529wma.8.1684493895108;
-        Fri, 19 May 2023 03:58:15 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id 8-20020a05600c024800b003f42ceb3bf4sm1984115wmj.32.2023.05.19.03.58.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 May 2023 03:58:13 -0700 (PDT)
-Date:   Fri, 19 May 2023 13:58:10 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc:     Sukrut Bellary <sukrut.bellary@linux.com>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Amol Maheshwari <amahesh@qti.qualcomm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH] misc: fastrpc: Fix double free of 'buf' in error path
-Message-ID: <fa0e9d9d-6362-456b-87f7-990ccf7e8930@kili.mountain>
-References: <20230518100829.515143-1-sukrut.bellary@linux.com>
- <9194ebdf-f335-4cd6-bf89-bb4f86a57784@kili.mountain>
- <f47b17c1-1c02-2aa3-ba10-fcef70cb25a8@linaro.org>
- <b0115d7d-d15a-4948-8726-09a8b37f3f36@kili.mountain>
+        d=1e100.net; s=20221208; t=1684494856; x=1687086856;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YmxaI1amCfTksu6ynk2557PwK0HJxrBQmYIx/Pz5hBs=;
+        b=Oq6YBAizjCK02OQepOnKYsXL+I/on/hMaa2Ekqb94ClZb3rKuA4kC908oFhViVhZPC
+         PvYSdvv8eqUHkysRcA5QE53nNKKO1pSc957he3S4OmNHOwmvI69a4GyNIIxdTjdnOt4P
+         2cMnthqsVO5hynpTRKApd+ftTFiATx7YzVXYdOzdFIYA3S/QFiyyRQwgiTcPNhT6p4B4
+         k2wCbdTXtUsqqYnG1dOrXBMcllfKn2VOKldhjeNT1a5Zcf4hIwLA/EAz3WiuRE8NsmcE
+         7reJt/L8o9H/0pu5exkAE53oaHMHd/dzl2nRyn0SkEtZqnkAXeCEL55BvOiOb74Ib1Sp
+         8+UQ==
+X-Gm-Message-State: AC+VfDzxVLxVweGKfAyW1gAUs1/wam2blVmj7uJZT8uxyTx1wzfN0apk
+        ELs5qt5u4VjHDo3dJ0jIHwK44xB5Mv4Re2Qx/VU=
+X-Google-Smtp-Source: ACHHUZ5xB5mRDs6MgIejz8B/S39N9B5uhgmjhEbIhVKnsZPFFaglEwROpbqvTT/AE/q+cECEHGD06Gjj5xmiy/gDjaU=
+X-Received: by 2002:a17:907:74d:b0:94f:7edf:8fa1 with SMTP id
+ xc13-20020a170907074d00b0094f7edf8fa1mr1222023ejb.32.1684494856209; Fri, 19
+ May 2023 04:14:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b0115d7d-d15a-4948-8726-09a8b37f3f36@kili.mountain>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a17:907:7dab:b0:94f:7d03:8e8b with HTTP; Fri, 19 May 2023
+ 04:14:15 -0700 (PDT)
+Reply-To: ninacoulibaly03@myself.com
+From:   nina coulibaly <ninacoulibaly199@gmail.com>
+Date:   Fri, 19 May 2023 04:14:15 -0700
+Message-ID: <CAM7Z2JC01HK==wZRHOUzUMt1UMX0mT2O8_X5AXXL-=jMT2Y+gQ@mail.gmail.com>
+Subject: from nina coulibaly
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This is unrelated but I was looking through the driver and I notice
-a bunch of code doing:
+Dear,
 
-grep 'return ret ?' drivers/firmware/ -R
+Please grant me permission to share a very crucial discussion with
+you. I am looking forward to hearing from you at your earliest
+convenience.
 
-	return ret ? : res.result[0];
-
-"ret" here is a kernel error code, and res.result[0] is a firmware
-error code.  Mixing error codes is a dangerous thing.  I was reviewing
-some of the callers and the firmware error code gets passed quite far
-back into the kernel to where we would only expect kernel error codes.
-
-Presumably the firmware is returning positive error codes?  To be honest,
-I am just guessing.  It's better to convert custom error codes to kernel
-error codes as soon as possible.  I am just guessing.  Sukrut, do you
-think you could take a look?  If the callers do not differentiate
-between negative kernel error codes and positive custom error codes then
-probably just do:
-
-	if (res.result[0])
-		ret = -EIO; // -EINVAL?
-	return ret;
-
-Also there are a couple places which do:
-
-	return ret ? false : !!res.result[0];
-
-Here true means success and false means failure.  So the !! converts
-a firmware error code to true when it should be false so that's a bug.
-Quadruple negatives are confusing...  It should be:
-
-	if (ret || res.result[0])
-		return false;
-	return true;
-
-regards,
-dan carpenter
-
+Mrs. Nina Coulibal

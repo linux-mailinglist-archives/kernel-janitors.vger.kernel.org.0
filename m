@@ -2,89 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40B7B722CBD
-	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Jun 2023 18:35:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACEF8722DCF
+	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Jun 2023 19:44:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234499AbjFEQfZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 5 Jun 2023 12:35:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47824 "EHLO
+        id S229895AbjFERon (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 5 Jun 2023 13:44:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232040AbjFEQfW (ORCPT
+        with ESMTP id S229560AbjFERol (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 5 Jun 2023 12:35:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5012594;
-        Mon,  5 Jun 2023 09:35:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E0DFF62395;
-        Mon,  5 Jun 2023 16:35:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31B9C4339C;
-        Mon,  5 Jun 2023 16:35:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685982920;
-        bh=PGCW96JiQOoQ+srOEeKWAWw1o+ime25VSyyUsDf6T7A=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aFfMJmoqJHMfuhevocY5Ej1nQyRqHICePni5FK6+IHXSNHZ9fs9HA1c41WKGYQCHL
-         yfvMilAtCuW+uAqHrwbXR/5dyPcde50kNAodtMGSiaBMKfIyv4Ic0nG8PY0zTejLVt
-         OWCUiDE3oae0r6848b4NhceZ52JL1uGUju1fIduWXGbh/HDvqVs2RxxsngGKL0WRDk
-         8qw+Kox7t++ToevORZBue5QAjBpxzzFjG7ajCKDl3OSG1mc5rMvAkw3Czy6uftDWKF
-         mD5+0MJ0NBQuGG+zril0338ZUhxdA/gBGs10CFHGhZb/2MgOJFtg6plauFcfCROGew
-         rFM7ltNJr+cDA==
-From:   Will Deacon <will@kernel.org>
-To:     Bjorn Andersson <andersson@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Neil Leeder <nleeder@codeaurora.org>,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     catalin.marinas@arm.com, kernel-team@android.com,
-        Will Deacon <will@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] perf: qcom_l2_pmu: Make l2_cache_pmu_probe_cluster() more robust
-Date:   Mon,  5 Jun 2023 17:35:03 +0100
-Message-Id: <168597368753.3035523.1877159803159338194.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <6a0f5bdb6b7b2ed4ef194fc49693e902ad5b95ea.1684397879.git.christophe.jaillet@wanadoo.fr>
-References: <6a0f5bdb6b7b2ed4ef194fc49693e902ad5b95ea.1684397879.git.christophe.jaillet@wanadoo.fr>
+        Mon, 5 Jun 2023 13:44:41 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CDC1A7
+        for <kernel-janitors@vger.kernel.org>; Mon,  5 Jun 2023 10:44:40 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-4f50470d77cso6412805e87.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 05 Jun 2023 10:44:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685987078; x=1688579078;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1W5OXAE6/wPgGYy1ffyxQ21z9u1FMp2glvber/gHEu8=;
+        b=F/Sr93aZ8zBIQ3C8z7mGTqQ3oEIbS4kLFQjhTcwp8wnrjmDNmLs8ZdOJX4lEQGc3a1
+         LQHj5Ge63lzd+nYptACuu5JKaZxjzirdCTEZFmLnundjkPiDJggQEXxU9LqzzXXOMVD9
+         roHS4aZqeR6gNQM+kNJTuT1mefvA47uG+y4Rji7hkmhIS7wz+zghtwR97QQcvRPPeNXe
+         jU5Fj7yxQ8N662tShqTv9NnqFWgDZm4FBYH94D9DvaHEygLeE/gyaF/jyQgENrI6EuFL
+         hiX8+lo9WdlQncI1n09hdPmFd8+Zru9OXIJfzsnQhojOpBiPlZn8H9RO/YR1DQY4FrYq
+         R9ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685987078; x=1688579078;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1W5OXAE6/wPgGYy1ffyxQ21z9u1FMp2glvber/gHEu8=;
+        b=lWvodZaFzxuAU4bD8gUp5kYbQjikXjuHdhn6FLt2W+dxmEoynuwjiJXqKKYohzmgIS
+         4MXvQl17WwHoebwCLLHG/Vjj4J0rzuHTfqDMspnB4hurPVXYUq3KYzflyunOEFYNuTZd
+         hAB8gW25N0IoMFGtNnjptWbxzfUMoaZm/NZz52baiX1N5ond/PU+l9C0tkIxTUZOZPHX
+         6iDziPt+xIkyazkrcONU9JFDbdOZEat+wwAPzTGkFQ/BWPjzA47P4uvYtW8DN7hVvA4C
+         XA5TdoUZZi4blmu4fMcwWuLkpBjcq6NK5pnAqlq1z/cfR6UJEAEBKUGY6tg8ixECGRzI
+         mJPw==
+X-Gm-Message-State: AC+VfDwZR0XK9dIbHt7jf+Dt/UDm5qMsa+Fg3BqF2kxVSAdCSf2xnZpV
+        zwhVC7HXixCKojLSCA0wZL/8pwFzhCCAg9DRUYE=
+X-Google-Smtp-Source: ACHHUZ7GmoMkd6s31QTKYry0OCUeszgmTJtsnYmNKPZtwfqhNN0rrJEhejnH+kLDsfCW4w3gwS+xzwHsu800GYc1MrE=
+X-Received: by 2002:ac2:5455:0:b0:4f3:a1fe:5b1c with SMTP id
+ d21-20020ac25455000000b004f3a1fe5b1cmr5889232lfn.44.1685987078114; Mon, 05
+ Jun 2023 10:44:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Received: by 2002:ab3:5612:0:b0:22d:de21:808f with HTTP; Mon, 5 Jun 2023
+ 10:44:37 -0700 (PDT)
+Reply-To: ethelmelzermikel@gmail.com
+From:   Ethel Melzer Mikel <enehjoy133@gmail.com>
+Date:   Mon, 5 Jun 2023 10:44:37 -0700
+Message-ID: <CAHQA-ZoEjykL2ssbqFyo0cDyY50d3SFX=jafqi-3eM+oJkPiAw@mail.gmail.com>
+Subject: Brauchen Sie einen Kredit
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 18 May 2023 10:18:08 +0200, Christophe JAILLET wrote:
-> If an error occurs after calling list_add(), the &l2cache_pmu->clusters
-> list will reference some memory that will be freed when the managed
-> resources will be released.
-> 
-> Move the list_add() at the end of the function when everything is in fine.
-> 
-> This is harmless because if l2_cache_pmu_probe_cluster() fails, then
-> l2_cache_pmu_probe() will fail as well and 'l2cache_pmu' will be released
-> as well.
-> But it looks cleaner and could silence static checker warning.
-> 
-> [...]
+Hallo guten Tag.
 
-Applied to will (for-next/perf), thanks!
+Mein Name ist Ethel Melzer, ich lebe in Deutschland und das Leben ist leben=
+swert
+bequem f=C3=BCr mich und meine Familie und ich habe es wirklich noch nie ge=
+sehen
+Mir wurde in meinem Leben so viel G=C3=BCte gezeigt, da ich eine schwierige
+Mutter bin
+Ich habe zwei Kinder und hatte ein ernstes Problem
+dass ich Geld brauchte und zur Bank gegangen bin, um einen Kredit
+aufzunehmen, und sie haben mich umgedreht
+unten und sage das
+Ich habe keine Kreditkarte, von dort bin ich zu meinen Geschwistern
+gelaufen und sie waren dort
+Ich konnte nicht helfen, als ich dann durch Yahoo-Antworten st=C3=B6berte u=
+nd ich
+bin auf den Kreditgeber Fast Link Worldwide Loans Financial Services gesto=
+=C3=9Fen
+der Kredite zu einem erschwinglichen Zinssatz vergibt, und ich war dort
+Ich habe von so vielen Betr=C3=BCgereien im Internet geh=C3=B6rt, bin aber
+dar=C3=BCber verzweifelt
+Situation hatte ich keine andere Wahl, als es =C3=BCberraschenderweise zu v=
+ersuchen
+Es war alles wie ein Traum, als ich einen Kredit von 250.000 erhielt.
+Ich sagte zu meinem
+Selbst, dass ich laut in die Welt schreien werde
+der Wunder Gottes zu mir durch diesen gottesf=C3=BCrchtigen Kreditgeber Fas=
+t
+Link Worldwide Loans Financial Services und ich werde jeden beraten
+echtes und ernsthaftes Darlehensbed=C3=BCrfnis
+Kontaktieren Sie diese gottesf=C3=BCrchtige Kreditgesellschaft =C3=BCber di=
+e
+offizielle E-Mail-Adresse
+(fastlinkloanfirm1@gmail.com) und ich m=C3=B6chte, dass Sie alle daf=C3=BCr=
+ beten
+Unternehmen f=C3=BCr mich.
 
-[1/1] perf: qcom_l2_pmu: Make l2_cache_pmu_probe_cluster() more robust
-      https://git.kernel.org/will/c/7bd42f122c7c
-
-Cheers,
--- 
-Will
-
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+DANKE
+Ethel Melzer

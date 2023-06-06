@@ -2,96 +2,191 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 336CB725477
-	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Jun 2023 08:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7026724CFD
+	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Jun 2023 21:28:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236710AbjFGGkJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 7 Jun 2023 02:40:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59956 "EHLO
+        id S238940AbjFFT2L (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 6 Jun 2023 15:28:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237719AbjFGGj5 (ORCPT
+        with ESMTP id S233959AbjFFT2K (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 7 Jun 2023 02:39:57 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBC3410C3
-        for <kernel-janitors@vger.kernel.org>; Tue,  6 Jun 2023 23:39:56 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-30c4c1fd511so5745292f8f.1
-        for <kernel-janitors@vger.kernel.org>; Tue, 06 Jun 2023 23:39:56 -0700 (PDT)
+        Tue, 6 Jun 2023 15:28:10 -0400
+Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AE3910CA
+        for <kernel-janitors@vger.kernel.org>; Tue,  6 Jun 2023 12:28:09 -0700 (PDT)
+Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-19e7008a20aso5933959fac.1
+        for <kernel-janitors@vger.kernel.org>; Tue, 06 Jun 2023 12:28:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686119995; x=1688711995;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HI9GdCgHoTGlfQU0exK8pWHJCdZzP4jYRRoNTOZ37xQ=;
-        b=RosDcx37udii0ZeWmNfNQw33MgXpSbLBh1BulbpvPbCAgWogAhWiVGM/3pjgd6n2Kf
-         oq1AvzeV7XoA8zoZhdJYYBnWieCKtU310GP36DINnoWyZhixEOuEeYio/lyTWQXB1L/k
-         YRz3Y5t59PW2qfQxQTcaEw1S6oMpYW63/0oa31NkCHZt2NUQHZeHF14XMCrV3iKJswp2
-         /zhrJIFQJA88yVPumlmCBwfrGbDCj4hYqbIxGXHSEDNrjbNFDJet15i6hlowqhqLx4m/
-         pRe/HSCUoIZhvmuOvdcIkb8QbN5A3S8FBU3B6KYwkOCJcLUkvAl/NCePZxAbvCuzAifb
-         qsKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686119995; x=1688711995;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1686079688; x=1688671688;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HI9GdCgHoTGlfQU0exK8pWHJCdZzP4jYRRoNTOZ37xQ=;
-        b=XPy/qmbJiSOT7HY+nosCt7hO9/zvWYDrKcm/FItlSFAM0M5u3evmGa5aRTqivdB/Pu
-         Ekqd8u4RH1lxBkIRC3PbOaU1hGFsaerVUvOchPr8LsMUt+4ySIkKIVQMhB94wgWOmhxP
-         3u39uaEaZmiylNyOzXV4ZaQsdKdEzjUYfBwNNoU3Afa1Tj7eTuI+ygMXF+x57lcpEzoY
-         hAvRGEdNjTmVwJXpvv7apGlf/DXgvKGxQHR/zeXu4LhN/jofGikvwx0DCxKpKyEmGmcb
-         qtz/mb0xtxc420EVqjXUs1p5N7AXE+QJ+gaXuDtkBMaBZ+kHOnQJ7jRGCx5MnxBQ46gc
-         y0/A==
-X-Gm-Message-State: AC+VfDw2nGJ7uS79PGx+lqgtb9RsMNjraIodSIBqp3UiYJxlPqn9k/Cp
-        TxPeyJHgMsYwRnFIQeR4pDUjbA==
-X-Google-Smtp-Source: ACHHUZ4/qEfuig8+pBDtHKvj+17QGcfaaoDYGfYpjItmrZ/JwJ0QdLy8j1q7Gdv88FeJuzPMts3g1Q==
-X-Received: by 2002:a5d:6702:0:b0:2ef:b4a9:202f with SMTP id o2-20020a5d6702000000b002efb4a9202fmr5174080wru.69.1686119995427;
-        Tue, 06 Jun 2023 23:39:55 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id z10-20020a056000110a00b003063a92bbf5sm14528126wrw.70.2023.06.06.23.39.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jun 2023 23:39:53 -0700 (PDT)
-Date:   Tue, 6 Jun 2023 21:32:16 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
-Cc:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "Vivi, Rodrigo" <rodrigo.vivi@intel.com>,
-        "Sripada, Radhakrishna" <radhakrishna.sripada@intel.com>,
-        "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
-        "Shankar, Uma" <uma.shankar@intel.com>,
-        "airlied@gmail.com" <airlied@gmail.com>,
-        "tvrtko.ursulin@linux.intel.com" <tvrtko.ursulin@linux.intel.com>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        "Ceraolo Spurio, Daniele" <daniele.ceraolospurio@intel.com>,
-        "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
-        "Kandpal, Suraj" <suraj.kandpal@intel.com>
-Subject: Re: [PATCH] drm/i915/gsc: Fix error code in
- intel_gsc_uc_heci_cmd_submit_nonpriv()
-Message-ID: <a0088658-d7d0-4047-9b5e-ea8e1987afc0@kadam.mountain>
-References: <ZH7sr+Vs4zOQoouU@moroto>
- <15829bd2d58a7439d416e2e36c5c4a17281b9fc2.camel@intel.com>
+        bh=7WNUhc6EOU+k61yIdrNm+E3oNw4Ztiymxbf5SrtdJeM=;
+        b=Vvb8OT9zCKPPzmIytNmksZHP6VebSdS6gsG1YaGsF94lCDAGBAUwJLMf077VySMbvz
+         ZkssOlA8t5lbjYyJD7SOeitoPtsBffbiA9L45oXyDXH4NktJklmd9ZCOlydDh+RKSD3s
+         09zFwVm8w2xI7DmkQrcjuXaznP0QCPke03cUkOBe/T6Hr9DA4xpvnf1U9d+X62lDwKJq
+         yvtmJfQpSa5295Wav5xDTq7FJicYvurEMnJDcDb1sEPFdoAbl73Iig6/AW7QEV5Q55CQ
+         L8PjsV4TMGaG4R3U8np0Au6hOLiL4nGyaiENotN7nt56RnIBjDZTS2/Q8+lJRJviTRl3
+         N+pQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686079688; x=1688671688;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7WNUhc6EOU+k61yIdrNm+E3oNw4Ztiymxbf5SrtdJeM=;
+        b=ZJHo9m/Vhh3J1FfcfN2maz/dEV7jO9eU0Ij89GR1cyF6GGn+Zxva0oWXovlhVFiJSI
+         /yn0QL0TvkjWMA28j1ycOcT9xPyCZVwKtVEkboLJp89yQmHUXZmebzTOXUkSmkp4b0cD
+         3bxkYLhJL+xWBFTIqffe5r+X/gL4U3W5FB4CYscgct+NQclDu9i1WZ0ufVlLCK+WHXdR
+         958QBlq8htjFezNCzKHOm4Q0Et+mgmWDgo068zwUltFlU8UegK4KQIXy1MXKcbxp90ll
+         9dOE8wc9Bv7GonrPvCLU5a2LImL8PWZnep/UJmK29QICYKsvrjl7f8qhIGA9/l8YH3dS
+         2R4g==
+X-Gm-Message-State: AC+VfDwcKBbpE7x6rHHau9aM/o7h6qoOtrdpMevrjIgV9UHEhgjCw3oq
+        eB9bz3UjdCgymosJoJXOSEC3oPLRvcE/3Spxuq7KK5+Y
+X-Google-Smtp-Source: ACHHUZ4yOChY2GqmKhYtFI2nRjc/GpXTQegYHYbqmx8aBfxwUplIw2ye/W5kcwf5trOmxctAlCfdIN6UwLpSmR/AmEk=
+X-Received: by 2002:a05:6870:73c3:b0:196:8dc3:4e16 with SMTP id
+ a3-20020a05687073c300b001968dc34e16mr2839070oan.39.1686079688302; Tue, 06 Jun
+ 2023 12:28:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <15829bd2d58a7439d416e2e36c5c4a17281b9fc2.camel@intel.com>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DATE_IN_PAST_12_24,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+References: <ZH7vaonsPEHJpy1j@moroto> <DM6PR12MB26192FFABF329682D9001C3BE452A@DM6PR12MB2619.namprd12.prod.outlook.com>
+In-Reply-To: <DM6PR12MB26192FFABF329682D9001C3BE452A@DM6PR12MB2619.namprd12.prod.outlook.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Tue, 6 Jun 2023 15:27:57 -0400
+Message-ID: <CADnq5_OjjkfGzj3Px3wARYEsgX=D7KhjfjJLAVbFWMAsqOCxAg@mail.gmail.com>
+Subject: Re: [PATCH] drm/amd/pm: Fix memory some memory corruption
+To:     "Quan, Evan" <Evan.Quan@amd.com>
+Cc:     Dan Carpenter <dan.carpenter@linaro.org>,
+        "Zhang, Horatio" <Hongkun.Zhang@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        "Wang, Yang(Kevin)" <KevinYang.Wang@amd.com>,
+        "Feng, Kenneth" <Kenneth.Feng@amd.com>,
+        "Lazar, Lijo" <Lijo.Lazar@amd.com>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "Chai, Thomas" <YiPeng.Chai@amd.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Li, Candice" <Candice.Li@amd.com>,
+        David Airlie <airlied@gmail.com>,
+        "Koenig, Christian" <Christian.Koenig@amd.com>,
+        "Zhang, Hawking" <Hawking.Zhang@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jun 06, 2023 at 06:07:19PM +0000, Teres Alexis, Alan Previn wrote:
-> That was my bad, i could have sword i'd fixed that before the final rev. Thanks for fixing this.
-> nit: below function applies to MTL only which at the moment is still force-probed, so not sure if the fixes tag is significant.
-> 
+Applied.  Thanks!
 
-The Fixes tag is correct.  It's definitely a bug fix.
+Alex
 
-(I invented the Fixes tag so technically that makes me the worlds #1
-expert on Fixes tags).
-
-regards,
-dan carpenter
+On Tue, Jun 6, 2023 at 6:27=E2=80=AFAM Quan, Evan <Evan.Quan@amd.com> wrote=
+:
+>
+> [AMD Official Use Only - General]
+>
+> Thanks for catching this.
+> Reviewed-by: Evan Quan <evan.quan@amd.com>
+>
+> > -----Original Message-----
+> > From: Dan Carpenter <dan.carpenter@linaro.org>
+> > Sent: Tuesday, June 6, 2023 4:34 PM
+> > To: Quan, Evan <Evan.Quan@amd.com>
+> > Cc: Deucher, Alexander <Alexander.Deucher@amd.com>; Koenig, Christian
+> > <Christian.Koenig@amd.com>; Pan, Xinhui <Xinhui.Pan@amd.com>; David
+> > Airlie <airlied@gmail.com>; Daniel Vetter <daniel@ffwll.ch>; Lazar, Lij=
+o
+> > <Lijo.Lazar@amd.com>; Zhang, Hawking <Hawking.Zhang@amd.com>; Feng,
+> > Kenneth <Kenneth.Feng@amd.com>; Li, Candice <Candice.Li@amd.com>;
+> > Chai, Thomas <YiPeng.Chai@amd.com>; Wang, Yang(Kevin)
+> > <KevinYang.Wang@amd.com>; Zhang, Horatio <Hongkun.Zhang@amd.com>;
+> > amd-gfx@lists.freedesktop.org; kernel-janitors@vger.kernel.org
+> > Subject: [PATCH] drm/amd/pm: Fix memory some memory corruption
+> >
+> > The "od_table" is a pointer to a large struct, but this code is doing p=
+ointer
+> > math as if it were pointing to bytes.  It results in writing far outsid=
+e the struct.
+> >
+> > Fixes: f0a0c659fb96 ("drm/amd/pm: fulfill the OD support for SMU13.0.0"=
+)
+> > Fixes: e3afa4f988b3 ("drm/amd/pm: fulfill the OD support for SMU13.0.7"=
+)
+> > Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> > ---
+> >  drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c | 4 ++--
+> > drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c | 4 ++--
+> >  2 files changed, 4 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+> > b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+> > index 5ac5ea770c1c..413e592f0ed6 100644
+> > --- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+> > +++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+> > @@ -1535,7 +1535,7 @@ static int smu_v13_0_0_od_edit_dpm_table(struct
+> > smu_context *smu,
+> >                * settings. Thus we do not cache it.
+> >                */
+> >               offset_of_featurectrlmask =3D offsetof(OverDriveTable_t,
+> > FeatureCtrlMask);
+> > -             if (memcmp(od_table + offset_of_featurectrlmask,
+> > +             if (memcmp((u8 *)od_table + offset_of_featurectrlmask,
+> >                          table_context->user_overdrive_table +
+> > offset_of_featurectrlmask,
+> >                          sizeof(OverDriveTableExternal_t) -
+> > offset_of_featurectrlmask)) {
+> >                       smu_v13_0_0_dump_od_table(smu, od_table); @@ -
+> > 1548,7 +1548,7 @@ static int smu_v13_0_0_od_edit_dpm_table(struct
+> > smu_context *smu,
+> >
+> >                       od_table->OverDriveTable.FeatureCtrlMask =3D 0;
+> >                       memcpy(table_context->user_overdrive_table +
+> > offset_of_featurectrlmask,
+> > -                            od_table + offset_of_featurectrlmask,
+> > +                            (u8 *)od_table + offset_of_featurectrlmask=
+,
+> >                              sizeof(OverDriveTableExternal_t) -
+> > offset_of_featurectrlmask);
+> >
+> >                       if (!memcmp(table_context->user_overdrive_table,
+> > diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+> > b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+> > index 0bd086360efa..cda4e818aab7 100644
+> > --- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+> > +++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+> > @@ -1524,7 +1524,7 @@ static int smu_v13_0_7_od_edit_dpm_table(struct
+> > smu_context *smu,
+> >                * settings. Thus we do not cache it.
+> >                */
+> >               offset_of_featurectrlmask =3D offsetof(OverDriveTable_t,
+> > FeatureCtrlMask);
+> > -             if (memcmp(od_table + offset_of_featurectrlmask,
+> > +             if (memcmp((u8 *)od_table + offset_of_featurectrlmask,
+> >                          table_context->user_overdrive_table +
+> > offset_of_featurectrlmask,
+> >                          sizeof(OverDriveTableExternal_t) -
+> > offset_of_featurectrlmask)) {
+> >                       smu_v13_0_7_dump_od_table(smu, od_table); @@ -
+> > 1537,7 +1537,7 @@ static int smu_v13_0_7_od_edit_dpm_table(struct
+> > smu_context *smu,
+> >
+> >                       od_table->OverDriveTable.FeatureCtrlMask =3D 0;
+> >                       memcpy(table_context->user_overdrive_table +
+> > offset_of_featurectrlmask,
+> > -                            od_table + offset_of_featurectrlmask,
+> > +                            (u8 *)od_table + offset_of_featurectrlmask=
+,
+> >                              sizeof(OverDriveTableExternal_t) -
+> > offset_of_featurectrlmask);
+> >
+> >                       if (!memcmp(table_context->user_overdrive_table,
+> > --
+> > 2.39.2
+>

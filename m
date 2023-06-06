@@ -2,130 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EDE1724B69
-	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Jun 2023 20:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 336CB725477
+	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Jun 2023 08:40:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238881AbjFFS3T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 6 Jun 2023 14:29:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45544 "EHLO
+        id S236710AbjFGGkJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 7 Jun 2023 02:40:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238872AbjFFS3S (ORCPT
+        with ESMTP id S237719AbjFGGj5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 6 Jun 2023 14:29:18 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1A061717
-        for <kernel-janitors@vger.kernel.org>; Tue,  6 Jun 2023 11:29:15 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3f730c1253fso29364655e9.1
-        for <kernel-janitors@vger.kernel.org>; Tue, 06 Jun 2023 11:29:15 -0700 (PDT)
+        Wed, 7 Jun 2023 02:39:57 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBC3410C3
+        for <kernel-janitors@vger.kernel.org>; Tue,  6 Jun 2023 23:39:56 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-30c4c1fd511so5745292f8f.1
+        for <kernel-janitors@vger.kernel.org>; Tue, 06 Jun 2023 23:39:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686076154; x=1688668154;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=JSdrg+UUFQJRbBaT65t9KQ0k6wnVcWDvrdEoLF/qj3w=;
-        b=TjbNAs5eMwUHdtHoS35R2Dg2L8xWx1/jmWIkC2AcnZcWafaM0RToQXl+enz4B83MWV
-         bYJC1LhCRD4PXWbh5GyYb7tl9KVsARHZx/BVirT5IsUjZkMOv+FRYDDfhDxvGXg7Ae7J
-         f+E1fRGRsyZ1Z5tKfgWz3bL4OuE1w9bZTv+MD9r8gyYoylTsy0rDjWRcu+lv2QM0jD3Q
-         0UC1nbAT60mtNmsM/+NVtRL5+GF4maumi46cLoScJy/VGCzFh/0sm2msxAw5dMrlLfZZ
-         qAd4X/PnJaUM4KvZUh+vFPcXtxQ8tvM8cd4K2CPf86xj5XFpE2uZ2yeke6dymTMqEJSP
-         ctEQ==
+        d=linaro.org; s=google; t=1686119995; x=1688711995;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HI9GdCgHoTGlfQU0exK8pWHJCdZzP4jYRRoNTOZ37xQ=;
+        b=RosDcx37udii0ZeWmNfNQw33MgXpSbLBh1BulbpvPbCAgWogAhWiVGM/3pjgd6n2Kf
+         oq1AvzeV7XoA8zoZhdJYYBnWieCKtU310GP36DINnoWyZhixEOuEeYio/lyTWQXB1L/k
+         YRz3Y5t59PW2qfQxQTcaEw1S6oMpYW63/0oa31NkCHZt2NUQHZeHF14XMCrV3iKJswp2
+         /zhrJIFQJA88yVPumlmCBwfrGbDCj4hYqbIxGXHSEDNrjbNFDJet15i6hlowqhqLx4m/
+         pRe/HSCUoIZhvmuOvdcIkb8QbN5A3S8FBU3B6KYwkOCJcLUkvAl/NCePZxAbvCuzAifb
+         qsKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686076154; x=1688668154;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JSdrg+UUFQJRbBaT65t9KQ0k6wnVcWDvrdEoLF/qj3w=;
-        b=l3HQOQi3/3kgC6RXaaJl2tTPComnygupnYf2hCEE5GweQ2+RCdBrekzObvqfRpYQxp
-         92x6u8JKl0uEQM51Ey6sgLvMUhsawClUHK8sES+CQCjx4p+FYBhfc+kiCoeifs2lZU7Z
-         3mq3IDSGmbMMf2/g5JjR00B/v+Psf33mIE+KZ0Vwa62hCrB90QdCDjBEtF6Lmvy9Babd
-         hHPxC+kyF0LDlGTx6OPHOAb2Jdqz+0WJl+8dW8FnYa/GAQL4oXRAoLhyBANZ6FiPJG5C
-         LX6ZEZ8hT02XhoBIfRO/HR1SgZCmhvqKmOmKm8UEeLy2UZqs/fwFoMRQDalimD8seRRm
-         0B0g==
-X-Gm-Message-State: AC+VfDw4WDfZKcFbSrzDBEo2o8bDAiXebkTlbRYc64pymjwxaxCN2WPp
-        g5mIgEDrYosxxEUeId7vLIqsnQ==
-X-Google-Smtp-Source: ACHHUZ6tnE3ZQrR14O8GiKBB5dGR00syzyGfixjm4MzBP0Syxdz4Y/iAzcQs0+KLT6/Sfa/QUIjZnQ==
-X-Received: by 2002:adf:ea48:0:b0:2ce:d84d:388f with SMTP id j8-20020adfea48000000b002ced84d388fmr2824604wrn.40.1686076154172;
-        Tue, 06 Jun 2023 11:29:14 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686119995; x=1688711995;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HI9GdCgHoTGlfQU0exK8pWHJCdZzP4jYRRoNTOZ37xQ=;
+        b=XPy/qmbJiSOT7HY+nosCt7hO9/zvWYDrKcm/FItlSFAM0M5u3evmGa5aRTqivdB/Pu
+         Ekqd8u4RH1lxBkIRC3PbOaU1hGFsaerVUvOchPr8LsMUt+4ySIkKIVQMhB94wgWOmhxP
+         3u39uaEaZmiylNyOzXV4ZaQsdKdEzjUYfBwNNoU3Afa1Tj7eTuI+ygMXF+x57lcpEzoY
+         hAvRGEdNjTmVwJXpvv7apGlf/DXgvKGxQHR/zeXu4LhN/jofGikvwx0DCxKpKyEmGmcb
+         qtz/mb0xtxc420EVqjXUs1p5N7AXE+QJ+gaXuDtkBMaBZ+kHOnQJ7jRGCx5MnxBQ46gc
+         y0/A==
+X-Gm-Message-State: AC+VfDw2nGJ7uS79PGx+lqgtb9RsMNjraIodSIBqp3UiYJxlPqn9k/Cp
+        TxPeyJHgMsYwRnFIQeR4pDUjbA==
+X-Google-Smtp-Source: ACHHUZ4/qEfuig8+pBDtHKvj+17QGcfaaoDYGfYpjItmrZ/JwJ0QdLy8j1q7Gdv88FeJuzPMts3g1Q==
+X-Received: by 2002:a5d:6702:0:b0:2ef:b4a9:202f with SMTP id o2-20020a5d6702000000b002efb4a9202fmr5174080wru.69.1686119995427;
+        Tue, 06 Jun 2023 23:39:55 -0700 (PDT)
 Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id p12-20020a5d458c000000b00307acec258esm13353778wrq.3.2023.06.06.11.29.10
+        by smtp.gmail.com with ESMTPSA id z10-20020a056000110a00b003063a92bbf5sm14528126wrw.70.2023.06.06.23.39.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jun 2023 11:29:12 -0700 (PDT)
-Date:   Tue, 6 Jun 2023 21:29:08 +0300
+        Tue, 06 Jun 2023 23:39:53 -0700 (PDT)
+Date:   Tue, 6 Jun 2023 21:32:16 +0300
 From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Franziska =?iso-8859-1?Q?N=E4pelt?= 
-        <franziska.naepelt@googlemail.com>
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Bagas Sanjaya <bagasdotme@gmail.com>, keyrings@vger.kernel.org,
-        dhowells@redhat.com, dwmw2@infradead.org,
-        linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
-        Linux SPDX Licenses <linux-spdx@vger.kernel.org>,
-        Linux Kernel Janitors <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH v2] certs/extract-cert: Fix checkpatch issues
-Message-ID: <93f96b93-2f2e-4c98-8ffd-1bd0bd441347@kadam.mountain>
-References: <20230601190508.56610-1-franziska.naepelt@gmail.com>
- <20230602085902.59006-1-franziska.naepelt@gmail.com>
- <ZH8mhIrjyBvTF4oZ@debian.me>
- <e39efb7f-5d8f-4433-83b3-8eea8a6c0486@kadam.mountain>
- <CT5NH4XXIYQF.5XXJE6JA5FZP@suppilovahvero>
- <e44d03cf-9993-483c-b3d4-6185f5c028cc@kadam.mountain>
- <CT5P0JH7NOTO.3P08AWR6O128R@suppilovahvero>
- <CAAUT3iPVFZEQE+bFk4HhWbaAtnsbQLYrzggeD2Va4mC0Q09SNQ@mail.gmail.com>
+To:     "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
+Cc:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "Vivi, Rodrigo" <rodrigo.vivi@intel.com>,
+        "Sripada, Radhakrishna" <radhakrishna.sripada@intel.com>,
+        "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
+        "Shankar, Uma" <uma.shankar@intel.com>,
+        "airlied@gmail.com" <airlied@gmail.com>,
+        "tvrtko.ursulin@linux.intel.com" <tvrtko.ursulin@linux.intel.com>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+        "Ceraolo Spurio, Daniele" <daniele.ceraolospurio@intel.com>,
+        "daniel@ffwll.ch" <daniel@ffwll.ch>,
+        "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
+        "Kandpal, Suraj" <suraj.kandpal@intel.com>
+Subject: Re: [PATCH] drm/i915/gsc: Fix error code in
+ intel_gsc_uc_heci_cmd_submit_nonpriv()
+Message-ID: <a0088658-d7d0-4047-9b5e-ea8e1987afc0@kadam.mountain>
+References: <ZH7sr+Vs4zOQoouU@moroto>
+ <15829bd2d58a7439d416e2e36c5c4a17281b9fc2.camel@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAUT3iPVFZEQE+bFk4HhWbaAtnsbQLYrzggeD2Va4mC0Q09SNQ@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <15829bd2d58a7439d416e2e36c5c4a17281b9fc2.camel@intel.com>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DATE_IN_PAST_12_24,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jun 06, 2023 at 07:59:02PM +0200, Franziska Näpelt wrote:
-> Am Di., 6. Juni 2023 um 18:03 Uhr schrieb Jarkko Sakkinen <jarkko@kernel.org>:
-> > On Tue Jun 6, 2023 at 6:25 PM EEST, Dan Carpenter wrote:
-> > > On Tue, Jun 06, 2023 at 05:51:09PM +0300, Jarkko Sakkinen wrote:
-> > > > On Tue Jun 6, 2023 at 4:38 PM EEST, Dan Carpenter wrote:
-> > > > > On Tue, Jun 06, 2023 at 07:28:52PM +0700, Bagas Sanjaya wrote:
-> > > > > > On Fri, Jun 02, 2023 at 10:59:02AM +0200, Franziska Naepelt wrote:
-> > > > > > > The following issues are fixed:
-> > > > > > > - WARNING: Missing or malformed SPDX-License-Identifier tag
-> > > > > > > - ERROR: trailing statements should be on next line
-> > > > > > > - WARNING: braces {} are not necessary for single statement blocks
-> > > > > > > - ERROR: space required before the open parenthesis '('
-> > > > > > > - ERROR: code indent should use tabs where possible
-> > > > > > > - WARNING: please, no spaces at the start of a line
-> > > > > > > - WARNING: Missing a blank line after declarations
-> > > > > >
-
-[ snip ]
-
+On Tue, Jun 06, 2023 at 06:07:19PM +0000, Teres Alexis, Alan Previn wrote:
+> That was my bad, i could have sword i'd fixed that before the final rev. Thanks for fixing this.
+> nit: below function applies to MTL only which at the moment is still force-probed, so not sure if the fixes tag is significant.
 > 
-> I'm a bit puzzled now since there are different opinions on my patch.
-> I'm struggling to draw a conclusion whether to split the patch into smaller
-> single line patches or not.
-> 
-> I'd propose to split it into two patches:
-> * One for SPDX license tag fix
-> * One for spacing, tab, blank line, unnecessary braces etc.
 
-You should definitely pull the SPDX change into its own patch because
-it's sightly controversial and important.
+The Fixes tag is correct.  It's definitely a bug fix.
 
-In drivers/staging/ we would say pull each type of checkpatch warning
-into its own patch so it would be something like 6 patches.  But I don't
-know how it's done in this subsystem.  I feel like Greg maybe goes
-overboard on splitting patches up, but the advantage of Greg's system is
-that it's easy to explain the rules to newbies.  There is a lot about
-staging/ which designed around newbies.
-
-If I'm totally honest, in a lot of subsystems the policy is just leave
-it alone.  Don't bother cleaning up checkpatch stuff because it just
-creates more work and makes the git log noisier.
+(I invented the Fixes tag so technically that makes me the worlds #1
+expert on Fixes tags).
 
 regards,
 dan carpenter

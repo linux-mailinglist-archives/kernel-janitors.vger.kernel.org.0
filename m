@@ -2,214 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3308E729A22
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Jun 2023 14:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82883729603
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Jun 2023 11:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240336AbjFIMgS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Jun 2023 08:36:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45592 "EHLO
+        id S241843AbjFIJ4I (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Jun 2023 05:56:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231349AbjFIMgR (ORCPT
+        with ESMTP id S241840AbjFIJzW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Jun 2023 08:36:17 -0400
-X-Greylist: delayed 4195 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 09 Jun 2023 05:36:15 PDT
-Received: from mx02-sz.bfs.de (mx01-sz.bfs.de [194.94.69.67])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DC2018C;
-        Fri,  9 Jun 2023 05:36:15 -0700 (PDT)
-Received: from SRVEX01-MUC.bfs.intern (unknown [10.161.90.31])
-        by mx02-sz.bfs.de (Postfix) with ESMTPS id D93582035C;
-        Fri,  9 Jun 2023 10:57:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1686301034;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=MQL6Xx7tBCSJf4MPKoKnpIlIJILrgf9XX+dLjaTtw4c=;
-        b=Sr5UmuMUh1u2zY3oY4r+zC7ZXH+xVGLoYr30Y8ctLEWaupUXos8aN2M7p11/6rcs1nM+n9
-        x3LFAmIvl/Xlr1xwT8K50mUcHAOzFod0qnDceplCNOEFCbM/Xl+zIjQxyh+yA8SvwKIPYY
-        DDpAnvRIyIjBXEeauBv+dUANrhxlFJrkSUja5wTbTNmfhClty2ieSoZo7UEl5WZrbML9os
-        VL4Z21GwnHJASLXa5HHawZ/bS7YVEtZBnQNssypPUMhamEl8kHC8/l62fQBqihB2ll3IX/
-        X29mOmfV3N4zYsfGnf71N++3Vx0XcFsWFDaZ3MQvaAo1MKD3tm+nSbQum8os0A==
-Authentication-Results: mx02-sz.bfs.de;
-        none
-Received: from SRVEX01-MUC.bfs.intern (10.161.90.31) by SRVEX01-MUC.bfs.intern
- (10.161.90.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.23; Fri, 9 Jun
- 2023 10:57:14 +0200
-Received: from SRVEX01-MUC.bfs.intern ([fe80::e8ba:5ab1:557f:4aad]) by
- SRVEX01-MUC.bfs.intern ([fe80::e8ba:5ab1:557f:4aad%5]) with mapi id
- 15.01.2507.023; Fri, 9 Jun 2023 10:57:14 +0200
-From:   Walter Harms <wharms@bfs.de>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Thomas Abraham <thomas.abraham@linaro.org>,
-        "Kukjin Kim" <kgene.kim@samsung.com>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-samsung-soc@vger.kernel.org" 
-        <linux-samsung-soc@vger.kernel.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>
-Subject: AW: [PATCH 2/2] tty: serial: samsung_tty: Fix a memory leak in
- s3c24xx_serial_getclk() when iterating clk
-Thread-Topic: [PATCH 2/2] tty: serial: samsung_tty: Fix a memory leak in
- s3c24xx_serial_getclk() when iterating clk
-Thread-Index: AQHZmo1JZHtkpWXz3Ey2tC0FGDzZt6+CJSbA
-Date:   Fri, 9 Jun 2023 08:57:14 +0000
-Message-ID: <f31523d7270d4a1f82d96b7891ed13e6@bfs.de>
-References: <e4359d5ef206f5b349c1d15a515a1205e78dda55.1686285892.git.christophe.jaillet@wanadoo.fr>,<93bf8f574310256fcea50e5c5a62b5c37e20bb14.1686285892.git.christophe.jaillet@wanadoo.fr>
-In-Reply-To: <93bf8f574310256fcea50e5c5a62b5c37e20bb14.1686285892.git.christophe.jaillet@wanadoo.fr>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.177.128.48]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_SOFTFAIL,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spamd-Result: default: False [-18.00 / 7.00];
-        WHITELIST_LOCAL_IP(-15.00)[10.161.90.31];
-        BAYES_HAM(-3.00)[99.98%];
-        MIME_GOOD(-0.10)[text/plain];
-        RCVD_NO_TLS_LAST(0.10)[];
-        MIME_TRACE(0.00)[0:+];
-        RCVD_COUNT_TWO(0.00)[2];
-        FROM_EQ_ENVFROM(0.00)[];
-        NEURAL_HAM(-0.00)[-1.000];
-        FREEMAIL_TO(0.00)[wanadoo.fr,linaro.org,samsung.com,linuxfoundation.org,kernel.org];
-        MID_RHS_MATCH_FROM(0.00)[];
-        RCPT_COUNT_TWELVE(0.00)[12];
-        FREEMAIL_ENVRCPT(0.00)[wanadoo.fr];
-        HAS_XOIP(0.00)[];
-        TO_DN_EQ_ADDR_SOME(0.00)[];
-        DKIM_SIGNED(0.00)[bfs.de:s=dkim201901];
-        FROM_HAS_DN(0.00)[];
-        TO_MATCH_ENVRCPT_ALL(0.00)[];
-        TO_DN_SOME(0.00)[];
-        ARC_NA(0.00)[]
+        Fri, 9 Jun 2023 05:55:22 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5392F5FD0;
+        Fri,  9 Jun 2023 02:46:50 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-514ab6cb529so5591488a12.1;
+        Fri, 09 Jun 2023 02:46:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686304007; x=1688896007;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=18c79hnDSol/lBi2kkuQKTV8w701gqJ/4FZD+vDn/9w=;
+        b=I9/U+zVxfjzKwTE+vEEcFRITFriLK3T5XcoQyJqieapFjlNorTQlD1koiOAIF6Xt+n
+         AMCi3dyNl8BeqLFktQzj4s9/lxpsIYgAJFi+J5C2wsbqlsSI3exRfNgbTVQU99/J4h5q
+         9KWR04TSSwa0a//Ltx6yLGXYgH3j063VnROZrjbWuOG0B/izMtNICgakgeaihjVqf1N4
+         iyFqLH4+QOD8jaAyIKrd1378hggNd1+MiL/7Uwa8QvzA8AyInmweJaZLPZshoepBpCkK
+         DnDFpkjbYjrIsaLhkOgXObIP71k85pqfwQ03jwC679vXozeXePfx4VLeqhfPjAEBYh2m
+         E1Hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686304007; x=1688896007;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=18c79hnDSol/lBi2kkuQKTV8w701gqJ/4FZD+vDn/9w=;
+        b=QnUMB06Qg0EZ2Ki5eYc0/aXMckYFg3qF1bw4sOh4ykfffyQR3NWOZpTti7x6dHIkew
+         9jaush+W8jXW49GqaG1qjNVdHuFyoji1hu9c2tLwgetQcF8C2bJMdKTEzyysHAeBRUMH
+         AQ6M5dV+/ms/1Uj7rCxdeoQSqDZbpRuRIyaVB2SxYJitxUXi5NuXMwdd/4q0wAU/j/vp
+         yJDv9g6XGH/gRWvSbbpK+HQFRvEUPASzu2CujHhLGF/+0XxfE6kO9fB18zxlCQLUBbh9
+         GmEyL4aD/Nt0w2MGoCzqAedjDKmh/qkPm8RrJw6uJGSJA/F9IGZVdILIRZ858IZpSOih
+         kAbw==
+X-Gm-Message-State: AC+VfDwWlHVPtLf89igxoZakIOOG+sKauV+icbJqPTz4NV2DicO1DJkE
+        BstHLObsRg/5YR7Tsh1wVWg=
+X-Google-Smtp-Source: ACHHUZ6mP5Egj/gfBwjg3Z6eWXv7Ale5idZVR9M8IesXcSJpTUp0x1P2IWj5tcwY5FfxP3RBJKGtrg==
+X-Received: by 2002:a17:907:2d93:b0:96f:add6:c1ed with SMTP id gt19-20020a1709072d9300b0096fadd6c1edmr1390429ejc.38.1686304007232;
+        Fri, 09 Jun 2023 02:46:47 -0700 (PDT)
+Received: from felia.fritz.box ([2a02:810d:7e40:14b0:f180:ae6e:6e9a:f400])
+        by smtp.gmail.com with ESMTPSA id f23-20020a170906085700b00978874d1083sm1052591ejd.135.2023.06.09.02.46.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jun 2023 02:46:46 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] posix-timers: refer properly to CONFIG_HIGH_RES_TIMERS
+Date:   Fri,  9 Jun 2023 11:46:43 +0200
+Message-Id: <20230609094643.26253-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Commit c78f261e5dcb ("posix-timers: Clarify posix_timer_fn() comments")
+turns an ifdef CONFIG_HIGH_RES_TIMERS into an conditional on
+"IS_ENABLED(CONFIG_HIGHRES_TIMERS)"; note that the new conditional refers
+to "HIGHRES_TIMERS" not "HIGH_RES_TIMERS" as before.
 
-while we are here ....
+Fix this typo introduced in that refactoring.
 
-perhaps INT_MAX from kernel.h ?
-
-int   deviation =3D (1 << 30) - 1;
-
-the part before looks a bit strange
-
-if (ourport->info->has_divslot) {
-                        unsigned long div =3D rate / req_baud;
-
-                        /* The UDIVSLOT register on the newer UARTs allows =
-us to
-                         * get a divisor adjustment of 1/16th on the baud c=
-lock.
-                         *
-                         * We don't keep the UDIVSLOT value (the 16ths we
-                         * calculated by not multiplying the baud by 16) as=
- it
-                         * is easy enough to recalculate.
-                         */
-
-                        quot =3D div / 16;
-                        baud =3D rate / div;
-because
-   baud=3Drate/rate/req_baud =3D req_baud
-can this be simplyfied ? (or is the numeric required  ?)
-
-
-Homebrew abs()  kernel.h has a abs() can we use it here ?
-
-            if (calc_deviation < 0)
-                        calc_deviation =3D -calc_deviation;
-
-to the patch:
-
-+                       /*
-+                        * If we find a better clk, release the previous on=
-e, if
-+                        * any.
-+                        */
-+                       if (!IS_ERR(*best_clk))
-+                               clk_put(*best_clk);
-
-the intentions are good. *best_clk is user supplied (and should be NULL)
-filled & released in the next round but IMHO must be valid (is clk).
-so no need to check. (ntl clk_put seems to handle NULL and ERR )
-   if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
-                return;
-
-JM2C
- wh
-________________________________________
-Von: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Gesendet: Freitag, 9. Juni 2023 06:45:39
-An: Krzysztof Kozlowski; Alim Akhtar; Greg Kroah-Hartman; Jiri Slaby; Thoma=
-s Abraham; Kukjin Kim
-Cc: linux-kernel@vger.kernel.org; kernel-janitors@vger.kernel.org; Christop=
-he JAILLET; linux-arm-kernel@lists.infradead.org; linux-samsung-soc@vger.ke=
-rnel.org; linux-serial@vger.kernel.org
-Betreff: [PATCH 2/2] tty: serial: samsung_tty: Fix a memory leak in s3c24xx=
-_serial_getclk() when iterating clk
-
-When the best clk is searched, we iterate over all possible clk.
-
-If we find a better match, the previous one, if any, needs to be freed.
-If a better match has already been found, we still need to free the new
-one, otherwise it leaks.
-
-Fixes: 5f5a7a5578c5 ("serial: samsung: switch to clkdev based clock lookup"=
-)
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Fixes: c78f261e5dcb ("posix-timers: Clarify posix_timer_fn() comments")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
-This patch is speculative. Review with care.
+ kernel/time/posix-timers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I think that some clk_put() are also missing somewhere else in the driver
-but won't be able to investigate further.
----
- drivers/tty/serial/samsung_tty.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/drivers/tty/serial/samsung_tty.c b/drivers/tty/serial/samsung_=
-tty.c
-index dd751e7010e3..c07877dd25fa 100644
---- a/drivers/tty/serial/samsung_tty.c
-+++ b/drivers/tty/serial/samsung_tty.c
-@@ -1488,10 +1488,18 @@ static unsigned int s3c24xx_serial_getclk(struct s3=
-c24xx_uart_port *ourport,
-                        calc_deviation =3D -calc_deviation;
-
-                if (calc_deviation < deviation) {
-+                       /*
-+                        * If we find a better clk, release the previous on=
-e, if
-+                        * any.
-+                        */
-+                       if (!IS_ERR(*best_clk))
-+                               clk_put(*best_clk);
-                        *best_clk =3D clk;
-                        best_quot =3D quot;
-                        *clk_num =3D cnt;
-                        deviation =3D calc_deviation;
-+               } else {
-+                       clk_put(clk);
-                }
-        }
-
---
-2.34.1
+diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
+index 8bb0dcf2e3d9..17fff6826a15 100644
+--- a/kernel/time/posix-timers.c
++++ b/kernel/time/posix-timers.c
+@@ -356,7 +356,7 @@ static enum hrtimer_restart posix_timer_fn(struct hrtimer *timer)
+ 			 * enabled as the periodic tick based timers are
+ 			 * automatically aligned to the next tick.
+ 			 */
+-			if (IS_ENABLED(CONFIG_HIGHRES_TIMERS)) {
++			if (IS_ENABLED(CONFIG_HIGH_RES_TIMERS)) {
+ 				ktime_t kj = TICK_NSEC;
+ 
+ 				if (timr->it_interval < kj)
+-- 
+2.17.1
 

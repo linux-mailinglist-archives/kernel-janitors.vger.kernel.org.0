@@ -2,145 +2,134 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ED227298D2
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Jun 2023 13:57:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 980DC729C1F
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Jun 2023 16:01:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239353AbjFIL5O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Jun 2023 07:57:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47472 "EHLO
+        id S239546AbjFIOBn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Jun 2023 10:01:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239349AbjFIL5K (ORCPT
+        with ESMTP id S238515AbjFIOBk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Jun 2023 07:57:10 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CA333C0A
-        for <kernel-janitors@vger.kernel.org>; Fri,  9 Jun 2023 04:56:39 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-976a0a1a92bso311034466b.1
-        for <kernel-janitors@vger.kernel.org>; Fri, 09 Jun 2023 04:56:39 -0700 (PDT)
+        Fri, 9 Jun 2023 10:01:40 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B251B30FE
+        for <kernel-janitors@vger.kernel.org>; Fri,  9 Jun 2023 07:01:38 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-3f7f6341b99so13738435e9.2
+        for <kernel-janitors@vger.kernel.org>; Fri, 09 Jun 2023 07:01:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686311781; x=1688903781;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oYrIxCV5eN1GYZDJEJ1UfI92aRFL2OYEZ4NP6sPPE2c=;
-        b=LO+fORubTVhmrOyNTWIDUURXux/NlOjg6bPwDxETFP0wrzbqPmSJH579qNs6TW9Dy/
-         kZUXic95WuWnCLXNRivrshUhTP8eHvUuzi3fP/8jbEHRSqLfIdV/VRUW3KlOy5d5wgc7
-         GqNUDBVs4TaECJ1Scp/WsddYlkFwsx4dgKGE3fPANBz/M+NrHmnoqsjA33Oy1Syy+u9x
-         VieIWj1BMAx8bMcXUSxhIkZaUZBR5lc5Bc6WgLmZ7R0PVBIg1i9XmdB6JNKneuc8uf4+
-         o0vww0+nzpd+h1nhfMZDhvkscVZLjlVFZA2X6uoZKbVFxjw2GsNxV6lpXMPLimtr0lyP
-         IbJw==
+        d=linaro.org; s=google; t=1686319297; x=1688911297;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3dMKLfxyfO6GRRSI5mpAvE1qLvloyaEdkSgeCZ5iq4U=;
+        b=efajulzotRym0OO0p2vBcircrcKWduJ7YSzbFR3qQjOSgZWpb0Qdz/SNKCWOh2A/r2
+         yuqugaKknpK0cVzFHNnCL871IVsouSLd//AMkWGTmcWrMkFyPBln0uQNq48HOFFcohA0
+         UvRgyNbS7//k8MKCtxeTBP/vglxeQcSK7PESRjA1rkuE/vi2QV+yequ/qNvIaOPcqyAZ
+         Ahuo7FryBnT7Fnq1s3gz9cFcOeKXR3aN0mz62KAd5teBCBd7lOtzyJW20IyHFusi0HWu
+         HF4RWMN0eG3bwzlUC5RjPBB/AlSFKLc5vO+6yWmszPtGQNuKYeGOSfwIGsW2E+4GBCJ0
+         WpMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686311781; x=1688903781;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oYrIxCV5eN1GYZDJEJ1UfI92aRFL2OYEZ4NP6sPPE2c=;
-        b=jfMKWukW2f9gEcpDCk3J+G3STWpB5OnDliYFasrMAlTUKdHPPAWkweFHxm4B05JfbX
-         wXsUYrUn0MRdIC8KPylZ3dXva5SN79RvghVtpGSxeCIkgnCY92f/7Odur2ypRgWdMu2u
-         D9ZrtR48mcD8PcqacXt/7QKhKvMTkuGMUSNWTedQkaiOht8uHSVODSqUyGxmHjTqXOhB
-         LKPNKBgrE+lGRTDmkDOhbHs5U2TTsh6CLJvuLO2NXzdorbEmg44KUtelSX0Xo5qGhNd/
-         wKEjGCx1HobvxinbJ9WQ+g4yL2NBJwp9DhYW7kzzuLD2qErHJ2GaC1v1+bfqj/cqUXx2
-         tZ5A==
-X-Gm-Message-State: AC+VfDyrEiy+qXi8xab+TcwL5KXQlkt5wtGCdHJfEzuVl1ZJJSCdeX62
-        YH0K5zwQQaLSRFStCOp3m6jZGA==
-X-Google-Smtp-Source: ACHHUZ7kFcjPb/Bl918mM98lpkRB6MU3jCR+A5T5xmYDhf2Kx350E1NZgAXUcmyAU0dnBFyQ5CpUHQ==
-X-Received: by 2002:a17:907:789:b0:978:ab6b:afd4 with SMTP id xd9-20020a170907078900b00978ab6bafd4mr1639295ejb.43.1686311781136;
-        Fri, 09 Jun 2023 04:56:21 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.26])
-        by smtp.gmail.com with ESMTPSA id b14-20020a1709064d4e00b00974638e4a98sm1207167ejv.24.2023.06.09.04.56.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Jun 2023 04:56:20 -0700 (PDT)
-Message-ID: <f3607725-b08c-8d96-02f8-f8f89af8e8b1@linaro.org>
-Date:   Fri, 9 Jun 2023 13:56:19 +0200
+        d=1e100.net; s=20221208; t=1686319297; x=1688911297;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3dMKLfxyfO6GRRSI5mpAvE1qLvloyaEdkSgeCZ5iq4U=;
+        b=LX2xIlJ8vdUeyrYTWfaVoHj2Oqv0frWkPM9XZ9vcssv5WaWgplpduCU5zXTwY2CaEH
+         XoX+h9ZmIhS8MMSeKzax8KcemOxl3vmaiIGS0yR7rX1G9WoGGUaZsIl/IazcuEYB25/R
+         mYoorDesd/npPiD5BuunNjAwL8LlKLJgX6ikftU5uoHZDkoY3c6QLwxPVc9AZAErvttG
+         TW/iSv45RNIaga8VxrjY2Rw1NnDi/tYv9MuuNVv/IwDaVkPe7EPj1tewFpMzCK4qLo5U
+         l9HlBsgXbR/41yOsjbjaAi/E1ITkQtabMhPCTaLSjmYZmcHx8WFmtJ8SXFp8c6lSPaNz
+         xgbw==
+X-Gm-Message-State: AC+VfDxsb/ZSSu9Ewg11aq+h4YBhwRHOmu/+mXVN+27/7O6zvyW7VU/T
+        yYYojTqZXeIV0JLTPfRI09ONKw==
+X-Google-Smtp-Source: ACHHUZ5IGHDLRT/F8ZiBNtbhtA6enQaJjbrsANjPa9s/JYdZAAOsgVsifgcve4BhUYpVZxJAkggcKQ==
+X-Received: by 2002:a1c:7c0a:0:b0:3f4:2492:a91f with SMTP id x10-20020a1c7c0a000000b003f42492a91fmr1046811wmc.27.1686319297138;
+        Fri, 09 Jun 2023 07:01:37 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id f13-20020a056000036d00b0030aefa3a957sm4568403wrf.28.2023.06.09.07.01.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jun 2023 07:01:35 -0700 (PDT)
+Date:   Fri, 9 Jun 2023 17:01:31 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     Bagas Sanjaya <bagasdotme@gmail.com>,
+        Franziska Naepelt <franziska.naepelt@googlemail.com>,
+        keyrings@vger.kernel.org, dhowells@redhat.com, dwmw2@infradead.org,
+        linux-kernel@vger.kernel.org,
+        Franziska Naepelt <franziska.naepelt@gmail.com>,
+        kernel test robot <lkp@intel.com>,
+        Linux SPDX Licenses <linux-spdx@vger.kernel.org>,
+        Linux Kernel Janitors <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH v2] certs/extract-cert: Fix checkpatch issues
+Message-ID: <c464c4ee-038c-47bf-857a-b11a89680e82@kadam.mountain>
+References: <20230601190508.56610-1-franziska.naepelt@gmail.com>
+ <20230602085902.59006-1-franziska.naepelt@gmail.com>
+ <ZH8mhIrjyBvTF4oZ@debian.me>
+ <e39efb7f-5d8f-4433-83b3-8eea8a6c0486@kadam.mountain>
+ <CT5NH4XXIYQF.5XXJE6JA5FZP@suppilovahvero>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: AW: [PATCH 2/2] tty: serial: samsung_tty: Fix a memory leak in
- s3c24xx_serial_getclk() when iterating clk
-Content-Language: en-US
-To:     Walter Harms <wharms@bfs.de>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Thomas Abraham <thomas.abraham@linaro.org>,
-        Kukjin Kim <kgene.kim@samsung.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-samsung-soc@vger.kernel.org" 
-        <linux-samsung-soc@vger.kernel.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>
-References: <e4359d5ef206f5b349c1d15a515a1205e78dda55.1686285892.git.christophe.jaillet@wanadoo.fr>
- <93bf8f574310256fcea50e5c5a62b5c37e20bb14.1686285892.git.christophe.jaillet@wanadoo.fr>
- <f31523d7270d4a1f82d96b7891ed13e6@bfs.de>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <f31523d7270d4a1f82d96b7891ed13e6@bfs.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CT5NH4XXIYQF.5XXJE6JA5FZP@suppilovahvero>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 09/06/2023 10:57, Walter Harms wrote:
-> 
-> while we are here ....
-> 
-> perhaps INT_MAX from kernel.h ?
-> 
-> int   deviation = (1 << 30) - 1;
-> 
-> the part before looks a bit strange
-> 
-> if (ourport->info->has_divslot) {
->                         unsigned long div = rate / req_baud;
-> 
->                         /* The UDIVSLOT register on the newer UARTs allows us to
->                          * get a divisor adjustment of 1/16th on the baud clock.
->                          *
->                          * We don't keep the UDIVSLOT value (the 16ths we
->                          * calculated by not multiplying the baud by 16) as it
->                          * is easy enough to recalculate.
->                          */
-> 
->                         quot = div / 16;
->                         baud = rate / div;
-> because
->    baud=rate/rate/req_baud = req_baud
-> can this be simplyfied ? (or is the numeric required  ?)
-> 
-> 
-> Homebrew abs()  kernel.h has a abs() can we use it here ?
-> 
->             if (calc_deviation < 0)
->                         calc_deviation = -calc_deviation;
-> 
-> to the patch:
-> 
-> +                       /*
-> +                        * If we find a better clk, release the previous one, if
-> +                        * any.
-> +                        */
-> +                       if (!IS_ERR(*best_clk))
-> +                               clk_put(*best_clk);
-> 
-> the intentions are good. *best_clk is user supplied (and should be NULL)
-> filled & released in the next round but IMHO must be valid (is clk).
-> so no need to check. (ntl clk_put seems to handle NULL and ERR )
->    if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
->                 return;
+On Tue, Jun 06, 2023 at 05:51:09PM +0300, Jarkko Sakkinen wrote:
+> It's not a "punishment". It's more like that I really have to take the
+> time to read the prose...
 
-Don't top-post.
+The thing about imperative tense is that it was used as a punishment on
+me once five years ago.  I wrote a quite bad commit message and a senior
+maintainer told me to re-write it properly and I realized that it was
+true.  My commit message was bad.  So I wrote a proper commit message.
+And then he yelled at me, "Can't you follow simple directions and write
+it in imperative tense like the documentation says?  Are you a
+shithead?"
 
-Anyway, I don't understand what you want to say here.
+So then I swore I would never talk to him again or to anyone who
+enforced the imperative tense rule.  That has only happened once in the
+intervening years.  I told the maintainer, "Fine.  Re-write the commit
+message however you like and give me Reported-by credit."  This was a
+cheeky response and it made the maintainer enraged.  I guess he thought
+that my boss would force me to fix the bug or something?  I felt bad for
+the Intel developer who had to fix my bug instead because I knew that
+the maintainer was going to be super angry if he gave me reported-by
+credit so I had put him in a bind.  I almost re-wrote the commit message
+so that he wouldn't have to deal with that.  Maybe this is how mothers
+feel when they try to take abuse from an angry husband instead of
+letting their kids suffer.  But I am a bad mother and I left.
 
-Best regards,
-Krzysztof
+My boss would never have forced me to deal with that.  When he left for
+a different company he said, "Dan, I'm transitioning and XXX is taking
+over me and I have told him all your weirdness so he is prepared."  And
+it was a huge comfort to me because I know what my weakness are.
 
+You people on this thread all seem super nice.  And you're right that we
+should always try to be improve every aspect of our craft.
+
+When Jarkko talked about people who write too long commit messages, I
+thought about one developer in particular who writes too long commit
+messages.  He writes in imperative tense.  He takes everything so
+seriously and he's never seen a rule without following it.  His patches
+are always right.  People have told him that his commit messages are bad
+and too long and those people are right.  But they need to shut up.  The
+good things that he does and the bad things that he does are all part of
+the same package.  He can't change and I don't want him to feel anything
+but welcome.
+
+It's hard to be a good kernel developer without being at least slightly
+obsessive.  Both developers and maintainers are that way.  And I deal
+with a lot of people and accomodating maintainers you disagree with is
+part of the job.
+
+So long as everyone is kind to each other.  That's the main thing.
+
+regards,
+dan carpenter

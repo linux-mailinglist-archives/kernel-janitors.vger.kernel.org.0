@@ -2,96 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92ED672BABF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Jun 2023 10:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CDDE72B3F9
+	for <lists+kernel-janitors@lfdr.de>; Sun, 11 Jun 2023 22:44:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232858AbjFLIdM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 12 Jun 2023 04:33:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
+        id S232285AbjFKUoX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 11 Jun 2023 16:44:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233269AbjFLIcx (ORCPT
+        with ESMTP id S231939AbjFKUoW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 12 Jun 2023 04:32:53 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41AF8268D;
-        Mon, 12 Jun 2023 01:32:16 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-4f620583bc2so4575237e87.1;
-        Mon, 12 Jun 2023 01:32:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686558734; x=1689150734;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=E60FWaLGWhSk1lYB85C9hG8InWWvSwGswhbesGiABvc=;
-        b=NtFxM7ibrmXxONBzTg21VcSflgvrTuxHCTN21mA4jvwigZe2gh/Mu+DLIQeUbwIfzF
-         5qJJ2/S76xDE8TrWFwtLvkbnEyzJJUKbebChD2vJubwIRN+rhLxjDf8co3IQpkLDI7pC
-         24Zpt/6YBPqybCd2WFqaTIclt7i7WOvksmsVZnuH5VZs7gAtFrLOHIjINq61iR2fex7B
-         J7X/nvuILbjbJQeeFSS9+5fzUBkX2AhSSGQocXHu3n6fRaLEAOXXySPpjag7G4OnabpA
-         AQxo7tfdLo7ZrXw9f8NodVhCr20YxaIBVvJ3ga5lIKFX1NBxH0F/Vb4vSrMzP3Zi7Ff/
-         IGjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686558734; x=1689150734;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E60FWaLGWhSk1lYB85C9hG8InWWvSwGswhbesGiABvc=;
-        b=js+Cv4CZjIevzFm1ZsJmn9N8MZUP89I1CQLLNl/8P9VUctP8SgEzI3+g2dFMWkUzV4
-         iBuhxMSx85WsB+JugCnWbmiDEDLzDcseFrG3hQ3AnNjq8QSgPm9JFTR1w+yuSOjkzUqy
-         ZVVAf2P+Enj9yaOIaiSIkA5MUl+alVPOOmnRu98yUe0SPKuluq+jlhTMI2c0Em39jgh0
-         G9L32GsZpKjOE+uwU0LtxAklASG33khgtZ8etOULysrMeF0c2uUHbJYAOLhMdQEb4si2
-         4PjeJFvkqBtlM5LQe/U1K0svl/rgKKjJ1SW5QgrqsSYRJhlxaM3LuPAwf3NJyW2aH2t7
-         gXSw==
-X-Gm-Message-State: AC+VfDyEUHPXL5mjiuzd4dH4LVf7WaD5j8hor6TgTCfDoZplquE2ndGL
-        QiJ5b1+0xf/o8nOLrYoZvxML2qbF4J8=
-X-Google-Smtp-Source: ACHHUZ71H3crGnpkWjeeb58pft9EXczqpM+3QXT+WO0i7gMfbKZyIzbalMx4lEJ7KeUzIXqNbWXuEQ==
-X-Received: by 2002:a05:6512:54a:b0:4f4:ba0d:3bbf with SMTP id h10-20020a056512054a00b004f4ba0d3bbfmr3467112lfl.60.1686558734015;
-        Mon, 12 Jun 2023 01:32:14 -0700 (PDT)
-Received: from Ansuel-xps. (93-34-93-173.ip49.fastwebnet.it. [93.34.93.173])
-        by smtp.gmail.com with ESMTPSA id m11-20020a5d6a0b000000b0030b5d203e7esm11744229wru.97.2023.06.12.01.32.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jun 2023 01:32:13 -0700 (PDT)
-Message-ID: <6486d80d.5d0a0220.bb6d6.3cbd@mx.google.com>
-X-Google-Original-Message-ID: <ZIXwj/bvFbcDcWZj@Ansuel-xps.>
-Date:   Sun, 11 Jun 2023 18:04:31 +0200
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     Dan Carpenter <dan.carpenter@linaro.org>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
+        Sun, 11 Jun 2023 16:44:22 -0400
+Received: from smtp.smtpout.orange.fr (smtp-25.smtpout.orange.fr [80.12.242.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3144FE52
+        for <kernel-janitors@vger.kernel.org>; Sun, 11 Jun 2023 13:44:19 -0700 (PDT)
+Received: from pop-os.home ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id 8Rv5qwjzfZnIG8Rv5qdCzN; Sun, 11 Jun 2023 22:44:17 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1686516257;
+        bh=UiEF+Yax2f7tK9mHB7IIdxWz2jAlp2s9xTkNsdxvvkw=;
+        h=From:To:Cc:Subject:Date;
+        b=OUYbcJz4qYNl/rvRcj8m+xkYnIYgYw5GQYzEjeohGePg5f/NCQ8hwaP+KA2NayJR9
+         9wo1V+vywBUF/RBzAz2/5PuBFXnj/0Pumv0YzR/p0GHPoa8tBx76xKE/EEB4WV7TIy
+         RyeSIE2ybOJ2nDKb/sSutIi5Gk+NTRKPv+sOcgvJOe89LUM8dsLItS05cgRvcGguI8
+         XtgUsQBFlGN/AqyLmN7CtnL3gCdjewsqhU16bNZpQhctYekQU1iorp9X7RZD038Z8n
+         /DGcOik+Xj5t5duaZZ3W3HuTPTCqjC+UPykoE5W1Reir3MyjLEIhDLR2sEM8iMMTgB
+         S7YmbF3ZWGfQg==
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 11 Jun 2023 22:44:17 +0200
+X-ME-IP: 86.243.2.178
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Pavel Machek <pavel@ucw.cz>,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-XXX] net: dsa: qca8k: uninitialized variable in
- hw_control_get()
-References: <5dff3719-f827-45b6-a0d3-a00efed1099b@moroto.mountain>
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
+Subject: [PATCH net-next] ice: Remove managed memory usage in ice_get_fw_log_cfg()
+Date:   Sun, 11 Jun 2023 22:44:13 +0200
+Message-Id: <e86a1ab7b450462a1e92264dccb5a5855546e384.1686516193.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5dff3719-f827-45b6-a0d3-a00efed1099b@moroto.mountain>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DATE_IN_PAST_12_24,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 10:20:55AM +0300, Dan Carpenter wrote:
-> The caller, netdev_trig_activate(), passes an uninitialized value for
-> *rules.  This function sets bits to one but it doesn't zero out any
-> bits so there is a potential for uninitialized data to be used.
-> Zero out the *rules at the start of the function.
-> 
-> Fixes: e0256648c831 ("net: dsa: qca8k: implement hw_control ops")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+There is no need to use managed memory allocation here. The memory is
+released at the end of the function.
 
-Thanks for the fix but I wonder if this should be better fixed in
-netdev_trig_activate? By setting the mode as 0 directly there?
+You kzalloc()/kfree() to simplify the code.
 
-I assume other dev implementing the get ops would do the same mistake.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/net/ethernet/intel/ice/ice_common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
+index eb2dc0983776..4b799a5d378a 100644
+--- a/drivers/net/ethernet/intel/ice/ice_common.c
++++ b/drivers/net/ethernet/intel/ice/ice_common.c
+@@ -834,7 +834,7 @@ static int ice_get_fw_log_cfg(struct ice_hw *hw)
+ 	u16 size;
+ 
+ 	size = sizeof(*config) * ICE_AQC_FW_LOG_ID_MAX;
+-	config = devm_kzalloc(ice_hw_to_dev(hw), size, GFP_KERNEL);
++	config = kzalloc(size, GFP_KERNEL);
+ 	if (!config)
+ 		return -ENOMEM;
+ 
+@@ -857,7 +857,7 @@ static int ice_get_fw_log_cfg(struct ice_hw *hw)
+ 		}
+ 	}
+ 
+-	devm_kfree(ice_hw_to_dev(hw), config);
++	kfree(config);
+ 
+ 	return status;
+ }
 -- 
-	Ansuel
+2.34.1
+

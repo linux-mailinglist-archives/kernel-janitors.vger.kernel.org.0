@@ -2,115 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AC8D72C3D8
-	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Jun 2023 14:19:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92ED672BABF
+	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Jun 2023 10:33:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231896AbjFLMTJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 12 Jun 2023 08:19:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49248 "EHLO
+        id S232858AbjFLIdM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 12 Jun 2023 04:33:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231318AbjFLMTI (ORCPT
+        with ESMTP id S233269AbjFLIcx (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 12 Jun 2023 08:19:08 -0400
-X-Greylist: delayed 2743 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 12 Jun 2023 05:19:04 PDT
-Received: from mail0.ceniai.inf.cu (mail0.ceniai.inf.cu [169.158.128.148])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 085318F
-        for <kernel-janitors@vger.kernel.org>; Mon, 12 Jun 2023 05:19:03 -0700 (PDT)
-Received: from mail0.ceniai.inf.cu (localhost [127.0.0.1])
-        by mail0.ceniai.inf.cu (Postfix) with ESMTP id 4D2086C867B;
-        Mon, 12 Jun 2023 07:04:48 -0400 (EDT)
-X-Virus-Scanned: amavisd-new at mail0.ceniai.inf.cu
-Received: from mail0.ceniai.inf.cu ([127.0.0.1])
-        by mail0.ceniai.inf.cu (mail0.ceniai.inf.cu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 6Clfth-zQIwX; Mon, 12 Jun 2023 07:04:48 -0400 (EDT)
-Received: from mail.vega.inf.cu (ns.vega.inf.cu [169.158.143.34])
-        by mail0.ceniai.inf.cu (Postfix) with ESMTP id 121036C807B;
-        Mon, 12 Jun 2023 06:32:54 -0400 (EDT)
-Received: from mx1.ecovida.cu (unknown [169.158.179.26])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        by mail.vega.inf.cu (Postfix) with ESMTPS id 457C3388BCB;
-        Sun, 11 Jun 2023 01:47:36 -0400 (CDT)
-Received: from mx1.ecovida.cu (localhost [127.0.0.1])
-        by mx1.ecovida.cu (Proxmox) with ESMTP id DCCA7240BC0;
-        Sun, 11 Jun 2023 05:31:16 -0400 (CDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ecovida.cu; h=cc
-        :content-description:content-transfer-encoding:content-type
-        :content-type:date:from:from:message-id:mime-version:reply-to
-        :reply-to:subject:subject:to:to; s=ecovida20; bh=eJCLj5LjLfltOUH
-        QwbhnEIM71NnOqC+k0uTJlyqNYA0=; b=NBtoYbk/8Coex9QamHmOVGhC4qqoWcR
-        Rbrgmhhl4aG366h6fKCsHJ77u/n0f+mwJBaVNwe7BP8DV62oXFhZNcl7p0H8PXBQ
-        mqzFWX4DLHTRiRyTpipUwTC6APNLP1q0lf570FjK03joVDJfSNgRJdJtCwqe26kO
-        FxqTJUtChWTYzpJZNPokscuU7PC1MU6l29qiXEsc5xRTp75zgF8Qx5JWT3CZhHcx
-        dGd5pYd4pkdfHgy3w8QySkIrlqGKNUED2b6ttmQ8VJhtP6H0fioBUmAcWxFJ7/Fv
-        0taBLKNsn/gZWEmd0Dt2Rn1mHv2OjdoCG12XB2XBlRYwEP+8O2UyISQ==
-Received: from correoweb.ecovida.cu (correoweb.ecovida.cu [192.168.100.7])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mx1.ecovida.cu (Proxmox) with ESMTPS id CD85B240561;
-        Sun, 11 Jun 2023 05:31:16 -0400 (CDT)
-Received: from localhost (localhost [127.0.0.1])
-        by correoweb.ecovida.cu (Postfix) with ESMTP id 527C84A2CB5;
-        Sun, 11 Jun 2023 05:31:16 -0400 (CDT)
-Received: from correoweb.ecovida.cu ([127.0.0.1])
-        by localhost (correoweb.ecovida.cu [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id NtzTrS-0MBNj; Sun, 11 Jun 2023 05:31:16 -0400 (CDT)
-Received: from localhost (localhost [127.0.0.1])
-        by correoweb.ecovida.cu (Postfix) with ESMTP id 53BAC4A2774;
-        Sun, 11 Jun 2023 05:28:52 -0400 (CDT)
-X-Virus-Scanned: amavisd-new at ecovida.cu
-Received: from correoweb.ecovida.cu ([127.0.0.1])
-        by localhost (correoweb.ecovida.cu [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id OORIskxkTyBe; Sun, 11 Jun 2023 05:28:52 -0400 (CDT)
-Received: from [192.168.100.9] (unknown [45.88.97.218])
-        by correoweb.ecovida.cu (Postfix) with ESMTPSA id CEC334A3183;
-        Sun, 11 Jun 2023 05:25:52 -0400 (CDT)
-Content-Type: text/plain; charset="iso-8859-1"
+        Mon, 12 Jun 2023 04:32:53 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41AF8268D;
+        Mon, 12 Jun 2023 01:32:16 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-4f620583bc2so4575237e87.1;
+        Mon, 12 Jun 2023 01:32:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686558734; x=1689150734;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=E60FWaLGWhSk1lYB85C9hG8InWWvSwGswhbesGiABvc=;
+        b=NtFxM7ibrmXxONBzTg21VcSflgvrTuxHCTN21mA4jvwigZe2gh/Mu+DLIQeUbwIfzF
+         5qJJ2/S76xDE8TrWFwtLvkbnEyzJJUKbebChD2vJubwIRN+rhLxjDf8co3IQpkLDI7pC
+         24Zpt/6YBPqybCd2WFqaTIclt7i7WOvksmsVZnuH5VZs7gAtFrLOHIjINq61iR2fex7B
+         J7X/nvuILbjbJQeeFSS9+5fzUBkX2AhSSGQocXHu3n6fRaLEAOXXySPpjag7G4OnabpA
+         AQxo7tfdLo7ZrXw9f8NodVhCr20YxaIBVvJ3ga5lIKFX1NBxH0F/Vb4vSrMzP3Zi7Ff/
+         IGjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686558734; x=1689150734;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E60FWaLGWhSk1lYB85C9hG8InWWvSwGswhbesGiABvc=;
+        b=js+Cv4CZjIevzFm1ZsJmn9N8MZUP89I1CQLLNl/8P9VUctP8SgEzI3+g2dFMWkUzV4
+         iBuhxMSx85WsB+JugCnWbmiDEDLzDcseFrG3hQ3AnNjq8QSgPm9JFTR1w+yuSOjkzUqy
+         ZVVAf2P+Enj9yaOIaiSIkA5MUl+alVPOOmnRu98yUe0SPKuluq+jlhTMI2c0Em39jgh0
+         G9L32GsZpKjOE+uwU0LtxAklASG33khgtZ8etOULysrMeF0c2uUHbJYAOLhMdQEb4si2
+         4PjeJFvkqBtlM5LQe/U1K0svl/rgKKjJ1SW5QgrqsSYRJhlxaM3LuPAwf3NJyW2aH2t7
+         gXSw==
+X-Gm-Message-State: AC+VfDyEUHPXL5mjiuzd4dH4LVf7WaD5j8hor6TgTCfDoZplquE2ndGL
+        QiJ5b1+0xf/o8nOLrYoZvxML2qbF4J8=
+X-Google-Smtp-Source: ACHHUZ71H3crGnpkWjeeb58pft9EXczqpM+3QXT+WO0i7gMfbKZyIzbalMx4lEJ7KeUzIXqNbWXuEQ==
+X-Received: by 2002:a05:6512:54a:b0:4f4:ba0d:3bbf with SMTP id h10-20020a056512054a00b004f4ba0d3bbfmr3467112lfl.60.1686558734015;
+        Mon, 12 Jun 2023 01:32:14 -0700 (PDT)
+Received: from Ansuel-xps. (93-34-93-173.ip49.fastwebnet.it. [93.34.93.173])
+        by smtp.gmail.com with ESMTPSA id m11-20020a5d6a0b000000b0030b5d203e7esm11744229wru.97.2023.06.12.01.32.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jun 2023 01:32:13 -0700 (PDT)
+Message-ID: <6486d80d.5d0a0220.bb6d6.3cbd@mx.google.com>
+X-Google-Original-Message-ID: <ZIXwj/bvFbcDcWZj@Ansuel-xps.>
+Date:   Sun, 11 Jun 2023 18:04:31 +0200
+From:   Christian Marangi <ansuelsmth@gmail.com>
+To:     Dan Carpenter <dan.carpenter@linaro.org>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Pavel Machek <pavel@ucw.cz>,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net-XXX] net: dsa: qca8k: uninitialized variable in
+ hw_control_get()
+References: <5dff3719-f827-45b6-a0d3-a00efed1099b@moroto.mountain>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: RE:
-To:     Recipients <lazaroluis@ecovida.cu>
-From:   Aldi Albrecht <lazaroluis@ecovida.cu>
-Date:   Sun, 11 Jun 2023 10:29:59 +0100
-Reply-To: aldiheister@gmail.com
-X-Antivirus: Avast (VPS 230611-2, 6/11/2023), Outbound message
-X-Antivirus-Status: Clean
-Message-Id: <20230611092552.CEC334A3183@correoweb.ecovida.cu>
-X-Spam-Status: Yes, score=6.1 required=5.0 tests=BAYES_50,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_FORGED_REPLYTO,NIXSPAM_IXHASH,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  3.0 NIXSPAM_IXHASH http://www.nixspam.org/
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.1 DKIM_INVALID DKIM or DK signature exists, but is not valid
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: ******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5dff3719-f827-45b6-a0d3-a00efed1099b@moroto.mountain>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DATE_IN_PAST_12_24,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hallo gesch=E4tzter Beg=FCnstigter, Sie wurden f=FCr eine gro=DFe Geldsumme=
- f=FCr humanit=E4re und Investitionszwecke jeglicher Art ausgew=E4hlt. F=FC=
-r weitere Details antworten Sie bitte.
+On Mon, Jun 12, 2023 at 10:20:55AM +0300, Dan Carpenter wrote:
+> The caller, netdev_trig_activate(), passes an uninitialized value for
+> *rules.  This function sets bits to one but it doesn't zero out any
+> bits so there is a potential for uninitialized data to be used.
+> Zero out the *rules at the start of the function.
+> 
+> Fixes: e0256648c831 ("net: dsa: qca8k: implement hw_control ops")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 
-Gr=FC=DFe
- 
-Beate Heister
-Eigent=FCmer
-Aldi Albrecht-TRUST
+Thanks for the fix but I wonder if this should be better fixed in
+netdev_trig_activate? By setting the mode as 0 directly there?
+
+I assume other dev implementing the get ops would do the same mistake.
 
 -- 
-This email has been checked for viruses by Avast antivirus software.
-www.avast.com
-
+	Ansuel

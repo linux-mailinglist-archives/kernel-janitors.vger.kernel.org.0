@@ -2,45 +2,45 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6016F72B8E9
-	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Jun 2023 09:42:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6281D72B87C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Jun 2023 09:15:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234959AbjFLHmn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 12 Jun 2023 03:42:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51348 "EHLO
+        id S232490AbjFLHPK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 12 Jun 2023 03:15:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235126AbjFLHmf (ORCPT
+        with ESMTP id S231462AbjFLHPH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 12 Jun 2023 03:42:35 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2EEE19B5
-        for <kernel-janitors@vger.kernel.org>; Mon, 12 Jun 2023 00:42:01 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-30aea656e36so2631493f8f.1
-        for <kernel-janitors@vger.kernel.org>; Mon, 12 Jun 2023 00:42:01 -0700 (PDT)
+        Mon, 12 Jun 2023 03:15:07 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86F9A1700
+        for <kernel-janitors@vger.kernel.org>; Mon, 12 Jun 2023 00:10:06 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3f6e1393f13so28669125e9.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 12 Jun 2023 00:10:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686555640; x=1689147640;
+        d=linaro.org; s=google; t=1686553672; x=1689145672;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
         bh=tnCxW0itTMo6yA3XNQbbmF8xoq0kbOuc9xf7ZwUXCgc=;
-        b=oD3jLd9Ms4CANQ7cIYYHpm24DsqzeQCTDZg94yHVmsn9dVx/r5QOk53sPovi+MRYqm
-         O/I6JQ7dVMJ6UJJiqK6RMcp4xMNphRo+M6fMoeKTNkxqwooLiy1JsN+nJf2FdbRZJcqF
-         yoa7eW3/1ANpV0lBD94Qoy1XnoxDxwPRFy1R9Oo6bbOmfeZnwHttczdVAsxqOiKQuKPg
-         oe6ux8BqJceE1pBD6qtNq7ycDN6wPXHpnQAuMgNTFcWy+K/kwBXTJVbz9H4GMfxGnxVW
-         +BU2tJY4OPgdeQrnRP6Dx4G+Tp/mpQ/HE2K9WOmKiXlAyxjznt7TnV8zpSBd3Bq4LRaP
-         yqkw==
+        b=AjUEzLuwBYYyf1jbHOpvc6+JllXdUSMtkFr7TKGPKZqLBlwOnHdzRr9qoaUibyzByR
+         a991lbdsojsORGHg6in+lAYfB9j+dMIoJtcLQ9eJGWGuLXQLvXtkrWseNO/H6dQ4KDeE
+         A2pqJXmxFq6OE9g9/+3ni3XOKzCPNffoizAvUD77PzhVLQ3jimoQ3GNHe7uWHDXrSLQI
+         ReMP8kHpIBPYOJNCgdjgMzQrF2ZRXkzTkic7vvCw5qqOyE4nNRTHQBX3jO2z4Dq89mR1
+         I76wcyDZnfDpKiBnuwHfsClrmYl+MxdYAktvhxyErCq6i5orQU4fD/9PNuehG7Jpcf7S
+         cWOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686555640; x=1689147640;
+        d=1e100.net; s=20221208; t=1686553672; x=1689145672;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
         bh=tnCxW0itTMo6yA3XNQbbmF8xoq0kbOuc9xf7ZwUXCgc=;
-        b=A5tYmlEcpAdHM3ekc4s4hZfQqwQCeydcNq5XAuzWrB+EPTN334IjrAzt5mi1N7G/VV
-         Dkhfg09Vir1R8kMNVg+bNq3/aOGsbax7SFxSo9UF4962OqeG8XJoCiTbzMN/85ii71uy
-         yGflidkYpsrQsK7SEQFAWd72B1cuJarDEyOugZxPtFW6uvMG+99zkt9giKynSG/RpvVa
-         LocfI3t7guL1o657CkRq+vARhT+Nitz0J+VCVcHxYDEzVOulH14cQ8DYo7nl92ixfDv2
-         bcw1kdtKs5HezcwuJhgf+6DF2m20n5UDk+cqE5C71f1mvNdiEQg/7RkXZmXa61MFULhC
-         u4sw==
-X-Gm-Message-State: AC+VfDyzs4WGmde4WvXeQ8TlTizJRR3K6eSuk4zUuXOWksrmaDDn3Ui2
-        3s8OwXhyBOSi4xCSFkDoW4chvjCUrS8y1lTiDt8=
+        b=hVLXYlT4YkgxhuRTRHRWpH/8IhjTuqXw5xldR0lATtLMdw4yVv8uZGxfOQEa30tNam
+         dwEm8wszwwOH2utw4DLhlDSsBGoLSVPm1FLMqwrjKiUH0jSeIz5jWSfUiGAoDnXl5EoV
+         CgQj784hnlsnj4gAZWqPfT/fj8iokNvKgpY5Iu3i3qq3mt3/foNqlDT3/S0mavTltHQq
+         oICXWYGOkRB4ASj9BTB6u1Vd5Ce2yFim9ATaor4e7QWt7Z+GTPM2rK1StER3EtSy/1Rs
+         ZGlz/KFjHE4zS7XeZKd3uyRTtjiivcIfT65DAdCL5Q2ZUEkj0+MWckLdD6ECIbxAILqb
+         3F+A==
+X-Gm-Message-State: AC+VfDzFsszoRfltuSN1HEkooZwF3clBQiuPlKHp3+r9Nc+SeAzU9iPk
+        8yOMo7JVf5nevO3NkHlJZJ4TWT0BBUfXou0+Zs8=
 X-Google-Smtp-Source: ACHHUZ4pmw8BWg0wWjjye8G9cWexophtsTqyab55gNCps5/WPk8Yrdx2UsNUrSaI5OFSkNxilzQIDQ==
 X-Received: by 2002:a7b:c8da:0:b0:3f7:e8fc:678d with SMTP id f26-20020a7bc8da000000b003f7e8fc678dmr5977585wml.13.1686553672137;
         Mon, 12 Jun 2023 00:07:52 -0700 (PDT)
@@ -67,12 +67,6 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org

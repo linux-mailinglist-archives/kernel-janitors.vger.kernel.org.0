@@ -2,107 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A544072E02A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 13 Jun 2023 12:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9829472E1C8
+	for <lists+kernel-janitors@lfdr.de>; Tue, 13 Jun 2023 13:36:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239119AbjFMKzX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 13 Jun 2023 06:55:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42880 "EHLO
+        id S239536AbjFMLgS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 13 Jun 2023 07:36:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239539AbjFMKzP (ORCPT
+        with ESMTP id S239273AbjFMLgR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 13 Jun 2023 06:55:15 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEEF61B8;
-        Tue, 13 Jun 2023 03:55:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686653714; x=1718189714;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vEktzoBpSkrn0wkyvocbOkW43+YZyv0TA5B13Xrvmd8=;
-  b=itOpNpWUXrEfWO1BgmdkTN32G1WQDsq/OSKMRuJdly4DPfBGo8R/qZHJ
-   IgFSwQEocnv5Dxa3Ijpl774UBgu1GCTfDU94uzMoKLljkme4VxXcfIPty
-   iE+r2KjYAL5GUpETJI8ehUUviaRc9qFrS3bppXmolgBOD8nLCQbEJYp6+
-   R41DU9/t9MXPG00Fwmsh0ahGSjqhntOUUTCH2KTWGDGJw4TEUMUY5GsJJ
-   /cV/X0UwFN+A4KMmZOPUhx7nTsDu1nsjikaVYuZ1kFnEQULw4dtfytkc4
-   S2EKcGNvnKQGl7hzEbWU9Amr92dXr8haJFHBZMhr3ar2a7xVgBMNGw8go
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="444670611"
-X-IronPort-AV: E=Sophos;i="6.00,239,1681196400"; 
-   d="scan'208";a="444670611"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 03:55:14 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="885806358"
-X-IronPort-AV: E=Sophos;i="6.00,239,1681196400"; 
-   d="scan'208";a="885806358"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 03:55:13 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-        by kekkonen.fi.intel.com (Postfix) with SMTP id 1A8A711F9D2;
-        Tue, 13 Jun 2023 13:55:10 +0300 (EEST)
-Date:   Tue, 13 Jun 2023 10:55:10 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-media@vger.kernel.org
-Subject: Re: [PATCH] media: v4l2-core: Fix a potential resource leak in
- v4l2_fwnode_parse_link()
-Message-ID: <ZIhLDh567eWqY5vk@kekkonen.localdomain>
-References: <2ddd10ec9e009bbb85518355f1e09e1ecd349925.1685340968.git.christophe.jaillet@wanadoo.fr>
+        Tue, 13 Jun 2023 07:36:17 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED157CD
+        for <kernel-janitors@vger.kernel.org>; Tue, 13 Jun 2023 04:36:15 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-970056276acso819140666b.2
+        for <kernel-janitors@vger.kernel.org>; Tue, 13 Jun 2023 04:36:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686656174; x=1689248174;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=aWPSS4nQP7w/sP247wDxABPZtjWV1EhZ4vjjjJ6SajI=;
+        b=j/4PjbbH8jBLfmuke7PdKxifdkXtpIUZDqgqYr1SLtYQ80rCLF6uRmbv4qidNbQFeu
+         YHnlO01+DLGzLl74nZGp42gRflO4pnQ+7WXgdeMmiUn7GKKf4dNhg5FIP624lBLEVexZ
+         LmS+mbkQG8ntTOlU3yovDZmJkJF9Mr0ecK+glMYETSqKX77h6AteGmWj2fWIrtimV6YY
+         EHRO1iQmNwwbpxM33+x5uYu/atdOYHIGg7DQQX0Qsffe31Z8ZQ+ekKkFUyprxY/JEICo
+         4MuT0WoJTuZ3sHXNhCIHJeIonXzwN0OAdSZPCLDaCQtM7NNUsZ/bcz0DMaSQ/vQ7v2nh
+         0ZEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686656174; x=1689248174;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aWPSS4nQP7w/sP247wDxABPZtjWV1EhZ4vjjjJ6SajI=;
+        b=bW2EN823mW82VohA0aWY5/KVO4JXvPn7jVliKQNjkJmjvzh856isGXFT/MCkzfw+gB
+         fTBaQOVqfm31SR2WQoaKYRFcEPPr4H6EKCneGwhjA5u+6mXYH7MjZYGsWrAPVNCAtoMH
+         KK31Y1eG/3kf2P57aDPa54KcLh7JZPOdS9fDUw2xfvlbDN58EB4X+wAEfGFfAC/iVfsx
+         Ffvps/6X7u9BYU0pvcUtTbcVMHJUMb0V4/kRpiJsc9vFOboQsXSryyTaSOJ8/IH5Duzm
+         wr/bKKFplReVki0yhov2UwQRdgQD6cNMXi+7SlrSDdvsSOmd1BAVdGNGTcJ6PZo1alCW
+         J5GA==
+X-Gm-Message-State: AC+VfDztxVFMIH59onZ453/bC8NbpDfmFBvhnhq0/mN6+dFi19lwh1DE
+        iGRBA0rllbeqLVBx56sq4utkXPV8foxLTR8ePw==
+X-Google-Smtp-Source: ACHHUZ4FMP+J2aagmRuajsdLPRZ9sT22V6b+bHvwLFY0yMXMae6Pxb8y+PMLMRoDhRgQzFV8hBOIuL1pJH0obHNCNC4=
+X-Received: by 2002:a17:906:fe43:b0:978:9235:d428 with SMTP id
+ wz3-20020a170906fe4300b009789235d428mr11024662ejb.36.1686656174207; Tue, 13
+ Jun 2023 04:36:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2ddd10ec9e009bbb85518355f1e09e1ecd349925.1685340968.git.christophe.jaillet@wanadoo.fr>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:6f02:c084:b0:50:6ff5:d22c with HTTP; Tue, 13 Jun 2023
+ 04:36:13 -0700 (PDT)
+Reply-To: francescogaetano01@outlook.com
+From:   FRANCESCO GAETANO <reginakarugo1968@gmail.com>
+Date:   Tue, 13 Jun 2023 14:36:13 +0300
+Message-ID: <CA+cNoAjKqsGoAW35VEhOJB9xH59UEbvgeQT2wx9rWVAS9C9oGg@mail.gmail.com>
+Subject: Rahaline annetus.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Christophe,
+--=20
+Summa 1 000 000,00 =E2=82=AC annetas teile Francesco Gaetano Caltagirone.
+Lisateabe saamiseks p=C3=B6=C3=B6rduge palun tagasi aadressil
+francescogaetano01@outlook.com
 
-On Mon, May 29, 2023 at 08:17:18AM +0200, Christophe JAILLET wrote:
-> 'fwnode is known to be NULL, at this point, so fwnode_handle_put() is a
-> no-op.
-> 
-> Release the reference taken from a previous fwnode_graph_get_port_parent()
-> call instead.
-> 
-> Fixes: ca50c197bd96 ("[media] v4l: fwnode: Support generic fwnode for parsing standardised properties")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> /!\  THIS PATCH IS SPECULATIVE  /!\
->          review with care
-> ---
->  drivers/media/v4l2-core/v4l2-fwnode.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
-> index 049c2f2001ea..b7dd467c53fd 100644
-> --- a/drivers/media/v4l2-core/v4l2-fwnode.c
-> +++ b/drivers/media/v4l2-core/v4l2-fwnode.c
-> @@ -571,7 +571,7 @@ int v4l2_fwnode_parse_link(struct fwnode_handle *fwnode,
->  
->  	fwnode = fwnode_graph_get_remote_endpoint(fwnode);
->  	if (!fwnode) {
-> -		fwnode_handle_put(fwnode);
-> +		fwnode_handle_put(link->local_node);
 
-link->local_node also needs to be non-NULL for the successful case. The
-condition should take that into account. Could you send v2 with that?
 
->  		return -ENOLINK;
->  	}
->  
-
--- 
-Kind regards,
-
-Sakari Ailus
+The sum of =E2=82=AC1,000,000.00 has been donated to you by Francesco Gaeta=
+no
+Caltagirone, Kindly get back for more info via
+francescogaetano01@outlook.com

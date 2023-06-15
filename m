@@ -2,38 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E24DE730D1F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Jun 2023 04:18:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB502730F16
+	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Jun 2023 08:09:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241234AbjFOCSH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 14 Jun 2023 22:18:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57204 "EHLO
+        id S237966AbjFOGJf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 15 Jun 2023 02:09:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237394AbjFOCSE (ORCPT
+        with ESMTP id S243275AbjFOGJc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 14 Jun 2023 22:18:04 -0400
-Received: from mail.nfschina.com (unknown [42.101.60.195])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 98B0E26B6;
-        Wed, 14 Jun 2023 19:17:58 -0700 (PDT)
-Received: from localhost.localdomain (unknown [180.167.10.98])
-        by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPA id A9E97603087E5;
-        Thu, 15 Jun 2023 10:17:33 +0800 (CST)
-X-MD-Sfrom: suhui@nfschina.com
-X-MD-SrcIP: 180.167.10.98
-From:   Su Hui <suhui@nfschina.com>
-To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, maciej.szmigiero@oracle.com,
-        yangyingliang@huawei.com, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Su Hui <suhui@nfschina.com>
-Subject: [PATCH] ALSA: ac97: Fix possible NULL dereference in snd_ac97_mixer
-Date:   Thu, 15 Jun 2023 10:17:32 +0800
-Message-Id: <20230615021732.1972194-1-suhui@nfschina.com>
-X-Mailer: git-send-email 2.30.2
+        Thu, 15 Jun 2023 02:09:32 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C01BA7
+        for <kernel-janitors@vger.kernel.org>; Wed, 14 Jun 2023 23:09:31 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-4f76a223ca5so1851685e87.3
+        for <kernel-janitors@vger.kernel.org>; Wed, 14 Jun 2023 23:09:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686809369; x=1689401369;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=26mSNpaphFv3eMUK08mrfdveKcRFHGUm7SxBgwM7wKQ=;
+        b=Woo960oRlKIg2EO9OFoNW7FesqkkGf9xBhoIYZDNjt1dJxBNHuZnK+VLc/9VAKtIbB
+         MIFaaMQOJpbzRMvEKHC8M53sfUbr9V0GugVDxrsUf61dadkbPdYrsY4ryYsgisavXLuq
+         GVCLSVUM7A8owEn+P3cNKJj/Dp5sjsgSLfU2JQigNbfupI/XDJs7DPziKKeCBLhpnBc1
+         CQ6v+/OkzDVhboP/zhMjbogBp4fx1V/gYUe6dH1X7A2ak718xx8C3vBT5lcK44FFh03C
+         uB+wxQX+54xJXZHF6Gab1BN3VOHE9pRtlSwZutloZC9Yf15XqURADZgY/MMgfEyD57xV
+         zrYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686809369; x=1689401369;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=26mSNpaphFv3eMUK08mrfdveKcRFHGUm7SxBgwM7wKQ=;
+        b=Op7oD2Y98AYlQ09aFnX+VY6CeyofJLZqsI9ay6Fd21c8vcN5n4htudiumYz6O3IRML
+         EC/9AzjufXv8zcZnzzWxwcXhL/EIOeV+ute3jomyscCVQyRcyJ9lxGcsNbDR+OGe0/h6
+         Kg0yN4oP0nDTcR3HovTq3Q89y22A7AsS6WI9VeDNB7sBwn0qfUCx01JuH4SBllTstGUN
+         e47PL1PF2MXPwsNUsq1lV2WbMQvoYbKMA3+tVMlcSBob/DS9joWT5vp0OcpXElsuBM5P
+         MV2EyBltAhPXujjDArpotGhKluc9vsoy73zJR704G4o8YvS66Dr7m4DnNF9zW/t1/13T
+         kAJA==
+X-Gm-Message-State: AC+VfDwTl/Utyigd12wsCmcDpMgh/jlj54oa5SLuIKho7/4K4/zkhaB+
+        zNH/wvxMVCCtypjmG1G1O4AMww==
+X-Google-Smtp-Source: ACHHUZ5Shvz56GbCkrxmqunekg700y5QlXwXfz9Y+4BHSqVNQbdVIZx5EZrklFNOx9V5YkOPwD3XDQ==
+X-Received: by 2002:a05:6512:329c:b0:4f1:3ca4:926f with SMTP id p28-20020a056512329c00b004f13ca4926fmr9429156lfe.21.1686809369499;
+        Wed, 14 Jun 2023 23:09:29 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id u26-20020a05600c00da00b003eddc6aa5fasm19463608wmm.39.2023.06.14.23.09.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jun 2023 23:09:27 -0700 (PDT)
+Date:   Thu, 15 Jun 2023 09:09:20 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        linux-mtd@lists.infradead.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] mtd: otp: clean up on error in mtd_otp_nvmem_add()
+Message-ID: <fe7ef901-9571-4c6e-a40e-449046efe2c6@moroto.mountain>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RDNS_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -41,33 +72,42 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-smatch error:
-sound/pci/ac97/ac97_codec.c:2354 snd_ac97_mixer() error:
-we previously assumed 'rac97' could be null (see line 2072)
+Smatch complains that these error paths are missing cleanup:
 
-remove redundant assignment, return error if rac97 is NULL.
+    drivers/mtd/mtdcore.c:983 mtd_otp_nvmem_add()
+    warn: missing unwind goto?
 
-Fixes: da3cec35dd3c ("ALSA: Kill snd_assert() in sound/pci/*")
-Signed-off-by: Su Hui <suhui@nfschina.com>
+This needs to call nvmem_unregister(mtd->otp_user_nvmem) before
+returning.
+
+Fixes: 3b270fac8443 ("mtd: otp: Put factory OTP/NVRAM into the entropy pool")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 ---
- sound/pci/ac97/ac97_codec.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/mtdcore.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/ac97/ac97_codec.c b/sound/pci/ac97/ac97_codec.c
-index 9afc5906d662..80a65b8ad7b9 100644
---- a/sound/pci/ac97/ac97_codec.c
-+++ b/sound/pci/ac97/ac97_codec.c
-@@ -2069,8 +2069,8 @@ int snd_ac97_mixer(struct snd_ac97_bus *bus, struct snd_ac97_template *template,
- 		.dev_disconnect =	snd_ac97_dev_disconnect,
- 	};
+diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
+index abf4cb58a8ab..ab77f8f858f0 100644
+--- a/drivers/mtd/mtdcore.c
++++ b/drivers/mtd/mtdcore.c
+@@ -975,12 +975,14 @@ static int mtd_otp_nvmem_add(struct mtd_info *mtd)
+ 			void *otp;
  
--	if (rac97)
--		*rac97 = NULL;
-+	if (!rac97)
-+		return -EINVAL;
- 	if (snd_BUG_ON(!bus || !template))
- 		return -EINVAL;
- 	if (snd_BUG_ON(template->num >= 4))
+ 			otp = kmalloc(size, GFP_KERNEL);
+-			if (!otp)
+-				return -ENOMEM;
++			if (!otp) {
++				err = -ENOMEM;
++				goto err;
++			}
+ 			err = mtd_nvmem_fact_otp_reg_read(mtd, 0, otp, size);
+ 			if (err < 0) {
+ 				kfree(otp);
+-				return err;
++				goto err;
+ 			}
+ 			add_device_randomness(otp, err);
+ 			kfree(otp);
 -- 
-2.30.2
+2.39.2
 

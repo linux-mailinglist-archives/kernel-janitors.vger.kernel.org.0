@@ -2,92 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3424735925
-	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Jun 2023 16:08:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6623373594B
+	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Jun 2023 16:15:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229669AbjFSOIE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 19 Jun 2023 10:08:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52822 "EHLO
+        id S231330AbjFSOPC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 19 Jun 2023 10:15:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229629AbjFSOIC (ORCPT
+        with ESMTP id S229585AbjFSOPB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 19 Jun 2023 10:08:02 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AAD4AB
-        for <kernel-janitors@vger.kernel.org>; Mon, 19 Jun 2023 07:08:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687183681; x=1718719681;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Z7JmNa7DLBrcbACOjFLzyo65LFtQS2huhGOQYnvrURI=;
-  b=Z95Tks9mtg9QZrP+KyQG91IEmz5Gg7kJ0NU34uNMo69utI9uzlinQ2fc
-   A5G4w3V7Gz82v3LJyiv4toYdwpxm1qSyNw9I7Nr+JEoqOXDxrdVjCwRcn
-   YheInu1UBMxNap5bV+FWKFlQYkNCV1w59SoMIPCEZHN7LONv9wrNFTby2
-   6YDJtwZ2FpwhqDq1y76jlws1ix4//deR1vpSKUgRm6DQ0SvkUngSb3RnY
-   rULIgwRwIOAWj6fICZF33DExsw+l09jK2tWDErkz8JYqJcmCzR4mPlUIH
-   G6WXlQN83ej5XaJkCMyFg5YUkdLiWTj/kB40tl8bF1v9l9+FVYqsI4cAI
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="339979211"
-X-IronPort-AV: E=Sophos;i="6.00,254,1681196400"; 
-   d="scan'208";a="339979211"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2023 07:06:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="826590563"
-X-IronPort-AV: E=Sophos;i="6.00,254,1681196400"; 
-   d="scan'208";a="826590563"
-Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.249.45.73]) ([10.249.45.73])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2023 07:06:24 -0700
-Message-ID: <d8764556-b4d2-6896-9699-25abfe444f69@linux.intel.com>
-Date:   Mon, 19 Jun 2023 16:06:22 +0200
+        Mon, 19 Jun 2023 10:15:01 -0400
+X-Greylist: delayed 470 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 19 Jun 2023 07:14:59 PDT
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F350B8E;
+        Mon, 19 Jun 2023 07:14:59 -0700 (PDT)
+Received: from sparky.lan (unknown [159.196.93.152])
+        by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 7386320153;
+        Mon, 19 Jun 2023 22:07:00 +0800 (AWST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=codeconstruct.com.au; s=2022a; t=1687183622;
+        bh=Zi8Q3+lSjvBrfrM3SdqJlbZi4/Rc2YBaeBye3BWAkN0=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=VCafOUSti/j8wBPaEI67oO15YsgZjEm8lvA8i00E8kVkjSQC2gg6e0k7fcOr78eH8
+         RcP5euhw5himZZ+NVUyMKF+Qk2el1Ql6Je+xB34vThMA7gNY6jrbMkDnUn3Mlse1gp
+         hJXhlxfIn/aZZuajiyGL7qJ+uZ54EajOyFwJYtf8GJg3mzFnsOCjWLzDmchMokMtMh
+         6r5a88Eo+yVd9MAOL9fvMT5Ir+Vt5cg6HH4cBKy6B24OjxZWGOqvdvsD8X5pyb0VHP
+         eOMeZZnX23dc+pFTO+Pb8LeqSafyRZUlgzXhtfY7hQP4XqjdbK94QQ/4r/eqSrOXSg
+         F5Wm3c49BnheA==
+Message-ID: <c83bb6cf8f0d1ea8f5e3da690cda5e9742498a39.camel@codeconstruct.com.au>
+Subject: Re: [PATCH net-next] mctp: Reorder fields in 'struct mctp_route'
+From:   Jeremy Kerr <jk@codeconstruct.com.au>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Matt Johnston <matt@codeconstruct.com.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        netdev@vger.kernel.org
+Date:   Mon, 19 Jun 2023 22:06:59 +0800
+In-Reply-To: <393ad1a5aef0aa28d839eeb3d7477da0e0eeb0b0.1687080803.git.christophe.jaillet@wanadoo.fr>
+References: <393ad1a5aef0aa28d839eeb3d7477da0e0eeb0b0.1687080803.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [Intel-gfx] [PATCH] drm/i915: Fix a NULL vs IS_ERR() bug
-To:     Andi Shyti <andi.shyti@linux.intel.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>
-Cc:     intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
-        Suren Baghdasaryan <surenb@google.com>,
-        Matthew Auld <matthew.auld@intel.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@gmail.com>,
-        Nirmoy Das <nirmoy.das@intel.com>
-References: <ZH7tHLRZ9oBjedjN@moroto> <ZH760GjGM+7XdTa5@ashyti-mobl2.lan>
-Content-Language: en-US
-From:   Nirmoy Das <nirmoy.das@linux.intel.com>
-In-Reply-To: <ZH760GjGM+7XdTa5@ashyti-mobl2.lan>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Pushed to gt-next.
+Hi Christoph,
+
+> Group some variables based on their sizes to reduce hole and avoid
+> padding. On x86_64, this shrinks the size of 'struct mctp_route' from
+> 72 to 64 bytes.
+>=20
+> It saves a few bytes of memory and is more cache-line friendly.
+
+The savings will be fairly minimal, but this doesn't affect readability
+for the route struct. LGTM.
+
+Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
+
+Thanks!
 
 
-Thanks,
-
-Nirmoy
-
-On 6/6/2023 11:22 AM, Andi Shyti wrote:
-> Hi Dan,
->
-> On Tue, Jun 06, 2023 at 11:23:56AM +0300, Dan Carpenter wrote:
->> The mmap_offset_attach() function returns error pointers, it doesn't
->> return NULL.
->>
->> Fixes: eaee1c085863 ("drm/i915: Add a function to mmap framebuffer obj")
->> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Thanks for this series of fixes!
->
-> Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
->
-> Andi
+Jeremy

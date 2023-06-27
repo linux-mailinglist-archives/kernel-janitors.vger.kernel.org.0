@@ -2,117 +2,151 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5198773FE4D
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Jun 2023 16:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0ABD73FEB4
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Jun 2023 16:45:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231811AbjF0OjS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Jun 2023 10:39:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38144 "EHLO
+        id S231828AbjF0Op0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Jun 2023 10:45:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231918AbjF0Oi5 (ORCPT
+        with ESMTP id S232067AbjF0Ooz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Jun 2023 10:38:57 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3B553C07;
-        Tue, 27 Jun 2023 07:38:23 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-98e25fa6f5bso468411566b.3;
-        Tue, 27 Jun 2023 07:38:23 -0700 (PDT)
+        Tue, 27 Jun 2023 10:44:55 -0400
+Received: from mail2-relais-roc.national.inria.fr (mail2-relais-roc.national.inria.fr [192.134.164.83])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CD33358A;
+        Tue, 27 Jun 2023 07:44:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687876701; x=1690468701;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aycEXc1p8AecpgCVFe3SN1Ps1KLQUbHdHOvGWse/Ca4=;
-        b=jaXJB/YU3JQz39KDQb+QDAKFdsmnrticA9rtbWy1ykxlRnJIevC3j1hKmX/0MXVoJg
-         w8jKqiTx/y9VWXNo0RJK0TTbnTi+K67/HN2VTh7KHWkPnGQEfyVpXole7nMsnq9KjbdU
-         GNfMDg+30KGrk9ZG/1UvMhYx20ICRMS0AAYEUTAkoRSst1k7LoXzQD/0L2Mwvdp2379C
-         9Muz3hE2k134stWl1rFqKDHWVHUbta01qqTOZNiG0/KdvW/8J6F83ImxVyahIfkbFR4+
-         1IDF/pq7mHSbbSGFCBjfbVDLBkWqS+TO2qIz6/IRHUNtSzGJL0jvOsy4E/pKGoM6RguG
-         b7ZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687876701; x=1690468701;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aycEXc1p8AecpgCVFe3SN1Ps1KLQUbHdHOvGWse/Ca4=;
-        b=lSFl+keIJRKLNlxxvi/IYSQgC5RyZdzlBeGLlGveVECxWk9ydnk6rTtT9yFB+z2oPG
-         wBI6htaCD4DykRIJm1GIrkkoKkPTGPO+VwW/3RXJpSsdLBFm8oz1d9HAcgnv10khL7Dy
-         jUXu2od7fPUAoSanaU9NIw8q04iRI4WgoljXQJWY7gTUkZuwOrrbin914328fD8kX/ki
-         IAVkCtjDTRJq7ujsSiXSkWJNlT19fg7lPGnLFWtcxD3ycTz5hmVxDsTgerM53hEGUcO/
-         QCY71+zUAlwAJHClEKtvOWuiPpQKIbgTOd8d5ynTUiCYxme3ajAjmFkOmE9iI/MS76qY
-         OxQg==
-X-Gm-Message-State: AC+VfDxSNYTNpqrDRaDun+Vf/z7Glm8KJUrW4yQTkQSNf9/5XrUSGkDC
-        uHwbsNUi1r8C3YrFz0LbAJcounQB7fvEJi8+
-X-Google-Smtp-Source: ACHHUZ50qYhprpbhs8hRwJ1pExP9hgcQpDJ1t3RmUD8qchv2Au4jmHRBJUCn5fqkbiSdOan16EquKQ==
-X-Received: by 2002:a17:907:7293:b0:988:d841:7f8d with SMTP id dt19-20020a170907729300b00988d8417f8dmr21453302ejc.71.1687876700555;
-        Tue, 27 Jun 2023 07:38:20 -0700 (PDT)
-Received: from tom-HP-ZBook-Fury-15-G7-Mobile-Workstation ([193.85.242.128])
-        by smtp.gmail.com with ESMTPSA id b21-20020a170906491500b009828dac8425sm4590406ejq.105.2023.06.27.07.38.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jun 2023 07:38:20 -0700 (PDT)
-Date:   Tue, 27 Jun 2023 16:38:18 +0200
-From:   Tommaso Merciai <tomm.merciai@gmail.com>
-To:     Colin Ian King <colin.i.king@gmail.com>
-Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] media: bt8xx: make read-only arrays static
-Message-ID: <ZJr0WvhFfCILwbeP@tom-HP-ZBook-Fury-15-G7-Mobile-Workstation>
-References: <20230627134851.728487-1-colin.i.king@gmail.com>
+  d=inria.fr; s=dc;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=lz+eaKXjltZfgC96+KOEH+DiV357kqzsKaP1ME9j9JM=;
+  b=YpuufV72ER5dSm9wrYSnJ+nyISX1oQx33v1s2pGZoMDoTbTZApc/Qnr+
+   jWRuBVmLvwZwmibFQ5jrR1vtZ5noOKi7DSKRNrP0U1BZ9FCltFGcibx6p
+   ck1ThN0OMstSb7PrPLh1Mq91rYGjkQ4mlVR9Zej3KEIn+kL4eNkAXPzxE
+   c=;
+Authentication-Results: mail2-relais-roc.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
+X-IronPort-AV: E=Sophos;i="6.01,162,1684792800"; 
+   d="scan'208";a="114936315"
+Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.90.48])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2023 16:43:51 +0200
+From:   Julia Lawall <Julia.Lawall@inria.fr>
+To:     linux-hyperv@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, keescook@chromium.org,
+        christophe.jaillet@wanadoo.fr, kuba@kernel.org,
+        kasan-dev@googlegroups.com,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>, iommu@lists.linux.dev,
+        linux-tegra@vger.kernel.org, Robin Murphy <robin.murphy@arm.com>,
+        Krishna Reddy <vdumpa@nvidia.com>,
+        virtualization@lists.linux-foundation.org,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        linux-scsi@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+        linux-media@vger.kernel.org, John Stultz <jstultz@google.com>,
+        Brian Starkey <Brian.Starkey@arm.com>,
+        Laura Abbott <labbott@redhat.com>,
+        Liam Mark <lmark@codeaurora.org>,
+        Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, Shailend Chand <shailend@google.com>,
+        linux-rdma@vger.kernel.org, mhi@lists.linux.dev,
+        linux-arm-msm@vger.kernel.org, linux-btrfs@vger.kernel.org,
+        intel-gvt-dev@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-sgx@vger.kernel.org
+Subject: [PATCH v2 00/24] use vmalloc_array and vcalloc
+Date:   Tue, 27 Jun 2023 16:43:15 +0200
+Message-Id: <20230627144339.144478-1-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230627134851.728487-1-colin.i.king@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Colin,
+The functions vmalloc_array and vcalloc were introduced in
 
-On Tue, Jun 27, 2023 at 02:48:51PM +0100, Colin Ian King wrote:
-> Don't populate the arrays on the stack, instead make them static const.
-> Also add spaces between values to clean up checkpatch style warnings.
-> 
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
->  drivers/media/pci/bt8xx/dvb-bt8xx.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/media/pci/bt8xx/dvb-bt8xx.c b/drivers/media/pci/bt8xx/dvb-bt8xx.c
-> index 4cb890b949c3..df83b59a618d 100644
-> --- a/drivers/media/pci/bt8xx/dvb-bt8xx.c
-> +++ b/drivers/media/pci/bt8xx/dvb-bt8xx.c
-> @@ -190,11 +190,15 @@ static int cx24108_tuner_set_params(struct dvb_frontend *fe)
->  	u32 freq = c->frequency;
->  	int i, a, n, pump;
->  	u32 band, pll;
-> -	u32 osci[]={950000,1019000,1075000,1178000,1296000,1432000,
-> -		1576000,1718000,1856000,2036000,2150000};
-> -	u32 bandsel[]={0,0x00020000,0x00040000,0x00100800,0x00101000,
-> +	static const u32 osci[] = {
-> +		950000, 1019000, 1075000, 1178000, 1296000, 1432000,
-> +		1576000, 1718000, 1856000, 2036000, 2150000
-> +	};
-> +	static const u32 bandsel[] = {
-> +		0, 0x00020000, 0x00040000, 0x00100800, 0x00101000,
->  		0x00102000,0x00104000,0x00108000,0x00110000,
+commit a8749a35c399 ("mm: vmalloc: introduce array allocation functions")
 
-Are you not missing space also here?
+but are not used much yet.  This series introduces uses of
+these functions, to protect against multiplication overflows.
 
-> -		0x00120000,0x00140000};
-> +		0x00120000, 0x00140000
-> +	};
->  
->  	#define XTAL 1011100 /* Hz, really 1.0111 MHz and a /10 prescaler */
->  	dprintk("cx24108 debug: entering SetTunerFreq, freq=%d\n", freq);
-> -- 
-> 2.39.2
-> 
+The changes were done using the following Coccinelle semantic
+patch.
 
-Regards,
-Tommaso
+@initialize:ocaml@
+@@
+
+let rename alloc =
+  match alloc with
+    "vmalloc" -> "vmalloc_array"
+  | "vzalloc" -> "vcalloc"
+  | _ -> failwith "unknown"
+
+@@
+    size_t e1,e2;
+    constant C1, C2;
+    expression E1, E2, COUNT, x1, x2, x3;
+    typedef u8;
+    typedef __u8;
+    type t = {u8,__u8,char,unsigned char};
+    identifier alloc = {vmalloc,vzalloc};
+    fresh identifier realloc = script:ocaml(alloc) { rename alloc };
+@@
+
+(
+      alloc(x1*x2*x3)
+|
+      alloc(C1 * C2)
+|
+      alloc((sizeof(t)) * (COUNT), ...)
+|
+-     alloc((e1) * (e2))
++     realloc(e1, e2)
+|
+-     alloc((e1) * (COUNT))
++     realloc(COUNT, e1)
+|
+-     alloc((E1) * (E2))
++     realloc(E1, E2)
+)
+
+v2: This series uses vmalloc_array and vcalloc instead of
+array_size.  It also leaves a multiplication of a constant by a
+sizeof as is.  Two patches are thus dropped from the series.
+
+---
+
+ arch/x86/kernel/cpu/sgx/main.c                    |    2 +-
+ drivers/accel/habanalabs/common/device.c          |    3 ++-
+ drivers/accel/habanalabs/common/state_dump.c      |    7 ++++---
+ drivers/bus/mhi/host/init.c                       |    2 +-
+ drivers/comedi/comedi_buf.c                       |    4 ++--
+ drivers/dma-buf/heaps/system_heap.c               |    2 +-
+ drivers/gpu/drm/gud/gud_pipe.c                    |    2 +-
+ drivers/gpu/drm/i915/gvt/gtt.c                    |    6 ++++--
+ drivers/infiniband/hw/bnxt_re/qplib_res.c         |    4 ++--
+ drivers/infiniband/hw/erdma/erdma_verbs.c         |    4 ++--
+ drivers/infiniband/sw/siw/siw_qp.c                |    4 ++--
+ drivers/infiniband/sw/siw/siw_verbs.c             |    6 +++---
+ drivers/iommu/tegra-gart.c                        |    4 ++--
+ drivers/net/ethernet/amd/pds_core/core.c          |    4 ++--
+ drivers/net/ethernet/freescale/enetc/enetc.c      |    4 ++--
+ drivers/net/ethernet/google/gve/gve_tx.c          |    2 +-
+ drivers/net/ethernet/marvell/octeon_ep/octep_rx.c |    2 +-
+ drivers/net/ethernet/microsoft/mana/hw_channel.c  |    2 +-
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c   |    4 ++--
+ drivers/scsi/fnic/fnic_trace.c                    |    2 +-
+ drivers/scsi/qla2xxx/qla_init.c                   |    4 ++--
+ drivers/vdpa/vdpa_user/iova_domain.c              |    4 ++--
+ drivers/virtio/virtio_mem.c                       |    6 +++---
+ fs/btrfs/zoned.c                                  |    4 ++--
+ kernel/kcov.c                                     |    2 +-
+ lib/test_vmalloc.c                                |    9 +++++----
+ 26 files changed, 52 insertions(+), 47 deletions(-)

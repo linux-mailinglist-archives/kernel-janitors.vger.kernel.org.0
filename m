@@ -2,60 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1D90740C20
-	for <lists+kernel-janitors@lfdr.de>; Wed, 28 Jun 2023 11:02:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7841740CE5
+	for <lists+kernel-janitors@lfdr.de>; Wed, 28 Jun 2023 11:31:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234716AbjF1I7o (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 28 Jun 2023 04:59:44 -0400
-Received: from [42.101.60.195] ([42.101.60.195]:46008 "HELO mail.nfschina.com"
+        id S232710AbjF1J1b (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 28 Jun 2023 05:27:31 -0400
+Received: from [42.101.60.195] ([42.101.60.195]:53662 "HELO mail.nfschina.com"
         rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with SMTP
-        id S236204AbjF1Ip0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 28 Jun 2023 04:45:26 -0400
+        id S236728AbjF1JCU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 28 Jun 2023 05:02:20 -0400
 Received: from [172.30.11.106] (unknown [180.167.10.98])
-        by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPSA id E8A80605F4FBF;
-        Wed, 28 Jun 2023 16:45:07 +0800 (CST)
-Message-ID: <f69df0a0-dcb4-b4d3-2582-e1c64331b491@nfschina.com>
-Date:   Wed, 28 Jun 2023 16:45:05 +0800
+        by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPSA id 38A89605F6240;
+        Wed, 28 Jun 2023 17:01:59 +0800 (CST)
+Message-ID: <734b846f-3235-f2e3-db06-6e852803cd7f@nfschina.com>
+Date:   Wed, 28 Jun 2023 17:01:58 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
-Subject: Re: [PATCH net-next 07/10] net: hns3: remove unnecessary (void*)
- conversions
+Subject: Re: [PATCH net-next 00/10] Remove unnecessary (void*) conversions
 Content-Language: en-US
-To:     Hao Lan <lanhao@huawei.com>, yisen.zhuang@huawei.com,
-        salil.mehta@huawei.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
+To:     Hao Lan <lanhao@huawei.com>, andrew@lunn.ch, f.fainelli@gmail.com,
+        olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, irusskikh@marvell.com,
+        yisen.zhuang@huawei.com, salil.mehta@huawei.com,
+        jesse.brandeburg@intel.com, anthony.l.nguyen@intel.com,
+        steve.glendinning@shawell.net, iyappan@os.amperecomputing.com,
+        keyur@os.amperecomputing.com, quan@os.amperecomputing.com,
+        hkallweit1@gmail.com, linux@armlinux.org.uk,
+        mostrows@earthlink.net, xeb@mail.ru, qiang.zhao@nxp.com
+Cc:     yangyingliang@huawei.com, linux@rempel-privat.de,
+        ansuelsmth@gmail.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+        linuxppc-dev@lists.ozlabs.org, kernel-janitors@vger.kernel.org
 X-MD-Sfrom: yunchuan@nfschina.com
 X-MD-SrcIP: 180.167.10.98
 From:   yunchuan <yunchuan@nfschina.com>
-In-Reply-To: <408a4d7b-5dbf-fa3b-357d-1cd736f92e83@huawei.com>
+In-Reply-To: <1f5652f7-7eb2-11f0-4a07-c87f2992e509@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-On 2023/6/28 15:26, Hao Lan wrote:
-> nit: the local variable declarations could be reverse xmas tree
-> longest line to shortest line.
-> and elsewhere in other patchs.
+On 2023/6/28 15:41, Hao Lan wrote:
+>
+> On 2023/6/28 10:41, wuych wrote:
+>> Remove (void*) conversions under "drivers/net" directory.
+>> According to the suggestion[1] of Jakub Kicinski, send these patches
+>> in series of 10.
+>>
+>> wuych (10):
+>>    net: dsa: ar9331: remove unnecessary (void*) conversions
+>>    net: dsa: qca8k: remove unnecessary (void*) conversions
+>>    atlantic:hw_atl2:hw_atl2_utils_fw: Remove unnecessary (void*)
+>>      conversions
+>>    ice: Remove unnecessary (void*) conversions
+>>    ethernet: smsc: remove unnecessary (void*) conversions
+>>    net: hns: Remove unnecessary (void*) conversions
+>>    net: hns3: remove unnecessary (void*) conversions
+>>    net: mdio: Remove unnecessary (void*) conversions
+>>    net: ppp: remove unnecessary (void*) conversions
+>>    net: wan: Remove unnecessary (void*) conversions
+>>
+> Hi wuych,
+> Thank you for your patch.
+> The following two patches conflict with the net-next branch, and others have modified the related code.
+> Please compile your series in net and net-next branch and upload your series again.
+>    net: dsa: ar9331: remove unnecessary (void*) conversions
+>    net: dsa: qca8k: remove unnecessary (void*) conversions
 
 Hi, Hao Lan,
 
-I am so sorry for this, I will check again and resend them when the 
-merge window opening.
+Sorry for that, I just compiled these patches in the mainline branch.
+I know now, it's also necessary to compile patches in net and net-next 
+branch.
 Thanks for your reply!
 
 wuych
 
->
-> By the way, the net-next branch is currently closed, and you need to wait for
-> the merge window to open before merging patches.
->
-> Reviewed-by: Hao Lan <lanhao@huawei.com>
 >
 > Yours,
 > Hao Lan

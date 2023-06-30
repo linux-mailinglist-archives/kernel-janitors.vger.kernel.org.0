@@ -2,116 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F230743E8F
-	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Jun 2023 17:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2250743FA5
+	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Jun 2023 18:23:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232246AbjF3PTa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 30 Jun 2023 11:19:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35718 "EHLO
+        id S232375AbjF3QXH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 30 Jun 2023 12:23:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230308AbjF3PTE (ORCPT
+        with ESMTP id S230427AbjF3QXG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 30 Jun 2023 11:19:04 -0400
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74CAC3C1E
-        for <kernel-janitors@vger.kernel.org>; Fri, 30 Jun 2023 08:19:02 -0700 (PDT)
-Received: by mail-qt1-x833.google.com with SMTP id d75a77b69052e-401f4408955so251181cf.1
-        for <kernel-janitors@vger.kernel.org>; Fri, 30 Jun 2023 08:19:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688138341; x=1690730341;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7y85+CsbEknGYolZq9ltwi/sLY28N+60rkHxxiN/96I=;
-        b=aqlpp13fau6b/AMECgbtGX07mxMGSbx3NyWZWBzftVHNCu3uE+q78Vtq39Xt4+8IZx
-         MY60D4oQIZPyEVwjOQPEVaJafMR80yvvUf6UiETAdxuBuqpUkqPHBkVDP3csWAj/nbri
-         nwNxjXQl+VNWTqnkjebhwCJFPEQyWD0VTt6b1myZeq8g2FD1p4JjY+5Bt4tfS8XSRo6E
-         ycBIFdW6u3BH5D3z/DXNEbhJ8zCDFr+0+SfmyS4xuIdmFLN6WB4v/GgrHsKkR2+S9KAi
-         8LbeX1AT3eNYq1uyb1ix+EunI7NpPUUNaU5r5hr+QIKw52FHwnkuw0ELBgiqqAFvpIxg
-         rWvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688138341; x=1690730341;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7y85+CsbEknGYolZq9ltwi/sLY28N+60rkHxxiN/96I=;
-        b=S3Ys07+WQ58bD/pf8dopmnBC3/odMLbkY3DgfiUqs83Bhjshiq4WT1rpdUvptet9XK
-         6rdLk1rHTWHCfXd94mbFWYPNUoKbKCH0WDef4wgbIapH6OY6SYkA4JUPnSCcHJnaALdE
-         HB+a4x6VPGw3o9FWmXHEPPuuud0N5X3XQQbLG9fiAtPoC+rGL0zhRFK72ilBYX+HHPeE
-         yrxw0z9hcI1E0v38AjJ1ACGAiVc7xb2uip3v7WhQhKq5qcPCv1N6gQ67djW6/1Y0wqgT
-         TfRf8dHgGT1mq4wT/4Rbv0GvuTpULr84dTDimo46xVq0EG5q3usWQi//qveytBtC1nKN
-         iBGA==
-X-Gm-Message-State: AC+VfDw4C0sHwb6clQ1ijlvG+EmU2cP4xvDLxgMgYqrhW3tw86ehW299
-        dNbr1sVm/qXYXJgWpEvOh6LWi/QA7WZcB8ZW0PaiCw==
-X-Google-Smtp-Source: ACHHUZ7GoyWKFwgMIOb5nMpnMqBXPwzzWjgKhNo/zhlInr9v0vOCULYLICY2l91NepNXZAFa4macgqfs35shWJDihQ8=
-X-Received: by 2002:a05:622a:110f:b0:3ef:302c:319e with SMTP id
- e15-20020a05622a110f00b003ef302c319emr832038qty.8.1688138340945; Fri, 30 Jun
- 2023 08:19:00 -0700 (PDT)
+        Fri, 30 Jun 2023 12:23:06 -0400
+X-Greylist: delayed 21256 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 30 Jun 2023 09:23:04 PDT
+Received: from forward502c.mail.yandex.net (forward502c.mail.yandex.net [178.154.239.210])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7833E5E;
+        Fri, 30 Jun 2023 09:23:04 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net [IPv6:2a02:6b8:c08:2087:0:640:7bf5:0])
+        by forward502c.mail.yandex.net (Yandex) with ESMTP id F1E235ED70;
+        Fri, 30 Jun 2023 19:22:59 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id vMROMcFDV0U0-m4ZS9JB6;
+        Fri, 30 Jun 2023 19:22:58 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1688142179;
+        bh=mv9+96IjNnE9RA4/nysPSS6WWMtg0mIxBYV6wh4+uBU=;
+        h=Subject:From:In-Reply-To:Cc:Date:References:To:Message-ID;
+        b=bcrFWFZcRIRwHkYq3HuC7SsbemHKohQtnvdSx9krkcuGcRXYbOMmd6balkfw0P/y8
+         /yz47zIBoxr4V729z9P4mU6tLl/6lVjDGp9vEQcs8/yVAB3S/y8q1w0UVXzQl3jbrg
+         XD9Oyuoj1sbdXtu16LbHPClUPUBennvFjpdNMs+k=
+Authentication-Results: mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+Message-ID: <0ce62702-9a2f-4916-d0eb-4de3896e137b@yandex.ru>
+Date:   Fri, 30 Jun 2023 19:22:51 +0300
 MIME-Version: 1.0
-References: <20230630080029.15614-1-colin.i.king@gmail.com>
-In-Reply-To: <20230630080029.15614-1-colin.i.king@gmail.com>
-From:   Ian Rogers <irogers@google.com>
-Date:   Fri, 30 Jun 2023 08:18:49 -0700
-Message-ID: <CAP-5=fUX_ktsmrrVGr9kwa3-C_4=yobTFgm5L+TpFNt8UZMZGg@mail.gmail.com>
-Subject: Re: [PATCH][next] perf/benchmark: Fix spelling mistake "synchronious"
- -> "synchronous"
-To:     Colin Ian King <colin.i.king@gmail.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        linux-perf-users@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US
+To:     Dan Carpenter <dan.carpenter@linaro.org>
+Cc:     Trond Myklebust <trond.myklebust@hammerspace.com>
+References: <2390fdc8-13fa-4456-ab67-44f0744db412@moroto.mountain>
+ <ac54a100-9e7f-47bf-a415-ca3784c08b1e@kadam.mountain>
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+Subject: Re: [PATCH] SUNRPC: clean up integer overflow check
+In-Reply-To: <ac54a100-9e7f-47bf-a415-ca3784c08b1e@kadam.mountain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jun 30, 2023 at 1:00=E2=80=AFAM Colin Ian King <colin.i.king@gmail.=
-com> wrote:
->
-> There is a spelling mistake in an option description. Fix it.
->
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-
-Acked-by: Ian Rogers <irogers@google.com>
-
-Thanks,
-Ian
-
-> ---
->  tools/perf/bench/sched-seccomp-notify.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/tools/perf/bench/sched-seccomp-notify.c b/tools/perf/bench/s=
-ched-seccomp-notify.c
-> index eac4ef60090f..2e8205c61141 100644
-> --- a/tools/perf/bench/sched-seccomp-notify.c
-> +++ b/tools/perf/bench/sched-seccomp-notify.c
-> @@ -33,7 +33,7 @@ static bool sync_mode;
->  static const struct option options[] =3D {
->         OPT_U64('l', "loop",    &loops,         "Specify number of loops"=
-),
->         OPT_BOOLEAN('s', "sync-mode", &sync_mode,
-> -                   "Enable the synchronious mode for seccomp notificatio=
-ns"),
-> +                   "Enable the synchronous mode for seccomp notification=
-s"),
->         OPT_END()
->  };
->
-> --
-> 2.39.2
->
+T24gNi8zMC8yMyAxNToxMywgRGFuIENhcnBlbnRlciB3cm90ZToNCg0KPiBTbyBoZXJlIHdl
+IGhhdmU6DQo+IA0KPiAJaWYgKHUzMl92YWwgPiBTT01FVEhJTkcpIHsNCj4gDQo+IFRoZSBj
+b25kaXRpb24gaXMgaW1wb3NzaWJsZSB3aGVuIHRoZSBjb2RlIGlzIGNvbXBpbGVkIG9uIGEg
+NjQtYml0DQo+IHN5c3RlbQ0KDQpUaGlzIGlzIGV4YWN0bHkgd2hhdCB0aGUgY29tcGlsZXJz
+IHdhcm5zIGFib3V0Og0KDQokIGNhdCB0ZXN0LmMNCiNpbmNsdWRlIDxzdGRpbnQuaD4NCg0K
+aW50IGYgKGludCAqcCwgdW5zaWduZWQgbikNCnsNCiAgIHJldHVybiBuID4gU0laRV9NQVgg
+LyBzaXplb2YgKCpwKTsNCn0NCiQgZ2NjIC1XZXh0cmEgLWMgdGVzdC5jDQp0ZXN0LmM6IElu
+IGZ1bmN0aW9uIOKAmGbigJk6DQp0ZXN0LmM6NToxMjogd2FybmluZzogY29tcGFyaXNvbiBp
+cyBhbHdheXMgZmFsc2UgZHVlIHRvIGxpbWl0ZWQgcmFuZ2Ugb2YgZGF0YSB0eXBlIFstV3R5
+cGUtbGltaXRzXQ0KICAgICA1IHwgICByZXR1cm4gbiA+IFNJWkVfTUFYIC8gc2l6ZW9mICgq
+cCk7DQogICAgICAgfCAgICAgICAgICAgIF4NCiQgZ2NjIC1tMzIgLVdleHRyYSAtYyB0ZXN0
+LmMNCiQgY2xhbmcgLVdleHRyYSAtYyB0ZXN0LmMNCnRlc3QuYzo1OjEyOiB3YXJuaW5nOiBy
+ZXN1bHQgb2YgY29tcGFyaXNvbiBvZiBjb25zdGFudCA0NjExNjg2MDE4NDI3Mzg3OTAzIHdp
+dGggZXhwcmVzc2lvbiBvZiB0eXBlICd1bnNpZ25lZCBpbnQnIGlzIGFsd2F5cyBmYWxzZSBb
+LVd0YXV0b2xvZ2ljYWwtY29uc3RhbnQtb3V0LW9mLXJhbmdlLWNvbXBhcmVdDQogICByZXR1
+cm4gbiA+IFNJWkVfTUFYIC8gc2l6ZW9mICgqcCk7DQogICAgICAgICAgfiBeIH5+fn5+fn5+
+fn5+fn5+fn5+fn5+fn4NCjEgd2FybmluZyBnZW5lcmF0ZWQuDQokIGNsYW5nIC1tMzIgLVdl
+eHRyYSAtYyB0ZXN0LmMNCiQNCg0KV2hlcmUgaXMgYSBidWcgaGVyZT8gV2hhdCB0aGUgY29t
+cGlsZXIgZGV2ZWxvcGVycyBhcmUgaW50ZW5kZWQgdG8gZml4Pw0KSG93IHRoZSBjb21waWxl
+cnMgc2hvdWxkIGJlaGF2ZSBpbiB0aGlzIGNhc2U/DQoNCkRtaXRyeQ0KDQoNCg==

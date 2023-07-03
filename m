@@ -2,103 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5621745B33
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Jul 2023 13:34:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAA6D745C15
+	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Jul 2023 14:19:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229958AbjGCLeu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Jul 2023 07:34:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50068 "EHLO
+        id S231211AbjGCMTT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Jul 2023 08:19:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229900AbjGCLes (ORCPT
+        with ESMTP id S231147AbjGCMTI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Jul 2023 07:34:48 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8008C6
-        for <kernel-janitors@vger.kernel.org>; Mon,  3 Jul 2023 04:34:47 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-51da8a744c4so4835315a12.0
-        for <kernel-janitors@vger.kernel.org>; Mon, 03 Jul 2023 04:34:47 -0700 (PDT)
+        Mon, 3 Jul 2023 08:19:08 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4293010C2
+        for <kernel-janitors@vger.kernel.org>; Mon,  3 Jul 2023 05:19:04 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2b69f71a7easo69969221fa.1
+        for <kernel-janitors@vger.kernel.org>; Mon, 03 Jul 2023 05:19:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1688384086; x=1690976086;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=op6mQcm4JLOM9l+53MHx6V+IW+ZpBdMwi+OgBoLHHDo=;
-        b=nJbw3EYLLN9fys3o29MLFKjTRT6T/eF0xMNckBtLtj0f7pGU38o2tN0P8IgWMQjO96
-         wV9R2G6BHzYrDE5GPXw2omslyV1dG/NmJ6I6iXXq3TNUKWCbfm7G83wgD/P3rNiT8cxV
-         7g1+C1MxFH7h5WyrO0Bi3lZgWvfgrim/Qt6em+N57+0dXf53t9TavEMxMH5Sdk8bVsu2
-         TZHUxYuxHK8qdu7XmcWmSbVVaCub1vFm74IKzR0G6dgdHd7E2Uimx/wzqpKhoORm+pQq
-         Y1253oIa20ZL4bUVlVpOMqETvC6OqPwxY13kZp/NAY3fSQJpI6lLjdLuDmO4Z67F4avV
-         wAhg==
+        d=gmail.com; s=20221208; t=1688386742; x=1690978742;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lii1qk0iOcZYWICJr2br350W927ez7amTIxsDQVx5s8=;
+        b=TE0wZHaiO9VtvTKN/PWwgxgoPBXLzzcNIlIvaJEeDML8+m2ZyhUTZsHm+6rVByftkE
+         WJQ7XOzCcHdgCwUlSmboiqcnFmhMe47rNohjpjwOBAxQRuMJJgddro1VLyY2crJfK8mI
+         iwP70Lc+WnwgLkJRtjZNV5dXmF4jv0ujG3+8jHPR3hzGeCCvoTyzE9XRBYtn2DN3Y7u5
+         /l+2IVDcvvg1h1rq6ySmIEDWqmjZpGVvuFkbLLevprAuCy/S4/pTz4Or+n1Sfz/aK4Lc
+         qJecbIZj8nPzTOdImhneWFFDnR8DvJW9XOw2PYO6OpU20UqBa/G/0jTtn+KvfG0BAZ0Q
+         Hcew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688384086; x=1690976086;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1688386742; x=1690978742;
+        h=to:subject:message-id:date:from:reply-to:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=op6mQcm4JLOM9l+53MHx6V+IW+ZpBdMwi+OgBoLHHDo=;
-        b=Thbj+G84O98msnLEpgyQwaF7SpTKkWjKRLuR105eped6zctUKPOF5lLL2LysFE5nOk
-         7RZ6sbyAIuiKNWpq6fubhYA0gjFDzLaS4e9CRq5T1yd07EMIW2scjZZdNa3sBYrle89+
-         xq799HWaBn4DbZKLPj1P+Zwxx9TxWMM+9QiHWaGUbhxP5LNP9ces42GqKMhM0aVOkgDG
-         yXuESi/QR1Qb/glRGed5yYZ9uaLhkDah3Q006Bmf7Zio5PGzVIEB7EAx0M3P5QyRBw5x
-         DIfWjLzEsmkjwZKThQc+aCmsItLzZxs0+Hn+QnSp5OgKiG4czMPFPEQ9K8JBwwN/uEU3
-         tAqA==
-X-Gm-Message-State: ABy/qLZdgT711Vp4sH75vzJgnw3+D8m/HaCZqb/KaQ+g+7v6+PzgwUPN
-        f1/9EZkdrrhreLFdlNVIyatrgQ==
-X-Google-Smtp-Source: APBJJlHw9F2VP9lgn05Vy8TBj3boa7p7E1HJ5XSqFNGTAcjnHaRVlL+3f5SWyYttgPyY6M6OCPUkLw==
-X-Received: by 2002:aa7:d98e:0:b0:518:721e:f594 with SMTP id u14-20020aa7d98e000000b00518721ef594mr7409699eds.37.1688384086239;
-        Mon, 03 Jul 2023 04:34:46 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.26])
-        by smtp.gmail.com with ESMTPSA id d25-20020a50fb19000000b0051ddfb4385asm5229702edq.45.2023.07.03.04.34.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Jul 2023 04:34:45 -0700 (PDT)
-Message-ID: <19a9fcdb-7ac9-c84f-56cc-940fe3548798@linaro.org>
-Date:   Mon, 3 Jul 2023 13:34:43 +0200
+        bh=lii1qk0iOcZYWICJr2br350W927ez7amTIxsDQVx5s8=;
+        b=aTMlMFOnLuLWNy/NHM40FFSAk1cx+kuz4VyhW/Ha/rPdRkECjYtOYaAM6KUPFYT4JH
+         P3yuIDmLb3K4PX5hZ9RU3oqFC+o7BCXiLr7tMMrSnQG+9tRWjUAG6FRaVrGFLPoYYyDI
+         PnqV5blzZcRadI1f6qcShazde22txl5debb4czKKlLBHec2zwzDPL0Eb1yG5xalxAF3i
+         pOounjOWThRTVZFHoMmqVhaSONlVl1CZU1dPBM9VCrObsOtvuUZAINmlsdRCZ2IpHAYI
+         lPJk42vZhONP44N1ZItphNXazOmt5xFEfE4Ch6RQOA2q+FeR7o8SJfdtVDEUcsPkfcQz
+         H/wQ==
+X-Gm-Message-State: ABy/qLb+RnkzTlldDrtPI6ES6Ix8fqbFMEDmSwjFsrYY2AVgO+EGgvRe
+        GDgy+UUJkoosQW8FLkJa6myskERUmnbhh40I4yY=
+X-Google-Smtp-Source: APBJJlFhShal84Dfs2I8fGBNN3QstOfzflh04tQrV3lEw2Cxh8V0qEVf7bfIfXTBmhcdhSk83mBKhy+KWiaH8S6g2mo=
+X-Received: by 2002:a05:6512:693:b0:4fa:21d4:b3ca with SMTP id
+ t19-20020a056512069300b004fa21d4b3camr7855921lfe.2.1688386742108; Mon, 03 Jul
+ 2023 05:19:02 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v4] arm64: dts: agilex/stratix10: Updated QSPI Flash
- layout for UBIFS
-To:     Conor.Dooley@microchip.com, Markus.Elfring@web.de,
-        alif.zakuan.yuslaimi@intel.com, kah.jing.lee@intel.com
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        catalin.marinas@arm.com, conor+dt@kernel.org, dinguyen@kernel.org,
-        robh+dt@kernel.org, will@kernel.org
-References: <20230703083626.1347969-1-kah.jing.lee@intel.com>
- <59da2f49-706f-0a08-df14-71ad0326da83@web.de>
- <a786b6b9-3923-0138-5738-dc20e14aa0f3@microchip.com>
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <a786b6b9-3923-0138-5738-dc20e14aa0f3@microchip.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Received: by 2002:a05:7208:4293:b0:6f:64:17 with HTTP; Mon, 3 Jul 2023
+ 05:19:01 -0700 (PDT)
+Reply-To: joebabm@hotmail.com
+From:   Joel Baba <jdebabah@gmail.com>
+Date:   Mon, 3 Jul 2023 12:19:01 +0000
+Message-ID: <CAHOgiy7DE5A19ubjKDwADkYg8hZktXfrzLKhVM7xLpbY-=ES-A@mail.gmail.com>
+Subject: God bless you.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.5 required=5.0 tests=ADVANCE_FEE_5_NEW,BAYES_50,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:22c listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5018]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [jdebabah[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.0 ADVANCE_FEE_5_NEW Appears to be advance fee fraud (Nigerian
+        *      419)
+        *  3.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 03/07/2023 11:08, Conor.Dooley@microchip.com wrote:
-> On 03/07/2023 10:00, Markus Elfring wrote:
-> 
->> …
->>> ---
->>> V4->V3: Drop cover letter & remove unnecessary marker line
->>> V3->V2: Update commit messages
->> …
->>
->> * Do you find the arrow notation helpful for the version identification?
->>
->> * How do you think about to avoid duplicate data in the version history?
->>
->> * Would an other listing style become nicer for the “patch changelog”?
-> 
-> This is a complete waste of contributor time. Please stop.
+Greetings to you.
 
-Markus is banned from the LKML. Just ignore the comments.
+ It is my desire to solicit your assistance in proposing an urgent
+transaction with mutual benefit that required maximum confidence.
 
-Best regards,
-Krzysztof
+I want you to let me know your stand in this proposal so that i can
+send the details of the business to you and i will not fail to bring
+to your notice that this transaction is hitch free and that you should
+not entertain any atom of fear as all required arrangements have been
+made for the transfer.
 
+I am awaiting for your immediate response as you receive this mail.
+
+Yours faithfully,
+
+Joel Baba.

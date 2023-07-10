@@ -2,90 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2445174D5FB
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Jul 2023 14:47:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDACB74D60F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Jul 2023 14:57:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232016AbjGJMrn convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Jul 2023 08:47:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44180 "EHLO
+        id S230014AbjGJM53 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Jul 2023 08:57:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229668AbjGJMrl (ORCPT
+        with ESMTP id S229469AbjGJM52 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Jul 2023 08:47:41 -0400
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C705A7;
-        Mon, 10 Jul 2023 05:47:41 -0700 (PDT)
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-579ef51428eso57428297b3.2;
-        Mon, 10 Jul 2023 05:47:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688993260; x=1691585260;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aSqp8QS3Eas+YBinZHpl7xLqipq/Ys4jkKB7+on99uc=;
-        b=fxM/j3YItc11qUJ7maKZuEaELNkTsnoHa4Kx1sQ9A4RZxw7eMvQ63UOdKY/jaSo2wd
-         pwmaP5OnX/imw+tea+6YLCd+2fWW+ZXWMieaCufykgXd/dZKWqC3YQhx670itBsWItz7
-         1iTxAgeFn5uMIIlyjBvKH204VHTynBocGntkzO/plgzYTHz6B1E3410HIyjrkYPGZWGv
-         oJCywH/rUdlkDsT3udfFZrSKiHZyfxn+tkU6i0nrxkWkPlfAwn8MzolUAu8PNiNaNx78
-         v4VHhxMDS+w7sOq13DQd6eG/juF6uSy4V6mZzetJLXfDY+ozuGfyACn6lTCL/yS1pzAw
-         c9Xw==
-X-Gm-Message-State: ABy/qLaAwpPgPFjrZKW3P0wz/oOwF840u26TmmImJ9Ji8RkoOPpTeSIl
-        A4/xXlikWrj1XDLo7h/bVaJlK1Ho1/jxYg==
-X-Google-Smtp-Source: APBJJlHDGRj66C6PwIDG66DppX4uHDDOki7uehMoF5Nz2C/ZkP8ilWkPSH14uymypmT/VgUcB1RiEA==
-X-Received: by 2002:a0d:d9c9:0:b0:56f:eaef:9d40 with SMTP id b192-20020a0dd9c9000000b0056feaef9d40mr13320419ywe.46.1688993260092;
-        Mon, 10 Jul 2023 05:47:40 -0700 (PDT)
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com. [209.85.128.169])
-        by smtp.gmail.com with ESMTPSA id u63-20020a816042000000b0054c0f3fd3ddsm3072618ywb.30.2023.07.10.05.47.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jul 2023 05:47:39 -0700 (PDT)
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-579ef51428eso57427907b3.2;
-        Mon, 10 Jul 2023 05:47:39 -0700 (PDT)
-X-Received: by 2002:a5b:98e:0:b0:c49:95fd:6361 with SMTP id
- c14-20020a5b098e000000b00c4995fd6361mr12951040ybq.0.1688993259725; Mon, 10
- Jul 2023 05:47:39 -0700 (PDT)
+        Mon, 10 Jul 2023 08:57:28 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74601C9;
+        Mon, 10 Jul 2023 05:57:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=zAdUESlNk5fFxjFObCoWuKOncSdiHBjIW11z46iYlUQ=; b=MlZ/IxeUDjRMI8Hmp0hS3O0/if
+        5A6uW01bp3rm2WTPzunre62vYGvFIPy7rDdCVekv/OTACVC+3/bR9mXhbA/i0dgn57PHybIpj1i/I
+        upo+EDf/YmF+9815vCHsUgjIpUq1JDGy/I2UeEYPw5l6Tvuv9IsIK2/4PAfUgTmGuUto=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qIqRu-000wmi-9n; Mon, 10 Jul 2023 14:57:06 +0200
+Date:   Mon, 10 Jul 2023 14:57:06 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Su Hui <suhui@nfschina.com>
+Cc:     iyappan@os.amperecomputing.com, keyur@os.amperecomputing.com,
+        quan@os.amperecomputing.com, hkallweit1@gmail.com,
+        linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        wuych <yunchuan@nfschina.com>
+Subject: Re: [PATCH net-next v2 08/10] net: mdio: Remove unnecessary (void*)
+ conversions
+Message-ID: <d9133c35-7817-499e-ad6d-2d19ceb6492a@lunn.ch>
+References: <20230710064127.173818-1-suhui@nfschina.com>
 MIME-Version: 1.0
-References: <fed02e0325275df84e2d76f8c481e40e7023cbd9.1688760372.git.christophe.jaillet@wanadoo.fr>
-In-Reply-To: <fed02e0325275df84e2d76f8c481e40e7023cbd9.1688760372.git.christophe.jaillet@wanadoo.fr>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 10 Jul 2023 14:47:27 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXO-f6KP1WCwwyy6Jy5eZpZ4LfFEV6y14dyrVYRp5QRMg@mail.gmail.com>
-Message-ID: <CAMuHMdXO-f6KP1WCwwyy6Jy5eZpZ4LfFEV6y14dyrVYRp5QRMg@mail.gmail.com>
-Subject: Re: [PATCH] clk: renesas: rzg2l: Simplify .determine_rate()
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230710064127.173818-1-suhui@nfschina.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jul 7, 2023 at 10:06 PM Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
-> rzg2l_cpg_sd_clk_mux_determine_rate() is the same as
-> __clk_mux_determine_rate_closest(), so use the latter to save some LoC.
->
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+On Mon, Jul 10, 2023 at 02:41:27PM +0800, Su Hui wrote:
+> From: wuych <yunchuan@nfschina.com>
+> 
+> Pointer variables of void * type do not require type cast.
+> 
+> Signed-off-by: wuych <yunchuan@nfschina.com>
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-i.e. will queue in renesas-clk-for-v6.6.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+    Andrew

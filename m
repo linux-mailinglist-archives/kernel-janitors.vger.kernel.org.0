@@ -2,40 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 563B875006D
-	for <lists+kernel-janitors@lfdr.de>; Wed, 12 Jul 2023 09:51:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AFD975026B
+	for <lists+kernel-janitors@lfdr.de>; Wed, 12 Jul 2023 11:05:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231334AbjGLHvK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 12 Jul 2023 03:51:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36068 "EHLO
+        id S232073AbjGLJFn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 12 Jul 2023 05:05:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229505AbjGLHul (ORCPT
+        with ESMTP id S233125AbjGLJFU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 12 Jul 2023 03:50:41 -0400
-Received: from mail.lokoho.com (mail.lokoho.com [217.61.105.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71DA219BA
-        for <kernel-janitors@vger.kernel.org>; Wed, 12 Jul 2023 00:50:14 -0700 (PDT)
-Received: by mail.lokoho.com (Postfix, from userid 1002)
-        id C826487E7B; Wed, 12 Jul 2023 09:46:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lokoho.com; s=mail;
-        t=1689148104; bh=Z0N5VlX9/JlryGOL5I747Le9USomZJCRNNGRT3LbbKc=;
-        h=Date:From:To:Subject:From;
-        b=ryVdHLYggM6zFHkcT59wAP6s2p9gOBOiH0Kw8V8D2xThnIQZa17qvaHWuEARebtEB
-         M+XXm4ieOFXXMtOIw9bebeMkTg6BmxFi5q8OCPC4aFVR1ImdWQ6A7rxPLaZHKWO8mr
-         8PNBHAJdbw82JSTFFmY617sKFz0i6E4tM8DWriYaMxEzBnfma4RDvVscxmkCnpaU5K
-         jAaYeMhojeMjU07u7zcR8HT2rDT+6q04AZYTMezX/CpBKYzAqGaGmuZXFgMEud8sfk
-         pjFBeDfJLT+O6zF+aEfuRbBmVmBoq9L21CwgAdADW3WRMI7qlU6bhLCdWbl+UCD5dE
-         ZggHL0lxSpUhw==
-Received: by mail.lokoho.com for <kernel-janitors@vger.kernel.org>; Wed, 12 Jul 2023 07:45:22 GMT
-Message-ID: <20230712084501-0.1.9.2al7.0.3xb430zvla@lokoho.com>
-Date:   Wed, 12 Jul 2023 07:45:22 GMT
-From:   "Adam Charachuta" <adam.charachuta@lokoho.com>
-To:     <kernel-janitors@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
-X-Mailer: mail.lokoho.com
+        Wed, 12 Jul 2023 05:05:20 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B04326BD
+        for <kernel-janitors@vger.kernel.org>; Wed, 12 Jul 2023 02:03:57 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-3fbf1b82d9cso68933945e9.2
+        for <kernel-janitors@vger.kernel.org>; Wed, 12 Jul 2023 02:03:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1689152635; x=1691744635;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=GupHuaIqXzbPk+pS2yyaKy7yHaFuRf0nsu4uBxchRjs=;
+        b=T/hA12xiZrfFKp3JKiCj0EzcXLzJaz2SziWM8IA9uYlH7QUI/nyv5mE9vnwYoO/WOU
+         N9INt2gIyOW/jzLV5/cAXXR85K4yBqOOuRAqsWlgC9W/WqKqNedR/2eIcqsh3WFMUQzt
+         jexpPFZoPxsqu4UasUpXMoim0zgUjZwZS9k6onTASvvvmsrwvkirgh8wD55gzf0NueV8
+         v0Y1yzlWcu+UqQZ97TA1d7TRfIn/7sL+QkQNKjsqXMu+rRWrEnk3bjBty9qlf0VbEWvT
+         AzOD79q4WDJPNsi1DFHB//sOu5IbgeKiMNLg/u3YonsUIRAX4oyuuXeEr98BOtNQFNey
+         VOrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689152635; x=1691744635;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GupHuaIqXzbPk+pS2yyaKy7yHaFuRf0nsu4uBxchRjs=;
+        b=K0n/F/MgwhFKgsXiBUxSM8LX/OaIW8EfxG8lJJ9Ja3wtL/I8U+AP81+dm7TlwFtsuW
+         JiCdhmfzvipw7Pboy0GUfEjmTL7+mMfSe3vNtBW3Nhs+Lzot77gSDEoiq5V1zu7j4pQr
+         DBBrf2o9/jYAvWBRSTZpWxNI0ptDpZ7tPRMUMNfUo2hZ3D0KLf0H8e3ZEFcpEE7MRGtd
+         46InYIUAW3nueZvhG5gaO9I7Ebu4vXz2OTiJTePTneBo5Jy55MIwafT3aOYFeeeVKOT0
+         ai98fxKyy6xha6chH0l5DmPY1RW+15nrrwC6+IBt/7pHyU7TT8KlqSEL3Q81hzGuwDxV
+         yZuA==
+X-Gm-Message-State: ABy/qLahplxWriQFqzdiMv3CEFZvN7sUP0AbZSRjwLZqWt3jqoiUe354
+        jbojfDAj8ClohGh5RjXKVSyxhQ==
+X-Google-Smtp-Source: APBJJlFf58Sbazh4Bq2aZg5cfCVoDyDVW1kusrum3uRNQGXJ9/dkAONt85gMQI28jMfIru+mjGQ9wQ==
+X-Received: by 2002:a05:600c:229a:b0:3fb:40ff:1cbd with SMTP id 26-20020a05600c229a00b003fb40ff1cbdmr14987929wmf.10.1689152635607;
+        Wed, 12 Jul 2023 02:03:55 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id 16-20020a05600c029000b003fc04d13242sm11977328wmk.0.2023.07.12.02.03.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Jul 2023 02:03:54 -0700 (PDT)
+Date:   Wed, 12 Jul 2023 09:36:41 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     Su Hui <suhui@nfschina.com>
+Cc:     airlied@redhat.com, kraxel@redhat.com, gurchetansingh@chromium.org,
+        olvaffe@gmail.com, daniel@ffwll.ch,
+        dri-devel@lists.freedesktop.org,
+        virtualization@lists.linux-foundation.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] drm/virtio: remove some redundant code
+Message-ID: <b82057bf-3126-4721-87f5-79ca3682cee4@kadam.mountain>
+References: <7f67ed65-647a-44d7-a262-d3f1f48d90b9@kadam.mountain>
+ <0561b89b-42a8-35bf-feaa-e5feb4ec3cd5@nfschina.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0561b89b-42a8-35bf-feaa-e5feb4ec3cd5@nfschina.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
@@ -46,19 +77,31 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Wed, Jul 12, 2023 at 09:18:42AM +0800, Su Hui wrote:
+> On 2023/7/11 19:13, Dan Carpenter wrote:
+> > On Tue, Jul 11, 2023 at 05:00:31PM +0800, Su Hui wrote:
+> > > virtio_gpu_get_vbuf always be successful,
+> > > so remove the error judgment.
+> > > 
+> > No, just ignore the static checker false positive in this case.  The
+> > intent of the code is clear that if it did have an error it should
+> > return an error pointer.
+> 
+> Hi, Dan,
+> 
+> Function "virtio_gpu_get_vbuf" call "kmem_cache_zalloc (vgdev->vbufs,
+> GFP_KERNEL | __GFP_NOFAIL)" to
+> allocate memory. Adding the " __GFP_NOFAIL”flag make sure it won't fail. And
+> "virtio_gpu_get_vbuf" never
+> return an error code, so I think this is not a false positive.
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+We all see this and agree.
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+However the check for if (IS_ERR()) is written deliberately because we
+might change the code to return error pointers in the future.  Static
+checkers are looking for code that does something unintentional but in
+this case the code was written that way deliberately.
 
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+regards,
+dan carpenter
 
-
-Pozdrawiam
-Adam Charachuta

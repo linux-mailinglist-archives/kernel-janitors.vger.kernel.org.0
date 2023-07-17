@@ -2,91 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 205D37550AF
-	for <lists+kernel-janitors@lfdr.de>; Sun, 16 Jul 2023 20:49:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8DC175590D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Jul 2023 03:33:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230107AbjGPStW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 16 Jul 2023 14:49:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42132 "EHLO
+        id S229585AbjGQBdv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 16 Jul 2023 21:33:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbjGPStV (ORCPT
+        with ESMTP id S229461AbjGQBdu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 16 Jul 2023 14:49:21 -0400
-Received: from smtp.smtpout.orange.fr (smtp-26.smtpout.orange.fr [80.12.242.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FEA91B6
-        for <kernel-janitors@vger.kernel.org>; Sun, 16 Jul 2023 11:49:18 -0700 (PDT)
-Received: from pop-os.home ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id L6nlqoZFfmJSQL6nyqovEY; Sun, 16 Jul 2023 20:49:15 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-        s=t20230301; t=1689533355;
-        bh=oXFfPn5WpEoNL6C6p4wE0Mawt3VwLpg29Dnt35c5y/Y=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=QwyYyRyRYJX9aBDwtDMwdqMBNfWwiY2IqxhldV2xxLfH3nywHnxtaUPSNYKA6SF6o
-         fQ4LAe9FVV5xXc/LpybW0+mu0ZWAba9ublz9vHPmaQLiUNfLNVPJ/+4N3NdnxzrHGB
-         MtkhexTxfkdM/9X4l/GzjKbLEo0ZNSyhYnxLmmT8+NsNuYKBfN9b3eLTr6fyYSmdRM
-         SDdc26oqLsUcTNKg/agP1MLmzkHgLSdTs9jH4gcguRJNYfyQhLJ4an119CKvvWBVCC
-         DwNIG8ZugG3uZdM355bmiruAr0Dw+zMPnnfpg+iG10pvu02bepEmZkA2NNtmpn/zi6
-         6Hhu9p5Uw5Yow==
-X-ME-Helo: pop-os.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 16 Jul 2023 20:49:15 +0200
-X-ME-IP: 86.243.2.178
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        ocfs2-devel@lists.linux.dev
-Subject: [PATCH 2/2] ocfs2: Use struct_size()
-Date:   Sun, 16 Jul 2023 20:48:57 +0200
-Message-Id: <9d99ea2090739f816d0dc0c4ebaa42b26fc48a9e.1689533270.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <c645911ffd2720fce5e344c17de642518cd0db52.1689533270.git.christophe.jaillet@wanadoo.fr>
-References: <c645911ffd2720fce5e344c17de642518cd0db52.1689533270.git.christophe.jaillet@wanadoo.fr>
+        Sun, 16 Jul 2023 21:33:50 -0400
+Received: from mail.nfschina.com (unknown [42.101.60.195])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 227E8B2;
+        Sun, 16 Jul 2023 18:33:47 -0700 (PDT)
+Received: from [172.30.11.106] (unknown [180.167.10.98])
+        by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPSA id E21B960108C45;
+        Mon, 17 Jul 2023 09:33:31 +0800 (CST)
+Message-ID: <9880bad7-66b5-4d73-7464-8be859d8b56f@nfschina.com>
+Date:   Mon, 17 Jul 2023 09:33:30 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH net-next v2 03/10] net: ppp: Remove unnecessary (void*)
+ conversions
+Content-Language: en-US
+To:     Guillaume Nault <gnault@redhat.com>
+Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, xeb@mail.ru, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+X-MD-Sfrom: yunchuan@nfschina.com
+X-MD-SrcIP: 180.167.10.98
+From:   yunchuan <yunchuan@nfschina.com>
+In-Reply-To: <ZLEQSivEvfpWXrdr@debian>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RDNS_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Use struct_size() instead of hand-writing it, when allocating a structure
-with a flex array.
+On 2023/7/14 17:07, Guillaume Nault wrote:
+> On Mon, Jul 10, 2023 at 02:40:27PM +0800, Su Hui wrote:
+>> From: wuych <yunchuan@nfschina.com>
+>>
+>> Pointer variables of void * type do not require type cast.
+>>
+>> Signed-off-by: wuych <yunchuan@nfschina.com>
+>> ---
+>>   drivers/net/ppp/pppoe.c | 4 ++--
+>>   drivers/net/ppp/pptp.c  | 4 ++--
+>>   2 files changed, 4 insertions(+), 4 deletions(-)
+> Reviewed-by: Guillaume Nault <gnault@redhat.com>
+>
+> While there, you might want to also remove the useless casts in
+> net/l2tp/l2tp_ppp.c and net/atm/pppoatm.c.
 
-This is less verbose.
+Hi,
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-It will also be helpful if the __counted_by() annotation is added with a
-Coccinelle script such as:
-   https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git/commit/?h=devel/counted_by&id=adc5b3cb48a049563dc673f348eab7b6beba8a9b
----
- fs/ocfs2/journal.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Thanks four your reminder! There are about 20 useless casts in net.
+I will remove all of them.
 
-diff --git a/fs/ocfs2/journal.c b/fs/ocfs2/journal.c
-index 2f7e70109020..4e779efe2a4e 100644
---- a/fs/ocfs2/journal.c
-+++ b/fs/ocfs2/journal.c
-@@ -114,9 +114,9 @@ int ocfs2_compute_replay_slots(struct ocfs2_super *osb)
- 	if (osb->replay_map)
- 		return 0;
- 
--	replay_map = kzalloc(sizeof(struct ocfs2_replay_map) +
--			     (osb->max_slots * sizeof(char)), GFP_KERNEL);
--
-+	replay_map = kzalloc(struct_size(replay_map, rm_replay_slots,
-+					 osb->max_slots),
-+			     GFP_KERNEL);
- 	if (!replay_map) {
- 		mlog_errno(-ENOMEM);
- 		return -ENOMEM;
--- 
-2.34.1
+Wu Yunchuan
 
+>> diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+>> index 3b79c603b936..ba8b6bd8233c 100644
+>> --- a/drivers/net/ppp/pppoe.c
+>> +++ b/drivers/net/ppp/pppoe.c
+>> @@ -968,7 +968,7 @@ static int __pppoe_xmit(struct sock *sk, struct sk_buff *skb)
+>>    ***********************************************************************/
+>>   static int pppoe_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+>>   {
+>> -	struct sock *sk = (struct sock *)chan->private;
+>> +	struct sock *sk = chan->private;
+>>   	return __pppoe_xmit(sk, skb);
+>>   }
+>>   
+>> @@ -976,7 +976,7 @@ static int pppoe_fill_forward_path(struct net_device_path_ctx *ctx,
+>>   				   struct net_device_path *path,
+>>   				   const struct ppp_channel *chan)
+>>   {
+>> -	struct sock *sk = (struct sock *)chan->private;
+>> +	struct sock *sk = chan->private;
+>>   	struct pppox_sock *po = pppox_sk(sk);
+>>   	struct net_device *dev = po->pppoe_dev;
+>>   
+>> diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
+>> index 32183f24e63f..6b3d3df99549 100644
+>> --- a/drivers/net/ppp/pptp.c
+>> +++ b/drivers/net/ppp/pptp.c
+>> @@ -148,7 +148,7 @@ static struct rtable *pptp_route_output(struct pppox_sock *po,
+>>   
+>>   static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+>>   {
+>> -	struct sock *sk = (struct sock *) chan->private;
+>> +	struct sock *sk = chan->private;
+>>   	struct pppox_sock *po = pppox_sk(sk);
+>>   	struct net *net = sock_net(sk);
+>>   	struct pptp_opt *opt = &po->proto.pptp;
+>> @@ -575,7 +575,7 @@ static int pptp_create(struct net *net, struct socket *sock, int kern)
+>>   static int pptp_ppp_ioctl(struct ppp_channel *chan, unsigned int cmd,
+>>   	unsigned long arg)
+>>   {
+>> -	struct sock *sk = (struct sock *) chan->private;
+>> +	struct sock *sk = chan->private;
+>>   	struct pppox_sock *po = pppox_sk(sk);
+>>   	struct pptp_opt *opt = &po->proto.pptp;
+>>   	void __user *argp = (void __user *)arg;
+>> -- 
+>> 2.30.2
+>>
+>>

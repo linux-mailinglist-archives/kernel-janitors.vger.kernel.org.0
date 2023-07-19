@@ -2,113 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBBFE759293
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jul 2023 12:18:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01295759325
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jul 2023 12:36:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230333AbjGSKSH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 Jul 2023 06:18:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40564 "EHLO
+        id S229864AbjGSKgS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 Jul 2023 06:36:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230151AbjGSKSE (ORCPT
+        with ESMTP id S229561AbjGSKgQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 Jul 2023 06:18:04 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00E761BEF
-        for <kernel-janitors@vger.kernel.org>; Wed, 19 Jul 2023 03:18:02 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-3159d5e409dso406710f8f.0
-        for <kernel-janitors@vger.kernel.org>; Wed, 19 Jul 2023 03:18:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689761881; x=1690366681;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=d6uSqq8iwHxn9/tpT05qWIJPin2r3B4nv+yMTWooWZQ=;
-        b=SIOzxz0kITZK8LFNRze7JYjdZtc1YCSgzt3hjwJAeBkNjc+AvJSC1N7/zvWKNFT2fv
-         habMlKdbAGHy8hqKFFxFqyYlUrjOI6uRKLk+Ni/S2VBmCgF1LFsed+EYzwSdN5UFx91f
-         aezEQDv//EXlkk3QwhCTMiggeTDLMoMyewr9wQvN2WrVfUHviIG2KxRw8tZRLxtNVIiY
-         gP5B7vwTv7lxPkt2x42ee8/nZRvPZOh07ZkazAYYdBGTrQm1kl91YnKxjIZZ8Ms8YsBG
-         sqUJS0uFKrDKXDHslsHEwC29cDCuqfnJHZXVRKPkhxEOvPpVXdJehP3jJFd4a0GWRWwf
-         cLlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689761881; x=1690366681;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=d6uSqq8iwHxn9/tpT05qWIJPin2r3B4nv+yMTWooWZQ=;
-        b=G6NRlpyhMi6a2BFZT6SeMI28tS3GxLVEUXNsDZeT5MsjMf1sZ4TeMMJhZXEG6QoUcj
-         cFB9DITHRgImU7H0+orTeWcr5ztUseNcMiC+B9pdFAbp+GZBOKlDZICWdJGChHl8OTLz
-         Wv9Bnz+pvPPKf12odPwJkZAoA/THD1nhBHIxjwC9sGDX9j3Gd7RgHRp45jWOrLiH2C7A
-         0aQMnNXqC/HYPhtC/0cR2UPSYlj5Q9i9+6QRSMSoXTpARIZX24wWDosv1e38BRfkvgWB
-         zOG1PSHrWAo/hU5mw8DRIvwUejG7Orwl7Vu+TrJma+8RWLdh2QeQNtPtDSvDZJHpN7YK
-         QVXg==
-X-Gm-Message-State: ABy/qLZ/DTTjdoydPtrQCxrXlETS+ZAaMHAzJ7r445T07p5nJ6Nb2+3U
-        /KPkQeNmGnL48/7sIaBQfQddJw==
-X-Google-Smtp-Source: APBJJlFM7viFvauoAMlySNo6VSSvtQdCoXkaiQxlJ4pgb0dZ2e8PBGcQhfI7IlseoQSuVvfamADMQg==
-X-Received: by 2002:adf:f082:0:b0:314:2c77:681b with SMTP id n2-20020adff082000000b003142c77681bmr1387870wro.30.1689761881437;
-        Wed, 19 Jul 2023 03:18:01 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id d15-20020adff84f000000b00313f9085119sm4896291wrq.113.2023.07.19.03.17.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jul 2023 03:18:00 -0700 (PDT)
-Date:   Wed, 19 Jul 2023 13:17:56 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Lucas Stach <l.stach@pengutronix.de>
-Cc:     Russell King <linux+etnaviv@armlinux.org.uk>,
-        Christian Gmeiner <christian.gmeiner@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>, etnaviv@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] drm/etnaviv: fix error code in event_alloc()
-Message-ID: <53fc5292-669a-4fca-8b99-e35a49da0b0f@moroto.mountain>
+        Wed, 19 Jul 2023 06:36:16 -0400
+Received: from mailbox.box.xen0n.name (mail.xen0n.name [115.28.160.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8096BE0;
+        Wed, 19 Jul 2023 03:36:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xen0n.name; s=mail;
+        t=1689762558; bh=zzi5kjyS7aIx9/ym7iyyPL9XVFwQcOnol4QUS4SlqUw=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=foB3/ueojPefseN2KuCfAWKwfBnt5yovt63TIp91f1fXhyps1dSO8lCmWRJNE7UAB
+         DkrBPZ62wGj0rusHYsgFtuq+lKLCna8xhWUMSsYxnU/lmsWxZINix9tXWFJ+g4pc5M
+         Z7Gz4wwrO0+65Fi61ht2j2QuN81cdb+UMlwUTckM=
+Received: from [100.100.34.13] (unknown [220.248.53.61])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mailbox.box.xen0n.name (Postfix) with ESMTPSA id 3D4D46006F;
+        Wed, 19 Jul 2023 18:29:18 +0800 (CST)
+Message-ID: <f9e7fb54-a76e-a9b0-1b9c-8c9251f4af20@xen0n.name>
+Date:   Wed, 19 Jul 2023 18:29:17 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH v5] LoongArch: Fix CONFIG_CMDLINE_EXTEND and
+ CONFIG_CMDLINE_BOOTLOADER handling
+Content-Language: en-US
+To:     Huacai Chen <chenhuacai@kernel.org>,
+        Markus Elfring <Markus.Elfring@web.de>
+Cc:     Zhihong Dong <donmor3000@hotmail.com>, loongarch@lists.linux.dev,
+        loongson-kernel@lists.loongnix.cn, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>, Guo Ren <guoren@kernel.org>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Xuefeng Li <lixuefeng@loongson.cn>
+References: <20230718153348.3340811-1-chenhuacai@loongson.cn>
+ <261edc6c-e339-faeb-3045-bfe6604d1aef@web.de>
+ <CAAhV-H5nNMmYZQXvoog85cgMUd+gM2QMaG3cUhYk_iGzjB=B4Q@mail.gmail.com>
+From:   WANG Xuerui <kernel@xen0n.name>
+In-Reply-To: <CAAhV-H5nNMmYZQXvoog85cgMUd+gM2QMaG3cUhYk_iGzjB=B4Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There are two "ret" variables declared in this function so setting
-"ret = -EBUSY;" sets the wrong one.  The function ends up returning an
-uninitialized variable.
+On 2023/7/19 15:22, Huacai Chen wrote:
+> Hi, Markus,
+> 
+> On Wed, Jul 19, 2023 at 2:51 PM Markus Elfring <Markus.Elfring@web.de> wrote:
+>>
+>>>                                                    …, so this patch add
+>>> some code to fix it.
+>>
+>> Would you like to avoid a typo here?
+>>
+>> Will any other imperative change description variant become more helpful?
+> Thank you for pointing this out, but since Zhihong is the original
+> author, I don't want to completely rewrite the commit message, so just
+> fix the typo...
 
-Fixes: f098f9b8042a ("drm/etnaviv: move runtime PM handling to events")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- drivers/gpu/drm/etnaviv/etnaviv_gpu.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+AFAICT the commit message is totally uninformative even if "an 
+imperative change description" were used. It basically:
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-index f54f12090685..0382cd91eebf 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-@@ -1158,18 +1158,18 @@ static int event_alloc(struct etnaviv_gpu *gpu, unsigned nr_events,
- 	int ret;
- 
- 	for (i = 0; i < nr_events; i++) {
--		unsigned long ret;
-+		unsigned long remaining;
- 
--		ret = wait_for_completion_timeout(&gpu->event_free, timeout);
-+		remaining = wait_for_completion_timeout(&gpu->event_free, timeout);
- 
--		if (!ret) {
-+		if (!remaining) {
- 			dev_err(gpu->dev, "wait_for_completion_timeout failed");
- 			ret = -EBUSY;
- 			goto out;
- 		}
- 
- 		acquired++;
--		timeout = ret;
-+		timeout = remaining;
- 	}
- 
- 	spin_lock(&gpu->event_spinlock);
+1. repeated the patch title,
+2. spent one sentence only for mentioning a function name without giving 
+any more information,
+3. mentioned why some change was not necessary due to some other 
+existing code, but not explicitly calling that part out, then
+4. finished with a sentence that boiled down to "we should do the 
+similar thing".
+
+My take:
+
+ > Subject: Fix CMDLINE_EXTEND and CMDLINE_BOOTLOADER on non-FDT systems
+ >
+ > On FDT systems these command line processing are already taken care of
+ > by early_init_dt_scan_chosen(). Add similar handling to the non-FDT
+ > code path to allow these config options to work for non-FDT boxes too.
+
+Would this sound better?
+
 -- 
-2.39.2
+WANG "xen0n" Xuerui
+
+Linux/LoongArch mailing list: https://lore.kernel.org/loongarch/
 

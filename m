@@ -2,75 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AE2B7609C3
-	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Jul 2023 07:51:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CDBE760AE9
+	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Jul 2023 08:51:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231698AbjGYFv5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 25 Jul 2023 01:51:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59878 "EHLO
+        id S231608AbjGYGvD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 25 Jul 2023 02:51:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231670AbjGYFvz (ORCPT
+        with ESMTP id S229905AbjGYGvC (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 25 Jul 2023 01:51:55 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A52C9BC
-        for <kernel-janitors@vger.kernel.org>; Mon, 24 Jul 2023 22:51:54 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3fbc63c2e84so51183495e9.3
-        for <kernel-janitors@vger.kernel.org>; Mon, 24 Jul 2023 22:51:54 -0700 (PDT)
+        Tue, 25 Jul 2023 02:51:02 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B55BEBD
+        for <kernel-janitors@vger.kernel.org>; Mon, 24 Jul 2023 23:51:00 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-3fbc244d384so42534855e9.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 24 Jul 2023 23:51:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690264313; x=1690869113;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LDa0fqzt30Ptcdn+Rp2moDt3uwTqaLbOBTSNBvQHsow=;
-        b=Fm732xFUENH32uKlXGBO66pTUcan0hi8UvbXIOsmsajrmKgF65+VKuAsgwl0h2rEvm
-         8bVGJCXxJ7Lo3CDTY397Y4mxix0VJtW/pkEXHkkLKO800NxhaPqfFFKex6vpdJLCOa4w
-         CmI8aGs1OSFpz1ZKdyfS0I94dx6bSwxKd8BBKpUZIt+arN+GsWHCduZZv9YOaAYpEwDJ
-         Kpqga4FAeLkxMrOnhuZRX4J7HcS3KeKVchXAMmblYLn9CvHnXCAxAdBbWFocNGUcqeMO
-         Tu3SmXJtzR2hdcpIZzcJs/EIeI/+pl0EtvFzM5PA5rL69dp57n8daVKEcMuVDnfOpImi
-         zo/Q==
+        d=linaro.org; s=google; t=1690267859; x=1690872659;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/7YC6gNPnD4sPdY6yeSLuPXwpQ68htwMP3OyMhq17Qw=;
+        b=b5pyU0m3Xf8DtZUSpLNI5iWTtnR2JJRlLq1iYS83w/W8EiOdcfgsf/MSFvp9n/o4S9
+         vMNanaS/hwz7/UrzOHmHTHqTBK4DShBDSc7T3LAUyrbE2jiEmLnIaqLXIdWZAS9WTDsz
+         UbOmtmzeeHLVGMLImoDkHDD3uo4inDfHi4lrUSCaQXBB3C8TrHInXZVmsNx2rBYpml3K
+         DLoCy4g1woqdDNo6XY1CEAXBOtJLKlbS76jO/oUTRCIBQ577fXsMLwPUgmYLQ4Q253xH
+         2tTuRoKF5AIEqb0Bzm3t+MZ2n0hXFxCO85GsP0zGyEMyItTV1Qy34vGjCEN3+Fop/2Cs
+         8SAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690264313; x=1690869113;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LDa0fqzt30Ptcdn+Rp2moDt3uwTqaLbOBTSNBvQHsow=;
-        b=G57rkNqDE7bjkHJ2gwZQoM4QxD67gJrst1f33zgH+f0B3hLxOTyk+Ubq7CI0Gn5xUi
-         f3nD27sH8f9peEhCv7JqPO39+/T1CM+PAYTSL5efEbHKmLm8kz6zeeFa37bR3GCMGGst
-         Wv4rVPuoK07tZsPXVjqzDM81Ddclw7v2glc2DPYUegscpkk+YLZHOmbHdz63yAq1md6f
-         7LgSij3b85V2tKn9mQQDhAbB3WteurpYE/S73TyYwyD4E6m77WT2Px5dBmtr2R/Tx+yy
-         YydRYtvVGvYTlGmtDIBJrEv6pFEkNdLdsDJL3FwVE+3c6cmbi9dVZRCVIjyMpcjHTGbD
-         uqkA==
-X-Gm-Message-State: ABy/qLa/O8cJigKjBed30dys/af6e7Tq7exqMFOsYPdBznb+QCoU16gM
-        h6TdQJ0jDhSdxYRx0jMYtFdUKA==
-X-Google-Smtp-Source: APBJJlFxsS3y+cMdX48jiFbTMmksWQoLUG07CWaL93WGXpO5sZmPQJoOQhas8KWkVrn1RtL/72a08g==
-X-Received: by 2002:a05:600c:152:b0:3fb:e200:b2b3 with SMTP id w18-20020a05600c015200b003fbe200b2b3mr9548144wmm.37.1690264313064;
-        Mon, 24 Jul 2023 22:51:53 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1690267859; x=1690872659;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/7YC6gNPnD4sPdY6yeSLuPXwpQ68htwMP3OyMhq17Qw=;
+        b=PURSNdh4QvgLPyu67nN8HcuiWmEBi9S5X30mhpL+hZ7fVUWJDxUwqofZO54RgHLG9W
+         u/tCcAJ+qu+iB6vs2hfwkYYctH0+P5CnA1WSKXeVfDtOQa9sMAU8nU0Awi/sN6NBHMSy
+         1mv9BzEnlNc1tap5SHkUcvKrbZdwQzsJTv//tZoIczmk+EWJdny7iYZwgsDmx40qJWlW
+         5nSr8CZQOdZYNb99kOEeM9kd/uk5WkPDVVdkki+N8/Iqxsb6VFpFa7a/80vb/cchptrJ
+         4buUTAuMC2wMX4kta+PuFJ+mhexxHLk1DWdUqxWjMhjYU7yQTac5WYEsHRAFsNaqFxoO
+         uX5g==
+X-Gm-Message-State: ABy/qLafV6F595Zf36XB3de8DuJXFO1OHQtRwX+dXJ+OJhOVsZo6DO+H
+        W4bwrWos9ZJZK6Bgizb/O/wSiA==
+X-Google-Smtp-Source: APBJJlHqNM99eb0ZHQXZM5f+65aTptDhOZEp2nsancdPfR1Rol7/vAlTqwOL6Py5w/39UVcsP6v7sA==
+X-Received: by 2002:adf:f591:0:b0:317:6efd:3a6b with SMTP id f17-20020adff591000000b003176efd3a6bmr199262wro.24.1690267859325;
+        Mon, 24 Jul 2023 23:50:59 -0700 (PDT)
 Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id w9-20020adfd4c9000000b0031423a8f4f7sm15243623wrk.56.2023.07.24.22.51.52
+        by smtp.gmail.com with ESMTPSA id v1-20020a5d6781000000b0031434c08bb7sm15180817wru.105.2023.07.24.23.50.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jul 2023 22:51:52 -0700 (PDT)
-Date:   Tue, 25 Jul 2023 08:51:50 +0300
+        Mon, 24 Jul 2023 23:50:58 -0700 (PDT)
+Date:   Tue, 25 Jul 2023 09:50:55 +0300
 From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Su Hui <suhui@nfschina.com>
-Cc:     Andi Shyti <andi.shyti@linux.intel.com>,
-        jani.nikula@linux.intel.com, joonas.lahtinen@linux.intel.com,
-        rodrigo.vivi@intel.com, tvrtko.ursulin@linux.intel.com,
-        airlied@gmail.com, daniel@ffwll.ch, nathan@kernel.org,
-        ndesaulniers@google.com, trix@redhat.com, andrzej.hajda@intel.com,
-        intel-gfx@lists.freedesktop.org, llvm@lists.linux.dev,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, mripard@kernel.org
-Subject: Re: [Intel-gfx] [PATCH v2] drm/i915/tv: avoid possible division by
- zero
-Message-ID: <5d096bcf-c394-4dad-b307-3d7e33ab6e6f@kadam.mountain>
-References: <ZL62X3/CnsJcWWU4@ashyti-mobl2.lan>
- <352f7c10-3592-4a18-abdc-ab554a992d10@nfschina.com>
+To:     Oleksij Rempel <linux@rempel-privat.de>
+Cc:     Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-i2c@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] i2c: imx: Clean up a call to request_irq()
+Message-ID: <fa375cc0-893a-4e64-8bf6-cc37f9ebecf5@moroto.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <352f7c10-3592-4a18-abdc-ab554a992d10@nfschina.com>
+X-Mailer: git-send-email haha only kidding
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -79,39 +74,29 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The reason why the first five attempts had bugs is because we are
-trying to write it in the most complicated way possible, shifting by
-logical not what?
+This is passing a NULL thread to request_threaded_irq().  So it's not
+really a threaded IRQ at all.  It's more readable to call request_irq()
+instead.
 
-regards,
-dan carpenter
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ drivers/i2c/busses/i2c-imx.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_tv.c b/drivers/gpu/drm/i915/display/intel_tv.c
-index 36b479b46b60..6997b6cb1df2 100644
---- a/drivers/gpu/drm/i915/display/intel_tv.c
-+++ b/drivers/gpu/drm/i915/display/intel_tv.c
-@@ -988,7 +988,13 @@ intel_tv_mode_to_mode(struct drm_display_mode *mode,
- 		      const struct tv_mode *tv_mode,
- 		      int clock)
- {
--	mode->clock = clock / (tv_mode->oversample >> !tv_mode->progressive);
-+	int div = tv_mode->oversample;
-+
-+	if (!tv_mode->progressive)
-+		div >>= 1;
-+	if (div == 0)
-+		div = 1;
-+	mode->clock = clock / div;
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index 65128a73e8a3..c0cac5bcfdd1 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -1506,8 +1506,7 @@ static int i2c_imx_probe(struct platform_device *pdev)
+ 		goto rpm_disable;
  
- 	/*
- 	 * tv_mode horizontal timings:
-@@ -1135,6 +1141,8 @@ intel_tv_get_config(struct intel_encoder *encoder,
- 		break;
- 	default:
- 		tv_mode.oversample = 1;
-+		WARN_ON_ONCE(!tv_mode.progressive);
-+		tv_mode.progressive = true;
- 		break;
- 	}
- 
+ 	/* Request IRQ */
+-	ret = request_threaded_irq(irq, i2c_imx_isr, NULL, IRQF_SHARED,
+-				   pdev->name, i2c_imx);
++	ret = request_irq(irq, i2c_imx_isr, IRQF_SHARED, pdev->name, i2c_imx);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "can't claim irq %d\n", irq);
+ 		goto rpm_disable;
+-- 
+2.39.2
 

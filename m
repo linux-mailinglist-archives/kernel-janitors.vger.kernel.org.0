@@ -2,110 +2,132 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E11F67609C7
-	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Jul 2023 07:52:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3D1D760930
+	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Jul 2023 07:25:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231789AbjGYFwH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 25 Jul 2023 01:52:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59984 "EHLO
+        id S231478AbjGYFZH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 25 Jul 2023 01:25:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231753AbjGYFwG (ORCPT
+        with ESMTP id S229832AbjGYFZD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 25 Jul 2023 01:52:06 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D738E77
-        for <kernel-janitors@vger.kernel.org>; Mon, 24 Jul 2023 22:52:03 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-3144bf65ce9so3990386f8f.3
-        for <kernel-janitors@vger.kernel.org>; Mon, 24 Jul 2023 22:52:03 -0700 (PDT)
+        Tue, 25 Jul 2023 01:25:03 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57483A6
+        for <kernel-janitors@vger.kernel.org>; Mon, 24 Jul 2023 22:25:02 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-3fbc59de009so41371025e9.3
+        for <kernel-janitors@vger.kernel.org>; Mon, 24 Jul 2023 22:25:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690264322; x=1690869122;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=/FtUwT9/spcMkR7VjrY/3W+93GEBxPQH5C64yCjsUNY=;
-        b=hZhK8yqyPCU6gQ47eSs3rvl/+mzA8qnllaGcH0qKGak8vQIK2xkNdZmYGn4F662v4D
-         DbkyxVQc76oGbjgTQUiiQJdA29vCjEWiQUVjxDGW6oxP6vbkf/CRQiNBgfjQ5hIOhbCu
-         wC5Q+ui5DEBjrkSWJqoWFUDAMyBK6hLZnhrMbrIO3Y+idyH+TusqM1yZEq8qOCth/bvE
-         0VbphYsweZ4co+3DpVFJE0YSHZC/0IcOG0p0Apo7EWLghuutJ9BB+SmnIVZp7gQUMZPE
-         FCoZUVRuVq36NxMECr2LXfusmjiOjPG0l5xVQTULJuDN/lmCvlsZh6E+x73Y1x522Emk
-         IhOw==
+        d=linaro.org; s=google; t=1690262701; x=1690867501;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=H79WJ1tZZDGA2P/ZJGv/toXPeURCI3lAAaWA6i+7WCc=;
+        b=haLrXUc4DawVtAshdPyra7G+2ZK9BuBOpIhM1fU8nWBd13IGaY0Qj0WMXKOwB9geo2
+         zbZoQIKvVvtXJyofj526s8WWvsGNc59d63mc1+N3NuG8MJC/ykrY19sKBs/6crYXgUs5
+         cgUZYCBlzVSz/hPrrsK7G0uAl80BXQiWubw81dR2YKcovNZ78giuuS/i/KIcp/OnbYjJ
+         yQJCO5gHjOj6ZKDcAOHbEuCqOH6RBmE4jgfGn5WdPqJunL5IybDnIHq3Q65kKMoh5iBc
+         /T9HR2Ejs/C9mnwV8q7o1pSFcfLdtA/K86CfP6V4au+7OuctD26UG3GRwBtnszYPxygn
+         I7rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690264322; x=1690869122;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20221208; t=1690262701; x=1690867501;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/FtUwT9/spcMkR7VjrY/3W+93GEBxPQH5C64yCjsUNY=;
-        b=Ir4Clto4MYLgN0pj/iJhof9SfaMB35fJ1XYhiVXFJARSdrRPRs5iulWuraD9wzskwD
-         Z9FoF/alsho+6/CRFfBgSu7TWzqAW2jux7Gx4yFYqriorNC0WSneBeLotgTN36dp4wiA
-         hFIMzDoIq3YqL/lBsuy66tAC1+ehXLiJlAIOy/VwJ6inSTdNre2OQVMzzdQ/bWI1ZxdT
-         g3xNU/jcWA75EiC7+lQ05HYe/4kjuAPm2lMFofkOzJTb1QWCUDgLPpVyUs6fwVGFac4E
-         SBRUgyGStASQwxPlNxii01vyPih9Rceicofr2vsIzuQdgctvtAtM0LnFrwyBfzd9/+Z8
-         d/NQ==
-X-Gm-Message-State: ABy/qLaEdN9AlSzTooTOOdNSIz/2aITLPy8Hougim81J//3p7Zg9G3fJ
-        Iv/KebMiPjupdLXEdQIp3r0EPw==
-X-Google-Smtp-Source: APBJJlElsz/2zyU+FYNXdSTi2LIazd6Gy3hVBg2ghcAgs41QegFsOHKPfiW0sQ3QKl5hURjAv9x3ow==
-X-Received: by 2002:a5d:5189:0:b0:317:636b:fcb1 with SMTP id k9-20020a5d5189000000b00317636bfcb1mr2648527wrv.27.1690264321883;
-        Mon, 24 Jul 2023 22:52:01 -0700 (PDT)
+        bh=H79WJ1tZZDGA2P/ZJGv/toXPeURCI3lAAaWA6i+7WCc=;
+        b=iF9b2vTIJMpmd9E4ITLNSJfWCjKML/lKJqlr1s6Ue4we//mf270x0UFkQXTquIIyTT
+         lhRRn5PkWRzzOVVIAx7Xpb9AaXnbkRgL+rEAGEzneFl42AUX77wGANLjlnwHH6czciFf
+         csFv6z3MJynTIVG73hW4qRgDFKuP+FZV7C1I8zPCraUiFbuz7BHxtbcpAJeQPdMIsN4A
+         3idFyHUI5Q0bYHXJ1xzpX2EOMftfIbken7CHpgpi9EEdLjt1u5Q5sbcQuoIwRZV0OBXe
+         Aq0AmVD0u5HKgj5U5fiu1Uik7xbqn87fg54xvJZaTDrG1RHwk6x4e6tKsFzfC/IRV6RK
+         gq0A==
+X-Gm-Message-State: ABy/qLY7v2IJgvQ+03+fta1U2xJDU7oyjjIaTeD7u0LIMyo3bZUOYK/t
+        IhDs9ySNKcJ+TU5qTfOC/czL1NLd7CihxgWcXzY=
+X-Google-Smtp-Source: APBJJlGlk5/ue4ciZ9K0Lm551GtLicMS+kyem42WYzAa6gMALSP3J6b8ppTyop7YQiL+pWW5wx7Wwg==
+X-Received: by 2002:a5d:5956:0:b0:314:5376:f0d6 with SMTP id e22-20020a5d5956000000b003145376f0d6mr8020592wri.52.1690262700825;
+        Mon, 24 Jul 2023 22:25:00 -0700 (PDT)
 Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id x13-20020a5d60cd000000b0030ada01ca78sm15055816wrt.10.2023.07.24.22.52.01
+        by smtp.gmail.com with ESMTPSA id r15-20020adff70f000000b003143ba62cf4sm14867520wrp.86.2023.07.24.22.25.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jul 2023 22:52:01 -0700 (PDT)
-Date:   Tue, 25 Jul 2023 07:33:37 +0300
+        Mon, 24 Jul 2023 22:25:00 -0700 (PDT)
+Date:   Tue, 25 Jul 2023 08:24:56 +0300
 From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Su Hui <suhui@nfschina.com>, tytso@mit.edu,
-        adilger.kernel@dilger.ca, nathan@kernel.org, trix@redhat.com,
-        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] ext4: mballoc: avoid garbage value from err
-Message-ID: <54fff30b-4662-48c7-8b87-2e8f74d2086b@kadam.mountain>
-References: <20230724054538.163319-1-suhui@nfschina.com>
- <CAKwvOdk-fdJr9TcgUnOhCiU0LvD2Qe_c+6YOe-c1k0Ukm+negA@mail.gmail.com>
+To:     petrm@nvidia.com
+Cc:     kernel-janitors@vger.kernel.org
+Subject: [bug report] mlxsw: spectrum_switchdev: Replay switchdev objects on
+ port join
+Message-ID: <049ee4a7-441c-4e76-8ca1-fb4ac1c3f389@moroto.mountain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKwvOdk-fdJr9TcgUnOhCiU0LvD2Qe_c+6YOe-c1k0Ukm+negA@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jul 24, 2023 at 10:19:02AM -0700, Nick Desaulniers wrote:
-> On Sun, Jul 23, 2023 at 10:46 PM Su Hui <suhui@nfschina.com> wrote:
-> >
-> > clang warning: fs/ext4/mballoc.c, line 4178, column 6
-> > Branch condition evaluates to a garbage value.
-> 
-> Specifically this is clang's static analysis; not the compiler itself.
-> 
-> >
-> > err is uninitialized and will be judged when it enters the
-> > loop first time and the condition "!ext4_sb_block_valid()"
-> > is true. Although this can't make problems now, it's better
-> > to correct it.
-> >
-> > Signed-off-by: Su Hui <suhui@nfschina.com>
-> 
-> Hi Su,
-> Thanks for the patch!  I see what the warning is getting at;
-> 
-> If `len <= 0` then `err` is never initialized, then is used at line
-> 4178 (that is UB).
-> 
-> Would you mind sending a v2 with the commit message updated to reflect
-> the above points?  I'd be happy to sign-off on that.
+Hello Petr Machata,
 
-The commit message talks about !ext4_sb_block_valid() on the first
-iteration through the loop and not that len <= 0.
+The patch ec4643ca3d98: "mlxsw: spectrum_switchdev: Replay switchdev
+objects on port join" from Jul 19, 2023 (linux-next), leads to the
+following Smatch static checker warning:
 
-But either way, brelse(NULL) is a no-op.
+	drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c:2679 mlxsw_sp_bridge_8021d_port_join()
+	error: we previously assumed 'mlxsw_sp_port_vlan->fid' could be null (see line 2664)
+
+drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
+    2642 static int
+    2643 mlxsw_sp_bridge_8021d_port_join(struct mlxsw_sp_bridge_device *bridge_device,
+    2644                                 struct mlxsw_sp_bridge_port *bridge_port,
+    2645                                 struct mlxsw_sp_port *mlxsw_sp_port,
+    2646                                 struct netlink_ext_ack *extack)
+    2647 {
+    2648         struct mlxsw_sp_port_vlan *mlxsw_sp_port_vlan;
+    2649         struct net_device *dev = bridge_port->dev;
+    2650         u16 vid;
+    2651         int err;
+    2652 
+    2653         vid = is_vlan_dev(dev) ? vlan_dev_vlan_id(dev) : MLXSW_SP_DEFAULT_VID;
+    2654         mlxsw_sp_port_vlan = mlxsw_sp_port_vlan_find_by_vid(mlxsw_sp_port, vid);
+    2655         if (WARN_ON(!mlxsw_sp_port_vlan))
+    2656                 return -EINVAL;
+    2657 
+    2658         if (mlxsw_sp_port_is_br_member(mlxsw_sp_port, bridge_device->dev)) {
+    2659                 NL_SET_ERR_MSG_MOD(extack, "Can not bridge VLAN uppers of the same port");
+    2660                 return -EINVAL;
+    2661         }
+    2662 
+    2663         /* Port is no longer usable as a router interface */
+    2664         if (mlxsw_sp_port_vlan->fid)
+
+This has a check for NULL.
+
+    2665                 mlxsw_sp_port_vlan_router_leave(mlxsw_sp_port_vlan);
+    2666 
+    2667         err = mlxsw_sp_port_vlan_bridge_join(mlxsw_sp_port_vlan, bridge_port,
+    2668                                              extack);
+
+Most of the time this would set ->fid but if mlxsw_sp_port_vlan->bridge_port
+then it wouldn't
+
+    2669         if (err)
+    2670                 return err;
+    2671 
+    2672         err = mlxsw_sp_bridge_port_replay(bridge_port, mlxsw_sp_port, extack);
+    2673         if (err)
+    2674                 goto err_replay;
+    2675 
+    2676         return 0;
+    2677 
+    2678 err_replay:
+--> 2679         mlxsw_sp_port_vlan_bridge_leave(mlxsw_sp_port_vlan);
+
+->fid dereferenced without being checked.
+
+    2680         return err;
+    2681 }
 
 regards,
 dan carpenter
-

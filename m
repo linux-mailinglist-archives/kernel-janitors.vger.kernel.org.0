@@ -2,111 +2,187 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08ADF774939
-	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Aug 2023 21:50:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CF98774948
+	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Aug 2023 21:51:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231293AbjHHTua (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 8 Aug 2023 15:50:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40380 "EHLO
+        id S234016AbjHHTvC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 8 Aug 2023 15:51:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233740AbjHHTuP (ORCPT
+        with ESMTP id S233205AbjHHTuo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 8 Aug 2023 15:50:15 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F36A2A2BE
-        for <kernel-janitors@vger.kernel.org>; Tue,  8 Aug 2023 09:56:38 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-3fe5c0e587eso21724785e9.0
-        for <kernel-janitors@vger.kernel.org>; Tue, 08 Aug 2023 09:56:38 -0700 (PDT)
+        Tue, 8 Aug 2023 15:50:44 -0400
+Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8538B53F18
+        for <kernel-janitors@vger.kernel.org>; Tue,  8 Aug 2023 09:56:42 -0700 (PDT)
+Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-1bb89ac2013so4385962fac.1
+        for <kernel-janitors@vger.kernel.org>; Tue, 08 Aug 2023 09:56:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691513797; x=1692118597;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hRMNIql4h6i50DoW9rO+SQKBVq3u6OMyHVjggvsaHiY=;
-        b=XJ2thEz0926gfZVa9/5N5jbPRnjXXRkiBNzaRqSvNHfw5jX8HssZTwycUzJ+lApX0C
-         Btnibd0oBAZXuoKhIMu9U83aOhzR6NzfeoSCdGwSnyUTC2VNf09i78HeFAo8YTuhoAbB
-         AvXn5HTtMddwnXllJ2R+dmsjRAioBttSxC3LJB8rPEasZJdkd26ggAsSWZEm1MfPEDLW
-         Hr/fibkl9SP0FzUWJy4gxD+6DQ/krqFPPUjbb4Yav+knfF57mrXLEqAy6JsQo5dDtx2j
-         ZDnycyhvfJaagKPDRYV88KfUD/yGDW0KAvE/UTFoWmIEdgZ3D+jKuMhnEL6nbLPoJz8T
-         VZyA==
+        d=linaro.org; s=google; t=1691513801; x=1692118601;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1aaFBO37dpPCuMBG1yWUb85dTTA1EjCFwxXfWyjK7Qw=;
+        b=iEyzQCP7QYNiBQ+A9aUqolMX3ZKaVJuSm539CAkcBAqbKTzNxhZRRfNMX+qo0DsIgO
+         C99I6CsLl3Zo/3O3n463/Q15dp+Os0FuXrPTP4jCfb57jx7wA811BUxw7gSVTrobSUmp
+         6diqeEc9mVh1U7wQUpxNlAQxmB+1p7c8snrIuo84XCQrVAbRk8lNlaUB1JFIcWtbSYQz
+         ZTsT7ZGm+nDiAs/gohG/x4xf7ffYOp7QmgldvAkdcum5/kTBHF3jHxXtysZb5qQYX/16
+         NahEIwfnfx4YXKqY1x2AglVPA9VElCheNykqEoJ6OlFy6eHRh+3NkHQQlJv9efIXlji/
+         GL3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691513797; x=1692118597;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hRMNIql4h6i50DoW9rO+SQKBVq3u6OMyHVjggvsaHiY=;
-        b=VzrmAkP9aDCowOgoNFFnkxi5OxQ0WENUSBG+RxAlXKICXMl8MUssDLz1R+7/u06gQm
-         yBH+GJTMfVgX2U196BaWGRg5C2kGJ2ctN3BRtt1bBCFUy6g+So6w1VHant0Pz0ZblBgT
-         VTR1lQPQuez68fPOo5ohnl7vISyYdKIiBnMaJg0B+z9NGaw9Zq6qwRVbE5QTLrTw7UF9
-         7VSpP64s7Xy6Lr9cnTaX+EU1CKA+XMhSrzSJssF5ENCgIubFM0VXGdPrUEydPOzgbgoW
-         kT5SgF/JR4rYQQcJgjT9Bf1CDh2gwTH+xlvpBj6L9FPYNZjIJQi7uRPDbnNsb9CxwM1A
-         HnlA==
-X-Gm-Message-State: AOJu0Yx23UTq2pk7uDdYVTacL7E6Cw7g2U2/bdZgOWMry4Bbnw9HErxa
-        w9EzV6NsCL7jUU8t3W9MONJQ+K/xbXF78N4U8UA=
-X-Google-Smtp-Source: AGHT+IG+xa/G0KUFOC99116SrrI42b1Qeto1ZUGnZKL3zxEPkqVqherNWGnAP7AYkTuw2scsVZ/Dtg==
-X-Received: by 2002:a1c:f216:0:b0:3fe:1fdb:cf5 with SMTP id s22-20020a1cf216000000b003fe1fdb0cf5mr9645023wmc.1.1691483293856;
-        Tue, 08 Aug 2023 01:28:13 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id h20-20020a05600c261400b003fe2ebf479fsm12982952wma.36.2023.08.08.01.28.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Aug 2023 01:28:13 -0700 (PDT)
-Date:   Tue, 8 Aug 2023 11:28:09 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>
-Cc:     "Vaibhaav Ram T.L" <vaibhaavram.tl@microchip.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Tharun Kumar P <tharunkumar.pasumarthi@microchip.com>,
-        linux-gpio@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] misc: microchip: pci1xxxx: Fix some NULL vs IS_ERR() bugs
-Message-ID: <043df330-222b-4c2c-ae19-ed2f731bfe0b@moroto.mountain>
+        d=1e100.net; s=20221208; t=1691513801; x=1692118601;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1aaFBO37dpPCuMBG1yWUb85dTTA1EjCFwxXfWyjK7Qw=;
+        b=I7D1yMmjIS3bnmdDmsHdcKjhGvz+hBbZPWJCrUV3jH9ebDUcCoYMJDWUOdK2bxo7uc
+         zQFxNhRoe6Rn6oWxRuZwRUZ8q3xTaloX5jy+GHUp0VLDrgfhPxWavapG6NsfjqHWaumJ
+         vN46FAxa4pzph47DesuaXssb9UgZ/+9c5qHbnoyXhy90w40go6fgovS/F51naLL8lhWz
+         8rhDrjmLtxmR8Gk2049wPiEOlsf+qZ/n1L/2Fu0nhXolndC8IDT+vqUqWXDhwRabQZ0O
+         65wIeb39txE9wMXkgUoER1bIdKOFHBm8TEvZQPVQRPMPoOdIb6GvoFF9rtsZhFUrO8So
+         Jq9w==
+X-Gm-Message-State: AOJu0YyYaXem68WYsSQA+Vdx+al6XPhMDa1wum0iFcAxZ2kxD0m/mY9v
+        sqwzfs+0i7QjsyjV+whRoakTJCJorV1MphiDsGYnPkCpSNGGrOtZLhE=
+X-Google-Smtp-Source: AGHT+IFJj9e2EUCkSwSgqtF2y3ZesBe+F0eiTcoGfYJG3GoyMXdp+CIP9EhdafPQbyNW+qk99mZLa2MicI2Cz2nNz/g=
+X-Received: by 2002:a25:4ec6:0:b0:d35:9a48:51b0 with SMTP id
+ c189-20020a254ec6000000b00d359a4851b0mr7568564ybb.7.1691485293733; Tue, 08
+ Aug 2023 02:01:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230801052321.1328225-1-harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <20230801052321.1328225-1-harshit.m.mogalapalli@oracle.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 8 Aug 2023 11:00:57 +0200
+Message-ID: <CAPDyKFr9inG4dgAUYhrQOEND1Fu1CDajEPoO3W=dBRRXB=kceQ@mail.gmail.com>
+Subject: Re: [PATCH next] mmc: sunplus: Fix error handling in spmmc_drv_probe()
+To:     Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc:     Tony Huang <tonyhuang.sunplus@gmail.com>,
+        Li-hao Kuo <lhjeff911@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dan.carpenter@linaro.org,
+        kernel-janitors@vger.kernel.org, error27@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The devm_nvmem_register() function returns error pointers.  It never
-returns NULL.  Update the checks accordingly.
+On Tue, 1 Aug 2023 at 07:23, Harshit Mogalapalli
+<harshit.m.mogalapalli@oracle.com> wrote:
+>
+> There are few issues in spmmc_drv_probe():
+>
+> 1. When mmc allocation fails, goto is a no-op.
+> 2. When mmc allocation succeeds, the error paths should use goto instead
+>    of direct return.
 
-Fixes: 0969001569e4 ("misc: microchip: pci1xxxx: Add support to read and write into PCI1XXXX OTP via NVMEM sysfs")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Rather than adding a bunch of new "gotos", how about converting into
+using devm_mmc_alloc_host()?
 
-diff --git a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
-index 3d3d1578119a..16695cb5e69c 100644
---- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
-+++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
-@@ -379,8 +379,8 @@ static int pci1xxxx_otp_eeprom_probe(struct auxiliary_device *aux_dev,
- 
- 		priv->nvmem_eeprom = devm_nvmem_register(&aux_dev->dev,
- 							 &priv->nvmem_config_eeprom);
--		if (!priv->nvmem_eeprom)
--			return -ENOMEM;
-+		if (IS_ERR(priv->nvmem_eeprom))
-+			return PTR_ERR(priv->nvmem_eeprom);
- 	}
- 
- 	release_sys_lock(priv);
-@@ -398,8 +398,8 @@ static int pci1xxxx_otp_eeprom_probe(struct auxiliary_device *aux_dev,
- 
- 	priv->nvmem_otp = devm_nvmem_register(&aux_dev->dev,
- 					      &priv->nvmem_config_otp);
--	if (!priv->nvmem_otp)
--		return -ENOMEM;
-+	if (IS_ERR(priv->nvmem_otp))
-+		return PTR_ERR(priv->nvmem_otp);
- 
- 	return ret;
- }
--- 
-2.39.2
+> 3. platform_get_irq() doesn't return zero, so '<' is sufficient.
+>
+> Fix the above issues by adding goto instead of direct return, also
+> remove NULL check in 'probe_free_host' as we changed the goto to return
+> when mmc_alloc_host() fails.
+>
+> Fixes: 4e268fed8b18 ("mmc: Add mmc driver for Sunplus SP7021")
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/all/a3829ed3-d827-4b9d-827e-9cc24a3ec3bc@moroto.mountain/
+> Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
+Other than the above, this looks good to me!
+
+Kind regards
+Uffe
+
+> ---
+> This is based on static analysis with Smatch. Only compile tested.
+> ---
+>  drivers/mmc/host/sunplus-mmc.c | 41 ++++++++++++++++++++--------------
+>  1 file changed, 24 insertions(+), 17 deletions(-)
+>
+> diff --git a/drivers/mmc/host/sunplus-mmc.c b/drivers/mmc/host/sunplus-mmc.c
+> index a55a87f64d2a..21cd49be08c0 100644
+> --- a/drivers/mmc/host/sunplus-mmc.c
+> +++ b/drivers/mmc/host/sunplus-mmc.c
+> @@ -864,10 +864,8 @@ static int spmmc_drv_probe(struct platform_device *pdev)
+>         int ret = 0;
+>
+>         mmc = mmc_alloc_host(sizeof(*host), &pdev->dev);
+> -       if (!mmc) {
+> -               ret = -ENOMEM;
+> -               goto probe_free_host;
+> -       }
+> +       if (!mmc)
+> +               return -ENOMEM;
+>
+>         host = mmc_priv(mmc);
+>         host->mmc = mmc;
+> @@ -875,30 +873,40 @@ static int spmmc_drv_probe(struct platform_device *pdev)
+>         host->dma_int_threshold = 1024;
+>
+>         host->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+> -       if (IS_ERR(host->base))
+> -               return PTR_ERR(host->base);
+> +       if (IS_ERR(host->base)) {
+> +               ret = PTR_ERR(host->base);
+> +               goto probe_free_host;
+> +       }
+>
+>         host->clk = devm_clk_get(&pdev->dev, NULL);
+> -       if (IS_ERR(host->clk))
+> -               return dev_err_probe(&pdev->dev, PTR_ERR(host->clk), "clk get fail\n");
+> +       if (IS_ERR(host->clk)) {
+> +               ret = dev_err_probe(&pdev->dev, PTR_ERR(host->clk), "clk get fail\n");
+> +               goto probe_free_host;
+> +       }
+>
+>         host->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+> -       if (IS_ERR(host->rstc))
+> -               return dev_err_probe(&pdev->dev, PTR_ERR(host->rstc), "rst get fail\n");
+> +       if (IS_ERR(host->rstc)) {
+> +               ret = dev_err_probe(&pdev->dev, PTR_ERR(host->rstc), "rst get fail\n");
+> +               goto probe_free_host;
+> +       }
+>
+>         host->irq = platform_get_irq(pdev, 0);
+> -       if (host->irq <= 0)
+> -               return host->irq;
+> +       if (host->irq < 0) {
+> +               ret = host->irq;
+> +               goto probe_free_host;
+> +       }
+>
+>         ret = devm_request_threaded_irq(&pdev->dev, host->irq,
+>                                         spmmc_irq, spmmc_func_finish_req, IRQF_SHARED,
+>                         NULL, host);
+>         if (ret)
+> -               return ret;
+> +               goto probe_free_host;
+>
+>         ret = clk_prepare_enable(host->clk);
+> -       if (ret)
+> -               return dev_err_probe(&pdev->dev, ret, "failed to enable clk\n");
+> +       if (ret) {
+> +               ret = dev_err_probe(&pdev->dev, ret, "failed to enable clk\n");
+> +               goto probe_free_host;
+> +       }
+>
+>         ret = mmc_of_parse(mmc);
+>         if (ret)
+> @@ -940,8 +948,7 @@ static int spmmc_drv_probe(struct platform_device *pdev)
+>         clk_disable_unprepare(host->clk);
+>
+>  probe_free_host:
+> -       if (mmc)
+> -               mmc_free_host(mmc);
+> +       mmc_free_host(mmc);
+>
+>         return ret;
+>  }
+> --
+> 2.39.3
+>

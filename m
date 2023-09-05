@@ -2,49 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64A8B7925B7
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Sep 2023 18:24:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3F7D792735
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Sep 2023 18:35:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243150AbjIEQUN convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Sep 2023 12:20:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43954 "EHLO
+        id S236815AbjIEQTn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Sep 2023 12:19:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354127AbjIEJqQ (ORCPT
+        with ESMTP id S1354241AbjIEKS7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Sep 2023 05:46:16 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6A4871AD;
-        Tue,  5 Sep 2023 02:46:12 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 160B211FB;
-        Tue,  5 Sep 2023 02:46:50 -0700 (PDT)
-Received: from donnerap.manchester.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A8FD53F793;
-        Tue,  5 Sep 2023 02:46:10 -0700 (PDT)
-Date:   Tue, 5 Sep 2023 10:46:08 +0100
-From:   Andre Przywara <andre.przywara@arm.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-phy@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH] phy: sun4i-usb: Fix a W=1 compilation failure
-Message-ID: <20230905104608.74490e60@donnerap.manchester.arm.com>
-In-Reply-To: <858ca657-3845-f65e-b9d8-9d7700e4a069@wanadoo.fr>
-References: <0bc81612171baaa6d5dff58c8e009debc03e1ba8.1693735840.git.christophe.jaillet@wanadoo.fr>
-        <20230904005855.658819b3@slackpad.lan>
-        <858ca657-3845-f65e-b9d8-9d7700e4a069@wanadoo.fr>
-Organization: ARM
-X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.32; aarch64-unknown-linux-gnu)
+        Tue, 5 Sep 2023 06:18:59 -0400
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9499A18D;
+        Tue,  5 Sep 2023 03:18:55 -0700 (PDT)
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3853OFjQ023612;
+        Tue, 5 Sep 2023 10:18:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2023-03-30;
+ bh=3PSbr7PxvuHc44jNSRQy1RWbVgyf5JrcACIDlRAzgvQ=;
+ b=YlzVOhp+er44xs16fv6vOo9l+KxUjuD6QvLFp63lrRrW+O0N4YIyQey3ir0yDzRPp0uR
+ VHvKsRx0itupQzHmJZb1aEBQw0BmU9Dar6e8dy+ZdhKUg5zEMMer0ZeMLXffcCIOYCbI
+ jcWUG0IPukLbpyrP6NQ/vDopX5Q+zvDnYwL0vaXC+ELj4StJ4ycPInUFQdV+en5oD+Dl
+ eaHrKJWKJKu/p1GiRFCPLVGzo3PP4gCmMWzLkKkS7vO5RlLDpg+0uYRpS4wFb2ELsQdl
+ Tqf3CUYCJwbPbiDakGojfxH99UKDjmGccdFiFGgE2Gc1w64LJrWX/N9mSA2XUhuxLSqz /A== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3suufdmwxr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 05 Sep 2023 10:18:52 +0000
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 3859of7B029094;
+        Tue, 5 Sep 2023 10:18:51 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3suug4j8by-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 05 Sep 2023 10:18:51 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 385AIlOZ032271;
+        Tue, 5 Sep 2023 10:18:50 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3suug4j85n-3;
+        Tue, 05 Sep 2023 10:18:50 +0000
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     Nilesh Javali <njavali@marvell.com>,
+        GR-QLogic-Storage-Upstream@marvell.com,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        linux-scsi@vger.kernel.org, Colin Ian King <colin.i.king@gmail.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] scsi: qla2xxx: Fix spelling mistake "tranport" -> "transport"
+Date:   Tue,  5 Sep 2023 06:18:26 -0400
+Message-Id: <169390541186.1533355.10096498850574984132.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230828213101.758609-1-colin.i.king@gmail.com>
+References: <20230828213101.758609-1-colin.i.king@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-05_08,2023-08-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 suspectscore=0
+ bulkscore=0 mlxlogscore=917 malwarescore=0 phishscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309050092
+X-Proofpoint-ORIG-GUID: K-y-bxADK3NXz5VkW8Gydb3NsyLpgRx8
+X-Proofpoint-GUID: K-y-bxADK3NXz5VkW8Gydb3NsyLpgRx8
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,83 +79,16 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 4 Sep 2023 19:57:33 +0200
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+On Mon, 28 Aug 2023 22:31:01 +0100, Colin Ian King wrote:
 
-Hi,
-
-> Le 04/09/2023 à 01:58, Andre Przywara a écrit :
-> > On Sun,  3 Sep 2023 12:11:06 +0200
-> > Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
-> >   
-> >> With gcc 12.3.0, when this file is built, we get errors such as:
-> >>
-> >> drivers/phy/allwinner/phy-sun4i-usb.c: In function ‘sun4i_usb_phy_probe’:
-> >> drivers/phy/allwinner/phy-sun4i-usb.c:790:52: error: ‘_vbus’ directive output may be truncated writing 5 bytes into a region of size between 2 and 12 [-Werror=format-truncation=]
-> >>    790 |                 snprintf(name, sizeof(name), "usb%d_vbus", i);
-> >>        |                                                    ^~~~~
-> >> drivers/phy/allwinner/phy-sun4i-usb.c:790:17: note: ‘snprintf’ output between 10 and 20 bytes into a destination of size 16
-> >>    790 |                 snprintf(name, sizeof(name), "usb%d_vbus", i);
-> >>        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >>
-> >> Because of the possible value of 'i', this can't be an issue in real world  
-> > 
-> > Would using "u8 i;" help? After all currently there are only 4 PHYs
-> > max, and in general this isn't expected to be more than a "handful", so
-> > 8 bits should be plenty. An unsigned is better anyway.
-> > It leaves a bit of a bitter taste, though, as we shouldn't do this kind
-> > type tweaking, especially not to work around the compiler trying to be
-> > clever, but then not seeing the whole picture (that "i" is bounded by
-> > compile time constants not exceeding "4").  
+> There is a spelling mistake in a ql_dbg message. Fix it.
 > 
-> data->cfg->num_phys is also an int, and having 'i' as an char is really 
-> unusual.
-
-So 'i' is just used as the phy index is this loop, nothing else in the
-function uses that. So we could just rename it to "idx" or even "phy_idx",
-then the u8 might look less odd?
-
-> So, if changing the size of name (only to waste some stack in order to 
-> silence a compiler warning) is not acceptable, I think that the best is 
-> to leave things as-is.
-
-But that's not really an option, is it? Since we normally don't tolerate
-warnings?
-
-And I am not against increasing the size, that's probably indeed the
-simplest solution, and given that it's indeed on the stack shouldn't
-affect much else. I just wanted to suggest an alternative, since the
-increased buffer size is not necessary.
-
-Cheers,
-Andre
-
-> > 
-> > Cheers,
-> > Andre
-> >   
-> >> application, but in order to have "make W=1" work correctly, give more
-> >> space for 'name'.
-> >>
-> >> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> >> ---
-> >>   drivers/phy/allwinner/phy-sun4i-usb.c | 2 +-
-> >>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/phy/allwinner/phy-sun4i-usb.c b/drivers/phy/allwinner/phy-sun4i-usb.c
-> >> index ec551464dd4f..e53a9a9317bc 100644
-> >> --- a/drivers/phy/allwinner/phy-sun4i-usb.c
-> >> +++ b/drivers/phy/allwinner/phy-sun4i-usb.c
-> >> @@ -782,7 +782,7 @@ static int sun4i_usb_phy_probe(struct platform_device *pdev)
-> >>   
-> >>   	for (i = 0; i < data->cfg->num_phys; i++) {
-> >>   		struct sun4i_usb_phy *phy = data->phys + i;
-> >> -		char name[16];
-> >> +		char name[32];
-> >>   
-> >>   		if (data->cfg->missing_phys & BIT(i))
-> >>   			continue;  
-> > 
-> >   
 > 
 
+Applied to 6.6/scsi-queue, thanks!
+
+[1/1] scsi: qla2xxx: Fix spelling mistake "tranport" -> "transport"
+      https://git.kernel.org/mkp/scsi/c/7a5dee9b72e9
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

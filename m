@@ -2,108 +2,126 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A685792778
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Sep 2023 18:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4138D792850
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Sep 2023 18:43:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245686AbjIEQUn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Sep 2023 12:20:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59464 "EHLO
+        id S241940AbjIEQU2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Sep 2023 12:20:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351857AbjIEF17 (ORCPT
+        with ESMTP id S1352171AbjIEFjv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Sep 2023 01:27:59 -0400
-Received: from smtp.smtpout.orange.fr (smtp-21.smtpout.orange.fr [80.12.242.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B083CE8
-        for <kernel-janitors@vger.kernel.org>; Mon,  4 Sep 2023 22:27:54 -0700 (PDT)
-Received: from [192.168.1.18] ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id dObLqMhXKyoREdObLqvYW2; Tue, 05 Sep 2023 07:27:53 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-        s=t20230301; t=1693891673;
-        bh=fc7UsU95zQsQlPFIsQq5CGy7XFtuPx0VRlseRiLjyWk=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=ZTcnkZLbqoSNSU+t4WKF6rZhBLRXayHen8UVP/HiXefCK2r6YV2YaoOmDVbiwhmi/
-         pL6EerMqzvKPsvFYnyE3OEq9EyLixV+EVphMNpQOsnac3otc+xHZNGnbFfxUNhah+3
-         J93Lq8s3m1aUPdyxBe/9y+YKerdABdST93g9BUSI84g4yuPnlBTOYPcCkZRemh8XTA
-         D23SnaLJZwrNquo6rv9ksE/7Lq3vpEiWtOSCr3hgl70d7MsqmOo9+Z+RbVXdEApWNO
-         ip5dyaxPioGlQzSZVOEZgbA+x1Es2Xpul8Ht3Ym5mcN/Yi6qxYpQbVzz+z7PYqaMuU
-         UZECZHO8vvAjg==
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 05 Sep 2023 07:27:53 +0200
-X-ME-IP: 86.243.2.178
-Message-ID: <00bdcfec-6cc1-e521-ceaa-d16d6341ca16@wanadoo.fr>
-Date:   Tue, 5 Sep 2023 07:27:47 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] crypto: hisilicon/hpre - Fix a erroneous check after
- snprintf()
-To:     Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     Longfang Liu <liulongfang@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Zaibo Xu <xuzaibo@huawei.com>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-crypto@vger.kernel.org
-References: <73534cb1713f58228d54ea53a8a137f4ef939bad.1693858632.git.christophe.jaillet@wanadoo.fr>
- <ZPaSCOX1F9b36rxV@gondor.apana.org.au>
-Content-Language: fr, en-US
-From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <ZPaSCOX1F9b36rxV@gondor.apana.org.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        Tue, 5 Sep 2023 01:39:51 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84273CCB;
+        Mon,  4 Sep 2023 22:39:43 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 439861F74D;
+        Tue,  5 Sep 2023 05:39:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1693892382; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8Dxo+OTaBq3eaJaf69uSWntTxeRXuDZqHqC6jWUmxEs=;
+        b=GJ5gLQGo/c4xD63vbFDV9o2v5C9POygISqIBxNv6pobO6k+mq1jQqbRenMs1h1kOsnA08q
+        PwIFdACl4qo1XJZNVfdodzmGCZ4rCwI3zlYs0d55/2uK+k44sQWjdRJxDwP2aVZc/VCHQQ
+        Hg+8l3cSvhBMfKGDLBygyd876yDoSNQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1693892382;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8Dxo+OTaBq3eaJaf69uSWntTxeRXuDZqHqC6jWUmxEs=;
+        b=505Djafo3RJfsC+Yl1bcf8IS+MmCYBcc6dVF+fvsHqfm9b8KMqPO/GXe40XEY3ALkw+Rcu
+        I/6L5oi/tV+gXkDw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 197D0134B2;
+        Tue,  5 Sep 2023 05:39:42 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 2s5uBR6/9mRvNQAAMHmgww
+        (envelope-from <tiwai@suse.de>); Tue, 05 Sep 2023 05:39:42 +0000
+Date:   Tue, 05 Sep 2023 07:39:41 +0200
+Message-ID: <87edjdi3fm.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH] ALSA: usb-audio: Fix a potential memory leak in scarlett2_init_notify()
+In-Reply-To: <87ledmjak0.wl-tiwai@suse.de>
+References: <fc275ed315b9157952dcf2744ee7bdb78defdb5f.1693746347.git.christophe.jaillet@wanadoo.fr>
+        <871qffmj2d.wl-tiwai@suse.de>
+        <8cde2320-517f-3a38-8c3f-f807791c6c52@wanadoo.fr>
+        <87sf7vkybk.wl-tiwai@suse.de>
+        <a0387d53-a08f-5e0c-c3a5-681ab5545150@wanadoo.fr>
+        <87ledmjak0.wl-tiwai@suse.de>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Mon, 04 Sep 2023 16:08:15 +0200,
+Takashi Iwai wrote:
+> 
+> On Sun, 03 Sep 2023 21:42:55 +0200,
+> Christophe JAILLET wrote:
+> > 
+> > Le 03/09/2023 à 18:37, Takashi Iwai a écrit :
+> > > On Sun, 03 Sep 2023 17:04:47 +0200,
+> > ...
+> > For the start_input_streams() caller, this is fine, because the
+> > corresponding memory is kzalloc()'ed in start_input_streams() at some
+> > point, but I've not been able to check for snd_usb_midi_v2_open().
 
-Le 05/09/2023 Ã  04:27, Herbert Xu a Ã©critÂ :
-> On Mon, Sep 04, 2023 at 10:17:29PM +0200, Christophe JAILLET wrote:
->> This error handling looks really strange.
->> Check if the string has been truncated instead.
->>
->> Fixes: 02ab994635eb ("crypto: hisilicon - Fixed some tiny bugs of HPRE")
->> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->> ---
->>   drivers/crypto/hisilicon/hpre/hpre_main.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/crypto/hisilicon/hpre/hpre_main.c b/drivers/crypto/hisilicon/hpre/hpre_main.c
->> index 39297ce70f44..db44d889438a 100644
->> --- a/drivers/crypto/hisilicon/hpre/hpre_main.c
->> +++ b/drivers/crypto/hisilicon/hpre/hpre_main.c
->> @@ -1033,7 +1033,7 @@ static int hpre_cluster_debugfs_init(struct hisi_qm *qm)
->>   
->>   	for (i = 0; i < clusters_num; i++) {
->>   		ret = snprintf(buf, HPRE_DBGFS_VAL_MAX_LEN, "cluster%d", i);
->> -		if (ret < 0)
->> +		if (ret >= HPRE_DBGFS_VAL_MAX_LEN)
->>   			return -EINVAL;
->>   		tmp_d = debugfs_create_dir(buf, qm->debug.debug_root);
-> Who is going to free the allocated memory in case of error?
+Oh I overlooked that point.  Yes, it's a missing call, although the
+memory leaks as free_midi_urbs() is called also at the destructor,
+free_midi2_endpoint(), too.  But it's definitely better to call at the
+error path, too.  Will fix it up together and submit the proper fix
+patch.
 
-Not sure to understand.
 
-The memory is allocated with devm_kzalloc(), so it will be freed by the 
-framework.
+thanks,
 
-Some debugfs dir of file way be left around. Is it what your are talking 
-about?
+Takashi
 
->
-> The other snprintf in the same file also looks suspect.
 
-It looks correct to me.
 
-And HPRE_DBGFS_VAL_MAX_LEN being 20, it doesn't really matter. The 
-string can't be truncated with just a "%u\n".
-
-CJ
-
->
-> Thanks,
+> > 
+> > CJ
+> > 
+> > > 
+> > > --- a/sound/usb/midi2.c
+> > > +++ b/sound/usb/midi2.c
+> > > @@ -265,7 +265,7 @@ static void free_midi_urbs(struct snd_usb_midi2_endpoint *ep)
+> > >     	if (!ep)
+> > >   		return;
+> > > -	for (i = 0; i < ep->num_urbs; ++i) {
+> > > +	for (i = 0; i < NUM_URBS; ++i) {
+> > >   		ctx = &ep->urbs[i];
+> > >   		if (!ctx->urb)
+> > >   			break;
+> > > 
+> > > That was the intended behavior of free_midi_urbs().
+> > > 
+> > > 
+> > > Takashi
+> > > 
+> > 
+> 

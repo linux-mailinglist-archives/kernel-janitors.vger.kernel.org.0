@@ -2,93 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3F7D792735
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Sep 2023 18:35:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFC2E792692
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Sep 2023 18:28:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236815AbjIEQTn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Sep 2023 12:19:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35894 "EHLO
+        id S239556AbjIEQUI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Sep 2023 12:20:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354241AbjIEKS7 (ORCPT
+        with ESMTP id S1354259AbjIEKZx (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Sep 2023 06:18:59 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9499A18D;
-        Tue,  5 Sep 2023 03:18:55 -0700 (PDT)
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3853OFjQ023612;
-        Tue, 5 Sep 2023 10:18:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2023-03-30;
- bh=3PSbr7PxvuHc44jNSRQy1RWbVgyf5JrcACIDlRAzgvQ=;
- b=YlzVOhp+er44xs16fv6vOo9l+KxUjuD6QvLFp63lrRrW+O0N4YIyQey3ir0yDzRPp0uR
- VHvKsRx0itupQzHmJZb1aEBQw0BmU9Dar6e8dy+ZdhKUg5zEMMer0ZeMLXffcCIOYCbI
- jcWUG0IPukLbpyrP6NQ/vDopX5Q+zvDnYwL0vaXC+ELj4StJ4ycPInUFQdV+en5oD+Dl
- eaHrKJWKJKu/p1GiRFCPLVGzo3PP4gCmMWzLkKkS7vO5RlLDpg+0uYRpS4wFb2ELsQdl
- Tqf3CUYCJwbPbiDakGojfxH99UKDjmGccdFiFGgE2Gc1w64LJrWX/N9mSA2XUhuxLSqz /A== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3suufdmwxr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 05 Sep 2023 10:18:52 +0000
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 3859of7B029094;
-        Tue, 5 Sep 2023 10:18:51 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3suug4j8by-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 05 Sep 2023 10:18:51 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 385AIlOZ032271;
-        Tue, 5 Sep 2023 10:18:50 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3suug4j85n-3;
-        Tue, 05 Sep 2023 10:18:50 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Nilesh Javali <njavali@marvell.com>,
-        GR-QLogic-Storage-Upstream@marvell.com,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        linux-scsi@vger.kernel.org, Colin Ian King <colin.i.king@gmail.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] scsi: qla2xxx: Fix spelling mistake "tranport" -> "transport"
-Date:   Tue,  5 Sep 2023 06:18:26 -0400
-Message-Id: <169390541186.1533355.10096498850574984132.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230828213101.758609-1-colin.i.king@gmail.com>
-References: <20230828213101.758609-1-colin.i.king@gmail.com>
+        Tue, 5 Sep 2023 06:25:53 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D1B5DB;
+        Tue,  5 Sep 2023 03:25:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id BAB11B8113E;
+        Tue,  5 Sep 2023 10:25:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6876DC433C7;
+        Tue,  5 Sep 2023 10:25:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693909547;
+        bh=s5OcvhMGsauyHDIDghPQ23qUl8W6KKM1Q1jw2SF9yi4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MCmfXrexYhH4Ai/BXu//C7U3rOTpsCWaLsG2uJMmVDnnEHOp1gXStiwclOrtqdLCF
+         MncEUQuevfAWcC/UQV5gAuG3WKjdr9gaDPvbVnTVJae/dzpZCdgEXzRv3Cb74PEev5
+         +0AAn1NOM6DAmxh0fEreYMJ1dJ8/wZqN5KGGWfc1nsBNPN4G+61Ic8F9Mb5EQWiHca
+         hl4iq8ICMou/PeI5bUv9Er9LzY0Ek2BOGGSveOQJFtSxnin4jDb3dngoSq6d1+EPJx
+         N4tUUInzW1rehli5Atc4hYch3YUxSuyIuL672CLe1FgME3om0QlqSbN1FrGb9QTkzy
+         NbANuoCgERNpg==
+Date:   Tue, 5 Sep 2023 12:25:43 +0200
+From:   Andi Shyti <andi.shyti@kernel.org>
+To:     Dan Carpenter <dan.carpenter@linaro.org>
+Cc:     Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+        dmitry.baryshkov@linaro.org,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Liao Chang <liaochang1@huawei.com>,
+        Todor Tomov <todor.too@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Vinod Koul <vkoul@kernel.org>, Wolfram Sang <wsa@kernel.org>,
+        linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        error27@gmail.com, vegard.nossum@oracle.com
+Subject: Re: [PATCH next] i2c: qcom-cci: Fix error checking in cci_probe()
+Message-ID: <20230905102543.54weuecvkcujusip@zenone.zhora.eu>
+References: <20230823194202.2280957-1-harshit.m.mogalapalli@oracle.com>
+ <47e3acac-7d4f-43bd-bd55-5ae9ab993f2d@kadam.mountain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-05_08,2023-08-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 suspectscore=0
- bulkscore=0 mlxlogscore=917 malwarescore=0 phishscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2309050092
-X-Proofpoint-ORIG-GUID: K-y-bxADK3NXz5VkW8Gydb3NsyLpgRx8
-X-Proofpoint-GUID: K-y-bxADK3NXz5VkW8Gydb3NsyLpgRx8
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <47e3acac-7d4f-43bd-bd55-5ae9ab993f2d@kadam.mountain>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 28 Aug 2023 22:31:01 +0100, Colin Ian King wrote:
+Hi Dan,
 
-> There is a spelling mistake in a ql_dbg message. Fix it.
+On Tue, Sep 05, 2023 at 12:10:31PM +0300, Dan Carpenter wrote:
+> On Wed, Aug 23, 2023 at 12:42:02PM -0700, Harshit Mogalapalli wrote:
+> > devm_clk_bulk_get_all() can return zero when no clocks are obtained.
+> > Passing zero to dev_err_probe() is a success which is incorrect.
+> > 
+> > Fixes: 605efbf43813 ("i2c: qcom-cci: Use dev_err_probe in probe function")
+> > Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+> > ---
+> > Only compile tested, found by static analysis with smatch.
+> > 
+> > https://lore.kernel.org/all/CAA8EJprTOjbOy7N5+8NiJaNNhK+_btdUUFcpHKPkMuCZj5umMA@mail.gmail.com/
+> > ^^ I reported initially here, Dmitry suggested we need to fix it in a
+> > different patch.
+> > 
+> > the Fixes commit used above pointed this bug, but the real fixes tag is this:
+> > Fixes: e517526195de ("i2c: Add Qualcomm CCI I2C driver")
 > 
-> 
+> This has already been applied but, for future reference, you should have
+> gone with the real fixes tag instead of where the static checker started
+> complaining.
 
-Applied to 6.6/scsi-queue, thanks!
+yeah... sorry... I normally check all the "Fixes:" tags, but
+sometimes, out of sheer laziness, I trust the commit.
 
-[1/1] scsi: qla2xxx: Fix spelling mistake "tranport" -> "transport"
-      https://git.kernel.org/mkp/scsi/c/7a5dee9b72e9
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Andi

@@ -2,99 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C94DF7925FE
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Sep 2023 18:25:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A685792778
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Sep 2023 18:36:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242069AbjIEQUW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Sep 2023 12:20:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38002 "EHLO
+        id S245686AbjIEQUn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Sep 2023 12:20:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350519AbjIEFEK (ORCPT
+        with ESMTP id S1351857AbjIEF17 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Sep 2023 01:04:10 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09A3CCC5;
-        Mon,  4 Sep 2023 22:04:06 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 15C2ACE1020;
-        Tue,  5 Sep 2023 05:04:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3746C433C7;
-        Tue,  5 Sep 2023 05:04:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693890242;
-        bh=rNZ6gSz952FnYbdOwNayc8WW+NGygaXz472YSAOluYk=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=b0GC0EYlTsTH7sHYMimcCh/EOaOHV4uGQ7vqQf/HuRw9Qulq+4xw75y80YOFRnkv9
-         b4LwteX6i6uFW4Fi/ztQKY0pa4fXglePRsstW5agm7HVr4h21wC+8G73P3d1omz09n
-         GGU1bpU3WQG8xLoTtxpVnQnHg6fx0QC3kZW9vs1ru7oUifErFtuAMkxJEKXZ7d4ht6
-         sryxO7lp4qym/OQ1QPl3o9iWxAJOcuRmQROuIxNSbTxRonsykbGilksIMBUfibE0jK
-         Q7wJoHWgM41x5ogHEVlUfkVJZSQroVIQvuP5b5/gvHNG2/fsm7hFKRlU03NC6GpKOD
-         +ekqiIr73cSXQ==
-Message-ID: <b5dcc85d-f709-a3a3-e7ad-9c71f278842a@kernel.org>
-Date:   Tue, 5 Sep 2023 14:04:00 +0900
+        Tue, 5 Sep 2023 01:27:59 -0400
+Received: from smtp.smtpout.orange.fr (smtp-21.smtpout.orange.fr [80.12.242.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B083CE8
+        for <kernel-janitors@vger.kernel.org>; Mon,  4 Sep 2023 22:27:54 -0700 (PDT)
+Received: from [192.168.1.18] ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id dObLqMhXKyoREdObLqvYW2; Tue, 05 Sep 2023 07:27:53 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1693891673;
+        bh=fc7UsU95zQsQlPFIsQq5CGy7XFtuPx0VRlseRiLjyWk=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=ZTcnkZLbqoSNSU+t4WKF6rZhBLRXayHen8UVP/HiXefCK2r6YV2YaoOmDVbiwhmi/
+         pL6EerMqzvKPsvFYnyE3OEq9EyLixV+EVphMNpQOsnac3otc+xHZNGnbFfxUNhah+3
+         J93Lq8s3m1aUPdyxBe/9y+YKerdABdST93g9BUSI84g4yuPnlBTOYPcCkZRemh8XTA
+         D23SnaLJZwrNquo6rv9ksE/7Lq3vpEiWtOSCr3hgl70d7MsqmOo9+Z+RbVXdEApWNO
+         ip5dyaxPioGlQzSZVOEZgbA+x1Es2Xpul8Ht3Ym5mcN/Yi6qxYpQbVzz+z7PYqaMuU
+         UZECZHO8vvAjg==
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 05 Sep 2023 07:27:53 +0200
+X-ME-IP: 86.243.2.178
+Message-ID: <00bdcfec-6cc1-e521-ceaa-d16d6341ca16@wanadoo.fr>
+Date:   Tue, 5 Sep 2023 07:27:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH] ata: sata_mv: Fix incorrect string length computation in
- mv_dump_mem()
-Content-Language: en-US
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-ide@vger.kernel.org
-References: <1a35e114a3dcc33053ca7cca41cb06b8426d8c40.1693857262.git.christophe.jaillet@wanadoo.fr>
-From:   Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <1a35e114a3dcc33053ca7cca41cb06b8426d8c40.1693857262.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH] crypto: hisilicon/hpre - Fix a erroneous check after
+ snprintf()
+To:     Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     Longfang Liu <liulongfang@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Zaibo Xu <xuzaibo@huawei.com>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-crypto@vger.kernel.org
+References: <73534cb1713f58228d54ea53a8a137f4ef939bad.1693858632.git.christophe.jaillet@wanadoo.fr>
+ <ZPaSCOX1F9b36rxV@gondor.apana.org.au>
+Content-Language: fr, en-US
+From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <ZPaSCOX1F9b36rxV@gondor.apana.org.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 9/5/23 04:54, Christophe JAILLET wrote:
-> snprintf() returns the "number of characters which *would* be generated for
-> the given input", not the size *really* generated.
-> 
-> In order to avoid too large values for 'o' (and potential negative values
-> for "sizeof(linebuf) o") use scnprintf() instead of snprintf().
-> 
-> Note that given the "w < 4" in the for loop, the buffer can NOT
-> overflow, but using the *right* function is always better.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Doesn't this need Fixes and CC stable tags ?
+Le 05/09/2023 à 04:27, Herbert Xu a écrit :
+> On Mon, Sep 04, 2023 at 10:17:29PM +0200, Christophe JAILLET wrote:
+>> This error handling looks really strange.
+>> Check if the string has been truncated instead.
+>>
+>> Fixes: 02ab994635eb ("crypto: hisilicon - Fixed some tiny bugs of HPRE")
+>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>> ---
+>>   drivers/crypto/hisilicon/hpre/hpre_main.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/crypto/hisilicon/hpre/hpre_main.c b/drivers/crypto/hisilicon/hpre/hpre_main.c
+>> index 39297ce70f44..db44d889438a 100644
+>> --- a/drivers/crypto/hisilicon/hpre/hpre_main.c
+>> +++ b/drivers/crypto/hisilicon/hpre/hpre_main.c
+>> @@ -1033,7 +1033,7 @@ static int hpre_cluster_debugfs_init(struct hisi_qm *qm)
+>>   
+>>   	for (i = 0; i < clusters_num; i++) {
+>>   		ret = snprintf(buf, HPRE_DBGFS_VAL_MAX_LEN, "cluster%d", i);
+>> -		if (ret < 0)
+>> +		if (ret >= HPRE_DBGFS_VAL_MAX_LEN)
+>>   			return -EINVAL;
+>>   		tmp_d = debugfs_create_dir(buf, qm->debug.debug_root);
+> Who is going to free the allocated memory in case of error?
 
-> ---
->  drivers/ata/sata_mv.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
-> index d105db5c7d81..45e48d653c60 100644
-> --- a/drivers/ata/sata_mv.c
-> +++ b/drivers/ata/sata_mv.c
-> @@ -1255,8 +1255,8 @@ static void mv_dump_mem(struct device *dev, void __iomem *start, unsigned bytes)
->  
->  	for (b = 0; b < bytes; ) {
->  		for (w = 0, o = 0; b < bytes && w < 4; w++) {
-> -			o += snprintf(linebuf + o, sizeof(linebuf) - o,
-> -				      "%08x ", readl(start + b));
-> +			o += scnprintf(linebuf + o, sizeof(linebuf) - o,
-> +				       "%08x ", readl(start + b));
->  			b += sizeof(u32);
->  		}
->  		dev_dbg(dev, "%s: %p: %s\n",
+Not sure to understand.
 
--- 
-Damien Le Moal
-Western Digital Research
+The memory is allocated with devm_kzalloc(), so it will be freed by the 
+framework.
 
+Some debugfs dir of file way be left around. Is it what your are talking 
+about?
+
+>
+> The other snprintf in the same file also looks suspect.
+
+It looks correct to me.
+
+And HPRE_DBGFS_VAL_MAX_LEN being 20, it doesn't really matter. The 
+string can't be truncated with just a "%u\n".
+
+CJ
+
+>
+> Thanks,

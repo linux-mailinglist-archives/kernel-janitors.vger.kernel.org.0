@@ -2,94 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D68C79734C
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Sep 2023 17:23:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E49B7797551
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Sep 2023 17:48:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233129AbjIGPW2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 Sep 2023 11:22:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50052 "EHLO
+        id S233991AbjIGPqr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 Sep 2023 11:46:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229766AbjIGPVW (ORCPT
+        with ESMTP id S1345271AbjIGPfU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 Sep 2023 11:21:22 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 418FB19C
-        for <kernel-janitors@vger.kernel.org>; Thu,  7 Sep 2023 08:21:08 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-501cba1ec0aso1784848e87.2
-        for <kernel-janitors@vger.kernel.org>; Thu, 07 Sep 2023 08:21:07 -0700 (PDT)
+        Thu, 7 Sep 2023 11:35:20 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CC8D1FC6
+        for <kernel-janitors@vger.kernel.org>; Thu,  7 Sep 2023 08:34:49 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-99bdeae1d0aso136367166b.1
+        for <kernel-janitors@vger.kernel.org>; Thu, 07 Sep 2023 08:34:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694100030; x=1694704830; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1694100862; x=1694705662; darn=vger.kernel.org;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=t1Xg8daKkiRDx70DYNoiC72rqrty0xVzo35tP0pXzLM=;
-        b=WogZqgrIfkFN/mV7lU6O9uIhXseBf4Br/BrPT2bi5XlnkQ88RNtlHouQZyACXiF+QY
-         J9l81o/4tMYzIiKkddeDWB0gNnQBgqJNslmzTMZl5ToTqLYfaXohdGDP5o1i/stEIt4U
-         mCnjBUeAD4uCQa3tbFQ2jk7A16oE7uVHKH3xzwQg2oX5VHq/7ibU3TctGNRGFvrf1CQN
-         ylKbpHIYxZuPmOLy55F59wAyLtyVyvDHInkgFJ6uUlX/QWAMYLqeWBrcKBmEPSOpvvmB
-         Ub2IDPlrixnGiqt0wVhMkgb4u8OB21fBtMkBzk4ieb5EbkFk7TRLmsBK/l41vhIox6wi
-         +A/A==
+        bh=ro+pKVjgj+qjW5pgqGuvDVB8LEkYu3AYgnnmwQIWsbs=;
+        b=YrYSBxTgBsy9IYSRDmmhfvsrJoPL3uZ34KK+Lour2LXAI2T8nIlPxmIHV/4oSayuOL
+         v0uwalZhuFvVMIONdSp8gXJHUZaPsUadG7pHM2NBOBTKgBgs6TKM2T90TVIhHqAAXsZI
+         hxIbVqI60P5w/0+OrjCGXD2lCHWkQYNgKi/fh5O+AHCRewVk6Y80IyxzXEXM2sEHvbOJ
+         4cZbuZtQltI3j1uzn+TVRvP3MV0UBkJr9eVis1ihWCyvsXN4dwJ+ymIFDnzuq3lQF+EP
+         TkuH1tFG3E8i5sodi8ENrI2cm+dxMFXCt0zsW9dMDdYqtO03sgO58D1QqQiLve/HAJGO
+         6cBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694100030; x=1694704830;
+        d=1e100.net; s=20221208; t=1694100862; x=1694705662;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=t1Xg8daKkiRDx70DYNoiC72rqrty0xVzo35tP0pXzLM=;
-        b=HPlzXZtqB6IFdxU3JKZG/us35Rf/bE0OT10MwAjXAzFQMg1dj2VgklDrbtPTo6n9bD
-         9FxXvbsHsayPQ0NJZVYV3aI71Us5YzvlUavx0THAFiytfQE1Y5oeJG1qQwezZ2zcXsbT
-         hTsgshpBNyIUKjY2oh2ruinTO9cjllJB63Bu40pMef9s9WuanWwX5mD1Uwl2u3NNiPcr
-         E5aNJzv7uaEq8FfWLeLkCmmm+n0xr7eKrkn8M0J/5emhc34X2MoROsBcjX0bpNUHoriG
-         duFbtV7h0p6yZ4Xmae6JuxIx1XFRyFAkBq3fpwJfMgUc0nLp/wuB+8NPwgtH0v6NP0Lq
-         UedA==
-X-Gm-Message-State: AOJu0Yz9UYs+p/8ubu6f4dvXYK5Wys/O6DlrmWRkzUCfrtl0qVSnC1U3
-        ZiLfQhAXKS8eJD8PwkWc4entBllmGd8tTTJ+qpE=
-X-Google-Smtp-Source: AGHT+IFmOiv05mocpi1VtcAzIkJzCg0pJhhEwIKxEuNtBoOnNOTF9KpuJgW2+cmwkNw5fVoET3C7lg==
-X-Received: by 2002:a05:600c:151:b0:400:6b36:ee2a with SMTP id w17-20020a05600c015100b004006b36ee2amr4511896wmm.26.1694080399345;
-        Thu, 07 Sep 2023 02:53:19 -0700 (PDT)
+        bh=ro+pKVjgj+qjW5pgqGuvDVB8LEkYu3AYgnnmwQIWsbs=;
+        b=YfFx+fb27UENxVqJeolmcncWvNKy/UU+9E8qkzvffrRY/8piS4ajUgJMUaew9F7K07
+         W4zkF+p94hMOe0QW89zCpAO4ovyqd0QE0Gx9VcTeaN57LfGWAU2J2flCDy3CRoKwkQkj
+         fPc1ZgcBT45jGVqKJNOKgLscz6feyR94mLSIfHGcvSFYWW+0ze9YDxB+RaSKtDalvWXc
+         TaRgbAWddis2VkpPUjWUEX6nEHaHh4JOWksNoHeVeNg/2ONiFby50kx6VHKTaSyBDZvf
+         cGoEF9qkPmZO2VOEHiGg2MzH2X/AskeUkMjou5cn91fkXCmrUD0e5WHChz/IicKO38Tz
+         e/hg==
+X-Gm-Message-State: AOJu0Yy6+SPuhhNI8+hTyoQhM2JjhyQ0xVnezk4ThBGHNcW4OSSAnkvv
+        SpIu/E1F3Z1Up7upAdYJUvOagkcIVJrTzCazeVA=
+X-Google-Smtp-Source: AGHT+IFg0bFSC0lzaqVqa/PY0sh6IBWdUUoK9G2NFmiJdxUui9GFWOqDAfoxG2ThzfavR6oiUtxwag==
+X-Received: by 2002:adf:e508:0:b0:317:6e08:ed35 with SMTP id j8-20020adfe508000000b003176e08ed35mr4543247wrm.1.1694080483294;
+        Thu, 07 Sep 2023 02:54:43 -0700 (PDT)
 Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id ay30-20020a5d6f1e000000b0031f65cdd271sm3827670wrb.100.2023.09.07.02.53.18
+        by smtp.gmail.com with ESMTPSA id f7-20020a7bcd07000000b00401c595fcc7sm2026280wmj.11.2023.09.07.02.54.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Sep 2023 02:53:19 -0700 (PDT)
-Date:   Thu, 7 Sep 2023 12:53:15 +0300
+        Thu, 07 Sep 2023 02:54:43 -0700 (PDT)
+Date:   Thu, 7 Sep 2023 12:54:39 +0300
 From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Bharat Bhushan <bbhushan2@marvell.com>
-Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-watchdog@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] watchdog: marvell_gti_wdt: Fix error code in probe()
-Message-ID: <af326fd7-ac71-43a1-b7de-81779b61d242@moroto.mountain>
+To:     Varadarajan Narayanan <quic_varada@quicinc.com>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] phy: qcom-m31: Fix error code in probe()
+Message-ID: <7926c8e6-630e-4d7a-b0b2-d29b3c8b2c09@moroto.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This error path accidentally returns success.  Return -EINVAL instead.
+This accidentally returns the wrong variable.  It should be "qphy->vreg"
+instead of "qphy->phy".
 
-Fixes: ef9e7fe2c890 ("Watchdog: Add marvell GTI watchdog driver")
+Fixes: 08e49af50701 ("phy: qcom: Introduce M31 USB PHY driver")
 Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 ---
- drivers/watchdog/marvell_gti_wdt.c | 2 +-
+When we're adding new drivers then we should use the new driver
+prefix instead of the subsystem prefix.  For example:
+
+ Bad: [PATCH] phy: qcom: Introduce M31 USB PHY driver
+Good: [PATCH] phy: qcom-m31: Introduce M31 USB PHY driver
+
+That way it's obvious to the first person who sends a bugfix
+what the driver prefix is.
+
+ drivers/phy/qualcomm/phy-qcom-m31.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/marvell_gti_wdt.c b/drivers/watchdog/marvell_gti_wdt.c
-index d7eb8286e11e..1ec1e014ba83 100644
---- a/drivers/watchdog/marvell_gti_wdt.c
-+++ b/drivers/watchdog/marvell_gti_wdt.c
-@@ -271,7 +271,7 @@ static int gti_wdt_probe(struct platform_device *pdev)
- 				   &wdt_idx);
- 	if (!err) {
- 		if (wdt_idx >= priv->data->gti_num_timers)
--			return dev_err_probe(&pdev->dev, err,
-+			return dev_err_probe(&pdev->dev, -EINVAL,
- 				"GTI wdog timer index not valid");
+diff --git a/drivers/phy/qualcomm/phy-qcom-m31.c b/drivers/phy/qualcomm/phy-qcom-m31.c
+index ed08072ca032..99d570f4142a 100644
+--- a/drivers/phy/qualcomm/phy-qcom-m31.c
++++ b/drivers/phy/qualcomm/phy-qcom-m31.c
+@@ -256,7 +256,7 @@ static int m31usb_phy_probe(struct platform_device *pdev)
  
- 		priv->wdt_timer_idx = wdt_idx;
+ 	qphy->vreg = devm_regulator_get(dev, "vdda-phy");
+ 	if (IS_ERR(qphy->vreg))
+-		return dev_err_probe(dev, PTR_ERR(qphy->phy),
++		return dev_err_probe(dev, PTR_ERR(qphy->vreg),
+ 						"failed to get vreg\n");
+ 
+ 	phy_set_drvdata(qphy->phy, qphy);
 -- 
 2.39.2
 

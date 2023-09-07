@@ -2,99 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4283C797547
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Sep 2023 17:48:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CBF8797553
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Sep 2023 17:48:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234592AbjIGPqx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 Sep 2023 11:46:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59994 "EHLO
+        id S234819AbjIGPq6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 Sep 2023 11:46:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344218AbjIGPcm (ORCPT
+        with ESMTP id S236067AbjIGPj6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 Sep 2023 11:32:42 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8E3A1FDC
-        for <kernel-janitors@vger.kernel.org>; Thu,  7 Sep 2023 08:32:17 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-500913779f5so1866484e87.2
-        for <kernel-janitors@vger.kernel.org>; Thu, 07 Sep 2023 08:32:17 -0700 (PDT)
+        Thu, 7 Sep 2023 11:39:58 -0400
+Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA0952733;
+        Thu,  7 Sep 2023 08:37:30 -0700 (PDT)
+Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-1c4cd0f6cb2so561000fac.0;
+        Thu, 07 Sep 2023 08:37:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694100687; x=1694705487; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JnMGoGgKemb+DDrSQzPTABi+a718THu1rk85qOkvFQg=;
-        b=DB7iM+w/gW3bkJVnVzZw8EIzE5plcublWASUZnTdM7wJuVm5yQ9wbBsHUyFnMdzJY9
-         qbTNfSos7u82g5QWw6s1hH6dgDQQQPhryxUO3gSUBchHJDGYlOGyph8qnBmUdDZ2l0ul
-         o12GwhiPjAcD5SmMiV5avPgyToC65dvKezs8A6vL2VsODQn/oQmXS1VFMpDzrx/1vcwr
-         y/jvtuB3dJIA5on824hXB+wBA/u9ypWfheC8spZHN+qZXjKc/L9LZte4JWYftkJxH9jq
-         McjNA+WOcwiYq4Z/7KPETcNzHGcxt/nu5Q4+Wy8G1VctwO9zslAXhtOdbvWJtygJ21uI
-         MRTw==
+        d=gmail.com; s=20221208; t=1694101008; x=1694705808; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=ije11m2dJHIRUBhbKjnCtBLajU/SOG5fYp+6ZMnYu94=;
+        b=bfyh7YbvQHv6K2Hilm8W8ODsr8m3x3GVivBs2HHUPAA/mwPSnv/ol4wlExlOK3OrN8
+         OVdOwHYLKSWaK6eyToiOemjmAmCVJOmwWC8jwL1A7cMIR7THLtKYQh3z2hrrrpojg5/A
+         G0NYkX7Tpw4bkFzEcSj8nehVrObCK4ZWgFCqRN9jN1SdfK9ExlfyRWV67+84QugBDQqs
+         2KiDEbGb/rI3Io7EHUwuDvBquOAuxOxUAGvlzs4GfyRcwm3agAOhUcp5jVS/4m/4u65c
+         XneddAwpAe7mPqDZSaKejq+g/bau7lk9c1QYlHaPkP9riwL2QRPxq0VB1LkG1SIEPwc9
+         SHOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694100687; x=1694705487;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JnMGoGgKemb+DDrSQzPTABi+a718THu1rk85qOkvFQg=;
-        b=GrpZ0VyygfOBr555uxoNr6Wa4fFDX4ACKM0KHXCBU5P3xCMAl9yCz6X2FSrZCQKRIx
-         yThYZwYY1zKQ/verKE5734whAkJ6ARgSBDpM2EQPVFgZRokuKuLrMkV+roa3rOZtWrGu
-         mB+XglUSa/FwVGfB0Rhr7l8DbS5F1d29EkMPwT2DAZyXSZ9UjWtg/Z1Q1atSWkI7EAZj
-         SVXSbY231Hx1drVMsSDgSMv1BxtGCHfIypLYjs3tQoU+K6uWHfNyqqh4dWgv1qo3XWgo
-         fiGHdS85MzdpFYFfs7Tbc8p8Z3TheUslm7bLJsCDpAOaeVAJDqeqT9XALitkOEt5in6X
-         A7Xg==
-X-Gm-Message-State: AOJu0YyXQ3VxQ612pZ58yzbJPx5KCvr3GrJDmgkUL2gIwrfOpVSYOz5s
-        DuLlzlCmuDNyzJLs5dLyIzbnxQTUMgNVTl9zh1A=
-X-Google-Smtp-Source: AGHT+IGyPStu/4bGX3A398E8xixDQaUmGkOmIW0jf0T9gkQFvDYPcLVleJrm+vURQhH+rA2UwXThOQ==
-X-Received: by 2002:a05:600c:2246:b0:401:c297:affb with SMTP id a6-20020a05600c224600b00401c297affbmr4284944wmm.37.1694085336903;
-        Thu, 07 Sep 2023 04:15:36 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id y10-20020a05600c364a00b00401b242e2e6sm2208451wmq.47.2023.09.07.04.15.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Sep 2023 04:15:36 -0700 (PDT)
-Date:   Thu, 7 Sep 2023 14:15:33 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
-        Longfang Liu <liulongfang@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Zaibo Xu <xuzaibo@huawei.com>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-crypto@vger.kernel.org
-Subject: Re: [PATCH] crypto: hisilicon/hpre - Fix a erroneous check after
- snprintf()
-Message-ID: <71bf9b84-462f-405e-91aa-fb21fc6ffbd5@moroto.mountain>
-References: <73534cb1713f58228d54ea53a8a137f4ef939bad.1693858632.git.christophe.jaillet@wanadoo.fr>
- <ZPaSCOX1F9b36rxV@gondor.apana.org.au>
- <00bdcfec-6cc1-e521-ceaa-d16d6341ca16@wanadoo.fr>
+        d=1e100.net; s=20221208; t=1694101008; x=1694705808;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ije11m2dJHIRUBhbKjnCtBLajU/SOG5fYp+6ZMnYu94=;
+        b=cfCrAwZj31ji2buwqMy+KY57DENKkhU+NvAcKU0Z+AedvHDSNeAUAN5YcHF9SYdUd7
+         ENhyRXfztI/Mb0VVRzp0XK7gbqgM532cbrlTDIB1j/7RM/OC3FD4lefwX3m8elKbIK8U
+         h6qcHHY3d79KHDrzicU2rtURkyquybtze+GYeGfo0Nr0OT32l/GuCBGuE7SHju1ZCovz
+         ObF3tS5sNXHszfRjyH03pvweu4tulO0kYAaoO2KX5GKrnfWIRN4f+vqobYUZyJi1XfO3
+         DyG9bUg/F5tJk86ZykKO2K36vmb/SIXp26v4Gjjq/EEOzEPC1PVZqKzFUdCAoDJfAg79
+         d99g==
+X-Gm-Message-State: AOJu0YygOD5K2t8BJjy5UlVimmXkEqwRCh8dqz3xuG1Ba3tP1xO8fd4Z
+        oaliducVzq+MFud7eELMSZPWnMpM3Nc=
+X-Google-Smtp-Source: AGHT+IE0wyur8SddnB7DKaXqnaG9wVQJXrBPrrxn8sfCzESUzgNQEQbmpEk1rhv1ZNOsSu2KKZ1oTw==
+X-Received: by 2002:a05:6a20:8e0d:b0:f0:50c4:4c43 with SMTP id y13-20020a056a208e0d00b000f050c44c43mr3279856pzj.5.1694085901243;
+        Thu, 07 Sep 2023 04:25:01 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id h3-20020a63b003000000b0056c466b09a4sm12571178pgf.59.2023.09.07.04.24.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Sep 2023 04:25:00 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <41dcef20-1a16-71be-e658-6fa84405f1a5@roeck-us.net>
+Date:   Thu, 7 Sep 2023 04:24:59 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <00bdcfec-6cc1-e521-ceaa-d16d6341ca16@wanadoo.fr>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] watchdog: marvell_gti_wdt: Fix error code in probe()
+Content-Language: en-US
+To:     Dan Carpenter <dan.carpenter@linaro.org>,
+        Bharat Bhushan <bbhushan2@marvell.com>
+Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
+        linux-watchdog@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <af326fd7-ac71-43a1-b7de-81779b61d242@moroto.mountain>
+From:   Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <af326fd7-ac71-43a1-b7de-81779b61d242@moroto.mountain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Sep 05, 2023 at 07:27:47AM +0200, Marion & Christophe JAILLET wrote:
-> > 
-> > The other snprintf in the same file also looks suspect.
+On 9/7/23 02:53, Dan Carpenter wrote:
+> This error path accidentally returns success.  Return -EINVAL instead.
 > 
-> It looks correct to me.
+> Fixes: ef9e7fe2c890 ("Watchdog: Add marvell GTI watchdog driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+
+> ---
+>   drivers/watchdog/marvell_gti_wdt.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> And HPRE_DBGFS_VAL_MAX_LEN being 20, it doesn't really matter. The string
-> can't be truncated with just a "%u\n".
-> 
-
-drivers/crypto/hisilicon/hpre/hpre_main.c
-   884          ret = snprintf(tbuf, HPRE_DBGFS_VAL_MAX_LEN, "%u\n", val);
-   885          return simple_read_from_buffer(buf, count, pos, tbuf, ret);
-
-You can't pass the return value from snprintf() to simple_read_from_buffer().
-Otherwise the snprintf() checking turned a sprintf() write overflow into
-a read overflow, which is less bad but not ideal.  It needs to be
-scnprintf().
-
-regards,
-dan carpenter
+> diff --git a/drivers/watchdog/marvell_gti_wdt.c b/drivers/watchdog/marvell_gti_wdt.c
+> index d7eb8286e11e..1ec1e014ba83 100644
+> --- a/drivers/watchdog/marvell_gti_wdt.c
+> +++ b/drivers/watchdog/marvell_gti_wdt.c
+> @@ -271,7 +271,7 @@ static int gti_wdt_probe(struct platform_device *pdev)
+>   				   &wdt_idx);
+>   	if (!err) {
+>   		if (wdt_idx >= priv->data->gti_num_timers)
+> -			return dev_err_probe(&pdev->dev, err,
+> +			return dev_err_probe(&pdev->dev, -EINVAL,
+>   				"GTI wdog timer index not valid");
+>   
+>   		priv->wdt_timer_idx = wdt_idx;
 

@@ -2,106 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CBF8797553
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Sep 2023 17:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85667797794
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Sep 2023 18:27:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234819AbjIGPq6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 Sep 2023 11:46:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50494 "EHLO
+        id S232069AbjIGQ1N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 Sep 2023 12:27:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236067AbjIGPj6 (ORCPT
+        with ESMTP id S230037AbjIGQ0d (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 Sep 2023 11:39:58 -0400
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA0952733;
-        Thu,  7 Sep 2023 08:37:30 -0700 (PDT)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-1c4cd0f6cb2so561000fac.0;
-        Thu, 07 Sep 2023 08:37:30 -0700 (PDT)
+        Thu, 7 Sep 2023 12:26:33 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D55459E2
+        for <kernel-janitors@vger.kernel.org>; Thu,  7 Sep 2023 09:23:43 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2bd0d19a304so20705481fa.1
+        for <kernel-janitors@vger.kernel.org>; Thu, 07 Sep 2023 09:23:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694101008; x=1694705808; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=ije11m2dJHIRUBhbKjnCtBLajU/SOG5fYp+6ZMnYu94=;
-        b=bfyh7YbvQHv6K2Hilm8W8ODsr8m3x3GVivBs2HHUPAA/mwPSnv/ol4wlExlOK3OrN8
-         OVdOwHYLKSWaK6eyToiOemjmAmCVJOmwWC8jwL1A7cMIR7THLtKYQh3z2hrrrpojg5/A
-         G0NYkX7Tpw4bkFzEcSj8nehVrObCK4ZWgFCqRN9jN1SdfK9ExlfyRWV67+84QugBDQqs
-         2KiDEbGb/rI3Io7EHUwuDvBquOAuxOxUAGvlzs4GfyRcwm3agAOhUcp5jVS/4m/4u65c
-         XneddAwpAe7mPqDZSaKejq+g/bau7lk9c1QYlHaPkP9riwL2QRPxq0VB1LkG1SIEPwc9
-         SHOA==
+        d=linaro.org; s=google; t=1694103763; x=1694708563; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oFwKknQkIgVeziygM7f8fcopzSN1Ty3LUsYRVOQc1fo=;
+        b=OjlIr/bCZWENHrwNu4OvaYD4ucySC6lZ+jjdQD1ZfCffNCYwTNxzaMl066aX35Ncn4
+         6a4NGDRmwO3+ofmpjGK0mPunT3ezw0VMpKcHlRvWlvhZ+RfdiFYUUNFKGtWnDjH0WeBL
+         8K2MYiHatij9sBc4b3x7vezyxSjPp5KwKe8oJFXikgvpod5sUTu/4pLOG92ftYHvjUx7
+         6yZNdiMf/PlY/Fvsefi+VXQsMDgEqi1uwskn6pJi6DFrDznV9v7haF4m/Gni7tSjrUEN
+         MAlsKCJcxmxVWneNlKCu+bete68kx3WF/NCLmp1rnR9As4d6Bn0Yujtf7Y5GLn9lHUK0
+         woLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694101008; x=1694705808;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ije11m2dJHIRUBhbKjnCtBLajU/SOG5fYp+6ZMnYu94=;
-        b=cfCrAwZj31ji2buwqMy+KY57DENKkhU+NvAcKU0Z+AedvHDSNeAUAN5YcHF9SYdUd7
-         ENhyRXfztI/Mb0VVRzp0XK7gbqgM532cbrlTDIB1j/7RM/OC3FD4lefwX3m8elKbIK8U
-         h6qcHHY3d79KHDrzicU2rtURkyquybtze+GYeGfo0Nr0OT32l/GuCBGuE7SHju1ZCovz
-         ObF3tS5sNXHszfRjyH03pvweu4tulO0kYAaoO2KX5GKrnfWIRN4f+vqobYUZyJi1XfO3
-         DyG9bUg/F5tJk86ZykKO2K36vmb/SIXp26v4Gjjq/EEOzEPC1PVZqKzFUdCAoDJfAg79
-         d99g==
-X-Gm-Message-State: AOJu0YygOD5K2t8BJjy5UlVimmXkEqwRCh8dqz3xuG1Ba3tP1xO8fd4Z
-        oaliducVzq+MFud7eELMSZPWnMpM3Nc=
-X-Google-Smtp-Source: AGHT+IE0wyur8SddnB7DKaXqnaG9wVQJXrBPrrxn8sfCzESUzgNQEQbmpEk1rhv1ZNOsSu2KKZ1oTw==
-X-Received: by 2002:a05:6a20:8e0d:b0:f0:50c4:4c43 with SMTP id y13-20020a056a208e0d00b000f050c44c43mr3279856pzj.5.1694085901243;
-        Thu, 07 Sep 2023 04:25:01 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id h3-20020a63b003000000b0056c466b09a4sm12571178pgf.59.2023.09.07.04.24.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Sep 2023 04:25:00 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <41dcef20-1a16-71be-e658-6fa84405f1a5@roeck-us.net>
-Date:   Thu, 7 Sep 2023 04:24:59 -0700
+        d=1e100.net; s=20221208; t=1694103763; x=1694708563;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oFwKknQkIgVeziygM7f8fcopzSN1Ty3LUsYRVOQc1fo=;
+        b=E3C9WSuCz8VrcX+1KjWrXa1hLQwuDgkSW8n0Yn0DR0niYZiWJP+XE9lK976KRDerat
+         nE05klxZ+ZCXuZAATmbnxTn8mZMAcw4tlkakOUmuqM6UwuLCwJwFDW4n9By1GEplht7+
+         99dABkEgvuYPw1czhv6qlwrQdHStVGzRz+b1M/ahqH+AIWp3x0qDRoCggCBgvxhUySWV
+         TSLP6iVLSzu8Uj5uWONdAEksfK3A5bgQFte0wSFmznmYErOgdLraw7rgPWQCmKGjCocb
+         j8M6Ip2SzJJ6sdKGPDBfrUvfXbRLgIKHEWCACEq+zM0XkYpTf+nhQ0JtxOGRT6y3RCK1
+         5inA==
+X-Gm-Message-State: AOJu0YxXrFpNAq9aSzWWpHyMmUV5gwj3+rHQewzpBFJM2u5NST0wj/cJ
+        aq7qgdatFgyVxR1jCiJT9ncunnt6ddCUUVCgWDs=
+X-Google-Smtp-Source: AGHT+IH7LwAYk5bN2j2hB6H8pGnORfTqQHKJiXsJKF10TLPkNCZgbFLJyTMJUh+jPrwUJvfzZm7QFQ==
+X-Received: by 2002:a7b:ce91:0:b0:3fe:4900:db95 with SMTP id q17-20020a7bce91000000b003fe4900db95mr4383812wmj.37.1694080494181;
+        Thu, 07 Sep 2023 02:54:54 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id m6-20020a05600c3b0600b004013797efb6sm2128337wms.9.2023.09.07.02.54.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Sep 2023 02:54:53 -0700 (PDT)
+Date:   Thu, 7 Sep 2023 12:54:50 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     Wenchao Chen <wenchao.chen@unisoc.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        linux-mmc@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] mmc: sdhci-sprd: Fix error code in sdhci_sprd_tuning()
+Message-ID: <a8af0a08-8405-43cc-bd83-85ff25f572ca@moroto.mountain>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] watchdog: marvell_gti_wdt: Fix error code in probe()
-Content-Language: en-US
-To:     Dan Carpenter <dan.carpenter@linaro.org>,
-        Bharat Bhushan <bbhushan2@marvell.com>
-Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
-        linux-watchdog@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <af326fd7-ac71-43a1-b7de-81779b61d242@moroto.mountain>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <af326fd7-ac71-43a1-b7de-81779b61d242@moroto.mountain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 9/7/23 02:53, Dan Carpenter wrote:
-> This error path accidentally returns success.  Return -EINVAL instead.
-> 
-> Fixes: ef9e7fe2c890 ("Watchdog: Add marvell GTI watchdog driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Return an error code if sdhci_sprd_get_best_clk_sample() fails.
+Currently, it returns success.
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: d83d251bf3c2 ("mmc: sdhci-sprd: Add SD HS mode online tuning")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+This is from static analysis and has not been tested.
+---
+ drivers/mmc/host/sdhci-sprd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> ---
->   drivers/watchdog/marvell_gti_wdt.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/watchdog/marvell_gti_wdt.c b/drivers/watchdog/marvell_gti_wdt.c
-> index d7eb8286e11e..1ec1e014ba83 100644
-> --- a/drivers/watchdog/marvell_gti_wdt.c
-> +++ b/drivers/watchdog/marvell_gti_wdt.c
-> @@ -271,7 +271,7 @@ static int gti_wdt_probe(struct platform_device *pdev)
->   				   &wdt_idx);
->   	if (!err) {
->   		if (wdt_idx >= priv->data->gti_num_timers)
-> -			return dev_err_probe(&pdev->dev, err,
-> +			return dev_err_probe(&pdev->dev, -EINVAL,
->   				"GTI wdog timer index not valid");
->   
->   		priv->wdt_timer_idx = wdt_idx;
+diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
+index 649ae075e229..6b84ba27e6ab 100644
+--- a/drivers/mmc/host/sdhci-sprd.c
++++ b/drivers/mmc/host/sdhci-sprd.c
+@@ -644,6 +644,7 @@ static int sdhci_sprd_tuning(struct mmc_host *mmc, struct mmc_card *card,
+ 	best_clk_sample = sdhci_sprd_get_best_clk_sample(mmc, value);
+ 	if (best_clk_sample < 0) {
+ 		dev_err(mmc_dev(host->mmc), "all tuning phase fail!\n");
++		err = best_clk_sample;
+ 		goto out;
+ 	}
+ 
+-- 
+2.39.2
 

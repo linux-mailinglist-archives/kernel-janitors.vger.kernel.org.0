@@ -2,123 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EEAD797A2B
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Sep 2023 19:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B5D7797832
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Sep 2023 18:43:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237629AbjIGRdU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 Sep 2023 13:33:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44908 "EHLO
+        id S230219AbjIGQnQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 Sep 2023 12:43:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244684AbjIGRc5 (ORCPT
+        with ESMTP id S242439AbjIGQmY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 Sep 2023 13:32:57 -0400
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D95AA10EC
-        for <kernel-janitors@vger.kernel.org>; Thu,  7 Sep 2023 10:32:31 -0700 (PDT)
-Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2bceca8a41aso20524611fa.0
-        for <kernel-janitors@vger.kernel.org>; Thu, 07 Sep 2023 10:32:31 -0700 (PDT)
+        Thu, 7 Sep 2023 12:42:24 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55BA2210B
+        for <kernel-janitors@vger.kernel.org>; Thu,  7 Sep 2023 09:41:03 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-31c7912416bso1250926f8f.1
+        for <kernel-janitors@vger.kernel.org>; Thu, 07 Sep 2023 09:41:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694107903; x=1694712703; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FdAB2Jh5naeisydTV3u43XXNVH38AlgAr9dXqaut4m8=;
-        b=WxDzS1a3bbbbgEPp4E3SkD0BgGCtmsTBVDW+PHr/TVY0ooZS9s7tgEZFe6lXS93hKu
-         RK2W3D2jOLvn06IbP8BX1m7ekOvDsrQTbOCHVzp7JgbdP8gDdjgHCaB+Y49RLsWyuGFu
-         H8S/PvmRx3lKfNsxeK1ouH8+5vyrjrzW9tDiWyTV5WjRSe8EgUMlY1BXQBVne76q8pSl
-         V7wWvAPNYyGbUw8rHV/9U+1sMxLy3tdcGgARgIApjCkWMO6WR2s90MaK/6mytv/D0EM6
-         7U1w7B1ya0UWfeyYSV1Uyp5UDOgdOgdzlvNYodG2AOTyeImGoHkm2mup1z72Qn2yDooz
-         7jWg==
+        d=linaro.org; s=google; t=1694104798; x=1694709598; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=AfBRtUznKahZ3dwZyCgaTKUpdQMQZ0q3hwDeizi9iw8=;
+        b=tYXtUwB1N6uOxKPJfaRapwNRzWgXtUiYSQx2LpNtLaMyYabYK1vateG+2CFMRJQvit
+         HlzrOxUYxgdz2yrSqlk+zeaBsRr41gYxiIGf32hZD9yfaLCM2CE742rUbGiodOCqA7VJ
+         Yr6JxZLE+1Ymt9mnIm3fo6YyGEYwK0LltfYRoJyrkZS8/2gFmWrEehgRb3EezpSeXmd7
+         u/WahGHgl4jn7iPg3smaD6xbZLHbjU/IsWGap2Wcajd8fvgQruFsy+KZXuXjFEzNNAI9
+         4zBsFcs+WcN2a1IfXhq8h3fLQluOtdlPi+jd2RdqjHn1+lSNivnHdTNR3CRuBSiP+Ylp
+         mzcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694107903; x=1694712703;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FdAB2Jh5naeisydTV3u43XXNVH38AlgAr9dXqaut4m8=;
-        b=eNb5HdQIY11xZANvjztT0fMFJ1qOm59USIkjY4Rz43ILAXA8BE7x+LneYcRdgLsU+0
-         CbXssvf72iYleZ6bcIVVI62BVcOLHTGR9XrkrcDbAFoVkS/j64be8dw4hJnl9oOY4fu9
-         mVflwcz1cXgeO7rXihGTzlwZRexPumvUWFd2lSVIJUGNhpGEgYrl0JS5wo/kh6HjYIyK
-         iIHYFX/3FyjcPn/orONBeN0ZypRhHVNNrK96TIesD2UczgoZiscFg+ggplfFfRaVxT21
-         qhs8/dnTnu1qaRXNVwBVbrxZi3Pg3fTmT6jsHAL5mxBtWie3X+ye0AxkHVmKFncD81+c
-         MSBg==
-X-Gm-Message-State: AOJu0YzJJm+cKL/xRai5kr2lFTcc0VsHCAEmK934fDlhr9SP5tpe/xB5
-        kBSw646oMNA3WvYdRRLXSJBaW9MCB4RsgOwHejk=
-X-Google-Smtp-Source: AGHT+IFVw0hhgJ9cIVl3OyrJhRbiJmQ67lfQPapydSicLHG49QPh+uB3ol2Bh2Lb6O0nBJh4qYsOpA==
-X-Received: by 2002:a5d:4441:0:b0:317:e04c:6791 with SMTP id x1-20020a5d4441000000b00317e04c6791mr4011818wrr.62.1694082564882;
-        Thu, 07 Sep 2023 03:29:24 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1694104798; x=1694709598;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AfBRtUznKahZ3dwZyCgaTKUpdQMQZ0q3hwDeizi9iw8=;
+        b=QF4I0WV0unl/KHLb2T1wX4UYpYasRiU8tiGyiA2DF+UjOK5FeosUnAUa7dex58H5PW
+         bwcAG060Ui+yiazYsC9o8UI62ydC8vIqHk9Lj5grHQPjskeB/ui2z1o6gvGD76yz7s2x
+         ynHcLLjxDTvUAID6Pxl60YAWBDQxNZiAd5hv7zN2AyZtuVM/hDT4HtfJsaGfowzQN4Vm
+         ANvDHYz+IzgFeB4aZYdvbszsA8PR9BTZKl8RxUAuy4G9DSwLhbwSFtHeahZ/K3MrXShr
+         jnVxsCnmZaXpstSDF0O+Z9J9Z4idFDhUP2vuTWmuulXqZYKigfW+/DXmyeUXGHSrJ4dC
+         G7xQ==
+X-Gm-Message-State: AOJu0Yx8VpsH5hhsZAqMvQfISP8F4K/iRFDx/lzZI/WD4BFOIA+yIqcv
+        VKJux0MSVQ9C+a7FpaIqC2FDm55pxF9W4XwDlMU=
+X-Google-Smtp-Source: AGHT+IFN1DVLDmj0KO6926C82lwOVs09adWFw1TE8GqB7efKq4l0BjednSUngORngfvmRmj6+fehVg==
+X-Received: by 2002:a5d:51d1:0:b0:317:6470:3271 with SMTP id n17-20020a5d51d1000000b0031764703271mr4725013wrv.45.1694083787100;
+        Thu, 07 Sep 2023 03:49:47 -0700 (PDT)
 Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id k11-20020a5d6d4b000000b0031ad2663ed0sm22917456wri.66.2023.09.07.03.29.24
+        by smtp.gmail.com with ESMTPSA id n22-20020a7bcbd6000000b003fef3180e7asm2143464wmi.44.2023.09.07.03.49.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Sep 2023 03:29:24 -0700 (PDT)
-Date:   Thu, 7 Sep 2023 13:29:22 +0300
+        Thu, 07 Sep 2023 03:49:46 -0700 (PDT)
+Date:   Thu, 7 Sep 2023 13:49:43 +0300
 From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Varadarajan Narayanan <quic_varada@quicinc.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] phy: qcom-m31: Fix error code in probe()
-Message-ID: <4c60268a-0896-4ce8-8c9f-61ff520cc90a@kadam.mountain>
-References: <7926c8e6-630e-4d7a-b0b2-d29b3c8b2c09@moroto.mountain>
- <20230907102405.GA7987@varda-linux.qualcomm.com>
+To:     Su Hui <suhui@nfschina.com>
+Cc:     gregkh@linuxfoundation.org, rafael@kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] driver base: slience unused warning
+Message-ID: <3b710f6d-05cf-49d5-b004-849ee2a3ca42@kadam.mountain>
+References: <20230831073654.1713710-1-suhui@nfschina.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230907102405.GA7987@varda-linux.qualcomm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230831073654.1713710-1-suhui@nfschina.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Sep 07, 2023 at 03:54:05PM +0530, Varadarajan Narayanan wrote:
-> On Thu, Sep 07, 2023 at 12:54:39PM +0300, Dan Carpenter wrote:
-> > This accidentally returns the wrong variable.  It should be "qphy->vreg"
-> > instead of "qphy->phy".
-> >
-> > Fixes: 08e49af50701 ("phy: qcom: Introduce M31 USB PHY driver")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> > ---
-> > When we're adding new drivers then we should use the new driver
-> > prefix instead of the subsystem prefix.  For example:
-> >
-> >  Bad: [PATCH] phy: qcom: Introduce M31 USB PHY driver
-> > Good: [PATCH] phy: qcom-m31: Introduce M31 USB PHY driver
-> >
-> > That way it's obvious to the first person who sends a bugfix
-> > what the driver prefix is.
-> >
-> >  drivers/phy/qualcomm/phy-qcom-m31.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/phy/qualcomm/phy-qcom-m31.c b/drivers/phy/qualcomm/phy-qcom-m31.c
-> > index ed08072ca032..99d570f4142a 100644
-> > --- a/drivers/phy/qualcomm/phy-qcom-m31.c
-> > +++ b/drivers/phy/qualcomm/phy-qcom-m31.c
-> > @@ -256,7 +256,7 @@ static int m31usb_phy_probe(struct platform_device *pdev)
-> >
-> >  	qphy->vreg = devm_regulator_get(dev, "vdda-phy");
-> >  	if (IS_ERR(qphy->vreg))
-> > -		return dev_err_probe(dev, PTR_ERR(qphy->phy),
-> > +		return dev_err_probe(dev, PTR_ERR(qphy->vreg),
-> >  						"failed to get vreg\n");
-> >
-> >  	phy_set_drvdata(qphy->phy, qphy);
-> > --
-> > 2.39.2
+On Thu, Aug 31, 2023 at 03:36:55PM +0800, Su Hui wrote:
+> Avoid unused warning with gcc and W=1 option.
 > 
-> I believe this is addressed by https://lore.kernel.org/linux-arm-msm/20230824091345.1072650-1-yangyingliang@huawei.com/
+> drivers/base/module.c:36:6: error:
+> variable ‘no_warn’ set but not used [-Werror=unused-but-set-variable]
 > 
+> Signed-off-by: Su Hui <suhui@nfschina.com>
+> ---
+>  drivers/base/module.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/base/module.c b/drivers/base/module.c
+> index 46ad4d636731..10494336d601 100644
+> --- a/drivers/base/module.c
+> +++ b/drivers/base/module.c
+> @@ -33,7 +33,7 @@ static void module_create_drivers_dir(struct module_kobject *mk)
+>  void module_add_driver(struct module *mod, struct device_driver *drv)
+>  {
+>  	char *driver_name;
+> -	int no_warn;
+> +	int __maybe_unused no_warn;
 
-Ah, I normally look up these sorts of fixes using the following command
-`elinks "http://lore.kernel.org/all/?q=${FUNC}`
-before sending but Yang Yingliang's patch wasn't in the first page of
-results so I missed it.
+Just delete the variable if it isn't used.
 
 regards,
 dan carpenter

@@ -2,120 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E817797601
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Sep 2023 18:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 903B1797533
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Sep 2023 17:47:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235597AbjIGQBA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 Sep 2023 12:01:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41504 "EHLO
+        id S234303AbjIGPqt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 Sep 2023 11:46:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240643AbjIGP7E (ORCPT
+        with ESMTP id S240265AbjIGPaf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 Sep 2023 11:59:04 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32704284C2;
-        Thu,  7 Sep 2023 08:47:26 -0700 (PDT)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3876nb4Q016363;
-        Thu, 7 Sep 2023 10:24:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=date : from : to :
- cc : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=qcppdkim1; bh=XLJztAV/phq5KKxeTjoRmOdM6LRYuvdNOdfunfImmz0=;
- b=O25m78kPKU3qPVRbzYBDctUw+uACsHY0eVcMND/kH9QtaP30r8S7NKwWXY2fpUdXNaVl
- 61I4gN0MXSSqFhRY4D2syvGoR2EsKkLQHBqi1esiICEE1BdEnCGdpE7ICLzOJBxeLKhW
- /LMzvAvpW85q+GWTy68juVeVDrnaeK+kQ8f31ErWF9zJ45eV/2f/gVMoe0KoODbTN/lT
- dK1j16/8drhYgKFvLiy7EzaIg6Gbc6yhxHus2T8mQk/N9fKdc20ajsCKYm9vQNR8F79B
- MmBm4ClbtnTRF8LSSdFQKibSQLqO9DzHAn0CONi+7z2WH4uhsy+3ZDqE8Giy+le8iLsn GA== 
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sy951ggcr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 07 Sep 2023 10:24:13 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-        by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 387AODmW007795
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 7 Sep 2023 10:24:13 GMT
-Received: from varda-linux.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.36; Thu, 7 Sep 2023 03:24:09 -0700
-Date:   Thu, 7 Sep 2023 15:54:05 +0530
-From:   Varadarajan Narayanan <quic_varada@quicinc.com>
-To:     Dan Carpenter <dan.carpenter@linaro.org>
-CC:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-phy@lists.infradead.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH] phy: qcom-m31: Fix error code in probe()
-Message-ID: <20230907102405.GA7987@varda-linux.qualcomm.com>
-References: <7926c8e6-630e-4d7a-b0b2-d29b3c8b2c09@moroto.mountain>
+        Thu, 7 Sep 2023 11:30:35 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B26D1700;
+        Thu,  7 Sep 2023 08:30:09 -0700 (PDT)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id B2EEE66072BA;
+        Thu,  7 Sep 2023 11:43:14 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1694083395;
+        bh=AtNfCg0ORcDFoK5Walc1Hu3UGCme85N5dgstHaeabAc=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=NejBNi91GDBi0Au8P24t4H4LZjQGG9Ryf1BpDJdsXgET3EkPKMCZFUG7BCYuxsp0A
+         L5J666GBfK2HyOu6yTaz/Zdt9srJi+5RKfsPZV35jTt1DuIjOV5nERNjqPd61FOF9M
+         1HiviQkDD472ch4zIdW+FtQekf0Fqf3SaP8d0MbPWgZ0QpNRuBKobGhS7xydNgFhgX
+         uUE0F5MmxWTv8He1c0FXyZ6t8nMYMInIUVo0N72Mqo1KXMOA4MxZJJvh5lfKIFp7+p
+         X7z5G8hFmmvlxMnVt4LcbxoOqjM8OW9eDq+vbWzlIYRdMbQnJ7STxw4HIqlaHsKBtK
+         d2YAIXSKPE/tQ==
+Message-ID: <cd6eea67-df0f-08b1-61cd-57a3b4f9cf0d@collabora.com>
+Date:   Thu, 7 Sep 2023 12:43:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <7926c8e6-630e-4d7a-b0b2-d29b3c8b2c09@moroto.mountain>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: uepUk1hYhfIIYyBLxKaaYwTVyx55XYRF
-X-Proofpoint-ORIG-GUID: uepUk1hYhfIIYyBLxKaaYwTVyx55XYRF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-07_02,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1011
- adultscore=0 impostorscore=0 phishscore=0 lowpriorityscore=0
- suspectscore=0 mlxscore=0 mlxlogscore=782 priorityscore=1501 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309070091
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH] power: supply: mt6370: Fix missing error code in
+ mt6370_chg_toggle_cfo()
+Content-Language: en-US
+To:     Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Cc:     dan.carpenter@linaro.org, kernel-janitors@vger.kernel.org,
+        error27@gmail.com
+References: <20230906084815.2827930-1-harshit.m.mogalapalli@oracle.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20230906084815.2827930-1-harshit.m.mogalapalli@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Sep 07, 2023 at 12:54:39PM +0300, Dan Carpenter wrote:
-> This accidentally returns the wrong variable.  It should be "qphy->vreg"
-> instead of "qphy->phy".
->
-> Fixes: 08e49af50701 ("phy: qcom: Introduce M31 USB PHY driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Il 06/09/23 10:48, Harshit Mogalapalli ha scritto:
+> When mt6370_chg_field_get() suceeds, ret is set to zero and returning
+> zero when flash led is still in strobe mode looks incorrect.
+> 
+> Fixes: 233cb8a47d65 ("power: supply: mt6370: Add MediaTek MT6370 charger driver")
+> Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 > ---
-> When we're adding new drivers then we should use the new driver
-> prefix instead of the subsystem prefix.  For example:
->
->  Bad: [PATCH] phy: qcom: Introduce M31 USB PHY driver
-> Good: [PATCH] phy: qcom-m31: Introduce M31 USB PHY driver
->
-> That way it's obvious to the first person who sends a bugfix
-> what the driver prefix is.
->
->  drivers/phy/qualcomm/phy-qcom-m31.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/phy/qualcomm/phy-qcom-m31.c b/drivers/phy/qualcomm/phy-qcom-m31.c
-> index ed08072ca032..99d570f4142a 100644
-> --- a/drivers/phy/qualcomm/phy-qcom-m31.c
-> +++ b/drivers/phy/qualcomm/phy-qcom-m31.c
-> @@ -256,7 +256,7 @@ static int m31usb_phy_probe(struct platform_device *pdev)
->
->  	qphy->vreg = devm_regulator_get(dev, "vdda-phy");
->  	if (IS_ERR(qphy->vreg))
-> -		return dev_err_probe(dev, PTR_ERR(qphy->phy),
-> +		return dev_err_probe(dev, PTR_ERR(qphy->vreg),
->  						"failed to get vreg\n");
->
->  	phy_set_drvdata(qphy->phy, qphy);
-> --
-> 2.39.2
+> This is based on static analysis with smatch, only compile tested.
+> ---
+>   drivers/power/supply/mt6370-charger.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/power/supply/mt6370-charger.c b/drivers/power/supply/mt6370-charger.c
+> index f27dae5043f5..a9641bd3d8cf 100644
+> --- a/drivers/power/supply/mt6370-charger.c
+> +++ b/drivers/power/supply/mt6370-charger.c
+> @@ -324,7 +324,7 @@ static int mt6370_chg_toggle_cfo(struct mt6370_priv *priv)
+>   
+>   	if (fl_strobe) {
+>   		dev_err(priv->dev, "Flash led is still in strobe mode\n");
+> -		return ret;
+> +		return -EINVAL;
 
-I believe this is addressed by https://lore.kernel.org/linux-arm-msm/20230824091345.1072650-1-yangyingliang@huawei.com/
+I think that returning 0 here was intentional, but I agree on a return ret
+here being both confusing and wrong.
 
-Thanks
-Varada
+That's how I get this logic:
+
+The function is enabling strobe mode, but if the flash led is *already* in
+strobe mode, the function exits cleanly because there's nothing to do, as
+the enablement is already done.
+
+Hence.... I believe that the right fix is not to return -EINVAL, but rather
+to change that to `return 0` instead.
+
+ChiaEn, can you please confirm, or deny my statement?
+
+Regards,
+Angelo
+
+>   	}
+>   
+>   	/* cfo off */
+
+

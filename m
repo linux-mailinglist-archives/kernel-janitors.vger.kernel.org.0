@@ -2,93 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E48B979AF9E
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Sep 2023 01:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACCD279AD42
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Sep 2023 01:39:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239980AbjIKWpu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Sep 2023 18:45:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38984 "EHLO
+        id S240499AbjIKWqK convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Sep 2023 18:46:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241425AbjIKPI0 (ORCPT
+        with ESMTP id S241726AbjIKPNC (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Sep 2023 11:08:26 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51C42FA;
-        Mon, 11 Sep 2023 08:08:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA0AC433C9;
-        Mon, 11 Sep 2023 15:08:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694444901;
-        bh=QQhUsR8kda3/hj6CcImnvWnHoUxICmdWDtUfw+d0L2k=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=oMnmqdvCbB/b9eUNHcCKrZgBIXAfEa4l3Ut8F+Krr/A+TO4Qp5xFRdmhtzOYMkOQW
-         98qwiW7ihtvdhmXn9/JMY3cAkCWfkf2RS329FQiqevC0xj5zMYEDcJaG1IoD/tdcm4
-         kpZWOr1Vyd7e3Vmm3u4QL91seR/p4ZlqPgFodnlHBoxj1eBGPhSgK/yrDWOIq40+f5
-         aUnUpUTw2aMPaIA27iibLEyT3mePx5Lnjot6mQy4HcSMzruUmZLyKo9qd8lzteD46Z
-         2M1fvO80IowMc9BrQIeMCwHpPKkPdDJZ3fzLDWpXm32vUmqUZe+eAU80MyQvPY7gmH
-         AOdhADl4GZdow==
-From:   Mark Brown <broonie@kernel.org>
-To:     alsa-devel@alsa-project.org, Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     kernel-janitors@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
-        Amit Kucheria <amitk@kernel.org>, linux-pm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linuxppc-dev@lists.ozlabs.org, linux-mmc@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        linux-mediatek@lists.infradead.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-media@vger.kernel.org
-In-Reply-To: <20230907095521.14053-1-Julia.Lawall@inria.fr>
-References: <20230907095521.14053-1-Julia.Lawall@inria.fr>
-Subject: Re: (subset) [PATCH 00/11] add missing of_node_put
-Message-Id: <169444489227.1851820.10212594180854433279.b4-ty@kernel.org>
-Date:   Mon, 11 Sep 2023 16:08:12 +0100
+        Mon, 11 Sep 2023 11:13:02 -0400
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 598BE12E;
+        Mon, 11 Sep 2023 08:12:57 -0700 (PDT)
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-3a9e89fa553so446789b6e.1;
+        Mon, 11 Sep 2023 08:12:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694445176; x=1695049976;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6swvSmT5NqK26Yyzy+9kC9qqap1tUl1p63s40e6jnbA=;
+        b=bVD+HYuqqY53rQc1ZfxKQTb0WEuKRmRecMBkXkAL4kY5rFhOxri3ZYYgG++L8k688B
+         WfkGRXtt+wHNoJDzFL6ahqt3c5ZiyWt+r6AI6nK+rKcCBOG1JgG1zPM9J4xQS/RwHlAH
+         SVz6Iea/5j16bOWpTgHNIOXydSipZkk5rDT7gOFqaj94mQR3TVuKEnp0PltZf4gvLZbO
+         xpmR6XCMrvQ3NviWVKOeX4/ROc6b6Pvz0fk/g+lXlP1ASujfi+/yAmj7oo9zzvuOOB6Z
+         zcdBtxFeD848aF48794/UUOHrMR4E5UVh/xsAeftgFgkusz8OWxYW36dCBLxFXy+hOlL
+         hnFQ==
+X-Gm-Message-State: AOJu0YwckDqrEhq4RUI2AFBX1HS8Sd4/EZNHyUrs2cd0jbID2mComAaj
+        wHjQ7z6cSqFSc6xHD/fW4Rqw/vYKxe4R+i5cYgG9n9q/
+X-Google-Smtp-Source: AGHT+IGNI5zcUadWDNtHZLwpSfhsnFZ6gYzXkoEsS4X00Bv8iWhvgl1gTNm5aAPU2QFPb91pnBGcMsp1J5LyEqnW6ow=
+X-Received: by 2002:a05:6808:221d:b0:3a3:37dd:e052 with SMTP id
+ bd29-20020a056808221d00b003a337dde052mr11704505oib.5.1694445176645; Mon, 11
+ Sep 2023 08:12:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-099c9
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230907095521.14053-1-Julia.Lawall@inria.fr> <20230907095521.14053-9-Julia.Lawall@inria.fr>
+In-Reply-To: <20230907095521.14053-9-Julia.Lawall@inria.fr>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 11 Sep 2023 17:12:45 +0200
+Message-ID: <CAJZ5v0i46Ybd3KWQ-ogmbTRoTW=w1nDEg4KpVfo8x0ZFf3qOeg@mail.gmail.com>
+Subject: Re: [PATCH 08/11] thermal/of: add missing of_node_put
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 07 Sep 2023 11:55:10 +0200, Julia Lawall wrote:
-> Add of_node_put on a break out of an of_node loop.
-> 
+On Thu, Sep 7, 2023 at 11:56 AM Julia Lawall <Julia.Lawall@inria.fr> wrote:
+>
+> for_each_child_of_node performs an of_node_get on each
+> iteration, so a break out of the loop requires an
+> of_node_put.
+>
+> This was done using the Coccinelle semantic patch
+> iterators/for_each_child.cocci
+>
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+>
+> ---
+>  drivers/thermal/thermal_of.c |    8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+>
+> diff -u -p a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+> --- a/drivers/thermal/thermal_of.c
+> +++ b/drivers/thermal/thermal_of.c
+> @@ -37,8 +37,10 @@ static int of_find_trip_id(struct device
+>          */
+>         for_each_child_of_node(trips, t) {
+>
+> -               if (t == trip)
+> +               if (t == trip) {
+> +                       of_node_put(t);
+>                         goto out;
+> +               }
+>                 i++;
+>         }
+>
+> @@ -401,8 +403,10 @@ static int thermal_of_for_each_cooling_m
+>
+>         for_each_child_of_node(cm_np, child) {
+>                 ret = thermal_of_for_each_cooling_device(tz_np, child, tz, cdev, action);
+> -               if (ret)
+> +               if (ret) {
+> +                       of_node_put(child);
+>                         break;
+> +               }
+>         }
+>
+>         of_node_put(cm_np);
+>
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[10/11] ASoC: rsnd: add missing of_node_put
-        commit: 28115b1c4f2bb76e786436bf6597c5eb27638a5c
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Applied as 6.6-rc material, thanks!

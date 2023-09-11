@@ -2,63 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7671F79B192
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Sep 2023 01:56:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27DBB79B666
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Sep 2023 02:05:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239512AbjIKWpr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Sep 2023 18:45:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60812 "EHLO
+        id S240224AbjIKWpz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Sep 2023 18:45:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244379AbjIKUPy (ORCPT
+        with ESMTP id S240982AbjIKO6x (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Sep 2023 16:15:54 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 309D3185;
-        Mon, 11 Sep 2023 13:15:49 -0700 (PDT)
-Received: from mercury (unknown [185.209.196.239])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: sre)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id BE10566072FB;
-        Mon, 11 Sep 2023 21:15:46 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1694463346;
-        bh=QvYpu+E4ir6H9xoX6RAFUKeRn6noR1kwabk8MMjaLtc=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=EwwodJ5FTz+p6UYEh057UhpgWQwoWjtl5y2YvIZyQfaFIQmcG9+9uHf4t24SRuZO5
-         hPc8ON09f5gyM9RnP+FYqD2s7LzWITpD6LcDRmDiFIWgO/tiRTer0qEwzOLnID+mTB
-         RggGg4AB1PtBH9DsyR7hoGq/V9xbCe/4vaxajZBIOyrnJ8/uF7VHXFi6VwhJUyt+yR
-         L20eEOSWK66I+nAt4VFh0EXu0jyoaLa6UY6h3xmWXpO8FJ/MZRImeWJc91lYcQrUM1
-         +uZKPCBlyKid6yI+hqybuXfgVpLXnKOnuCKSzp4A3ywhcJwi958kGX8uLI4+uZbCD2
-         Z1dxlDPJnZfvA==
-Received: by mercury (Postfix, from userid 1000)
-        id 73FFB1060929; Mon, 11 Sep 2023 22:15:44 +0200 (CEST)
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Sebastian Reichel <sre@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc:     dan.carpenter@linaro.org, kernel-janitors@vger.kernel.org,
-        error27@gmail.com
-In-Reply-To: <20230906084815.2827930-1-harshit.m.mogalapalli@oracle.com>
-References: <20230906084815.2827930-1-harshit.m.mogalapalli@oracle.com>
-Subject: Re: [PATCH] power: supply: mt6370: Fix missing error code in
- mt6370_chg_toggle_cfo()
-Message-Id: <169446334445.405661.9324882432164519233.b4-ty@collabora.com>
-Date:   Mon, 11 Sep 2023 22:15:44 +0200
+        Mon, 11 Sep 2023 10:58:53 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8B19E40;
+        Mon, 11 Sep 2023 07:58:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC149C433C8;
+        Mon, 11 Sep 2023 14:58:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694444328;
+        bh=ElBM/KqIFBZMLgqkcIjsypNkZ50Q+YUJl4HU6zRkfek=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BAFGBX6lY9IYbWAu8h+uiNoMOiLaq26BbLyEvk5MjFus/HU1S/U7h5ES2T/fCoIH3
+         Czh3CnX3xHkdzrzT3AJXYqb8hZbRM+9TlmsU46IqUBO/xJkMt3vzl7C6rGEd/HpkI7
+         y9ZsN8N7b5qZhsEcb+SuKxRut34O9vTIFQaDALCno2Q1pEZCPjz4ZcHKNva3AsR/al
+         s0jJLRJTkl8MauZ0TSUhwLFgh+yv1I/621//5LBw/4FhJtKHRj6fwMNXxw3u7EOrbh
+         kJbOdFi3jUNHtEuVTMi4q4UxqMOvXtSxZhxXMiV7JJgJzbPjI0xcTNMmTlMOsIAdPe
+         7h1CLd0GHHaiA==
+Received: (nullmailer pid 1247017 invoked by uid 1000);
+        Mon, 11 Sep 2023 14:58:46 -0000
+Date:   Mon, 11 Sep 2023 09:58:46 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Dan Carpenter <dan.carpenter@linaro.org>
+Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Frank Rowand <frowand.list@gmail.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: Re: [PATCH] of: dynamic: Fix potential memory leak in
+ of_changeset_action()
+Message-ID: <169444431966.1246837.7857965062714574561.robh@kernel.org>
+References: <7dfaf999-30ad-491c-9615-fb1138db121c@moroto.mountain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7dfaf999-30ad-491c-9615-fb1138db121c@moroto.mountain>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -66,18 +55,22 @@ List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
-On Wed, 06 Sep 2023 01:48:15 -0700, Harshit Mogalapalli wrote:
-> When mt6370_chg_field_get() suceeds, ret is set to zero and returning
-> zero when flash led is still in strobe mode looks incorrect.
+On Fri, 08 Sep 2023 10:03:50 +0300, Dan Carpenter wrote:
+> Smatch complains that the error path where "action" is invalid leaks
+> the "ce" allocation:
+>     drivers/of/dynamic.c:935 of_changeset_action()
+>     warn: possible memory leak of 'ce'
 > 
+> Fix this by doing the validation before the allocation.
+> 
+> Fixes: 914d9d831e61 ("of: dynamic: Refactor action prints to not use "%pOF" inside devtree_lock")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/r/202309011059.EOdr4im9-lkp@intel.com/
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> ---
+>  drivers/of/dynamic.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
 
 Applied, thanks!
-
-[1/1] power: supply: mt6370: Fix missing error code in mt6370_chg_toggle_cfo()
-      commit: 779873ec81306d2c40c459fa7c91a5d40655510d
-
-Best regards,
--- 
-Sebastian Reichel <sebastian.reichel@collabora.com>
 

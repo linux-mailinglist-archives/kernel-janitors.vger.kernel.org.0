@@ -2,136 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30E9779A468
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Sep 2023 09:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E48B979AF9E
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Sep 2023 01:47:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234123AbjIKH1i (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Sep 2023 03:27:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39466 "EHLO
+        id S239980AbjIKWpu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Sep 2023 18:45:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229748AbjIKH1h (ORCPT
+        with ESMTP id S241425AbjIKPI0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Sep 2023 03:27:37 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DBC2CD1
-        for <kernel-janitors@vger.kernel.org>; Mon, 11 Sep 2023 00:27:31 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-401f68602a8so44712755e9.3
-        for <kernel-janitors@vger.kernel.org>; Mon, 11 Sep 2023 00:27:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694417250; x=1695022050; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XyNRJsgDnT0Q1wv9e4Yhzfbl/njbmsE4L07P0lJyW3k=;
-        b=u1Gyjua/NAJ+ui+tSAZUYCfRHILudJ+sRaJ8BAx64xKYROiUN3LSW6vEdOw2oLtIdP
-         2nnyrCb9YY9rwlapAnzdmMXeuqLdEIfL3oPSY3rXI942tq8FO4konwYTXeKbBwEkx6Vb
-         i2u7LKif9sY7Hv3BozT7TPQkJYDNaawZK13cGPlM6oBfTuMnvFKstiw2sDnvXGkfhabc
-         gB0njW9ogvpahtusGe2w2daZ60/YbTZkoQu40JYypdF47ZyKxSamlTuDiAQoRXc9nJU2
-         pdU5wtEysRg56a1sY+saKaZVKgATmPYTdjkUDn8XVAn7xYxStIYwFSQNiFprTYlIfwC/
-         PG1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694417250; x=1695022050;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XyNRJsgDnT0Q1wv9e4Yhzfbl/njbmsE4L07P0lJyW3k=;
-        b=EUt8zi5d3d5Ja4Z783EgW6g8l0ABw5o1EPlNBgGB0DFkg4HizqFujMkYOM8N6DfUpK
-         sTtz4SOvdUfe6YGr+vThA/H5b8lwOzm7m/FxGcBCW3i4VIMS6tIzWbTeHFuHb/++VjDB
-         feyoLhlyn3QT962kRUJ3HrBxqKjy3jJmv76NpUE7KnYA++nThLc2siCoqY9Mohvh/iwT
-         WFL+BK0Ij4BJ4CTArXduSJ9tjHDZw+SLcdifOgc7wMDJOmTBQNsczfHLHUbqVPaxDG1g
-         1oq4z/sWNZhK2uAY1ORnFGw4bUphn7BQ3qt2cs8vlc1qA1WIklPm2sZrlyfqWNL4oY5o
-         EOGg==
-X-Gm-Message-State: AOJu0YxyE17DKlL0EDKQBXLcm3cjOHWqvLn3rg7WmBBNVvhpa+O3QyhB
-        qK1UR9FwAuKL/ixU0UwKelny7Q==
-X-Google-Smtp-Source: AGHT+IGdBfloYgMq0Mc9JPKNVTFK1Kj770gyf2LEnnuCfIgLbNILenUucwmxL1Rn2ZvcDwzJG4mIDQ==
-X-Received: by 2002:adf:f589:0:b0:319:7b66:7803 with SMTP id f9-20020adff589000000b003197b667803mr6607879wro.55.1694417250043;
-        Mon, 11 Sep 2023 00:27:30 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id 14-20020a056000154e00b0031f8be5b41bsm6289336wry.5.2023.09.11.00.27.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Sep 2023 00:27:29 -0700 (PDT)
-Date:   Mon, 11 Sep 2023 10:27:25 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     liulongfang <liulongfang@huawei.com>
-Cc:     Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Zaibo Xu <xuzaibo@huawei.com>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-crypto@vger.kernel.org
-Subject: Re: [PATCH] crypto: hisilicon/hpre - Fix a erroneous check after
- snprintf()
-Message-ID: <6b9ada4d-0bfc-43c6-9793-be6762c1bbba@kadam.mountain>
-References: <73534cb1713f58228d54ea53a8a137f4ef939bad.1693858632.git.christophe.jaillet@wanadoo.fr>
- <ZPaSCOX1F9b36rxV@gondor.apana.org.au>
- <00bdcfec-6cc1-e521-ceaa-d16d6341ca16@wanadoo.fr>
- <71bf9b84-462f-405e-91aa-fb21fc6ffbd5@moroto.mountain>
- <258d6883-f572-9ac7-f6c6-73c34b9d5b63@huawei.com>
+        Mon, 11 Sep 2023 11:08:26 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51C42FA;
+        Mon, 11 Sep 2023 08:08:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA0AC433C9;
+        Mon, 11 Sep 2023 15:08:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694444901;
+        bh=QQhUsR8kda3/hj6CcImnvWnHoUxICmdWDtUfw+d0L2k=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=oMnmqdvCbB/b9eUNHcCKrZgBIXAfEa4l3Ut8F+Krr/A+TO4Qp5xFRdmhtzOYMkOQW
+         98qwiW7ihtvdhmXn9/JMY3cAkCWfkf2RS329FQiqevC0xj5zMYEDcJaG1IoD/tdcm4
+         kpZWOr1Vyd7e3Vmm3u4QL91seR/p4ZlqPgFodnlHBoxj1eBGPhSgK/yrDWOIq40+f5
+         aUnUpUTw2aMPaIA27iibLEyT3mePx5Lnjot6mQy4HcSMzruUmZLyKo9qd8lzteD46Z
+         2M1fvO80IowMc9BrQIeMCwHpPKkPdDJZ3fzLDWpXm32vUmqUZe+eAU80MyQvPY7gmH
+         AOdhADl4GZdow==
+From:   Mark Brown <broonie@kernel.org>
+To:     alsa-devel@alsa-project.org, Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     kernel-janitors@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
+        Amit Kucheria <amitk@kernel.org>, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linuxppc-dev@lists.ozlabs.org, linux-mmc@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        linux-mediatek@lists.infradead.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-media@vger.kernel.org
+In-Reply-To: <20230907095521.14053-1-Julia.Lawall@inria.fr>
+References: <20230907095521.14053-1-Julia.Lawall@inria.fr>
+Subject: Re: (subset) [PATCH 00/11] add missing of_node_put
+Message-Id: <169444489227.1851820.10212594180854433279.b4-ty@kernel.org>
+Date:   Mon, 11 Sep 2023 16:08:12 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <258d6883-f572-9ac7-f6c6-73c34b9d5b63@huawei.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-099c9
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Sep 11, 2023 at 09:58:56AM +0800, liulongfang wrote:
-> On 2023/9/7 19:15, Dan Carpenter wrote:
-> > On Tue, Sep 05, 2023 at 07:27:47AM +0200, Marion & Christophe JAILLET wrote:
-> >>>
-> >>> The other snprintf in the same file also looks suspect.
-> >>
-> >> It looks correct to me.
-> >>
-> >> And HPRE_DBGFS_VAL_MAX_LEN being 20, it doesn't really matter. The string
-> >> can't be truncated with just a "%u\n".
-> >>
-> > 
-> > drivers/crypto/hisilicon/hpre/hpre_main.c
-> >    884          ret = snprintf(tbuf, HPRE_DBGFS_VAL_MAX_LEN, "%u\n", val);
-> >    885          return simple_read_from_buffer(buf, count, pos, tbuf, ret);
-> > 
-> > You can't pass the return value from snprintf() to simple_read_from_buffer().
-> > Otherwise the snprintf() checking turned a sprintf() write overflow into
-> > a read overflow, which is less bad but not ideal.  It needs to be
-> > scnprintf().
-> >
+On Thu, 07 Sep 2023 11:55:10 +0200, Julia Lawall wrote:
+> Add of_node_put on a break out of an of_node loop.
 > 
-> Here only one "%u" data is written to buf, the return value ret cannot exceed 10,
-> and the length of tbuf is 20.
-> How did the overflow you mentioned occur?
 
-Why are we using snprintf() if the overflow can't occur?  We could just
-use sprintf().
+Applied to
 
-The reason why we prefer to use snprintf() is because we are trying
-extra hard to avoid buffer overflows.  Belt and suspenders.  The
-overflow can't happen because we measured but even if we messed up we
-are still safe.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-We should apply that same logic to the next line.  Even if an overflow
-occurs, then we still want to be safe.  And the way to do that is to
-change snprintf() to scnprintf().
+Thanks!
 
-It is always incorrect to assume that snprintf() cannot overflow.  It is
-a mismatch.  snprintf() is for careful people, and if we are going to be
-careful then we have to be careful everywhere within the function
-boundary.  Outside of the function boundary then we can have different
-assumptions, but within the function boundary then we have to logically
-consistent.
+[10/11] ASoC: rsnd: add missing of_node_put
+        commit: 28115b1c4f2bb76e786436bf6597c5eb27638a5c
 
-It's the same logic as checking for NULL consistently.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-	foo->bar = frob();
-	if (!foo)
-		return -EINVAL;
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-This code is wrong.  Even if foo can never be NULL and the code can
-never crash, it is a logic inconsistency so it is wrong.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-regards,
-dan carpenter
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

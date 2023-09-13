@@ -2,77 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A813579FAD1
-	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Sep 2023 07:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C6907A00AC
+	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Sep 2023 11:48:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234746AbjINF2r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 14 Sep 2023 01:28:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33612 "EHLO
+        id S237504AbjINJsF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 14 Sep 2023 05:48:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234655AbjINF2q (ORCPT
+        with ESMTP id S237497AbjINJsE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 14 Sep 2023 01:28:46 -0400
-Received: from smtp.smtpout.orange.fr (smtp-25.smtpout.orange.fr [80.12.242.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E56E2BD
-        for <kernel-janitors@vger.kernel.org>; Wed, 13 Sep 2023 22:28:41 -0700 (PDT)
-Received: from [192.168.1.18] ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id geu7qi3W7064Kgeu7qSmeo; Thu, 14 Sep 2023 07:28:40 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-        s=t20230301; t=1694669320;
-        bh=e+af5j09RXHijicnoPfch2UIrQzegSr6ZHEjvBLEAIc=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=rqPZHfBO5xteKv4Cv1Jt1OblHZxr/1SDkh2R2D7sqGk4eN+eGoTNZ8H5Mkde2bdr4
-         8V61wNhUfzN8/odkeDrZ4aRbQEBTfQ0gI5cg2Doy7YtDVZ0j7zMOaX4jC6svTNWSll
-         8D3YigKNfkYMQLFWYZZPeBxVm/0Jb1Vw2bMRYRYUYjl24DVNH/3eJpQ6SkoXeY+8oo
-         30dVFJxAtzgrKGXoxpGl7ga/+x7gZCY66o9vY0wO1SzbYghS7UdZEn6YJsAXzzg3cr
-         vEi6/SVdvNtLTfirYyM+1/6/ejeJXX5olITJw3xhA42S+n9KHHYDJaVLgdMPI3zgLa
-         Zop3QRBFwv42w==
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 14 Sep 2023 07:28:40 +0200
-X-ME-IP: 86.243.2.178
-Message-ID: <1d1d83df-c1d1-22b0-72a0-291a68d0c328@wanadoo.fr>
-Date:   Thu, 14 Sep 2023 07:28:39 +0200
+        Thu, 14 Sep 2023 05:48:04 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4166EB
+        for <kernel-janitors@vger.kernel.org>; Thu, 14 Sep 2023 02:47:59 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-40434d284f7so5155025e9.3
+        for <kernel-janitors@vger.kernel.org>; Thu, 14 Sep 2023 02:47:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1694684878; x=1695289678; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NzzzJpY9KlYdQtsBVsrdcIxWQyjcGOv0khQAB609xvg=;
+        b=I8CIqLhZH7ynHiMYMnqMB4b7c89IzWD4eGgaVyuAgl7gMFubwSN3RsoBN8OzxPczDV
+         RSFinowOnopUZOAfxWrglOU0lfZqe13jBSsjuAMmk24i5B+Q9vjy02UJ/QO6THK40v7C
+         5kvjJ4VWPWcj86hVZ/+Tbo9Vca7M6WdhmfDro/cBgz0oxSi+qcqXMXjZOnhJmqpEMqLI
+         AJb6Hxc15pEVActHbuvmmWLG35Oz0tOjhY6pRNEiO0YSqJP20WxFo1j3MGGmGys1mP+j
+         TSdHlvPXiws/uXR7TYFDryTuMfORin8I5nZfI5zcFL9gT81hbY44K2mz/9n8lI62vvzX
+         PqVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694684878; x=1695289678;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NzzzJpY9KlYdQtsBVsrdcIxWQyjcGOv0khQAB609xvg=;
+        b=NCcG/KT8fu+rxjJU6dAwTIMcoMECW8w0VwOn0qfvH4b01tXuz3srjT1+btvoQrwIah
+         93qNJqfOL4WJUAmfnOXyvJWADgXwm9EMn6V8SAviKJ/GqQTqKM7JrFBpAAe+49J2lXs5
+         LvyeqPDDmRyYAE/6WazhFNqaH1h3NmFEv1dagltxexzEveFm7PDnDaBKuSAFcg3QG5w3
+         yghsko2i1UASlJBFWIUMk08Pe7BqfVL2gXrP6O8mxSUQAKeMXkYA4QbQwVgLUPLT2St8
+         1YYlEE5nMNO/2Q8aw4OKM1oHrjOLXptyB1k3WXTgcL1sBWmdtvZYVixOtsMs6jBjHMFd
+         9GqQ==
+X-Gm-Message-State: AOJu0Yz+2zEsvLpvPVE+/SL7z63E98J2/FUQxNlk4Vio6FummHAfiqU2
+        Dxp48RZlRm9UeR+L6AxOBLq5lQ==
+X-Google-Smtp-Source: AGHT+IHzgX1oNCgbhQl0a7H9yPKrhXkm4fFi37KYW/JBRfGXBl+yNuIOQgHlKkxiKUMaw93PkJHsHg==
+X-Received: by 2002:a7b:c7d5:0:b0:3fe:e7b2:c97f with SMTP id z21-20020a7bc7d5000000b003fee7b2c97fmr4019759wmk.36.1694684878173;
+        Thu, 14 Sep 2023 02:47:58 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id f2-20020a7bc8c2000000b003fed70fb09dsm1499698wml.26.2023.09.14.02.47.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Sep 2023 02:47:57 -0700 (PDT)
+Date:   Wed, 13 Sep 2023 12:36:29 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     Eric Dumazet <edumazet@google.com>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        David Ahern <dsahern@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH net-next] tcp: indent an if statement
+Message-ID: <de6b9eed-7049-45c6-aa49-ca7990c979c8@moroto.mountain>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH 1/2] bcachefs: Fix a potential in the error handling path
- of use-after-free inbch2_dev_add()
-To:     Kent Overstreet <kent.overstreet@linux.dev>
-Cc:     Brian Foster <bfoster@redhat.com>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Kent Overstreet <kent.overstreet@gmail.com>,
-        linux-bcachefs@vger.kernel.org
-References: <3ab17a294fd2b5fcb180d44955b0d76a28af11cb.1694623395.git.christophe.jaillet@wanadoo.fr>
- <20230913230135.y27i2bx244tdjhvj@moria.home.lan>
-Content-Language: fr
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20230913230135.y27i2bx244tdjhvj@moria.home.lan>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Indent this if statement one tab.
 
-Le 14/09/2023 à 01:01, Kent Overstreet a écrit :
-> On Wed, Sep 13, 2023 at 06:44:08PM +0200, Christophe JAILLET wrote:
->> If __bch2_dev_attach_bdev() fails, bch2_dev_free() is called twice.
->> Once here and another time in the error handling path.
->>
->> This leads to several use-after-free.
->>
->> Remove the redundant call and only rely on the error handling path.
-> Thanks, both applied
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+Applies to net and net-next, but it's just a white space issue so it
+should go into net-next.
 
+ net/ipv4/tcp_timer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-If not too late, it is more a double-free than a use-after-free.
-
-And I messed up the ordering of the words in the subject.
-
-Sorry about that.
-
-CJ
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index d45c96c7f5a4..18ede5205b9d 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -394,7 +394,7 @@ static void tcp_probe_timer(struct sock *sk)
+ 		if (user_timeout &&
+ 		    (s32)(tcp_jiffies32 - icsk->icsk_probes_tstamp) >=
+ 		     msecs_to_jiffies(user_timeout))
+-		goto abort;
++			goto abort;
+ 	}
+ 	max_probes = READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_retries2);
+ 	if (sock_flag(sk, SOCK_DEAD)) {
+-- 
+2.39.2
 

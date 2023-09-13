@@ -2,159 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F01C79E057
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Sep 2023 09:01:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9456779E1D1
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Sep 2023 10:18:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238398AbjIMHBM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 Sep 2023 03:01:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51170 "EHLO
+        id S233942AbjIMISn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 13 Sep 2023 04:18:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232592AbjIMHBK (ORCPT
+        with ESMTP id S231656AbjIMISm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 Sep 2023 03:01:10 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AA581738
-        for <kernel-janitors@vger.kernel.org>; Wed, 13 Sep 2023 00:01:06 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-401da71b85eso70178915e9.1
-        for <kernel-janitors@vger.kernel.org>; Wed, 13 Sep 2023 00:01:06 -0700 (PDT)
+        Wed, 13 Sep 2023 04:18:42 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D40C81996
+        for <kernel-janitors@vger.kernel.org>; Wed, 13 Sep 2023 01:18:37 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id ffacd0b85a97d-31fa15f4cc6so3280099f8f.2
+        for <kernel-janitors@vger.kernel.org>; Wed, 13 Sep 2023 01:18:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694588465; x=1695193265; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rxEwSrADigL55KUK+kn7a1SeYT+9CqL3SU8EoT51CDk=;
-        b=Wua8OQ8hb5BPxMUekouQOb5BZwOj13VSbftvNQwBa6hltLVm0VPPzkksJzVh2Hi+B7
-         dP8/NLX+E0uk4CTZ7oHsBnmjEgKaiJYuYywlMgOXdXonJ1uvkj//etMX19k7DIAVpQHf
-         DwUWHXJ9m+uJsQx2BhhjcRbIrtXdgLFWWqH9aGysbNjadt4kQsUMZk/NPwRV4+QPrK5p
-         Z2Hop3oO80VuTWlnxHOLWxAvamv4hqsnkUuHARirTPOFDXf40XqfsnKZ2HMbfkgWRngr
-         8f4wZ3jnk4Ol2mMTD/vaq/OlBcTC3JwJr0vW9NDC6hBN7QsLa++3fWXScgroeKNHaS2v
-         oC8A==
+        d=linaro.org; s=google; t=1694593116; x=1695197916; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=p0T8G3R6507VORdtnswAiI9E09gNgvj+W/NjhPnIOgc=;
+        b=a9bJIDmvMoKGbxP30LbfvoGSibKlid/XXdBJLYkAtHFdTjJekp/3mdsxGOm7G7tP2L
+         lMfw0rXrOUUsHdWqnaB1X77WgXI0Z3oGJf79UWJqs0NrmS1ZeJRp57LXP1ZqUot0qeVK
+         6AOXrGow6yhSV40KNz61e+43pA1BEGK+3ovU6ZPzluWPBeDzqi2lOxzYIlj3AfIQ74pY
+         MCYZX7ajfp07omW1/HypHoPj4IBW+655WHKHr7YB3lwi1nocrVkThxwdLaQmDECSw2l9
+         CPeflBGsMx04LjpSIof5/g/K2UFAOERk1ABv0u5G4AzXveNpjzEQQUyRd2HFjJjEzsbD
+         GczQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694588465; x=1695193265;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rxEwSrADigL55KUK+kn7a1SeYT+9CqL3SU8EoT51CDk=;
-        b=ItF3xa7ihvRFQfPzpjRqsPJb8aYNY+CVXJ0YjM8zmTcstN+PVirZylhU3XawhXembg
-         XQmH8F2Dpk8HU/LVc/jcNmf1Qel2R61X5827jtUg5PklbEJ/HG/nScu7FQyIC+NuI0Bl
-         Lr1pVX8a5F+JcN4bjjQsMm2Ff0g9Dqn9kTTWPAE+UF7GulF/osZhf49LK3zYAs4ts1S0
-         JCscw8LJXHeS8bhA43KQdJIYzBbTslx1m+OFvsUQrK1njCILi7vGEDJNg1Sl5oNAUxCT
-         htSvIN6oRTLjMULUyal4Pgu2OQizKRP3NGwP4UQQsT9Hdtub2OEMgm/AXKEHqmNhzZPr
-         kQwA==
-X-Gm-Message-State: AOJu0YyiS0yQH25e8PQ2wmWlDQexui7GRQuf5A8HWuyBL5HJkFBtyqQN
-        /ywXSgaKeTmZrh7G//ZoWJJRXA==
-X-Google-Smtp-Source: AGHT+IGICr3IH8Jp41V2bYK9Ff2nTqLZswVkjLZvdCTwqajKf/5QT/EFKcb52xlWuAdRsrkmSCW0Rg==
-X-Received: by 2002:adf:ea85:0:b0:319:7c1f:8dae with SMTP id s5-20020adfea85000000b003197c1f8daemr1473001wrm.3.1694588465003;
-        Wed, 13 Sep 2023 00:01:05 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1694593116; x=1695197916;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=p0T8G3R6507VORdtnswAiI9E09gNgvj+W/NjhPnIOgc=;
+        b=Oo99Iss+/FbOlIbwk0oH/vCaGdIt9exDbYFGK/jxXOvQva6ZQb1tsGI57QiwwPxOLC
+         J5Djq9bT2at0RV9IsTd8Yi5V9GkfE78x9vxskzq07J+D3dc3/Wei6ti2LHQ2ry5J0zh9
+         OgxpV4MwcJrbJv0GLMDeFpDli6ZWlM9XuelsXkV/jpqKkuPAe3VUFlfgHgWkrED/k6pH
+         g43k9PA5i315/qmnpL9iPqu+Jo0jPQHAXe5uGnJK3d9o6gpvXc928JGx3pOSVUWuuK83
+         0w0Dlm0GL4Iff39XZqBiyBD98VFUDV9goThtKpoPxKdUjL7mZDcC/ZfzJiaX7fTxsJ5f
+         OGlg==
+X-Gm-Message-State: AOJu0Ywn/sN9jgQx6FG3cuY+ENRzKgbhXU2fGuqBFueHcFSdBuMxpzv1
+        CXpL5jVBQfy7tuE2YcC88A/39Q==
+X-Google-Smtp-Source: AGHT+IHeUTw7CplSMuNF9IZLmnrwVvu9RTNpnTc9kOuLVW/S+0mQbzZT1Fpm5Ke/E/yXYbLhgadW7A==
+X-Received: by 2002:adf:ea85:0:b0:319:7c1f:8dae with SMTP id s5-20020adfea85000000b003197c1f8daemr1673532wrm.3.1694593116282;
+        Wed, 13 Sep 2023 01:18:36 -0700 (PDT)
 Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id g8-20020a5d4888000000b0031912c0ffebsm14594274wrq.23.2023.09.13.00.01.03
+        by smtp.gmail.com with ESMTPSA id c6-20020adfed86000000b0031de43fe9bfsm14899765wro.0.2023.09.13.01.18.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Sep 2023 00:01:04 -0700 (PDT)
-Date:   Wed, 13 Sep 2023 10:01:01 +0300
+        Wed, 13 Sep 2023 01:18:36 -0700 (PDT)
+Date:   Wed, 13 Sep 2023 11:17:41 +0300
 From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     "Darrick J. Wong" <djwong@kernel.org>
-Cc:     Alex Elder <elder@ieee.org>,
-        Chandan Babu R <chandan.babu@oracle.com>,
-        Dave Chinner <dchinner@redhat.com>,
-        Kent Overstreet <kent.overstreet@linux.dev>,
-        linux-xfs@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] xfs: delete some dead code in xfile_create()
-Message-ID: <3c63cc50-c6a8-4bba-87d8-6556ebe1905e@kadam.mountain>
-References: <1429a5db-874d-45f4-8571-7854d15da58d@moroto.mountain>
- <20230912153824.GB28186@frogsfrogsfrogs>
- <e575bbf3-f0ba-ec39-03c5-9165678d1fc7@ieee.org>
- <20230912162315.GC28186@frogsfrogsfrogs>
+To:     Zhanjun Dong <zhanjun.dong@intel.com>
+Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Matt Roper <matthew.d.roper@intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Lucas De Marchi <lucas.demarchi@intel.com>,
+        Radhakrishna Sripada <radhakrishna.sripada@intel.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        Fei Yang <fei.yang@intel.com>,
+        Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] drm/i915/gt: Prevent error pointer dereference
+Message-ID: <455b2279-2e08-4d00-9784-be56d8ee42e3@moroto.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230912162315.GC28186@frogsfrogsfrogs>
+X-Mailer: git-send-email haha only kidding
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Sep 12, 2023 at 09:23:15AM -0700, Darrick J. Wong wrote:
-> On Tue, Sep 12, 2023 at 10:41:53AM -0500, Alex Elder wrote:
-> > On 9/12/23 10:38 AM, Darrick J. Wong wrote:
-> > > On Tue, Sep 12, 2023 at 06:18:45PM +0300, Dan Carpenter wrote:
-> > > > The shmem_file_setup() function can't return NULL so there is no need
-> > > > to check and doing so is a bit confusing.
-> > > > 
-> > > > Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> > > > ---
-> > > > No fixes tag because this is not a bug, just some confusing code.
-> > > 
-> > > Please don't re-send patches that have already been presented here.
-> > > https://lore.kernel.org/linux-xfs/20230824161428.GO11263@frogsfrogsfrogs/
-> > 
-> > FWIW, I side with Dan's argument.  shmem_file_setup() *does not*
-> > return NULL.  If it ever *did* return NULL, it would be up to the
-> > person who makes that happen to change all callers to check for NULL.
-> 
-> And as I asked three weeks ago, what's the harm in checking for a NULL
-> pointer here?  The kerneldoc for shmem_file_setup doesn't explicitly
-> exclude a null return.  True, it doesn't mention the possibility of
-> ERR_PTR returns either, but that's an accepted practice for pointer
-> returns.
+Move the check for "if (IS_ERR(obj))" in front of the call to
+i915_gem_object_set_cache_coherency() which dereferences "obj".
+Otherwise it will lead to a crash.
 
-Mixing up error pointers and NULL checking is a common bug.  We never
-hit this in run time these days because we've been using static analysis
-to prevent it for over a decade.
+Fixes: 43aa755eae2c ("drm/i915/mtl: Update cache coherency setting for context structure")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ drivers/gpu/drm/i915/gt/intel_lrc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-If you look at the code we used to ship in the 2006 era it's absolutely
-amazing (bad).  Static analysis isn't perfect for everything but there
-are some kinds of simple bugs where we've almost eliminated them
-completely.
-
-> 
-> For a call outside of the xfs subsystem, I think it's prudent to have
-> stronger return value checking.  Yes, someone changing the interface
-> would have to add a null check to all the callsites, but (a) it's benign
-> to guard against a behavior change in another module and (b) people miss
-> things all the time.
-> 
-> > The current code *suggests* that it could return NULL, which
-> > is not correct.
-> 
-> Huh?
-> 
-> Are you talking about this stupid behavior of bots where they decide
-> what a function returns based on the callsites in lieu of analyzing the
-> actual implementation code?
-
-In this case Smatch is looking at the implementation.
-
-$ smdb return_states shmem_file_setup | grep INTER
-mm/shmem.c | shmem_file_setup | 2229 |  4096-ptr_max|        INTERNAL | -1 |                      | struct file*(*)(char*, llong, ulong) |
-mm/shmem.c | shmem_file_setup | 2230 |  (-4095)-(-1)|        INTERNAL | -1 |                      | struct file*(*)(char*, llong, ulong) |
-mm/shmem.c | shmem_file_setup | 2231 | (-4095)-(-4),(-2)-(-1)|        INTERNAL | -1 |                      | struct file*(*)(char*, llong, ulong) |
-mm/shmem.c | shmem_file_setup | 2232 |         (-22)|        INTERNAL | -1 |                      | struct file*(*)(char*, llong, ulong) |
-mm/shmem.c | shmem_file_setup | 2233 |         (-12)|        INTERNAL | -1 |                      | struct file*(*)(char*, llong, ulong) |
-
-I also manually reviewed the function implementation to verify.
-
-> 
-> I don't feel like getting harassed by bots when someone /does/
-> accidentally change the implementation to return NULL, and now one of
-> the other build/test/syz bots starts crashing in xfile_create.
-
-If someone changes it to return NULL then there are a few things to
-note.
-
-1) That person is going to have change all the call sites.
-2) Normally when a function returns both error pointers and NULL then
-   the NULL is success. So this code doesn't handle the normal case
-   correctly because it assumes NULL is an error.
-3) Static checkers will complain if the call sites are not updated.  Try
-   to find any IS_ERR vs NULL bugs in the past year that were found at
-   run time instead of through static analysis.  Occasionally syzbot
-   will hit them before me but it's rare.  I don't even remember the
-   last time where this sort of bug managed to reach actual users.
-
-> 
-> Of course all that has bought me is ... more f*** bot harassment.
-> 
-> I'm BURNED OUT, give me a fucking break!
-
-Fair enough.  I should have seen Yang Yingliang's email.
-
-regards,
-dan carpenter
+diff --git a/drivers/gpu/drm/i915/gt/intel_lrc.c b/drivers/gpu/drm/i915/gt/intel_lrc.c
+index 957d0aeb0c02..c378cc7c953c 100644
+--- a/drivers/gpu/drm/i915/gt/intel_lrc.c
++++ b/drivers/gpu/drm/i915/gt/intel_lrc.c
+@@ -1094,6 +1094,9 @@ __lrc_alloc_state(struct intel_context *ce, struct intel_engine_cs *engine)
+ 					  I915_BO_ALLOC_PM_VOLATILE);
+ 	if (IS_ERR(obj)) {
+ 		obj = i915_gem_object_create_shmem(engine->i915, context_size);
++		if (IS_ERR(obj))
++			return ERR_CAST(obj);
++
+ 		/*
+ 		 * Wa_22016122933: For Media version 13.0, all Media GT shared
+ 		 * memory needs to be mapped as WC on CPU side and UC (PAT
+@@ -1102,8 +1105,6 @@ __lrc_alloc_state(struct intel_context *ce, struct intel_engine_cs *engine)
+ 		if (intel_gt_needs_wa_22016122933(engine->gt))
+ 			i915_gem_object_set_cache_coherency(obj, I915_CACHE_NONE);
+ 	}
+-	if (IS_ERR(obj))
+-		return ERR_CAST(obj);
+ 
+ 	vma = i915_vma_instance(obj, &engine->gt->ggtt->vm, NULL);
+ 	if (IS_ERR(vma)) {

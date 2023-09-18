@@ -2,100 +2,159 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DA5B7A4EF7
-	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Sep 2023 18:32:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F17727A52B7
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Sep 2023 21:09:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230136AbjIRQce (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 Sep 2023 12:32:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52672 "EHLO
+        id S229947AbjIRTJL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 Sep 2023 15:09:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229986AbjIRQcY (ORCPT
+        with ESMTP id S229899AbjIRTJK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 Sep 2023 12:32:24 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13883BE;
-        Mon, 18 Sep 2023 09:17:38 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-402c46c49f4so50473095e9.1;
-        Mon, 18 Sep 2023 09:17:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695053856; x=1695658656; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CANJvV/UmJ8+MnU+w/pR9h9EIL/YLrx6SrFgD3723Yg=;
-        b=UbIaPyfVkuByfEsIpp/hhhNx1XM4O9H+NxC9+oJQP4AZqzh7keOhkMcZaRN0QKqE5V
-         gzHEY87X97+HYab++WeNbasL/r6gtXumQxbuaRAQOiw+KgbnUNDNrBBe8yKR/6JSpQB/
-         /7JIW8y/rU7FVrJYwhok44+Az0ebKGbjCgtoH017bEo61Of3eJj+2daXPprBIvvF9Nvv
-         JBqXFoIzcZN0UJ7NqsrRk2SAKcQpAGO2FymwhXyJC9OS6b9wAWtl0z3+/+5VKhEu64o0
-         roUZOS6FbbhY6ut199ljC6jnm9SlFrm61IedMFPWg8aJhhwqkGeh89CdI6GQNLxwbR83
-         Wh8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695053856; x=1695658656;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CANJvV/UmJ8+MnU+w/pR9h9EIL/YLrx6SrFgD3723Yg=;
-        b=W9hufwtfDeieGhHtKSlK8URZERHm0B1zs3b9u/1A4+8VkEoBMpGqFwIPRAq+z33OHa
-         wJyWOB5fU+APETQjk6DiD6JnhXyH8FNRkSNnOi3RSafd99F7Dp2ruo6SJAynGNu9F5kP
-         UoroBbyvSsydLqtswn3O/mXAaWBkH63h04CFa8ztl0SsXkLMRhAdDQE8YyLpUr0adIzj
-         4hUvADQzJok41+PeWn+2+aV724/SSqn+BC/COkl+LoUewTPcmmv71OmjDHWGsbrUYO/C
-         0AXgHG7HTpIOnVjwa5cCq9m4PYyIT4CKfuCwqZToqlcES3NR3CXFg/IWQfzc9juOytpP
-         CTMg==
-X-Gm-Message-State: AOJu0YyMBxkgCXVDOp0F0XDQo9SjqPxcP1lZSASeRc29ieNwy937X83A
-        +afDk0Mf3Gc5Sp5qobqJlAPGLU5MR5uDnQdG
-X-Google-Smtp-Source: AGHT+IGI9gcwwPd99BrXutUFqVP6EWni7zFRDYdVplnOmPGUVdRaEi9ml0NcsG1K68WuDpLLsCxVtA==
-X-Received: by 2002:a5d:6ad2:0:b0:319:7788:5027 with SMTP id u18-20020a5d6ad2000000b0031977885027mr7448298wrw.59.1695043305259;
-        Mon, 18 Sep 2023 06:21:45 -0700 (PDT)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id 7-20020a05600c230700b003fefcbe7fa8sm12539395wmo.28.2023.09.18.06.21.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Sep 2023 06:21:44 -0700 (PDT)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Woojung Huh <woojung.huh@microchip.com>,
-        UNGLinuxDriver@microchip.com, Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] net: dsa: microchip: Fix spelling mistake "unxpexted" -> "unexpected"
-Date:   Mon, 18 Sep 2023 14:21:42 +0100
-Message-Id: <20230918132142.199638-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        Mon, 18 Sep 2023 15:09:10 -0400
+Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDA5B111
+        for <kernel-janitors@vger.kernel.org>; Mon, 18 Sep 2023 12:09:03 -0700 (PDT)
+Received: from eig-obgw-6006a.ext.cloudfilter.net ([10.0.30.182])
+        by cmsmtp with ESMTP
+        id iIHBqKlvbOzKliJcFqZtk0; Mon, 18 Sep 2023 19:09:03 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with ESMTPS
+        id iJcEqg4zrjefgiJcEq4hXO; Mon, 18 Sep 2023 19:09:02 +0000
+X-Authority-Analysis: v=2.4 cv=Aqf9YcxP c=1 sm=1 tr=0 ts=6508a04e
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=P7XfKmiOJ4/qXqHZrN7ymg==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=VSjF23E3Ok2ZiNtq:21 a=IkcTkHD0fZMA:10 a=zNV7Rl7Rt7sA:10 a=wYkD_t78qR0A:10
+ a=Z0r0GRSmFf-DnjB3DMoA:9 a=QEXdDO2ut3YA:10 a=m8lDLIEVUrKgScV2SIex:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=B5tMPsVfntUMhpYWlnMiaWsyGXw6mb8koJoFx0gfO7o=; b=R5stTqN9xsgrwySPbtSX0O9i5C
+        QSXuTu1SYXfR2ATKJiqLloT737kEr+VHOUSROOe+SqonHTpduxrILJFZITReMz0V7AJKC8gPXobXh
+        0Lm80V938IYFqLDoH4OOx5utnFMKK3wtZ2QU5N/V7kb8wk2MDkp8nAhBQ2y7yagexWD3d489w8jbh
+        sukPkV8YB4hICJgIAdIy4h2WMrWtFa+DoKNeXa8xr2rszFNbYMUehImHzgvi3otIFdDlGM3mApiTW
+        cC28tfr7BXK/TgMPFka4DdmtMKSQrBVlO03OWWt495psWkdTXQV39LiONiRc30iYzRJauvyYrQoAb
+        93C5X22A==;
+Received: from [94.239.20.48] (port=51062 helo=[192.168.1.98])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1qiJcD-003BP8-0d;
+        Mon, 18 Sep 2023 14:09:01 -0500
+Message-ID: <7043f179-b670-db3c-3ab0-a1f3e991add9@embeddedor.com>
+Date:   Sun, 17 Sep 2023 21:10:05 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] udmabuf: Fix a potential (and unlikely) access to
+ unallocated memory
+Content-Language: en-US
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc:     linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org
+References: <3e37f05c7593f1016f0a46de188b3357cbbd0c0b.1695060389.git.christophe.jaillet@wanadoo.fr>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <3e37f05c7593f1016f0a46de188b3357cbbd0c0b.1695060389.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 94.239.20.48
+X-Source-L: No
+X-Exim-ID: 1qiJcD-003BP8-0d
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.1.98]) [94.239.20.48]:51062
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 4
+X-Org:  HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfDY8mKfTHrpv3/sH+MSsvAwZUkubSiphKxWT5eLtqeOnICvJ2khqLx+halP0+Qub1AGgEtY1GQ19eD8g/C7UXClucSFABCqxWgh/iLxyU4ZcJ6jnjlZr
+ 2sFBjZPQ04mkomsT2QEJT1bKzWZeLwWKdHwvUBcs5KgxVi9KjIsiy710FQgtoeoKrBLIxzSto307oKCu8iDdUu7QAH6GaL2/RmFQysjkf6Wk/Q1DK7+2rzfO
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_12_24,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is a spelling mistake in a dev_err message. Fix it.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/net/dsa/microchip/ksz9477_acl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz9477_acl.c b/drivers/net/dsa/microchip/ksz9477_acl.c
-index 93cd46185e71..06d74c19eb94 100644
---- a/drivers/net/dsa/microchip/ksz9477_acl.c
-+++ b/drivers/net/dsa/microchip/ksz9477_acl.c
-@@ -353,7 +353,7 @@ static int ksz9477_acl_update_linkage(struct ksz_device *dev, u8 *entry,
- 		return 0;
- 
- 	if (val0 != old_idx) {
--		dev_err(dev->dev, "ACL: entry %d has unxpexted ActionRule linkage: %d\n",
-+		dev_err(dev->dev, "ACL: entry %d has unexpected ActionRule linkage: %d\n",
- 			old_idx, val0);
- 		return -EINVAL;
- 	}
--- 
-2.39.2
+On 9/18/23 12:46, Christophe JAILLET wrote:
+> If 'list_limit' is set to a very high value, 'lsize' computation could
+> overflow if 'head.count' is big enough.
+> 
+> In such a case, udmabuf_create() will access to memory beyond 'list'.
+> 
+> Use size_mul() to saturate the value, and have memdup_user() fail.
+> 
+> Fixes: fbb0de795078 ("Add udmabuf misc device")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>   drivers/dma-buf/udmabuf.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
+> index c40645999648..fb4c4b5b3332 100644
+> --- a/drivers/dma-buf/udmabuf.c
+> +++ b/drivers/dma-buf/udmabuf.c
+> @@ -314,13 +314,13 @@ static long udmabuf_ioctl_create_list(struct file *filp, unsigned long arg)
+>   	struct udmabuf_create_list head;
+>   	struct udmabuf_create_item *list;
+>   	int ret = -EINVAL;
+> -	u32 lsize;
+> +	size_t lsize;
+>   
+>   	if (copy_from_user(&head, (void __user *)arg, sizeof(head)))
+>   		return -EFAULT;
+>   	if (head.count > list_limit)
+>   		return -EINVAL;
+> -	lsize = sizeof(struct udmabuf_create_item) * head.count;
+> +	lsize = size_mul(sizeof(struct udmabuf_create_item), head.count);
+>   	list = memdup_user((void __user *)(arg + sizeof(head)), lsize);
+>   	if (IS_ERR(list))
+>   		return PTR_ERR(list);
 
+How about this, and we get rid of `lsize`:
+
+diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
+index c40645999648..5cf9d849aaa8 100644
+--- a/drivers/dma-buf/udmabuf.c
++++ b/drivers/dma-buf/udmabuf.c
+@@ -314,14 +314,13 @@ static long udmabuf_ioctl_create_list(struct file *filp, unsigned long arg)
+         struct udmabuf_create_list head;
+         struct udmabuf_create_item *list;
+         int ret = -EINVAL;
+-       u32 lsize;
+
+         if (copy_from_user(&head, (void __user *)arg, sizeof(head)))
+                 return -EFAULT;
+         if (head.count > list_limit)
+                 return -EINVAL;
+-       lsize = sizeof(struct udmabuf_create_item) * head.count;
+-       list = memdup_user((void __user *)(arg + sizeof(head)), lsize);
++       list = memdup_user((void __user *)(arg + sizeof(head)),
++                          size_mul(sizeof(*list), head.count));
+         if (IS_ERR(list))
+                 return PTR_ERR(list);
+
+
+--
+Gustavo

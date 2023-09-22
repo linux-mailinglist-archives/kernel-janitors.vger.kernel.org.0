@@ -2,117 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0249C7AB779
-	for <lists+kernel-janitors@lfdr.de>; Fri, 22 Sep 2023 19:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 041297ABA07
+	for <lists+kernel-janitors@lfdr.de>; Fri, 22 Sep 2023 21:27:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232846AbjIVRcS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 22 Sep 2023 13:32:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51802 "EHLO
+        id S233893AbjIVT1j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 22 Sep 2023 15:27:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233137AbjIVRcD (ORCPT
+        with ESMTP id S233785AbjIVT1i (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 22 Sep 2023 13:32:03 -0400
-Received: from smtp.smtpout.orange.fr (smtp-15.smtpout.orange.fr [80.12.242.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09D0B197
-        for <kernel-janitors@vger.kernel.org>; Fri, 22 Sep 2023 10:31:23 -0700 (PDT)
+        Fri, 22 Sep 2023 15:27:38 -0400
+Received: from smtp.smtpout.orange.fr (smtp-22.smtpout.orange.fr [80.12.242.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8573AA3
+        for <kernel-janitors@vger.kernel.org>; Fri, 22 Sep 2023 12:27:30 -0700 (PDT)
 Received: from pop-os.home ([86.243.2.178])
         by smtp.orange.fr with ESMTPA
-        id jjzlq1mvsWkeLjjzuquw1D; Fri, 22 Sep 2023 19:31:22 +0200
+        id jloFqD9PsGlzojloFq0RyT; Fri, 22 Sep 2023 21:27:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-        s=t20230301; t=1695403882;
-        bh=V2TWwOebnSbbI2cNxOy+6tSiLTe5TgHaacu+uy4XtWI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=TX6zHgc928K0ZEdheeOI3LHvylT2Zk+3802M3kwf7zwKf6/tNyJV2hrS0t2QDL6zm
-         y17PxnNEsUNJtz3rB4eIs7+J97GsfmCA5+4lBwF2d1XL7JZbnoVE985mg3NYAV3t+/
-         9fGYZmwB3YwvOiUCg5Kb92t+mxWukCCCsdjVOYTFaGW2kf1SREFy6d3ijUqqWHXqrO
-         fkdgUd3NCgOn25vktljueaiheiiN3VPmdctVP4ZnkyEo1uD/d3ouUbWfKkKBEoi/iK
-         7V/JJcmQnD/sTem8fmoMZoRPACWoB/qCD1N2bdsXQ3rj76jI5VJh3Hczk85olXLvOa
-         1mAMhDtGfhbdg==
+        s=t20230301; t=1695410848;
+        bh=XEqKkQdd+1AGqY7DppYqYg8hkwbZVqfTt1fDBwsytHo=;
+        h=From:To:Cc:Subject:Date;
+        b=tzuTLQNT2FcvHWUhvK7u8I5xvd2KA5IRJCU1xjcCBN4l14vbvTpn2YO5G3N99N/iJ
+         hBcGEeW26CUo24OMz22rm7R7kHw6+L9UiNn9p1RihPMY9pIFn50z7GsjgWYTCKf8hq
+         Xk2ml88ep4HJsD9wm1TI+fpSCN3ITNY6nXlOcQvmGLuQBji6qGheyUzJs25Bc9c+rP
+         6a61QFX1qkWHe5OzhUMSVPdemOGVORUV8YmY6sHZrkLKy+lnBZ72S5fJe4/UxuG34e
+         p6B4dixT6ScxQcx+gFHVwUxGEovC9xubtfVh4LnikubTrm4NFY/d7Plxm0r5/+1EwQ
+         Jm27Pr7yM5EWQ==
 X-ME-Helo: pop-os.home
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 22 Sep 2023 19:31:22 +0200
+X-ME-Date: Fri, 22 Sep 2023 21:27:28 +0200
 X-ME-IP: 86.243.2.178
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Christine Caulfield <ccaulfie@redhat.com>,
-        David Teigland <teigland@redhat.com>
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Lijo Lazar <lijo.lazar@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        gfs2@lists.linux.dev
-Subject: [PATCH 3/3] fs: dlm: Remove some useless memset()
-Date:   Fri, 22 Sep 2023 19:31:10 +0200
-Message-Id: <e2ce90b1297db6c336b7234e744759510c6ed96e.1695403360.git.christophe.jaillet@wanadoo.fr>
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: [PATCH] drm/amd: Fix the size of a buffer in amdgpu_vcn_idle_work_handler()
+Date:   Fri, 22 Sep 2023 21:27:25 +0200
+Message-Id: <d8a9cda0c4c391458ddd63d1be88f2a757f6a5d0.1695410820.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1695403360.git.christophe.jaillet@wanadoo.fr>
-References: <cover.1695403360.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is no need to clear the buffer used to build the file name.
+In order to be sure that fw_name is not truncated, this buffer should be
+at least 41 bytes long.
 
-snprintf() already guarantees that it is NULL terminated and such a
-(useless) precaution was not done for the first string (i.e
-ls_debug_rsb_dentry)
+Let the compiler compute the correct length by itself.
 
-So, save a few LoC.
+When building with W=1, this fixes the following warnings:
 
+  drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c: In function ‘amdgpu_vcn_early_init’:
+  drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c:95:58: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
+     95 |         snprintf(fw_name, sizeof(fw_name), "amdgpu/%s.bin", ucode_prefix);
+        |                                                          ^
+  drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c:95:9: note: ‘snprintf’ output between 12 and 41 bytes into a destination of size 40
+     95 |         snprintf(fw_name, sizeof(fw_name), "amdgpu/%s.bin", ucode_prefix);
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixes: 69939009bde7 ("drm/amd: Load VCN microcode during early_init")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- fs/dlm/debug_fs.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/dlm/debug_fs.c b/fs/dlm/debug_fs.c
-index c93359ceaae6..42f332f46359 100644
---- a/fs/dlm/debug_fs.c
-+++ b/fs/dlm/debug_fs.c
-@@ -986,7 +986,6 @@ void dlm_create_debug_file(struct dlm_ls *ls)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
+index c93f3a4c0e31..f8cd55a0d1f0 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
+@@ -88,7 +88,7 @@ static void amdgpu_vcn_idle_work_handler(struct work_struct *work);
+ int amdgpu_vcn_early_init(struct amdgpu_device *adev)
+ {
+ 	char ucode_prefix[30];
+-	char fw_name[40];
++	char fw_name[sizeof(ucode_prefix) + sizeof("amdgpu/.bin") - 1];
+ 	int r;
  
- 	/* format 2 */
- 
--	memset(name, 0, sizeof(name));
- 	snprintf(name, sizeof(name), "%s_locks", ls->ls_name);
- 
- 	ls->ls_debug_locks_dentry = debugfs_create_file(name,
-@@ -997,7 +996,6 @@ void dlm_create_debug_file(struct dlm_ls *ls)
- 
- 	/* format 3 */
- 
--	memset(name, 0, sizeof(name));
- 	snprintf(name, sizeof(name), "%s_all", ls->ls_name);
- 
- 	ls->ls_debug_all_dentry = debugfs_create_file(name,
-@@ -1008,7 +1006,6 @@ void dlm_create_debug_file(struct dlm_ls *ls)
- 
- 	/* format 4 */
- 
--	memset(name, 0, sizeof(name));
- 	snprintf(name, sizeof(name), "%s_toss", ls->ls_name);
- 
- 	ls->ls_debug_toss_dentry = debugfs_create_file(name,
-@@ -1017,7 +1014,6 @@ void dlm_create_debug_file(struct dlm_ls *ls)
- 						       ls,
- 						       &format4_fops);
- 
--	memset(name, 0, sizeof(name));
- 	snprintf(name, sizeof(name), "%s_waiters", ls->ls_name);
- 
- 	ls->ls_debug_waiters_dentry = debugfs_create_file(name,
-@@ -1028,7 +1024,6 @@ void dlm_create_debug_file(struct dlm_ls *ls)
- 
- 	/* format 5 */
- 
--	memset(name, 0, sizeof(name));
- 	snprintf(name, sizeof(name), "%s_queued_asts", ls->ls_name);
- 
- 	ls->ls_debug_queued_asts_dentry = debugfs_create_file(name,
+ 	amdgpu_ucode_ip_version_decode(adev, UVD_HWIP, ucode_prefix, sizeof(ucode_prefix));
 -- 
 2.34.1
 

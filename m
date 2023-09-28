@@ -2,47 +2,46 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E1CE7B1B83
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Sep 2023 13:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7325A7B1D31
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Sep 2023 15:00:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232265AbjI1L4i (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Sep 2023 07:56:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34132 "EHLO
+        id S232590AbjI1NAy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Sep 2023 09:00:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232114AbjI1L4e (ORCPT
+        with ESMTP id S232582AbjI1NAy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Sep 2023 07:56:34 -0400
+        Thu, 28 Sep 2023 09:00:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FF311A5;
-        Thu, 28 Sep 2023 04:56:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41957C433C7;
-        Thu, 28 Sep 2023 11:56:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6FC0199;
+        Thu, 28 Sep 2023 06:00:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC3DC433C7;
+        Thu, 28 Sep 2023 13:00:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695902188;
-        bh=wAziT84zsBar0DnfXJLmnl6XnoBPC7xoMptDDmCkGSg=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=sQNstdL/NaO5ZYXnEyKoGAQteUo9B3pfTj376QsYbb3M3g09CilZsuzlSclEqJECW
-         PYC2ZOrG6pq/RLy2NlMW+WXSypx6UlqEkOs+OBiPfD7yyrsA+cl+5nNZ5GoQDrTVG+
-         mu0Jj3k/fmDvxESqGhtxRtzaTUoQrsjXPxnqs0G94SoLVUkizMXh2CAQxvraPfEetR
-         UUIWgoV3LA6aPJ4ovsNX9rL5qyPzjgk836cph4mupzIpZ+vCSjdKcz5ElBhu034w7s
-         Q5UFoQkkOIJXH23zHy+3tz6X1bqM3nCJExsXiWiAICT6fhDi71R88W0MKAJrnRyp2x
-         65EQ+Eup5n/Vg==
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>
-Cc:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Tony Lindgren <tony@atomide.com>, dmaengine@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-In-Reply-To: <f15cb6a7-8449-4f79-98b6-34072f04edbc@moroto.mountain>
-References: <f15cb6a7-8449-4f79-98b6-34072f04edbc@moroto.mountain>
-Subject: Re: [PATCH] dmaengine: ti: edma: handle irq_of_parse_and_map()
- errors
-Message-Id: <169590218590.152265.2604230779311762501.b4-ty@kernel.org>
-Date:   Thu, 28 Sep 2023 17:26:25 +0530
+        s=k20201202; t=1695906050;
+        bh=1w5FRlOo1tK8D8G1rHrmB3vPWLFLyIZOOaoFfnEL2Y0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=K8N5b0bFaojf/1rQrdbr+Nc6K6JlJEYbmvmTM3APbrIv1dDDlzmLViptfoJl0NSqk
+         wlJdnJKk8RdOgWxHk0HPn+68ktWelgKGpHKeIfYxxEqFflbpjCyq0HGDRMP6SW9WAG
+         4xdtwp176vOXaxqv5YcKKcn1mz6FWZnZJ7LF7Q83topamtD58cF7JtkW8u8OOkU7u5
+         CciCrwmetlb54aGVZquF3WlMnVTgE/oNKq6IvDB6cBiry8AGKGGkl727MAUkzBcLkC
+         E0u53xWe732dqsrYhyNH9D/6RRZ8AgsfVMFVPP2oL84+IK8XuwDANI9RU2b2nH8iGa
+         okbG9cBTBq1ew==
+Date:   Thu, 28 Sep 2023 15:00:47 +0200
+From:   Frederic Weisbecker <frederic@kernel.org>
+To:     Dan Carpenter <dan.carpenter@linaro.org>
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Josh Triplett <josh@joshtriplett.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] locktorture: Check the correct variable for allocation
+ failure
+Message-ID: <ZRV4/20T4pGk2QuX@lothringen>
+References: <ec2c9ecf-9360-41fa-934d-6854d2615799@moroto.mountain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ec2c9ecf-9360-41fa-934d-6854d2615799@moroto.mountain>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -52,21 +51,28 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-On Fri, 15 Sep 2023 15:59:59 +0300, Dan Carpenter wrote:
-> Zero is not a valid IRQ for in-kernel code and the irq_of_parse_and_map()
-> function returns zero on error.  So this check for valid IRQs should only
-> accept values > 0.
+On Thu, Sep 28, 2023 at 10:06:11AM +0300, Dan Carpenter wrote:
+> There is a typo so this checks the wrong variable.  "chains" plural vs
+> "chain" singular.  We already know that "chains" is non-zero.
 > 
+> Fixes: 7f993623e9eb ("locktorture: Add call_rcu_chains module parameter")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> ---
+>  kernel/locking/locktorture.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
+> diff --git a/kernel/locking/locktorture.c b/kernel/locking/locktorture.c
+> index a3abcd136f56..69d3cd2cfc3b 100644
+> --- a/kernel/locking/locktorture.c
+> +++ b/kernel/locking/locktorture.c
+> @@ -1075,7 +1075,7 @@ static int call_rcu_chain_init(void)
+>  	if (call_rcu_chains <= 0)
+>  		return 0;
+>  	call_rcu_chain = kcalloc(call_rcu_chains, sizeof(*call_rcu_chain), GFP_KERNEL);
+> -	if (!call_rcu_chains)
+> +	if (!call_rcu_chain)
+>  		return -ENOMEM;
+>  	for (i = 0; i < call_rcu_chains; i++) {
+>  		call_rcu_chain[i].crc_stop = false;
 
-Applied, thanks!
-
-[1/1] dmaengine: ti: edma: handle irq_of_parse_and_map() errors
-      commit: 4500d86a2e5115724d58c27cfb3ef590bee0dd58
-
-Best regards,
--- 
-~Vinod
-
-
+Oh good catch, queueing this one, thanks!

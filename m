@@ -2,53 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9AAE7BA3A1
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Oct 2023 17:58:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B6497BA068
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Oct 2023 16:41:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234353AbjJEP6G (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Oct 2023 11:58:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53376 "EHLO
+        id S237060AbjJEOiB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Oct 2023 10:38:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234452AbjJEP4t (ORCPT
+        with ESMTP id S235245AbjJEOfe (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Oct 2023 11:56:49 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 614101347E
-        for <kernel-janitors@vger.kernel.org>; Thu,  5 Oct 2023 06:57:26 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-3248ac76acbso924343f8f.1
-        for <kernel-janitors@vger.kernel.org>; Thu, 05 Oct 2023 06:57:26 -0700 (PDT)
+        Thu, 5 Oct 2023 10:35:34 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37940902A
+        for <kernel-janitors@vger.kernel.org>; Thu,  5 Oct 2023 06:58:23 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-3226b8de467so1029635f8f.3
+        for <kernel-janitors@vger.kernel.org>; Thu, 05 Oct 2023 06:58:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696514245; x=1697119045; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AooGTYUy452CMDPClrlTisOX8k1qSdGixxMstg0I9q0=;
-        b=RXHKOdEK900FcuhVBywDk8NW2QQyrPnVZzSGHaCppaXF0yqIKMULLollDslbMvc0W2
-         FcMBed8lKnDktsfnD+TmkWNtV0Aqs3C6gDFTvaaj4HWE/OxmUB60K/wMv05dmX9jcBC+
-         a2qTcHku8g5tAt40GYteCXkgQZpauuTQmPCU7bYYprUZpxtH4t1VMoxWl4Hnp4TnkNVl
-         nQ1ky6ZjrZGCNKP5N3V6Dixagr5IDmdZ9FMy/k2vEYKTgy3C5xfS5/S7XG5JFyKrCtN3
-         71syKa/+TeN/zF1lD7/x7OsBB6tcO905CWXQtRFxGY1g8WHTChIJqjnxxu0dshJvllM8
-         jvZw==
+        d=linaro.org; s=google; t=1696514285; x=1697119085; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cbV1aUniv7FDwoYe4l9QjP2aDA1u/O0qniF8u91BDus=;
+        b=pZrE38V/8z8QcVKvZoFHf9jCSpU3SPDoj1toEPUHTKaxcyzxQg8HngyjXDQfifmtI4
+         eNT8EEh6tZyPDu3KWaR7tDH2/qyezYGAw0Q0N2NQnY4AYb696fLFQ/J5srNnY5n3S2Hp
+         9CDcJRd7bJAx3Cq6C7NZd4QRTwViH4gmEkt03F3QGERB1Gl7M1Kk29xJOEFSRgokOVAq
+         5db2kL7hiPyjfubPVx4Qp8bC0sieI6gy30HTFrFVFMyGDYCwTHzcEdO//SFhtBM8z1Ck
+         ljdVEsO8mElBTB2XQhRGaqLBRLw4rNCkxUOoyCt8LFM4FX8DP9hO2l9C3X7JLnysd2NC
+         QnKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696514245; x=1697119045;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AooGTYUy452CMDPClrlTisOX8k1qSdGixxMstg0I9q0=;
-        b=RFwo2jDRVXGYEnr5NgovovAUs/EIEuIDDxJtNA3pvmTH7o/IiD/VzFXCJjVQ4wUCOb
-         hP+0NUYOAdufFW91/YZbbmjkHJ2Zrw1Q0kfkPdfOGXJgawYzCO81W/6xICjbzj12/QlJ
-         RwafiEW1R1SJSZfyLdSXllEHxBbLkjCvCVVinqr9GW0RRE4IMdJWJOcmfZ3JHOb+NvLA
-         3XS+l+8A6Wph/7K9pzEh8+zSWquLmPTyloWCGcveKj8ynpijoveoyDR3y5SwwTmXQv5N
-         PDLN0G03AsJ7rb6a5FeYm8yTCwWZdizLUIQI7ac2w+P6s4/AkO2jDSNbs/x7QCWPcZwo
-         ANRA==
-X-Gm-Message-State: AOJu0YxkqBXvKcZhIRFZe43O1C7RbLBYkPqDE7MQb2ATYJCLUg3jAw90
-        iQFvq3m331deNrAle79g9g+DCxyazCwdHAiE9yY=
-X-Google-Smtp-Source: AGHT+IGEGxGJ8wEps7sHxei6GOKIWpDvnRrTfQ/aBGCmZAYI2aBq2ytwW6bqUoWdRMnKb5xGjvnu4Q==
-X-Received: by 2002:a5d:45c8:0:b0:317:dd94:ed38 with SMTP id b8-20020a5d45c8000000b00317dd94ed38mr4875974wrs.42.1696514244730;
-        Thu, 05 Oct 2023 06:57:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696514285; x=1697119085;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cbV1aUniv7FDwoYe4l9QjP2aDA1u/O0qniF8u91BDus=;
+        b=ZouvWgnu9v8DLUhqP/zATGnkrlXsmZMYXbZCFtwQRZjJqPFQi8tc3kBgojrXYFzPzL
+         xCs/zKg41SSGA2s69T5nkwHTUD5A/dWs1hwH6u0IJe9beT/q5yKusDJzTK5k6bIyvfTZ
+         OdqfjYGEZTbRspji+cujEcOVuQ6jL9UB8uz2WY2gzKmBtFjt5LQ8/LaLwAoLvlBwRkqD
+         8DbbmrKMUn1zV7uU5pxzH3Q22T53jmqJU0sgpmxxW3qs7WZZ/1tNTqosA7y0cOLADCge
+         +PkYzqzS6rh4XUu1JzbQloaI/pJV3+9B8hNhFxYSDg8Y8YdNr7gufIfh9G4izjdMYMZr
+         mJ/w==
+X-Gm-Message-State: AOJu0Ywn8wlm5gfr7QM83M1CoIRKoCuz4KRj17pbS2+niZoHXa7yMiTE
+        eTwqbpGpP1omx1t4qap+d6S4Tw==
+X-Google-Smtp-Source: AGHT+IE/iWnwqmpAF4wqaA6W5GsdMwBdfNIcUdBB5OSIxRFtjMweSLN1TdvH9Iybz2DfnfNeSgB9KA==
+X-Received: by 2002:a5d:538e:0:b0:317:6a7c:6e07 with SMTP id d14-20020a5d538e000000b003176a7c6e07mr4788087wrv.32.1696514284749;
+        Thu, 05 Oct 2023 06:58:04 -0700 (PDT)
 Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id q13-20020adff78d000000b0032415213a6fsm1861805wrp.87.2023.10.05.06.57.24
+        by smtp.gmail.com with ESMTPSA id e14-20020a5d594e000000b0030ae53550f5sm1858644wri.51.2023.10.05.06.58.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Oct 2023 06:57:24 -0700 (PDT)
-Date:   Thu, 5 Oct 2023 16:57:21 +0300
+        Thu, 05 Oct 2023 06:58:04 -0700 (PDT)
+Date:   Thu, 5 Oct 2023 16:58:01 +0300
 From:   Dan Carpenter <dan.carpenter@linaro.org>
 To:     Jinjie Ruan <ruanjinjie@huawei.com>
 Cc:     Jesse Brandeburg <jesse.brandeburg@intel.com>,
@@ -61,14 +62,16 @@ Cc:     Jesse Brandeburg <jesse.brandeburg@intel.com>,
         Simon Horman <horms@kernel.org>,
         intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH net-next 1/2] igb: Fix an end of loop test
-Message-ID: <4d61f086-c7b4-4762-b025-0ba5df08968b@moroto.mountain>
+Subject: [PATCH net-next 2/2] ixgbe: fix end of loop test in
+ ixgbe_set_vf_macvlan()
+Message-ID: <34603f41-1d51-48df-9bca-a28fd5b27a53@moroto.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <4d61f086-c7b4-4762-b025-0ba5df08968b@moroto.mountain>
 X-Mailer: git-send-email haha only kidding
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -77,49 +80,65 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-When we exit a list_for_each_entry() without hitting a break statement,
-the list iterator isn't NULL, it just point to an offset off the
-list_head.  In that situation, it wouldn't be too surprising for
-entry->free to be true and we end up corrupting memory.
+The list iterator in a list_for_each_entry() loop can never be NULL.
+If the loop exits without hitting a break then the iterator points
+to an offset off the list head and dereferencing it is an out of
+bounds access.
 
-The way to test for these is to just set a flag.
+Before we transitioned to using list_for_each_entry() loops, then
+it was possible for "entry" to be NULL and the comments mention
+this.  I have updated the comments to match the new code.
 
 Fixes: c1fec890458a ("ethernet/intel: Use list_for_each_entry() helper")
 Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 ---
- drivers/net/ethernet/intel/igb/igb_main.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ .../net/ethernet/intel/ixgbe/ixgbe_sriov.c    | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index 2ac9dffd0bf8..c45b1e7cde58 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -7857,7 +7857,8 @@ static int igb_set_vf_mac_filter(struct igb_adapter *adapter, const int vf,
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
+index 4c6e2a485d8e..a703ba975205 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
+@@ -639,6 +639,7 @@ static int ixgbe_set_vf_macvlan(struct ixgbe_adapter *adapter,
+ 				int vf, int index, unsigned char *mac_addr)
  {
- 	struct pci_dev *pdev = adapter->pdev;
- 	struct vf_data_storage *vf_data = &adapter->vf_data[vf];
--	struct vf_mac_filter *entry = NULL;
-+	struct vf_mac_filter *entry;
+ 	struct vf_macvlans *entry;
 +	bool found = false;
- 	int ret = 0;
+ 	int retval = 0;
  
- 	if ((vf_data->flags & IGB_VF_FLAG_PF_SET_MAC) &&
-@@ -7888,11 +7889,13 @@ static int igb_set_vf_mac_filter(struct igb_adapter *adapter, const int vf,
- 	case E1000_VF_MAC_FILTER_ADD:
- 		/* try to find empty slot in the list */
- 		list_for_each_entry(entry, &adapter->vf_macs.l, l) {
--			if (entry->free)
-+			if (entry->free) {
-+				found = true;
- 				break;
-+			}
- 		}
+ 	if (index <= 1) {
+@@ -660,22 +661,22 @@ static int ixgbe_set_vf_macvlan(struct ixgbe_adapter *adapter,
+ 	if (!index)
+ 		return 0;
  
--		if (entry && entry->free) {
-+		if (found) {
- 			entry->free = false;
- 			entry->vf = vf;
- 			ether_addr_copy(entry->vf_mac, addr);
+-	entry = NULL;
+-
+ 	list_for_each_entry(entry, &adapter->vf_mvs.l, l) {
+-		if (entry->free)
++		if (entry->free) {
++			found = true;
+ 			break;
++		}
+ 	}
+ 
+ 	/*
+ 	 * If we traversed the entire list and didn't find a free entry
+-	 * then we're out of space on the RAR table.  Also entry may
+-	 * be NULL because the original memory allocation for the list
+-	 * failed, which is not fatal but does mean we can't support
+-	 * VF requests for MACVLAN because we couldn't allocate
+-	 * memory for the list management required.
++	 * then we're out of space on the RAR table.  It's also possible
++	 * for the &adapter->vf_mvs.l list to be empty because the original
++	 * memory allocation for the list failed, which is not fatal but does
++	 * mean we can't support VF requests for MACVLAN because we couldn't
++	 * allocate memory for the list management required.
+ 	 */
+-	if (!entry || !entry->free)
++	if (!found)
+ 		return -ENOSPC;
+ 
+ 	retval = ixgbe_add_mac_filter(adapter, mac_addr, vf);
 -- 
 2.39.2
 

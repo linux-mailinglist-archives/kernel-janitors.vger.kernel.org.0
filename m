@@ -2,117 +2,171 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CE217B97F8
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Oct 2023 00:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BBD67BA354
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Oct 2023 17:54:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235066AbjJDWZF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Oct 2023 18:25:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53472 "EHLO
+        id S234157AbjJEPx6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Oct 2023 11:53:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233545AbjJDWZD (ORCPT
+        with ESMTP id S235715AbjJEPvl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Oct 2023 18:25:03 -0400
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52A4FD8
-        for <kernel-janitors@vger.kernel.org>; Wed,  4 Oct 2023 15:24:58 -0700 (PDT)
-Received: by mail-yb1-xb35.google.com with SMTP id 3f1490d57ef6-d8198ca891fso405925276.1
-        for <kernel-janitors@vger.kernel.org>; Wed, 04 Oct 2023 15:24:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696458297; x=1697063097; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gH30QPkyF/caBY3YS+rN5NHQoXS59+XKdr7laMCwC0E=;
-        b=fH2h1lIEmZYJHcsbKulKvnsi04ejpIVxeUaRQCllnrQWJda+wy3kHaoOb9HRk9YlaV
-         1WXtbjXFV9hTY+sUqWVXlhpsg1gC+1RXrYKx1dCKqM06PkDYUg3rcEKNeyGusk6jQ7D4
-         XB9kqLYIxTIYaJzqPBA+kZLTaq6i3F3PwuraQdh7IZp1DpIG3TwczGnNtD9+RhOiHhHy
-         9INDdQfOd/af2mUdIKVoc8sN+knjNs0GIbqQkSf1BBmcIHVC0gdiV9Uo7sEUmQB2r7s5
-         Pw2pQjIcEQJAGrqBHrAOkrgy2EOTmD4WmzMNNPe9+Cwyf4pyvpImziPQ3bh46HpIyEpI
-         VuIg==
+        Thu, 5 Oct 2023 11:51:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5938E20E63
+        for <kernel-janitors@vger.kernel.org>; Thu,  5 Oct 2023 07:09:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1696514952;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=D2fnoj8vzkTz1uPdmOImvOOhAqJGXgCxNbu69/797zA=;
+        b=FeVSjt2pfjdD1BjdvtyHqNtSfz5ktD8wdQsHxbKphom5+5AkZTm9c/QQK7+1xs+T7q1Hrm
+        8cVNf8+wPeh8QRbXMdHwUqwr+jU49NdUIKCwkCnYAMGghuYlQVtr1HXEBl4Wgg5TI7H8oR
+        ocbFq8wCUmWwO5olO+bG5I8y0AUFC4s=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-403-1Rv6iIZNN2yJolcwKKicJQ-1; Thu, 05 Oct 2023 04:06:25 -0400
+X-MC-Unique: 1Rv6iIZNN2yJolcwKKicJQ-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-9ae5101b152so15404966b.1
+        for <kernel-janitors@vger.kernel.org>; Thu, 05 Oct 2023 01:06:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696458297; x=1697063097;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gH30QPkyF/caBY3YS+rN5NHQoXS59+XKdr7laMCwC0E=;
-        b=pwkmhs12pJWMxTxXxvxz6LPdJQ/UgsRZ3/Ac9yBsx78btBvjVwzhIHFXC5mBcqPU7U
-         HRvKMNiuMu0YwAQOvWa+4zVnvgxX7NHbGpWUhg4KAakF5sxEXIzw7JWOefqUTevwDAri
-         xN1QtTBdDRiz60kYM1g8I41g4Wkouh/aymg7soIPDz3L9lFl7WgJshMjgjm9O+9/lFeG
-         ZIzDBYxiYvombPBiEhCjLqinFcRjaOflMAiNi/VAb2EMp39UoqFTqLLufMgEPhyq6qFI
-         m5A3SiHJL7Ln79y1I5yE9Mvbx86wECkCJad6jZECYw3tlR1x2Dt8xJPjJwLl5U1EFcJm
-         UtJA==
-X-Gm-Message-State: AOJu0YyTGy4vV8WcYPhAXJkdO3Qq3HPsNDxPFpgdn6qICHzspkrk6lyr
-        abS9pWU6p5RvsfnSp8zEACtqZodyH1X8j0a0FLAVyQ==
-X-Google-Smtp-Source: AGHT+IFo+3fXJ8TdbXgEN/Hz8y43/QTFuu7aQACpU8yUl344BH2AOBs1bXzHNFgaMnM5ALFgVPOmBpQhUdPplxGG4hI=
-X-Received: by 2002:a25:7797:0:b0:d12:ab1:d88a with SMTP id
- s145-20020a257797000000b00d120ab1d88amr3426559ybc.40.1696458297530; Wed, 04
- Oct 2023 15:24:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230907095521.14053-1-Julia.Lawall@inria.fr> <20230907095521.14053-5-Julia.Lawall@inria.fr>
-In-Reply-To: <20230907095521.14053-5-Julia.Lawall@inria.fr>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 5 Oct 2023 00:24:21 +0200
-Message-ID: <CAPDyKFpEdFnJ5p+O2p-gr06mF9ug43Ss-=2uJeSVZzgrcTGzTg@mail.gmail.com>
-Subject: Re: [PATCH 04/11] genpd: ti: add missing of_node_put
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     Nishanth Menon <nm@ti.com>, kernel-janitors@vger.kernel.org,
-        Tero Kristo <kristo@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        d=1e100.net; s=20230601; t=1696493184; x=1697097984;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=D2fnoj8vzkTz1uPdmOImvOOhAqJGXgCxNbu69/797zA=;
+        b=eJTZ/bxMaul3SSioBx/BXnK+TjmHXOmj5PdqBeSqNty7HXzV85uQ4JM5qItKMVUuoO
+         dFh8EnlnAz9OfYpBK6Qmid2TTb9dzFYOwcTvxrVq1e3509kHfcOVgUdtL+yj4cYRNUPg
+         GOhVTerzkeb5qfST3iykJ6Zyp/CwnH9kSetfZ84ly8s+pU712hxcaXiRTEQjo7fDt152
+         DZHUmen6ThKHr98fhBptrh9brTe05NndyvERBZu9pTPOS9tkxCHKrP/TPNnNiCimu6EP
+         AuXkV/u/kUuRLqv4aDhWmFcNdt/IQGcmU7tAAgTKXdpCT4VtpYBxq8gS/ynsdfFAZKEK
+         YHkw==
+X-Gm-Message-State: AOJu0Yz/S/vRWwFHDB5WSAdBd37wiVf9EyzFFoyWfdPLAERp5s1+H6x5
+        pF5i9n3+Uov8MiZ64m0al7WWHVmask+Toy6nxo6DHEwLcgCginqr6kLh+G+36fnAhjOFhTBsqPB
+        5YkndpGwQD8DQ8CtxMce7VrGFyVeC
+X-Received: by 2002:a17:906:10a:b0:9b1:488d:afd1 with SMTP id 10-20020a170906010a00b009b1488dafd1mr4562856eje.5.1696493184541;
+        Thu, 05 Oct 2023 01:06:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFeg2b8hY+aWyTZPpZKtdDpIPfskC7OlfK/6tOjFU1hvul2wP0Aq6GMQ3TFGXo026SjSV5hYg==
+X-Received: by 2002:a17:906:10a:b0:9b1:488d:afd1 with SMTP id 10-20020a170906010a00b009b1488dafd1mr4562827eje.5.1696493184131;
+        Thu, 05 Oct 2023 01:06:24 -0700 (PDT)
+Received: from gerbillo.redhat.com (146-241-237-55.dyn.eolo.it. [146.241.237.55])
+        by smtp.gmail.com with ESMTPSA id si5-20020a170906cec500b009b97d9ae329sm747224ejb.198.2023.10.05.01.06.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Oct 2023 01:06:23 -0700 (PDT)
+Message-ID: <7102fb731c18f7b10f19f6bdc05d8a7f74e43feb.camel@redhat.com>
+Subject: Re: [PATCH net-next] net: dsa: microchip: Uninitialized variable in
+ ksz9477_acl_move_entries()
+From:   Paolo Abeni <pabeni@redhat.com>
+To:     Vladimir Oltean <olteanv@gmail.com>,
+        Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     Dan Carpenter <dan.carpenter@linaro.org>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Woojung Huh <woojung.huh@microchip.com>,
+        UNGLinuxDriver@microchip.com, Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Date:   Thu, 05 Oct 2023 10:06:22 +0200
+In-Reply-To: <20231002152853.xjyxlvpouktfbg6k@skbuf>
+References: <2f58ca9a-9ac5-460a-98a4-aa8304f2348a@moroto.mountain>
+         <20230927144624.GN2714790@pengutronix.de>
+         <20231002152853.xjyxlvpouktfbg6k@skbuf>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 7 Sept 2023 at 11:55, Julia Lawall <Julia.Lawall@inria.fr> wrote:
->
-> for_each_node_with_property performs an of_node_get on
-> each iteration, so a break out of the loop requires an
-> of_node_put.
->
-> This was done using the Coccinelle semantic patch
-> iterators/for_each_child.cocci
->
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+On Mon, 2023-10-02 at 18:28 +0300, Vladimir Oltean wrote:
+> Hi Oleksij,
+>=20
+> On Wed, Sep 27, 2023 at 04:46:24PM +0200, Oleksij Rempel wrote:
+> > On Wed, Sep 27, 2023 at 03:53:37PM +0300, Dan Carpenter wrote:
+> > > Smatch complains that if "src_idx" equals "dst_idx" then
+> > > ksz9477_validate_and_get_src_count() doesn't initialized "src_count".
+> > > Set it to zero for this situation.
+> > >=20
+> > > Fixes: 002841be134e ("net: dsa: microchip: Add partial ACL support fo=
+r ksz9477 switches")
+> > > Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> >=20
+> > Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> >=20
+> > Thank you!
+> >=20
+> > > ---
+> > >  drivers/net/dsa/microchip/ksz9477_acl.c | 3 ++-
+> > >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > >=20
+> > > diff --git a/drivers/net/dsa/microchip/ksz9477_acl.c b/drivers/net/ds=
+a/microchip/ksz9477_acl.c
+> > > index 06d74c19eb94..e554cd4a024b 100644
+> > > --- a/drivers/net/dsa/microchip/ksz9477_acl.c
+> > > +++ b/drivers/net/dsa/microchip/ksz9477_acl.c
+> > > @@ -554,7 +554,8 @@ static int ksz9477_acl_move_entries(struct ksz_de=
+vice *dev, int port,
+> > >  	struct ksz9477_acl_entry buffer[KSZ9477_ACL_MAX_ENTRIES];
+> > >  	struct ksz9477_acl_priv *acl =3D dev->ports[port].acl_priv;
+> > >  	struct ksz9477_acl_entries *acles =3D &acl->acles;
+> > > -	int src_count, ret, dst_count;
+> > > +	int ret, dst_count;
+> > > +	int src_count =3D 0;
+> > > =20
+> > >  	ret =3D ksz9477_validate_and_get_src_count(dev, port, src_idx, dst_=
+idx,
+> > >  						 &src_count, &dst_count);
+> > > --=20
+> > > 2.39.2
+> > >=20
+> > >=20
+> > >=20
+> >=20
+> > --=20
+> > Pengutronix e.K.                           |                           =
+  |
+> > Steuerwalder Str. 21                       | http://www.pengutronix.de/=
+  |
+> > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0  =
+  |
+> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-555=
+5 |
+>=20
+> For the case where src_idx =3D=3D dst_idx that Dan points out, is this pa=
+tch
+> sufficient to ensure that ksz9477_acl_move_entries() will not execute
+> unwanted code paths? For example, it will still call ksz9477_move_entries=
+_upwards(),
+> which from what I can tell, will do something given the way in which it's=
+ written.
+>=20
+> Perhaps it would be better to move this line:
+>=20
+> 	/* Nothing to do */
+> 	if (src_idx =3D=3D dst_idx)
+> 		return 0;
+>=20
+> outside of ksz9477_validate_and_get_src_count() and into its single calle=
+r,
+> ksz9477_acl_move_entries()?
 
-Applied for next (by amending the change to pmdomain instead of genpd), thanks!
+Additionally, it looks like that when (src_idx =3D=3D dst_idx) even
+dst_count is not initialized but is still later used.
 
-Kind regards
-Uffe
+Cheers,
 
->
-> ---
->  drivers/genpd/ti/ti_sci_pm_domains.c |    8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
->
-> diff -u -p a/drivers/genpd/ti/ti_sci_pm_domains.c b/drivers/genpd/ti/ti_sci_pm_domains.c
-> --- a/drivers/genpd/ti/ti_sci_pm_domains.c
-> +++ b/drivers/genpd/ti/ti_sci_pm_domains.c
-> @@ -153,14 +153,18 @@ static int ti_sci_pm_domain_probe(struct
->                                         max_id = args.args[0];
->
->                                 pd = devm_kzalloc(dev, sizeof(*pd), GFP_KERNEL);
-> -                               if (!pd)
-> +                               if (!pd) {
-> +                                       of_node_put(np);
->                                         return -ENOMEM;
-> +                               }
->
->                                 pd->pd.name = devm_kasprintf(dev, GFP_KERNEL,
->                                                              "pd:%d",
->                                                              args.args[0]);
-> -                               if (!pd->pd.name)
-> +                               if (!pd->pd.name) {
-> +                                       of_node_put(np);
->                                         return -ENOMEM;
-> +                               }
->
->                                 pd->pd.power_off = ti_sci_pd_power_off;
->                                 pd->pd.power_on = ti_sci_pd_power_on;
->
+Paolo
+

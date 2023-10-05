@@ -2,70 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DFCB7BA3A6
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Oct 2023 17:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98EB87BA061
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Oct 2023 16:40:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237950AbjJEP6I (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Oct 2023 11:58:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43722 "EHLO
+        id S237061AbjJEOiD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Oct 2023 10:38:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbjJEP5I (ORCPT
+        with ESMTP id S235241AbjJEOfD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Oct 2023 11:57:08 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E66B027B38
-        for <kernel-janitors@vger.kernel.org>; Thu,  5 Oct 2023 06:44:14 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-40666aa674fso8845665e9.0
-        for <kernel-janitors@vger.kernel.org>; Thu, 05 Oct 2023 06:44:14 -0700 (PDT)
+        Thu, 5 Oct 2023 10:35:03 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F18327B10
+        for <kernel-janitors@vger.kernel.org>; Thu,  5 Oct 2023 06:57:09 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-405524e6768so9435025e9.2
+        for <kernel-janitors@vger.kernel.org>; Thu, 05 Oct 2023 06:57:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696513453; x=1697118253; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4H2x/Q98PONLTuvH7BLyvxEUYi0TC7qsCtzYr2cez6g=;
-        b=RjFSXDNtSyT9dbIVnlkRGJBroxoLAS8MeaVsdCLB52Hy3xuTZgldMJsTy5YcbimLQy
-         G6Bcm+m4RNCjmcQyMQmOaPlP3Ty3g0DssbY40rNydPn+DWsV6y50fKwlL9jg+Paav/DY
-         qOaScLdNDl779s//n+PXqx/RLSvBdFjUtf7gT2uFleRwxAqbCmtoC/wEX5eTvqJ6c46V
-         2Vkjh3qNAwv/dllZ61AdJpZ8CeCwlHZyfW3pS27rbWTrqFdFpPwZyS67CrIKd3c+FSY3
-         aY9G6tBpReU0iVBPzzmY2LHPJRkxi102xjTKhc8GyvPnbyyqxgvpprdNPTFYf3jKWDp6
-         9X1g==
+        d=linaro.org; s=google; t=1696514226; x=1697119026; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kIDUUDyPCMDnmf6dgpyyTfj6uNBxPsdSSFa0JLZBazw=;
+        b=lCazjyMTJzIespSvCCMrWe3Xzr0lRGcJ3t0VvohDnyzfrci/2V54iBYcMhzui1tANx
+         XeWEHijdBumD7/ZLLR/JQrP0t0516N0yrVmwZKGUgypW+JEVt6qavbfgDhASN7ZLB/Pu
+         8Ucm430cVWVnkwyRpywxCIP1rsOMuP66TQ7d8Pem1x25E1WS10p1nMHEPrzKFYLawQQA
+         tx7rSFtzGmr9kgNXcdDbHd36zqbyhvljVmYfqix42po9Zhv+Zv/t5yjP+TfmpKDNgduF
+         J5ef/2t9eeWc8N1LqjF3RNw3iWtag8Vu0qby240Fuea5EGIbgZmtm9HQYmQrIxnu1Ms2
+         eraw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696513453; x=1697118253;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4H2x/Q98PONLTuvH7BLyvxEUYi0TC7qsCtzYr2cez6g=;
-        b=vUrHyeqxImj/mXcM4JegqW7Tizf82KPi4oWUw0hifYg534GEf4ONy0PVGFx2QSi7Nf
-         FrLE38X2M48ZeHkL34WMSrCWTGtdz0EEiCmOMry6lml5AhdINHFFvtyy3GzLemeOYRAL
-         gUqJakIbTnE3fmhLWx+/eL8iMAk9p5st+5REjIEhrLizXudTziV3HvwDAbnKRb97Je+z
-         ZNjnqIDxrVrbQ3RPUaof9kSviGoPOSUxOuzMKUlwZUvbEfSq0Ssr+S8aAMsLbYrxRoRy
-         Lq7g3w0ZOn3yxox9fwuCPnABe1CV6Tfk6KXkKZgRNGtr7tZk52FvI8/EQpAX4a4FKVfN
-         C/Nw==
-X-Gm-Message-State: AOJu0Yx9Gf6L0svyj2X8ekZgOuZrav3pbk8yz2Y8HbRUSBUDroUYoAbL
-        1+mh5G2kTpLyqnCv4ce/lTDQIw==
-X-Google-Smtp-Source: AGHT+IEkQdWyFKDmYzO0BLwkXEoO2QnS1GnkdjFnl1ZzqizDdpMmrmtiUdCoClpcdWL+YnKS2bR5/w==
-X-Received: by 2002:a1c:6a18:0:b0:401:eb0:a974 with SMTP id f24-20020a1c6a18000000b004010eb0a974mr4405896wmc.3.1696513453029;
-        Thu, 05 Oct 2023 06:44:13 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696514226; x=1697119026;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kIDUUDyPCMDnmf6dgpyyTfj6uNBxPsdSSFa0JLZBazw=;
+        b=j7rlihAzyXaA1dTfmqGRrGZSlDxEzOvUBIKG5SH+I+QOIEe5nIiN6F1nhA2DA7ePOk
+         ZRFm6PVidpEK8OzgHKC9LvQdy0j7vztSW3P1hKujRD8joJVmMPvjIEYyhs8vtk89zHtU
+         VFLmFbUYvnj4BGvyqLAAEZieiJqMlVSghoZgjxKS4RnBIFSsEmv6n3p0bUbosU+cA5os
+         ym9u6Y6K1NcDOg1s+Uk5AR/+qJ+2LcyGy0vBrvQuWmn5Dx763AADHEIVJU158vfxjdwF
+         kj+reIUUlGUKjkPwlCcABpbT8r0p57/V/Vq/5/0Q3vvcMUpGWLxkQpchPQrdopTci1Ep
+         w8Yg==
+X-Gm-Message-State: AOJu0YyLlNDsy3OWJwPqKwhmdkTpMRZMaFWycOiYziLLUj3147rKT6AV
+        ExKC3tyGiQ1AAiMX8iJ9gYqSPg==
+X-Google-Smtp-Source: AGHT+IH+50km3L9x7FNGDdpi8jFVFT/mSqPZ1f1vTJoCUCMCRuejoPXyRAO7AbAoq0zfWgzr9nEAVw==
+X-Received: by 2002:a05:600c:211:b0:401:bf56:8ba6 with SMTP id 17-20020a05600c021100b00401bf568ba6mr5087166wmi.28.1696514226615;
+        Thu, 05 Oct 2023 06:57:06 -0700 (PDT)
 Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id m19-20020a7bcb93000000b003fe61c33df5sm3808705wmi.3.2023.10.05.06.44.12
+        by smtp.gmail.com with ESMTPSA id n16-20020a05600c3b9000b0040684abb623sm3774428wms.24.2023.10.05.06.57.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Oct 2023 06:44:12 -0700 (PDT)
-Date:   Thu, 5 Oct 2023 16:44:09 +0300
+        Thu, 05 Oct 2023 06:57:06 -0700 (PDT)
+Date:   Thu, 5 Oct 2023 16:57:02 +0300
 From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     "Maciej W. Rozycki" <macro@orcam.me.uk>
-Cc:     Su Hui <suhui@nfschina.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rafael@kernel.org, linux-kernel@vger.kernel.org,
+To:     Greg Rose <gregory.v.rose@intel.com>
+Cc:     Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] driver base: slience unused warning
-Message-ID: <ceaa146a-2781-4266-ade8-6a25eb39abbf@kadam.mountain>
-References: <45027fa0-cda5-2a80-f1cd-ed805d2717ee@nfschina.com>
- <alpine.DEB.2.21.2310041557310.61599@angie.orcam.me.uk>
- <d98f7107-56d7-44a3-8b77-b8766cdc02d9@kadam.mountain>
- <alpine.DEB.2.21.2310051305530.20354@angie.orcam.me.uk>
+Subject: [PATCH net] ixgbe: fix crash with empty VF macvlan list
+Message-ID: <3cee09b8-4c49-4a39-b889-75c0798dfe1c@moroto.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.21.2310051305530.20354@angie.orcam.me.uk>
+X-Mailer: git-send-email haha only kidding
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
@@ -76,14 +76,38 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This is a W=1 static checker warning.  We've already reviewed it, and
-marked it as old.  There isn't anything else required.
+The adapter->vf_mvs.l list needs to be initialized even if the list is
+empty.  Otherwise it will lead to crashes.
 
-Or are we close to promoting the unused-but-set-variable warning from
-W=1 to being on by default?  How many of these warnings are remaining?
-It it's like only 20-50 warnings left then maybe we should consider the
-other options but that kind of information needs to be in the cover
-letter or otherwise we won't know about it.
+Fixes: c6bda30a06d9 ("ixgbe: Reconfigure SR-IOV Init")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-regards,
-dan carpenter
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
+index a703ba975205..9cfdfa8a4355 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
+@@ -28,6 +28,9 @@ static inline void ixgbe_alloc_vf_macvlans(struct ixgbe_adapter *adapter,
+ 	struct vf_macvlans *mv_list;
+ 	int num_vf_macvlans, i;
+ 
++	/* Initialize list of VF macvlans */
++	INIT_LIST_HEAD(&adapter->vf_mvs.l);
++
+ 	num_vf_macvlans = hw->mac.num_rar_entries -
+ 			  (IXGBE_MAX_PF_MACVLANS + 1 + num_vfs);
+ 	if (!num_vf_macvlans)
+@@ -36,8 +39,6 @@ static inline void ixgbe_alloc_vf_macvlans(struct ixgbe_adapter *adapter,
+ 	mv_list = kcalloc(num_vf_macvlans, sizeof(struct vf_macvlans),
+ 			  GFP_KERNEL);
+ 	if (mv_list) {
+-		/* Initialize list of VF macvlans */
+-		INIT_LIST_HEAD(&adapter->vf_mvs.l);
+ 		for (i = 0; i < num_vf_macvlans; i++) {
+ 			mv_list[i].vf = -1;
+ 			mv_list[i].free = true;
+-- 
+2.39.2
+

@@ -2,65 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B7967BA092
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Oct 2023 16:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 669677BA06C
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Oct 2023 16:41:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237236AbjJEOiv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Oct 2023 10:38:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46474 "EHLO
+        id S237311AbjJEOi6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Oct 2023 10:38:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236138AbjJEOgo (ORCPT
+        with ESMTP id S235014AbjJEOgv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Oct 2023 10:36:44 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04F2F497AE
-        for <kernel-janitors@vger.kernel.org>; Thu,  5 Oct 2023 07:01:55 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-4053c6f0db8so8874905e9.3
-        for <kernel-janitors@vger.kernel.org>; Thu, 05 Oct 2023 07:01:55 -0700 (PDT)
+        Thu, 5 Oct 2023 10:36:51 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C45BE43515
+        for <kernel-janitors@vger.kernel.org>; Thu,  5 Oct 2023 07:02:08 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-317c3ac7339so961704f8f.0
+        for <kernel-janitors@vger.kernel.org>; Thu, 05 Oct 2023 07:02:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696514489; x=1697119289; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1696514521; x=1697119321; darn=vger.kernel.org;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=W8BwQ3IP0CHV2dHAgfr58wuL/lxT2QhMZVJPK4cP22Q=;
-        b=QoXjL6YaDoXHL2lQQOvKosMu0kfGoVZSVPT0sX5GHS2MtaFJ5LUJ8wp53hgnC5qs1E
-         SuJa23cI8sZ0VkyctyQ/8j15aAKu4f2QcRNECK39exkZCUDPZJ4SRbxchoPE0Pb897PK
-         849c+dxzGSAh+zH2BgQWw4qlRH2a/vuAetGsN0m3oqBanHk30i3lamPN5ZqBq2G0tKrq
-         Y7Llzgg1dNZOba3+k+d9O3g5N/u1E6lbv6DCaI6z2R3BgbjFQkT3vzZcmApE8XiK+bxR
-         GAlsFvnm1G3jo+B7cebveLASuzUulM7fD2UOL+CasrDnBWmtQ/NzSFeDR7qoBktXfIK2
-         mvwA==
+        bh=rbcoAiVjWZW5P7u3ypsUZftXt7DOl7esx6TwnJ6vnvw=;
+        b=yMXc8n8Ma24feUaJ3nLJnrS0/sGbDmkbKFvd+GTKldX6HJBvxOtBXW3kOm/33ahOOD
+         /vvpehycvVDywf9zDD6Dkt540SotCRKB8LZq2HmkfAaohkUoFu6vZ8iriL8fY5yDi8zP
+         m69riz4SWRJkH1eGwqwPFbXV9qjwGdlfX2xSzKaCmlIdi1FvKRVFBYH+ZyyiT3WZ/0/S
+         BvXyoBjJf5/dFOmVkrnFDcKPjqHVpeEMlWGeHVx0OJmPQcQPlC7liMOidJLq4FFQvNWa
+         EkZ1H3P+B01GQ0Smwwc0EOF4lDapKHx5WJ6yMtd4/F5TuVek7kOPHIZWxQUAXR9uYAo6
+         kVDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696514489; x=1697119289;
+        d=1e100.net; s=20230601; t=1696514521; x=1697119321;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=W8BwQ3IP0CHV2dHAgfr58wuL/lxT2QhMZVJPK4cP22Q=;
-        b=bgFuqkiDPrKuOE1FBDtSAre7whS9Kk5itwAMKSPekSxflQmqjGRza5nNvC4ZGZACMM
-         v+KqpMk8iCAS3IaXa0sLzkZLhRXdr/x3qliKEB8VSUPeusHirgMH5GaWWuXb1gkQ5max
-         vTj4hFhIsrWcgjMtbf2Od2vxUYAODCIFb6kS500KTIQUJQeYEtNXSNKrON4wVhTET+SH
-         x7m30/9yTBRolbRUSwg2TsYsB+RrbgcoJJbNTUWHxvReidTMlCZ7Gs6OWX26IJz8/o0y
-         sYHkR/dP7lRivMoNsdjszGNK11x7uQMRF2zO/iEagOjmCc73pOZvmcL5D4gkVpxMW5RG
-         v+6w==
-X-Gm-Message-State: AOJu0Yx4lk3jYDB7DVMH5DY5yFxDsQlquzIo0yBqBROQw2nlwWImbnHZ
-        whFjCqrp20tDpTo7hgRmMKvXAw==
-X-Google-Smtp-Source: AGHT+IG0ZEP6rYEhZohaIubCmSt7nEhccGbk/yon9cOa/OMeRwiJeM+DhepxTXfUwcJtiWkWOHLS3Q==
-X-Received: by 2002:a5d:40c6:0:b0:31f:dcbb:f81c with SMTP id b6-20020a5d40c6000000b0031fdcbbf81cmr4388076wrq.10.1696514488977;
-        Thu, 05 Oct 2023 07:01:28 -0700 (PDT)
+        bh=rbcoAiVjWZW5P7u3ypsUZftXt7DOl7esx6TwnJ6vnvw=;
+        b=rioMjtev5FYj1QWfNX/V5AWX6/GPjTDY8oAdc+V3MMHT/nI++UCKg/BXrxbfjw/Q4Q
+         gZ6616cK21uAUFx9HvA1H0UCSvUTGrx6TW3IWgm7mDoBF6x9UqvRsJvJRViioQsdDJtD
+         ss9VBawesnGgX7ggn4qh5gfEGyTEHMoEfHmg8dCSHCIPuMkT0nkiH1Nsdb6iOuZPhBr9
+         48IRmIeolpOyVfUOjKylfwStdXrKgInOCK/ciutVYNKC01wBzjABXyn7l6PQKAHvzH4Q
+         T4Zo8xplATKrKSyUHz31m9S3CsDbIWHhi3c6tctI4pQf8bB7blgEVPUZpTMUQXKqlZmD
+         8BAQ==
+X-Gm-Message-State: AOJu0Yyr6vEMY5P3SiZpfOFxY6wAp7XrQQeTN18PQXFYeM8I17hnXzgd
+        pkanyAy/mXjanPVOP560sE60Gg==
+X-Google-Smtp-Source: AGHT+IFzMG84hWtgM7/kzXwiczHNUb5vU+sHKFOUOrM4aCWSY90+ZZWXEdv9Z3kAjAM3RZftvpszLg==
+X-Received: by 2002:adf:f74a:0:b0:31a:d6cb:7f9d with SMTP id z10-20020adff74a000000b0031ad6cb7f9dmr4786129wrp.24.1696514520442;
+        Thu, 05 Oct 2023 07:02:00 -0700 (PDT)
 Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id b15-20020a5d4d8f000000b0031f300a4c26sm1854246wru.93.2023.10.05.07.01.28
+        by smtp.gmail.com with ESMTPSA id j18-20020a5d6052000000b003248a490e3asm1867036wrt.39.2023.10.05.07.01.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Oct 2023 07:01:28 -0700 (PDT)
-Date:   Thu, 5 Oct 2023 17:01:25 +0300
+        Thu, 05 Oct 2023 07:02:00 -0700 (PDT)
+Date:   Thu, 5 Oct 2023 17:01:57 +0300
 From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Tzuyi Chang <tychang@realtek.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] pinctrl: realtek: Fix error handling in probe()
-Message-ID: <590b337a-13ce-4391-a09d-d2b06fbc912d@moroto.mountain>
+To:     Santosh Shilimkar <santosh.shilimkar@ti.com>
+Cc:     Santosh Shilimkar <ssantosh@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Mike Turquette <mturquette@linaro.org>,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] clk: keystone: pll: fix a couple NULL vs IS_ERR() checks
+Message-ID: <d9da4c97-0da9-499f-9a21-1f8e3f148dc1@moroto.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,70 +73,51 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There are several issues in the probe function:
-1) of_iomap() return NULL on error but the code checks for error
-   pointers.
-2) pinctrl_register() is the reverse.  It returns error pointers
-   but the code checks for NULL.
-3) The error paths need to call iounmap(data->base) before returning
-   to avoid a resource leak.
+The clk_register_divider() and clk_register_mux() functions returns
+error pointers on error but this code checks for NULL.  Fix that.
 
-Fixes: e99ce78030db ("pinctrl: realtek: Add common pinctrl driver for Realtek DHC RTD SoCs")
+Fixes: b9e0d40c0d83 ("clk: keystone: add Keystone PLL clock driver")
 Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 ---
- drivers/pinctrl/realtek/pinctrl-rtd.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/clk/keystone/pll.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pinctrl/realtek/pinctrl-rtd.c b/drivers/pinctrl/realtek/pinctrl-rtd.c
-index bafe27face80..6c6aa9c3c567 100644
---- a/drivers/pinctrl/realtek/pinctrl-rtd.c
-+++ b/drivers/pinctrl/realtek/pinctrl-rtd.c
-@@ -535,14 +535,15 @@ static struct regmap_config rtd_pinctrl_regmap_config = {
- int rtd_pinctrl_probe(struct platform_device *pdev, const struct rtd_pinctrl_desc *desc)
- {
- 	struct rtd_pinctrl *data;
-+	int ret;
+diff --git a/drivers/clk/keystone/pll.c b/drivers/clk/keystone/pll.c
+index ee5c72369334..6bbdd4705d71 100644
+--- a/drivers/clk/keystone/pll.c
++++ b/drivers/clk/keystone/pll.c
+@@ -281,12 +281,13 @@ static void __init of_pll_div_clk_init(struct device_node *node)
  
- 	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
- 	if (!data)
- 		return -ENOMEM;
- 
- 	data->base = of_iomap(pdev->dev.of_node, 0);
--	if (IS_ERR(data->base))
--		return PTR_ERR(data->base);
-+	if (!data->base)
-+		return -ENOMEM;
- 
- 	data->dev = &pdev->dev;
- 	data->info = desc;
-@@ -561,18 +562,25 @@ int rtd_pinctrl_probe(struct platform_device *pdev, const struct rtd_pinctrl_des
- 	if (IS_ERR(data->regmap_pinctrl)) {
- 		dev_err(data->dev, "failed to init regmap: %ld\n",
- 			PTR_ERR(data->regmap_pinctrl));
--		return PTR_ERR(data->regmap_pinctrl);
-+		ret = PTR_ERR(data->regmap_pinctrl);
-+		goto unmap;
+ 	clk = clk_register_divider(NULL, clk_name, parent_name, 0, reg, shift,
+ 				 mask, 0, NULL);
+-	if (clk) {
+-		of_clk_add_provider(node, of_clk_src_simple_get, clk);
+-	} else {
++	if (IS_ERR(clk)) {
+ 		pr_err("%s: error registering divider %s\n", __func__, clk_name);
+ 		iounmap(reg);
++		return;
  	}
- 
- 	data->pcdev = pinctrl_register(&data->desc, &pdev->dev, data);
--	if (!data->pcdev)
--		return -ENOMEM;
-+	if (IS_ERR(data->pcdev)) {
-+		ret = PTR_ERR(data->pcdev);
-+		goto unmap;
-+	}
- 
- 	platform_set_drvdata(pdev, data);
- 
- 	dev_dbg(&pdev->dev, "probed\n");
- 
- 	return 0;
 +
-+unmap:
-+	iounmap(data->base);
-+	return ret;
++	of_clk_add_provider(node, of_clk_src_simple_get, clk);
  }
- EXPORT_SYMBOL(rtd_pinctrl_probe);
+ CLK_OF_DECLARE(pll_divider_clock, "ti,keystone,pll-divider-clock", of_pll_div_clk_init);
+ 
+@@ -328,10 +329,12 @@ static void __init of_pll_mux_clk_init(struct device_node *node)
+ 	clk = clk_register_mux(NULL, clk_name, (const char **)&parents,
+ 				ARRAY_SIZE(parents) , 0, reg, shift, mask,
+ 				0, NULL);
+-	if (clk)
+-		of_clk_add_provider(node, of_clk_src_simple_get, clk);
+-	else
++	if (IS_ERR(clk)) {
+ 		pr_err("%s: error registering mux %s\n", __func__, clk_name);
++		return;
++	}
++
++	of_clk_add_provider(node, of_clk_src_simple_get, clk);
+ }
+ CLK_OF_DECLARE(pll_mux_clock, "ti,keystone,pll-mux-clock", of_pll_mux_clk_init);
  
 -- 
 2.39.2

@@ -2,53 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8FD37BE9A3
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Oct 2023 20:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A8CE7BEB21
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Oct 2023 22:00:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378056AbjJISgb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Oct 2023 14:36:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37440 "EHLO
+        id S1378512AbjJIUAK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Oct 2023 16:00:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378055AbjJISg1 (ORCPT
+        with ESMTP id S1377401AbjJIUAJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Oct 2023 14:36:27 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 580C0CF
-        for <kernel-janitors@vger.kernel.org>; Mon,  9 Oct 2023 11:36:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2B6C433C9;
-        Mon,  9 Oct 2023 18:36:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696876586;
-        bh=+QPgU7tZbSjlQmBiszLV/gnTedCkn+UeSkKgZ9idR64=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=HLmYl8yZrRs0G/Gqaiaz/D17bfLM+vyMebeuSGyKhdBjifE8CfnY8RG60C/OoC0cL
-         HkwecJvwi1H6ATEJpvHoLR7oDXFfAusKzgDvdFIVGF6+spiH6zA2BVgl4WYrt5JTw/
-         KGj2KuMWyMa1y+XeJSX+lfiDwT8zWHF3dQkZU1/1io0Y+DwkDCKCbVZQhmle38Lyy2
-         qbbaWvaPQ9Gh6uDE2DkgCI1hRT2EioNC5rkOiSgzC3wcGriwknptLpnlNvb36tIyBy
-         er9tmGpSet75PSLVl1X4b8Mkx9etSi16npbEb7JD2PYHXTAxRpJeQBsXU07qv8z4o9
-         XJWc1Kh6NQ9ug==
-From:   Mark Brown <broonie@kernel.org>
-To:     Daniel Mack <daniel@zonque.org>,
-        Dan Carpenter <dan.carpenter@linaro.org>
-Cc:     Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        linux-arm-kernel@lists.infradead.org, alsa-devel@alsa-project.org,
-        kernel-janitors@vger.kernel.org
-In-Reply-To: <84ac2313-1420-471a-b2cb-3269a2e12a7c@moroto.mountain>
-References: <84ac2313-1420-471a-b2cb-3269a2e12a7c@moroto.mountain>
-Subject: Re: [PATCH] ASoC: pxa: fix a memory leak in probe()
-Message-Id: <169687658335.138823.2904268371010439072.b4-ty@kernel.org>
-Date:   Mon, 09 Oct 2023 19:36:23 +0100
+        Mon, 9 Oct 2023 16:00:09 -0400
+Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68299A3
+        for <kernel-janitors@vger.kernel.org>; Mon,  9 Oct 2023 13:00:04 -0700 (PDT)
+Received: by mail-ot1-x331.google.com with SMTP id 46e09a7af769-6c665b2469dso3282129a34.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 09 Oct 2023 13:00:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1696881603; x=1697486403; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XnnNZrfQHu6U702fU9qv9YujuMNy/CqVElyAPuDlNS8=;
+        b=C774o6WSf/gt2YrkMRsHjeigz24wLn36GDvorNU0gUCxqUjrVcUsHb/F5XpmpaHRb9
+         GI4v6CFdNJAWydxM1Gsft3erUrCeOjIn9yvdVpi8Cuvfd8MlGlVGiChGLhiq1yCUoicR
+         pxLEmdRAdkdSZtOe55jC1HQc3RShNIEZNQI/M=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696881603; x=1697486403;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XnnNZrfQHu6U702fU9qv9YujuMNy/CqVElyAPuDlNS8=;
+        b=qWPYVj8xtpr3MJeF8yPgrJnTJuVljiv+73J/v2eRMQTfFc1ay4j6krch1EAAdFEtMe
+         lJgxIn5D6PbzgdLT0QRqCb08DdHAMeGRQ+oqjzJoan8CDZVrkPm/8tl7rUc3O6vvb3BQ
+         VHRe71bXQ6iMx7fKmdFkOsX7XfvEqTHgAOMf/xIbQyLLFGvwjtHQHiQVNyphd1iK5gJM
+         SN1Lem83/jSCA97Q7Aa5ZQk6wvKQYN5fw7MvNSABoYi6KRrbfv89IimcJN2xaCY35DrM
+         MX3VPlA+DJZfrSNZArxfqV185s7NExqLN809G1QomvRuTWJhWHwTzvfc0klC6MIOsNYz
+         Z1ZA==
+X-Gm-Message-State: AOJu0Yxrb4wPKBJAqL8CIBkhdQk2JlzNZjyTp3Yva4aOTWfJsR3z8qUe
+        eWo/aaZEfpNVWCWdpME/e/056w==
+X-Google-Smtp-Source: AGHT+IFr2diKV0FUnPCKvbVJgM9zVEQvrx9lAF5Q6PUGXjcm/39HFBRDZ6m3k4XI8U3B8QraX/ZFbw==
+X-Received: by 2002:a05:6358:42a6:b0:143:321:f36b with SMTP id s38-20020a05635842a600b001430321f36bmr14035556rwc.18.1696881603565;
+        Mon, 09 Oct 2023 13:00:03 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id b21-20020a170902d31500b001bdc8a5e96csm10053257plc.169.2023.10.09.13.00.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Oct 2023 13:00:03 -0700 (PDT)
+Date:   Mon, 9 Oct 2023 12:59:58 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org,
+        linux-hardening@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH] mtd: rawnand: rockchip: Use struct_size()
+Message-ID: <202310091259.1D9E73DAE@keescook>
+References: <481721c2c7fe570b4027dbe231d523961c953d5a.1696146232.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-0438c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <481721c2c7fe570b4027dbe231d523961c953d5a.1696146232.git.christophe.jaillet@wanadoo.fr>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,36 +78,25 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 05 Oct 2023 17:00:24 +0300, Dan Carpenter wrote:
-> Free the "priv" pointer before returning the error code.
+On Sun, Oct 01, 2023 at 09:44:04AM +0200, Christophe JAILLET wrote:
+> Use struct_size() instead of hand writing it.
+> This is less verbose and more robust.
 > 
+> While at it, prepare for the coming implementation by GCC and Clang of the
+> __counted_by attribute. Flexible array members annotated with __counted_by
+> can have their accesses bounds-checked at run-time checking via
+> CONFIG_UBSAN_BOUNDS (for array indexing) and CONFIG_FORTIFY_SOURCE (for
+> strcpy/memcpy-family functions).
 > 
+> Also remove a useless comment about the position of a flex-array in a
+> structure.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Applied to
+It seems the consensus is to keep the struct_size() changes together
+with the __counted_by annotation, so yes, this looks correct to me:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-Thanks!
-
-[1/1] ASoC: pxa: fix a memory leak in probe()
-      commit: aa6464edbd51af4a2f8db43df866a7642b244b5f
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+-- 
+Kees Cook

@@ -2,33 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89B4D7D0B05
-	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Oct 2023 11:00:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E4D57D0B10
+	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Oct 2023 11:03:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376556AbjJTJAg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 20 Oct 2023 05:00:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59874 "EHLO
+        id S1376560AbjJTJDN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 20 Oct 2023 05:03:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376521AbjJTJAd (ORCPT
+        with ESMTP id S1376523AbjJTJDL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 20 Oct 2023 05:00:33 -0400
+        Fri, 20 Oct 2023 05:03:11 -0400
 Received: from mail.nfschina.com (unknown [42.101.60.195])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 04C4EAB;
-        Fri, 20 Oct 2023 02:00:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id B937AD67;
+        Fri, 20 Oct 2023 02:03:06 -0700 (PDT)
 Received: from localhost.localdomain (unknown [180.167.10.98])
-        by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPA id 5758960494CD8;
-        Fri, 20 Oct 2023 17:00:17 +0800 (CST)
+        by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPA id 776BE60494CD8;
+        Fri, 20 Oct 2023 17:03:03 +0800 (CST)
 X-MD-Sfrom: suhui@nfschina.com
 X-MD-SrcIP: 180.167.10.98
 From:   Su Hui <suhui@nfschina.com>
-To:     andrew@lunn.ch, f.fainelli@gmail.com, olteanv@gmail.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, richardcochran@gmail.com
-Cc:     Su Hui <suhui@nfschina.com>, netdev@vger.kernel.org,
+To:     ping.cheng@wacom.com, jason.gerecke@wacom.com, jikos@kernel.org,
+        benjamin.tissoires@redhat.com
+Cc:     Su Hui <suhui@nfschina.com>, linux-input@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] net: dsa: mv88e6xxx: add an error code check in mv88e6352_tai_event_work
-Date:   Fri, 20 Oct 2023 17:00:04 +0800
-Message-Id: <20231020090003.200092-1-suhui@nfschina.com>
+Subject: [PATCH] HID: wacom_sys: add error code check in wacom_feature_mapping
+Date:   Fri, 20 Oct 2023 17:02:38 +0800
+Message-Id: <20231020090237.201029-1-suhui@nfschina.com>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -41,29 +40,36 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-mv88e6xxx_tai_write() can return error code (-EOPNOTSUPP ...) if failed.
-So check the value of 'ret' after calling mv88e6xxx_tai_write().
+hid_report_raw_event() can return error code like '-ENOMEM' if
+failed, so check 'ret' to make sure all things work fine.
 
 Signed-off-by: Su Hui <suhui@nfschina.com>
 ---
- drivers/net/dsa/mv88e6xxx/ptp.c | 4 ++++
+ drivers/hid/wacom_sys.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/ptp.c b/drivers/net/dsa/mv88e6xxx/ptp.c
-index ea17231dc34e..56391e09b325 100644
---- a/drivers/net/dsa/mv88e6xxx/ptp.c
-+++ b/drivers/net/dsa/mv88e6xxx/ptp.c
-@@ -182,6 +182,10 @@ static void mv88e6352_tai_event_work(struct work_struct *ugly)
- 	mv88e6xxx_reg_lock(chip);
- 	err = mv88e6xxx_tai_write(chip, MV88E6XXX_TAI_EVENT_STATUS, status[0]);
- 	mv88e6xxx_reg_unlock(chip);
-+	if (err) {
-+		dev_err(chip->dev, "failed to write TAI status register\n");
-+		return;
-+	}
- 
- 	/* This is an external timestamp */
- 	ev.type = PTP_CLOCK_EXTTS;
+diff --git a/drivers/hid/wacom_sys.c b/drivers/hid/wacom_sys.c
+index 3f704b8072e8..1f898d4ee708 100644
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -320,6 +320,8 @@ static void wacom_feature_mapping(struct hid_device *hdev,
+ 			if (ret == n && features->type == HID_GENERIC) {
+ 				ret = hid_report_raw_event(hdev,
+ 					HID_FEATURE_REPORT, data, n, 0);
++				if (ret)
++					hid_warn(hdev, "failed to report feature\n");
+ 			} else if (ret == 2 && features->type != HID_GENERIC) {
+ 				features->touch_max = data[1];
+ 			} else {
+@@ -381,6 +383,8 @@ static void wacom_feature_mapping(struct hid_device *hdev,
+ 		if (ret == n) {
+ 			ret = hid_report_raw_event(hdev, HID_FEATURE_REPORT,
+ 						   data, n, 0);
++			if (ret)
++				hid_warn(hdev, "failed to report feature\n");
+ 		} else {
+ 			hid_warn(hdev, "%s: could not retrieve sensor offsets\n",
+ 				 __func__);
 -- 
 2.30.2
 

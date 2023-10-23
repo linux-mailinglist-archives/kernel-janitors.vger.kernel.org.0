@@ -2,36 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 192C77D3DCC
-	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Oct 2023 19:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBAD27D3EAF
+	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Oct 2023 20:11:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233521AbjJWRck (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 23 Oct 2023 13:32:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41916 "EHLO
+        id S231755AbjJWSLJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 Oct 2023 14:11:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233789AbjJWRc0 (ORCPT
+        with ESMTP id S230492AbjJWSLI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 23 Oct 2023 13:32:26 -0400
-X-Greylist: delayed 450 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 23 Oct 2023 10:32:16 PDT
-Received: from out.smtpout.orange.fr (out-18.smtpout.orange.fr [193.252.22.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B8322D7B
-        for <kernel-janitors@vger.kernel.org>; Mon, 23 Oct 2023 10:32:16 -0700 (PDT)
+        Mon, 23 Oct 2023 14:11:08 -0400
+Received: from out.smtpout.orange.fr (out-17.smtpout.orange.fr [193.252.22.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BCFFD79
+        for <kernel-janitors@vger.kernel.org>; Mon, 23 Oct 2023 11:11:03 -0700 (PDT)
 Received: from localhost.localdomain ([89.207.171.96])
-        by smtp.orange.fr with ESMTPA
-        id uyfSqiNV2aLS1uyfTqByU0; Mon, 23 Oct 2023 19:24:44 +0200
+        by smtp.orange.fr with ESMTPSA
+        id uzOEqlElA4FJ9uzOGqZu8v; Mon, 23 Oct 2023 20:11:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-        s=t20230301; t=1698081884;
+        s=t20230301; t=1698084661;
         bh=t7dPTH86r3T7OE/Hsg6Sc2j1I/GQSk2tQP+zV+h/AG8=;
         h=From:To:Cc:Subject:Date;
-        b=MFBZI8p7FmZLlPFCzeqUapweAH47vcCK4oyUBogCqv7EhD1XnR6I6QzcFo4tbNaM/
-         9WoAIH9zWCABgwlyw+DoowNcv/UinyDoP2xX86rAW77+CpXkm6NCGxaBmrHi+t02W0
-         qeh4Ax+YLsbjbn2Pc3gqcgu60E+eySej/jW/0rKCUhEcrCCywNj8RS2QgOjXdptSkz
-         syd+ioJdbyJRyBluDc3kBs7PIoC1ScZYf137hks9+/XjQcboh4MP1dLRwA06HkKc7S
-         6Vx+Rg552JZnrz1IrgcHC3ocgZXZGNCq2GiHYAZRkQDdrVYfzm2tK5d1qjMPL0cmyV
-         YNOkBT5NZZB2A==
+        b=Ho/NcSpkN8htKg6u6eVgDyHecadbEki5RmVTf/e27i+9rzkCus3f+UCfSS9goXEH/
+         MtS56RnTgk9JiDkz5CF1PwQLwCcxaQ+QLVZnyRQTilGPwgN+7w2QHiLjrfsqUB7syG
+         4Rrn30bBmAOIbOoz89SbcM6iUj083q/XjFtHPQAYK+6nEJWrp4Wsqed1Yk1LBgCvuT
+         kooGzg8yEpkDajDH9H9kYqCzzmZ00AFIRftwkDe3oCYqpTM+zsS4pkMgADoWSH2PAV
+         1OECd7Ue4fxwdV2O8Y/j2EuTDNZ7vK5l+d8VVAt85PcUa8pW++df+qvAjg2EUFFGAe
+         uU6q1rt1ytUZA==
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 23 Oct 2023 19:24:44 +0200
+X-ME-Date: Mon, 23 Oct 2023 20:11:01 +0200
 X-ME-IP: 89.207.171.96
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 To:     rafael@kernel.org, lenb@kernel.org
@@ -39,7 +38,7 @@ Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Subject: [PATCH 0/4] ACPI: sysfs: Fix some issues in create_of_modalias() and create_pnp_modalias()
-Date:   Mon, 23 Oct 2023 19:24:37 +0200
+Date:   Mon, 23 Oct 2023 20:10:52 +0200
 Message-Id: <cover.1698081019.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0

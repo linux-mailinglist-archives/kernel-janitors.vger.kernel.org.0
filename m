@@ -2,81 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E1F07D4543
-	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Oct 2023 04:00:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20F357D43A7
+	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Oct 2023 02:08:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231982AbjJXCAt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 23 Oct 2023 22:00:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53866 "EHLO
+        id S231588AbjJXAIY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 Oct 2023 20:08:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231989AbjJXCAr (ORCPT
+        with ESMTP id S231492AbjJXAIO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 23 Oct 2023 22:00:47 -0400
-X-Greylist: delayed 12122 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 23 Oct 2023 19:00:43 PDT
-Received: from mail.tehinnovacii.ru (mail.tehinnovacii.ru [185.221.212.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 996E810C3;
-        Mon, 23 Oct 2023 19:00:41 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.tehinnovacii.ru (Postfix) with ESMTP id 75DB38454F767;
-        Mon, 23 Oct 2023 23:45:19 +0300 (MSK)
-Received: from mail.tehinnovacii.ru ([127.0.0.1])
-        by localhost (mail.tehinnovacii.ru [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id PTSgeIfWcAMU; Mon, 23 Oct 2023 23:45:19 +0300 (MSK)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.tehinnovacii.ru (Postfix) with ESMTP id 2FE888454F80C;
-        Mon, 23 Oct 2023 23:45:16 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.tehinnovacii.ru 2FE888454F80C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tehinnovacii.ru;
-        s=mail; t=1698093916;
-        bh=Ws5TcS6EV4V7aiUY6u9eol5cuGGKUQT0mSrLKF+Le3s=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=samxurkQqDJ6Xsxp/BhcYdQtJCsLeTGCGzJGPvf9JWiTZUNYZyXcFYRA9Wlgf7LPl
-         li83AscKNHFyyoA825hnU0wi2VwhDsaNwS8MBXqxXUgtr3FjrtVniLs68JnQVMpbNP
-         GMXv2+MbXhW0OyOlu5lR0Fp8WarLR8BJ0wZC32hlleAc8TPErZc6nk4Dq5BHcQtUFL
-         ++uuERLcQez10t9snuBfc6dsKyQIBUlDahYm2700oRC9PddgjdygEPSE4CJ8risrhN
-         4SSbdBTrV5WeUSZ4JCFQvIG15fFaMIe3UkkBS9Xe1xZvkdC6esPLJNVDr3jI/yzhhO
-         7sW+uDWmY+evQ==
-Received: from mail.tehinnovacii.ru ([127.0.0.1])
-        by localhost (mail.tehinnovacii.ru [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id IcXgPq1LtTP1; Mon, 23 Oct 2023 23:45:16 +0300 (MSK)
-Received: from DESKTOP-0AG4O9B.lan (unknown [41.157.248.166])
-        by mail.tehinnovacii.ru (Postfix) with ESMTPSA id 710AA84AD3D73;
-        Mon, 23 Oct 2023 23:45:01 +0300 (MSK)
-Content-Type: text/plain; charset="iso-8859-1"
+        Mon, 23 Oct 2023 20:08:14 -0400
+Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 998CB199D
+        for <kernel-janitors@vger.kernel.org>; Mon, 23 Oct 2023 17:07:53 -0700 (PDT)
+Received: from eig-obgw-6002a.ext.cloudfilter.net ([10.0.30.222])
+        by cmsmtp with ESMTPS
+        id v0PoqOm0A8Htev4xcqSrAY; Tue, 24 Oct 2023 00:07:52 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with ESMTPS
+        id v4xbqnHYwGYrgv4xbq3YQm; Tue, 24 Oct 2023 00:07:51 +0000
+X-Authority-Analysis: v=2.4 cv=bYd47cDB c=1 sm=1 tr=0 ts=65370ad7
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=bhdUkHdE2iEA:10 a=wYkD_t78qR0A:10 a=6xGJIMmgAAAA:8
+ a=_Wotqz80AAAA:8 a=RlR4_g-fcLoRnPhprk4A:9 a=QEXdDO2ut3YA:10
+ a=aWz6Jz32kaLdCzdWRG-w:22 a=buJP51TR1BpY-zbLSsyS:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=U0w4wkXYX8VfyvFsbwiv8o8q6UfmPFTSJkWOtfro1hQ=; b=g412Fl00B6ZdkPGKynV/BPT2+C
+        rhACG0EyhnM8L/jtRfY9/2FCiZZRqkK514S3WoqRlTdAWlNe3H39OC8UqOYTCizWQiRFubofOqLpr
+        BEPpdse2mcQOlQzMBJ+/PF1q9GZJFLjPe6Mm6DMVvVnVePfNqnUrr2uAhKvNB9G/GZFO9AWGzg36P
+        bvWmgU/Rlg+uRRt2sZWnv9XuOV28BzOUk8Yc5KKfMrmWDKRG3vTz/MEv8UxBPOd2ajg2NNmkMgvU0
+        Uq7mX8EDfG203wtSlDDteZLvjB9twqyBMEeqHDUcrYczV1+rNTdw7v5fYz0EmpD7ISZs8YEi3deaz
+        324mdJ5Q==;
+Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:41240 helo=[192.168.15.10])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96.2)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1qv4xb-000Xms-0I;
+        Mon, 23 Oct 2023 19:07:51 -0500
+Message-ID: <e122e8c3-bb9a-4f38-927b-989b1ae343a7@embeddedor.com>
+Date:   Mon, 23 Oct 2023 18:07:50 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Brauchen Sie einen Kredit?
-To:     Recipients <zp@tehinnovacii.ru>
-From:   Georg Johannes Proksch <zp@tehinnovacii.ru>
-Date:   Mon, 23 Oct 2023 13:44:01 -0700
-Reply-To: kreditschufadeutsch0@gmail.com
-Message-Id: <20231023204501.710AA84AD3D73@mail.tehinnovacii.ru>
-X-Spam-Status: No, score=4.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_BL_SPAMCOP_NET,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+User-Agent: Mozilla Thunderbird
+Subject: Re: KTODO automated TODO lists
+Content-Language: en-US
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To:     Dan Carpenter <dan.carpenter@linaro.org>, ksummit@lists.linux.dev
+Cc:     outreachy@lists.linux.dev, kernel-janitors@vger.kernel.org
+References: <369bc919-1a1d-4f37-9cc9-742a86a41282@kadam.mountain>
+ <9e0dc452-c4fe-4511-83fe-a1e356bd5438@embeddedor.com>
+In-Reply-To: <9e0dc452-c4fe-4511-83fe-a1e356bd5438@embeddedor.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.21.192
+X-Source-L: No
+X-Exim-ID: 1qv4xb-000Xms-0I
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.10]) [187.162.21.192]:41240
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 1
+X-Org:  HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfPUg6uyONWAHLgjlBOoH3BbnOaNlJh7BSvg/z1JLFgD7Crv5tEQ9TJCl/JMO2yrYS/SptRmU/2OM5Nx3mu0qHsfxZkHNKAQCxelcGqu97gHwN0oC8LSY
+ /HTb05l51h1Q8bxshqcRmaJJD2NAYBWYHJTS9KfrbK27AUPZfWbKq75B3NNxo/2qN3r4sS+feWW0NMmS1xk693exQaIKwtHmbK8egaGzH8uzhf5jgw6xDy1x
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Brauchen Sie einen Kredit?
-Tr=E4umen Sie davon, ein Unternehmen zu gr=FCnden?
-Sie ben=F6tigen Geld f=FCr Ihre Gesch=E4ftsidee, ben=F6tigen aber eine gro=
-=DFe Finanzierung?
-Besitzen Sie ein Unternehmen und m=F6chten expandieren?
 
-Wir bieten Gesch=E4ftskredite, Privatkredite, Projektkredite und Autokredit=
-e mit einem Zinssatz von 2 % an.
 
-Vollst=E4ndiger Name:
-Kreditbetrag:
-Kreditlaufzeit:
-Land:
-Telefonnummer:
+On 10/23/23 17:38, Gustavo A. R. Silva wrote:
+> 
+> 
+> On 10/18/23 22:11, Dan Carpenter wrote:
+>> Yesterday someone on my lists just sent an email looking for kernel
+>> tasks.  This was a university student in a kernel programming class.
+>> We also have kernel-janitors and outreachy and those people are always
+>> asking for small tasks.
+> 
+> We have tons of issues waiting to be audited and fixed here:
+> 
+> https://scan.coverity.com/projects/linux-next-weekly-scan
+> 
+> You will never run out of fun. :) People just need to sign up.
+I see people already signing up. :)
 
-Herr Georg Johannes Proksch
-Kreditberater/Berater
+BTW, here are some resources that people could find valuable:
+
+https://embeddedor.com/slides/2017/kr/kr2017.pdf
+https://embeddedor.com/slides/2018/kr/kr2018.pdf
+https://embeddedor.com/slides/2019/kr/kr2019.pdf
+
+Those are the slides from some presentations about fixing Coverity (and other)
+issues that I gave at Kernel Recipes some years ago. The talks are also on
+YouTube if people want to take a look.
+
+--
+Gustavo
+

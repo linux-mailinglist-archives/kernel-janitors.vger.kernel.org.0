@@ -2,156 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E67737D60B6
-	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Oct 2023 06:07:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 725EA7D60D0
+	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Oct 2023 06:18:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232503AbjJYEHk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 25 Oct 2023 00:07:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39520 "EHLO
+        id S232665AbjJYESf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Oct 2023 00:18:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232579AbjJYEHj (ORCPT
+        with ESMTP id S232654AbjJYESc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 25 Oct 2023 00:07:39 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A0AA136
-        for <kernel-janitors@vger.kernel.org>; Tue, 24 Oct 2023 21:07:36 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-4081ccf69dcso2140195e9.0
-        for <kernel-janitors@vger.kernel.org>; Tue, 24 Oct 2023 21:07:36 -0700 (PDT)
+        Wed, 25 Oct 2023 00:18:32 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58CC1130
+        for <kernel-janitors@vger.kernel.org>; Tue, 24 Oct 2023 21:18:29 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-40859c464daso31764725e9.1
+        for <kernel-janitors@vger.kernel.org>; Tue, 24 Oct 2023 21:18:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698206855; x=1698811655; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1698207508; x=1698812308; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ffh1hc5+xa7pdyDr+SRzq0H2ZTdMTKrRahcZ7F1PnBI=;
-        b=PvnAZ3txpUeZ2/gW4Ke9J1F/JU5tBTNscKZc9e8G/18e96aMo7X4xL2/3eBkuzHvWV
-         is3GrPy2cIjF3GxrGoWoJTu0CTFN+HY8RHaaYSFJ1U8Eeria6jJ8th0GmLvZVhykRdRD
-         grga75UQAfTahZNnn5KFAWtBkyR3yDmvs78VcWLJzoJ57hbmkKBAQkgJnwlPKJaVk1zS
-         lP7HtXKN5f3ME0V5Cf7QcAK2TgBKiaLgM4x+NQqcwxOsaF+kHo9BgKk5SdCsNSYfqZEG
-         tMzu4H08sdNzN1M+LhwemOiKqLBqQrLg4S3k3xLIA4vY5oxC6u5pEs63S9xEuYF7Rrx0
-         dHOg==
+        bh=qNR7ea//1RhQMh43Nn1LOqMDgljHo5DtbTVWYpA0DcM=;
+        b=ko9Ir6CpWZ+1p4uRxfMW2laYWn1bIFDmU44AwsklfHpf80B9uJtZfEU5imcIXl7bcx
+         KiBX97ZdFAebrAtW4ui+7tWLxeJNpFcQeu9W6PS0DYIyFmS2lKvBR8mVc02O5YjWeIqz
+         /xqIIg/9jE4HJircGcnUCyMwFJQf0jofy9XS8gDqwvoW5TjzckDXaWBlX7MkNOIhyfCO
+         ht/e4S4HP0BXgr5qRP2NuwMVkojnUEybiL0eku7VOaDY+H5tRva5fgIJtz3vCXZBnibV
+         sl7BdTqLbWbqld+rtEGqx5dF/H//hmZEPnUP8LrscCd6E/MpobCyDcTTbp6d8Ya3oTtA
+         GZdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698206855; x=1698811655;
+        d=1e100.net; s=20230601; t=1698207508; x=1698812308;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ffh1hc5+xa7pdyDr+SRzq0H2ZTdMTKrRahcZ7F1PnBI=;
-        b=IaJIxfWeCiJ2qgDyegzGRtDDAj8mORRBEG0J7nDCsb+h9paf06OUaF59Bqq51mZSXw
-         wy3xhnxOlV/ioDCPZRYMmmOuwD30iQzOi/bY9RkMuPWVoYus/SaVWAq+ZGYsY9j/e/uR
-         vxSxCWHh9T52B7LRvP4f9P+bZxDvaCa/F3OWKjoSSBL1PKUrampVKihobKDEaWkjyuRv
-         Q8+L4d3LFLnCHNoBFmQXFhtuRHRCWKkA7XAGKpYRR4UwURO7aww59u1V79qH4XjVI+sL
-         y5K3kTFw2ldAzqmZhl5iw49Cc7sg61eDhI2KiRBTPnAgGFHR3pQhDsM0y1wi9fEHMYn2
-         9tpw==
-X-Gm-Message-State: AOJu0Yxe9KY7pCoWzqXiwRrLoqyf6nylO+r98/aVp7tve+WRZgJsn5zA
-        2pIvBF+/MbEZam0XrkufFMvHzA==
-X-Google-Smtp-Source: AGHT+IGnsflWEFj9kmnbEqGjA6gOQ1vVEZ1jGDutnomG+MGT1NN/xSTeV1TZUMzgtVdXz2qL7DKGNw==
-X-Received: by 2002:adf:b198:0:b0:32d:cae5:3573 with SMTP id q24-20020adfb198000000b0032dcae53573mr17923061wra.32.1698206855013;
-        Tue, 24 Oct 2023 21:07:35 -0700 (PDT)
+        bh=qNR7ea//1RhQMh43Nn1LOqMDgljHo5DtbTVWYpA0DcM=;
+        b=FElw06LXGneiB96fDWMlVnIqIhiY2ARorE650efB6IdSK5QMJFnZe4712Dd+C9vzwW
+         rIqVXfliYB/q7VIHtnV9/v3ZN3kMVPAsYFZvib4JrXKhLUG24bUIg5L+vtUhjhsL1XCV
+         BeyD38oRnBtgYC/95cBGG4KbdDCIegbMzmTDQev2TjEiFTDVYRj56ZybcPXJC0rfKHDb
+         wB+tp24h2KUfRMaBoyl6L4O5FmXoHlRpjfb9b1LFQmqB7w7rNlC8jPyrSwCJY5pFC2uC
+         jwT7dwdOwDm0IysxPzlsRSNupZ03CAggWW/azO3HhwCuy4QKYh6xxap7+w3/pcpRx72u
+         TszQ==
+X-Gm-Message-State: AOJu0YyMbRtfjyzBC0pjnjiuU6b9RxYk6kLrDl5QLGWPuD1e4jmdWgFt
+        IYaJJQyZYcQgGKTIgfPLwIe8WQ==
+X-Google-Smtp-Source: AGHT+IHh0Yz93NJIxzr1UvkVjXqIOZmuaG6avCJrJHwpf93+day3qOWd2OD7YLuO2MBZGqUL+ayLdg==
+X-Received: by 2002:a05:600c:19d1:b0:405:82c0:d9d9 with SMTP id u17-20020a05600c19d100b0040582c0d9d9mr10694503wmq.41.1698207507203;
+        Tue, 24 Oct 2023 21:18:27 -0700 (PDT)
 Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id e16-20020adfef10000000b0032d8354fb43sm11210237wro.76.2023.10.24.21.07.33
+        by smtp.gmail.com with ESMTPSA id h12-20020a05600c314c00b004068def185asm4181970wmo.28.2023.10.24.21.18.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Oct 2023 21:07:34 -0700 (PDT)
-Date:   Wed, 25 Oct 2023 07:07:30 +0300
+        Tue, 24 Oct 2023 21:18:26 -0700 (PDT)
+Date:   Wed, 25 Oct 2023 07:11:24 +0300
 From:   Dan Carpenter <dan.carpenter@linaro.org>
 To:     Wenchao Hao <haowenchao22@gmail.com>
 Cc:     Wenchao Hao <haowenchao2@huawei.com>,
+        Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+        Vinod Koul <vkoul@kernel.org>,
         "James E.J. Bottomley" <jejb@linux.ibm.com>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 2/2] scsi: scsi_debug: delete some bogus error checking
-Message-ID: <d49244a3-6d00-483b-9ae5-ac45de5169b2@kadam.mountain>
-References: <f96d6366-9271-4020-ab66-f75737a1e8bd@moroto.mountain>
- <d2cb55a9-6bc0-47a0-a812-418d187c2c00@gmail.com>
- <d8ec82e6-5ba5-4945-825c-0e622c62f5b6@kadam.mountain>
- <f882e8ba-c563-4c9a-99ab-50b20fe7b1b0@gmail.com>
+        Douglas Gilbert <dgilbert@interlog.com>,
+        dmaengine@vger.kernel.org, linux-scsi@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH 1/2] scsi: scsi_debug: fix some bugs in
+ sdebug_error_write()
+Message-ID: <9767953c-480d-4ad9-a553-a45ae80c572b@kadam.mountain>
+References: <96d50cf7-afec-46af-9d98-08099f8dc76e@moroto.mountain>
+ <CAOptpSMTgGwyFkn8o6qAEnUKXh+_mOr8dQKAZUWfM_4QEnxzxw@mail.gmail.com>
+ <44b0eca3-57c1-4edd-ab35-c389dc976273@kadam.mountain>
+ <cbe14e3a-11c7-4da5-b125-5801244e27f2@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f882e8ba-c563-4c9a-99ab-50b20fe7b1b0@gmail.com>
+In-Reply-To: <cbe14e3a-11c7-4da5-b125-5801244e27f2@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Oct 25, 2023 at 12:49:48AM +0800, Wenchao Hao wrote:
-> On 10/23/23 1:06 PM, Dan Carpenter wrote:
-> > On Sat, Oct 21, 2023 at 01:28:50AM +0800, Wenchao Hao wrote:
-> >> On 2023/10/20 22:15, Dan Carpenter wrote:
-> >>> Smatch complains that "dentry" is never initialized.  These days everyone
-> >>> initializes all their stack variables to zero so this means that it will
-> >>> trigger a warning every time this function is run.
-> >>>
-> >>> Really debugfs functions are not supposed to be checked for errors so
-> >>> this checking can just be deleted.
-> >>>
-> >>> Fixes: f084fe52c640 ("scsi: scsi_debug: Add debugfs interface to fail target reset")
-> >>> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> >>> ---
-> >>> See my blog for more information on the history of debugfs error
-> >>> checking:
-> >>>
-> >>> https://staticthinking.wordpress.com/2023/07/24/debugfs-functions-are-not-supposed-to-be-checked/
-> >>> ---
-> >>>  drivers/scsi/scsi_debug.c | 7 -------
-> >>>  1 file changed, 7 deletions(-)
-> >>>
-> >>> diff --git a/drivers/scsi/scsi_debug.c b/drivers/scsi/scsi_debug.c
-> >>> index 0a4e41d84df8..c0be9a53ac79 100644
-> >>> --- a/drivers/scsi/scsi_debug.c
-> >>> +++ b/drivers/scsi/scsi_debug.c
-> >>> @@ -1127,7 +1127,6 @@ static const struct file_operations sdebug_target_reset_fail_fops = {
-> >>>  static int sdebug_target_alloc(struct scsi_target *starget)
-> >>>  {
-> >>>  	struct sdebug_target_info *targetip;
-> >>> -	struct dentry *dentry;
-> >>>  
-> >>>  	targetip = kzalloc(sizeof(struct sdebug_target_info), GFP_KERNEL);
-> >>>  	if (!targetip)
-> >>> @@ -1135,15 +1134,9 @@ static int sdebug_target_alloc(struct scsi_target *starget)
-> >>>  
-> >>>  	targetip->debugfs_entry = debugfs_create_dir(dev_name(&starget->dev),
-> >>>  				sdebug_debugfs_root);
-> >>> -	if (IS_ERR_OR_NULL(targetip->debugfs_entry))
-> >>> -		pr_info("%s: failed to create debugfs directory for target %s\n",
-> >>> -			__func__, dev_name(&starget->dev));
-> >>>  
-> >>>  	debugfs_create_file("fail_reset", 0600, targetip->debugfs_entry, starget,
-> >>>  				&sdebug_target_reset_fail_fops);
-> >>> -	if (IS_ERR_OR_NULL(dentry))
-> >>> -		pr_info("%s: failed to create fail_reset file for target %s\n",
-> >>> -			__func__, dev_name(&starget->dev));
-> >>>  
-> >>>  	starget->hostdata = targetip;
-> >>>  
-> >>
-> >>
-> >> Thank you for the fix, the check for debugfs_create_file() is added because 
-> >> scsi_debug driver is often used to test abnormal situations, here just check
-> >> and prompt a log, so maybe you should not remove it and fix the issue
-> >> following changes:
-> >>
-> > 
-> > No, the correct thing is to remove it.  This is explained in my blog
-> > article linked to earlier.
-> > 
-> > https://staticthinking.wordpress.com/2023/07/24/debugfs-functions-are-not-supposed-to-be-checked/
-> > 
+On Wed, Oct 25, 2023 at 01:09:34AM +0800, Wenchao Hao wrote:
+> Yes, there is bug here if write with .c code. Because your change to use
+> strndup_user() would make write with dirty data appended to "ubuf" failed,
+
+I don't understand this sentence.  What is "dirty" data in this context?
+
+> can we fix it with following change:
 > 
-> There are other places in scsi_debug which check return value
-> of debugfs functions added by my previous patches, would you
-> remove them?
+> diff --git a/drivers/scsi/scsi_debug.c b/drivers/scsi/scsi_debug.c
+> index 67922e2c4c19..0e8ct724463f 100644
+> --- a/drivers/scsi/scsi_debug.c
+> +++ b/drivers/scsi/scsi_debug.c
+> @@ -1019,7 +1019,7 @@ static seize_t sdebug_error_write(struct file *file, const char __user *ubuf,
+>         struct sdebug_err_inject *inject;
+>         struct scsi_device *sdev = (struct scsi_device *)file->f_inode->i_private;
+>  
+> -       buf = kmalloc(count, GFP_KERNEL);
+> +       buf = kzalloc(count + 1, GFP_KERNEL);
 
-It's harmless to check most of the time.  Technically, they should be
-removed but that's like a whitespace clean up so it's not worth spending
-a lot of time on unless you care about a specific driver.  Here, though,
-it was an uninitialized variable bug, and try to fix bugs.
+That would also fix the bug.
 
-Smatch is really about fixing bugs so I have special code to not warn
-about if people check debugfs code for NULL.  Normally Smatch would
-complain if people check an error pointer function for NULL but with
-debugfs functions it doesn't matter.
+>         if (!buf)
+>                 return -ENOMEM;
+> 
+> Or is there other kernel lib function which can address this issue?
+
+I don't understand the issue.
 
 regards,
 dan carpenter
+

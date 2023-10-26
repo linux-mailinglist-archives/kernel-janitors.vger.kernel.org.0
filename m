@@ -2,73 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 731FC7D78D7
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Oct 2023 01:45:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 268817D7AB4
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Oct 2023 04:11:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229709AbjJYXpy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 25 Oct 2023 19:45:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41718 "EHLO
+        id S232859AbjJZCL5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Oct 2023 22:11:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229638AbjJYXpx (ORCPT
+        with ESMTP id S229518AbjJZCL4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 25 Oct 2023 19:45:53 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8D4213D
-        for <kernel-janitors@vger.kernel.org>; Wed, 25 Oct 2023 16:45:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EE5EC433C7;
-        Wed, 25 Oct 2023 23:45:50 +0000 (UTC)
-Date:   Wed, 25 Oct 2023 19:45:47 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     "Paul E. McKenney" <paulmck@kernel.org>
-Cc:     NeilBrown <neilb@suse.de>, Krzysztof Kozlowski <krzk@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        ksummit@lists.linux.dev, outreachy@lists.linux.dev,
+        Wed, 25 Oct 2023 22:11:56 -0400
+Received: from mail.nfschina.com (unknown [42.101.60.195])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id B68DC133;
+        Wed, 25 Oct 2023 19:11:53 -0700 (PDT)
+Received: from localhost.localdomain (unknown [180.167.10.98])
+        by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPA id D187E605FCF04;
+        Thu, 26 Oct 2023 10:11:12 +0800 (CST)
+X-MD-Sfrom: suhui@nfschina.com
+X-MD-SrcIP: 180.167.10.98
+From:   Su Hui <suhui@nfschina.com>
+To:     lukas@wunner.de, maarten.lankhorst@linux.intel.com,
+        mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+        daniel@ffwll.ch
+Cc:     Su Hui <suhui@nfschina.com>, tiwai@suse.de, Jim.Qu@amd.com,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: Re: KTODO automated TODO lists
-Message-ID: <20231025194547.05959d74@gandalf.local.home>
-In-Reply-To: <92cff666-c948-457a-8aa6-967e624a3d37@paulmck-laptop>
-References: <369bc919-1a1d-4f37-9cc9-742a86a41282@kadam.mountain>
-        <20231023114949.34fc967988c354547f79c4e7@linux-foundation.org>
-        <8ca50d4c-3c96-4efa-a111-fca04d580ab5@kernel.org>
-        <169818295461.20306.14022136719064683486@noble.neil.brown.name>
-        <20231024180517.421618c0@gandalf.local.home>
-        <92cff666-c948-457a-8aa6-967e624a3d37@paulmck-laptop>
-X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Subject: [PATCH] vga_switcheroo: Fix impossible judgment condition
+Date:   Thu, 26 Oct 2023 10:10:57 +0800
+Message-Id: <20231026021056.850680-1-suhui@nfschina.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RDNS_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 24 Oct 2023 20:47:28 -0700
-"Paul E. McKenney" <paulmck@kernel.org> wrote:
+'id' is enum type like unsigned int, so it will never be less than zero.
 
-> On Tue, Oct 24, 2023 at 06:05:17PM -0400, Steven Rostedt wrote:
-> > On Wed, 25 Oct 2023 08:29:14 +1100
-> > "NeilBrown" <neilb@suse.de> wrote:
-> >   
-> > > Here we all are, brilliantly talented computer programmers who spend
-> > > our days making amazing fast digital devices do amazingly clever and
-> > > subtle things, inventing time-saving tools and processing vast amounts
-> > > of data without blinking, but for some reason we think the task of
-> > > skipping over a few thousand lines that all start with '> " is too hard
-> > > for us and that we should, in stead, complain to some other human to
-> > > convince them to make our life easier for us.
-> > > 
-> > > Does anyone else see the irony?  
-> > 
-> > Did you also know that real-time developers are the most unpredictable?  
-> 
-> Are safety-critical programmers the most easy-going?
-> 
+Fixes: 4aaf448fa975 ("vga_switcheroo: set audio client id according to bound GPU id")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+---
+ drivers/gpu/vga/vga_switcheroo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-No, they are the most accident prone ;-)
+diff --git a/drivers/gpu/vga/vga_switcheroo.c b/drivers/gpu/vga/vga_switcheroo.c
+index 365e6ddbe90f..d3064466fd3a 100644
+--- a/drivers/gpu/vga/vga_switcheroo.c
++++ b/drivers/gpu/vga/vga_switcheroo.c
+@@ -375,7 +375,7 @@ int vga_switcheroo_register_audio_client(struct pci_dev *pdev,
+ 	mutex_lock(&vgasr_mutex);
+ 	if (vgasr_priv.active) {
+ 		id = vgasr_priv.handler->get_client_id(vga_dev);
+-		if (id < 0) {
++		if ((int)id < 0) {
+ 			mutex_unlock(&vgasr_mutex);
+ 			return -EINVAL;
+ 		}
+-- 
+2.30.2
 
--- Steve

@@ -2,44 +2,44 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF02F7D99D4
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Oct 2023 15:30:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1353F7D9A17
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Oct 2023 15:36:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345948AbjJ0NaQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Oct 2023 09:30:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37196 "EHLO
+        id S1346089AbjJ0Ngn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Oct 2023 09:36:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345926AbjJ0NaP (ORCPT
+        with ESMTP id S1345978AbjJ0NgR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Oct 2023 09:30:15 -0400
+        Fri, 27 Oct 2023 09:36:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDA9718F;
-        Fri, 27 Oct 2023 06:30:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93F8C433C9;
-        Fri, 27 Oct 2023 13:30:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B589D6A;
+        Fri, 27 Oct 2023 06:36:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C3CC433C9;
+        Fri, 27 Oct 2023 13:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698413412;
-        bh=WhLHybGvjXg6KH83VHDPsIL/bPZh52vmPBOUFL8UsHM=;
+        s=k20201202; t=1698413762;
+        bh=0xd7P4qYVmXOKMAZZhnxdTAzptuC3esnYUCmJULyCB8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=G/BKEHw8qA2TK0n5/ruuZBbJ39DIAXA/pZJGtcKodXPkNfp8T8woPEed/iVvjuxD2
-         uSdWJ7Ee8yA6kBr7f33+5hBjsF2JXMcIbcEbqlcOF15fRwHFflunwNLvPPIrf4KlpW
-         8V0oh4uITqpT2sD+O3FybSwgjCWK62cUrpRrx1Yn16PezmPdr3Ry3aOo+nCHtIjjMJ
-         qIp2r2Dt+xI7svCU8jGGcyrKrCiQubkbgVfMgveEDuHXx5I4NEG37d3o6zja2vPeUe
-         vwArUo0kZDtjdXVdrbQLH7dVEORrFZbJvbxT0TYsKEfdwJuAt3s2Xm7Tfh1g3mM4t6
-         xO9knVzOskiMg==
-Date:   Fri, 27 Oct 2023 14:30:10 +0100
+        b=kdr9xBX/kVeoUGv0I2qU4a9zqQb7P/6SbXYTGPU6CxbiOzYbxWkQHsNaJcRVFujoF
+         U0hjXSHePCG+09skR+SGHmFydgCkUuZY96ngHKMSarHPmP4lK7aEyKKwrynYU8h+m3
+         /KDNuGlLsUGWxuLTYPWb1urXHF1gbpyh/fg/VO/duWGc7gwk3R3HTLXe4EQm1s+avX
+         rwvuSnqPM4cRF0x+eIWMH92xZAqAB0SV9bckKz3hNyaEVQ54L4FVj455UZBfleB6xd
+         VQPXHbTEJ9XRX12x2214sI6LAkNjylDNAkUCvXSU7hoSSEdeAUCyMXys1HynEklUiu
+         ciSQwbc2OTpRw==
+Date:   Fri, 27 Oct 2023 14:36:00 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jagath Jog J <jagathjog1996@gmail.com>
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: correct file entry in BOSCH SENSORTEC
- BMI323 IMU IIO DRIVER
-Message-ID: <20231027143010.2d49c82d@jic23-huawei>
-In-Reply-To: <CAM+2Eu+yjguvkZLzAw6u+Y3PxT5JDuOEWtJSfv-U-C5mdmvL+Q@mail.gmail.com>
-References: <20231025091550.21052-1-lukas.bulwahn@gmail.com>
-        <CAM+2Eu+yjguvkZLzAw6u+Y3PxT5JDuOEWtJSfv-U-C5mdmvL+Q@mail.gmail.com>
+To:     Su Hui <suhui@nfschina.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>, lars@metafoo.de,
+        jean-baptiste.maneyrol@tdk.com, chenhuiz@axis.com,
+        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH 2/2] phy: mapphone-mdm6600: fix an error code problem in
+ inv_mpu6050_read_raw
+Message-ID: <20231027143600.2dd74f78@jic23-huawei>
+In-Reply-To: <bccca54f-5eb8-83ba-17ad-6cb312aa6ea5@nfschina.com>
+References: <7f81d365-0440-de01-8be4-9c8d3ab9d69c@nfschina.com>
+        <bccca54f-5eb8-83ba-17ad-6cb312aa6ea5@nfschina.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,33 +54,52 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 26 Oct 2023 01:19:51 +0530
-Jagath Jog J <jagathjog1996@gmail.com> wrote:
+On Mon, 23 Oct 2023 11:29:30 +0800
+Su Hui <suhui@nfschina.com> wrote:
 
-> On Wed, Oct 25, 2023 at 2:45=E2=80=AFPM Lukas Bulwahn <lukas.bulwahn@gmai=
-l.com> wrote:
+> On 2023/10/23 09:33, Su Hui wrote:
+> > On 2023/10/20 23:55, Jonathan Cameron wrote: =20
+> >> I'm not sure why inv_mpu6050_sensor_show() doesn't return
+> >> the actual error code from the regmap_bulk_read() and instead=20
+> >> replaces it
+> >> with -EINVAL.=C2=A0 Given you are tidying up this related issues perha=
+ps=20
+> >> change
+> >> that as well?
+> >>
+> >> static int inv_mpu6050_sensor_show(struct inv_mpu6050_state *st, int=20
+> >> reg,
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int axis, int *val)
+> >> {
+> >> =C2=A0=C2=A0=C2=A0=C2=A0int ind, result;
+> >> =C2=A0=C2=A0=C2=A0=C2=A0__be16 d;
+> >>
+> >> =C2=A0=C2=A0=C2=A0=C2=A0ind =3D (axis - IIO_MOD_X) * 2;
+> >> =C2=A0=C2=A0=C2=A0=C2=A0result =3D regmap_bulk_read(st->map, reg + ind=
+, &d, sizeof(d));
+> >> =C2=A0=C2=A0=C2=A0=C2=A0if (result)
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EINVAL;
+> >> //Make this return result; =20
 > >
-> > Commit b512c767e7bc ("iio: imu: Add driver for BMI323 IMU") adds the
-> > MAINTAINERS section BOSCH SENSORTEC BMI323 IMU IIO DRIVER and refers to=
- a
-> > non-existing device-tree file.
-> >
-> > Probably, this mistake was introduced by copying from the BOSCH SENSORT=
-EC
-> > BMA400 ACCELEROMETER IIO DRIVER section and missing to adjust the file
-> > entry properly. This is however easily caught, as the script
-> > ./scripts/get_maintainer.pl --self-test=3Dpatterns complains about a br=
-oken
-> > reference.
-> >
-> > The related commit 77583938740e ("dt-bindings: iio: imu: Add Bosch BMI3=
-23")
-> > adds bosch,bmi323.yaml, so refer to that intended file instead. =20
+> > Sure, I will tidy up this, Thanks for your suggestion! =20
 >=20
-> My apologies for the silly mistake, and thank you for fixing it.
-> Reviewed-by: Jagath Jog J <jagathjog1996@gmail.com>
+> I'm not sure=C2=A0 whether the caller could handler this=C2=A0 when retur=
+n=20
+> 'result' rather than '-EINVAL'.
 >=20
-Applied to the togreg branch of iio.git and pushed out as testing.
+> This is not a big problem, maybe we shouldn't modify this code.
 
-Thanks,
+If the ultimate caller (userspace in this case) doesn't handle other
+error codes it won't work with lots of other devices and is broken.
+
+So I doubt any code is that fragile. If we get a report of a regression
+we can look into whether it's sensible to resolve it.
+
+So fine to change this, but could be a separate patch.
+
+J
+>=20
+> Su Hui
+>=20
 

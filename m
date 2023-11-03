@@ -1,133 +1,173 @@
-Return-Path: <kernel-janitors+bounces-144-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-146-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 879A07DFFA7
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Nov 2023 09:16:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C3A7E000E
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Nov 2023 10:38:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1ECFB21372
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Nov 2023 08:16:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B32C4281E18
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Nov 2023 09:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50A98460;
-	Fri,  3 Nov 2023 08:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD43E11721;
+	Fri,  3 Nov 2023 09:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="kv7cb5gR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gL6m+T9t"
 X-Original-To: kernel-janitors@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A54C79D1
-	for <kernel-janitors@vger.kernel.org>; Fri,  3 Nov 2023 08:16:00 +0000 (UTC)
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 102D4D43;
-	Fri,  3 Nov 2023 01:15:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1698999354; x=1730535354;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=bvVuH8PuQUV64vR22Glj7m93WZ75FEboVmfiiEOIF00=;
-  b=kv7cb5gRKPLmo3mawp9RGLy0THUfNckfJHn26oqsxt9NgkF3WxVJc6Yp
-   Wl4zo86urRg2OG08PWthgRWDTypXfafVhJKTipiwE+vcD1xcsyjnZSYfc
-   jic2ntC5UdJfTetP37zspTAeFEGCjVMscCWfygmVmgmWd9134alJcLcWi
-   x7OILzlOaJwtdZNYMN8Ox8E/+W1PtVJtLfDh3i/ABMCD1dtjArIx5Ynfk
-   RCrbkU26gK6l9z9QBOP57Azx+aQPSdIx24jpuSVLq4vtFpzwbFtRDu57Y
-   eAmDAlZkFKcOVmbXQwpJDVDWxy+zlEJvf48zGqJdurt7rjUyE112kUY6t
-   w==;
-X-IronPort-AV: E=Sophos;i="6.03,273,1694728800"; 
-   d="scan'208";a="33793751"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 03 Nov 2023 09:15:51 +0100
-Received: from steina-w.localnet (steina-w.tq-net.de [10.123.53.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id A229028007F;
-	Fri,  3 Nov 2023 09:15:51 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Lee Jones <lee@kernel.org>, Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>, Markus Niebel <Markus.Niebel@ew.tq-group.com>, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: adjust file patterns in TQ SYSTEMS BOARD & DRIVER SUPPORT
-Date: Fri, 03 Nov 2023 09:15:52 +0100
-Message-ID: <13490070.uLZWGnKmhe@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <11135245.nUPlyArG6x@steina-w>
-References: <20230825055821.30508-1-lukas.bulwahn@gmail.com> <11135245.nUPlyArG6x@steina-w>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4231C125A8
+	for <kernel-janitors@vger.kernel.org>; Fri,  3 Nov 2023 09:37:53 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AE2FD45;
+	Fri,  3 Nov 2023 02:37:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699004268; x=1730540268;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=S/nkKrTesetAZ6aXFR4Ncu3X482+P1gkm27faoGAlpc=;
+  b=gL6m+T9tazegAY1+2iKwJDdwam33EulNYWM/uyswwjZ1q0piq/xS/InD
+   G4LpIRG0GSlb4RbdcCOO2Ajyyjbx9mx9QHsYC60v6FspzsoNd5tnfI9v1
+   RvUQ2iNGj3iNg/BENS46eW5pldFMr3tCgzAu7GsYD4Dkm0BZi1AvkAEiQ
+   sJfWL9knUoSsxrAtJVIJocyxjsLFoDAZ8ynGuEnFyIVQ6YpPI2jkyMnIw
+   yo5999i03+4E/8HeLb1hbNs4T3SRR/glpnfO4OcY2plE6rIkpUdKt+xeV
+   2p164a43YsYtGUKwAcYd+C2uVUnvNu9wF5OUq1QrpNHA6S0rkV45L6/gm
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10882"; a="388741441"
+X-IronPort-AV: E=Sophos;i="6.03,273,1694761200"; 
+   d="scan'208";a="388741441"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2023 02:37:48 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10882"; a="711460349"
+X-IronPort-AV: E=Sophos;i="6.03,273,1694761200"; 
+   d="scan'208";a="711460349"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2023 02:37:45 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 11148120F5B;
+	Fri,  3 Nov 2023 10:42:54 +0200 (EET)
+Date: Fri, 3 Nov 2023 08:42:54 +0000
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] media: v4l2-subdev: Fix a 64bit bug
+Message-ID: <ZUSyjllEUXYYszoF@kekkonen.localdomain>
+References: <a14df0e5-74aa-42c9-a444-ba4c7d733364@moroto.mountain>
+ <ZUSaccRE_lq5Mizh@kekkonen.localdomain>
+ <f335560c-af40-4bed-ba3f-46a9efa339b8@kadam.mountain>
+ <ZUSiGbcoutTPErJH@kekkonen.localdomain>
+ <f47de73d-7741-4c2e-8a15-41264fb91e56@kadam.mountain>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f47de73d-7741-4c2e-8a15-41264fb91e56@kadam.mountain>
 
-Hi,
+Hi Dan,
 
-Am Freitag, 25. August 2023, 08:19:32 CET schrieb Alexander Stein:
-> Hi Lukas,
->=20
-> Am Freitag, 25. August 2023, 07:58:21 CEST schrieb Lukas Bulwahn:
-> > Commit 77da3f22b3d5 ("MAINTAINERS: Add entry for TQ-Systems device trees
-> > and drivers") adds some file patterns for files in arch/arm/boot/dts/, =
-but
-> > those patterns do not match any files in the repository. Hence,
-> > ./scripts/get_maintainer.pl --self-test=3Dpatterns complains about brok=
-en
-> > references. The files of interest are actually in the directory
-> > arch/arm/boot/dts/nxp/imx/.
->=20
-> Nice, I didn't know about --self-test=3Dpatterns. But you are right, the
-> patterns do not match anymore since arch/arm dts restructuring.
-> I also suggest to add the Fixes tag:
->=20
-> Fixes: 77da3f22b3d54 ("MAINTAINERS: Add entry for TQ-Systems device trees
-> and drivers")
-> Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+On Fri, Nov 03, 2023 at 10:51:09AM +0300, Dan Carpenter wrote:
+> On Fri, Nov 03, 2023 at 07:32:41AM +0000, Sakari Ailus wrote:
+> > > > > diff --git a/include/uapi/linux/v4l2-subdev.h b/include/uapi/linux/v4l2-subdev.h
+> > > > > index 4a195b68f28f..21d149969119 100644
+> > > > > --- a/include/uapi/linux/v4l2-subdev.h
+> > > > > +++ b/include/uapi/linux/v4l2-subdev.h
+>                       ^^^^
+> 
+> > > > > @@ -239,7 +239,7 @@ struct v4l2_subdev_routing {
+> > > > >   * set (which is the default), the 'stream' fields will be forced to 0 by the
+> > > > >   * kernel.
+> > > > >   */
+> > > > > - #define V4L2_SUBDEV_CLIENT_CAP_STREAMS		(1U << 0)
+> > > > > + #define V4L2_SUBDEV_CLIENT_CAP_STREAMS		BIT_ULL(0)
+> > > > 
+> > > > This is a UAPI header but BIT_ULL() is defined in kernel-only headers.
+> > > > 
+> > > > So (1ULL << 0) ?
+> > > > 
+> > > > uapi/linux/const.h also has _BITULL().
+> > > 
+> > > Let's just do 1ULL < 0.  I'll resend.  Is there an automated way I could
+> > > have caught this?
+> > 
+> > I don't know. :-) Remember to use shift left for bit definitions in UAPI
+> > headers?
+> 
+> Yeah.  I knew it was UAPI but I'm not used to thinking about UAPI rules.
+> I only tried to build this on kernel .c files and didn't try to rebuild
+> the usr/ dir.
+> 
+> I bet someone would have complained eventually but who would have
+> run into this first...  I see there are existing BIT() users in the usr/
+> dir, but everyone seems good about using __u32 instead of u32.  Probably
+> because declaring a variable as u32 causes an immediate compile error
+> for everyone but bogus BIT() defines are not an issue until someone
+> tries to use them.
+> 
+> KTODO: write a script to check that UAPI doesn't use kernel types
+> 
+> Maybe this could be a part of checkpatch.pl?
 
-Any progress on this?
-Thanks
+I think that would be useful.
 
-Alexander
+I wonder if there are be better ways to check for non-existent macros
+than e.g. singling out BIT() and others. I'd think just checking for BIT()
+etc. should be enough.
 
-> > Adjust the file patterns to match the intended files.
-> >=20
-> > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> > ---
-> > Lee, please pick this minor clean-up patch.
-> >=20
-> >  MAINTAINERS | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 52277ee9c1b8..f5d4058b7ff4 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -21817,9 +21817,9 @@ TQ SYSTEMS BOARD & DRIVER SUPPORT
-> >=20
-> >  L:	linux@ew.tq-group.com
-> >  S:	Supported
-> >  W:	https://www.tq-group.com/en/products/tq-embedded/
-> >=20
-> > -F:	arch/arm/boot/dts/imx*mba*.dts*
-> > -F:	arch/arm/boot/dts/imx*tqma*.dts*
-> > -F:	arch/arm/boot/dts/mba*.dtsi
-> > +F:	arch/arm/boot/dts/nxp/imx/imx*mba*.dts*
-> > +F:	arch/arm/boot/dts/nxp/imx/imx*tqma*.dts*
-> > +F:	arch/arm/boot/dts/nxp/imx/mba*.dtsi
-> >=20
-> >  F:	arch/arm64/boot/dts/freescale/imx*mba*.dts*
-> >  F:	arch/arm64/boot/dts/freescale/imx*tqma*.dts*
-> >  F:	arch/arm64/boot/dts/freescale/mba*.dtsi
+> 
+> regards,
+> dan carpenter
+> 
+> $ grep BIT usr/ -Rw
+> usr/include/misc/uacce/uacce.h:#define UACCE_DEV_SVA            BIT(0)
+> usr/include/linux/psci.h:#define PSCI_1_0_OS_INITIATED                  BIT(0)
+> usr/include/linux/can/netlink.h: * For further information, please read chapter "8 BIT TIMING
+> usr/include/linux/cxl_mem.h:#define CXL_MEM_COMMAND_FLAG_ENABLED                BIT(0)
+> usr/include/linux/cxl_mem.h:#define CXL_MEM_COMMAND_FLAG_EXCLUSIVE              BIT(1)
+> usr/include/linux/nl80211.h: *  bitmask of BIT(NL80211_BAND_*) as described in %enum
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_0_PAUSE            BIT(10)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_0_ASM_DIR          BIT(11)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_0_C2               BIT(12)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_0_RF               BIT(13)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_0_ACK              BIT(14)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_0_NP               BIT(15)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_1_1000BASE_KX      BIT(5)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_1_10GBASE_KX4      BIT(6)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_1_10GBASE_KR       BIT(7)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_1_40GBASE_KR4      BIT(8)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_1_40GBASE_CR4      BIT(9)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_1_100GBASE_CR10    BIT(10)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_1_100GBASE_KP4     BIT(11)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_1_100GBASE_KR4     BIT(12)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_1_100GBASE_CR4     BIT(13)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_1_25GBASE_R_S      BIT(14)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_1_25GBASE_R                BIT(15)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_2_2500BASE_KX      BIT(0)
+> usr/include/linux/mdio.h:#define MDIO_AN_C73_2_5GBASE_KR                BIT(1)
+> usr/include/asm/kvm.h:#define KVM_PMU_EVENT_FLAG_MASKED_EVENTS BIT(0)
+> usr/include/asm/kvm.h:#define KVM_EXIT_HYPERCALL_LONG_MODE      BIT(0)
+> usr/include/drm/radeon_drm.h: * THESE ARE NOT BIT FIELDS
+> usr/include/drm/habanalabs_accel.h:#define HL_RAZWI_READ                BIT(0)
+> usr/include/drm/habanalabs_accel.h:#define HL_RAZWI_WRITE               BIT(1)
+> usr/include/drm/habanalabs_accel.h:#define HL_RAZWI_LBW         BIT(2)
+> usr/include/drm/habanalabs_accel.h:#define HL_RAZWI_HBW         BIT(3)
+> usr/include/drm/habanalabs_accel.h:#define HL_RAZWI_RR          BIT(4)
+> usr/include/drm/habanalabs_accel.h:#define HL_RAZWI_ADDR_DEC    BIT(5)
 
+Indeed.
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+-- 
+Regards,
 
-
+Sakari Ailus
 

@@ -1,57 +1,57 @@
-Return-Path: <kernel-janitors+bounces-273-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-272-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AD867EA453
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Nov 2023 21:08:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 179177EA451
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Nov 2023 21:08:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3B39B20B00
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Nov 2023 20:08:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 472881C209A2
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Nov 2023 20:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08EFE2420C;
-	Mon, 13 Nov 2023 20:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10950241FB;
+	Mon, 13 Nov 2023 20:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="w77SsOuI"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="S/u7eAb0"
 X-Original-To: kernel-janitors@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D064C22F09
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D069A23749
 	for <kernel-janitors@vger.kernel.org>; Mon, 13 Nov 2023 20:08:00 +0000 (UTC)
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D1F0D7E;
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A6D110C6;
 	Mon, 13 Nov 2023 12:07:58 -0800 (PST)
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ADHit5N019625;
-	Mon, 13 Nov 2023 20:07:48 GMT
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ADHiA0j000768;
+	Mon, 13 Nov 2023 20:07:50 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=corp-2023-03-30;
- bh=+7eunD0OTU2yjHAOkU5WnoPs83gQX3uVzrbb3I5v9cs=;
- b=w77SsOuICMsJa6wr+X+N7k4P1k/uyHf9K7LOD2hU3LKQK6mIwqSYosOhvMbkoTqaGRnl
- v3Q/OBs2IYkVPxiEMq7qm+oxenaZUkRyAHAy/cCryrnU7ZIBbYkvGF9bAcz6wo1ld74c
- YNKS+Ln63MLxKjd8Lewlj/UsXjH9bobZEuBv48IBBUWd7QcogRM3p47cNtZZxpL3TXON
- s47yiIZqz7Mf8Clzw4o69BjPxlbMDK2nBNsgsXLFcodBALW0cNGYFPVZR8GRDYfC2KK+
- DspEjtzKNv+huQJdaSCXczrFQgVwy2Qbq5fu1AUsyaBJ9ez0d0zyJLm5GpHM+QX7qeoj pg== 
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2023-03-30;
+ bh=fuVCWG9/1pFqM8nRxc0cgkM2TyYa54FsIIfc1Q7gpNs=;
+ b=S/u7eAb0TlZBhmA22Bt3Ot6q6rOs9nOOYPzsbGab2tIRfMBHHMbiJLBtNLMXkxRwitvn
+ 9lCHy3Afk31fR5Q1P82gxuU2sTKqPTAhLZgDvEXMIVeofb+4NkJPC5EFAmWrF9vdUvTP
+ 2i7Fz5Whd9Bp3kmC9FanLNBDxizT43P1c54552RofDYou1CmNNfYvLe2YY0rYwo6qyu/
+ zKOIt5pItRWM+anNnoLc8EmQyP4uB1eI05rmongS4JNObq35O2GY3AZPWLVMsXxS5G71
+ ah3p0e5F4sfqmn3gkcMr/CKwzZvE8HRPmazFdJ6xc97lu54qRDNjybT1xtzHaCx5iR+E PA== 
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ua2m2bn3t-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ua2n9upm3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 13 Nov 2023 20:07:47 +0000
+	Mon, 13 Nov 2023 20:07:49 +0000
 Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 3ADIsDvf029856;
-	Mon, 13 Nov 2023 20:07:46 GMT
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 3ADJHqjt029776;
+	Mon, 13 Nov 2023 20:07:49 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3uaxqqe8wp-1
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3uaxqqe8y0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 13 Nov 2023 20:07:46 +0000
+	Mon, 13 Nov 2023 20:07:49 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ADK7jMV026381;
-	Mon, 13 Nov 2023 20:07:45 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ADK7jMX026381;
+	Mon, 13 Nov 2023 20:07:48 GMT
 Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 3uaxqqe8vg-1;
-	Mon, 13 Nov 2023 20:07:45 +0000
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 3uaxqqe8vg-2;
+	Mon, 13 Nov 2023 20:07:48 +0000
 From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 To: Jorge Lopez <jorge.lopez2@hp.com>, Hans de Goede <hdegoede@redhat.com>,
         =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
@@ -61,10 +61,12 @@ To: Jorge Lopez <jorge.lopez2@hp.com>, Hans de Goede <hdegoede@redhat.com>,
 Cc: dan.carpenter@linaro.org, kernel-janitors@vger.kernel.org,
         error27@gmail.com, vegard.nossum@oracle.com,
         harshit.m.mogalapalli@oracle.com
-Subject: [PATCH v4 1/4] platform/x86: hp-bioscfg: Simplify return check in hp_add_other_attributes()
-Date: Mon, 13 Nov 2023 12:07:37 -0800
-Message-ID: <20231113200742.3593548-1-harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH v4 2/4] platform/x86: hp-bioscfg: move mutex_lock() down in hp_add_other_attributes()
+Date: Mon, 13 Nov 2023 12:07:38 -0800
+Message-ID: <20231113200742.3593548-2-harshit.m.mogalapalli@oracle.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231113200742.3593548-1-harshit.m.mogalapalli@oracle.com>
+References: <20231113200742.3593548-1-harshit.m.mogalapalli@oracle.com>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -80,25 +82,29 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxsc
  suspectscore=0 mlxlogscore=999 phishscore=0 malwarescore=0 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
  definitions=main-2311130159
-X-Proofpoint-GUID: kDMwqjScWbYKHuT5TS74-DMazetyI6Hx
-X-Proofpoint-ORIG-GUID: kDMwqjScWbYKHuT5TS74-DMazetyI6Hx
+X-Proofpoint-GUID: YfEi0kz0czkKHnJocIQzo6hjTbfdpH87
+X-Proofpoint-ORIG-GUID: YfEi0kz0czkKHnJocIQzo6hjTbfdpH87
 
-All cases in switch-case have a same goto on error, move the return
-check out of the switch. This is a cleanup.
+attr_name_kobj's memory allocation is done with mutex_lock() held, this
+is not needed.
 
+Move allocation outside of mutex_lock() so unlock is not needed when
+allocation fails.
+
+Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 ---
 v3->v4: Add R.B from Ilpo
 ---
- drivers/platform/x86/hp/hp-bioscfg/bioscfg.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/platform/x86/hp/hp-bioscfg/bioscfg.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-index 5798b49ddaba..10676e1abc28 100644
+index 10676e1abc28..a3599498c4e8 100644
 --- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
 +++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-@@ -575,81 +575,79 @@ static void release_attributes_data(void)
+@@ -575,79 +575,77 @@ static void release_attributes_data(void)
  /**
   * hp_add_other_attributes() - Initialize HP custom attributes not
   * reported by BIOS and required to support Secure Platform and Sure
@@ -119,13 +125,17 @@ index 5798b49ddaba..10676e1abc28 100644
  	int ret;
  	char *attr_name;
  
- 	mutex_lock(&bioscfg_drv.mutex);
- 
+-	mutex_lock(&bioscfg_drv.mutex);
+-
  	attr_name_kobj = kzalloc(sizeof(*attr_name_kobj), GFP_KERNEL);
- 	if (!attr_name_kobj) {
- 		ret = -ENOMEM;
- 		goto err_other_attr_init;
- 	}
+-	if (!attr_name_kobj) {
+-		ret = -ENOMEM;
+-		goto err_other_attr_init;
+-	}
++	if (!attr_name_kobj)
++		return -ENOMEM;
++
++	mutex_lock(&bioscfg_drv.mutex);
  
  	/* Check if attribute type is supported */
  	switch (attr_type) {
@@ -157,24 +167,19 @@ index 5798b49ddaba..10676e1abc28 100644
  	switch (attr_type) {
  	case HPWMI_SECURE_PLATFORM_TYPE:
  		ret = hp_populate_secure_platform_data(attr_name_kobj);
--		if (ret)
--			goto err_other_attr_init;
  		break;
  
  	case HPWMI_SURE_START_TYPE:
  		ret = hp_populate_sure_start_data(attr_name_kobj);
--		if (ret)
--			goto err_other_attr_init;
  		break;
  
  	default:
  		ret = -EINVAL;
--		goto err_other_attr_init;
  	}
  
-+	if (ret)
-+		goto err_other_attr_init;
-+
+ 	if (ret)
+ 		goto err_other_attr_init;
+ 
  	mutex_unlock(&bioscfg_drv.mutex);
  	return 0;
  

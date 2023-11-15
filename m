@@ -1,91 +1,109 @@
-Return-Path: <kernel-janitors+bounces-294-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-296-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E8DF7EC2DF
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Nov 2023 13:50:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E8837EC881
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Nov 2023 17:28:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C32BEB20B8C
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Nov 2023 12:50:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE6091F278AE
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Nov 2023 16:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93F39171D3;
-	Wed, 15 Nov 2023 12:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF93339FF9;
+	Wed, 15 Nov 2023 16:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hPwSMjcm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a850aYS/"
 X-Original-To: kernel-janitors@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E30118053
-	for <kernel-janitors@vger.kernel.org>; Wed, 15 Nov 2023 12:50:02 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FF59121;
-	Wed, 15 Nov 2023 04:50:01 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5812E651
+	for <kernel-janitors@vger.kernel.org>; Wed, 15 Nov 2023 16:28:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E91C8E;
+	Wed, 15 Nov 2023 08:27:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700052601; x=1731588601;
-  h=from:to:cc:in-reply-to:references:subject:message-id:
-   date:mime-version:content-transfer-encoding;
-  bh=17IQzIyHeOleBFfI3fNPQ5d6+A7WndaMjwIptCNyBm8=;
-  b=hPwSMjcmi6taOPqLIywzfHmdo+QJwG6uzrMm+ruYt4Pq8CnAsXs/Luc2
-   8wwIyDSt9N7pBwZBag3Kjhx/BvjZXvb/mIEi8aqVc5sbN3YgtE8/pOVLY
-   tOYSFrzSPp2uPBkB6nEpigdod5uvSudvxsmpjL1lxxufj7vF5CXuY0sJs
-   Rn+/jZI5NL0unH/CrmH4LY9pXoeULyMnITAEir2Jp/TUcGuiI1NKvopQc
-   x4g8m17/eQyrV05YaMfCpcXm7qzoVmTT/ByCebjPsbSFC+cGJr+qbt3av
-   tk72z8hJcG2SGffDjdXUCmDiVegRc5HI3/oT9cAv+F064d11r6TCx6J7b
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="12417953"
+  t=1700065679; x=1731601679;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=XSWLyJxFTqyYvobQOApnn9qgzueYzqYkv2eVyB9iQuM=;
+  b=a850aYS/7BjwXIP2ZfpiGUBI5zWrreMQZslbuIiDPPY5PcAlyQYjL25w
+   e4/CA4taU2bR/GRW5lzBirPM+/XLmFt+8UEuwkoVxglyQ4zb3OLNUCjuu
+   0ON3s32tv/PnhBXQCtWj63CnbQTs6h+tD4mTVu1KP1Bm9oVPMbrM8Vf8S
+   DhhiaMlRQ246Wi75MapVryzhu3bT8rEXSkGEqtOuBPjeH4wPRGx5t3EKI
+   ePti2FQYnizjbpZoYm4PZgi2KV6q8rqTQZJnIxW95rllXYdJ8icNmImTK
+   Tc87961HJIcSDPb17UKCrbRXWwdmALYbbVG2Cr2jIT8Kr8FvzZ8xXmd7c
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10895"; a="370252753"
 X-IronPort-AV: E=Sophos;i="6.03,305,1694761200"; 
-   d="scan'208";a="12417953"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2023 04:50:01 -0800
+   d="scan'208";a="370252753"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2023 08:27:58 -0800
 X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10895"; a="855690652"
 X-IronPort-AV: E=Sophos;i="6.03,305,1694761200"; 
-   d="scan'208";a="12776941"
-Received: from rkhristx-mobl.ger.corp.intel.com (HELO localhost) ([10.252.38.217])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2023 04:49:57 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Jorge Lopez <jorge.lopez2@hp.com>, Hans de Goede <hdegoede@redhat.com>, Mark Gross <markgross@kernel.org>, Thomas Weißschuh <linux@weissschuh.net>, platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org, Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: dan.carpenter@linaro.org, kernel-janitors@vger.kernel.org, error27@gmail.com, vegard.nossum@oracle.com
-In-Reply-To: <20231113200742.3593548-1-harshit.m.mogalapalli@oracle.com>
-References: <20231113200742.3593548-1-harshit.m.mogalapalli@oracle.com>
-Subject: Re: [PATCH v4 1/4] platform/x86: hp-bioscfg: Simplify return check in hp_add_other_attributes()
-Message-Id: <170005255094.3255.4578937371871843438.b4-ty@linux.intel.com>
-Date: Wed, 15 Nov 2023 14:49:10 +0200
+   d="scan'208";a="855690652"
+Received: from ipaliych-mobl2.amr.corp.intel.com (HELO [10.212.183.137]) ([10.212.183.137])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2023 08:27:56 -0800
+Message-ID: <3e461bb5-fa6b-4729-8ff5-ccc1d2887066@linux.intel.com>
+Date: Wed, 15 Nov 2023 08:44:16 -0600
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] soundwire: amd: add an error code check in
+ amd_sdw_clock_stop_exit
+To: Su Hui <suhui@nfschina.com>, vkoul@kernel.org,
+ yung-chuan.liao@linux.intel.com, sanyog.r.kale@intel.com, nathan@kernel.org,
+ ndesaulniers@google.com, trix@redhat.com,
+ Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Cc: alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev, kernel-janitors@vger.kernel.org
+References: <20231115095407.1059704-1-suhui@nfschina.com>
+Content-Language: en-US
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <20231115095407.1059704-1-suhui@nfschina.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Mon, 13 Nov 2023 12:07:37 -0800, Harshit Mogalapalli wrote:
 
-> All cases in switch-case have a same goto on error, move the return
-> check out of the switch. This is a cleanup.
+
+On 11/15/23 03:54, Su Hui wrote:
+> Clang static analyzer complains that value stored to 'ret' is never read.
+> Add an error code check and print an error message if 'readl_poll_timeout'
+> failed.
 > 
+> Signed-off-by: Su Hui <suhui@nfschina.com>
+> ---
+>  drivers/soundwire/amd_manager.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
+> diff --git a/drivers/soundwire/amd_manager.c b/drivers/soundwire/amd_manager.c
+> index 3a99f6dcdfaf..f391b541f4b7 100644
+> --- a/drivers/soundwire/amd_manager.c
+> +++ b/drivers/soundwire/amd_manager.c
+> @@ -1029,6 +1029,10 @@ static int amd_sdw_clock_stop_exit(struct amd_sdw_manager *amd_manager)
+>  		ret = readl_poll_timeout(amd_manager->mmio + ACP_SW_CLK_RESUME_CTRL, val,
+>  					 (val & AMD_SDW_CLK_RESUME_DONE), ACP_DELAY_US,
+>  					 AMD_SDW_TIMEOUT);
+> +		if (ret)
+> +			dev_err(amd_manager->dev, "%s: timed out: %pe\n", __func__,
+> +				ERR_PTR(ret));
 
+Is this really the desired behavior?
 
-Thank you for your contribution, it has been applied to my local
-review-ilpo branch. Note it will show up in the public
-platform-drivers-x86/review-ilpo branch only once I've pushed my
-local branch there, which might take a while.
+This patch fixes the static analysis issue by logging the error code,
+but does it make sense to continue resuming here and trying to exit from
+the clock stop mode?
 
-The list of commits applied:
-[1/4] platform/x86: hp-bioscfg: Simplify return check in hp_add_other_attributes()
-      commit: c5dbf04160005e07e8ca7232a7faa77ab1547ae0
-[2/4] platform/x86: hp-bioscfg: move mutex_lock() down in hp_add_other_attributes()
-      commit: 5736aa9537c9b8927dec32d3d47c8c31fe560f62
-[3/4] platform/x86: hp-bioscfg: Fix error handling in hp_add_other_attributes()
-      commit: f40f939917b2b4cbf18450096c0ce1c58ed59fae
-[4/4] platform/x86: hp-bioscfg: Remove unused obj in hp_add_other_attributes()
-      commit: 92c47597db7d8fb500a4b04ebd457ec7360279cc
+At this point a bus reset might be a more relevant behavior...
 
---
- i.
+>  		if (val & AMD_SDW_CLK_RESUME_DONE) {
+>  			writel(0, amd_manager->mmio + ACP_SW_CLK_RESUME_CTRL);
+>  			ret = sdw_bus_exit_clk_stop(&amd_manager->bus);
 

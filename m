@@ -1,91 +1,61 @@
-Return-Path: <kernel-janitors+bounces-303-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-305-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AEEB7EDFC5
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Nov 2023 12:26:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 335F67EE1DF
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Nov 2023 14:48:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 025FA2810AB
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Nov 2023 11:26:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1E482810E6
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Nov 2023 13:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913DC2E401;
-	Thu, 16 Nov 2023 11:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B3730FA0;
+	Thu, 16 Nov 2023 13:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KKdL9HlG"
+	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="CTDHL+/I"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE707A20
-	for <kernel-janitors@vger.kernel.org>; Thu, 16 Nov 2023 11:26:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B47BC433C7;
-	Thu, 16 Nov 2023 11:26:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700133984;
-	bh=91H4/KMPMkjTV+q/X6xZwFVszTpe0ikL12Gouw7eKGk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KKdL9HlGEpg2+x2JaPqMsP65qQ2zD0VpHPw/eWcBXd/31rSP0TT56j7WPO3yL31cI
-	 b4Gz5gT93Gy2DKQ2aw9u5kjKTrUfY9LkaoiL57bTne9851WEnssHXqclvRLTG1vZyJ
-	 h31dHdthwKqIKCmdIg0oy9snapn7Zdb3g7TZaY09AAdFGS9yj/F2XMV6pcm4//vGuv
-	 R+WmH/3Ne+Vx2DPowxrqJs6306RnsEUvKiakJgpia2dx/YIZvIxQL0a9EIqa1TGBxp
-	 p+OV10sluVANNKwC+M1k4jVaJyW0O8AOCUg5n4abq8p8QuM4enjY3yfVi29x4aZy55
-	 Do9ybUoDd8riA==
-Date: Thu, 16 Nov 2023 16:56:19 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Su Hui <suhui@nfschina.com>
-Cc: kishon@kernel.org, u.kleine-koenig@pengutronix.de,
-	linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 1/2] phy: mapphone-mdm6600: fix an error code problem in
- phy_mdm6600_device_power_on
-Message-ID: <ZVX8W8+cM0U4j6Wh@matsya>
-References: <20231020091413.205743-1-suhui@nfschina.com>
+X-Greylist: delayed 557 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 16 Nov 2023 05:48:42 PST
+Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DFC1A0;
+	Thu, 16 Nov 2023 05:48:42 -0800 (PST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+	t=1700141962; bh=xz/iIZuRY8Op5WtoC1hs7ryH78Y6fd9GbW1inUZsj3M=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=CTDHL+/IzwlYYfT58IfEP+UsddbyIZ9mdusYQH+NvNEqXFUTGdZZtBE7T6+QFtrlw
+	 48Gu2yY92JWcInAMHeTbZwuhpjHvkUeRUmyOZJ9IfNr4IC5ZUbAjDVWhinxqB1NHsk
+	 5UTCD2YcUNI2M1Q4DAUIbgrGaRSCnB8e0u6QVI5ATYK8g5ttO8E6ZodsU38KF0OhPT
+	 3mZMgSdASmET9BYE4k+iN70F5qAhsDw3odiBiRkbNjTwSy2vEakHTpL7Db/pUtFPB0
+	 RRv7ceCoyyz/SwNk94NXWITaVPwVpggpmLHltTv/KpBXFYcD+iiQR7eV+yRbDdUBKg
+	 ysi6eWVgYQjpQ==
+To: Wu Yunchuan <yunchuan@nfschina.com>, kvalo@kernel.org, afaerber@suse.de,
+ mani@kernel.org
+Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-actions@lists.infradead.org, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, Wu Yunchuan <yunchuan@nfschina.com>
+Subject: Re: [PATCH v2 wireless-next 9/9] wifi: ath9k: Remove unnecessary
+ (void*) conversions
+In-Reply-To: <20230919045226.524544-1-yunchuan@nfschina.com>
+References: <20230919045226.524544-1-yunchuan@nfschina.com>
+Date: Thu, 16 Nov 2023 14:39:22 +0100
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87o7ftddh1.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231020091413.205743-1-suhui@nfschina.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 20-10-23, 17:14, Su Hui wrote:
-> When wait_for_completion_timeout() failed, error is assigned
-> '-ETIMEDOUT'. But this error code is never used. Return '-ETIMEDOUT'
-> directly to fix this problem.
+Wu Yunchuan <yunchuan@nfschina.com> writes:
 
-Where is patch 2/2?
-> 
-> Signed-off-by: Su Hui <suhui@nfschina.com>
-> ---
-> 
-> I'm not sure that return directly is true or not, maybe need some 
-> process before return directly.
-> 
->  drivers/phy/motorola/phy-mapphone-mdm6600.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/phy/motorola/phy-mapphone-mdm6600.c b/drivers/phy/motorola/phy-mapphone-mdm6600.c
-> index 1d567604b650..e84e3390bff0 100644
-> --- a/drivers/phy/motorola/phy-mapphone-mdm6600.c
-> +++ b/drivers/phy/motorola/phy-mapphone-mdm6600.c
-> @@ -421,8 +421,8 @@ static int phy_mdm6600_device_power_on(struct phy_mdm6600 *ddata)
->  			dev_info(ddata->dev, "Powered up OK\n");
->  	} else {
->  		ddata->enabled = false;
-> -		error = -ETIMEDOUT;
->  		dev_err(ddata->dev, "Timed out powering up\n");
-> +		return -ETIMEDOUT;
+> No need cast (void *) to (struct owl_ctx *), (struct ath_hw *),
+> (struct cmd_buf *) or other types.
+>
+> Signed-off-by: Wu Yunchuan <yunchuan@nfschina.com>
 
->  	}
->  
->  	/* Reconfigure mode1 GPIO as input for OOB wake */
-> -- 
-> 2.30.2
-
--- 
-~Vinod
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
 

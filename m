@@ -1,39 +1,39 @@
-Return-Path: <kernel-janitors+bounces-323-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-324-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE427F0732
-	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Nov 2023 16:29:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 552AE7F0745
+	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Nov 2023 16:55:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31DDE1F22875
-	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Nov 2023 15:29:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA9DCB20A10
+	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Nov 2023 15:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4AC13AE4;
-	Sun, 19 Nov 2023 15:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB7313AFB;
+	Sun, 19 Nov 2023 15:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="WLfHFr8C"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="DEIHA1P0"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-13.smtpout.orange.fr [80.12.242.13])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4526EB5
-	for <kernel-janitors@vger.kernel.org>; Sun, 19 Nov 2023 07:29:45 -0800 (PST)
+Received: from smtp.smtpout.orange.fr (smtp-23.smtpout.orange.fr [80.12.242.23])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 444C4182
+	for <kernel-janitors@vger.kernel.org>; Sun, 19 Nov 2023 07:55:21 -0800 (PST)
 Received: from pop-os.home ([86.243.2.178])
 	by smtp.orange.fr with ESMTPA
-	id 4jjwrvAGSmTW54jjxrDo1w; Sun, 19 Nov 2023 16:29:43 +0100
+	id 4k8jra5LJxVPt4k8jrzYqY; Sun, 19 Nov 2023 16:55:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1700407783;
-	bh=M/DjUxLaOupRVKEtY71THqnxeBXaH7E/KMuBzoQWOwI=;
+	s=t20230301; t=1700409318;
+	bh=Pk/dqXN8wqk5MN1OczjCM6gfHKmZ2sdCVcd4g3SfGHU=;
 	h=From:To:Cc:Subject:Date;
-	b=WLfHFr8CmcnxZBwgBnCX+i0RbqVE6KD2nCYNd42ufdbg0jAS4FXGQ+VrHL3D8TrWr
-	 O5y9AjnLcOSvVrk98bz9lppZJUezU9uXY2CBA2oHA0HGyV4s4CQ7EILLGFFZJJpnvJ
-	 nLGTwUH9XIshh4f5ykTP7Vuxh4IpznsLFPeN4QLnFHeUON2sQasjc/MyER1UdMJVVo
-	 Al9fwij0ysqRukCWM33XLs4pQXgTyIHMZ75jhRdl6mc/W/KfB7GIyjYKtG5DeD+md1
-	 FJnhP/GvzARXDkWYdApHpE4ZLrWDqaCphDaMGqvYusKlxc1PPaUmcNxWtU34UibuLl
-	 nUxs09nZvqZRA==
+	b=DEIHA1P0nqzgSjkJf9O8nWTv/D9NfWyIw1YGskUroT1NBO110kk5Ozj5WEZ8ACT3Z
+	 gGl/iqRkvaIWUGv6Hz6k0SkX3rQMLlRtomZvUzAedUi7qyriZDF8WcOqxvOi1oItaD
+	 +58UV04puQ8nQt5eFa6RW3732cA55yvcLvNlK+DmBEkpxhMP5x035UmGy90wztY+kV
+	 aydw5TDN/DNbwMiwNIo5+NZZfux2gLPZB0t2b6C8SPQnd2U7JXF7JDJYiHbMN8aCy5
+	 H7OtZnEj7t1jisCbbEJoozGPOTu+uHPTy1azyMhOKfWJb+FqH5GqIhG984M1MPXSf3
+	 TFYAtCT9D6amQ==
 X-ME-Helo: pop-os.home
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 19 Nov 2023 16:29:43 +0100
+X-ME-Date: Sun, 19 Nov 2023 16:55:18 +0100
 X-ME-IP: 86.243.2.178
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 To: Richard Genoud <richard.genoud@gmail.com>,
@@ -47,9 +47,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	linux-serial@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] serial: atmel: convert not to use dma_request_slave_channel()
-Date: Sun, 19 Nov 2023 16:29:39 +0100
-Message-Id: <f0522ae5a08a772268c901da6f74efe4ec2fe96c.1700407759.git.christophe.jaillet@wanadoo.fr>
+Subject: [PATCH v2] serial: atmel: convert not to use dma_request_slave_channel()
+Date: Sun, 19 Nov 2023 16:55:15 +0100
+Message-Id: <f2e9790d8b49aeba8b43ce018d30a35b837ac1eb.1700409299.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -66,11 +66,13 @@ Switch to the preferred function and update the error handling accordingly.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/tty/serial/atmel_serial.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+v2: Also update atmel_prepare_rx_dma()
+---
+ drivers/tty/serial/atmel_serial.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/tty/serial/atmel_serial.c b/drivers/tty/serial/atmel_serial.c
-index 1946fafc3f3e..a58cfaa87f1d 100644
+index 1946fafc3f3e..6aeb4648843b 100644
 --- a/drivers/tty/serial/atmel_serial.c
 +++ b/drivers/tty/serial/atmel_serial.c
 @@ -1013,14 +1013,18 @@ static int atmel_prepare_tx_dma(struct uart_port *port)
@@ -93,6 +95,29 @@ index 1946fafc3f3e..a58cfaa87f1d 100644
 +	atmel_port->chan_tx = chan;
  	dev_info(port->dev, "using %s for tx DMA transfers\n",
  		dma_chan_name(atmel_port->chan_tx));
+ 
+@@ -1188,6 +1192,7 @@ static int atmel_prepare_rx_dma(struct uart_port *port)
+ 	dma_cap_mask_t		mask;
+ 	struct dma_slave_config config;
+ 	struct circ_buf		*ring;
++	struct dma_chan *chan;
+ 	int ret, nent;
+ 
+ 	ring = &atmel_port->rx_ring;
+@@ -1195,9 +1200,12 @@ static int atmel_prepare_rx_dma(struct uart_port *port)
+ 	dma_cap_zero(mask);
+ 	dma_cap_set(DMA_CYCLIC, mask);
+ 
+-	atmel_port->chan_rx = dma_request_slave_channel(mfd_dev, "rx");
+-	if (atmel_port->chan_rx == NULL)
++	chan = dma_request_chan(mfd_dev, "rx");
++	if (IS_ERR(chan)) {
++		atmel_port->chan_rx = NULL;
+ 		goto chan_err;
++	}
++	atmel_port->chan_rx = chan;
+ 	dev_info(port->dev, "using %s for rx DMA transfers\n",
+ 		dma_chan_name(atmel_port->chan_rx));
  
 -- 
 2.34.1

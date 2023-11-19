@@ -1,49 +1,51 @@
-Return-Path: <kernel-janitors+bounces-321-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-322-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BDD77F0591
-	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Nov 2023 12:00:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E54047F06F5
+	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Nov 2023 15:52:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2EC41C2092E
-	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Nov 2023 11:00:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16C0B1C203B7
+	for <lists+kernel-janitors@lfdr.de>; Sun, 19 Nov 2023 14:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D70D506;
-	Sun, 19 Nov 2023 11:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2A512B94;
+	Sun, 19 Nov 2023 14:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="bMrCvuAg"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="nr1WCNZ1"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-29.smtpout.orange.fr [80.12.242.29])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 434C0C0
-	for <kernel-janitors@vger.kernel.org>; Sun, 19 Nov 2023 02:59:56 -0800 (PST)
+Received: from smtp.smtpout.orange.fr (smtp-14.smtpout.orange.fr [80.12.242.14])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CABA11D
+	for <kernel-janitors@vger.kernel.org>; Sun, 19 Nov 2023 06:52:44 -0800 (PST)
 Received: from pop-os.home ([86.243.2.178])
 	by smtp.orange.fr with ESMTPA
-	id 4fWqr551gODaN4fWrr4GNd; Sun, 19 Nov 2023 11:59:53 +0100
+	id 4jA9ruwTOmTW54jA9rDjNP; Sun, 19 Nov 2023 15:52:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1700391593;
-	bh=MntiypTvXcH5bZA1OG0dGkr+lu0AvoaryKrACfMPtnw=;
+	s=t20230301; t=1700405562;
+	bh=pAh5rfKWMlNtS3iglM7rvXZUQgMkHc1XA5sjN2Bujj0=;
 	h=From:To:Cc:Subject:Date;
-	b=bMrCvuAgtvmmR0/etLtFuypEUjyUp6OYUcbQWc8r6Q0IkSR3kSUM2I3BcjG+ferfY
-	 lscEi6ZhMVjr6zYkHhxEA+O3FZ74e0VoO+IwTROi4Yluj0666jCVd1STwnJ56EjbCW
-	 OyrCVDTu1NsvlMHnsPL86jn72PW65Np2L2N4VLh5D0qXovLk41ODZVtcOKuBwMxtRC
-	 uU7VjVF00AzOGFpZ9+SdAAJUvQBQsGJyWZ+GSRn2c9zjZgjzjnn6/rrW+u5Nxo3e2x
-	 XGN+j0ZtFYR974bT5LsVsooavhk2yFfOvjULJFCPwSZFkXA9L2lf3NDIxQjSLobqpM
-	 Bn1ZQGIl6fYJg==
+	b=nr1WCNZ17TxtLQoBclQyq/hfThLxHkEbPzeLuCWXz17pZ3yIGLXTEexG7YAO1Ykqr
+	 /LNk7LDQms7vr5V7RZGWFaKhOLv1DeVys/wkB22wK5ng7xljxPxQ7yNI+AOs0CwUqo
+	 BuzeFrzWCLR7m5spvt0AAugudqbH2pFKA4VA8JqUjm4f09OpsBwSD1AMxS7kSo9v0F
+	 wIbgip2ykR2lE6zTJD5srTPeX9Zff+1wdEcxMIVVOe+DXn4mowsAJaaJMY3lpZTJ6z
+	 PJ3xrlbJ+AHzgsEJXx6u1bSgStXLScOTflJYKrLF7MyugPVICwJIpAiuO0UE4YOpHU
+	 WgvzA+/G/0pSQ==
 X-ME-Helo: pop-os.home
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 19 Nov 2023 11:59:53 +0100
+X-ME-Date: Sun, 19 Nov 2023 15:52:42 +0100
 X-ME-IP: 86.243.2.178
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Mark Brown <broonie@kernel.org>
+To: Russell King <linux@armlinux.org.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>
 Cc: linux-kernel@vger.kernel.org,
 	kernel-janitors@vger.kernel.org,
 	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	linux-spi@vger.kernel.org
-Subject: [PATCH] spi: ingenic: convert not to use dma_request_slave_channel()
-Date: Sun, 19 Nov 2023 11:59:50 +0100
-Message-Id: <1c88236b5d6bff0af902492ea9e066c8cb0dfef5.1700391566.git.christophe.jaillet@wanadoo.fr>
+	linux-serial@vger.kernel.org
+Subject: [PATCH] serial: amba-pl011: convert not to use dma_request_slave_channel()
+Date: Sun, 19 Nov 2023 15:52:39 +0100
+Message-Id: <6f76e22f77d776d6c1f176d56e7ee341314d8554.1700405529.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -60,37 +62,34 @@ Switch to the preferred function and update the error handling accordingly.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/spi/spi-ingenic.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/tty/serial/amba-pl011.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-ingenic.c b/drivers/spi/spi-ingenic.c
-index cc366936d72b..003a6d21c4c3 100644
---- a/drivers/spi/spi-ingenic.c
-+++ b/drivers/spi/spi-ingenic.c
-@@ -346,14 +346,17 @@ static bool spi_ingenic_can_dma(struct spi_controller *ctlr,
- static int spi_ingenic_request_dma(struct spi_controller *ctlr,
- 				   struct device *dev)
- {
--	ctlr->dma_tx = dma_request_slave_channel(dev, "tx");
--	if (!ctlr->dma_tx)
--		return -ENODEV;
-+	struct dma_chan *chan;
+diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
+index 61cc24cd90e4..6d7bfe9399db 100644
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -444,9 +444,9 @@ static void pl011_dma_probe(struct uart_amba_port *uap)
+ 		 dma_chan_name(uap->dmatx.chan));
  
--	ctlr->dma_rx = dma_request_slave_channel(dev, "rx");
-+	chan = dma_request_chan(dev, "tx");
-+	if (IS_ERR(chan))
-+		return PTR_ERR(chan);
-+	ctlr->dma_tx = chan;
- 
--	if (!ctlr->dma_rx)
--		return -ENODEV;
+ 	/* Optionally make use of an RX channel as well */
+-	chan = dma_request_slave_channel(dev, "rx");
 +	chan = dma_request_chan(dev, "rx");
-+	if (IS_ERR(chan))
-+		return PTR_ERR(chan);
-+	ctlr->dma_rx = chan;
  
- 	ctlr->can_dma = spi_ingenic_can_dma;
+-	if (!chan && plat && plat->dma_rx_param) {
++	if (IS_ERR(chan) && plat && plat->dma_rx_param) {
+ 		chan = dma_request_channel(mask, plat->dma_filter, plat->dma_rx_param);
  
+ 		if (!chan) {
+@@ -455,7 +455,7 @@ static void pl011_dma_probe(struct uart_amba_port *uap)
+ 		}
+ 	}
+ 
+-	if (chan) {
++	if (!IS_ERR(chan)) {
+ 		struct dma_slave_config rx_conf = {
+ 			.src_addr = uap->port.mapbase +
+ 				pl011_reg_to_offset(uap, REG_DR),
 -- 
 2.34.1
 

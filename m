@@ -1,71 +1,110 @@
-Return-Path: <kernel-janitors+bounces-368-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-369-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B357F2FE6
-	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Nov 2023 14:54:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C380B7F303F
+	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Nov 2023 15:05:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D52A3282B60
-	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Nov 2023 13:54:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6512BB2172F
+	for <lists+kernel-janitors@lfdr.de>; Tue, 21 Nov 2023 14:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D19C48CD2;
-	Tue, 21 Nov 2023 13:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B83E54F96;
+	Tue, 21 Nov 2023 14:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jpJa7ewH"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="3JFzdoVX"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA1B9D79;
-	Tue, 21 Nov 2023 05:54:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=iAltbJrZNA/R9xdaEOLVfyowdzRQUxOd0WzcTS+2T0Y=; b=jpJa7ewHbzi7uwU/x7A34+Dy+e
-	YhMklydm+MG8FLwGFegi+1q78SrQQsnrUDSTGVWaJu57Z6ps7j9hnNRC+Vn93A0OkqH7w/WtwZSiU
-	cLyme7RzaC98Bl8YCI6VReYxj/OpZwUfoiLXd2FVvYck+0WTJRliQqLz+OtzPvXJ1vfU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1r5RD7-000lEM-AC; Tue, 21 Nov 2023 14:54:41 +0100
-Date: Tue, 21 Nov 2023 14:54:41 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	linux-arm-kernel@lists.infradead.org,
-	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: add Marvell MBus driver to Marvell EBU SoCs
- support
-Message-ID: <432a3d95-4cbe-49a5-a824-89b3ecdabf40@lunn.ch>
-References: <20231121093414.11926-1-lukas.bulwahn@gmail.com>
+Received: from mail-oo1-xc30.google.com (mail-oo1-xc30.google.com [IPv6:2607:f8b0:4864:20::c30])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A47C2D71
+	for <kernel-janitors@vger.kernel.org>; Tue, 21 Nov 2023 06:05:39 -0800 (PST)
+Received: by mail-oo1-xc30.google.com with SMTP id 006d021491bc7-58a0d0cdcc1so3570766eaf.1
+        for <kernel-janitors@vger.kernel.org>; Tue, 21 Nov 2023 06:05:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1700575539; x=1701180339; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9/TcEF+FhqZ2nz6qvi/9iJUZggk71Tmqu0as2U0xGu4=;
+        b=3JFzdoVXCUHDirJnVsMkGwwuXQY4e9DuM4YaIHoZFNPMSxUHoqRySYBWBdNqSMjEOu
+         0kUmgIbpNvUMjVL7sWaN6vP6VOy374WcAWPNBTCq2sk8O+Hd83vgoMzJ62pLwDdVKRcV
+         a0VrrFm/BROgonetQIH6hKq45kL4OqsJVRI6JYKjft4fxrMGxFdjY189G2cw8VQ+IfNW
+         n7s/Ox1Y0BWueg/YmNGtZA+CmEb5iuvunqdYCCXla8pFo/YExJdVwSz/jTjYBpK5HQOg
+         ZZwfNmcBe5+arf9u5/MVNaKxAuh24I560SfJH0zTPcKBcfnG6LI0AmFjrHVMmej//uBP
+         ZnSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700575539; x=1701180339;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9/TcEF+FhqZ2nz6qvi/9iJUZggk71Tmqu0as2U0xGu4=;
+        b=vSWj7TJKr/VzMsFgylFRhOmRqn2emvAzabP7LTvwAsPpH/yx7VLmu1EI9W6YRSDUey
+         WyZZBuLvq6ZWij562it/a1qkgDmZPafKFlwLFURsPGec9gbRU6uxEGuRh8h3jwu06AWH
+         f75NkVEBStkm+u51M0St75pLQ9c1do4eLh929ioxkhJDeJdz0MrkEQ1KOcMJNyr8635G
+         i+OPUhP7J+KNDws9AZBZ9mjwe81IwiQ7+XFTd5fC58LN0L1lthES1dUXpv/9K850Pe5y
+         7I35gUuFfkuPAvI6Qj5ckBfz8MbBbxzgViojaimHclYX8Phwr2ePMooDcNu/KeBKzJcF
+         Y9WA==
+X-Gm-Message-State: AOJu0Yyus3qJOuGRvO38SdIZipwz0khbvz3VvQdDLXI96hMwJtH3ZGir
+	mgMzzLGhOdHI2sRveIuKXkjKzotYrFk8KBSXT3jGesj9gqNdRKLi
+X-Google-Smtp-Source: AGHT+IFdtzRXzXfVy2Uyhi9mLRyDdjmHGp1/Reyrw5PR3wZ9oCq2hd80cAXzSj382UrLHy3w0bEY47RRQFKxOu/bww4=
+X-Received: by 2002:a05:6358:199b:b0:169:7dad:fee1 with SMTP id
+ v27-20020a056358199b00b001697dadfee1mr4692933rwn.4.1700575538944; Tue, 21 Nov
+ 2023 06:05:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231121093414.11926-1-lukas.bulwahn@gmail.com>
+References: <20231121085024.15955-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <20231121085024.15955-1-lukas.bulwahn@gmail.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 21 Nov 2023 15:05:28 +0100
+Message-ID: <CAMRc=Mf-F5vRPwtV37tuj1-Nwm6ncWM9xfgY-DvYaXXfK1rA7w@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: add TI da8xx bus driver to TI DAVINCI
+ MACHINE SUPPORT
+To: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, kernel-janitors@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 21, 2023 at 10:34:14AM +0100, Lukas Bulwahn wrote:
+On Tue, Nov 21, 2023 at 9:50=E2=80=AFAM Lukas Bulwahn <lukas.bulwahn@gmail.=
+com> wrote:
+>
 > While doing some code cleanup in drivers/bus/, I noticed that the file
-> drivers/bus/mvebu-mbus.c has no maintainer.
-> 
-> Although the file has not been touched a lot lately, the git history tells
-> us that Gregory Clement and Andrew Lunn integrated patches specific to
-> this driver code. Further, the driver's config depends on config
-> PLAT_ORION, and the code for this platform is defined in
-> arch/arm/plat-orion/, which is part of ARM/Marvell Dove/MV78xx0/Orion SOC
-> support with Gregory and Andrew already being its maintainer.
-> 
-> Add drivers/bus/mvebu-mbus.c to ARM/Marvell Dove/MV78xx0/Orion SOC support.
-> 
+> drivers/bus/da8xx-mstpri.c has no maintainer.
+>
+> Although the file has not been touched a lot lately, the git history tell=
+s
+> us that Bartosz Golaszewski is the main author. Further, the driver's
+> config depends on config ARCH_DAVINCI_DA8XX, and that is defined in
+> arch/arm/mach-davinci/, which is part of TI DAVINCI MACHINE SUPPORT with
+> Bartosz already being its maintainer.
+>
+> Add drivers/bus/da8xx-mstpri.c to TI DAVINCI MACHINE SUPPORT.
+>
 > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e829dbac1e99..e9cbf6e353bd 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -21707,6 +21707,7 @@ T:      git git://git.kernel.org/pub/scm/linux/ke=
+rnel/git/brgl/linux.git
+>  F:     Documentation/devicetree/bindings/i2c/i2c-davinci.txt
+>  F:     arch/arm/boot/dts/ti/davinci/
+>  F:     arch/arm/mach-davinci/
+> +F:     drivers/bus/da8xx-mstpri.c
+>  F:     drivers/i2c/busses/i2c-davinci.c
+>
+>  TI DAVINCI SERIES CLOCK DRIVER
+> --
+> 2.17.1
+>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-
-    Andrew
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 

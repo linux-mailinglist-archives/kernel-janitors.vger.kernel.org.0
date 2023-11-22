@@ -1,107 +1,109 @@
-Return-Path: <kernel-janitors+bounces-379-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-381-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691177F417E
-	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Nov 2023 10:22:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5AEB7F41D6
+	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Nov 2023 10:42:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 216DF2817E3
-	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Nov 2023 09:22:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFD4C281813
+	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Nov 2023 09:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C362821372;
-	Wed, 22 Nov 2023 09:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C6254BF4;
+	Wed, 22 Nov 2023 09:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="hrbzriWg";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Vt5Dn8hM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PZyJh801"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A936B83;
-	Wed, 22 Nov 2023 01:22:22 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id 610CD5C0111;
-	Wed, 22 Nov 2023 04:22:19 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Wed, 22 Nov 2023 04:22:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm3; t=1700644939; x=1700731339; bh=ay
-	8h41bmlYZ1BdZhviMyvO1VouxncVOl1ol7RHGvguc=; b=hrbzriWgfWicypi6oM
-	BRZWopSWGxYO/uNJTDhtttfYkJzgG0DcNCRGQG6zIzELPvno/3iAzgsuKKdUyN0F
-	IpCofc16WxUGnFkBchmgQkyOfz+vcUtgYLpuXvmGCS9trfgikMLd+4ZmXJYwn2WH
-	fcd+rerHZTGaI+s/wTK1HTQTIcbMvNks9Z9Z/svkV88pgPoEyGAtCfxXAc842WFZ
-	aP/TvDBgUwFV9yBELQ6/TSvEBeC8Oo56M+y8b4uBRjz6OLYJ7bdaMbu9ZoirxR2J
-	bOEv3dtWwtCL9lMB28E288WaMQywvjStEKBmNNnA5WmiSbB0JeXZyKnrxzXoHxZc
-	fv1g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1700644939; x=1700731339; bh=ay8h41bmlYZ1B
-	dZhviMyvO1VouxncVOl1ol7RHGvguc=; b=Vt5Dn8hM28RK+U2AdrXoog5WhSem3
-	T8PtkeQrqYdF5BrsyC7cVe7+6ldJRxU0K7vtwJke1HCUjCNs3YehMliGswxP+gk+
-	Tb+4oxxpVd0Ho9JUyNg3nGhAu0WtY/r0WSwyatbJYO9dSyM6XB9YlWXVXqAccDns
-	ytcUWUhVHaz9/lOwdHksGKTgKMKdhwRZ29/Fntll9hSfPIImtnSDZPz3DPLsgqnv
-	JWMVo8XVhMYchv87BrpHOH/JUJ/5IfCWIzwSsZlBKPu12ERt+Ca7jrtGmrNmuS0y
-	6fhe4TIsqUiIU3EyX5GS+iHFqZ51mg39Iv0QhpD3rh7Ebg08CULtS+1Qw==
-X-ME-Sender: <xms:S8hdZS6cwdf3YcZmTieJXu70oi-CjiZ4BDVZ-4UHurehyCzu617aYQ>
-    <xme:S8hdZb7vHvYV84KMKYyOZWPNVn_MEZ1UWf0cKqkSFlZtEd21K8W3Pa9hlYFe3D6Ex
-    3oupLgt0QzX0nd_GMc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudehuddgtddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:S8hdZRcgGVWlwJTDjg3H9OwkDUhvIQqRJVAGVt92p7t9ark_eUXHgQ>
-    <xmx:S8hdZfK_npqo-0uKQEjgHd8yOAb5XEv4-B-Q7SDC038bw_R7uM-j0w>
-    <xmx:S8hdZWLqZoHzENjDjD-iV_7nRYgin8L880y5P6TTKsJbJSBVcYBa3g>
-    <xmx:S8hdZS3PqjbhSPuw1OLRgVb-IUHFn0tGjEZE9F7gOMNKLEFidvMLjQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 224FDB60089; Wed, 22 Nov 2023 04:22:19 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1229-gdd3e08e26c-fm-20231121.001-gdd3e08e2
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D0DB10C;
+	Wed, 22 Nov 2023 01:42:05 -0800 (PST)
+Received: by mail-pg1-x535.google.com with SMTP id 41be03b00d2f7-5a9bc2ec556so4246358a12.0;
+        Wed, 22 Nov 2023 01:42:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700646125; x=1701250925; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=abM4W7xPRLNxSr6XVpDl8XekNAlf56sZOpqa2J1fPeA=;
+        b=PZyJh801bN8aZubpXbYXUNIAKBkJDSc0EqwLd0cGoLT19sHEPEU1Fk2ubJzYHY268x
+         R3mzqkuwj+Ov5jsmagT7ySIuRfpmx0wJ9n3jpc+TppUwLkOrXV8nrF77/rPLyaW9hWLb
+         nX9k4UGIyECjp2axANWstw9xvYkFQs9H5GSRzldExmQ648gx9fLDVOdEi2svkuJDgAOu
+         ST7a+v8qUt86O8hSuCi5YoZTkQvYc/xrDJEWAeGJa2wVPNj3E3meID95VVPZTJlZKf1+
+         /a97whNOeB2jif//wB3rm31DrtZ6qViU87simbPnvnzNBAHdwFR++/CKBWXqVxumQWQi
+         pZRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700646125; x=1701250925;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=abM4W7xPRLNxSr6XVpDl8XekNAlf56sZOpqa2J1fPeA=;
+        b=afMsjM9I/Z/GMKW8VigBiURuRTohZDmL48eZk3qqAQqo0IVcL/EjbehcaenU22Cqwf
+         TcJ6suCKSjAkPqBMIc6SbwG87nEjfMmdn9Y/Gv+Ko3Wj57BAisoXDTeDpG0AqPD3lGvu
+         HmqOc5fG4362jc1b4LRLIqfonvne+p4hwkTpYck3V4b0xWlt6IRZ79Kp9PVFvakucuE4
+         RNU39rXMwuxbj7p9aSIrKRmGMNR8V+5SilAFOPZkJdAehzRaF6X2cWOfCGbcrH9o3jJZ
+         JPdwdraPuSP8k/zvC2akaC/+ero0Dzw2mU7zh1cDtqlLbhC2bTnU99Oy9bTkAaEcEm3N
+         49CA==
+X-Gm-Message-State: AOJu0YzIYog+ryWntC4nwnlxgDcT7oK+vP8L/N71dHtciPQpz1A26azf
+	yNwjsEDeNpYzpgyGRlRfLUg=
+X-Google-Smtp-Source: AGHT+IHqeWNO23DIW2lYuAdRhp6TKZ+eKAtoCVKFyJQdL7W+3OHe2cC/WMjkijKCBJRvRfwDqiTwfA==
+X-Received: by 2002:a05:6a20:2c91:b0:187:ce9f:e198 with SMTP id g17-20020a056a202c9100b00187ce9fe198mr1422428pzj.5.1700646124816;
+        Wed, 22 Nov 2023 01:42:04 -0800 (PST)
+Received: from archie.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id b14-20020a17090a488e00b002851466f471sm937659pjh.31.2023.11.22.01.42.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Nov 2023 01:42:03 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id 5B10110210547; Wed, 22 Nov 2023 16:42:00 +0700 (WIB)
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Staging Drivers <linux-staging@lists.linux.dev>,
+	Linux Kernel Janitors <kernel-janitors@vger.kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dan Carpenter <error27@gmail.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Bruno Moreira-Guedes <codeagain@codeagain.dev>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: [PATCH 0/2] MAINTAINERS update for VME subsystems
+Date: Wed, 22 Nov 2023 16:41:54 +0700
+Message-ID: <20231122094156.30642-1-bagasdotme@gmail.com>
+X-Mailer: git-send-email 2.42.1
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <6270c14a-6b65-44f5-a820-43cb72f8f2b7@app.fastmail.com>
-In-Reply-To: <20231122083047.12774-1-lukas.bulwahn@gmail.com>
-References: <20231122083047.12774-1-lukas.bulwahn@gmail.com>
-Date: Wed, 22 Nov 2023 10:21:57 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Lukas Bulwahn" <lukas.bulwahn@gmail.com>,
- "Kalle Valo" <kvalo@kernel.org>, libertas-dev@lists.infradead.org,
- linux-wireless@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: libertas: fix config name in dependency for SDIO support
-Content-Type: text/plain
+X-Developer-Signature: v=1; a=openpgp-sha256; l=856; i=bagasdotme@gmail.com; h=from:subject; bh=2Jh5t3H6agB2YlqKVyZOWg3kjv4ysogPOLg7wiXeDUc=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDKmxpx/vc4r/zffF9Mi7w+4/1SZPCBAQnq/Vtqp14lyV5 bFTuKZFdpSyMIhxMciKKbJMSuRrOr3LSORC+1pHmDmsTCBDGLg4BWAi5/8w/Gabr/jL4GbTtDhl YRXmEI4lp0RnbOp+u2GKcONyFy1udTtGhsklKo7i22cs5VrgefKDJOsLZtZZd6unf5z19qJxUY2 TMj8A
+X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 22, 2023, at 09:30, Lukas Bulwahn wrote:
-> Commit 4b478bf6bdd8 ("wifi: libertas: drop 16-bit PCMCIA support") reworks
-> the dependencies for config LIBERTAS, and adds alternative dependencies for
-> USB, SDIO and SPI.
->
-> The config option SDIO however does not exist in the kernel tree. It was
-> probably intended to refer to the config option MMC, which represents
-> "MMC/SD/SDIO card support" and is used as dependency by various other
-> drivers that use SDIO.
->
-> Fix the dependency to the config option MMC for declaring the requirement
-> on provision of SDIO support.
->
-> Fixes: 4b478bf6bdd8 ("wifi: libertas: drop 16-bit PCMCIA support")
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Since Martyn's last VME subsystem review [1], VME maintainers are inactive
+with respect to the subsystem. While Martyn is now working for Collabora,
+Manohar is AFAIK MIA (his last email about 9 years ago).
 
-Good catch
+Update MAINTAINERS to reflect above situation.
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+[1]: https://lore.kernel.org/all/3e91b72a86294b542acf460657d0fd94adeb252e.camel@welchs.me.uk/
+
+---
+
+This series is based on v6.7-rc2 (same as current staging-next HEAD).
+Greg, you can pick this series up via driver-core tree if you want.
+
+Bagas Sanjaya (2):
+  MAINTAINERS: Update Martyn Welch's address
+  MAINTAINERS: Move Manohar Vanga to CREDITS
+
+ .mailmap    | 1 +
+ CREDITS     | 4 ++++
+ MAINTAINERS | 3 +--
+ 3 files changed, 6 insertions(+), 2 deletions(-)
+
+
+base-commit: 98b1cc82c4affc16f5598d4fa14b1858671b2263
+-- 
+An old man doll... just what I always wanted! - Clara
+
 

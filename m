@@ -1,98 +1,67 @@
-Return-Path: <kernel-janitors+bounces-531-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-535-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B4C8000F4
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Dec 2023 02:27:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 184B28001D6
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Dec 2023 04:00:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D767BB2123C
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Dec 2023 01:27:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 490ED1C20B2A
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Dec 2023 03:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9EF17D9;
-	Fri,  1 Dec 2023 01:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994015388;
+	Fri,  1 Dec 2023 03:00:32 +0000 (UTC)
 X-Original-To: kernel-janitors@vger.kernel.org
 Received: from mail.nfschina.com (unknown [42.101.60.195])
-	by lindbergh.monkeyblade.net (Postfix) with SMTP id 8960A10E2;
-	Thu, 30 Nov 2023 17:27:04 -0800 (PST)
-Received: from [172.30.11.106] (unknown [180.167.10.98])
-	by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPSA id 04889605E83EA;
-	Fri,  1 Dec 2023 09:26:44 +0800 (CST)
-Message-ID: <0247c807-333a-0e8c-d7ca-60e142ab6279@nfschina.com>
-Date: Fri, 1 Dec 2023 09:26:44 +0800
+	by lindbergh.monkeyblade.net (Postfix) with SMTP id 1AA52171D;
+	Thu, 30 Nov 2023 19:00:27 -0800 (PST)
+Received: from localhost.localdomain (unknown [180.167.10.98])
+	by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPSA id 3B42560105E64;
+	Fri,  1 Dec 2023 11:00:16 +0800 (CST)
+X-MD-Sfrom: suhui@nfschina.com
+X-MD-SrcIP: 180.167.10.98
+From: Su Hui <suhui@nfschina.com>
+To: dan.carpenter@linaro.org,
+	hare@suse.com,
+	jejb@linux.ibm.com,
+	martin.petersen@oracle.com
+Cc: Su Hui <suhui@nfschina.com>,
+	linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH v2 0/3] scsi: aic7xxx: fix some problem of return value
+Date: Fri,  1 Dec 2023 10:59:53 +0800
+Message-Id: <20231201025955.1584260-1-suhui@nfschina.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH] scsi: aic7xxx: fix some problem of return value
-Content-Language: en-US
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: hare@suse.com, jejb@linux.ibm.com, martin.petersen@oracle.com,
- linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-janitors@vger.kernel.org
-X-MD-Sfrom: suhui@nfschina.com
-X-MD-SrcIP: 180.167.10.98
-From: Su Hui <suhui@nfschina.com>
-In-Reply-To: <1784b008-6eb2-4dc8-ae21-b0b2c18760bf@suswa.mountain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+v2:
+ - fix some problems and split v1 patch into this patch set.(Thanks to
+   Dan)
 
-On 2023/11/30 15:21, Dan Carpenter wrote:
-> On Thu, Nov 30, 2023 at 10:41:23AM +0800, Su Hui wrote:
->>   	error = aic7770_config(ahc, aic7770_ident_table + edev->id.driver_data,
->>   			       eisaBase);
->>   	if (error != 0) {
->>   		ahc->bsh.ioport = 0;
->>   		ahc_free(ahc);
->> -		return (error);
->> +		return -error;
-> aic7770_config() mostly returns positive error codes but I see it also
-> return -1 from ahc_reset().  So you'd want to do something like:
->
-> 	return error < 0 ? error : -error;
-Oh, I missed this one. Thanks for pointing out this mistake!
->> @@ -1117,7 +1117,7 @@ ahc_linux_register_host(struct ahc_softc *ahc, struct scsi_host_template *templa
->>   	if (retval) {
->>   		printk(KERN_WARNING "aic7xxx: scsi_add_host failed\n");
->>   		scsi_host_put(host);
->> -		return retval;
->> +		return -retval;
-> Originally ahc_linux_register_host() returned a mix of positive and
-> negative error codes.  You have converted it to return only positive
-> error codes.  That's good for consistency in a way, but it's a step
-> backwards from the big picture point of view.
-Agreed, it's better to let ahc_linux_register_host() only return 
-negative error codes.
->>   	}
->>   
->>   	scsi_scan_host(host);
->> diff --git a/drivers/scsi/aic7xxx/aic7xxx_osm_pci.c b/drivers/scsi/aic7xxx/aic7xxx_osm_pci.c
->> index a07e94fac673..e17eb8df12c4 100644
->> --- a/drivers/scsi/aic7xxx/aic7xxx_osm_pci.c
->> +++ b/drivers/scsi/aic7xxx/aic7xxx_osm_pci.c
->> @@ -241,8 +241,8 @@ ahc_linux_pci_dev_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
->>   		ahc_linux_pci_inherit_flags(ahc);
->>   
->>   	pci_set_drvdata(pdev, ahc);
->> -	ahc_linux_register_host(ahc, &aic7xxx_driver_template);
->> -	return (0);
->> +	error = ahc_linux_register_host(ahc, &aic7xxx_driver_template);
->> +	return -error;
-> This should be done in a separate patch.
->
-> patch 1: return negative error codes in ahc_linux_register_host()
-> patch 2: return negative error codes in aic7770_probe()
-> patch 3: add a check for errors in ahc_linux_pci_dev_probe()
+v1:
+ - https://lore.kernel.org/all/20231130024122.1193324-1-suhui@nfschina.com/
 
-Got it, I will send v2 patch set soon.
-Really thanks for your suggestions!
+Su Hui (3):
+  scsi: aic7xxx: return negative error codes in
+    ahc_linux_register_host()
+  scsi: aic7xxx: return ahc_linux_register_host()'s value rather than
+    zero
+  scsi: aic7xxx: return negative error codes in aic7770_probe()
 
-Su Hui
+ drivers/scsi/aic7xxx/aic7770_osm.c     | 6 +++---
+ drivers/scsi/aic7xxx/aic7xxx_osm.c     | 2 +-
+ drivers/scsi/aic7xxx/aic7xxx_osm_pci.c | 3 +--
+ 3 files changed, 5 insertions(+), 6 deletions(-)
+
+-- 
+2.30.2
 
 

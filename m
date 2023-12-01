@@ -1,85 +1,66 @@
-Return-Path: <kernel-janitors+bounces-534-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-536-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC7C18001D5
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Dec 2023 04:00:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1118D800435
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Dec 2023 07:56:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17ECF1C21044
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Dec 2023 03:00:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42C931C20D1C
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Dec 2023 06:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3C05232;
-	Fri,  1 Dec 2023 03:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9135211729;
+	Fri,  1 Dec 2023 06:56:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="H/lgqMkV"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail.nfschina.com (unknown [42.101.60.195])
-	by lindbergh.monkeyblade.net (Postfix) with SMTP id 0F9CE1722;
-	Thu, 30 Nov 2023 19:00:23 -0800 (PST)
-Received: from localhost.localdomain (unknown [180.167.10.98])
-	by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPSA id 6E5CF60105E65;
-	Fri,  1 Dec 2023 11:00:21 +0800 (CST)
-X-MD-Sfrom: suhui@nfschina.com
-X-MD-SrcIP: 180.167.10.98
-From: Su Hui <suhui@nfschina.com>
-To: dan.carpenter@linaro.org,
-	hare@suse.com,
-	jejb@linux.ibm.com,
-	martin.petersen@oracle.com
-Cc: Su Hui <suhui@nfschina.com>,
-	linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH v2 3/3] scsi: aic7xxx: return negative error codes in aic7770_probe()
-Date: Fri,  1 Dec 2023 10:59:56 +0800
-Message-Id: <20231201025955.1584260-4-suhui@nfschina.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20231201025955.1584260-1-suhui@nfschina.com>
+Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73589171A;
+	Thu, 30 Nov 2023 22:56:43 -0800 (PST)
+Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
+	by mail5.25mail.st (Postfix) with ESMTPSA id 6350860476;
+	Fri,  1 Dec 2023 06:56:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
+	s=25mailst; t=1701413803;
+	bh=rCfSlTTMt0AuaLRhIg405pBsrNHK2Y5VgYH9Y2Qiidc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=H/lgqMkVXbMwcGYRzC7DRMWC2iwx0bpoILYJoeeuUrAbiQjpfPCwpELNZykmOLIgL
+	 Pwfl02dwxt5Ud7Nf8Le3YOeXWwQIwOgAc8InlHvtn9jPh70yjSu9fJwPRlJ642u2Nx
+	 PcT9nM1G8lgarwtxLdf6FpdEQHDnKG7W/+IprlLYC4bDpmt0iewgsW8hXwcUdia29l
+	 a4rQe5dU9DbSEMz8pjNEoalD0S0FN3udCG7/XdXoWH42IhD8ZXc+kg6gj+5fK8Ya/h
+	 JmSEXcSIk401izJKzStII4aZ7fw4SD3X9cjqnDW37ZJMpiHD0MU5UC8GTrryA/YQ/4
+	 c46Y7onyOdyAA==
+Date: Fri, 1 Dec 2023 08:56:32 +0200
+From: Tony Lindgren <tony@atomide.com>
+To: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc: linux-omap@vger.kernel.org, kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: add omap bus drivers to OMAP2+ SUPPORT
+Message-ID: <20231201065632.GH5169@atomide.com>
+References: <20231115104434.25796-1-lukas.bulwahn@gmail.com>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231115104434.25796-1-lukas.bulwahn@gmail.com>
 
-aic7770_config() returns both negative and positive error code.
-it's better to make aic7770_probe() only return negative error codes.
+* Lukas Bulwahn <lukas.bulwahn@gmail.com> [231115 12:44]:
+> While doing some code cleanup in drivers/bus/, I noticed that the files
+> drivers/bus/omap*.[ch] have no maintainer.
+> 
+> As far as I see from the git history, important changes to those files went
+> through Tony Lindgren. Further, the inclusion of those drivers depend on
+> the config ARCH_OMAP2PLUS being enabled. This suggests these drivers are
+> part of the section OMAP2+ SUPPORT.
+> 
+> Add the omap bus drivers to OMAP2+ SUPPORT.
 
-And the previous patch made ahc_linux_register_host() return negative error
-codes, which makes sure aic7770_probe() returns negative error codes.
+Applying into omap-for-v6.8/maintainers thanks.
 
-Signed-off-by: Su Hui <suhui@nfschina.com>
----
- drivers/scsi/aic7xxx/aic7770_osm.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/scsi/aic7xxx/aic7770_osm.c b/drivers/scsi/aic7xxx/aic7770_osm.c
-index bdd177e3d762..a19cdd87c453 100644
---- a/drivers/scsi/aic7xxx/aic7770_osm.c
-+++ b/drivers/scsi/aic7xxx/aic7770_osm.c
-@@ -87,17 +87,17 @@ aic7770_probe(struct device *dev)
- 	sprintf(buf, "ahc_eisa:%d", eisaBase >> 12);
- 	name = kstrdup(buf, GFP_ATOMIC);
- 	if (name == NULL)
--		return (ENOMEM);
-+		return -ENOMEM;
- 	ahc = ahc_alloc(&aic7xxx_driver_template, name);
- 	if (ahc == NULL)
--		return (ENOMEM);
-+		return -ENOMEM;
- 	ahc->dev = dev;
- 	error = aic7770_config(ahc, aic7770_ident_table + edev->id.driver_data,
- 			       eisaBase);
- 	if (error != 0) {
- 		ahc->bsh.ioport = 0;
- 		ahc_free(ahc);
--		return (error);
-+		return error < 0 ? error : -error;
- 	}
- 
-  	dev_set_drvdata(dev, ahc);
--- 
-2.30.2
-
+Tony
 

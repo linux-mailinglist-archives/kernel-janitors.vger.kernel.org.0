@@ -1,118 +1,134 @@
-Return-Path: <kernel-janitors+bounces-553-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-555-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A322F80326B
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Dec 2023 13:21:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 930D580329F
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Dec 2023 13:29:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D39EC1C20A4C
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Dec 2023 12:21:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D01E1F20FA5
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Dec 2023 12:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DBA023773;
-	Mon,  4 Dec 2023 12:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3652B241E5;
+	Mon,  4 Dec 2023 12:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="ipJDJFSk"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HZGeiMgy"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 055AAC3;
-	Mon,  4 Dec 2023 04:21:39 -0800 (PST)
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B4C9q80016735;
-	Mon, 4 Dec 2023 12:21:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding;
- s=corp-2023-11-20; bh=jIS5wAnVSsNNvK1fqn1ZGEXn0mdtAdWPjrHPs/QHSv0=;
- b=ipJDJFSkkoQ8OSQPZhk5NGBF5GWZGXGxxoWTDFq3JcYkMP4DJvuuZu/eIYPnB/4q0Mrb
- l10CkBMRPOR0Vi120mKOdhXeJmoF2YR8NUbfL1LIQD0ZZvYmp0MGmmWbdbIZZcR+gwAI
- MjPpaT+niWJSaI2c7dmkvCF5OPyaNRvUL4kavB5aXNv4AG45M70K4ndvhTP4s019D2o8
- hXCm/qVQx7W2gcEw1lAA3Uuvay76uqF4WaREhS7p0HazCbuUx+1zj5k/NKoDp5t51uzB
- OB1HVK4NEblxEw6mQ4R+DarG/CuKMFyt8U7y3gVdkrI3YH6zkQC6kvO44SIbfQMdZ1SA uw== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3usec201h9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 04 Dec 2023 12:21:08 +0000
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 3B4BaSvE014380;
-	Mon, 4 Dec 2023 12:21:06 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3uqu15p761-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 04 Dec 2023 12:21:06 +0000
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B4CL692015651;
-	Mon, 4 Dec 2023 12:21:06 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 3uqu15p74p-1;
-	Mon, 04 Dec 2023 12:21:06 +0000
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-To: Emma Anholt <emma@anholt.net>, Melissa Wen <mwen@igalia.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Cc: dan.carpenter@linaro.org, kernel-janitors@vger.kernel.org,
-        error27@gmail.com, harshit.m.mogalapalli@oracle.com
-Subject: [PATCH next] drm/v3d: Fix missing error code in v3d_submit_cpu_ioctl()
-Date: Mon,  4 Dec 2023 04:21:01 -0800
-Message-ID: <20231204122102.181298-1-harshit.m.mogalapalli@oracle.com>
-X-Mailer: git-send-email 2.42.0
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06679C0
+	for <kernel-janitors@vger.kernel.org>; Mon,  4 Dec 2023 04:29:11 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-40c09dfa03cso11879835e9.2
+        for <kernel-janitors@vger.kernel.org>; Mon, 04 Dec 2023 04:29:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1701692949; x=1702297749; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MkkECO5iEe8wffVmp+N+jpk0G+DJrLKzEev9h10F0Rg=;
+        b=HZGeiMgySiUnWJmhgw+zXewpTQZsiLfX69MWrxIehWuO5AFYy+Vzi0fzJI2iS0Z74X
+         w2OeWSyXyslK6/G2dBtuSiUYNmJK33wQo3+o6xBKYzMiWvFpe5a7ZrrhCB2zMdp2LLag
+         M3HJZiGboTgpfqTUxKWMSbqLZwdiq8AIMM5oyb1qHT2pGcA0UUTNZzETY1cgV8w0HcJN
+         vvSyiKvUQJmn2OxOZN5avuc9YrzViCcAS6Mt3oC6EmDC66Xcw5Gz/gvKmfiPs2b/qVVr
+         RlZ2RcVzWBSx/UYZjosP+j/PC9mFjwZwzPsTl8EuBj8JLFR7877jic5Egv1+Yb6bmcQ5
+         +Znw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701692949; x=1702297749;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MkkECO5iEe8wffVmp+N+jpk0G+DJrLKzEev9h10F0Rg=;
+        b=R1YNp3dzXf4480nnxNEwWVjGqUpFdlILY+GAImjvrhEnR6khC4werlTmAyMH8ctYSz
+         3v5NggFbBgBTJOmW7nGA2NjTBpaUkVMtYpWIEtqUQInSB6eAV1CqLIpSIIMQBYITVO3Y
+         +qT36H3lwmWUw4U3VWySiLopWhxCrM3CC7W57MkNmlgWiJhgS2lmJn/YNrFFHwTWsTwF
+         NpR7gl7PTuyh153DzK0CsZ9hJScPbMGPVGpnUOS73R3DG4LkilOids7NIt3+2jlQJ7q7
+         S9/2iAuzEHLpCD6wE+33RwAR6Fwx6J6m3zxwNfaZY4qad7bL0UEv9YY8mDlfb5S/f3hx
+         akiA==
+X-Gm-Message-State: AOJu0YwKPAkw77Sv18XTV4ZJ1JwAvcYequk+M5FOj8YfbKVm26BEDqM0
+	JW1G34aJlrf1sFIyNzFgRlz9dg==
+X-Google-Smtp-Source: AGHT+IEhBK8pDeFMWjsr+8bKrzXeC11m8+GcPR+3mHNKpiYY/iuhyUeTu2UUAAGueQ/HmM7P67v+lw==
+X-Received: by 2002:a7b:c041:0:b0:40b:42d4:3319 with SMTP id u1-20020a7bc041000000b0040b42d43319mr2561709wmc.0.1701692949452;
+        Mon, 04 Dec 2023 04:29:09 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id j11-20020a05600c190b00b0040b47c69d08sm18464512wmq.18.2023.12.04.04.29.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Dec 2023 04:29:09 -0800 (PST)
+Date: Mon, 4 Dec 2023 15:29:00 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Sean Paul <seanpaul@chromium.org>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Inki Dae <inki.dae@samsung.com>, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] drm/bridge: nxp-ptn3460: fix i2c_master_send() error checking
+Message-ID: <0cdc2dce-ca89-451a-9774-1482ab2f4762@moroto.mountain>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-04_11,2023-11-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
- mlxlogscore=999 mlxscore=0 suspectscore=0 adultscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2312040093
-X-Proofpoint-GUID: FqbDJb9ICTqnlVj5k1F4_ZyMkZQBve0e
-X-Proofpoint-ORIG-GUID: FqbDJb9ICTqnlVj5k1F4_ZyMkZQBve0e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-Smatch warns:
-	drivers/gpu/drm/v3d/v3d_submit.c:1222 v3d_submit_cpu_ioctl()
-	warn: missing error code 'ret'
+The i2c_master_send/recv() functions return negative error codes or the
+number of bytes that were able to be sent/received.  This code has
+two problems.  1)  Instead of checking if all the bytes were sent or
+received, it checks that at least one byte was sent or received.
+2) If there was a partial send/receive then we should return a negative
+error code but this code returns success.
 
-When there is no job type or job is submitted with wrong number of BOs
-it is an error path, ret is zero at this point which is incorrect
-return.
-
-Fix this by changing it to -EINVAL.
-
-Fixes: aafc1a2bea67 ("drm/v3d: Add a CPU job submission")
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Fixes: a9fe713d7d45 ("drm/bridge: Add PTN3460 bridge driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 ---
-This is based on static analysis and only compile tested.
----
- drivers/gpu/drm/v3d/v3d_submit.c | 2 ++
- 1 file changed, 2 insertions(+)
+This is from static analysis and code review.  It's always a concern
+when you add stricter error handling that something will break.
 
-diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
-index d7a9da2484fd..fcff41dd2315 100644
---- a/drivers/gpu/drm/v3d/v3d_submit.c
-+++ b/drivers/gpu/drm/v3d/v3d_submit.c
-@@ -1219,11 +1219,13 @@ v3d_submit_cpu_ioctl(struct drm_device *dev, void *data,
- 	/* Every CPU job must have a CPU job user extension */
- 	if (!cpu_job->job_type) {
- 		DRM_DEBUG("CPU job must have a CPU job user extension.\n");
-+		ret = -EINVAL;
- 		goto fail;
+ drivers/gpu/drm/bridge/nxp-ptn3460.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/gpu/drm/bridge/nxp-ptn3460.c b/drivers/gpu/drm/bridge/nxp-ptn3460.c
+index d81920227a8a..9b7eb8c669c1 100644
+--- a/drivers/gpu/drm/bridge/nxp-ptn3460.c
++++ b/drivers/gpu/drm/bridge/nxp-ptn3460.c
+@@ -56,13 +56,13 @@ static int ptn3460_read_bytes(struct ptn3460_bridge *ptn_bridge, char addr,
+ 	ret = i2c_master_send(ptn_bridge->client, &addr, 1);
+ 	if (ret <= 0) {
+ 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
+-		return ret;
++		return ret ?: -EIO;
  	}
  
- 	if (args->bo_handle_count != cpu_job_bo_handle_count[cpu_job->job_type]) {
- 		DRM_DEBUG("This CPU job was not submitted with the proper number of BOs.\n");
-+		ret = -EINVAL;
- 		goto fail;
+ 	ret = i2c_master_recv(ptn_bridge->client, buf, len);
+-	if (ret <= 0) {
++	if (ret != len) {
+ 		DRM_ERROR("Failed to recv i2c data, ret=%d\n", ret);
+-		return ret;
++		return ret < 0 ? ret : -EIO;
  	}
  
+ 	return 0;
+@@ -78,9 +78,9 @@ static int ptn3460_write_byte(struct ptn3460_bridge *ptn_bridge, char addr,
+ 	buf[1] = val;
+ 
+ 	ret = i2c_master_send(ptn_bridge->client, buf, ARRAY_SIZE(buf));
+-	if (ret <= 0) {
++	if (ret != ARRAY_SIZE(buf)) {
+ 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
+-		return ret;
++		return ret < 0 ? ret : -EIO;
+ 	}
+ 
+ 	return 0;
 -- 
-2.39.3
+2.42.0
 
 

@@ -1,109 +1,93 @@
-Return-Path: <kernel-janitors+bounces-552-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-554-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08B27802ECF
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Dec 2023 10:39:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C204E80327C
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Dec 2023 13:22:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7B401F2121F
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Dec 2023 09:39:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DC481F210A7
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Dec 2023 12:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C41F1CA96;
-	Mon,  4 Dec 2023 09:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2723623776;
+	Mon,  4 Dec 2023 12:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CoFuB5nU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KiIj8OFD"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3086B2;
-	Mon,  4 Dec 2023 01:39:43 -0800 (PST)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-40c09ba723eso11251645e9.2;
-        Mon, 04 Dec 2023 01:39:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701682782; x=1702287582; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=itnvq+P/Fjh6RP+B0+dY8QHorajZulYkmu3iW5W6GwY=;
-        b=CoFuB5nU6e31ISJXpMBxyiKWE8ME0yoRZlrS8DYOEhlP14xRysT5BPQ1zaKlVJkRkh
-         RWTkyHgh2rNT35F0yWexHGP3Puk939AkBnYihRc6q5aXdbtJQ51lsnde0RYAEoj34x1L
-         Al355chhLfeKHg59nxVWtG6bZKKwwWfCTn8/S+e1fcyLFl4TSu9oywM84I9PbOGSiQ9P
-         g6jTHkVmRwzXn24IHzD/+RhyMCx+CuJFUR7TRwmil+Ubuq0oldyG3/V9Mx2pjy1di8r4
-         PBhVAnF5SWGOqGpopJxZygsCkmxHg1u6Sm2NlsQbx+TXs1SWinASfhWPMfGoRcLgukM+
-         jlYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701682782; x=1702287582;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=itnvq+P/Fjh6RP+B0+dY8QHorajZulYkmu3iW5W6GwY=;
-        b=lqZhmGd5RlTi8S9CP++e9Cs89/mlhMhzAGwO25jZ4QZKEzjwpCb8JUBKHpzyUeBQxZ
-         UBh1uSxhZXm2iWHOyaiHwEzK9J/L9wBhPW5hOVyuO+9fYxHB/p5cdKohLqS3SvRuj2dj
-         sZ49m0GkqUrI3OsVUuX+On9YoDsgMWkOxX5phtSs0P1G+gjIgYylLHOJbcj/oXxIv6wY
-         G44IC7zGvTPzDlH+4fytdRQKzQFaQg2kgml9bnnvocDma/HFj8nZDFPcDTXDw5UwJzS+
-         IrzO0ZTiBOJnj09Yt/PHuSDzLnFioMCVnAmNPXekAxup5r+nc30yimP5Oxk+48U0U980
-         8mOw==
-X-Gm-Message-State: AOJu0Ywl+MvrBnkEYQgBTbL+e0kgCjSlSzPqIZPrvfeRHS31TUflC2PJ
-	x1HbEks8a29RBfIgLNJw9KQ=
-X-Google-Smtp-Source: AGHT+IEuktjrUxLdnaKY9QQMHGXtWDZAhW0oayMCNA5adoVDlXNkChDbLVtvMFBUY6gJCz8lY1y0og==
-X-Received: by 2002:a05:600c:3584:b0:408:5a1c:9de7 with SMTP id p4-20020a05600c358400b004085a1c9de7mr2136608wmq.7.1701682782129;
-        Mon, 04 Dec 2023 01:39:42 -0800 (PST)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id r1-20020a5d4e41000000b0033340c678ffsm4278525wrt.96.2023.12.04.01.39.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Dec 2023 01:39:41 -0800 (PST)
-From: Colin Ian King <colin.i.king@gmail.com>
-To: Andrii Nakryiko <andrii@kernel.org>,
-	Mykola Lysenko <mykolal@fb.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@google.com>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH][NEXT] selftests/bpf: Fix spelling mistake "get_signaure_size" -> "get_signature_size"
-Date: Mon,  4 Dec 2023 09:39:40 +0000
-Message-Id: <20231204093940.2611954-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.39.2
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7351B1EB54;
+	Mon,  4 Dec 2023 12:22:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E9F6C433C9;
+	Mon,  4 Dec 2023 12:22:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1701692542;
+	bh=VBhrN1iPpuRyzjKXqxjhhLRiYuFI95GVYxgoft4cV+8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KiIj8OFDtFDuB6JKodOOuVAdXP362m2FJeoPh4PXXfCfZObsP6HzgR0U9xs2o9KEv
+	 OOLqGlRWqIK8+dnhNdyUJEcp6yfR/5BdPP6qIF4bZJ6ry3Z41iaGeOf66n6+HP09M3
+	 4qw6jBXbREaIeogan0AmKBRjd0tnPBrBcXKDhTdQ=
+Date: Mon, 4 Dec 2023 09:00:42 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Su Hui <suhui@nfschina.com>
+Cc: alexander.usyskin@intel.com, tomas.winkler@intel.com, arnd@arndb.de,
+	nathan@kernel.org, ndesaulniers@google.com, trix@redhat.com,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v3] misc: mei: client.c: fix problem of return
+ '-EOVERFLOW' in mei_cl_write
+Message-ID: <2023120452-stool-party-bf2b@gregkh>
+References: <20231128014507.418254-1-suhui@nfschina.com>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231128014507.418254-1-suhui@nfschina.com>
 
-There is a spelling mistake in an ASSERT_GT message. Fix it.
+On Tue, Nov 28, 2023 at 09:45:08AM +0800, Su Hui wrote:
+> Clang static analyzer complains that value stored to 'rets' is never
+> read.Using 'goto err' to go to the error path and fix this problem.
+> 
+> Fixes: 8c8d964ce90f ("mei: move hbuf_depth from the mei device to the hw modules")
+> Signed-off-by: Su Hui <suhui@nfschina.com>
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- tools/testing/selftests/bpf/prog_tests/verify_pkcs7_sig.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+How was this tested?
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/verify_pkcs7_sig.c b/tools/testing/selftests/bpf/prog_tests/verify_pkcs7_sig.c
-index 6c90372b772d..ab0f02faa80c 100644
---- a/tools/testing/selftests/bpf/prog_tests/verify_pkcs7_sig.c
-+++ b/tools/testing/selftests/bpf/prog_tests/verify_pkcs7_sig.c
-@@ -498,7 +498,7 @@ static void test_pkcs7_sig_fsverity(void)
- 	if (!ASSERT_OK_PTR(skel, "test_sig_in_xattr__open"))
- 		goto out;
- 	ret = get_signature_size(sig_path);
--	if (!ASSERT_GT(ret, 0, "get_signaure_size"))
-+	if (!ASSERT_GT(ret, 0, "get_signature_size"))
- 		goto out;
- 	skel->bss->sig_size = ret;
- 	skel->bss->user_keyring_serial = syscall(__NR_request_key, "keyring",
--- 
-2.39.2
+> ---
+> v3: 
+>  - using 'goto err' rather than 'buf_len=-EOVERFLOW'.(Thanks to Sasha)
+> 
+> v2:
+>  - split v1 patch to different patches
+> https://lore.kernel.org/all/20231120095523.178385-2-suhui@nfschina.com/
+> 
+> v1:
+> https://lore.kernel.org/all/5c98fc07-36a9-92cc-f8d6-c4efdc0c34aa@nfschina.com/
+> 
+>  drivers/misc/mei/client.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/misc/mei/client.c b/drivers/misc/mei/client.c
+> index 7ea80779a0e2..0489bec4fded 100644
+> --- a/drivers/misc/mei/client.c
+> +++ b/drivers/misc/mei/client.c
+> @@ -2033,7 +2033,7 @@ ssize_t mei_cl_write(struct mei_cl *cl, struct mei_cl_cb *cb, unsigned long time
+>  	hbuf_slots = mei_hbuf_empty_slots(dev);
+>  	if (hbuf_slots < 0) {
+>  		rets = -EOVERFLOW;
+> -		goto out;
+> +		goto err;
 
+Please prove that this is correct, as based on the code logic, it seems
+very wrong.  I can't take this unless the code is tested properly.
+
+thanks,
+
+greg k-h
 

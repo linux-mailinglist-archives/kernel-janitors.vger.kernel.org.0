@@ -1,51 +1,50 @@
-Return-Path: <kernel-janitors+bounces-643-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-644-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A83A80BC76
-	for <lists+kernel-janitors@lfdr.de>; Sun, 10 Dec 2023 18:52:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4B680BC8D
+	for <lists+kernel-janitors@lfdr.de>; Sun, 10 Dec 2023 19:42:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9A39280C63
-	for <lists+kernel-janitors@lfdr.de>; Sun, 10 Dec 2023 17:52:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AA63B209B5
+	for <lists+kernel-janitors@lfdr.de>; Sun, 10 Dec 2023 18:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A4419BD9;
-	Sun, 10 Dec 2023 17:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196951A5A7;
+	Sun, 10 Dec 2023 18:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="mkWMq5TB"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="ZaqfFfTj"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-19.smtpout.orange.fr [80.12.242.19])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BCCBFA
-	for <kernel-janitors@vger.kernel.org>; Sun, 10 Dec 2023 09:51:57 -0800 (PST)
+Received: from smtp.smtpout.orange.fr (smtp-24.smtpout.orange.fr [80.12.242.24])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03B4EDB
+	for <kernel-janitors@vger.kernel.org>; Sun, 10 Dec 2023 10:42:00 -0800 (PST)
 Received: from pop-os.home ([92.140.202.140])
 	by smtp.orange.fr with ESMTPA
-	id CNy4r77eNxqX7CNy4r8b6X; Sun, 10 Dec 2023 18:51:56 +0100
+	id COkVr0Jjza8POCOkVrYw1e; Sun, 10 Dec 2023 19:41:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1702230716;
-	bh=I+oLHrfSteD1fM5wZcNGUaFi+cT/ZUrP8W7m+tITsR4=;
+	s=t20230301; t=1702233719;
+	bh=I4d7pDDCyjT9L0OHzm3kZ0ExqvKGHQ3K/sxp0Y597HM=;
 	h=From:To:Cc:Subject:Date;
-	b=mkWMq5TBbq7Mt5b0vqjmNsCy44MG2vlYUyENYi5GtepUNxLqKPZnXgx5x90e79Xu4
-	 kK3Vk+ulADvk2FkP248VX7Nx2QyglnFw5TqYDsn7aN28tqEIrdMloZ/tBfOAmG2DDf
-	 JD5mPXyCkPWtBy3/fQJZosYogQcBjzVHqnHODhTGFHouy6YOb+U5QaYoo5F6B0faif
-	 slLqRoNkhCuRZx2G+d93TRM2X94o1VS/eKxPUpdPyykrBBfePH5piqer/h0nY4WPvy
-	 hJCBt1nMacbOMxAbnocPtbXHqgW195NJCgVcgIZOC0ptbTnaXsbiV3IvRJpOGXEn3r
-	 kN/rjptAc/3Ug==
+	b=ZaqfFfTj5/sK1oG0y6x+Yv/Iag8x3sqCmGofmIBzxwSpdXL5Rkmt9+jSBKtxXS/OC
+	 RL1LwO2tYWJjCsLvGWHXaGzc3rnOkKg7aQ7DqsE1sqxd+n5J75fxfbULD66wDgyMWu
+	 JJHtsqNmUmuzfNBjZBO0bE/x4TDxvvh4bzj8leLCfmQWL3quTXd58nkNBMAccvTS5A
+	 VNroBNT8ctYWqSqMkOAtFoJ2/IPe0buyvA/skTk/Huyax5gBS1zLDk7XwiEVTANqTX
+	 swNoW3P5nuxiqcBk5XMFchi7yII2xudGkKetzTtlk+szG1fH0HCULfHWKZGBR2ZcdX
+	 CFOIqgV6/NMBQ==
 X-ME-Helo: pop-os.home
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 10 Dec 2023 18:51:56 +0100
+X-ME-Date: Sun, 10 Dec 2023 19:41:59 +0100
 X-ME-IP: 92.140.202.140
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
 Cc: linux-kernel@vger.kernel.org,
 	kernel-janitors@vger.kernel.org,
 	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	virtualization@lists.linux.dev
-Subject: [PATCH] vdpa: Remove usage of the deprecated ida_simple_xx() API
-Date: Sun, 10 Dec 2023 18:51:50 +0100
-Message-Id: <d7534cc4caf4ff9d6b072744352c1b69487779ea.1702230703.git.christophe.jaillet@wanadoo.fr>
+	linux-crypto@vger.kernel.org
+Subject: [PATCH] hwrng: virtio - Remove usage of the deprecated ida_simple_xx() API
+Date: Sun, 10 Dec 2023 19:41:51 +0100
+Message-Id: <ff9912450e608388a73bd331b5e5e5c816131071.1702233701.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -62,31 +61,40 @@ This is less verbose.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/vdpa/vdpa.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/char/hw_random/virtio-rng.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/vdpa/vdpa.c b/drivers/vdpa/vdpa.c
-index a7612e0783b3..d0695680b282 100644
---- a/drivers/vdpa/vdpa.c
-+++ b/drivers/vdpa/vdpa.c
-@@ -131,7 +131,7 @@ static void vdpa_release_dev(struct device *d)
- 	if (ops->free)
- 		ops->free(vdev);
+diff --git a/drivers/char/hw_random/virtio-rng.c b/drivers/char/hw_random/virtio-rng.c
+index 58d92d62ddfe..7a4b45393acb 100644
+--- a/drivers/char/hw_random/virtio-rng.c
++++ b/drivers/char/hw_random/virtio-rng.c
+@@ -135,7 +135,7 @@ static int probe_common(struct virtio_device *vdev)
+ 	if (!vi)
+ 		return -ENOMEM;
  
--	ida_simple_remove(&vdpa_index_ida, vdev->index);
-+	ida_free(&vdpa_index_ida, vdev->index);
- 	kfree(vdev->driver_override);
- 	kfree(vdev);
- }
-@@ -205,7 +205,7 @@ struct vdpa_device *__vdpa_alloc_device(struct device *parent,
- 	return vdev;
+-	vi->index = index = ida_simple_get(&rng_index_ida, 0, 0, GFP_KERNEL);
++	vi->index = index = ida_alloc(&rng_index_ida, GFP_KERNEL);
+ 	if (index < 0) {
+ 		err = index;
+ 		goto err_ida;
+@@ -166,7 +166,7 @@ static int probe_common(struct virtio_device *vdev)
+ 	return 0;
  
- err_name:
--	ida_simple_remove(&vdpa_index_ida, vdev->index);
-+	ida_free(&vdpa_index_ida, vdev->index);
+ err_find:
+-	ida_simple_remove(&rng_index_ida, index);
++	ida_free(&rng_index_ida, index);
  err_ida:
- 	kfree(vdev);
- err:
+ 	kfree(vi);
+ 	return err;
+@@ -184,7 +184,7 @@ static void remove_common(struct virtio_device *vdev)
+ 		hwrng_unregister(&vi->hwrng);
+ 	virtio_reset_device(vdev);
+ 	vdev->config->del_vqs(vdev);
+-	ida_simple_remove(&rng_index_ida, vi->index);
++	ida_free(&rng_index_ida, vi->index);
+ 	kfree(vi);
+ }
+ 
 -- 
 2.34.1
 

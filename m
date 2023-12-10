@@ -1,48 +1,49 @@
-Return-Path: <kernel-janitors+bounces-634-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-635-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BD4280BC4B
-	for <lists+kernel-janitors@lfdr.de>; Sun, 10 Dec 2023 18:17:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1445D80BC55
+	for <lists+kernel-janitors@lfdr.de>; Sun, 10 Dec 2023 18:21:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A2E4B208C7
-	for <lists+kernel-janitors@lfdr.de>; Sun, 10 Dec 2023 17:17:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C22B91F20F50
+	for <lists+kernel-janitors@lfdr.de>; Sun, 10 Dec 2023 17:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6481863E;
-	Sun, 10 Dec 2023 17:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8856118AF7;
+	Sun, 10 Dec 2023 17:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="iySQgHrO"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="ZXZ1qU84"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-24.smtpout.orange.fr [80.12.242.24])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BF4CBD
-	for <kernel-janitors@vger.kernel.org>; Sun, 10 Dec 2023 09:17:15 -0800 (PST)
+Received: from smtp.smtpout.orange.fr (smtp-13.smtpout.orange.fr [80.12.242.13])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7988DFD
+	for <kernel-janitors@vger.kernel.org>; Sun, 10 Dec 2023 09:21:00 -0800 (PST)
 Received: from pop-os.home ([92.140.202.140])
 	by smtp.orange.fr with ESMTPA
-	id CNQWrHujroJwrCNQXrDwLo; Sun, 10 Dec 2023 18:17:13 +0100
+	id CNUArclegsaM8CNUArtR4j; Sun, 10 Dec 2023 18:20:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1702228633;
-	bh=aurnWtncV7Q1TSEkm/6CYQqUg0/hz67stY/BfmCeZBs=;
+	s=t20230301; t=1702228858;
+	bh=C9fceqXzVbndKoQVbdNeb4fI05XCiHfbkjzq+6X8Vgs=;
 	h=From:To:Cc:Subject:Date;
-	b=iySQgHrOimU8UrWY2H6752ATWXqMQfNcZmXjNkLTNmktMAtyBKNMFhhoMCZ/IJm50
-	 2J8zeKjcPZXftwO4SpFc5sILyaWGXFxUIcpeUMnl9bJG44YlNeCTPm/guO1AEf53kZ
-	 f0341g9cxYGLx33XdTVeq+YIPwda8m7yffQZkFOdOfJFJ0anR3trdeekzE9ZNJot1F
-	 UYkyHs20FNDT3B+tFeytXAwUYJxfofJr45XJYIAQPfMHqeaHKeikDUS6x+XUV87R8P
-	 SA1o++NwCM86wrLtFTRd8Y1y9ieOyu+KVm5ZpIBtxdm+kdu0RDX8KOH5MXuLztKS73
-	 xQrhEwvIxHEeQ==
+	b=ZXZ1qU84Kqhmmpjwh13l6+ke0Q+qqj6pYHCmQRR7hz/4ewZcYXMbXIk4YMBQStOba
+	 eulTp9iEgrpKwz/Riqco8pu2ldMMsSAAp4/JKsl3i7jjNoD27NBsc7kqTi74tXxZm7
+	 xEkXtLUd9eFVscbfNz2sIHIPtTarLP+R5alTvyM6MhpykCYm+e2t7awfX26ltO5qYz
+	 9lNeS+xPaDOGAh7tRHUeaN3gcm0vHGSdzLWoVOdUSDiI6mKkILj2VPq4CcW4ABL0lq
+	 elw1cb0gc3Y9rSOWQui2SAy6D6e+QyKq0QqKUt5e6R4WAO0uk66jnEmBI05MDsREff
+	 INJCogq9xnosQ==
 X-ME-Helo: pop-os.home
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 10 Dec 2023 18:17:13 +0100
+X-ME-Date: Sun, 10 Dec 2023 18:20:58 +0100
 X-ME-IP: 92.140.202.140
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Peter Rosin <peda@axentia.se>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Cc: linux-kernel@vger.kernel.org,
 	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] mux: Remove usage of the deprecated ida_simple_xx() API
-Date: Sun, 10 Dec 2023 18:17:10 +0100
-Message-Id: <727714bdfcd69d21e7f2a0c5c7426fcb70439b91.1702228605.git.christophe.jaillet@wanadoo.fr>
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-input@vger.kernel.org
+Subject: [PATCH] Input: xpad - Remove usage of the deprecated ida_simple_xx() API
+Date: Sun, 10 Dec 2023 18:20:57 +0100
+Message-Id: <a3e30e30f18cc5d6f032c8013ce9d900c8e223e5.1702228806.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -59,31 +60,40 @@ This is less verbose.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/mux/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/input/joystick/xpad.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mux/core.c b/drivers/mux/core.c
-index 775816112932..78c0022697ec 100644
---- a/drivers/mux/core.c
-+++ b/drivers/mux/core.c
-@@ -64,7 +64,7 @@ static void mux_chip_release(struct device *dev)
- {
- 	struct mux_chip *mux_chip = to_mux_chip(dev);
+diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
+index f5c21565bb3c..00c77e906744 100644
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -1669,7 +1669,7 @@ static int xpad_led_probe(struct usb_xpad *xpad)
+ 	if (!led)
+ 		return -ENOMEM;
  
--	ida_simple_remove(&mux_ida, mux_chip->id);
-+	ida_free(&mux_ida, mux_chip->id);
- 	kfree(mux_chip);
+-	xpad->pad_nr = ida_simple_get(&xpad_pad_seq, 0, 0, GFP_KERNEL);
++	xpad->pad_nr = ida_alloc(&xpad_pad_seq, GFP_KERNEL);
+ 	if (xpad->pad_nr < 0) {
+ 		error = xpad->pad_nr;
+ 		goto err_free_mem;
+@@ -1692,7 +1692,7 @@ static int xpad_led_probe(struct usb_xpad *xpad)
+ 	return 0;
+ 
+ err_free_id:
+-	ida_simple_remove(&xpad_pad_seq, xpad->pad_nr);
++	ida_free(&xpad_pad_seq, xpad->pad_nr);
+ err_free_mem:
+ 	kfree(led);
+ 	xpad->led = NULL;
+@@ -1705,7 +1705,7 @@ static void xpad_led_disconnect(struct usb_xpad *xpad)
+ 
+ 	if (xpad_led) {
+ 		led_classdev_unregister(&xpad_led->led_cdev);
+-		ida_simple_remove(&xpad_pad_seq, xpad->pad_nr);
++		ida_free(&xpad_pad_seq, xpad->pad_nr);
+ 		kfree(xpad_led);
+ 	}
  }
- 
-@@ -111,7 +111,7 @@ struct mux_chip *mux_chip_alloc(struct device *dev,
- 	mux_chip->dev.of_node = dev->of_node;
- 	dev_set_drvdata(&mux_chip->dev, mux_chip);
- 
--	mux_chip->id = ida_simple_get(&mux_ida, 0, 0, GFP_KERNEL);
-+	mux_chip->id = ida_alloc(&mux_ida, GFP_KERNEL);
- 	if (mux_chip->id < 0) {
- 		int err = mux_chip->id;
- 
 -- 
 2.34.1
 

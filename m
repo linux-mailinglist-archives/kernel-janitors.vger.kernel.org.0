@@ -1,51 +1,38 @@
-Return-Path: <kernel-janitors+bounces-698-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-699-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7C381433E
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Dec 2023 09:07:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E16BF8144F7
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Dec 2023 10:58:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 207701F230BB
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Dec 2023 08:07:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80F191F2366B
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Dec 2023 09:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB644111A7;
-	Fri, 15 Dec 2023 08:07:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="A4gInUKe"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B573E18C1B;
+	Fri, 15 Dec 2023 09:58:14 +0000 (UTC)
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1024312E4E;
-	Fri, 15 Dec 2023 08:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Received: from 8bytes.org (p4ffe1e67.dip0.t-ipconnect.de [79.254.30.103])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 121431A230B;
-	Fri, 15 Dec 2023 09:07:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1702627632;
-	bh=DoLMZzXbG/nWSjrpA3fB74d7qoBKCRr4ZyF52F0eyOM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A4gInUKeDrLKf9Y9tGxAqDzDUok/NETBtA5ZDULDobcM2JfCceidpXN+T8+RPivxC
-	 dNiTqxRozUciZ1RqVxu5ylyUp5nMkCXD5J8fpudZGEYIWbC/MhxmcTmELSSJDn38hO
-	 ZX19amG6Inl0vqpkCbx+24iEbyWlkq+UrxBSNIjTHVDFm0VrDQfEVWPDEpCuxqqlAE
-	 DyE9oQE/7IetE179DH8ni/Y+DtrO24AeJklIJaq8+2f7UDDBhH/N73/7BRawyzW099
-	 E8acfqEfhl4mXr2bGWjJJIdnX4DVDRz1K2545et/jltidEFKPDW8MEnHCiGQtTzIH4
-	 XJPUGmDNS0uOg==
-Date: Fri, 15 Dec 2023 09:07:10 +0100
-From: Joerg Roedel <joro@8bytes.org>
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	dan.carpenter@linaro.org, kernel-janitors@vger.kernel.org,
-	error27@gmail.com
-Subject: Re: [PATCH] iommu/sva: Fix memory leak in iommu_sva_bind_device()
-Message-ID: <ZXwJLi9EnfdLVAHA@8bytes.org>
-References: <20231213111450.2487861-1-harshit.m.mogalapalli@oracle.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350CC24A07;
+	Fri, 15 Dec 2023 09:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+	id 1rE4xA-00BCkJ-Ig; Fri, 15 Dec 2023 17:57:57 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 15 Dec 2023 17:58:06 +0800
+Date: Fri, 15 Dec 2023 17:58:06 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Olivia Mackall <olivia@selenic.com>, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org, linux-crypto@vger.kernel.org
+Subject: Re: [PATCH] hwrng: virtio - Remove usage of the deprecated
+ ida_simple_xx() API
+Message-ID: <ZXwjLtmSqyGznN+g@gondor.apana.org.au>
+References: <ff9912450e608388a73bd331b5e5e5c816131071.1702233701.git.christophe.jaillet@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -54,11 +41,22 @@ List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231213111450.2487861-1-harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <ff9912450e608388a73bd331b5e5e5c816131071.1702233701.git.christophe.jaillet@wanadoo.fr>
 
-On Wed, Dec 13, 2023 at 03:14:50AM -0800, Harshit Mogalapalli wrote:
->  drivers/iommu/iommu-sva.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+On Sun, Dec 10, 2023 at 07:41:51PM +0100, Christophe JAILLET wrote:
+> ida_alloc() and ida_free() should be preferred to the deprecated
+> ida_simple_get() and ida_simple_remove().
+> 
+> This is less verbose.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  drivers/char/hw_random/virtio-rng.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 
-Applied, thanks.
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 

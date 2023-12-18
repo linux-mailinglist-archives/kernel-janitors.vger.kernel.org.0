@@ -1,131 +1,104 @@
-Return-Path: <kernel-janitors+bounces-720-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-722-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B0EA8171B6
-	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Dec 2023 15:01:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64292817477
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Dec 2023 15:59:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E2AE1C249AF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Dec 2023 14:01:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F7E7285691
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Dec 2023 14:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B931A42363;
-	Mon, 18 Dec 2023 14:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC8A3A1BA;
+	Mon, 18 Dec 2023 14:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WULgJHAQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FB2bklC7"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50E83A1B6
-	for <kernel-janitors@vger.kernel.org>; Mon, 18 Dec 2023 13:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702907997;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3Z08qTo4VHKqBvQdQYFQ7T86lFpxtYJXk00pxEYx2D4=;
-	b=WULgJHAQdSa7GYK8cIkkyJEE54fAv28Js8sxsd4/QEDCiUDG8wp8rAUO/kn6Fxe2RkHwMD
-	FaKoFUh9B7J9gkowAd5bybYZBvdi1u1LGrh2JJgQkrUSa9ohbOLB58vBKATafGQYN8Uy88
-	Jv+eP/c/9maLAWpGmiSb1w2c7dU56uU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-5-9v2gyJj6MjGktqJc7ntXSA-1; Mon, 18 Dec 2023 08:59:56 -0500
-X-MC-Unique: 9v2gyJj6MjGktqJc7ntXSA-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-40c4a824c4bso25951015e9.2
-        for <kernel-janitors@vger.kernel.org>; Mon, 18 Dec 2023 05:59:55 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702907995; x=1703512795;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3Z08qTo4VHKqBvQdQYFQ7T86lFpxtYJXk00pxEYx2D4=;
-        b=oBhlEmX50c1FeMyFZY3aRuPKgQZ3SY8YrwckSeepuF+ueRCTgBWIQQ2GJecb7lOOCV
-         dSgJqYVeXA2WIOJQUnjernnZe6xeDdGKHobTJVAGbyHWPg2l8EaU5w9Uw3w2dR5xQ5+d
-         +KAWbSBUpl4Qm4afoH3y/kxIlb51/TYpe/yjtKetwJwoaoWYLRKSPFce2iqXk15wnX6B
-         goXf6M6SQ7En73VkE64xv641SJihUg9n4UJYMj9KLhfZVhv48xYWIYaHOA2c/OFOJYDK
-         ry6ZYjVJTgA+cpKLHC45fPgJNz4ujrpphQPkJFSKrYlXWczwd5il75KKvNaOKivhYN7H
-         hwFQ==
-X-Gm-Message-State: AOJu0Yzju75w4lYIE5KceUo9ZG4iIxhajAm8xPqTzAtmFv8V13WhXH28
-	0AT/HDus5cRe08RMGd4XfCTPGm8u8U5sqHWETGR+9aD24F5seHwb3aOmHlBK1sfj/xqal+qBZh6
-	YeMPMBh//phAZr3Y0NGIW8Wo+IeER
-X-Received: by 2002:a7b:c385:0:b0:40c:24e1:b6bb with SMTP id s5-20020a7bc385000000b0040c24e1b6bbmr8131727wmj.128.1702907995001;
-        Mon, 18 Dec 2023 05:59:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEcdBLo/fPLob8CR9UlEPNAiidKYcTuOaD1IcTPhjmqGj7oGakg4oZsc8hPpVkW4btXSQMQCQ==
-X-Received: by 2002:a7b:c385:0:b0:40c:24e1:b6bb with SMTP id s5-20020a7bc385000000b0040c24e1b6bbmr8131722wmj.128.1702907994622;
-        Mon, 18 Dec 2023 05:59:54 -0800 (PST)
-Received: from [10.40.98.142] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id cx7-20020a170907168700b009fc576e26e6sm14059747ejd.80.2023.12.18.05.59.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Dec 2023 05:59:54 -0800 (PST)
-Message-ID: <011c6ff1-e9ce-400d-bc34-a08ce880f6e6@redhat.com>
-Date: Mon, 18 Dec 2023 14:59:53 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDFB22088;
+	Mon, 18 Dec 2023 14:59:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA42CC433C7;
+	Mon, 18 Dec 2023 14:59:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702911546;
+	bh=j87jRYCDb0lryskWckm01CmOmZHH/yU/DZt9Eohvopc=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=FB2bklC7bgMwydcNe05LbcKSrZQkpwU3XM7a4FBsc4CwXCXqoZTJ2xpb3d/KNKaUR
+	 s8uBjmxMXBlgPkCqFgYT1BFwBQMBOudZnE8VDB1WDYgNVGK1xLneO0Klcewxx6M3aY
+	 leC550vsP7nom003KJ+i5j+KieIfcqb9CV0NrRh+LqhShsmBidzqb3LiIpSPD2LPqq
+	 x22BCQm9hAH3cbZOvx/stEsxLYxrj5NHPHoexwVP0wmmwNmXWutEmMj61pVv+YfSXT
+	 LilzcFIpXt+DD3yGOF8Q9pdrpzwfp+zsS7amRP0FvCVWbeQRvOvmCHRKqhOzY+Anct
+	 6LApnitldUI+g==
+From: Kalle Valo <kvalo@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>,  =?utf-8?Q?Rafa=C5=82_Mi?=
+ =?utf-8?Q?=C5=82ecki?=
+ <zajec5@gmail.com>,  "David S . Miller" <davem@davemloft.net>,  Eric
+ Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo
+ Abeni <pabeni@redhat.com>,  Larry Finger <Larry.Finger@lwfinger.net>,
+  Arend van Spriel <aspriel@gmail.com>,  Franky Lin
+ <franky.lin@broadcom.com>,  Hante Meuleman <hante.meuleman@broadcom.com>,
+  Michael Buesch <m@bues.ch>,  linux-wireless@vger.kernel.org,
+  netdev@vger.kernel.org,  b43-dev@lists.infradead.org,
+  brcm80211-dev-list.pdl@broadcom.com,  SHA-cyfmac-dev-list@infineon.com,
+  kernel-janitors@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] bcma,ssb: simplify dependency handling for bcma and ssb
+ drivers
+References: <20231218115802.15859-1-lukas.bulwahn@gmail.com>
+	<26207725d5025318b831dd5a5feca67248aaa221.camel@sipsolutions.net>
+Date: Mon, 18 Dec 2023 16:59:00 +0200
+In-Reply-To: <26207725d5025318b831dd5a5feca67248aaa221.camel@sipsolutions.net>
+	(Johannes Berg's message of "Mon, 18 Dec 2023 14:17:59 +0100")
+Message-ID: <87o7ensgjv.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH][next] platform/x86: silicom-platform: Fix spelling
- mistake "platfomr" -> "platform"
-Content-Language: en-US
-To: Colin Ian King <colin.i.king@gmail.com>,
- Henry Shi <henryshi2018@gmail.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- platform-driver-x86@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231215112746.13752-1-colin.i.king@gmail.com>
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20231215112746.13752-1-colin.i.king@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-Hi,
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-On 12/15/23 12:27, Colin Ian King wrote:
-> There is a spelling mistake in a literal string. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> On Mon, 2023-12-18 at 12:58 +0100, Lukas Bulwahn wrote:
+>
+> Dunno, I'm not super involved with this but ...
+>
+>> +++ b/drivers/bcma/Kconfig
+>> @@ -1,12 +1,7 @@
+>>  # SPDX-License-Identifier: GPL-2.0
+>> -config BCMA_POSSIBLE
+>> -	bool
+>> -	depends on HAS_IOMEM && HAS_DMA
+>> -	default y
+>> -
+>>  menuconfig BCMA
+>>  	tristate "Broadcom specific AMBA"
+>> -	depends on BCMA_POSSIBLE
+>> +	depends on HAS_IOMEM && HAS_DMA
+>
+> [...]
+>>  config BRCMSMAC
+>>  	tristate "Broadcom IEEE802.11n PCIe SoftMAC WLAN driver"
+>> -	depends on MAC80211
+>> -	depends on BCMA_POSSIBLE
+>> +	depends on HAS_IOMEM && HAS_DMA && MAC80211
+>>  	select BCMA
+>
+> to me it kind of seems more obvious for example in this case to say
+> "depend on BCMA_POSSIBLE and select BCMA" rather than open-coding the
+> BCMA dependencies both here and in BCMA? Now granted, they're rather
+> unlikely to _change_, but it still seems more obvious?
 
-Thank you for your patch, I've applied this patch to my review-hans 
-branch:
-https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
+I was thinking the same. Lukas, is there a specific reason why you want
+to change this or this just something you noticed by chance?
 
-Note it will show up in my review-hans branch once I've pushed my
-local branch there, which might take a while.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Once I've run some tests on this branch the patches there will be
-added to the platform-drivers-x86/for-next branch and eventually
-will be included in the pdx86 pull-request to Linus for the next
-merge-window.
-
-Regards,
-
-Hans
-
-
-> ---
->  drivers/platform/x86/silicom-platform.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/platform/x86/silicom-platform.c b/drivers/platform/x86/silicom-platform.c
-> index 84b92b3f9f4b..6ce43ccb3112 100644
-> --- a/drivers/platform/x86/silicom-platform.c
-> +++ b/drivers/platform/x86/silicom-platform.c
-> @@ -866,7 +866,7 @@ static int silicom_fan_control_read_labels(struct device *dev,
->  {
->  	switch (type) {
->  	case hwmon_fan:
-> -		*str = "Silicom_platfomr: Fan Speed";
-> +		*str = "Silicom_platform: Fan Speed";
->  		return 0;
->  	case hwmon_temp:
->  		*str = "Silicom_platform: Thermostat Sensor";
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

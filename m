@@ -1,112 +1,69 @@
-Return-Path: <kernel-janitors+bounces-768-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-770-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A8B818B4F
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Dec 2023 16:36:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED24818B63
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Dec 2023 16:40:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB9231F22683
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Dec 2023 15:36:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75B261C246FF
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Dec 2023 15:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA791CA92;
-	Tue, 19 Dec 2023 15:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE361CF95;
+	Tue, 19 Dec 2023 15:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="NdSHAllz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RhiD+jZ"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C48C1CA82;
-	Tue, 19 Dec 2023 15:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-	t=1703000172; x=1703604972; i=markus.elfring@web.de;
-	bh=behxKfyGna2w4fIuLyZUlD9UgVji5Pzaqh7fdVWijjk=;
-	h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:
-	 In-Reply-To;
-	b=NdSHAllz2ytmZIT0QQCD69MNm4qSxBOrxg96wlionm7kXZr/joZYDH7INPo3N3+g
-	 KoXYVYaKuknbstv0fU3v+mfBgQIbyEDDW8swCkjMzoWeb48bJ7eAcDyYH8hujKMD/
-	 4KHfJM37clRxBi0tVFEGCOe0B4R6aGOLKMVddak03dqlFH8yRJVZ2s6Yf6iI3Ragn
-	 iff1isB3nGfvsMf8+j8e4xnPaaZC8Haeb0L84L/w6b6UJ9kRE8eSMoXacv/qcPlrK
-	 ZUXxrZf3JaCyIpFJOrE3w5ux5K6GVOvFceRD53KmS4agGP/BMz+ZFWiWwLbAvS7hj
-	 Zuwpyown8cwj76WQlw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MGxQX-1rT2XA40kl-00EGMH; Tue, 19
- Dec 2023 16:36:12 +0100
-Message-ID: <526df884-8d9f-4fe1-8a32-c98dfff261d7@web.de>
-Date: Tue, 19 Dec 2023 16:36:11 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD161F605;
+	Tue, 19 Dec 2023 15:40:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24CDC433C9;
+	Tue, 19 Dec 2023 15:40:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1703000407;
+	bh=grP01wEzHEY+P/AJ9wJUOp8gbbINY7i13UDZOkqesUY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=1RhiD+jZRugrX9VCLGwWP8amkkRhLqBy5p2OYJNc+dAQ44uB7tKDmQufzjF6jcRxw
+	 YpK3vfXV472R8IprTBexPp2dj6B6pyU/TavFBsobw+skbZGziCu9nEs5br+Aix6ob/
+	 tAIOOFyBvt5aJKh+ctQ9h9bVwguELn9Zl7Azh/NU=
+Date: Tue, 19 Dec 2023 16:40:04 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: kernel-janitors@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>, cocci@inria.fr
+Subject: Re: [PATCH 2/3] kobject: Improve a size determination in
+ kobject_uevent_env()
+Message-ID: <2023121946-immovable-striving-e2c7@gregkh>
+References: <e0543d9d-a02a-4c9c-b341-36771cfb5353@web.de>
+ <f007f92c-a355-4bb9-a715-aa42ee6c647b@web.de>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH 3/3] kobject: Delete an unnecessary variable initialisation in
- kobject_uevent_env()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-To: kernel-janitors@vger.kernel.org, Andrew Morton
- <akpm@linux-foundation.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, cocci@inria.fr
-References: <e0543d9d-a02a-4c9c-b341-36771cfb5353@web.de>
-In-Reply-To: <e0543d9d-a02a-4c9c-b341-36771cfb5353@web.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Ty9JQzMTJdBwRgq27eu4X1MYwBgEoqbzGhLFiC0uyypy8ISyY/3
- 04ttYsnYF4svdZvfzX2e0Q5LP9xnbZXCwWwLPotK0G3FSPKrDvSggC3MSn7WHsRqklFB8u8
- Y/zvYhANVJwd/l7F38NBblZ6qZZHqwg+tm+flOv8n6ggTQHf/+98Jhh3Uyg15wdIWKJAzUW
- rYw7t/s52WNc20JKw5meg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:bn4Ds0KTrg4=;i9ZeJm85eydOOEPORA+V0LPdHbM
- 5dd4Z4bvbJMQeTztCMzJ5ZOE074edtSA8hze0krNwEGRBPzr+n7FGg/Tsth9nxgoKU8MsGE14
- J5nDsA2n3dfOiqBE1I7KRw2+fwFlw/xcL9gIW/k++bHjNgZyOFA0RdXirtX997AEnkhAjFeYd
- SXwLcOEPBp6sNLWCpSQCIlFluLBFxOizeDNFCfFeWIKtZwtr4b6WjeQZHnusPsfMDN4J93C1T
- hPznwNJMqkBuXELcjpDLAnvWgd7tnnw3KMRKrkRxwKrjszWHVSokaUSiHqQJjCVUvgQcSOjmi
- bAjZV81AHAvg00HRxZQ3GsyV1FUd6xJVvaT947/UhMeW9lTEC+n2pi+0Fg1XCoesBWupmbv+c
- ufUM+YcVv/BaV33Vqd/4pHBwgIDzy+Sf6Vc7yap6TxhB6Lt1Pi28U1NSXDpyLtO+wWCfh5uko
- is+/2jLi3fD+V22WB7Cy+Dg1UARlflZSBrHjKBjJjmCTstjPKg2TcgH7Y+jtCNj1l4B6s/GKA
- LpJTVQC0ArOQjl1knDByBuFa6x1/Tw1ui5/gYQfPQXqCvIhYtbL34gHF8Bih8NasXSm3oRtph
- k23pSlBWO8lte3tTJsUXc0VM+EjjWeQf8BxSxuHqf+UDxEanFGJyHWOcVvExZv+yF450YHJL7
- B3b/BhVmj/UTqzC2S02Wh5zciuL96MDNyfgldgzZODcKKWugIZyBXjL3b3XIY9QvuXLh2zmWy
- 2mHBlMLN9oXP33u0GK62z1SvHEpKOeI9naEUVZ2WDoQD0NS9VzCxEhAZKtrwQiz6sSqZl4Yhy
- g5hFxtKusafBRxL9/Vn50YH0AEhWBRHTpcCtzLzXHqly5+4Gx7XAu/A8vNpfsJeRBgqShlNm4
- r354EUyMvxkjZik6xZzKjBTJea6EEtimOVJYI3rNuCAiS3wIGYp7BA3ZSZObWDhOfHfd14MLI
- +aTfAw==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f007f92c-a355-4bb9-a715-aa42ee6c647b@web.de>
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 19 Dec 2023 16:03:39 +0100
+On Tue, Dec 19, 2023 at 04:34:19PM +0100, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Tue, 19 Dec 2023 16:00:22 +0100
+> 
+> Replace the specification of a data structure by a pointer dereference
+> as the parameter for the operator "sizeof" to make the corresponding size
+> determination a bit safer according to the Linux coding style convention.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-The local variable =E2=80=9Cdevpath=E2=80=9D will eventually be set to an =
-appropriate
-pointer a bit later.
-Thus omit the explicit initialisation at the beginning.
+Sorry, but for obvious reasons, I'm still not taking patches from you.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- lib/kobject_uevent.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+best of luck,
 
-diff --git a/lib/kobject_uevent.c b/lib/kobject_uevent.c
-index a9b1bc02f65c..1b7b42dc160c 100644
-=2D-- a/lib/kobject_uevent.c
-+++ b/lib/kobject_uevent.c
-@@ -459,7 +459,7 @@ int kobject_uevent_env(struct kobject *kobj, enum kobj=
-ect_action action,
- {
- 	struct kobj_uevent_env *env;
- 	const char *action_string =3D kobject_actions[action];
--	const char *devpath =3D NULL;
-+	const char *devpath;
- 	const char *subsystem;
- 	struct kobject *top_kobj;
- 	struct kset *kset;
-=2D-
-2.43.0
-
+greg k-h
 

@@ -1,66 +1,43 @@
-Return-Path: <kernel-janitors+bounces-739-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-748-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88EC581819A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Dec 2023 07:37:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8A88181D8
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Dec 2023 08:01:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23CE51F24080
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Dec 2023 06:37:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32413B24FAE
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Dec 2023 07:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3EE5849C;
-	Tue, 19 Dec 2023 06:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="YirwQ/ie"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A678016407;
+	Tue, 19 Dec 2023 06:58:14 +0000 (UTC)
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3BDC12F;
-	Tue, 19 Dec 2023 06:36:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BJ0KpYQ024067;
-	Tue, 19 Dec 2023 06:36:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding;
- s=corp-2023-11-20; bh=kNbP2WlWBMrLu1QgfSgeqIA5z2OMYRWHwqSpmbR+bdg=;
- b=YirwQ/ie7u9Cxw08FpLPGFW44zPI5efwqp623twqguPDS+RxGNkx00z0zU8v+jfmd/4I
- qpS1IWWPtImBOKN6y8RRkH21cDePs/yqBVaopccA0qn18JaqROFAS3oaxzgpsT6uxSys
- EdQHPAGrZnw7BxTJUBlndg86CRoDjTudg/zQELYj6k9nSJD5DOcWhv3cYq/P7/6b7osw
- qj+Mz94ouDq0y70wPp3j2chKklL6F9Y9LCBUkcStgVp5wmfcLjPEtFiaAy8olnsfxGsU
- Kr0qsKWwvxBcVdOS0+0lBerqNO4luz+ahT1NhdmfiI8YnCE8aLVXaXjwf7eJiI1J4KIs wg== 
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3v13sb50aa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 19 Dec 2023 06:36:43 +0000
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 3BJ5k2pJ028994;
-	Tue, 19 Dec 2023 06:36:43 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3v12b67x79-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 19 Dec 2023 06:36:43 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BJ6agEv022292;
-	Tue, 19 Dec 2023 06:36:42 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3v12b67x6q-1;
-	Tue, 19 Dec 2023 06:36:42 +0000
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-        Lee Jones <lee@kernel.org>, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc: dan.carpenter@linaro.org, kernel-janitors@vger.kernel.org,
-        error27@gmail.com, kernel test robot <lkp@intel.com>
-Subject: [PATCH] usb: yurex: Fix inconsistent locking bug in yurex_read()
-Date: Mon, 18 Dec 2023 22:36:35 -0800
-Message-ID: <20231219063639.450994-1-harshit.m.mogalapalli@oracle.com>
-X-Mailer: git-send-email 2.42.0
+Received: from mail.nfschina.com (unknown [42.101.60.195])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 6463812B80;
+	Tue, 19 Dec 2023 06:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
+Received: from localhost.localdomain (unknown [180.167.10.98])
+	by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPSA id 3FA5260F0D2BB;
+	Tue, 19 Dec 2023 14:57:51 +0800 (CST)
+X-MD-Sfrom: suhui@nfschina.com
+X-MD-SrcIP: 180.167.10.98
+From: Su Hui <suhui@nfschina.com>
+To: pkshih@realtek.com,
+	kvalo@kernel.org
+Cc: Su Hui <suhui@nfschina.com>,
+	Larry.Finger@lwfinger.net,
+	linville@tuxdriver.com,
+	george0505@realtek.com,
+	chaoming_li@realsil.com.cn,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH wireless-next 00/11] using calculate_bit_shift() to fix undefined bitwise shift behavior.
+Date: Tue, 19 Dec 2023 14:57:28 +0800
+Message-Id: <20231219065739.1895666-1-suhui@nfschina.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -68,44 +45,47 @@ List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-19_02,2023-12-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=915 adultscore=0
- malwarescore=0 phishscore=0 mlxscore=0 bulkscore=0 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2312190047
-X-Proofpoint-ORIG-GUID: eft87yRi825x-nhKuNnaynBwYrOUUb09
-X-Proofpoint-GUID: eft87yRi825x-nhKuNnaynBwYrOUUb09
 
-Unlock before returning on the error path.
+There is an undefined bitwise shift behavior, when the right operand is
+greater than or equal to then width of the  promoted left operand.
+(eg: (u32)data << 32). Commit bc8263083af6("fix an undefined bitwise shift
+behavior") only fixed one problem, there are many similar problems in 
+drivers/net/wireless/realtek/. 
 
-Fixes: 86b20af11e84 ("usb: yurex: Replace snprintf() with the safer scnprintf() variant")
-Reported-by: Dan Carpenter <error27@gmail.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202312170252.3udgrIcP-lkp@intel.com/
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
----
- drivers/usb/misc/yurex.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+This patchset adds a new function calculate_bit_shift() to fix the
+remaining undefined bitwise shift behavior problems.(Compile tested only)
 
-diff --git a/drivers/usb/misc/yurex.c b/drivers/usb/misc/yurex.c
-index 5a13cddace0e..9a0649d23693 100644
---- a/drivers/usb/misc/yurex.c
-+++ b/drivers/usb/misc/yurex.c
-@@ -414,8 +414,10 @@ static ssize_t yurex_read(struct file *file, char __user *buffer, size_t count,
- 		return -ENODEV;
- 	}
- 
--	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN))
-+	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN)) {
-+		mutex_unlock(&dev->io_mutex);
- 		return -EIO;
-+	}
- 
- 	spin_lock_irqsave(&dev->lock, flags);
- 	scnprintf(in_buffer, MAX_S64_STRLEN, "%lld\n", dev->bbu);
+Su Hui (11):
+  wifi: rtlwifi: add calculate_bit_shift()
+  wifi: rtlwifi: rtl8821ae: phy: using calculate_bit_shift()
+  wifi: rtlwifi: rtl8188ee: phy: using calculate_bit_shift()
+  wifi: rtlwifi: rtl8192c: using calculate_bit_shift()
+  wifi: rtlwifi: rtl8192cu: using calculate_bit_shift()
+  wifi: rtlwifi: rtl8192ce: using calculate_bit_shift()
+  wifi: rtlwifi: rtl8192de: using calculate_bit_shift()
+  wifi: rtlwifi: rtl8192ee: using calculate_bit_shift()
+  wifi: rtlwifi: rtl8192se: using calculate_bit_shift()
+  wifi: rtlwifi: rtl8723_common: using calculate_bit_shift()
+  wifi: rtlwifi: rtl8723{be,ae}: using calculate_bit_shift()
+
+ .../net/wireless/realtek/rtlwifi/rtl8188ee/phy.c | 14 ++++----------
+ .../realtek/rtlwifi/rtl8192c/phy_common.c        | 12 ++----------
+ .../realtek/rtlwifi/rtl8192c/phy_common.h        |  1 -
+ .../net/wireless/realtek/rtlwifi/rtl8192ce/phy.c |  6 +++---
+ .../net/wireless/realtek/rtlwifi/rtl8192ce/phy.h |  1 -
+ .../net/wireless/realtek/rtlwifi/rtl8192cu/phy.c |  6 +++---
+ .../net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 15 ++++-----------
+ .../net/wireless/realtek/rtlwifi/rtl8192ee/phy.c | 16 ++++------------
+ .../net/wireless/realtek/rtlwifi/rtl8192se/phy.c | 15 ++++-----------
+ .../net/wireless/realtek/rtlwifi/rtl8723ae/phy.c |  6 +++---
+ .../net/wireless/realtek/rtlwifi/rtl8723be/phy.c |  4 ++--
+ .../realtek/rtlwifi/rtl8723com/phy_common.c      | 12 ++----------
+ .../realtek/rtlwifi/rtl8723com/phy_common.h      |  1 -
+ .../net/wireless/realtek/rtlwifi/rtl8821ae/phy.c | 15 ++++-----------
+ drivers/net/wireless/realtek/rtlwifi/wifi.h      |  7 +++++++
+ 15 files changed, 42 insertions(+), 89 deletions(-)
+
 -- 
-2.42.0
+2.30.2
 
 

@@ -1,137 +1,97 @@
-Return-Path: <kernel-janitors+bounces-958-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-960-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84853820B7A
-	for <lists+kernel-janitors@lfdr.de>; Sun, 31 Dec 2023 15:08:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1471820BAF
+	for <lists+kernel-janitors@lfdr.de>; Sun, 31 Dec 2023 16:00:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A88921C20E6B
-	for <lists+kernel-janitors@lfdr.de>; Sun, 31 Dec 2023 14:08:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EE081C20B4D
+	for <lists+kernel-janitors@lfdr.de>; Sun, 31 Dec 2023 15:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B27568B;
-	Sun, 31 Dec 2023 14:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C025963A7;
+	Sun, 31 Dec 2023 15:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="I5Rsre8W"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="cwr6EcAq"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mout.web.de (mout.web.de [212.227.15.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4408C63A7;
-	Sun, 31 Dec 2023 14:08:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BV8QA1Z003121;
-	Sun, 31 Dec 2023 14:08:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=/uM23a1DykmVUSnyJhKoNd/pLzJUVQGzc8LClp1i+c4=;
- b=I5Rsre8WTcCRXkQ3neHKlQoHtyml0m9oQc25vVZI9ObgJHsywbXvaE6E31wPWK043gPp
- tYgdPzOs7p7iyJQnte+0HK/iDw+KKyt3KzKVDA4+5z6/OmzBqvl9gM9HTNbgJHmBUh/M
- VD+L96k8ZS0uGZIXnpkyPUDASlZV4Nzx59pczon3gzCR/hjDzxBWrwg7CyvNK7E5BOVa
- NIJT4Qexzg/Mk2Z2OjoKQV2ofPFzllXgvkT75EgL4mp4YPbSWhmRXhwwmhTxfSC1RTxX
- gmlsAI+XbJC+aVQ61R09On0KAbph77pKf++Oe7S2UHzS08W3LM1mu9fpoQogDjkwpBl4 3w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vak6f2ag3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 31 Dec 2023 14:08:05 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BVDxBEZ029654;
-	Sun, 31 Dec 2023 14:08:04 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vak6f2afn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 31 Dec 2023 14:08:04 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3BVDj9iA007335;
-	Sun, 31 Dec 2023 14:08:03 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vaxhnjpae-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 31 Dec 2023 14:08:03 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3BVE82vO17433138
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 31 Dec 2023 14:08:03 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 95F0758058;
-	Sun, 31 Dec 2023 14:08:02 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 545CA58057;
-	Sun, 31 Dec 2023 14:08:01 +0000 (GMT)
-Received: from lingrow.int.hansenpartnership.com (unknown [9.67.79.160])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 31 Dec 2023 14:08:01 +0000 (GMT)
-Message-ID: <775642a320f7dae53d70610f265056bcdfd8ab13.camel@linux.ibm.com>
-Subject: Re: scsi: ses: Move a label in ses_enclosure_data_process()
-From: James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To: Markus Elfring <Markus.Elfring@web.de>, linux-scsi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        "Martin K. Petersen"
-	 <martin.petersen@oracle.com>
-Cc: LKML <linux-kernel@vger.kernel.org>
-Date: Sun, 31 Dec 2023 09:07:59 -0500
-In-Reply-To: <38dfe7b6-6d8b-4056-9943-12197c80f4d7@web.de>
-References: <4616e325-e313-4078-9788-dd1e6e51b9e0@web.de>
-	 <9d24844f30604f969ac10da456801f594ce72f2d.camel@linux.ibm.com>
-	 <b65afa15-41e6-4d71-87bd-39fd688fa551@web.de>
-	 <a35c6128d4449fec00238c909e5f6f45ebf4bcba.camel@linux.ibm.com>
-	 <a3825ab2-8987-4b85-9db0-642035789c49@web.de>
-	 <4018ab9225ecaf18501e54114a94217a58a8a57f.camel@linux.ibm.com>
-	 <38dfe7b6-6d8b-4056-9943-12197c80f4d7@web.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6814C8F48;
+	Sun, 31 Dec 2023 15:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
+	t=1704034522; x=1704639322; i=markus.elfring@web.de;
+	bh=sPbGqZwafLmtEVIaH8Z0WnNMA+uOieKky2NsYhgEBh0=;
+	h=X-UI-Sender-Class:Date:To:From:Subject;
+	b=cwr6EcAqvvbLEgTJSCXhxgnhD6vJ3RUoLFFClVCYcn6vPZYrcD99r7om7I9JkfWp
+	 gMrG2w2qyZJgj9mnIGzlNFX/zWPzNc2T58oz7yXm9BeA7skKbGm+INo2UlleT3Ebc
+	 yk0ztsK32Ocgjc6lcjTM+6Zz8AEeozL6nKxULQuYjDf2DiWOB0s+YbF4JDmA2JCJv
+	 yjtmxv2HNpCrjhlHrfNxt2vbtHW3W2IU4oircNaQ8fyZy/izmol7usaEgvhLKMZRa
+	 7P5GXKBj8yW/XzJhGkFzts14YX23IKxWZin+9XAeOHQUINDsjCu8OAgcmiuXw3tyK
+	 WPb4pFaPtgZdMn9mBg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.90.95]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MECGX-1rTcPH3FjR-00A8yI; Sun, 31
+ Dec 2023 15:55:22 +0100
+Message-ID: <8ba404fd-7f41-44a9-9869-84f3af18fb46@web.de>
+Date: Sun, 31 Dec 2023 15:55:15 +0100
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: djWPtmrHUpMkdhmwwenP19MDP89Ifvn2
-X-Proofpoint-GUID: vFr7PqRaRso_YZKBlAOYJp00uqQ-d7az
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-31_07,2023-12-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=15 clxscore=1015 mlxscore=15
- priorityscore=1501 bulkscore=0 suspectscore=0 adultscore=0
- lowpriorityscore=0 impostorscore=0 phishscore=0 spamscore=15
- mlxlogscore=74 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311290000 definitions=main-2312310116
+User-Agent: Mozilla Thunderbird
+To: linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ "D. Wythe" <alibuda@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Jan Karcher <jaka@linux.ibm.com>,
+ Paolo Abeni <pabeni@redhat.com>, Tony Lu <tonylu@linux.alibaba.com>,
+ Wen Gu <guwen@linux.alibaba.com>, Wenjia Zhang <wenjia@linux.ibm.com>
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH 0/2] net/smc: Adjustments for two function implementations
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:fMt6aL0td+jOUlHgZcHRKvPvhNP4ynrk9DKe8/vJO8JS/KSguym
+ 6TSeU5vmD19bWtL9VmfNaKA1betfa4Bg58SwJWaDfdkpIcqGG7OxvH5IbzgY8bBs7fJbfK+
+ KJZymviWlFgRVJfnRRBJjnrXeSOgNF+3ue0/FkUpkgRJnG/OwsbIKk4fvIgFH/+zJ/iQl7b
+ bOuYR9PNRxaWB/ROPcN0Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:1PMvN/iqWjE=;s/6PrCzXY3EPFFVTSdcrWeBOscN
+ CuC69C1DSZwbuqkBSCPyQq3G6gWp1oB4BnJF07e19TKtVdqoUT7JgUQtmBrZXGNFs80CdGW+2
+ OBBVE/YYLzYlcagERj/5R/JsW8zaE+Z2rROHkfaLW7mX5aRx8VqiQO7GpSvqzp1+lnsQ37LG+
+ yTuApcsLyYeRxKUIfyGJtp19Od0bCyD+XnhhwamR5BlJif+r2mO/Dhd3GJh/afcfwpHPchuEs
+ 9Zw+6ug8qV1WcIJ5TVEM3Is0896mr7hv1yd6NDbqbXTXc6y5YH4PTKyqEIMNjS1AXHdXSWcbd
+ sh4ndH1DBdr55VCkgVpyREKtsakhLLRotCttmo4l9ZNM6rbAAqEyv3uCYu+yBAhNoQMaENifE
+ ostOhqHAWlRfoiISU9X5m7LvgBltcxpld220PDY9l8n9EJO3kSahE+RFnuv12eNoHWOLyOm/Q
+ Qq/ENtmvn4M+rxOf8bIo8LU73i2hSdpvFHUg5X8DNQqGvqlh9fVYDKYJ7i3oGHOGtIUY8UsVc
+ 6DZ5xE0nHZhcUNHW6FzP4LIlHigVCNcy6dv3zC2eqFGnxgZYVnsnrRpngTK1bASMeC3KPUz+f
+ hAipBB9+34c0sigPVbc++a1WRLhheVWVY4IjEgrPEubwzPK61+43g9oEL4TXDxA/2leojlEIS
+ wD5RRqG5PgmBUe1qouie9AQc5ZylADqosVIq9ykt1Q5DL8yCr2RhwKu2AOowzidPPAI07/+iZ
+ 1geYmKzVIFCccsxw8Od64qgW98LwLz4kDBHYhKtVdWP4N5AjTa/ErRlaHl+GXgOcsHN9Fc3ql
+ Q3wbLJcresGU1Zmb5nIBkWUkOBJFewr3zrDpUjp/oyEl73iHOPLCaDAMjP30XX8uEr3ywkSs3
+ 1q/wC/iPaS0G2uhVQEjLHjbXoC7U/hN/8khP/ZTwNz59j1Hw8bgt2mu7iZ2rtppi/Nc2cl6IM
+ gfn9ZXdJp2aj8XI8ctId8endSuU=
 
-On Sat, 2023-12-30 at 15:25 +0100, Markus Elfring wrote:
-> > > If you would dare to follow advice from goto chains in a strict
-> > > way, I imagine that you can tend to stress the attention for more
-> > > useful data processing a bit more than such a redundant function
-> > > call.
-> > 
-> > It's about maintainability and simplicity.  Eliminating kfree(NULL)
-> > doesn't simplify most code,
-> 
-> I find it easy to avoid such a call in the affected and concrete
-> function implementation.
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Sun, 31 Dec 2023 15:48:45 +0100
 
-I find it easy to fall down stairs nowadays; that doesn't make it a
-necessary or even desirable thing to do.
+A few update suggestions were taken into account
+from static source code analysis.
 
-> >                             it just makes the exit paths more
-> > complex
-> 
-> Where is undesirable software complexity here in the repositioning
-> of the label “simple_populate” before the statement “buf = NULL;”?
+Markus Elfring (2):
+  Return directly after a failed kzalloc() in smc_fill_gid_list()
+  Improve exception handling in smc_llc_cli_add_link_invite()
 
-We don't just apply patches because we can: code churn is inimical to
-software maintenance and backporting, so every patch has an application
-cost.  The value provided by any patch has to be greater than that
-cost. kfree(NULL) is an expected operation so there's little value in
-avoiding it and certainly not enough to overcome the patch application
-cost.
+ net/smc/af_smc.c  |  2 +-
+ net/smc/smc_llc.c | 15 +++++++--------
+ 2 files changed, 8 insertions(+), 9 deletions(-)
 
-James
+=2D-
+2.43.0
 
 

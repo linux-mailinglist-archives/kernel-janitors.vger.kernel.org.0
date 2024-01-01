@@ -1,63 +1,63 @@
-Return-Path: <kernel-janitors+bounces-988-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-990-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E278214F4
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jan 2024 19:14:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 529E2821511
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jan 2024 19:51:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A762280EB1
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jan 2024 18:14:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62F251C20A31
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jan 2024 18:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8499BCA6A;
-	Mon,  1 Jan 2024 18:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEABAD52F;
+	Mon,  1 Jan 2024 18:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="sHQxvYRD"
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="JtyWj12N"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD92DC8F4
-	for <kernel-janitors@vger.kernel.org>; Mon,  1 Jan 2024 18:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BFDDDA2
+	for <kernel-janitors@vger.kernel.org>; Mon,  1 Jan 2024 18:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3bbb4806f67so4806736b6e.3
-        for <kernel-janitors@vger.kernel.org>; Mon, 01 Jan 2024 10:14:44 -0800 (PST)
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-5955bc798a2so1027571eaf.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 01 Jan 2024 10:50:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1704132884; x=1704737684; darn=vger.kernel.org;
+        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1704135059; x=1704739859; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6RbKb+Ssey02t/EjSEFx36sx2rnp4+NFSDQiVDQTJ2g=;
-        b=sHQxvYRDfUWt2PQTe1Ex3obVPKvfT3N7G6cFZNgR/JpeF+aYtCNe4kJuyya8LbtlaV
-         pgTwiCDQkmRrqlp4wqIH1wYc79EGWz/v/w2am5bgtPw+0dF+dNw2dp+pJ7uAvxCo/YKM
-         opUGcPkwpY1pBmr79au0b9GdqeStDOKJIqe+vN/DC9OhrCgqMYfAw60kOub+WGzIC2nh
-         xBIpKGWpcJezGypuLv2uAzAsLcI76C3t0iMeA3IJEOzBlUjJf6fDNmAXa61Jc7yZDg8h
-         F3POfoyf3/8GWQYBRU57rObfkOl0+B7+GW6p6ubMwR5QMuzqfV5Xc89fmNVhgincNCLb
-         2UHA==
+        bh=FbYCUJFY53U9gRpJbfuC37YC1Mxo6+GgjWkmqV3oS5M=;
+        b=JtyWj12N+0uOPsOTDncS3AsJcWw79Dk46Mc+oAlekj4VSlY94vkpE3A1nFt+pZt7lq
+         89iFqLGJnjRB+zFiUZ3yw3Anwz6FqluE/NZRML7cHx8/xEsEYBwONot0qIcVzanE+uAV
+         eV3g4FUvpvshgusUXuR7EL/PaFd/7vodLsLJA7G/Fq4sFaIT47CAbRkdfiUin+htPBOj
+         ApD/jNdoRWaSLQbbHNDrHyZl7Z8nfEl0uFPP+favVx8VCG85q/TZupWTa3rqAb8aNKcW
+         SwsUpf0YVQm5uWKZpitqUggoDskaGSKEeumFtSzNf/9cF5hdbGXojO3XjWh7zjUaAb3+
+         wXZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704132884; x=1704737684;
+        d=1e100.net; s=20230601; t=1704135059; x=1704739859;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6RbKb+Ssey02t/EjSEFx36sx2rnp4+NFSDQiVDQTJ2g=;
-        b=K9CbuQ0TxS9K9gubRUn3d4+lw6/FsugcTSbe5q7GDzYWUabqoqzw8teF9gqJYLk+gQ
-         4YsPJfn8ezw9xd3lyPsZC60j2DJ6tS4jsL/2FBgOlawQW/Z50mkhmiZWYubgJHW6q4IP
-         pxoJO0wqWsPRTeHr+MXHldOOPFZ+hwIDSH+LiOKJ5JIaUuPaw5hPW9Jw+ZQUYHVGov47
-         PuonhM1cczd8SFTaD20efp2HWWntPLFkISjbazEMHimEHFN7CBG+2fJYKI01wWeYV5cT
-         4WBCdbezb1vtbnXW0uWAgqEWYkms3L3T2zn9n5owRBXT63lpHPUTodOrE9/Xo+FEbPo0
-         BC4Q==
-X-Gm-Message-State: AOJu0YyPY2MWEHROKxYJXMmj8RVNRjY+gcBYnypkZX1ggyJ8dSnkfAIP
-	RfFQKoul+jbjQimczWc1FJyit/k6jm0REA==
-X-Google-Smtp-Source: AGHT+IFGe/SVgUx8wqoEmP9kgAuUxnfl6a77Ua3dKecNfiDTHuUXFt0Eo0igJA3P8vcpyL+g3J40hQ==
-X-Received: by 2002:a05:6808:23d2:b0:3bb:c394:fd52 with SMTP id bq18-20020a05680823d200b003bbc394fd52mr11468601oib.105.1704132883889;
-        Mon, 01 Jan 2024 10:14:43 -0800 (PST)
+        bh=FbYCUJFY53U9gRpJbfuC37YC1Mxo6+GgjWkmqV3oS5M=;
+        b=L8VwnrLXirNqT4mMZOtszrb6Wttrfpoe6KrPuRhZw7A4mfS5muBqNxnii08Rel2BHs
+         pR5zGdKFDZOlTMg9SxcSRztkkJCKCeNIglb5RK4kCJI6NefL9NVTftzhBNCLBNb3if++
+         FfI9kqPFSiuURczJ+6i12Z8WdMLyX9M0t6zpZEgkWdhyeRHcuxpRLZi+5nNFrW9gbFio
+         FToGNjSbspPNPTbHhXrjllz3RVKasU/R9PTxPkUxZcMS8Qvqe9sw9/1ZyYjQMc6ieE9h
+         oED/WXjjKmezMPpQqkQo2grfCZiZUwXOVMR7r9qBfBAjAqnT8D208tEueg0TLry9FOyV
+         Nr8Q==
+X-Gm-Message-State: AOJu0YxoSz7I1S/SDU8bYrwKsp7p82GIwZu76wFIg3EhOg/X+jdhf3aC
+	tuk9DuCm7H9P/vXVcpQ1Hd6yJdbLzUlCCw==
+X-Google-Smtp-Source: AGHT+IGDMm+FVjTXA72pnuAwLWup8Jaz/FJ4gAq6/Vwi5wJKsbICW/ENAk0MDLKGDqiUWKyDNw0CGQ==
+X-Received: by 2002:a05:6808:3c4d:b0:3bb:cdd5:17c4 with SMTP id gl13-20020a0568083c4d00b003bbcdd517c4mr13254821oib.83.1704135059018;
+        Mon, 01 Jan 2024 10:50:59 -0800 (PST)
 Received: from hermes.local (204-195-123-141.wavecable.com. [204.195.123.141])
-        by smtp.gmail.com with ESMTPSA id a23-20020a62bd17000000b006da19433468sm7706526pff.61.2024.01.01.10.14.43
+        by smtp.gmail.com with ESMTPSA id gu5-20020a056a004e4500b006d96662ef22sm14799175pfb.16.2024.01.01.10.50.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jan 2024 10:14:43 -0800 (PST)
-Date: Mon, 1 Jan 2024 10:14:41 -0800
+        Mon, 01 Jan 2024 10:50:58 -0800 (PST)
+Date: Mon, 1 Jan 2024 10:18:51 -0800
 From: Stephen Hemminger <stephen@networkplumber.org>
 To: Markus Elfring <Markus.Elfring@web.de>
 Cc: netdev@vger.kernel.org, kernel-janitors@vger.kernel.org, Anjali Kulkarni
@@ -65,12 +65,12 @@ Cc: netdev@vger.kernel.org, kernel-janitors@vger.kernel.org, Anjali Kulkarni
  Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
  Kuniyuki Iwashima <kuniyu@amazon.com>, Paolo Abeni <pabeni@redhat.com>,
  Simon Horman <horms@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/4] netlink: Move an assignment for the variable
- =?UTF-8?B?4oCcc2vigJ0=?= in __netlink_kernel_create()
-Message-ID: <20240101101441.2af52a45@hermes.local>
-In-Reply-To: <223a61e9-f826-4f37-b514-ca6ed53b1269@web.de>
+Subject: Re: [PATCH 4/4] netlink: Move an assignment for the variable
+ =?UTF-8?B?4oCcY2JfbXV0ZXjigJ0=?= in __netlink_kernel_create()
+Message-ID: <20240101101851.10c640ef@hermes.local>
+In-Reply-To: <d250255b-fd88-4ea9-aa08-bc8d911143af@web.de>
 References: <90679f69-951c-47b3-b86f-75fd9fde3da3@web.de>
-	<223a61e9-f826-4f37-b514-ca6ed53b1269@web.de>
+	<d250255b-fd88-4ea9-aa08-bc8d911143af@web.de>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -80,19 +80,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, 31 Dec 2023 18:44:13 +0100
+On Sun, 31 Dec 2023 18:48:11 +0100
 Markus Elfring <Markus.Elfring@web.de> wrote:
 
 > From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Sun, 31 Dec 2023 17:36:50 +0100
+> Date: Sun, 31 Dec 2023 18:16:26 +0100
 >=20
-> Move one assignment for the variable =E2=80=9Csk=E2=80=9D closer to the p=
-lace
+> Move one assignment for the variable =E2=80=9Ccb_mutex=E2=80=9D closer to=
+ the place
 > where this pointer is used.
 >=20
 > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
 NAK
-Useless churn of source code.
-If compiler will do this kind of optimization itself.
+Useless code churn, no improvement in performance or readablilty.
+Compiler optimizer will do this already if it wants.
 

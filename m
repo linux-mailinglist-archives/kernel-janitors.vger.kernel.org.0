@@ -1,99 +1,149 @@
-Return-Path: <kernel-janitors+bounces-1015-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-1017-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6238C821A55
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jan 2024 11:48:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ACB6821AE7
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jan 2024 12:28:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 896121C21DDE
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jan 2024 10:48:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C62EA283116
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jan 2024 11:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB62BDDB6;
-	Tue,  2 Jan 2024 10:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8889E572;
+	Tue,  2 Jan 2024 11:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="AKGWWcpN"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="Ma1AcYdF"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B9CDDA8;
-	Tue,  2 Jan 2024 10:47:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-	t=1704192459; x=1704797259; i=markus.elfring@web.de;
-	bh=7lTu++jE80Y5lovMDkufPLLBPIN7e6g+jmCCUacF2ck=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
-	 In-Reply-To;
-	b=AKGWWcpNiDEpb0arZ5Nal3G8mmlaaX3bo9gtdFy6OW3hzdrQuMDEOKrxYKXIBmrd
-	 TGXyO8WkWsyPTZyJs0d0+/o2/nTjvCY+fQjZ3YUeDE3uTpbv0yhwOZ85kl/oTHM86
-	 UDhvX2nKRYT4reA8JWdS9u0xzQAF9pdYlhFs9HItK8M7KDIzTlmZ7HAkxwRu7J6l6
-	 IRbyk/95VXrN85nBMkaPSLtOKrZIbpmzwcnkZUEsCahUVMdVhZpblbdsiRp/uYL4w
-	 foHsjSBU5GidQBfbgyvg2mKJhmLM12br5zycW6lEtIE9k+3yeWlGkE5oZmDY+KLj4
-	 VMoStzynGEgjp50w0Q==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.91.95]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1Md6tr-1qkSPQ07MJ-00Zljr; Tue, 02
- Jan 2024 11:47:39 +0100
-Message-ID: <9b27d89d-c410-4898-b801-00d2a00fb693@web.de>
-Date: Tue, 2 Jan 2024 11:47:38 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B39DF6A;
+	Tue,  2 Jan 2024 11:28:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1704194540;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IKJCpy+cXuzjprgjg+Of6HIRqe2chRqAQCoAEdEUmLc=;
+	b=Ma1AcYdF6RGml4NMC2wYnGW8Vy7bjxkIzK37EUrf2SOtuanqn/FetHnrbA82SaaooQe92G
+	Mhnjmwbsq85AfOHyz7iQ0XHuHmEeytkzWWUp4MladgBss0XUVBDLqt6+JL42CIWfs/dW8/
+	/64eblXjavruLl8t+a/CvRTjviKw6ao=
+From: Sven Eckelmann <sven@narfation.org>
+To: b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, Antonio Quartulli <a@unstable.cc>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Marek Lindner <mareklindner@neomailbox.ch>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Wunderlich <sw@simonwunderlich.de>,
+ Markus Elfring <Markus.Elfring@web.de>
+Cc: LKML <linux-kernel@vger.kernel.org>
+Subject:
+ Re: [PATCH 1/2] batman-adv: Return directly after a failed
+ batadv_dat_select_candidates() in batadv_dat_forward_data()
+Date: Tue, 02 Jan 2024 12:22:16 +0100
+Message-ID: <12355496.O9o76ZdvQC@sven-l14>
+In-Reply-To: <54dc53f8-5f08-4f1d-938a-c845c8ec0d44@web.de>
+References:
+ <8588cafe-3c61-40a6-b071-0877632a2a1e@web.de>
+ <54dc53f8-5f08-4f1d-938a-c845c8ec0d44@web.de>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [2/2] virtiofs: Improve error handling in virtio_fs_get_tree()
-Content-Language: en-GB
-To: Matthew Wilcox <willy@infradead.org>, virtualization@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Cc: Miklos Szeredi <miklos@szeredi.hu>, Stefan Hajnoczi
- <stefanha@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
- LKML <linux-kernel@vger.kernel.org>
-References: <c5c14b02-660a-46e1-9eb3-1a16d7c84922@web.de>
- <5745d81c-3c06-4871-9785-12a469870934@web.de>
- <ZY6Iir/idOZBiREy@casper.infradead.org>
- <54b353b6-949d-45a1-896d-bb5acb2ed4ed@web.de>
- <ZY7V+ywWV/iKs4Hn@casper.infradead.org>
- <691350ea-39e9-4031-a066-27d7064cd9d9@web.de>
- <ZZPisBFGvF/qp2eB@casper.infradead.org>
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <ZZPisBFGvF/qp2eB@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: multipart/signed; boundary="nextPart5744289.DvuYhMxLoT";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
+
+--nextPart5744289.DvuYhMxLoT
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:NQrjPEtu2sclqHgtnO1i2502o/Vpbe3+O2LyKYUhPOToDQSfBRU
- DI7rOJ28yLd4ISEiJ6VGRXezMOWtTYdlCfi3HKfG6pQurU9eHidjkB+YGEo/y7tuhxed0TK
- MAF3cmCrLZYeDdu8sMoqpeiHuINlr7Z1BtBN9gerO9LspTa045EJ4gsRJE973KOusC0izMn
- IDcGgK5pYDpGmLri1V2Ow==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:058r1Zkd6zE=;lsl9C7ejOmkA9cjgumy9I5v+6DC
- RSt/fHu53q4wobmXYl1Vk0Xj/ahyq2AmpyUp6n1WYP1wly5YCN8AeAzXFT70txPNHfCZGns13
- LYnRyKzroh9oxMHMcrQ5DbDxq3ei7atfbpa4n20DpqpH+C5G4YyXRgT9dVp3X3rLHti7jsjNY
- hBTsiBn5W9C1EZfYXVwqUB4v50UlsTcb9i9sNfk2alFWJzlZhuHssI81YOHkburO//smyYeOX
- vEkUuqmOAMPnooFQGJkQyVe+4QXckuIArX1t9TaZJ/nUNdofBT1FlzKn7aMG2NW9DTmwqIbSV
- KDSZs/l9iCRl7CxrrL0PWM079oGp+s861fPWJr0pQSRghz5/52+3OR/M/DL2QwseGdYAsdkSj
- vEHt0ZcMe7UrVNghavaM1SznURVQOCFh6olp1JBzjeoPEvmgOuskjvV6OqILZUI9aNenNTqks
- 6BEalOiQpLuK/8FnpruTmq4Q9ch2hjI7TYjLLGWpBMgRp71Hgqmo376AgJ7cxrcn1jRFwhRDN
- sBiy8vt18HsnYDF9OddtKQq7twPkVMwi/G5xVE3Ph0iLl4Xx/0sU13qbp0siwGqWsyL+3U+Ce
- LPrbMNt3Q2bt5K6oW/74uWTPwkBcNEiJM7ewOdBqNEOe3f2Q95iBjF2vpOYfRwswajPTjl8mH
- rovEqYQiasPlkUZ6jjjzCV5qkiB7MRgHPP8pWzTJMHc3a1P/SRR8AFZ9JhMtSUmWUukl1+U3w
- u9Cr1HpbZLU2F641+E4VYmbpxxnOxxJHAwcYw+uaaXVX/fwV790jjA6w2C04+H6ePwgckhZNq
- DA3sOkMbgVP0T4bTVgPVL37o+wHrkAIG+dKntNCbJBUNVghTWN4hnFihiGb6JFVjTmx1Rvr7J
- nfLavYLCGojkqZ4wr3ivvqBukyfdc3SDQsCbKA77gW6nGDZQ/wSOFjwL/haycAdppYYxYRp4Z
- Rt3kRg==
+Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+Cc: LKML <linux-kernel@vger.kernel.org>
+Date: Tue, 02 Jan 2024 12:22:16 +0100
+Message-ID: <12355496.O9o76ZdvQC@sven-l14>
+In-Reply-To: <54dc53f8-5f08-4f1d-938a-c845c8ec0d44@web.de>
+MIME-Version: 1.0
 
-> Do you consider more clarity in your argumentation?
+On Tuesday, 2 January 2024 08:11:47 CET Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Tue, 2 Jan 2024 07:27:45 +0100
+>=20
+> The kfree() function was called in one case by
+> the batadv_dat_forward_data() function during error handling
+> even if the passed variable contained a null pointer.
+> This issue was detected by using the Coccinelle software.
+>=20
+> * Thus return directly after a batadv_dat_select_candidates() call failed
+>   at the beginning.
+>=20
+> * Delete the label =E2=80=9Cout=E2=80=9D which became unnecessary with th=
+is refactoring.
+>=20
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-It is probably clear that the function call =E2=80=9Ckfree(NULL)=E2=80=9D =
-does not perform
-data processing which is really useful for the caller.
-Such a call is kept in some cases because programmers did not like to inve=
-st
-development resources for its avoidance.
+Acked-by: Sven Eckelmann <sven@narfation.org>
 
-Regards,
-Markus
+> ---
+>  net/batman-adv/distributed-arp-table.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>=20
+> diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/dist=
+ributed-arp-table.c
+> index 28a939d56090..4c7e85534324 100644
+> --- a/net/batman-adv/distributed-arp-table.c
+> +++ b/net/batman-adv/distributed-arp-table.c
+> @@ -684,7 +684,7 @@ static bool batadv_dat_forward_data(struct batadv_pri=
+v *bat_priv,
+>=20
+>  	cand =3D batadv_dat_select_candidates(bat_priv, ip, vid);
+>  	if (!cand)
+> -		goto out;
+> +		return ret;
+>=20
+>  	batadv_dbg(BATADV_DBG_DAT, bat_priv, "DHT_SEND for %pI4\n", &ip);
+>=20
+> @@ -728,7 +728,6 @@ static bool batadv_dat_forward_data(struct batadv_pri=
+v *bat_priv,
+>  		batadv_orig_node_put(cand[i].orig_node);
+>  	}
+>=20
+> -out:
+>  	kfree(cand);
+>  	return ret;
+>  }
+> --
+> 2.43.0
+>=20
+>=20
+
+
+--nextPart5744289.DvuYhMxLoT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmWT8ekACgkQXYcKB8Em
+e0Zezg/+P9PfejkVp+OoIyYjl/JOvoFqwplYaSBqhuTzvIVSx8fGZmzS0eBHploL
+kIPHLR9UoxD4ghhd0JX1Vu/e2bWMQUFJGmzX92xFcXxMrx/FJ3DfMRM9rPSkd/FX
+Z4QFQp5BkQuqWk1tICiOSP+GeGtiXY9UZnrYFEKmJG601RaziFMGXC8va/zmaBBD
+7+YTYyJwPxO5jF+KLIEMJjCT1b4+o9fneoGdwpoyvk0JyC9FbYbiOPeeB+37PczD
+X1YGGNnAmF8cPFU89J/8XXplraK8HAOaivzAsTDPnBOu4SP/spQKWefX/LgqkFWx
+5c0l02CzZapL6szJEk1ZbqTfXrRbDjnqFxxIV7HBbtnx6hkSbPvNcubB+B1k56AA
+l+2EY9gPnIUe/a5C11LUYc4zfNF5Z+k8ZgtrRiTiR+CstKtjBdiGytyRN4Lj/7ax
+YmhnVkAKY/Dr79Frc76jP+sGNnCzHna9AhHUyHBtHRdr6/vx8ggEPtylrxjsVll0
+VCZuKAM23pJ8fKdEiexVon9pX5UXq+nqIBc/iZvU0+i/QE8GK/DAd1lWVoDpFDvA
+25O42/MbEUefcd4VHksZdNLOqxKwyFJunUZmS5piyt7VO2RhRUQQVCeWDvETpZ+/
+oyV9q09FlZRIYbRioLqmv2jNV7WoUSw3DWOrh7GUe1vsWzYhzmM=
+=QSP4
+-----END PGP SIGNATURE-----
+
+--nextPart5744289.DvuYhMxLoT--
+
+
+
 

@@ -1,131 +1,146 @@
-Return-Path: <kernel-janitors+bounces-1182-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-1180-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E77B829BAA
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jan 2024 14:48:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76367829B92
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jan 2024 14:46:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8D251F24471
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jan 2024 13:48:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09B042838EA
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jan 2024 13:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445E14A99E;
-	Wed, 10 Jan 2024 13:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC72C48CE4;
+	Wed, 10 Jan 2024 13:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gdd15CDR"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599C04A987;
-	Wed, 10 Jan 2024 13:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-Received: from localhost ([80.140.206.200]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1Mr8SG-1qqzKS0cH0-00oBtt; Wed, 10 Jan 2024 14:34:22 +0100
-Date: Wed, 10 Jan 2024 14:34:19 +0100
-From: Christian Heusel <christian@heusel.eu>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Markus Elfring <Markus.Elfring@web.de>, 
-	linux-arm-kernel@lists.infradead.org, kernel-janitors@vger.kernel.org, 
-	LKML <linux-kernel@vger.kernel.org>, cocci@inria.fr
-Subject: Re: Re: [0/2] ARM: Adjustments for init_atags_procfs()
-Message-ID: <vltzbtbcuzrfgjoeg5oovdyoe34fnhte25uhb3gln56pzvmqzb@5u7u7cwgzzen>
-References: <6cbcf640-55e5-2f11-4a09-716fe681c0d2@web.de>
- <562a6f99-3f8e-9a77-e519-b668e24dced2@web.de>
- <b3c42397-c879-4381-aa96-c7887e81c068@web.de>
- <7dd19987-6590-4756-a929-1ff01503ad1c@web.de>
- <ZZ6MZl14bcIaCaQn@shell.armlinux.org.uk>
- <1c38e495-5c9c-4ff8-b453-93b882dd2c4c@web.de>
- <ZZ6R6KSQo9ph3ARZ@shell.armlinux.org.uk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F7B219E4;
+	Wed, 10 Jan 2024 13:45:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6810751e1fdso17086486d6.2;
+        Wed, 10 Jan 2024 05:45:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704894349; x=1705499149; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AImHcPePTa4X8irF6z53CgRBjh/qHTx0qzOkLCQqzVU=;
+        b=Gdd15CDRoXytZXjCFzJwg5A21g742RADmsDoCxlanm0mJTjTUA19a12hkZRRRiF/RE
+         pJ+dxHh0XhHb7bBH8VbxQ670RGU+WlAJjNmxJjGP6SNMDwcdVklbSv/8shg6xGraC02L
+         XQSmcKsbGv2upscvdYvV5NVRC9EQnCOq20r19tGUU6VhT27FvaHQVT1oKZZ+7YJFiaj7
+         wxbbWnR7xCWfYHi+vnlrkjMO+95MIPwrc1FJsqtLHHjwtgTDfb8G/3C8NG0D/BtKfT7w
+         kBoyVpVgQdLxG0JNcRHfccpexM5va0BAjNlSl8ZjG9YYUcQN7mH5l8xwtJjI1kcozG4t
+         VCFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704894349; x=1705499149;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AImHcPePTa4X8irF6z53CgRBjh/qHTx0qzOkLCQqzVU=;
+        b=FYnH2+bsN0+6XpzkdkJaKvuAgTvbfNPv3SuD2FK7DK19YE2XuiGHZR60p1zOnj6EDi
+         eKpEDA2fPxzOlI9azTKfgJzqwzaJoISjgBxw9PX7JvCZjjGxMrEEgZJFa7fOGBsW1mu5
+         iMHUofuAU1wuMMcFGhD28rES1Pem+IQb2LotR3EroFFs28wl0XsBahrBBJ/+jLx4o/LX
+         JEq9nqUk9CLb/j8CYhbAmNWHDM5/OZcS4dEqUIrtn6tnSMAlaEbOQVI5qbISVd7vb9iS
+         thXZnDUBabeGVG5dxIVFF+HH8OVfxNt3q/xapL+SQSsZ14sjjDCTJ8RG5NaoF2QlZ+57
+         kqYQ==
+X-Gm-Message-State: AOJu0YxsNv/5iwC3u1Z0Kuv934gM1Rj4XOEwbEc4gTr04RUslWJ7jANX
+	ivalLvtdXjWtW5Y6YwL6dS/7xf5WUN9BPN/5Pco=
+X-Google-Smtp-Source: AGHT+IGjdFnr3WO7Ou/kYw1Yeqr+1mPCRTsBWXEkaPVirpKeMhwEm5irTrAYABsPlDlg5gW0dJ3F48qseuduVGTNbB8=
+X-Received: by 2002:ad4:596f:0:b0:681:9cd:c96 with SMTP id eq15-20020ad4596f000000b0068109cd0c96mr1335715qvb.86.1704894348851;
+ Wed, 10 Jan 2024 05:45:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="5omxkbyuztlvommc"
-Content-Disposition: inline
-In-Reply-To: <ZZ6R6KSQo9ph3ARZ@shell.armlinux.org.uk>
-X-Provags-ID: V03:K1:742zGJqrsTcPdmXqkg5IqwvNg66u0oPuuKZ7EwzpxdRtA0kmo/O
- xV4QlMlgrEVflGmBPdhFlHJ1h90Uhm8SV3lXRYxkcFkrN1M+KYfSlJm6J6VW3gTbbIko/9p
- /zuscFVts6U8n4rkKOe6yA4jZGbZ8/2LCjVEUsC6QTanRqfjmuOOEcVbj4pqLbXYCWSQGvl
- RvpgSS1x28Ttf6e5kcvPA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:c0YYenV97Ok=;Po7rqHU4Q9YlYXi+PgjTKPwGXj2
- DX+It2d+/TnXFrXHCytyr+K6YNwrVTXpwZNClK9HkH7JFqL5dA1IBDsGMPlPC2UoghDiZPhpL
- t2QMYnuoV/F0Jet2HAlN6R+PO7fsrr0KlZ7xl2mfsladOT+drtZwMgGA5y5a6oAU5tYx69rj4
- ioiY1vZLgmk67MafWHNJp20Hx+rp13IQNnZd1Nko+MSLDclaPpsWVaSEkSMLMovrtyj51Oe6D
- tCENXRBe7198T0yh1AWj8kV7g8lBElfaynGOgbTuHB/T/fG0LMQq9s6K9jTge7ZZPsO4q0vMZ
- yV22R2DNYC7FlKkfCwyfftmDY/gYgaaotkhPVFCUJ7AwjfMfT/PPgM9wDCJqOP+vV5XTEeWYy
- xyBcqPj8HmBGgN/KXrMjK1smJFsIcZGADYg2E5pymc5o+QN7RmUAbY5SyWzHC3ezY8k7Bfhfg
- X0FLpI8Bk8hTlyfFNvg2WoiVRYCfAqtQk5imBbNp/tbPCA9eROSpGZWwCuBIH6PW3XAHBzyIN
- nXNWgXHOtq+Pp6b+Tw2aLTHCxJK5Wh4IAjgmm+Shw+9gDd7TA9EqGpTJfGIcHSxBUhfDt2s1W
- y6uVfVGC2o+ip+Z3NsjbxRkat6tc6u/IsGHwRn6E52Lqq4ZkVuyDlA5r3iKq5NDFpo0cR7hd0
- Q/B82tmvSe+lhJHhM9Fh681/K+MB5fHogTje9SNs3xvzT5FghZtiDapWf3c/gL10ha7EA50Cp
- dqj1usnUGu9FuodDqN74lqlGnqB1z7dB4mjmHoLxpEzrYOyPhoZf3JoqMy+7HQLZBylyWo6Mi
- tt5Akf9sZot70CNI9t7vOY8OY+Uu2nVir9VP1YrcBv3sm7sQ4d3awOi321FivkjRuxt4uHiXV
- 1xnUBOFkQloi/9w==
-
-
---5omxkbyuztlvommc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <6cbcf640-55e5-2f11-4a09-716fe681c0d2@web.de> <87b65f8e-abde-2aff-4da8-df6e0b464677@web.de>
+ <05d334af-1a0f-4498-b57d-36a783288f07@web.de> <CAOQ4uxiRaTQyT1nxeRD7B89=VuA+KKEqi01LL1kqfJ17-qKKpw@mail.gmail.com>
+ <d912872a-e70a-4e5d-aabe-26f289507f44@web.de> <CAOQ4uxjsuYy8BzgaHXaNa-S0+HZ_P-Fb1UEgOkbrdxQPz0Y6rQ@mail.gmail.com>
+ <1df4916d-421c-4c87-8503-5a36934d03d8@web.de>
+In-Reply-To: <1df4916d-421c-4c87-8503-5a36934d03d8@web.de>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Wed, 10 Jan 2024 15:45:37 +0200
+Message-ID: <CAOQ4uxgx8m5Q6+DyfVaZUyFhFu_TAyOWLdHHUJfgOOkTDYMuiA@mail.gmail.com>
+Subject: Re: [0/4] overlayfs: Adjustments for ovl_fill_super()
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: linux-unionfs@vger.kernel.org, kernel-janitors@vger.kernel.org, 
+	Miklos Szeredi <miklos@szeredi.hu>, cocci@inria.fr, LKML <linux-kernel@vger.kernel.org>, 
+	Christian Brauner <brauner@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 24/01/10 12:47PM, Russell King (Oracle) wrote:
-> On Wed, Jan 10, 2024 at 01:44:01PM +0100, Markus Elfring wrote:
-> > >>> Is this patch series still in review queues?
-> > >>
-> > >> See also:
-> > >> https://lore.kernel.org/cocci/562a6f99-3f8e-9a77-e519-b668e24dced2@w=
+On Wed, Jan 10, 2024 at 3:33=E2=80=AFPM Markus Elfring <Markus.Elfring@web.=
+de> wrote:
+>
+> >>>> See also:
+> >>>> https://lore.kernel.org/cocci/87b65f8e-abde-2aff-4da8-df6e0b464677@w=
 eb.de/
-> > >> https://sympa.inria.fr/sympa/arc/cocci/2023-03/msg00098.html
-> > >
-> > > I suspect no one looked at it, sorry.
-> >=20
-> > Special mailing list settings probably influenced this situation.
-> >=20
-> > >                                       I don't catch everything that is
-> > > on the mailing list. Looks fine to me but it needs to end up in the
-> > > patch system to be applied.
-> >=20
-> > Can you collaborate also with mentioned mailing list archive interfaces?
->=20
-> Err what? Sorry, I don't understand your comment.
+> >>>> https://sympa.inria.fr/sympa/arc/cocci/2023-03/msg00115.html
+> >>>
+> >>> I will queue cleanup patches 1-2,
+> >>
+> >> Thanks for this positive feedback.
+> >
+> > Sorry, these patches do not apply to master branch and patch 1
+> > is no longer correct in master branch and the new mount api changes.
+>
+> Do you want that I adapt the linked development ideas to the current situ=
+ation
+> a bit more?
+>
 
-I am just generally following along here, but to give some context it
-seems like Markus is banned from posting to various kernel mailing
-lists[0][1][2].
+No thanks.
+Patch 1 just doesn't work for the new mount api.
 
-Cheers,
-Chris
+>
+> >>>                                   but I do not like patches 3/4 and 4=
+/4.
+> >>> I do not think that they make the code better to read or maintain.
+> >>
+> >> I would appreciate if the details for such change reluctance can be cl=
+arified better.
+> >
+> > patch 3:
+> > I much rather a single error handling label that takes care of
+> > all the cleanups - it is harder to make mistakes and jump to
+> > the wrong label when adding new error conditions.
+>
+> There are different coding style preferences involved.
+>
+> See also:
+> https://wiki.sei.cmu.edu/confluence/display/c/MEM12-C.+Consider+using+a+g=
+oto+chain+when+leaving+a+function+on+error+when+using+and+releasing+resourc=
+es
+>
 
-[0]: https://lkml.org/lkml/2023/6/19/38
-[1]: https://lore.kernel.org/lkml/CAHC9VhREfdgiCji=3DuEeCrc4w1kPGfnWGKnJuUY=
-KXwTApdneSjQ@mail.gmail.com/T/#m1a55ecc3205045fe63ab0f12451705df911d31a0
-[2]: https://lore.kernel.org/all/20200629081039.GA1221843@kroah.com/
+As long as coding styles are not mandatory
+I prefer what we have right now.
 
---5omxkbyuztlvommc
-Content-Type: application/pgp-signature; name="signature.asc"
+>
+> > patch 4:
+> > Overlayfs uses this coding style all over the place
+> >
+> >   err =3D -ENOMEM;
+> >   ofs->creator_cred =3D cred =3D prepare_creds();
+> >   if (!cred)
+> >       goto out_free_ofs;
+> >
+> > I don't see the benefit in making err =3D -ENOMEM conditional.
+> > I don't see the style after your patch as clearly better than before.
+>
+> Can it be nicer to set error codes only in exceptional data processing si=
+tuations?
+>
 
------BEGIN PGP SIGNATURE-----
+It's a matter of taste.
+I'll stay with what we have.
 
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmWenNsACgkQwEfU8yi1
-JYV+IRAAqZtbPL/0aDr8ZwGVzBNCdqRCpqhLKHVKyD/NWSlxf+qKZrcY2KsFpU2M
-Ino+YfJaDWdztG9kAgrR3Vp+XZ5W2739lQE6x+aXcqbbi/aY9f780Yg0Ne5HOWMI
-dXFxS08wOkqjBYVJjwgyF7QKO7Wv0REDd/Zo8Wm+YblnOaI0AX/HgrrAZUPuUCjV
-XGPfHOt5KH3gDVo499SomDlke1gFdL65P2zFjxUNjAvOtHxJT3OBGRSV5lCwEqK7
-akFzh02n2zZM14v4H7WOqShsnTPTr1eUa0z2LV7P43xlMzWkB2MvfwFCbOQm0UGI
-DmG9Lpc3jdrgBt/rUgvATwbI2iTV4BgT+JxPhYtnXlps0tOs4S+iPMLYQi1xtZxY
-m6ZGbQbWl+cNtpOPgUYiF3gCt0e4Fz6eMEWwUtcFWTVjL98vvH3HWXZVtcMj0Dff
-KY2d6FTqe5eLCDNH7XmAtGUXJjH08QTrcbHZjqNTqp5t7pnpal9bxHG0dOl7ohTm
-r73AgAIr3noT0QYujzHT3ddv+1d7wl5zDtXsO0fi+v8iQ3N8CewtK5fCblcppkoi
-Aauh5otlMsgmWSPhFHkML3ZedsE4UlYVE0D5ZMMFKaZc0gyWnotEdeOXGU2KbwLm
-1oDS0k6LzcxZB7414DzhAoz6uHVX6VfJwPVlgZkV4rxbtz6azus=
-=Xpvc
------END PGP SIGNATURE-----
-
---5omxkbyuztlvommc--
+Thanks,
+Amir.
 

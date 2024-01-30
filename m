@@ -1,114 +1,87 @@
-Return-Path: <kernel-janitors+bounces-1505-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-1507-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A56DA84193A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jan 2024 03:29:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8959841DE9
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jan 2024 09:36:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2AA27B270F4
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jan 2024 02:29:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7440128E84F
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jan 2024 08:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA0E37710;
-	Tue, 30 Jan 2024 02:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4187C57866;
+	Tue, 30 Jan 2024 08:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="ArsF7OaA"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="QQ1m6SLd"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291ED364C6;
-	Tue, 30 Jan 2024 02:27:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358D856745;
+	Tue, 30 Jan 2024 08:36:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706581654; cv=none; b=aQB643JHEU4ztgSV9ZPaEO5/bMf2rAJCFL9iaKtUkrc8Cz3PE+qcKFQBTWZjmDO0f6jcc8utEL7EfBWLxGfWaeS0iyCHIyhvZsvXP4H02viKNZ7GHPldL7DvhlCMRmlFZ4A7Rszlr7xLX/ts6T2JzX4OuZ//T9ePJE4yRt1LMcU=
+	t=1706603778; cv=none; b=ahF3XF43pVE4L9UQIOEvihgzAUtHuyRBZgBkUIUeV2Rhu+cn2U0vy96sEw2jtMdslRjiypJCzBBE/hw+Hd/xpbJZEU7fZ8gOpwKmBRBtF637kW/+FGMW8GbzqQSR/1IZ678ZRWAnSubqaViuYvWNHHcPrVGqKGqn8HP+DgylF1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706581654; c=relaxed/simple;
-	bh=JcosPY/MUcmuEKAv8uCYUQulu9wUKKVPAVVT2p9eLHo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l0RKFLEtjxn8iwy1lIQCrN04tpoZvHjDdXyI1uXiqJMRECR4hIra5P7RI4oNajglB4WvghmOILXZi4dQm+5UuFW2BYOwd0S9Fdn+xv20wwL7jX0nffl2QdX0HRhGUIhEr46PNqdt0Bmx2SNl03g6bBuf6TlIq1NatkxQ1vftsIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=ArsF7OaA; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40TJiSDN007797;
-	Tue, 30 Jan 2024 02:27:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2023-11-20;
- bh=Eoh+JshKWgOgkcuwwhLvB39S4d8nsOejXj2leZ5f3BQ=;
- b=ArsF7OaA3Ylo8U6xG7TyPyKYieEE3LsE5y+Pxv/KrMHLTOeuw/oL6myKncHwmfFpk84f
- dMJ85uplfkic62wzYFh0lAjfmuicludf5qGqY4zULAcukHBvXG+VmX7v4+z01GqLVf/T
- hqXTVw1V/+0mivqLlKgHwWAyX7ymzfLKy1dvzGTLEb4uFS+7U1ATlIOPjiLkYfGGuSD/
- cwJFFYAJGRNgnUwf1ZLPNgplKQGczMIufXhak77kH4c9F20n8SlSEcxu9blODZD35JAS
- S5mscV/BJb83cKpJqfvAYEj3jpfYxAsLautd8+ICIyYFzXcmtQsQHGNOCOBK/pbedb/w Qg== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vvtcuwft2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Jan 2024 02:27:30 +0000
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 40U2A4vB014552;
-	Tue, 30 Jan 2024 02:27:29 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3vvr96g50c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Jan 2024 02:27:29 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40U2RPxk040916;
-	Tue, 30 Jan 2024 02:27:29 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3vvr96g4y7-4;
-	Tue, 30 Jan 2024 02:27:28 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: Sathya Prakash <sathya.prakash@broadcom.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
-        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
-        Colin Ian King <colin.i.king@gmail.com>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] scsi: message: fusion: remove redundant pointer hd
-Date: Mon, 29 Jan 2024 21:27:00 -0500
-Message-ID: <170657812676.784857.7561703610497490336.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20240118122039.2541425-1-colin.i.king@gmail.com>
-References: <20240118122039.2541425-1-colin.i.king@gmail.com>
+	s=arc-20240116; t=1706603778; c=relaxed/simple;
+	bh=DPzX8bKF/2fviPf/M2liuaua/0lWQdiOsoNEF2zZ3Kw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tyvR1QSRvLkFccH49Zowt5iFuJDUXQ37xT7KQj9soJZ7j8nrJ6fG95OVI4CftJ2cRsgYMhtXZ3U/c//U4LQJY9A5MN2pgtHybnTNRlWwMlHVjtTtmo+B1CdbIwQtensIjoxoVIiqNmGtEmC7Y040xWtM2gaMhACnlrdfn0VItUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=QQ1m6SLd; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1706603775;
+	bh=DPzX8bKF/2fviPf/M2liuaua/0lWQdiOsoNEF2zZ3Kw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=QQ1m6SLdXWukRY/jHpuZaif7HrnumJY0OTOjXsU4HwmzLA3WaO7HtRytzJIcqztxu
+	 koxbBQ0E6kh7aVFy7PPw1ge3SKfXXR8VDKWego9QPPuQ2fKSDrCtjgPUUp1UcFG32C
+	 oA2Tockeh2++BG9SmsF/1MwNOPDLObfrl/qx9/CNaYnWDA49kvFxSU60zEqI9syhcy
+	 gGR2kQL0NT620VvFoARvoUNH0gZW87uTu1No8VUCAz5xcLq3uCFhAEMZpGZTxxqs5C
+	 kAIm8VFh1p+boVdOMCuLXq0SPgXsToceRwMLTKSLFhtfBkJhq68lGKf4d8ViFpqvuT
+	 JYnJaef/wSMug==
+Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 885273782076;
+	Tue, 30 Jan 2024 08:36:14 +0000 (UTC)
+Message-ID: <46c05b42-dfc5-439e-9dd2-9c115199ff5f@collabora.com>
+Date: Tue, 30 Jan 2024 09:36:14 +0100
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-29_15,2024-01-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 malwarescore=0
- suspectscore=0 phishscore=0 mlxscore=0 mlxlogscore=897 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401300015
-X-Proofpoint-ORIG-GUID: l8tkXpHexA3b_hau8E-YqD4e6sixnjqQ
-X-Proofpoint-GUID: l8tkXpHexA3b_hau8E-YqD4e6sixnjqQ
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] thermal/drivers/mediatek/lvts_thermal: Fix a memory leak
+ in an error handling path
+Content-Language: en-US
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
+ Lukasz Luba <lukasz.luba@arm.com>, Matthias Brugger
+ <matthias.bgg@gmail.com>, Balsam CHIHI <bchihi@baylibre.com>
+Cc: linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-pm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+References: <481d345233862d58c3c305855a93d0dbc2bbae7e.1706431063.git.christophe.jaillet@wanadoo.fr>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <481d345233862d58c3c305855a93d0dbc2bbae7e.1706431063.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, 18 Jan 2024 12:20:39 +0000, Colin Ian King wrote:
-
-> The pointer hd is being assigned a value that is not being
-> read later. The variable is redundant and can be removed.
+Il 28/01/24 09:38, Christophe JAILLET ha scritto:
+> If devm_krealloc() fails, then 'efuse' is leaking.
+> So free it to avoid a leak.
 > 
-> Cleans up clang scan build warning:
-> warning: Although the value stored to 'hd' is used in the enclosing
-> expression, the value is never actually read from 'hd'
-> [deadcode.DeadStores]
-> 
-> [...]
+> Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Applied to 6.9/scsi-queue, thanks!
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[1/1] scsi: message: fusion: remove redundant pointer hd
-      https://git.kernel.org/mkp/scsi/c/be7fc734b658
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
 

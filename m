@@ -1,117 +1,168 @@
-Return-Path: <kernel-janitors+bounces-1619-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-1621-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F306884B347
-	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Feb 2024 12:19:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE88F84B38F
+	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Feb 2024 12:35:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF158282F08
-	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Feb 2024 11:19:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6D80B23E5B
+	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Feb 2024 11:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5908F12EBD2;
-	Tue,  6 Feb 2024 11:18:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Y9DR9RcL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A13131E4D;
+	Tue,  6 Feb 2024 11:30:07 +0000 (UTC)
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3289D58131
-	for <kernel-janitors@vger.kernel.org>; Tue,  6 Feb 2024 11:18:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE56D131E3A;
+	Tue,  6 Feb 2024 11:30:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707218332; cv=none; b=RZZoK/CeQ6whDAVDa0UX8Fu6D2AgKEuH4HMAeR+XIUuBitKDugN5kZKJ2NoD0r0JXj+UbMaWOoBX7NpYYJEcUB78y1isu/aySBDoOs35+c322DuO4Mf9IRntsuiTCZipbTGnr+f/XxCn+DIAM/feI6Pug6RZSb9lNn8XPoUGSNY=
+	t=1707219006; cv=none; b=S2oo2PhtPP1lQmJjKm5U6WwCUP9UnWcs3f9+jZVdJCgdo8wHTK4q4wgaT0yGTQ6hcR4+RiMTr6FFXdXso2v+qGaQIi2UDOsLTbwMsg1FGSgMSd+q2bexoEU6e3QU4q35iswwL5ut+Dvg4YyiQNourJxBjTQPu+vdw2BfuFZ/whg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707218332; c=relaxed/simple;
-	bh=RAUcQj04TyEXEDqfDrWDiMlYnTPZzSWd7J0PrXfQYhs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q6CNX4fERPl0/GEJ5v5sceI6hgzDeAWYMW0pYtdnduJpQKE0FINYZQ3k5uEbsWQoTi1hpuXEB8ZAtYDYH/xsKbxInaPgRsibyYg6iBGn3NXm8w2jfaDzxQwQ7CsjMCm7oWJ3pdrKeTdqdYF6Vc99wQesUO55pRnxLMpUjhmLHEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Y9DR9RcL; arc=none smtp.client-ip=209.85.219.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dbed0710c74so4715958276.1
-        for <kernel-janitors@vger.kernel.org>; Tue, 06 Feb 2024 03:18:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707218330; x=1707823130; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=e345+swzPUmQgd41l0m3kNKJ/xmdbW17sX8/bM58R7U=;
-        b=Y9DR9RcLqQquZMzl8oG+qCFOpkWKgKCZWiikR6jOKzHT0OmKaujpl377FvtPE42WhT
-         Gj2Nb0qHAUy4L/ovHudsCz1YiH4ECaZoQ059ROUZDbUNkA7u4bw4jjieiRoPhpiezaa2
-         cKEt8jdbQXgkIUpXgOoVnSMci9XxjMC49hwiJdmE5BQNpKemXLkOwdTRxJJZ0b26VjH5
-         12pXlumv80QUZ3owU4AzbtaUGrJbfACXG0f26o5Wdl/uE6STcYMxVTpJp0S/JKUiK9Dn
-         GiR1iOU5kGEGCbyzqKhPAphO8AJY29h4NSowg/FNXAJ+1IzgzOEOKA8tIJh+XLRwRS9C
-         +ZxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707218330; x=1707823130;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=e345+swzPUmQgd41l0m3kNKJ/xmdbW17sX8/bM58R7U=;
-        b=TUnA2hnW0X4lrtaaeDWLuRubYlhG8dxZqgpgc8dWFEFA/UAKvDd+8arRnKArdRDFob
-         gQZGeQcqFa+xwMQ4a/3bdBTuYrhFG5WxBkWuBG5zGKXFnJH/45lWnrBDOaizqPbsbGX/
-         1nxs9XLY8c5ndIiNlp9HVAF+Klddc5HzhmT3AB9ns/hsaYS2qMh5xvt3ygLTyydxwthm
-         WYW83zP4YNy15ZakMhJKOGmzIVPsfTEjXEhqvwGfNIW8c0nE9HWsjr+/Uvkuv1NsXfB1
-         WL2lDuK9g9lbpZTwz3fQLqANiY2PjZnWI0rpfMvo51TnYwN3vl+Q4yR8hmaIhlfyHBrr
-         DOHg==
-X-Gm-Message-State: AOJu0YzegXFiuIiW/5RHjN+fC7svyDtk/75vVWmcDFq1eppFWtF6ZS/M
-	9GsCmMKlJALM9xhrFCN3Xmi0Nw5cS+S9sDwr59eYF+5+6P16bVUTnOtdJbZ6Mmrz7ZPqbwLyXkd
-	SWAj/el/mmAoWe8IsglM4syjvmBxec2no/nB4qg==
-X-Google-Smtp-Source: AGHT+IH5fKEJpfHApHOplFSXWwd53luljuax/eSuatIgasfLKxsU+SyYcCYNNtHkP+jet8LCGSrmSvjmsvLU/HM9H40=
-X-Received: by 2002:a25:840c:0:b0:dc6:e8b3:9ffd with SMTP id
- u12-20020a25840c000000b00dc6e8b39ffdmr1292874ybk.53.1707218328670; Tue, 06
- Feb 2024 03:18:48 -0800 (PST)
+	s=arc-20240116; t=1707219006; c=relaxed/simple;
+	bh=G1Gw1a7eFKFw9dCcvKzz58oWfD/sTnzegnAB6UAnqxQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fdyV48tCsjWrZr80N04H/7BNCJKeYra+InQ9RgqZZ5TVe4Za0VQCEoC3i45BJ6m5v/ohi2FYltm9AjhmATGfFyJK6YaeuinhPHC1Y5mXKPk+IQP7jtygu2qRKg85dece3m6Yr205ol2jL6S3x56UEpPj0fmPy5Uz9qXpBeOkd3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
+Received: from [78.30.41.52] (port=52834 helo=gnumonks.org)
+	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <pablo@gnumonks.org>)
+	id 1rXJeC-007LEL-Im; Tue, 06 Feb 2024 12:29:54 +0100
+Date: Tue, 6 Feb 2024 12:29:51 +0100
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Florian Westphal <fw@strlen.de>
+Cc: Michal Kubecek <mkubecek@suse.cz>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org, andrea.mattiazzo@suse.com
+Subject: Re: [PATCH net] netfilter: nf_tables: fix pointer math issue in
+ nft_byteorder_eval()
+Message-ID: <ZcIYL3Z/rx+/iJg0@calendula>
+References: <15fdceb5-2de5-4453-98b3-cfa9d486e8da@moroto.mountain>
+ <20240206104336.ctigqpkunom2ufmn@lion.mk-sys.cz>
+ <20240206111112.GD17626@breakpoint.cc>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240205191310.1848561-1-colin.i.king@gmail.com>
-In-Reply-To: <20240205191310.1848561-1-colin.i.king@gmail.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 6 Feb 2024 12:18:12 +0100
-Message-ID: <CAPDyKFosojWAaSWATX6hGh8cJ7yU3zCxheMSiKUsMgJmB1Y-+Q@mail.gmail.com>
-Subject: Re: [PATCH] mmc: wbsd: remove redundant assignment to variable id
-To: Colin Ian King <colin.i.king@gmail.com>
-Cc: Pierre Ossman <pierre@ossman.eu>, linux-mmc@vger.kernel.org, 
-	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/mixed; boundary="2+U0zCyIbaZAmbaL"
+Content-Disposition: inline
+In-Reply-To: <20240206111112.GD17626@breakpoint.cc>
+X-Spam-Score: -1.9 (-)
 
-On Mon, 5 Feb 2024 at 20:13, Colin Ian King <colin.i.king@gmail.com> wrote:
->
-> The variable id is being initialized with a value that is never
-> read, it is being re-assigned later on. The initialization is
-> redundant and can be removed.
->
-> Cleans up clang scan build warning:
-> drivers/mmc/host/wbsd.c:1287:4: warning: Value stored to 'id'
-> is never read [deadcode.DeadStores]
->
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
->  drivers/mmc/host/wbsd.c | 2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/drivers/mmc/host/wbsd.c b/drivers/mmc/host/wbsd.c
-> index 001a468bc149..f0562f712d98 100644
-> --- a/drivers/mmc/host/wbsd.c
-> +++ b/drivers/mmc/host/wbsd.c
-> @@ -1284,8 +1284,6 @@ static int wbsd_scan(struct wbsd_host *host)
->                         continue;
->
->                 for (j = 0; j < ARRAY_SIZE(unlock_codes); j++) {
-> -                       id = 0xFFFF;
-> -
->                         host->config = config_ports[i];
->                         host->unlock_code = unlock_codes[j];
 
-A few lines down there is check "if (id != 0xFFFF)". Looks like that
-is a redundant check. Would you mind cleaning up that part too, as a
-part of the $subject patch?
+--2+U0zCyIbaZAmbaL
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-Kind regards
-Uffe
+On Tue, Feb 06, 2024 at 12:11:12PM +0100, Florian Westphal wrote:
+> Michal Kubecek <mkubecek@suse.cz> wrote:
+> > I stumbled upon this when the issue got a CVE id (sigh) and I share
+> > Andrea's (Cc-ed) concern that the fix is incomplete. While the fix,
+> > commit c301f0981fdd ("netfilter: nf_tables: fix pointer math issue in
+> > nft_byteorder_eval()") now, fixes the destination side, src is still
+> > a pointer to u32, i.e. we are reading 64-bit values with relative
+> > offsets which are multiples of 32 bits.
+> > 
+> > Shouldn't we fix this as well, e.g. like indicated below?
+> 
+> No, please remove multi-elem support instead, nothing uses this feature.
+
+See attached patch.
+
+I posted this:
+
+https://patchwork.ozlabs.org/project/netfilter-devel/patch/20240202120602.5122-1-pablo@netfilter.org/
+
+I can replace it by the attached patch if you prefer. This can only
+help in the future to microoptimize some set configurations, where
+several byteorder can be coalesced into one single expression.
+
+--2+U0zCyIbaZAmbaL
+Content-Type: text/x-diff; charset=utf-8
+Content-Disposition: attachment; filename="remove-multiword.patch"
+
+diff --git a/net/netfilter/nft_byteorder.c b/net/netfilter/nft_byteorder.c
+index 8cf91e47fd7a..af3412602869 100644
+--- a/net/netfilter/nft_byteorder.c
++++ b/net/netfilter/nft_byteorder.c
+@@ -43,18 +43,14 @@ void nft_byteorder_eval(const struct nft_expr *expr,
+ 
+ 		switch (priv->op) {
+ 		case NFT_BYTEORDER_NTOH:
+-			for (i = 0; i < priv->len / 8; i++) {
+-				src64 = nft_reg_load64(&src[i]);
+-				nft_reg_store64(&dst64[i],
+-						be64_to_cpu((__force __be64)src64));
+-			}
++			src64 = nft_reg_load64(&src[i]);
++			nft_reg_store64(&dst64[i],
++					be64_to_cpu((__force __be64)src64));
+ 			break;
+ 		case NFT_BYTEORDER_HTON:
+-			for (i = 0; i < priv->len / 8; i++) {
+-				src64 = (__force __u64)
+-					cpu_to_be64(nft_reg_load64(&src[i]));
+-				nft_reg_store64(&dst64[i], src64);
+-			}
++			src64 = (__force __u64)
++				cpu_to_be64(nft_reg_load64(&src[i]));
++			nft_reg_store64(&dst64[i], src64);
+ 			break;
+ 		}
+ 		break;
+@@ -62,24 +58,20 @@ void nft_byteorder_eval(const struct nft_expr *expr,
+ 	case 4:
+ 		switch (priv->op) {
+ 		case NFT_BYTEORDER_NTOH:
+-			for (i = 0; i < priv->len / 4; i++)
+-				dst[i] = ntohl((__force __be32)src[i]);
++			dst[i] = ntohl((__force __be32)src[i]);
+ 			break;
+ 		case NFT_BYTEORDER_HTON:
+-			for (i = 0; i < priv->len / 4; i++)
+-				dst[i] = (__force __u32)htonl(src[i]);
++			dst[i] = (__force __u32)htonl(src[i]);
+ 			break;
+ 		}
+ 		break;
+ 	case 2:
+ 		switch (priv->op) {
+ 		case NFT_BYTEORDER_NTOH:
+-			for (i = 0; i < priv->len / 2; i++)
+-				d16[i] = ntohs((__force __be16)s16[i]);
++			d16[i] = ntohs((__force __be16)s16[i]);
+ 			break;
+ 		case NFT_BYTEORDER_HTON:
+-			for (i = 0; i < priv->len / 2; i++)
+-				d16[i] = (__force __u16)htons(s16[i]);
++			d16[i] = (__force __u16)htons(s16[i]);
+ 			break;
+ 		}
+ 		break;
+@@ -137,6 +129,9 @@ static int nft_byteorder_init(const struct nft_ctx *ctx,
+ 	if (err < 0)
+ 		return err;
+ 
++	if (priv->size != len)
++		return -EINVAL;
++
+ 	priv->len = len;
+ 
+ 	if (len % size != 0)
+
+--2+U0zCyIbaZAmbaL--
 

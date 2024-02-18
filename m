@@ -1,104 +1,105 @@
-Return-Path: <kernel-janitors+bounces-1771-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-1773-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13CBD858DA8
-	for <lists+kernel-janitors@lfdr.de>; Sat, 17 Feb 2024 08:32:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA89B8593C8
+	for <lists+kernel-janitors@lfdr.de>; Sun, 18 Feb 2024 02:14:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 468411C20F20
-	for <lists+kernel-janitors@lfdr.de>; Sat, 17 Feb 2024 07:32:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F4CC28247F
+	for <lists+kernel-janitors@lfdr.de>; Sun, 18 Feb 2024 01:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407C21CD2A;
-	Sat, 17 Feb 2024 07:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="PuMWz8ZT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5443617FF;
+	Sun, 18 Feb 2024 01:13:57 +0000 (UTC)
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-20.smtpout.orange.fr [80.12.242.20])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FCBC1CAB7
-	for <kernel-janitors@vger.kernel.org>; Sat, 17 Feb 2024 07:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.20
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CA8149DED;
+	Sun, 18 Feb 2024 01:13:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708155121; cv=none; b=bz1qZigkXItVxxelMo+aroOkkuY9clIP3n/CBVwHu4FPqE0Iffs5cOrvv0UIkEqHZCdjrQ7sSBNXeoQFQkuvAQL5LMpNPe5/usRIg0djVjxyPe3nWA4R3lap1w+OLEQbuAhWyp43Gj1iiup4lcUNPDYvONI+HWWDw7RGV4Mxylc=
+	t=1708218836; cv=none; b=kChUMHFAgZuxD39+2QisSxJBqIOi48wHdWiPDH0IOJDTTkhLdUWztYvnfaMxC0CKM0fUvAUuLDpL1QXtOrkZiyi2m/UhcaCDoHrQy0rA6IqnPoG5G3xXTKcQs3vt4Tb7FjTYqQanyumaQN8ajyIyXLqun161gVcBkYDVEasNNLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708155121; c=relaxed/simple;
-	bh=3wE0OY454mubqM9kqU3kHG80CJKYun5q3sKzkDVg2vs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3PxBd0AGKoDoUjcSqJlSNsGgBcjKsMeDTnO/v6xhFZs1ruR1kljpa/WE7P04X8z5UT7daIYB1aXtAormltLkawGQJJSp5dQV1smlWSMQbaLejL76jzLjbrEMadYxoMYz/qUZXzJCt8jjRB1VM/Ac19TzAGamqXYdP5maRFDKfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=PuMWz8ZT; arc=none smtp.client-ip=80.12.242.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from fedora.home ([92.140.202.140])
-	by smtp.orange.fr with ESMTPA
-	id bF9rr7RBlRhCJbF9tr0LVY; Sat, 17 Feb 2024 08:30:49 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1708155049;
-	bh=5vKyutSF5vbJeBYhO1altd+rC0SgjetnS/HWHgINoOs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PuMWz8ZTELKEI8vMRbQe6sW8sB9UIkS8KOjwo8ppSOudEaxa0Lgmi5UFIpWeQIVYT
-	 Hg8au41CCBRXki8wWZso2guY1wUC/4Mpf9rpSHiDTqjE6ojSzFGiVYeurLICDSeOfK
-	 E1V27m6vMF9Y8tKWjykO3djjzhW9CCLiZv23uFgbmH15+Wp+kmzYATvvcH1vDXlGt0
-	 RP2krzxKEzp5Q+T8aY0w85zPLl6bRvtFMKobcgCoPOdU7R8lTydn4Dbr63omIqg8yb
-	 b/ySRMCSRFaOeD5yl6/hYQuMj6ITg227LEOy9bZmYLlFwrQTnHW288nsF53SWkgXvd
-	 J1wZeKzEafSaA==
-X-ME-Helo: fedora.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 17 Feb 2024 08:30:49 +0100
-X-ME-IP: 92.140.202.140
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	linux-bluetooth@vger.kernel.org
-Subject: [PATCH 2/2] Bluetooth: btbcm: Use devm_kstrdup()
-Date: Sat, 17 Feb 2024 08:30:42 +0100
-Message-ID: <272fb12e9392c0bc6fead23931f98ea45bf6fc69.1708154999.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <79b9c9d9f86b4c573f0d3f2dac0a6fc9e6024058.1708154999.git.christophe.jaillet@wanadoo.fr>
-References: <79b9c9d9f86b4c573f0d3f2dac0a6fc9e6024058.1708154999.git.christophe.jaillet@wanadoo.fr>
+	s=arc-20240116; t=1708218836; c=relaxed/simple;
+	bh=BM5fWLHxt+nbnIcaH9/6rApX+O/g3UTPsFa3hJbgNYQ=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=MjRzLnzvXJzzs9scfp+J4YYdIQl0YLkje2zoa6l8/woLf9J7EdzTWeJzxbklvcDjnYqnQufyOaZrbqI6zCdB2TjJeR6t7fotcE636P0NSaJj1AbosZA7WIWtM30skVdOhIr2ovIelsm9BdNYFNlK9pf+uJIjFITQYLuPwbuMDo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4TcncM4vSQz1FKTg;
+	Sun, 18 Feb 2024 09:08:51 +0800 (CST)
+Received: from kwepemm600013.china.huawei.com (unknown [7.193.23.68])
+	by mail.maildlp.com (Postfix) with ESMTPS id B5AB314040D;
+	Sun, 18 Feb 2024 09:13:39 +0800 (CST)
+Received: from [10.174.178.46] (10.174.178.46) by
+ kwepemm600013.china.huawei.com (7.193.23.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Sun, 18 Feb 2024 09:13:38 +0800
+Subject: Re: [PATCH] jffs2: print symbolic error name instead of error code
+To: Christian Heusel <christian@heusel.eu>, David Woodhouse
+	<dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>,
+	<linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+CC: <kernel-janitors@vger.kernel.org>
+References: <20240211003907.167891-1-christian@heusel.eu>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
+Message-ID: <e4d00360-bb36-cfe1-5c0c-8e5b1c7bebc0@huawei.com>
+Date: Sun, 18 Feb 2024 09:13:27 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <20240211003907.167891-1-christian@heusel.eu>
+Content-Type: text/plain; charset="gbk"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemm600013.china.huawei.com (7.193.23.68)
 
-Use devm_kstrdup() instead of hand-writing it.
-It is less verbose.
+ÔÚ 2024/2/11 8:39, Christian Heusel Ð´µÀ:
+> Utilize the %pe print specifier to get the symbolic error name as a
+> string (i.e "-ENOMEM") in the log message instead of the error code to
+> increase its readablility.
+> 
+> This change was suggested in
+> https://lore.kernel.org/all/92972476-0b1f-4d0a-9951-af3fc8bc6e65@suswa.mountain/
+> 
+> Signed-off-by: Christian Heusel <christian@heusel.eu>
+> ---
+>   fs/jffs2/background.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/bluetooth/btbcm.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/drivers/bluetooth/btbcm.c b/drivers/bluetooth/btbcm.c
-index 01d2343b4978..f9a7c790d7e2 100644
---- a/drivers/bluetooth/btbcm.c
-+++ b/drivers/bluetooth/btbcm.c
-@@ -544,7 +544,6 @@ static const char *btbcm_get_board_name(struct device *dev)
- 	struct device_node *root;
- 	char *board_type;
- 	const char *tmp;
--	int len;
- 
- 	root = of_find_node_by_path("/");
- 	if (!root)
-@@ -554,9 +553,7 @@ static const char *btbcm_get_board_name(struct device *dev)
- 		return NULL;
- 
- 	/* get rid of any '/' in the compatible string */
--	len = strlen(tmp) + 1;
--	board_type = devm_kzalloc(dev, len, GFP_KERNEL);
--	strscpy(board_type, tmp, len);
-+	board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
- 	strreplace(board_type, '/', '-');
- 	of_node_put(root);
- 
--- 
-2.43.2
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+> 
+> diff --git a/fs/jffs2/background.c b/fs/jffs2/background.c
+> index 6da92ecaf66d..bb0ee1a59e71 100644
+> --- a/fs/jffs2/background.c
+> +++ b/fs/jffs2/background.c
+> @@ -44,8 +44,8 @@ int jffs2_start_garbage_collect_thread(struct jffs2_sb_info *c)
+> 
+>   	tsk = kthread_run(jffs2_garbage_collect_thread, c, "jffs2_gcd_mtd%d", c->mtd->index);
+>   	if (IS_ERR(tsk)) {
+> -		pr_warn("fork failed for JFFS2 garbage collect thread: %ld\n",
+> -			-PTR_ERR(tsk));
+> +		pr_warn("fork failed for JFFS2 garbage collect thread: %pe\n",
+> +			tsk);
+>   		complete(&c->gc_thread_exit);
+>   		ret = PTR_ERR(tsk);
+>   	} else {
+> --
+> 2.43.1
+> 
+> 
+> ______________________________________________________
+> Linux MTD discussion mailing list
+> http://lists.infradead.org/mailman/listinfo/linux-mtd/
+> .
+> 
 
 

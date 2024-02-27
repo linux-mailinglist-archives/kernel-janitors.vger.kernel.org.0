@@ -1,20 +1,20 @@
-Return-Path: <kernel-janitors+bounces-1909-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-1908-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F42886893C
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1697586893B
 	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Feb 2024 07:53:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3540C1F26F82
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Feb 2024 06:53:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AABDB1F26F9C
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Feb 2024 06:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A425467E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFCBC5467C;
 	Tue, 27 Feb 2024 06:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
 	dkim=pass (2048-bit key) header.d=sonic.net header.i=@sonic.net header.b="nrWVfgTd"
-X-Original-To: kernel-janitors+unsubscribe@vger.kernel.org
+X-Original-To: kernel-janitors+subscribe@vger.kernel.org
 Received: from c.mail.sonic.net (c.mail.sonic.net [64.142.111.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)

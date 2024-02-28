@@ -1,123 +1,145 @@
-Return-Path: <kernel-janitors+bounces-1941-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-1943-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6CED86B64D
-	for <lists+kernel-janitors@lfdr.de>; Wed, 28 Feb 2024 18:44:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0FB86B676
+	for <lists+kernel-janitors@lfdr.de>; Wed, 28 Feb 2024 18:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DCD51F292BE
-	for <lists+kernel-janitors@lfdr.de>; Wed, 28 Feb 2024 17:44:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE9461C20C48
+	for <lists+kernel-janitors@lfdr.de>; Wed, 28 Feb 2024 17:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAF215D5DE;
-	Wed, 28 Feb 2024 17:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4DAC15E5CE;
+	Wed, 28 Feb 2024 17:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ymi35g3E"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="bsR6BXXr"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB8715CD42
-	for <kernel-janitors@vger.kernel.org>; Wed, 28 Feb 2024 17:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+Received: from smtp.smtpout.orange.fr (smtp-14.smtpout.orange.fr [80.12.242.14])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC6D159573
+	for <kernel-janitors@vger.kernel.org>; Wed, 28 Feb 2024 17:53:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709142250; cv=none; b=fUgI0BZMjbO1xgVUdkx1eTaVRNafD4Ayrm6o9IuxhViIC46bI7GfMXhsgrdJiFgzATNZFX+KQkm6QW/LZAU0lk4OUeyxnmT2UgrefZHagbsfxlLrSyoRlbVc9FXRSS2L8NUqdCuUdPRt/bKCgcgUHc0WvBBwrvmDwtumYZ7Z2yw=
+	t=1709142824; cv=none; b=F0XcbtedO5tfqRw2r/OkoG2Lba5+NKejK2uoeSVFc9ueFiReAWNXKWL+KUBzHOjfOCZ56+oJLXhoGhB7WPERR2GulVoayQ3xT9GZ044wWsMSziKMev4fCDC6SdXBKBEuZ2OW+LR/8uyj5EX3HKApy6LSs+5IRmahVxXXvDsi374=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709142250; c=relaxed/simple;
-	bh=W6V/WUDrcU6ltqu9bzNaahvrM7LME69p9CtE6KRKCd0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=it1u5ausZ3foyPunfgul/eF+wi5kBn2C3nHXyYepHDlmGddSSJjw9k4hyDEfmztZJshPFemfBHSZi19R+CDEVqd1aSaX8bq3+QGvIUFbHVLHKEmGFo3/Rilfv9Y/LI7WLk+4ebNlzbYMhgpi6D8JwWvqeW2uWgK4XzR1gCh1rk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ymi35g3E; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-412b814da6bso2690015e9.2
-        for <kernel-janitors@vger.kernel.org>; Wed, 28 Feb 2024 09:44:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709142247; x=1709747047; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZQYfGRlMuAzV9NGrkcAH7hkAKHgrR0yYSvegD/d+xL8=;
-        b=Ymi35g3EEvkMiXXIouWabZ77SZcpf2PnI9YixiRbeWetDQW5jVnR0/tzDLx6B33lb7
-         mEwhM0o+GsJ15JdH2I6QtSJLUYiyKJgdytf/qU+QbIwuGU7J+3R23l2p8jLII2PFUyCt
-         PceCeRRomVtvwV+l8Koe0VfAakSwMeFBzADIFlk6wqyuuT4YvR+uD8GQ7aDsv8xi/ICF
-         06tkgwhsxkzWc/Q1qG/b0shlaVDg0dwtmk1SxZu68jzKN+zpn/QxyK6D8f9Tw7DRuhVY
-         KhU/LS6YLpruRlZqJiJIGkW+IKx8HruMK4gJC4BIGSShmpPYew7tLI3BQ/QpP7ICcQK1
-         b1yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709142247; x=1709747047;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZQYfGRlMuAzV9NGrkcAH7hkAKHgrR0yYSvegD/d+xL8=;
-        b=NBnK/8latyJchpSpJmOpCle92q0KrEMfgi+4w5bUGCHZy1jtB7cA56NMueIh8Va0+K
-         SdEzePS0/y24+wDPbH8uf/TRYbGbxBrI7llAAQQ42teHD2Xr1TdNrx6uDZ5xaf80P33J
-         brcRIjT/vIcOC4iYOOEMCRkEkr/G+LUIo7bLx1BxW6ewbt2fpv0KLGuuokD03wZ6kcCo
-         vMk0Quu1/o38xjKyN+3DuL5jnn5jdmCedmDZLa7mC2Xy1JBJBDhLaFChEmSnga6Sn6Sl
-         PnQFjZcDhiBE8t6mhDLrUIup7c/msI+a+AeUGCSGMGDKAyafYzoqDItDzIzgf037jWIW
-         n9tw==
-X-Forwarded-Encrypted: i=1; AJvYcCXzqxk+STrru+YqqQ8bAIqtGoSbLwWatnpVwbJv2kSCjZoA29EMG7pfoEz5NvnZNm5r85c7fKUq5upPXamLGTfonpd57HOKsF9hovrcoyGa
-X-Gm-Message-State: AOJu0YwT6JaPZxdw3u9hX8EQSAMya+eUDfQNbgAxRAH9wS5s1IXQa643
-	jJB/vlRAVT07CD3AvNzD5PjODT6XqEFZud4A3+84vwatiD3OGRYq+kTfLirJBC8=
-X-Google-Smtp-Source: AGHT+IHOwDyfmepDmBoQvFrRKQ7FFwyrzLDzVXnTAg0OSmmsmnEyu00VFewWnjH4ylk3CMxRj1xMVg==
-X-Received: by 2002:a05:600c:468f:b0:412:64a5:a21 with SMTP id p15-20020a05600c468f00b0041264a50a21mr127317wmo.40.1709142247357;
-        Wed, 28 Feb 2024 09:44:07 -0800 (PST)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id j10-20020a5d564a000000b0033e0523b829sm1008975wrw.13.2024.02.28.09.44.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Feb 2024 09:44:07 -0800 (PST)
-Date: Wed, 28 Feb 2024 20:44:03 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Cindy Lu <lulu@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Xie Yongji <xieyongji@bytedance.com>,
-	Maxime Coquelin <maxime.coquelin@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Christian Brauner <brauner@kernel.org>,
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] vduse: Fix off by one in vduse_dev_mmap()
-Message-ID: <e2361611-e8e3-4c6a-9f71-30e81a65f793@moroto.mountain>
+	s=arc-20240116; t=1709142824; c=relaxed/simple;
+	bh=LbhXy96A+w6vpiruQUVvkg+e4nnJKaBfp0FqCDBfu6U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bLutbLEonjtz8HLjiWEj337j144/04YpNKw/Lc4FnnYpSbXUmKCThh5nJ9ZMgjiSX20OlubFZ2y5cjJnnq8I5hHvDvCyLwu6iyqbU9phHES8NdEPgQwVSWJUZfeQynerqEtprQU+BbvTugVzGIH7H+TeWDoDm2J6ejyTN0N4U2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=bsR6BXXr; arc=none smtp.client-ip=80.12.242.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.18] ([92.140.202.140])
+	by smtp.orange.fr with ESMTPA
+	id fO6Zrco9bdHY5fO6ZrJUJj; Wed, 28 Feb 2024 18:52:33 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1709142753;
+	bh=pf79XzCNz511kLy7uzOABu4V2YVxERhDVTMvZ5TxWoQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bsR6BXXr/ORjNGiqYcwp31xeIlNipEkvHWPlujcKWjPYY91Qw5hrv4BJYkLHvicOH
+	 uS1pX8OFvf+AHnEVv9EkL6ThaznaOkXgzYGbMV/KTKvYf+ej3OXpo6qiHApJ7hDvjg
+	 dJIl9HMWE7HadwG9zEjRtWaq1oBzHTaVeYbeu3FsiXIJjpGAp+nRZAUna9/iH0rxuo
+	 m0jdomeV5P9FicFE7x1jvnHZpbH6Skfj3FFHY3LsQEek/TTmDnFDfSygrEFs+aAWM5
+	 SP+OUHqD6O9sfyKMAGlVjWuPJO4Wo48Gv1d7YkfGsSH5Pr5nerF7dSq87DB/RPkOJd
+	 DHVwEsaNkyOGQ==
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 28 Feb 2024 18:52:33 +0100
+X-ME-IP: 92.140.202.140
+Message-ID: <22bb246c-6e94-43c2-b742-38993ced9a61@wanadoo.fr>
+Date: Wed, 28 Feb 2024 18:52:30 +0100
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/2] net: tehuti: Fix a missing pci_disable_msi() in
+ the error handling path of bdx_probe()
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: andy@greyhouse.net, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <cover.1709066709.git.christophe.jaillet@wanadoo.fr>
+ <011588ecfd6689e27237f96213acdb7a3543f981.1709066709.git.christophe.jaillet@wanadoo.fr>
+ <Zd8CEAng7emsvaxg@nanopsycho>
+Content-Language: en-MW
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <Zd8CEAng7emsvaxg@nanopsycho>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-The dev->vqs[] array has "dev->vq_num" elements.  It's allocated in
-vduse_dev_init_vqs().  Thus, this > comparison needs to be >= to avoid
-reading one element beyond the end of the array.
+Le 28/02/2024 à 10:51, Jiri Pirko a écrit :
+> Tue, Feb 27, 2024 at 09:50:55PM CET, christophe.jaillet@wanadoo.fr wrote:
+>> If an error occurs after a successful call to pci_enable_msi(),
+>> pci_disable_msi() should be called as already done in the remove function.
+>>
+>> Add a new label and the missing pci_disable_msi() call.
+>>
+>> Fixes: 1a348ccc1047 ("[NET]: Add Tehuti network driver.")
+>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>> ---
+>> Compile tested only.
+>> ---
+>> drivers/net/ethernet/tehuti/tehuti.c | 9 +++++++--
+>> 1 file changed, 7 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/net/ethernet/tehuti/tehuti.c b/drivers/net/ethernet/tehuti/tehuti.c
+>> index ca409515ead5..938a5caf5a3b 100644
+>> --- a/drivers/net/ethernet/tehuti/tehuti.c
+>> +++ b/drivers/net/ethernet/tehuti/tehuti.c
+>> @@ -1965,7 +1965,7 @@ bdx_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>> 		ndev = alloc_etherdev(sizeof(struct bdx_priv));
+>> 		if (!ndev) {
+>> 			err = -ENOMEM;
+>> -			goto err_out_iomap;
+>> +			goto err_out_disable_msi;
+>> 		}
+>>
+>> 		ndev->netdev_ops = &bdx_netdev_ops;
+>> @@ -2031,7 +2031,7 @@ bdx_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>> 		if (bdx_read_mac(priv)) {
+>> 			pr_err("load MAC address failed\n");
+>> 			err = -EFAULT;
+>> -			goto err_out_iomap;
+>> +			goto err_out_disable_msi;
+>> 		}
+>> 		SET_NETDEV_DEV(ndev, &pdev->dev);
+>> 		err = register_netdev(ndev);
+>> @@ -2048,6 +2048,11 @@ bdx_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>>
+>> err_out_free:
+>> 	free_netdev(ndev);
+>> +err_out_disable_msi:
+>> +#ifdef BDX_MSI
+> 
+> ifdef does not seem to be necessary here. The irq_type check should be
+> enough.
 
-Add an array_index_nospec() as well to prevent speculation issues.
+I thought about removing it, but I left it because it how it is done in 
+the remove function.
 
-Fixes: 316ecd1346b0 ("vduse: Add file operation for mmap")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
-v2: add array_index_nospec().
+I'll send a v2 without the ifdef and will also add another patch to 
+remove it as well from the remove function.
 
- drivers/vdpa/vdpa_user/vduse_dev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+CJ
 
-diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
-index b7a1fb88c506..eb914084c650 100644
---- a/drivers/vdpa/vdpa_user/vduse_dev.c
-+++ b/drivers/vdpa/vdpa_user/vduse_dev.c
-@@ -1532,9 +1532,10 @@ static int vduse_dev_mmap(struct file *file, struct vm_area_struct *vma)
- 	if ((vma->vm_flags & VM_SHARED) == 0)
- 		return -EINVAL;
- 
--	if (index > dev->vq_num)
-+	if (index >= dev->vq_num)
- 		return -EINVAL;
-
- 	vq = dev->vqs[index];
- 	vaddr = vq->vdpa_reconnect_vaddr;
- 	if (vaddr == 0)
--- 
-2.43.0
+> 
+> pw-bot: cr
+> 
+> 
+>> +	if (nic->irq_type == IRQ_MSI)
+>> +		pci_disable_msi(pdev);
+>> +#endif
+>> err_out_iomap:
+>> 	iounmap(nic->regs);
+>> err_out_res:
+>> -- 
+>> 2.43.2
+>>
+>>
+> 
+> 
 
 

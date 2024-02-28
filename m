@@ -1,139 +1,77 @@
-Return-Path: <kernel-janitors+bounces-1927-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-1929-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93CA386A130
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Feb 2024 21:54:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD14086A6DE
+	for <lists+kernel-janitors@lfdr.de>; Wed, 28 Feb 2024 03:48:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 019B1B26BFB
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Feb 2024 20:52:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88708280EF1
+	for <lists+kernel-janitors@lfdr.de>; Wed, 28 Feb 2024 02:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CFFA14DFF5;
-	Tue, 27 Feb 2024 20:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177EE20319;
+	Wed, 28 Feb 2024 02:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="o63+GAqK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dEmXryY2"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-27.smtpout.orange.fr [80.12.242.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B8A14F964
-	for <kernel-janitors@vger.kernel.org>; Tue, 27 Feb 2024 20:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D27621342;
+	Wed, 28 Feb 2024 02:46:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709067076; cv=none; b=p27PnUfBVGGup8WEN+iR2QBNwWhJhH7evqlbue04yhyvypuCukPEbIUKPOCiGIAH23ZWx/aPsE90VlAzfzRrQ2TgCCcazlHvVEV83IX7GX+yuSNJVfrl3QrGP1rRZWG9RcmkHjIWPEbBxL0D+51lyabQdC1SVv65XzEjkcPQ4Eo=
+	t=1709088419; cv=none; b=gJZ2CyZNTE/1GLwRJ3NSWM96CiONyx9xI8lyyr87NBdzN+s36FMWfFjjLP10j4R6GZayMaqpAcJwQlKnl9oluPexHTam9gmClEeh9LxOPAjRGEchK2MuKJYHadITdQ2yuFA+mOTimU6dY77EOYhHS2keWuvW4LZBs7s6UvIbaD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709067076; c=relaxed/simple;
-	bh=C0EhGGIcvZ5dia6z/DMgXS0/s8mPCNUY3CZZl/PV8yI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UGRLMka+PFZ08PXXkm70+T3IUcwTpJbDrW64leJpPgoO/w1Az4aoczlsT3+qRyhlgyNXotfqOEd6yJgWBOqf8sy6QfjKywLaC0s+N97LMxbTLkSMq06vFFvE2V5CX4qrDwSAZ0GJ7b0JwDxgHEzpWbjL7eGEyqVmG3SfhErmdc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=o63+GAqK; arc=none smtp.client-ip=80.12.242.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from fedora.home ([92.140.202.140])
-	by smtp.orange.fr with ESMTPA
-	id f4PjrRU7nxsbMf4PxrnVkm; Tue, 27 Feb 2024 21:51:14 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1709067074;
-	bh=7fh9n2YY+v7xWTDGOZYJY6/nuH13jrBRMC/bW8tKScA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=o63+GAqKGfx/mlADiFhta1gyxBFJ8uc639Wp16WrZKT6slPdnUDf17LNyr9/4eh//
-	 sDAicxQKAatVayHw1tHwmP6X4Y8F7GXuzcPSj2qBAFCuzAARKkhnWPYUZiPr7TSv8/
-	 4vbVBkC29wH8xASlmKeSWdw5FXA5LlBNvayZ+gBHD5aAUfCODUU5BnnGjWnsAQ/ZRO
-	 ap6xlASO0me8gaNIKO3O/ZITYI5HMMeQui98osjS3WjiFvEHlHgcN+6EFlFvCuO4L0
-	 09Ggdh6XcrocUN3r4stlWPKqLRrVcrh/FYfT/mw5+ZYMnsf6FGgpMxC0QMGLnmsxxs
-	 bDRdjBlEij6Cw==
-X-ME-Helo: fedora.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 27 Feb 2024 21:51:14 +0100
-X-ME-IP: 92.140.202.140
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: andy@greyhouse.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH net 2/2] net: tehuti: Fix leaks in the error handling path of bdx_probe()
-Date: Tue, 27 Feb 2024 21:50:56 +0100
-Message-ID: <9090b599c7574892b77a9521e3ddb3a52a154205.1709066709.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <cover.1709066709.git.christophe.jaillet@wanadoo.fr>
-References: <cover.1709066709.git.christophe.jaillet@wanadoo.fr>
+	s=arc-20240116; t=1709088419; c=relaxed/simple;
+	bh=Tnku9fdfb4RAYA9RXtUVS6U+UK5al6iZT05jrsPWoS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L6WJ4KELXAZx72l11XULB/ruaFcaN3cWkgBDr9INKzBlrxNWintrNOPchMGHKIM2CFExZGZpSr646bgsX9cCG7wSXZiQtxoN5A+ZPW+hqQ+IsyZHws3sB4Vy2eU4oHBnst8g+5D2KTpzYSWlAhSA4nvdtY0fZIghQGiTPrZaqjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dEmXryY2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940E3C433F1;
+	Wed, 28 Feb 2024 02:46:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709088419;
+	bh=Tnku9fdfb4RAYA9RXtUVS6U+UK5al6iZT05jrsPWoS0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=dEmXryY25ebRwANbBUGtI6ksIrGC+yw6XPMwJUBMd6m2Gi30xmZVbqbY8Ko3brVrW
+	 HJpbknBs/B7AblepqcptwN0rSZFglUjP7NgdHr+wqwY6c2Hmb2idx4tMhbz8TH+4u2
+	 QZe4fXRNcgYAMqMGrSN5Wjf84Hd9E9QDtsn/gjyW1WSB/ZWDnwNbb5NgJoeLIU63VW
+	 z4nEgV7p+Klt1JHkvDzOesqBietzTRZWD5sNC+UQO4t5k54lxYypBDajtyz6c0ZlUF
+	 m8W4WTKn1hwFhbvx/9ROKNDaYy0A8aST1VFUd8LT9Qb231W7pPAtVIgKSt2r/dFiD3
+	 ut8Px/Nuw/5Ng==
+Date: Tue, 27 Feb 2024 18:46:57 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: netdev@vger.kernel.org, kernel-janitors@vger.kernel.org, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Madalin
+ Bucur <madalin.bucur@nxp.com>, Paolo Abeni <pabeni@redhat.com>, Sean
+ Anderson <sean.anderson@seco.com>, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] net: fman: Use common error handling code in
+ dtsec_init()
+Message-ID: <20240227184657.76ec4e82@kernel.org>
+In-Reply-To: <9b879c8d-4c28-4748-acf6-18dc69d8ebdf@web.de>
+References: <9b879c8d-4c28-4748-acf6-18dc69d8ebdf@web.de>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-If an error occurs when allocating the net_device, all the one already
-allocated and registered should be released, as already done in the remove
-function.
+On Tue, 27 Feb 2024 14:14:52 +0100 Markus Elfring wrote:
+> Adjust jump targets so that a bit of exception handling can be better
+> reused at the end of this function implementation.
 
-Add a new label, remove the now useless 'err_out_disable_msi' label and
-adjust the error handling path accordingly.
+Okay, but..
 
-Fixes: 1a348ccc1047 ("[NET]: Add Tehuti network driver.")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Compile tested only.
----
- drivers/net/ethernet/tehuti/tehuti.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+>  .../net/ethernet/freescale/fman/fman_dtsec.c  | 19 +++++++++++--------
+>  1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/tehuti/tehuti.c b/drivers/net/ethernet/tehuti/tehuti.c
-index 938a5caf5a3b..6678179885cb 100644
---- a/drivers/net/ethernet/tehuti/tehuti.c
-+++ b/drivers/net/ethernet/tehuti/tehuti.c
-@@ -1965,7 +1965,7 @@ bdx_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		ndev = alloc_etherdev(sizeof(struct bdx_priv));
- 		if (!ndev) {
- 			err = -ENOMEM;
--			goto err_out_disable_msi;
-+			goto err_out_free;
- 		}
- 
- 		ndev->netdev_ops = &bdx_netdev_ops;
-@@ -2031,13 +2031,13 @@ bdx_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		if (bdx_read_mac(priv)) {
- 			pr_err("load MAC address failed\n");
- 			err = -EFAULT;
--			goto err_out_disable_msi;
-+			goto err_out_free_current;
- 		}
- 		SET_NETDEV_DEV(ndev, &pdev->dev);
- 		err = register_netdev(ndev);
- 		if (err) {
- 			pr_err("register_netdev failed\n");
--			goto err_out_free;
-+			goto err_out_free_current;
- 		}
- 		netif_carrier_off(ndev);
- 		netif_stop_queue(ndev);
-@@ -2046,9 +2046,14 @@ bdx_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	}
- 	RET(0);
- 
--err_out_free:
-+err_out_free_current:
- 	free_netdev(ndev);
--err_out_disable_msi:
-+err_out_free:
-+	while (--port >= 0) {
-+		ndev = nic->priv[port]->ndev;
-+		unregister_netdev(ndev);
-+		free_netdev(ndev);
-+	}
- #ifdef BDX_MSI
- 	if (nic->irq_type == IRQ_MSI)
- 		pci_disable_msi(pdev);
+..you've added more lines than you've removed so what's the point.
 -- 
-2.43.2
-
+pw-bot: reject
 

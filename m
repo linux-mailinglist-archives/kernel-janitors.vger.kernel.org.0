@@ -1,155 +1,110 @@
-Return-Path: <kernel-janitors+bounces-2085-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2087-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A536870821
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Mar 2024 18:16:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8591D87089D
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Mar 2024 18:50:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1D491C2088A
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Mar 2024 17:16:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4206F283AA6
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Mar 2024 17:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD23460271;
-	Mon,  4 Mar 2024 17:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 931DE62148;
+	Mon,  4 Mar 2024 17:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jNi2jmam"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="CflVt1jW"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F0A6025B;
-	Mon,  4 Mar 2024 17:16:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94590612FF;
+	Mon,  4 Mar 2024 17:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709572588; cv=none; b=s92+2Gkbv9FkNzeIERaDQG0sRyUxRDjNqzwWYmJtekyLTlJouI5Ti+ozw/MXWb0AXHBZmZY7/GOOi3A2ew1I8GX34CYEKrZRlMTfFukt9dzNEETPoUinmHoWJcLeaRAZeg7q9gqtMjM+5Q35H6Omp48jjZvfJhhFXO+jKoW7DOc=
+	t=1709574607; cv=none; b=uBl0Mp5qot0b3l7PO+fAFSoSZA2X6Z4JRKEax7xk1uGXyJZqRksMOk+M7WaMvOFhdw/8PPMyRzc7wLPLeTjRYRMDU220ggzGn9qQPTrKGUmBgKpgKU6XbgmIapEel6VNas/1wTdIutRmughk5KssHptIPXbFxi+nuCUu+168lik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709572588; c=relaxed/simple;
-	bh=m4aPM8M6KAN3usk2/26PJxZ518eFliLBsTOWT8kko9o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oZ0NS2yXwRrt0P+2gL+JcWjP9OkmSvqSlluEfl1eQS/2IpnrL4WpmeqYeULCryESRj6nCcTLht8XkgJ5NAdmAI0eede8bsC3p6k8KgzbialH1ZKJDkr+X5dMC2E7E0ig/rethKJl61njOvuQYNDEcHJlgKzvbB3xpeEVO6cLluI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jNi2jmam; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-5ce9555d42eso4053186a12.2;
-        Mon, 04 Mar 2024 09:16:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709572586; x=1710177386; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=GiGUTwcmS+sZMCMr3FUD76KaDTM9Y9RtqjrMO//bVwE=;
-        b=jNi2jmamFhTSA3Q9UPcFSSwkGSG6Iw2Tqm7KMTgWRWMvZZ6JVxatYB92v44dT4IGgF
-         NXJwEM+mWGdkW0hvV5kPU9G6FdD4xgN0ELfdKx5wKXyq3MnZCcFrDp/4+LnNt2SrzYTh
-         bGFz8e2Ho8ad3ngAFRuYQ14ecC1igF+z3Eqv4HrYLbDdCHGUiMeblJ747j1STDSj2bT7
-         ghVq0FEcWiS1b6UHOlAbUPyn4WyE5JEsKuCE1l2fi39qA49xDrkVp+mD6SxcRnZgt3Df
-         MheGX+kTYuA0TF5QwRSISVbY58PKPTVvHkEYt8AcsZd/g/Z4vjXLnYkrrLEjp3ATdi27
-         ZTVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709572586; x=1710177386;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GiGUTwcmS+sZMCMr3FUD76KaDTM9Y9RtqjrMO//bVwE=;
-        b=Xv+0TatP7bx+rT7FBfhGOlWRn+vQ/lYTrlLWtNis63BTgPs9owO6DxlaW8/NqKVYoR
-         9B3Wko9wmV/TBpl6eB6L1kXnuEURdSIvW8qs77VAYnzrnBWMeFVOhFcG041iAk6Uy6C4
-         9U14qQSRbLA1KJ2HuZ3mlEFiLSHfNbX06/jQpus8xTx1kiHNVLMwuK8zjg4F6wby+Gxa
-         D8jZTbxDb1ji86nNh+jQ6JQp4ZFftkhJI/Io7evXuM+pVc3XjWU1lqRR0ngnrBnsa7an
-         qHLIL+KW28LCkk+5LHJuSAPkvTQjGk4Dc7+7G23MLMhaUCueDG7PeGdEd7Eht8PIC7Um
-         1HTg==
-X-Forwarded-Encrypted: i=1; AJvYcCWMdevwhHKRFValZXhLfSmuQIun0gaazhtFOrKhQWlW1U+6zkOywzrMFyxcRKCEvojKsva87yasl+Z93p6DoYoE9S5Hesxh8BNhDK8HZq/hAwFNcS6Ig5Lq6pXOL+qsSuAutcFuGLTFYDCaJ5HHObYFqEmX5O+jAwHF6NODFcD0G+foYNXqWAoyCLc=
-X-Gm-Message-State: AOJu0Yy4jiOfu+R/8jYt2DUA5B6fxTQrFEcNPAycg6wrkhYnxmPdXXfn
-	L1q2a6lWuuQlKhnzuqiR7i7TwKKCNubQA42xKHfl6xa+DMO0m0RV
-X-Google-Smtp-Source: AGHT+IGuVXFuv6smouEpbKdN0FwHDvZTejuV/4+04n1oAt1D7900BVI3gEwpMEPYxt6tRHJMB294Pg==
-X-Received: by 2002:a17:90b:46c8:b0:29b:1f62:6a3a with SMTP id jx8-20020a17090b46c800b0029b1f626a3amr7834956pjb.29.1709572585964;
-        Mon, 04 Mar 2024 09:16:25 -0800 (PST)
-Received: from google.com ([2620:15c:9d:2:99d7:8333:f50c:d6a6])
-        by smtp.gmail.com with ESMTPSA id ta6-20020a17090b4ec600b0029a849e7268sm10345209pjb.28.2024.03.04.09.16.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Mar 2024 09:16:25 -0800 (PST)
-Date: Mon, 4 Mar 2024 09:16:23 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Julia Lawall <julia.lawall@inria.fr>
-Cc: Markus Elfring <Markus.Elfring@web.de>, linux-input@vger.kernel.org,
-	kernel-janitors@vger.kernel.org, Jeff LaBundy <jeff@labundy.com>,
-	Rob Herring <robh@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2] Input: iqs626a - Use scope-based resource management
- in iqs626_parse_events()
-Message-ID: <ZeYB51RRw6Lg0XSh@google.com>
-References: <8a7607f8-d634-415e-8269-e26dcc0f9fdc@web.de>
- <ZeU8ENmnPj3sKxAv@nixie71>
- <ZeVOPSt0L1D4BxuZ@google.com>
- <e8a2b63f-4f9a-463b-b419-c5f673191111@web.de>
- <b91fe21-fe2-eac8-d1ee-ea8922a08861@inria.fr>
+	s=arc-20240116; t=1709574607; c=relaxed/simple;
+	bh=7K3bP1+oTQ+p1gZWNk1OVZkWGD2ZtvOsntwZZ5+E8kw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=odWbaUQJyRP4GVAlgzeEOA7bYTMg12MYYzWjSht0MuEbm8S40ys1TiZRX12gyRzf+3HyDERsdb6o6nfyTDlLfra9fSOm+o+bW/TAx0iMLrLY71ZWmVZGXLb1SEUG/K3EpbQp3Y/Rd4yKBOgsjKm6OmMJrSZTIZF81bGfTBdaw7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=CflVt1jW; arc=none smtp.client-ip=212.227.15.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
+	t=1709574554; x=1710179354; i=markus.elfring@web.de;
+	bh=7K3bP1+oTQ+p1gZWNk1OVZkWGD2ZtvOsntwZZ5+E8kw=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=CflVt1jWgMV6mfTL5qSrUp61G3mhxbyohnpj2KyHsZv3/puovr5NygeyA6ACfBQd
+	 mvP5K8Sk7muKGyMRb8hUwg6Skamz/liyXcBOQqXrKPtlTlBGpOnqaFPIc/joZ+mrD
+	 +h28OH3fAFq0Ltsm5qYcrxhjwl+zXEm18jXeVFNFrx8zHzUEX3JjqCzvpbY5SUflE
+	 0Simsc2SRZHJjrPhnmnn7dwxpM3mqWwEG6h/U3p+sBLH1ehoqZeBFyk6uY1CG8KDW
+	 lYeOzlfw2yDaFwMB7204MSG6z5QjIbLuKkFe9Xz1jgyXkvksg/+YkXTNh0Yiukhku
+	 neqQ4dB47fvFYfis9A==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.86.95]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MFs1z-1rdfnh1i2R-00HCYi; Mon, 04
+ Mar 2024 18:49:14 +0100
+Message-ID: <ea3b033a-7a50-4276-9839-f6335b754c30@web.de>
+Date: Mon, 4 Mar 2024 18:48:58 +0100
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b91fe21-fe2-eac8-d1ee-ea8922a08861@inria.fr>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [v2] Input: iqs269a - Use scope-based resource management in
+ iqs269_parse_chan()
+Content-Language: en-GB
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Jeff LaBundy <jeff@labundy.com>, linux-input@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
+Cc: Mattijs Korpershoek <mkorpershoek@baylibre.com>,
+ Rob Herring <robh@kernel.org>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ ye xingchen <ye.xingchen@zte.com.cn>, LKML <linux-kernel@vger.kernel.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <6bf9f962-cf75-459d-89f4-2546063fc154@web.de>
+ <ZeT6UUFNq1ujMW17@google.com> <b5f9c66e-d9c8-4dc6-8ce5-8d1dc5f0782d@web.de>
+ <ZeYAk830OUpaup5W@nixie71> <ZeYBTUQRAp2u3bXX@google.com>
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <ZeYBTUQRAp2u3bXX@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:W4V1XEZEso69HFCLMu/ebTwwAh/2Q6Ps1nvxXQYecLV4Ex4Y4tq
+ Zf83KIuZFNK7Owqdj48cyayM67viuzP62V4soZSVINueMLayTAwkRLM91eh5Qmk98JNCdi6
+ OOqY5dyy0oEsjQPDOVcl0PBbiVzyXw/10vcifUnJxXYoIp/NYbXPjiyrpHeB/HggtHc6KaF
+ cCYNMJ6RbXPfgw4yGJ0EA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:PKqMxeqTb/s=;xhcINlzZEoVtVbkCJ5JeDg5kP6h
+ KU9RJoGyHBHBHTnGrX6Mjs9P94H5vTapipJRq14O2WtFN/irotdXmULfASsnimS6WWsVuO+Bc
+ AH0lUuB4FvdfNmaqyvB3dXZO3Y5NB1gNYfEpLIAeoel7fl0bNNWvxH8xGsiQcFJ4yTGs9OfuI
+ vIe49oTQoUXrjDgIjoWqbSDFtb4U3EgxX8panHo0OZDkIEwVsqzleDiBtoBE2XzIMUAVeTBoL
+ VXX9qM26hw2RBM+WPjBwV2EwWa8ZKVP1lHaZTv/0OX1tAqwyqRPJPX1nGY0Vbh34y2jiuvpb+
+ vmNsTzF2OZHkBR6FKZjtkv28jMcIMR7owa2jg32HGvn/xIuBwkojO14vE+HP0fAA0A1tpv+lu
+ HaZ1dExdoJmtrrREucwIz8K7GGaoLlLNMAL08or0DFWMaRuXafBrlpwbdtF259ePy4hPPBPat
+ f1eniLxKcpmwhAqOOINSiUwsetp38FiSoyDO1wbB9xUJfqlIuOigeniInQafapP4T64effSxB
+ nEEylcJml141mA3bTm1VU+9R/WjEyZXE66a3e1JXTvdAXqxV7rwHmZm6x6FpLWIiYtswuawJc
+ IIpLCoPEi75CDAAiVnR+/CX+bR8C40ia0tTZNvDP+dCc7MLCQ3EwlTMiO7eVywLQw4KRnNmm/
+ ckNmYCho2qttMnoBHoS9fNYRfpED3ma622ZpiIWyNxysdm+/QkzKnJ6GT5BaMuYYN7+rY0dqs
+ 8aS4SvDIi8wvHba/d5vKBmBgYWwsjx4lCQZjfk/xDeCx8mgide6xtQ/ybrsYYWyTcahYrcQ9w
+ 0CGup+Lxhs0q1sHNL/dF9fw1quFn7DiPrkW9nHPEJYuAE=
 
-On Mon, Mar 04, 2024 at 11:55:23AM +0100, Julia Lawall wrote:
-> 
-> 
-> On Mon, 4 Mar 2024, Markus Elfring wrote:
-> 
-> > From: Markus Elfring <elfring@users.sourceforge.net>
-> > Date: Mon, 4 Mar 2024 11:40:04 +0100
-> >
-> > Scope-based resource management became supported also for this software
-> > area by contributions of Jonathan Cameron on 2024-02-17.
-> >
-> > device property: Add cleanup.h based fwnode_handle_put() scope based cleanup.
-> > https://lore.kernel.org/r/20240217164249.921878-3-jic23@kernel.org
-> >
-> >
-> > * Thus use the attribute “__free(fwnode_handle)”.
-> >
-> > * Reduce the scope for the local variable “ev_node” into a for loop.
-> >
-> > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> > ---
-> >
-> > v2:
-> > An other cleanup technique was applied as requested by Dmitry Torokhov
-> > and Jeff LaBundy.
-> >
-> >
-> >  drivers/input/misc/iqs626a.c | 8 ++------
-> >  1 file changed, 2 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/drivers/input/misc/iqs626a.c b/drivers/input/misc/iqs626a.c
-> > index 0dab54d3a060..86fcb5134f45 100644
-> > --- a/drivers/input/misc/iqs626a.c
-> > +++ b/drivers/input/misc/iqs626a.c
-> > @@ -462,7 +462,6 @@ iqs626_parse_events(struct iqs626_private *iqs626,
-> >  {
-> >  	struct iqs626_sys_reg *sys_reg = &iqs626->sys_reg;
-> >  	struct i2c_client *client = iqs626->client;
-> > -	struct fwnode_handle *ev_node;
-> >  	const char *ev_name;
-> >  	u8 *thresh, *hyst;
-> >  	unsigned int val;
-> > @@ -501,6 +500,8 @@ iqs626_parse_events(struct iqs626_private *iqs626,
-> >  		if (!iqs626_channels[ch_id].events[i])
-> >  			continue;
-> >
-> > +		struct fwnode_handle *ev_node __free(fwnode_handle);
-> 
-> Doesn't this need to be initialized?
+> The extra curly braces are absolutely not needed. The for loop's body
+> already defines scope, __cleanup()s should be called at the end of the b=
+ody.
 
-It would be better if we had a helper here, iqs626_get_ev_node() or
-something.
+I present an other development opinion here.
+I got the impression that the required scope should be smaller for
+the adjusted local variable =E2=80=9Cev_node=E2=80=9D (according to the pr=
+evious function implementation).
 
-Thanks.
+Otherwise:
+How do you think about to move any source code part from the loop
+into a separate function?
 
--- 
-Dmitry
+Regards,
+Markus
 

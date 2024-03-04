@@ -1,106 +1,95 @@
-Return-Path: <kernel-janitors+bounces-2048-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2050-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E195386FCCA
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Mar 2024 10:11:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A47686FCF6
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Mar 2024 10:17:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D984284403
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Mar 2024 09:11:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D37E1F237DA
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Mar 2024 09:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6081B971;
-	Mon,  4 Mar 2024 09:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559FA23758;
+	Mon,  4 Mar 2024 09:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="MoQtuYqx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tak5sBNU"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F216A19472;
-	Mon,  4 Mar 2024 09:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A269B23747;
+	Mon,  4 Mar 2024 09:16:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709543465; cv=none; b=IxWPWBBGYJv/YpH7TRhPqxsfEolgYB14f0lYXlnF7QU8+R3rQ2C3Pjzvk8r4Z5vP47bc0nVWt1Xg5ucyFmMGbl/Xj99fwaet+rhbVLRqVTAebE5AUCYP6jh5ZsMka3aMGyo2nYSYiWykDdV/wMxNyPiLE7oYD8eSTioon5uUGyQ=
+	t=1709543816; cv=none; b=ZySTT6uOMkcF5GGJesZsvpTZljkA1u3zsr715wG6xlvXHiJ6E7VJO24mI99MjU/RtRXXRb05yw3LAsfX0XRTeSYrWh6G3+2bJPLHbzmwP/mpu4d6j7BONTjwNt6FGhEYYpTZlwxSjDRxwvnSqT+unXBupjiX4s68du1+zIZzGyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709543465; c=relaxed/simple;
-	bh=CVm0itqbknJclQDsY4Frf9OoAkYPPa/1GZRo1JGqk0M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FdxqIAI+JTPMe72VE7cjnBeV74+jAICEoA5gS2Uql1xw4Jsy5otUQAtE1kfJ5CNp7s6q794BYW5XaHBQ8gDF53HAEjr1Svl0e6xMHekrQDOPuGo5q5yz2YeFQ17NWaG3cgBicCIwIdcpBtbFnoBTLZup8zIZ11NJnTeZGCz4Mw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=MoQtuYqx; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1709543461;
-	bh=CVm0itqbknJclQDsY4Frf9OoAkYPPa/1GZRo1JGqk0M=;
-	h=From:To:Cc:Subject:Date:From;
-	b=MoQtuYqxH59MYYoqJHYWXgE/CvSNkS4FDInxOYwx+mBhrrD6EgejdXCyXE9MrjrDc
-	 JdM39yfc+uT7tRfH7HbyGWnZzyafiz0GiKY/DXxXIY6i8A66/aIYv0SdnLxGWOHMkm
-	 ScjWEkYMttvzFGh6aEzmCCGOMq31NUtCyDf1yb31FEArCD6dkMM9eNf0QLqxh83vrI
-	 8Ui56w0i4qR/Wyd3GXS2TFEeaZ70jlH8tuVXkVqg5Gu/15cXZiCCFgSOzDWkLfrEmh
-	 nPAFMC2dj0ptermIeZBQFZ7dRJAieLIHyIoXCDebuPBkF88nytOK/Kb1Vufxx0O840
-	 DCdQioVds9PdQ==
-Received: from localhost.localdomain (broslavsky.collaboradmins.com [68.183.210.73])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: usama.anjum)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 580A73781FE9;
-	Mon,  4 Mar 2024 09:10:58 +0000 (UTC)
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-To: James Smart <james.smart@broadcom.com>,
-	Dick Kennedy <dick.kennedy@broadcom.com>,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Justin Tee <justin.tee@broadcom.com>
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	kernel@collabora.com,
-	kernel-janitors@vger.kernel.org,
-	James Smart <jsmart2021@gmail.com>,
-	linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] scsi: lpfc: correct size for cmdwqe/rspwqe for memset
-Date: Mon,  4 Mar 2024 14:11:19 +0500
-Message-Id: <20240304091119.847060-1-usama.anjum@collabora.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1709543816; c=relaxed/simple;
+	bh=smtWowPoYhv7nEqimgeA8xDDf1PSEUGTNJKR2E0PKfE=;
+	h=Content-Type:Date:Message-Id:Cc:From:To:Subject:References:
+	 In-Reply-To; b=Q3RmKN6OLUsz6yLmY8jLbdjzcHa7nZMce2nP2pPS6XbVjrdYqa/zhaE1jcLS2Tsnyxj0SBIh1d4PsbL61MZnoqpX/u9pS78RiGRoc8NNJQ0xnfUKc0nAdwe3lLx6ZfK+hRrtRXczihL+8VHIwKm4PZIUdr79QJTvVSnrPM8iJpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tak5sBNU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCFA8C433F1;
+	Mon,  4 Mar 2024 09:16:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709543816;
+	bh=smtWowPoYhv7nEqimgeA8xDDf1PSEUGTNJKR2E0PKfE=;
+	h=Date:Cc:From:To:Subject:References:In-Reply-To:From;
+	b=Tak5sBNUjnXkT+jt+oS3upMdOErw/XV1bnFuq3gV7KE6pHzfe53DwvyBxSTvqOmk5
+	 gtJg0BnwMKflLZksQRhxucvAfFIb/ngzzsCFglrW0Q+6p1EeIhxFRw4Ny+moOxJ9ER
+	 BzoxbjOE5qfdnmTNiLcXluFS6MPSkKUBZmhMVwQxgtV931ayWpAAycnqhggvNTDbiN
+	 TUarNka6cEvsIydUSzFXP+EthiiuBTrPHyva8eeA3dOJTtY+vHnzpNQMmCncVaP4gw
+	 pXY3aJEuuDAmwF0S3RkMKRMxJEtvLO0GMtM1KQGqwhvFHSi67MvIE1NqreluH6qjZV
+	 pY9M5r4PlCaCg==
+Content-Type: multipart/signed;
+ boundary=56c5c757e8efd87fd596512d7c6b13800a50b7e712b376cf74eec9ce7510;
+ micalg=pgp-sha256; protocol="application/pgp-signature"
+Date: Mon, 04 Mar 2024 10:16:53 +0100
+Message-Id: <CZKUPDY8GTHC.BQ9KN9FR2R0H@kernel.org>
+Cc: <kernel@collabora.com>, <kernel-janitors@vger.kernel.org>,
+ <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+From: "Michael Walle" <mwalle@kernel.org>
+To: "Muhammad Usama Anjum" <usama.anjum@collabora.com>, "Tudor Ambarus"
+ <tudor.ambarus@linaro.org>, "Pratyush Yadav" <pratyush@kernel.org>, "Miquel
+ Raynal" <miquel.raynal@bootlin.com>, "Richard Weinberger" <richard@nod.at>,
+ "Vignesh Raghavendra" <vigneshr@ti.com>, "Takahiro Kuwano"
+ <Takahiro.Kuwano@infineon.com>
+Subject: Re: [PATCH v2] mtd: spi-nor: core: correct type of i
+X-Mailer: aerc 0.16.0
+References: <20240304090103.818092-1-usama.anjum@collabora.com>
+In-Reply-To: <20240304090103.818092-1-usama.anjum@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The cmdwqe and rspwqe are of type lpfc_wqe128. They should be memset
-with the same type.
+--56c5c757e8efd87fd596512d7c6b13800a50b7e712b376cf74eec9ce7510
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-Fixes: 61910d6a5243 ("scsi: lpfc: SLI path split: Refactor CT paths")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
----
-Changes since v1:
-- Use *ptr instead of specifying type in sizeof
----
- drivers/scsi/lpfc/lpfc_bsg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Mon Mar 4, 2024 at 10:01 AM CET, Muhammad Usama Anjum wrote:
+> The i should be signed to find out the end of the loop. Otherwise,
+> i >=3D 0 is always true and loop becomes infinite. Make its type to be
+> int.
+>
+> Fixes: 6a9eda34418f ("mtd: spi-nor: core: set mtd->eraseregions for non-u=
+niform erase map")
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-diff --git a/drivers/scsi/lpfc/lpfc_bsg.c b/drivers/scsi/lpfc/lpfc_bsg.c
-index d80e6e81053b0..7d5275d3a7406 100644
---- a/drivers/scsi/lpfc/lpfc_bsg.c
-+++ b/drivers/scsi/lpfc/lpfc_bsg.c
-@@ -3169,10 +3169,10 @@ lpfc_bsg_diag_loopback_run(struct bsg_job *job)
- 	}
- 
- 	cmdwqe = &cmdiocbq->wqe;
--	memset(cmdwqe, 0, sizeof(union lpfc_wqe));
-+	memset(cmdwqe, 0, sizeof(*cmdwqe));
- 	if (phba->sli_rev < LPFC_SLI_REV4) {
- 		rspwqe = &rspiocbq->wqe;
--		memset(rspwqe, 0, sizeof(union lpfc_wqe));
-+		memset(rspwqe, 0, sizeof(*rspwqe));
- 	}
- 
- 	INIT_LIST_HEAD(&head);
--- 
-2.39.2
+Reviewed-by: Michael Walle <mwalle@kernel.org>
 
+--56c5c757e8efd87fd596512d7c6b13800a50b7e712b376cf74eec9ce7510
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iIgEABYIADAWIQQCnWSOYTtih6UXaxvNyh2jtWxG+wUCZeWRhRIcbXdhbGxlQGtl
+cm5lbC5vcmcACgkQzcodo7VsRvvI9QD+NBOU1OgPhPQF+0Iw2vVU+MRbcTw0ux1D
+p4zNxDJ+bogBAIO88z955ZP4Qg575PSYdMtAVZ7V6Xt8v3OTgB8inEwA
+=0b60
+-----END PGP SIGNATURE-----
+
+--56c5c757e8efd87fd596512d7c6b13800a50b7e712b376cf74eec9ce7510--
 

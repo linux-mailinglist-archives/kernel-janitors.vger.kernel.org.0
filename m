@@ -1,90 +1,119 @@
-Return-Path: <kernel-janitors+bounces-2113-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2110-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C90873688
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Mar 2024 13:33:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C27F873606
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Mar 2024 13:05:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C8BC28A413
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Mar 2024 12:33:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D076B21762
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Mar 2024 12:05:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A9A8592F;
-	Wed,  6 Mar 2024 12:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1227A7FBD5;
+	Wed,  6 Mar 2024 12:05:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kAeF81mT"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from 7.mo584.mail-out.ovh.net (7.mo584.mail-out.ovh.net [178.33.253.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E6F1DA4C
-	for <kernel-janitors@vger.kernel.org>; Wed,  6 Mar 2024 12:33:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.33.253.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D5A78B43;
+	Wed,  6 Mar 2024 12:05:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709728426; cv=none; b=RKODRriHoJtgILOQUXMykpXX78LfFxUmJN1nASJjVsT60V98HtxsafmgOA4mg574kKAcl9osPyA6+MCjAeUN6tSj4/Q07w7xdbbkzLuFYFbiCKCp+dYMxKX6Q0FtB7m2/ApTitV49CVjcoDV0XMmCgZhEefKdKjkwzTByJ/EdSQ=
+	t=1709726722; cv=none; b=bUL1pGdY12Z9MMwOyvPveDfV4ULQl6u31ESN4OdFG1vurdZk6hyCti9WeSoq3kp9ZiLym7ZXMoCAAUOI48VWlNTgirR3vScqut3uLwEQJlrQr9O9Axc0VtzBUGJFr7ZJwQZNQGsbZ/FlWiAaKKhYSgEyuLAKK1O6FEFBM3nrQCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709728426; c=relaxed/simple;
-	bh=T/ZFalMvsTIqIXH9CCmS4Q6/QVqPFJOqTdkBRjqsCZ0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=nLv/IZR/hTMb19Ns2hBe12N042eFUqBdBqfi9lpLzcU7hUIWcU0Mz/jbR3n+zaguYgzi+i8C31djZS+PM+t+87z62Hc2LhiU1VlW4rn2wZPZ93vlv9gLx4ev+8CFgCIKKACO3gHGJSkzVWZryCYqdB6nBOuA7y8RF+/eKqSAX8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=etezian.org; arc=none smtp.client-ip=178.33.253.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etezian.org
-Received: from director7.ghost.mail-out.ovh.net (unknown [10.109.176.128])
-	by mo584.mail-out.ovh.net (Postfix) with ESMTP id 4TqW8s36Sqz121D
-	for <kernel-janitors@vger.kernel.org>; Wed,  6 Mar 2024 11:55:41 +0000 (UTC)
-Received: from ghost-submission-6684bf9d7b-6n4p5 (unknown [10.111.182.10])
-	by director7.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 4DE6D1FF02;
-	Wed,  6 Mar 2024 11:55:40 +0000 (UTC)
-Received: from etezian.org ([37.59.142.102])
-	by ghost-submission-6684bf9d7b-6n4p5 with ESMTPSA
-	id ebVeDrxZ6GUteAAALhss6w
-	(envelope-from <andi@etezian.org>); Wed, 06 Mar 2024 11:55:40 +0000
-Authentication-Results:garm.ovh; auth=pass (GARM-102R0040eb92394-62a9-4541-aed7-3e0ed99d4b9a,
-                    62DEF991EB217AB86F953B10C2782167B22AFEEB) smtp.auth=andi@etezian.org
-X-OVh-ClientIp:89.217.109.169
-From: Andi Shyti <andi.shyti@kernel.org>
-To: wsa@kernel.org, Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-In-Reply-To: <6ed30ecf43a4c8574aa6b9f93be50f3203a42850.1704465414.git.christophe.jaillet@wanadoo.fr>
-References: <6ed30ecf43a4c8574aa6b9f93be50f3203a42850.1704465414.git.christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH] i2c: wmt: Fix an error handling path in
- wmt_i2c_probe()
-Message-Id: <170972613724.1712532.15551713382249380033.b4-ty@kernel.org>
-Date: Wed, 06 Mar 2024 12:55:37 +0100
+	s=arc-20240116; t=1709726722; c=relaxed/simple;
+	bh=eQFHMv8UUo9nQQ3yy4xIIoO43toDxUa8TDUZCAlrLJY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iTcIgWl3UFu2O2H6hFVSuJhInoc7SSU/KR5vzi3BXnNqcV9XKgYZXgYtv5RB2fEVTDJONlFU04VYcIQfjpln5Mub6BvyqAjNXFSX3x68rqugFEuhp9WunReMjcOF05ffcpLk8f3OPpBfQiNuNjIFvhFBlwcRx4DR+y7OU3igV48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kAeF81mT; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a4429c556efso900510366b.0;
+        Wed, 06 Mar 2024 04:05:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709726719; x=1710331519; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z8RIolar8ojewqWNyIt1GZK9S7XixCtLVhwrhP98c+A=;
+        b=kAeF81mTngChlwUGS6c/arwbYyHgw9RSHfe4PcxFdkG8PqdM9JLTths4qcYWjk1ye6
+         WcLY9P3DzGalBpzDLezwEdFfQyupNL9e1ZZZ2bZuY8Z8W09v87l1fW3WqJXEe2YYPcPi
+         szrc09an83E6X0TkkdXxirCc0w2d0budSQY2HtNlBnbfIz2PwTX5vQyrUN2EBnBKEXLY
+         2prHY735pV9b/JHkzRmJpkADTFtIIDT6GYBgcaBqSh2wgsu/qqvDOlEN46nzxGtzoqkA
+         cXUH8o/F779r3awrxxbbDzTnLGrLzZ6o3bnVXUUClz3U/QYcwvkJk7f7s6E3hGkeACtf
+         OuvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709726719; x=1710331519;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Z8RIolar8ojewqWNyIt1GZK9S7XixCtLVhwrhP98c+A=;
+        b=tXY5AIE/chPLYjzMw8HLfAjAcOjgnzOudzrKtBdN+e1b6NSCiTjeFAo+GHBV7RmnBq
+         +KAdB3OZxQw3aCeh8eIvFqX55cPsfXZSdFs/jzs5DR0VCJTpUsd4F66N3WShz1f7sMJF
+         zyHeXFxvP2GDqu5y2JjTqouXu49DbK6VLDISAzVrv01IrdNIz2F8wWeSeORk0wrf+IZy
+         xO+HXk5CnZn9fyaRa9ImIq6qCK9G4L4BZhmMMeaYkgQoDfzdMSmIp1Zm2464x/TDAjIm
+         jAGmB4G09gFjMGC5f+ol9HK4yzWyS2gInwfskInir2nm5S7XBbuzQi9G1ioLLWqBtBFQ
+         mv1g==
+X-Forwarded-Encrypted: i=1; AJvYcCV2kSlvaau6x/uCvKu8xjr9daPADvE6gJkxqGBQshlg3Nv5M1OucKW6QtJczg8oYi2eeHs0jBiiB2aZfycCeqqYAqHfQtysvECdlh6H
+X-Gm-Message-State: AOJu0Yw+LEyi3i+Q4ikuMnmCs1lnh8BuWL+2LfqzzNZGunOe+5ABinIM
+	VxsbAQAyGHywezHWqvfcCnPqFJc0NT3gQeiklpAKL+9LVrCOG5HHUWAYqO6kTOw=
+X-Google-Smtp-Source: AGHT+IGCoXG6Rl4slT5HV6uXkUjMR2UjZ+4AnyHwlfCUp0/BkCYBOE0k6LPL7CYJvUf1+uaWpPSQTA==
+X-Received: by 2002:a17:906:13d5:b0:a45:95f5:f314 with SMTP id g21-20020a17090613d500b00a4595f5f314mr3820262ejc.42.1709726719025;
+        Wed, 06 Mar 2024 04:05:19 -0800 (PST)
+Received: from lola.. ([2a02:810d:7e40:14b0:d371:e319:5dd0:9b35])
+        by smtp.gmail.com with ESMTPSA id v27-20020a170906381b00b00a449f43a7afsm5637290ejc.113.2024.03.06.04.05.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Mar 2024 04:05:18 -0800 (PST)
+From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To: Rodolfo Giometti <giometti@enneenne.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] pps: use cflags-y instead of EXTRA_CFLAGS
+Date: Wed,  6 Mar 2024 13:05:15 +0100
+Message-ID: <20240306120515.15711-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
-X-Ovh-Tracer-Id: 6466324643755526875
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledriedugdefudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevjghfuffkffggtgfgofesthejredtredtjeenucfhrhhomheptehnughiucfuhhihthhiuceorghnughirdhshhihthhisehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnhepffetheduffdvhfdugfffudfgjeejudehheegfeeguefhieeugffhgfeuffdvgfefnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepuddvjedrtddrtddruddpkeelrddvudejrddutdelrdduieelpdefjedrheelrddugedvrddutddvnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpegrnhguihesvghtvgiiihgrnhdrohhrghdpnhgspghrtghpthhtohepuddprhgtphhtthhopehkvghrnhgvlhdqjhgrnhhithhorhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehkeegpdhmohguvgepshhmthhpohhuth
+Content-Transfer-Encoding: 8bit
 
-Hi
+Commit f77bf01425b1 ("kbuild: introduce ccflags-y, asflags-y and
+ldflags-y") deprecates use of EXTRA_CFLAGS in the kernel build.
 
-On Fri, 05 Jan 2024 15:39:35 +0100, Christophe JAILLET wrote:
-> wmt_i2c_reset_hardware() calls clk_prepare_enable(). So, should an error
-> occurs after it, it should be undone by a corresponding
-> clk_disable_unprepare() call, as already done in the remove function.
-> 
-> 
+This has been cleaned up in the whole kernel tree long ago, but this one
+single place must have been missed.
 
-Applied to i2c/i2c-host-fixes on
+Replace the EXTRA_CFLAGS use by the common pattern for such debug flags.
+No functional change.
 
-git://git.kernel.org/pub/scm/linux/kernel/git/andi.shyti/linux.git
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+Rodolfo, please ack.
 
-Thank you,
-Andi
+Greg, please pick this minor cleanup patch.
 
-Patches applied
-===============
-[1/1] i2c: wmt: Fix an error handling path in wmt_i2c_probe()
-      commit: 78c1dbed365217ee751531e24c18da77795074d9
+ drivers/pps/generators/Makefile | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/pps/generators/Makefile b/drivers/pps/generators/Makefile
+index 2d56dd0495d5..2589fd0f2481 100644
+--- a/drivers/pps/generators/Makefile
++++ b/drivers/pps/generators/Makefile
+@@ -5,6 +5,4 @@
+ 
+ obj-$(CONFIG_PPS_GENERATOR_PARPORT) += pps_gen_parport.o
+ 
+-ifeq ($(CONFIG_PPS_DEBUG),y)
+-EXTRA_CFLAGS += -DDEBUG
+-endif
++ccflags-$(CONFIG_PPS_DEBUG) := -DDEBUG
+-- 
+2.43.2
 
 

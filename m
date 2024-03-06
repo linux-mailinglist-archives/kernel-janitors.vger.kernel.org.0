@@ -1,104 +1,120 @@
-Return-Path: <kernel-janitors+bounces-2112-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2114-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C4187364E
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Mar 2024 13:27:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F948736C4
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Mar 2024 13:41:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D99BB21A03
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Mar 2024 12:27:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 766DD1C2265A
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Mar 2024 12:41:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7EC780614;
-	Wed,  6 Mar 2024 12:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0611130E5C;
+	Wed,  6 Mar 2024 12:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IMmn96V7"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCBE605DC;
-	Wed,  6 Mar 2024 12:27:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDA61272B9;
+	Wed,  6 Mar 2024 12:40:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709728049; cv=none; b=VHOhkRqfVU+0aUVBt6U/GjUJDatqlDZNrWtlGQBhboy/Zx1NxLt85DQmqmNMXXSFPvG2JSN0O/NIEzX4e3jhW3ixveKAAVHzs86INzfIuv4/vEwl0bFm82WFLitTC157ThOQxRgyX+qrzk+8dWZ5tD3Tz5UGnY5xdUehT4qSbZQ=
+	t=1709728861; cv=none; b=JHgWbBlWo5ESu20l13a2F7LogjiA2GoCFfKUQXd6mW+llFiHDXd97LBGCXaq+ZVDqwlVF4wq6XHhmuTI2luoUkY2QSp7T86xBq6M71ntpprcZuVloJh1BiCKhtX0YwoQ17tKqw/yMYjLY+suchbQVFBz89CKw/hw7LDHyF9nevw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709728049; c=relaxed/simple;
-	bh=odzYK9sDbtw2mcibUKgzKaZ9I64oqqSJfnvzyoEQ9j4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UGt79zfgwEa1sRAn6hRkzjDpNv7LFNgmkaL/lJLq+54ApUwuEMJ9jcXmx6JaYgK4H5lr9Ecde9yw1tovz1gHTl+l9A9t4IMs9b3pcrmrbCdmkBskWzSaGuZ3Unm3hPymKRuyU2Go/+qCt1L9VtVFq/OsYL//oE/d/eNn/MYG4Dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+	s=arc-20240116; t=1709728861; c=relaxed/simple;
+	bh=UtXFUhqermy9LTNrI/IvJ4ub3irTv6w86+6UyvBqI9o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=FHqr37Ifo619rgyc3GoWiicHEotxdQb2S1eF8utlClS5FiPcj/BgFVFJ8Kr4Z8F77AnUGUemdMcFYpkoCEoJAYr9nkx1M4K2+96rSe3nPOvS56I/ficxrBl5iOmsmoyakCk33YqbzFSP2jjdyOiFNgXzfweehdshWinHSebY5fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IMmn96V7; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-220ce420472so1286642fac.1;
-        Wed, 06 Mar 2024 04:27:27 -0800 (PST)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-412f0655d81so9651565e9.2;
+        Wed, 06 Mar 2024 04:40:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709728856; x=1710333656; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Sb4JijoDvx9NYWTRsmYG7XFGmbbVsOk1cVh5cF3zIr8=;
+        b=IMmn96V7S7rEkLoUjg0K9Zp9I2vdCvKuqsz6fGO4X5/XkDWxrIlcTiBPQBZoOfZ1Z6
+         TavlD9yFiDlJK7fg6lzhVn98J+G+J46W1TGA9R/R1mj7eXmbiWAJf/ydetbDkCoLrymm
+         sgvrdQ3BerwV6ZNGGBu/2BfBaAj/dECNznbMLUHYGl+JnqR2bnffYCgI7OCsJ6hNzYEa
+         Um0NBPShrjhGOqZsorqUSK14FXLxoeacT8tPlrg5Kom9j5CNc4wUPZj121l0q1jps29l
+         hiyILtrTQM4frcWVQlFJHY5iWXws6NlDm7ScSMLoE7Oi23StOD31VC8ur9aRMwmt17MP
+         Evrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709728047; x=1710332847;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k2uwWIvrqigw9U2DmUo/9WpsuuGHJz16WfDDJYpM0GE=;
-        b=Z0/sWuyDdS4UNeM5tnrFwChMo7UOXnnM+6j8V79cFn15b/1spWJIVZJuYSbj3M3d0d
-         JctUpSKJJPqcqgeEC0ZjyXbiNnzU3Ehn8HCYmbK52oujSqLtE5vfx2OeUrIh4LlRunmJ
-         NENWjw84FfttJOcWai5xMtcVXHVrtaN5ksfmJO0rRk96WrkCjBc7vmY0Rw9uDg6q7rLX
-         3NLZgC008RckJGzU2QiZIlYVUbrERtWb1LpPv5sP6+K6+Pn58j6Sr0TXnP7ACp/RBwjG
-         nRRRKT/Dsjmtz/iszjpn9xuk0a9vjIyppY4GfUAIzZ2b/cO5fGHVaepqeFtRXSYegzqE
-         f3Ag==
-X-Forwarded-Encrypted: i=1; AJvYcCXniDR6AcrGNAeRZN57hCI6WOXq7n7AZl3wKdNfvF86SHdFdSVTVtnJ4cUaMC/8HYCMTg4aO2Y23FpOuKZgwuDJ7l036iBAeA35c2aGPOjSOSyxTglfQcSTqBMYWQVVt3R7FiPeXGkGtcm/Kkj6RLoYpBWIEDullf13+DNKlNm2fo37cLURXMA=
-X-Gm-Message-State: AOJu0YySt4s8ltKTUhS10FMnKjbVEyJpKu/r0mUb17OfP6Q+A/Md5h7Y
-	b9FqdPCMweNoigyzIhrm674Jv/IX4RuXO9OBajsfmTmOtl5DRZRNlYyfxs+onmYb9p6++Wf7MZb
-	GsmxajPTsxBMu/dY0zgzyT5F5A+0=
-X-Google-Smtp-Source: AGHT+IEw8QK+9xM0ePQfDuX8Nb/nB70c9hqG08jVgDbSBKLXQ+U/dWyKMZi23KsM5ugJqOEYnOqPtzHiTAFelTx4mk8=
-X-Received: by 2002:a05:6871:60a:b0:221:16e3:8f22 with SMTP id
- w10-20020a056871060a00b0022116e38f22mr3274775oan.5.1709728047162; Wed, 06 Mar
- 2024 04:27:27 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709728856; x=1710333656;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Sb4JijoDvx9NYWTRsmYG7XFGmbbVsOk1cVh5cF3zIr8=;
+        b=EFGZM+OPTL1DnxLT2ViLjY5XXtB2Mr8srs06dSSDNWPoPyQJ76otMEH/Dm/hMJF3+r
+         ShgL4FjQn+EiM7hGrMb24DaQIKcB0+tc32orO8SxK/7sGGRyJUxRqmm2F4bowqTtz6Wc
+         31cEnOccVTCqvo8gBzRoT9odAuDM0ltOtf1Zhy9fcJWhwISJ02U0wxLtIiGNN3WGXQJI
+         ZfZXi3ooRbEcHszFoFBbzWcDUxZ4RJFcZqNcZbB/G4x7pAzE0992MEp8sz+aXAmyJe7L
+         uZ+gp418seaNeRU2tGROydB9cLC27oFgnCKgLuOSsd/uQZ4uEaEjman4+AKqujLSje6I
+         6rbA==
+X-Forwarded-Encrypted: i=1; AJvYcCUJzAOfwfeurAFuyq1UkZTG2tDNbuAdS9fn6t1j83uD29y2Cq63VhubVjx87vCLrf/VIOlK1d/6rzqiyBTuikCleQ6aULZ8qOp1ZjK7Q7iaMk7xHBOPCLpW108JdP1EC3G3ybEJD6bmkxtr8g==
+X-Gm-Message-State: AOJu0YyI+g2QFhI19dlWhaCdN6hzWvSKRdBwLunr2lJjNlaLFsN0taCn
+	eHD3deXTnoHep+CsQF8P77dqfiubI3TezFyYp3jZWpLTb5IhTra1
+X-Google-Smtp-Source: AGHT+IF1DaezPiqzFxxA1H+f5F4oN502JTyV/jTD1scFcDyo8uoWYmdH3zmw/9EBnVpZ5lKsUQzOAw==
+X-Received: by 2002:a05:600c:4448:b0:412:f6dc:1d3 with SMTP id v8-20020a05600c444800b00412f6dc01d3mr1046437wmn.11.1709728855924;
+        Wed, 06 Mar 2024 04:40:55 -0800 (PST)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id m9-20020a05600c3b0900b0041294d015fbsm20904242wms.40.2024.03.06.04.40.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Mar 2024 04:40:55 -0800 (PST)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Wedson Almeida Filho <walmeida@microsoft.com>,
+	Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] hfsplus: remove dev_err message "xattr exists yet"
+Date: Wed,  6 Mar 2024 12:40:54 +0000
+Message-Id: <20240306124054.1785697-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <3332079a-9548-4b19-bba9-69270be115ec@moroto.mountain>
-In-Reply-To: <3332079a-9548-4b19-bba9-69270be115ec@moroto.mountain>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 6 Mar 2024 13:27:15 +0100
-Message-ID: <CAJZ5v0hF_u+_j7ZJHh8ssdGUWMQWEUDa87Y3YLUcJU9zJSUKFw@mail.gmail.com>
-Subject: Re: [PATCH] thermal: core: remove unnecessary check in trip_point_hyst_store()
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 6, 2024 at 6:31=E2=80=AFAM Dan Carpenter <dan.carpenter@linaro.=
-org> wrote:
->
-> This code was shuffled around a bit recently.  We no longer need to
-> check the value of "ret" because we know it's zero.
->
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> ---
->  drivers/thermal/thermal_sysfs.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/thermal/thermal_sysfs.c b/drivers/thermal/thermal_sy=
-sfs.c
-> index 7c02d35384ce..5b533fa40437 100644
-> --- a/drivers/thermal/thermal_sysfs.c
-> +++ b/drivers/thermal/thermal_sysfs.c
-> @@ -181,7 +181,7 @@ trip_point_hyst_store(struct device *dev, struct devi=
-ce_attribute *attr,
->
->         mutex_unlock(&tz->lock);
->
-> -       return ret ? ret : count;
-> +       return count;
->  }
->
->  static ssize_t
-> --
+While exercising hfsplus with stress-ng with xattr tests the kernel
+log was spammed with many "xattr exists yet" messages. The error
+EOPNOTSUPP is returned, so the need to emit these error messages is
+not necessary; removing them reduces kernel error spamming.
 
-Good catch, applied.
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ fs/hfsplus/xattr.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Thanks!
+diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
+index 9c9ff6b8c6f7..57101524fff4 100644
+--- a/fs/hfsplus/xattr.c
++++ b/fs/hfsplus/xattr.c
+@@ -288,7 +288,6 @@ int __hfsplus_setxattr(struct inode *inode, const char *name,
+ 
+ 	if (!strcmp_xattr_finder_info(name)) {
+ 		if (flags & XATTR_CREATE) {
+-			pr_err("xattr exists yet\n");
+ 			err = -EOPNOTSUPP;
+ 			goto end_setxattr;
+ 		}
+@@ -335,7 +334,6 @@ int __hfsplus_setxattr(struct inode *inode, const char *name,
+ 
+ 	if (hfsplus_attr_exists(inode, name)) {
+ 		if (flags & XATTR_CREATE) {
+-			pr_err("xattr exists yet\n");
+ 			err = -EOPNOTSUPP;
+ 			goto end_setxattr;
+ 		}
+-- 
+2.39.2
+
 

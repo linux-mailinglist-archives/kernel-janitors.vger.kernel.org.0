@@ -1,95 +1,87 @@
-Return-Path: <kernel-janitors+bounces-2146-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2144-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4537875586
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Mar 2024 18:50:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF9B875529
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Mar 2024 18:30:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F2C0286BF3
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Mar 2024 17:50:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20F711F23AAE
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Mar 2024 17:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F2C130E5A;
-	Thu,  7 Mar 2024 17:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527F6130E53;
+	Thu,  7 Mar 2024 17:29:54 +0000 (UTC)
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D457F130E23;
-	Thu,  7 Mar 2024 17:50:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.17
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 3325F12FF7C
+	for <kernel-janitors@vger.kernel.org>; Thu,  7 Mar 2024 17:29:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.131.102.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709833829; cv=none; b=MAklZEUdOruPMdFiK5t0navwoDKuTxDuq9Zmk6oT+rSbs8m2gSE2CwCdQumpwxyT7PTGcxtjIuucM0WYUlTTqZ9HQACJzhWXZwQ+C1y3AWMbjqSXFmmT6TYhBmE4i7Z4nXTtx4T1fKHm4NMA6xAumdIzgOsHUNA2YpeGDIwHdwk=
+	t=1709832594; cv=none; b=bSdGH5oM6NHH/WuVHN1/j8wuo4R3eaqoFtwgKLHI1lTPEYEeIDAYcGcCdwFvXK7EdrKJDLlmujlTE6r6f0pfhSrxFbsTuFQ+8qlnYCyoosd+HTrOkSV7T+tDSh0qr0DUitDIYJ/hW/IJlsxjQzKS6GDKae+Oe1tCXUbm6NICTtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709833829; c=relaxed/simple;
-	bh=UkQw+M2hziB+AtfHClDHqBrPe0u0iSyiMBdceYnvNxw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=O29iQhebTmK42pab0P1Sk6eoQpy+j5kgGStkiHfSSIBhSJjwypIWArFG07YIcDAI9nma7INVkqQyO3Lkm6F9lAVg1z46K4RgDwHw64SowOY3UaS5/Hzlv+DD9vIEgQINpWlYGZ8MS3jqQVl3hQJElLirTYz1nGFEzAf9lEgFhdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com; spf=pass smtp.mailfrom=perches.com; arc=none smtp.client-ip=216.40.44.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
-Received: from omf03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 03BBB1C14D8;
-	Thu,  7 Mar 2024 17:13:35 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf03.hostedemail.com (Postfix) with ESMTPA id 5E9B76000B;
-	Thu,  7 Mar 2024 17:13:33 +0000 (UTC)
-Message-ID: <3d9e47beeb08b3319651b49b81da4271cbbcad96.camel@perches.com>
-Subject: Re: checkpatch.pl getting stuck on a macro in mm/kmsan/kmsan_test.c
-From: Joe Perches <joe@perches.com>
-To: Lukas Bulwahn <lukas.bulwahn@gmail.com>, Dan Carpenter
-	 <dan.carpenter@linaro.org>
-Cc: kernel-janitors <kernel-janitors@vger.kernel.org>, Linux Kernel
-	Mailing List <linux-kernel@vger.kernel.org>
-Date: Thu, 07 Mar 2024 09:13:32 -0800
-In-Reply-To: <CAKXUXMwCdV466mRd4K0ePV73qDO9GRAph4KuC5nQ0JAp-ouemQ@mail.gmail.com>
-References: 
-	<CAKXUXMwCdV466mRd4K0ePV73qDO9GRAph4KuC5nQ0JAp-ouemQ@mail.gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	s=arc-20240116; t=1709832594; c=relaxed/simple;
+	bh=knRagf2SaEsYlyHQSJfvNiE/tRYyl0/2a8GwXg+213Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iqLd8zWTIipKyGv+wJDPmrM6Qzovu+ZYeXVUiqet2J0CD7hB1xweS6XC0f+BxicAqeNhDRMiEl2IfAD2e6Aj0Y5JDE4nJzm9MgCEGWURlsyVcIjwqRw14C/ihErPrbPC7yTFF6aoWgOrnO4afpriPyJjKQUJlbq/Rc60RHWR1Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu; spf=pass smtp.mailfrom=netrider.rowland.org; arc=none smtp.client-ip=192.131.102.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
+Received: (qmail 226215 invoked by uid 1000); 7 Mar 2024 12:29:51 -0500
+Date: Thu, 7 Mar 2024 12:29:51 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: Colin Ian King <colin.i.king@gmail.com>,
+  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+  kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] usb: gadget: net2272: remove redundant variable
+ irqflags
+Message-ID: <2b318367-2428-44ba-b4d9-0a452fcb7858@rowland.harvard.edu>
+References: <20240307105135.1981060-1-colin.i.king@gmail.com>
+ <mywsgq453muhggv5y7pfrsg7zrodtuebcpo5rbc4kus5h2ameo@fhnpemjuntaz>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 5E9B76000B
-X-Stat-Signature: bcjmq85es8tghntjkgwc514jcdkrqkb4
-X-Rspamd-Server: rspamout01
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1+lFb7snM1uJiWroRAnCi7TfyQNi+Z2QnM=
-X-HE-Tag: 1709831613-598557
-X-HE-Meta: U2FsdGVkX1/fqsZ7gRjkaPArITu2uknZnBXYsXrXUZ/0LIJoV41Ft4QGlY8WStIHj6JK0A/r25AhV4Xs1gk38f/cs+yGSdF9PNMuk6mMWMHLnIjR8OeQyOhBmTmntEML7n6fcwy1f0ywFPhBvJLBA12DqEhI3ouG8JxO1b6QMEbYC5ZwiSqARvUApEJBobDOf2A1/1woP6uPvSJzatdxN2VndGDFXCs7kpFODaYmKL/uTnOi+Lro4GK16qiZthtEkNsc1j6Lj2/i+70ZGA7mslan9AoB5tQt9CJeSSe+5DKKFGsalq787+RPFnzn6P8L
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <mywsgq453muhggv5y7pfrsg7zrodtuebcpo5rbc4kus5h2ameo@fhnpemjuntaz>
 
-On Wed, 2024-03-06 at 10:33 +0100, Lukas Bulwahn wrote:
-> Dear Joe,
->=20
-> while running checkpatch.pl -f on all files in the kernel repository
-> (v6.8-rc1) for some experiment, I noticed that checkpatch.pl got stuck
-> on mm/kmsan/kmsan_test.c, i.e., ./scripts/checkpatch.pl -f
-> mm/kmsan/kmsan_test.c never terminates.
->=20
-> I could already boil it down to checkpatch getting stuck on the macro
-> #define DEFINE_TEST_MEMSETXX(size), see lines 541 to 554 in
-> mm/kmsan/kmsan_test.c on v6.8-rc1.
->=20
-> I do not know if it is worth fixing, but certainly I was surprised
-> that reasonable code can put checkpatch into some stuck state.
->=20
+On Thu, Mar 07, 2024 at 05:51:59PM +0100, Uwe Kleine-König wrote:
+> On Thu, Mar 07, 2024 at 10:51:35AM +0000, Colin Ian King wrote:
+> > The variable irqflags is being initialized and being bit-or'd with
+> > values but it is never read afterwards. The variable is redundant
+> > and can be removed.
+> > 
+> > Cleans up clang scan build warning:
+> > drivers/usb/gadget/udc/net2272.c:2610:15: warning: variable 'irqflags'
+> > set but not used [-Wunused-but-set-variable]
+> > 
+> > Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> 
+> this "problem" exists since the driver was introduced in commit
+> ceb80363b2ec ("USB: net2272: driver for PLX NET2272 USB device
+> controller"). Might be worth a Fixes: line.
+> 
+> I wonder if the better fix would be:
+> 
+> diff --git a/drivers/usb/gadget/udc/net2272.c b/drivers/usb/gadget/udc/net2272.c
+> index 12e76bb62c20..19bbc38f3d35 100644
+> --- a/drivers/usb/gadget/udc/net2272.c
+> +++ b/drivers/usb/gadget/udc/net2272.c
+> @@ -2650,7 +2650,7 @@ net2272_plat_probe(struct platform_device *pdev)
+>  		goto err_req;
+>  	}
+>  
+> -	ret = net2272_probe_fin(dev, IRQF_TRIGGER_LOW);
+> +	ret = net2272_probe_fin(dev, irqflags);
+>  	if (ret)
+>  		goto err_io;
 
-I know why it hangs.  I'll give it a think for a bit.
-I rather doubt Dan's suggestion is the appropriate one.
+I agree, that makes much more sense.
 
-Code is:
-
-		volatile uint##size##_t
-uninit;			\
-
-and in checkpatch line 2304:
-
-			$possible =3D~ s/\s*$Type\s*//g;
-
-where uint is a $Type it removes.
-
+Alan Stern
 

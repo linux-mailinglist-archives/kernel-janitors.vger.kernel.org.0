@@ -1,137 +1,127 @@
-Return-Path: <kernel-janitors+bounces-2145-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2147-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D39887557A
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Mar 2024 18:46:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A05328755F8
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Mar 2024 19:18:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7F082892C2
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Mar 2024 17:46:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8251B24DC0
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Mar 2024 18:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3E6130E59;
-	Thu,  7 Mar 2024 17:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FA8134759;
+	Thu,  7 Mar 2024 18:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OjoQWOFC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RF7vrSnw"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE578130AE1;
-	Thu,  7 Mar 2024 17:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BC6132494;
+	Thu,  7 Mar 2024 18:17:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709833596; cv=none; b=UzA5dfhd5EIjktpGjSOJA9I+gPn9SybDQlWVLU/pZwtAR+r0aQWqCV0VyZQhrb9l/ZNf5zwl6Cu8Di06y0fB59MAnEEHGF0WoGcOBnLnc/8/ZJKD/HuTOCiJ463a6bVHB0+/BOmMFirz2WvTeUsk1U74E0X1GMSFg34HDOXNm8s=
+	t=1709835459; cv=none; b=cLghDe4ks0yOooBoIzTQI/fNrBTplpwDWFdlLGaQveXrb59RGlF6kvgoGsoSZZQrQC3PKc+5Mpzb4j7fUmTl3kWKrMsA6CWKgIm6MbqIzR6yV0vUl5aXWbN8x8uZTOmtji2L6GhCWvKSPyZkeBI8eqqXuAeBeJYbQE8DOwoABd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709833596; c=relaxed/simple;
-	bh=X59QqX4H8M/10w2nNvVyVuDtckeb/yTabVDkxTaENJU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xt7ADROPT8UuUqZMe0DA4VGY5vmpenpVkWRzSWk+fTHbV0/upYDJ8pOQ0KWG1LudSXeAg4w4UVv0LfdsMASNjNMJ0gLAhqzwlO55Zq/Tc3SG28WVzkp8S1r/Q1EOYzsXx2dns5/Pet44CJgkD80HCkBW5hAu+owoW+L/+Lh6SI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OjoQWOFC; arc=none smtp.client-ip=209.85.128.50
+	s=arc-20240116; t=1709835459; c=relaxed/simple;
+	bh=tS/IFPg7cx1pgTE8i9jCOG/PSDwlO/ZsPG9gatsNzZM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=GlEtWKjZ/yjHwu+K5U2mQuWEsJBRWn5kifWI7lZrpwdRCvTlugWyZX6FbbIPmS61JXFNsRQhurWsQxdOp3EPxsu2XASXswF/rtMxCXa59u/doxcfUco9Uu7u/jE7qYi8KPv5BR02lnTodGQUrdQdWdhcDtWEC2uqs2EwbSV5zbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RF7vrSnw; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4131651709bso984445e9.2;
-        Thu, 07 Mar 2024 09:46:34 -0800 (PST)
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-33ddd1624beso782475f8f.1;
+        Thu, 07 Mar 2024 10:17:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709833593; x=1710438393; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zidrMVgwKZG7PoFFeaVJDkEIlmqOlMqbL//oQj2VMe0=;
-        b=OjoQWOFChxbSpB9AS+JZgmabKUD0mgFo+ChAO+Yfpu0O35hTzuRdEOxzoaqXqHuniD
-         Harn5wFv7i4/BePEsVOLT11XUv+MfTQBrG+A7DE5B+/F3QmGc4pJuE1xdXYkOvHdI5++
-         +j4y6+E9pzYwoq4DPaVMFOp5uBOcrfmPYLgGMcoGZczCPlkrVJTAbRtDHS7YK5WFnTjo
-         UT0azqA10Iw/frSF+dt+be3LcVUOg9BRT0PwUZR/v28+gg74hATTTiqphJygwu1FEsp9
-         p0D5kvOe5mZ1ct9IgSsSkRg7kvmN76w8YNHO9c8QqvMEet1rNYu7rtmtnPDBCSBAkfap
-         RXhA==
+        d=gmail.com; s=20230601; t=1709835456; x=1710440256; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=E4IzLeRGDXIml4WPRP0z/vVkc5vfGEv9d+YctMnKNIQ=;
+        b=RF7vrSnwAPwaStIzwXNK5M9TL15xNRpGauS80BK3OjvBDoiySj3KxCEGhlmDAq+NF+
+         UxkCHX0gycoWXrPEbb+rps1TGxH2WdtbnxlMtaUbshy2CWZ8tOkoDn296S5oOD988uYh
+         /MCrJtPhURHX5DLIiQ3dDuPAUfwvo3pfcqJxCLw/L7Enh9GrKKH7iQ448wdLof5NDj8b
+         byK/I0uAUCwR7E7xHyIPAa61X7URKPGXzTefwQNIvVxjEHQfpYU/FPsC5YgQFExxfVT3
+         FXuOjbWKfsh9XaB7fF416wsQ9rOu51zEHZFLF7y1iMlexaIVL8rpGUsTI1bMioxF1hT0
+         XPyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709833593; x=1710438393;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zidrMVgwKZG7PoFFeaVJDkEIlmqOlMqbL//oQj2VMe0=;
-        b=g2IDhh1alMPBc3xqFAD7TikRmgvPZDFajEhfrEM1TW9an4C+fC0cpNRNipNE7xUGtJ
-         Jx7YFA8NI2nQdqeRaSe+L1ltKIYFBnXBAQQO8h1owpcY3bhQfiNtaZz0HExqhLM8xk+b
-         Bl3NqolS6bwZw09NbvVd/Vm7tyf2lo+yPavxBE0zsqpjD4wWbkkLVx+2Hdz1nksxNtzJ
-         Ywi0oQEHNFqG4OrSugnpNwrUjt4zTkaDNojeAmtnCKULq/oXSxHQc42scylKsN9xAvQX
-         P/pAPKjrDUP6oZryZx440wGhA0zKeF1ED+7huRAg8agZ6LYfaAXRbt4crgGMHqwY4av+
-         mI9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUiy+XYS+P8VdW+9eoebCYrHrd4SQ4meEDmNW85v/9hA+ootf00vaqJf8o4LFd5/pEUFHsP63LnESJdK79MmpgFapv/9Oi+MEwU462zWQD2RCrqwiiLHSB6Vw8pJvgJ2SQyUyeiv93fhqlpP5bBzGBuDbWQiGJi0WWAyPLVL70lAUtoYkxk3hP1
-X-Gm-Message-State: AOJu0YyPpIMEuocm2lq5VPRTBvGoT1n158GxFKV0XM3poSukqiNy7g0y
-	rErOmljzv+TMY7VVtIRt1LQ8fWbWpgxYb5Q6Z+TQHASCfCS9A1iY
-X-Google-Smtp-Source: AGHT+IHetAQpP5/ML/yXLg+SIqzs0WbSWPeIuCRA1d1fNHUAKAT9glKWnCfGjizvnc9rO6jrvLS/0A==
-X-Received: by 2002:a05:600c:46cd:b0:412:dcf0:991a with SMTP id q13-20020a05600c46cd00b00412dcf0991amr10169173wmo.12.1709833592771;
-        Thu, 07 Mar 2024 09:46:32 -0800 (PST)
-Received: from [192.168.0.101] (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.googlemail.com with ESMTPSA id n20-20020a05600c501400b00412ea92f1b4sm3473188wmr.19.2024.03.07.09.46.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Mar 2024 09:46:32 -0800 (PST)
-Message-ID: <7aab696f-6a4f-410d-9769-17fda28f5c4d@gmail.com>
-Date: Thu, 7 Mar 2024 17:46:31 +0000
+        d=1e100.net; s=20230601; t=1709835456; x=1710440256;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=E4IzLeRGDXIml4WPRP0z/vVkc5vfGEv9d+YctMnKNIQ=;
+        b=pFu88zBeArTsG5pH7hWs6qWTVvM2AV/QzCk+t1Ry94kYeM3rbfJzOuR9axNTfBpBEB
+         8GQEerZiWKttAs8+YMVZs0ODPoxszwRAtJ3MD5XjuBcy2xcApSD93VlJ8/pQl0K0InkN
+         cgySD8GAjmItuVeXC0tR0tT5cuV11EWHckyxyKTb/LCcZz0fBLl5R+CVRRB8DF2eAYeV
+         6QJSYZeDby8GJKBTHIwVpCpA1sAOgGsyCrDAGqu78x2ODB/MfXsi5RjUgXP5SkQMbjt5
+         B81SpGFeaYfNs/cm1kaN1y6waQtKTOroMrDzqOcULGcVEkat43jxVTDviVlE5bMSaT6i
+         9tjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWA9e87Sb/Dh2cqlZ17NW177IBS4Q5SDRT4/BfVjwxi/CIsRIKmNdxmFrNck5EKslMb5HSd9nwnIVQGXlp2BWtUHIW6teCjN4n3t1A+HiknXOTtxQ13EAuGbiThMVzKytl3M6T/neeJ
+X-Gm-Message-State: AOJu0YyMmw3RigPil5eHjVDx3O2WkKZs3I7MkA6u0c71HZtEUeZckrMY
+	WsfVO1ehpx0V/5JmDHwgTLZBHnTK77bSO+lPW1aw5Cov9SFCE+K9Wg5o3eGh65k=
+X-Google-Smtp-Source: AGHT+IFhXEcBUHBfrGKPRVKKjnrYD0VO7ipK2IkyLwPd+jvBJOsv+bpjH/6Bly7zRDfwPiRtfhvtag==
+X-Received: by 2002:adf:a31a:0:b0:33e:73a3:fd13 with SMTP id c26-20020adfa31a000000b0033e73a3fd13mr624632wrb.16.1709835455886;
+        Thu, 07 Mar 2024 10:17:35 -0800 (PST)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id bw1-20020a0560001f8100b0033db0c866f7sm21242811wrb.11.2024.03.07.10.17.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Mar 2024 10:17:35 -0800 (PST)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Roy Huang <roy.huang@analog.com>,
+	Ash Aziz <ash.aziz@plxtech.com>,
+	Mike Frysinger <vapier@gentoo.org>,
+	Seth Levy <seth.levy@plxtech.com>,
+	linux-usb@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next][V2] usb: gadget: net2272: Use irqflags in the call to net2272_probe_fin
+Date: Thu,  7 Mar 2024 18:17:34 +0000
+Message-Id: <20240307181734.2034407-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH][next] usb: gadget: net2272: remove redundant variable
- irqflags
-Content-Language: en-US
-To: Alan Stern <stern@rowland.harvard.edu>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240307105135.1981060-1-colin.i.king@gmail.com>
- <mywsgq453muhggv5y7pfrsg7zrodtuebcpo5rbc4kus5h2ameo@fhnpemjuntaz>
- <2b318367-2428-44ba-b4d9-0a452fcb7858@rowland.harvard.edu>
-From: "Colin King (gmail)" <colin.i.king@gmail.com>
-In-Reply-To: <2b318367-2428-44ba-b4d9-0a452fcb7858@rowland.harvard.edu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-On 07/03/2024 17:29, Alan Stern wrote:
-> On Thu, Mar 07, 2024 at 05:51:59PM +0100, Uwe Kleine-König wrote:
->> On Thu, Mar 07, 2024 at 10:51:35AM +0000, Colin Ian King wrote:
->>> The variable irqflags is being initialized and being bit-or'd with
->>> values but it is never read afterwards. The variable is redundant
->>> and can be removed.
->>>
->>> Cleans up clang scan build warning:
->>> drivers/usb/gadget/udc/net2272.c:2610:15: warning: variable 'irqflags'
->>> set but not used [-Wunused-but-set-variable]
->>>
->>> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
->>
->> this "problem" exists since the driver was introduced in commit
->> ceb80363b2ec ("USB: net2272: driver for PLX NET2272 USB device
->> controller"). Might be worth a Fixes: line.
->>
->> I wonder if the better fix would be:
->>
->> diff --git a/drivers/usb/gadget/udc/net2272.c b/drivers/usb/gadget/udc/net2272.c
->> index 12e76bb62c20..19bbc38f3d35 100644
->> --- a/drivers/usb/gadget/udc/net2272.c
->> +++ b/drivers/usb/gadget/udc/net2272.c
->> @@ -2650,7 +2650,7 @@ net2272_plat_probe(struct platform_device *pdev)
->>   		goto err_req;
->>   	}
->>   
->> -	ret = net2272_probe_fin(dev, IRQF_TRIGGER_LOW);
->> +	ret = net2272_probe_fin(dev, irqflags);
->>   	if (ret)
->>   		goto err_io;
-> 
-> I agree, that makes much more sense.
+Currently the variable irqflags is being set but is not being used,
+it appears it should be used in the call to net2272_probe_fin
+rather than IRQF_TRIGGER_LOW being used. Kudos to Uwe Kleine-König
+for suggesting the fix.
 
-OK, I'll send a V2, but I can't test it, so I suspect that is a risk, 
-but it is clearly wrong as it stands.
+Cleans up clang scan build warning:
+drivers/usb/gadget/udc/net2272.c:2610:15: warning: variable 'irqflags'
+set but not used [-Wunused-but-set-variable]
 
-Colin
+Fixes: ceb80363b2ec ("USB: net2272: driver for PLX NET2272 USB device controller")
 
-> 
-> Alan Stern
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+
+V2: don't remove irqflags but instead use it in the call to net2272_probe_fin
+
+---
+ drivers/usb/gadget/udc/net2272.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/usb/gadget/udc/net2272.c b/drivers/usb/gadget/udc/net2272.c
+index 12e76bb62c20..19bbc38f3d35 100644
+--- a/drivers/usb/gadget/udc/net2272.c
++++ b/drivers/usb/gadget/udc/net2272.c
+@@ -2650,7 +2650,7 @@ net2272_plat_probe(struct platform_device *pdev)
+ 		goto err_req;
+ 	}
+ 
+-	ret = net2272_probe_fin(dev, IRQF_TRIGGER_LOW);
++	ret = net2272_probe_fin(dev, irqflags);
+ 	if (ret)
+ 		goto err_io;
+ 
+-- 
+2.39.2
 
 

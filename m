@@ -1,131 +1,95 @@
-Return-Path: <kernel-janitors+bounces-2143-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2146-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBBCF875498
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Mar 2024 17:52:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4537875586
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Mar 2024 18:50:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5669A1F23354
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Mar 2024 16:52:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F2C0286BF3
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Mar 2024 17:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DEB012FF8B;
-	Thu,  7 Mar 2024 16:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F2C130E5A;
+	Thu,  7 Mar 2024 17:50:29 +0000 (UTC)
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94FE12F5B0
-	for <kernel-janitors@vger.kernel.org>; Thu,  7 Mar 2024 16:52:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D457F130E23;
+	Thu,  7 Mar 2024 17:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709830325; cv=none; b=JEQQ3GgYKurTldSWoJkJEQ8ITkqks/QVARCtaNVAFcOpB5T8BvUdp23rlGE3ngFa3y0tguDseEEwTfBj47MZm9CvWSHOXiaixMgWg2p9b2OUdJjvWz+Ze7Zco27Bpvf0InTOND8cUHv2w+BMEaCAQt/OWEaA9kJoEIcCwEWpPBk=
+	t=1709833829; cv=none; b=MAklZEUdOruPMdFiK5t0navwoDKuTxDuq9Zmk6oT+rSbs8m2gSE2CwCdQumpwxyT7PTGcxtjIuucM0WYUlTTqZ9HQACJzhWXZwQ+C1y3AWMbjqSXFmmT6TYhBmE4i7Z4nXTtx4T1fKHm4NMA6xAumdIzgOsHUNA2YpeGDIwHdwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709830325; c=relaxed/simple;
-	bh=i9CCT9j7BCqV2bE+0gCx3jMpwRqeW581xksody4aj88=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BcCOZancUywRkpygTUaojrxWLD2WNkul7HaE849gHrBNOBb2WhpwZIZVNOaLWVqlqBIaefCnFMBw4hXPxskfi6YadXI+/WFLkxgV3Ol+QS+0r6hEkHovfjBoeAAR1DNxf+e8K4b/6Z9m0bTzDmLgsR3/cukt+n8lltZuqk/F39w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1riGyO-00019r-AR; Thu, 07 Mar 2024 17:52:00 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1riGyN-004yht-Qw; Thu, 07 Mar 2024 17:51:59 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1riGyN-001PCL-2O;
-	Thu, 07 Mar 2024 17:51:59 +0100
-Date: Thu, 7 Mar 2024 17:51:59 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Colin Ian King <colin.i.king@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] usb: gadget: net2272: remove redundant variable
- irqflags
-Message-ID: <mywsgq453muhggv5y7pfrsg7zrodtuebcpo5rbc4kus5h2ameo@fhnpemjuntaz>
-References: <20240307105135.1981060-1-colin.i.king@gmail.com>
+	s=arc-20240116; t=1709833829; c=relaxed/simple;
+	bh=UkQw+M2hziB+AtfHClDHqBrPe0u0iSyiMBdceYnvNxw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=O29iQhebTmK42pab0P1Sk6eoQpy+j5kgGStkiHfSSIBhSJjwypIWArFG07YIcDAI9nma7INVkqQyO3Lkm6F9lAVg1z46K4RgDwHw64SowOY3UaS5/Hzlv+DD9vIEgQINpWlYGZ8MS3jqQVl3hQJElLirTYz1nGFEzAf9lEgFhdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com; spf=pass smtp.mailfrom=perches.com; arc=none smtp.client-ip=216.40.44.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
+Received: from omf03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 03BBB1C14D8;
+	Thu,  7 Mar 2024 17:13:35 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf03.hostedemail.com (Postfix) with ESMTPA id 5E9B76000B;
+	Thu,  7 Mar 2024 17:13:33 +0000 (UTC)
+Message-ID: <3d9e47beeb08b3319651b49b81da4271cbbcad96.camel@perches.com>
+Subject: Re: checkpatch.pl getting stuck on a macro in mm/kmsan/kmsan_test.c
+From: Joe Perches <joe@perches.com>
+To: Lukas Bulwahn <lukas.bulwahn@gmail.com>, Dan Carpenter
+	 <dan.carpenter@linaro.org>
+Cc: kernel-janitors <kernel-janitors@vger.kernel.org>, Linux Kernel
+	Mailing List <linux-kernel@vger.kernel.org>
+Date: Thu, 07 Mar 2024 09:13:32 -0800
+In-Reply-To: <CAKXUXMwCdV466mRd4K0ePV73qDO9GRAph4KuC5nQ0JAp-ouemQ@mail.gmail.com>
+References: 
+	<CAKXUXMwCdV466mRd4K0ePV73qDO9GRAph4KuC5nQ0JAp-ouemQ@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gewgcxuilb6kaoqd"
-Content-Disposition: inline
-In-Reply-To: <20240307105135.1981060-1-colin.i.king@gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
+X-Rspamd-Queue-Id: 5E9B76000B
+X-Stat-Signature: bcjmq85es8tghntjkgwc514jcdkrqkb4
+X-Rspamd-Server: rspamout01
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX1+lFb7snM1uJiWroRAnCi7TfyQNi+Z2QnM=
+X-HE-Tag: 1709831613-598557
+X-HE-Meta: U2FsdGVkX1/fqsZ7gRjkaPArITu2uknZnBXYsXrXUZ/0LIJoV41Ft4QGlY8WStIHj6JK0A/r25AhV4Xs1gk38f/cs+yGSdF9PNMuk6mMWMHLnIjR8OeQyOhBmTmntEML7n6fcwy1f0ywFPhBvJLBA12DqEhI3ouG8JxO1b6QMEbYC5ZwiSqARvUApEJBobDOf2A1/1woP6uPvSJzatdxN2VndGDFXCs7kpFODaYmKL/uTnOi+Lro4GK16qiZthtEkNsc1j6Lj2/i+70ZGA7mslan9AoB5tQt9CJeSSe+5DKKFGsalq787+RPFnzn6P8L
 
-
---gewgcxuilb6kaoqd
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Mar 07, 2024 at 10:51:35AM +0000, Colin Ian King wrote:
-> The variable irqflags is being initialized and being bit-or'd with
-> values but it is never read afterwards. The variable is redundant
-> and can be removed.
+On Wed, 2024-03-06 at 10:33 +0100, Lukas Bulwahn wrote:
+> Dear Joe,
 >=20
-> Cleans up clang scan build warning:
-> drivers/usb/gadget/udc/net2272.c:2610:15: warning: variable 'irqflags'
-> set but not used [-Wunused-but-set-variable]
+> while running checkpatch.pl -f on all files in the kernel repository
+> (v6.8-rc1) for some experiment, I noticed that checkpatch.pl got stuck
+> on mm/kmsan/kmsan_test.c, i.e., ./scripts/checkpatch.pl -f
+> mm/kmsan/kmsan_test.c never terminates.
 >=20
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> I could already boil it down to checkpatch getting stuck on the macro
+> #define DEFINE_TEST_MEMSETXX(size), see lines 541 to 554 in
+> mm/kmsan/kmsan_test.c on v6.8-rc1.
+>=20
+> I do not know if it is worth fixing, but certainly I was surprised
+> that reasonable code can put checkpatch into some stuck state.
+>=20
 
-this "problem" exists since the driver was introduced in commit
-ceb80363b2ec ("USB: net2272: driver for PLX NET2272 USB device
-controller"). Might be worth a Fixes: line.
+I know why it hangs.  I'll give it a think for a bit.
+I rather doubt Dan's suggestion is the appropriate one.
 
-I wonder if the better fix would be:
+Code is:
 
-diff --git a/drivers/usb/gadget/udc/net2272.c b/drivers/usb/gadget/udc/net2=
-272.c
-index 12e76bb62c20..19bbc38f3d35 100644
---- a/drivers/usb/gadget/udc/net2272.c
-+++ b/drivers/usb/gadget/udc/net2272.c
-@@ -2650,7 +2650,7 @@ net2272_plat_probe(struct platform_device *pdev)
- 		goto err_req;
- 	}
-=20
--	ret =3D net2272_probe_fin(dev, IRQF_TRIGGER_LOW);
-+	ret =3D net2272_probe_fin(dev, irqflags);
- 	if (ret)
- 		goto err_io;
-=20
+		volatile uint##size##_t
+uninit;			\
 
-Best regards
-Uwe
+and in checkpatch line 2304:
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+			$possible =3D~ s/\s*$Type\s*//g;
 
---gewgcxuilb6kaoqd
-Content-Type: application/pgp-signature; name="signature.asc"
+where uint is a $Type it removes.
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmXp8K4ACgkQj4D7WH0S
-/k726wgApuSl5j8yqZxfz0r/ljO+iYK/Mkfds9vddxUBRxPq16H/WB7iqdlAAj6L
-Z3+ZTxiXgsExqYh+ZEeU4lKwHa8DYotgoQZOxkANsqjJBIK+JQoDj73w+UvraCEv
-sGi0Uv606kD8zV1Nb8pYq5O9n8G24XWwH9f1y96zKlt+IAnwLnDrq0D8d6SfIfd4
-VJFvrVTl2oNsWky9RS74vRfGEkc2H9R3UrwRRyD1Sv2PpZOpyKJKru621qHw1kv/
-+aPOIxHEty7nTu87lQJZ1RwRX7rmwYwqlPChOoL6hLD4KM1fkcsihbGqSr/3pMqz
-EKbgDXH/dFyvvnrWghAoTkEkjujmmQ==
-=8zp0
------END PGP SIGNATURE-----
-
---gewgcxuilb6kaoqd--
 

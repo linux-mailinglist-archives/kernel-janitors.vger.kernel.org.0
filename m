@@ -1,80 +1,58 @@
-Return-Path: <kernel-janitors+bounces-2203-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2205-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E1087D012
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Mar 2024 16:21:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 587D687D067
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Mar 2024 16:35:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5A6C1F215D8
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Mar 2024 15:21:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F9651F23DEA
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Mar 2024 15:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0253D571;
-	Fri, 15 Mar 2024 15:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE2E3EA77;
+	Fri, 15 Mar 2024 15:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nr67b5Y0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oIFGOt9W"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44833D542
-	for <kernel-janitors@vger.kernel.org>; Fri, 15 Mar 2024 15:21:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43CC1946C;
+	Fri, 15 Mar 2024 15:35:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710516067; cv=none; b=HjohVmmzsnG9XyYAP09qhO9ZlabnbWwSuAu6jcwle21y7VUCG+jzq9JpWP5dATFzHkhIJKLCYmovWqBHvYOWQlLDIpMcF9qGeROReTeVMXzJpklSFckr0YWrAEjTRzHVKJ1zr0vpa5k3M7vI5fbxDff/Udw1MubmneXlplHukf4=
+	t=1710516902; cv=none; b=AmYL81HOMzrKOCIatYRejR62LBy/bVAmtoy8aPtQ2vldqgf0XrJRmsRCMhNgfFgmch/Nek//QIPBfdOkVdOphzxl86SJ5gQG82dr7fLUFlNdeO7RfA/hwBfKZBaVjMddw6ho+nNc7ikjU9K1zxvV/yx7zAjRpsRwWgASGQyK7fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710516067; c=relaxed/simple;
-	bh=oQSU8jjDxqSIS8TDvT+ZEvcNLa1hjhhovpfiAu/AtGE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=n4scKcZC8xq1tkJsWu+fJmvE5d6mljPOHHIRctB0oFgiRFPj1t/DGssqiut9ofP2YFKUU07L/7E0x2dUazAK7+L/89oVKD5i76D8ZnJ1uXF8acOYPxQEi3/saEGOkbqyS+esvVOZ+3Iq+9Ee2J1bQMedGz0lpOdoeWn1aGg5Fbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nr67b5Y0; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-413f4cb646dso11009855e9.1
-        for <kernel-janitors@vger.kernel.org>; Fri, 15 Mar 2024 08:21:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1710516064; x=1711120864; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZYKXoXyTZp5ci3YSNMbewaGpFg016n+QUTmPiNKutP8=;
-        b=nr67b5Y00FpstdzWyaItuqUA+vzNDjKC74oTSeoDviOHdgGgzmHLGvU9D844S3caz8
-         kgvzMrmwmLkLgiR1x4MkqRAdxkTzdeD+7U5OhD1j0x1l/W+KjrMTZu3RrzB59bsLbQ6h
-         r0M38PMSTxoq/Lmfv7psSYUb3mkJSYmixKEsUgbLrlUOVKI1y3vc/TIq+9I4a76lLKuP
-         U+PkpEagJhWDWYDBj15zvN4cdADt7XtiZam7KS3TuBRBEmo76POOMtK4AnkzZ9FG3Dig
-         9EBPo9xiQBRR+wEeEZm8C+PmBdPrvrgqXODDnBCbOmJXOyEOHudKOHBXbH8V0yjRsbry
-         LiyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710516064; x=1711120864;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZYKXoXyTZp5ci3YSNMbewaGpFg016n+QUTmPiNKutP8=;
-        b=Yu2BdsqamhVOHI2c5+hIxycAlndIbwg/P/6Mp3f7HdT6PShPo/w0BWswt9lbX85TxZ
-         TEJMU4/fndIo7RWdvXhqGHSVQvBbr3cZ+KhaATGrf01POb4HIziZe7V5j/skkyeQQiWv
-         cfO8Lrl9Bk2AwNnXeyy/zJ8jkdSKEJkB1aW0oy4FiZb82rCTRYwQQyJWMSKI1nXPJ0dt
-         YfOPdTZdmxmm67QLKxuU/feL4oLEJXOA0Fyo+ypYNqrRNCGAWuvKCC5+o9cQbIyxV4K4
-         nOgX8Gw2hDhKxIWaCX9AhTiC5INZNN/Raef6BN3Kw5h/Jfmg0rVCc3zdfCCU2keJrbza
-         gMxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWyahW0M0RL6Jswkz6zLonOLw2oXiUf0XRMMcY6uQ4BsuSk/I6lxG9h1LMyIAM5p5OF7TRqRu14IvsVuTBfR6Q6QcqdMdtY6O/Jo/D7FQVG
-X-Gm-Message-State: AOJu0Yw6kQhHdKd130Wy7J2wuzC1Os3JHIe/+HtYuStide/FxPicKd/c
-	aoCOHDe7JgyEjJFhxMBlJQrLILmQlI9CN/qNtEYwMGP0UUfsmVFg7uafeHg0yXI=
-X-Google-Smtp-Source: AGHT+IEcaJ72Qyr1XY7S8v6ZEeNlHEDW0NpxpQP3hzbLmJpU6iEGgDon3kkU7qm+Qmk7GrjsL7dbSg==
-X-Received: by 2002:a5d:6b0d:0:b0:33e:c2ea:5e1f with SMTP id v13-20020a5d6b0d000000b0033ec2ea5e1fmr3133725wrw.0.1710516064137;
-        Fri, 15 Mar 2024 08:21:04 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id dd12-20020a0560001e8c00b0033eab3520a9sm3402524wrb.43.2024.03.15.08.21.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Mar 2024 08:21:03 -0700 (PDT)
-Date: Fri, 15 Mar 2024 18:21:00 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Mathias Nyman <mathias.nyman@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH] usb: usb-acpi: fix uninitialized variable in
- usb_acpi_get_connect_type()
-Message-ID: <fdd4f94d-fb8c-44a0-9472-3485a567caca@moroto.mountain>
+	s=arc-20240116; t=1710516902; c=relaxed/simple;
+	bh=4Mbh4wTN4l0acjOafVieNblPuAn3MVy3J0dwXOH+nZE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YZSbxRVuUdLz4YOJx+Ns+JYp+XXZwlHI/z/M70aDvFht0MWWocwDaud1pCXhqz1lBKRfg24sMR+Jom2mUKnQyCBIC1n7gOkZeLskPneG5MT1g7q9jdOLkoQLF24SBJ0OwMF/x1uTCM0/ODO3FJ8HChvFCu1BGBAlxz4K1FQqRV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oIFGOt9W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67D6C433C7;
+	Fri, 15 Mar 2024 15:35:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710516901;
+	bh=4Mbh4wTN4l0acjOafVieNblPuAn3MVy3J0dwXOH+nZE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oIFGOt9WEi+rs8n9L6/eU7bjSyoSBJYpWft4q74RdYzXL1f762aaNvFOvraBL/y3k
+	 +7LT6mlQUWzv2PNrGRxp5BcWkWX+ueV0RU6UQagANB/49Ppkx3P28D2NYdB+OW8Ybz
+	 XpQBZfrNVFxSFIzITonzQsLJzRwdJzeY9Il7MQL5CCuElvxbagWeNZr9VLwizu3Jm0
+	 FDI41R0/OzGUAUCifShbVo/AaD5tuuxjw30B2ompS2wWU8W64E++Z9cufxUlxMAB+P
+	 JPrUuOiqVukCWxkdqzA0iPoJuhg7vFrdio6NLmiMyJlIgN1qxllbcB2CjUQO8gc80h
+	 8X0NWrh7E7HTw==
+Date: Fri, 15 Mar 2024 15:34:58 +0000
+From: Eric Van Hensbergen <ericvh@kernel.org>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Colin Ian King <colin.i.king@gmail.com>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev, kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] fs/9p: remove redundant pointer v9ses
+Message-ID: <ZfRqohX3x7q2p952@1149290c588b>
+References: <20240229222250.351322-1-colin.i.king@gmail.com>
+ <ZeXFqt1NDp9sdz7n@codewreck.org>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -83,32 +61,35 @@ List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+In-Reply-To: <ZeXFqt1NDp9sdz7n@codewreck.org>
 
-The "pld" pointer is uninitialized if acpi_get_physical_device_location()
-fails.  Initialize it to NULL.
+On Mon, Mar 04, 2024 at 09:59:22PM +0900, Dominique Martinet wrote:
+> Colin Ian King wrote on Thu, Feb 29, 2024 at 10:22:50PM +0000:
+> > Pointer v9ses is being assigned the value from the return of inlined
+> > function v9fs_inode2v9ses (which just returns inode->i_sb->s_fs_info).
+> > The pointer is not used after the assignment, so the variable is
+> > redundant and can be removed.
+> > 
+> > Cleans up clang scan warnings such as:
+> > fs/9p/vfs_inode_dotl.c:300:28: warning: variable 'v9ses' set but not
+> > used [-Wunused-but-set-variable]
+> 
+> Thanks for the patch!
+> 
+> Eric, this appears to be for your -next tree as it doesn't build on
+> master -- didn't notice the [next] in the subject line until I tried...
+> (I've just build-checked on your tree and it appears correct there)
+> 
+> > 
+> > Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> 
+> Reviewed-by: Dominique Martinet <asmadeus@codewreck.org>
+> 
+> -- 
+> Dominique
 
-Fixes: f3ac348e6e04 ("usb: usb-acpi: Set port connect type of not connectable ports correctly")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- drivers/usb/core/usb-acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Pulled into my for-next tree, will try to get into a part-2 pull
+request.  Thanks.
 
-diff --git a/drivers/usb/core/usb-acpi.c b/drivers/usb/core/usb-acpi.c
-index f250dfc3b14d..2aeeaa389380 100644
---- a/drivers/usb/core/usb-acpi.c
-+++ b/drivers/usb/core/usb-acpi.c
-@@ -153,8 +153,8 @@ usb_acpi_get_connect_type(struct usb_port *port_dev, acpi_handle *handle)
- {
- 	enum usb_port_connect_type connect_type = USB_PORT_CONNECT_TYPE_UNKNOWN;
- 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-+	struct acpi_pld_info *pld = NULL;
- 	union acpi_object *upc = NULL;
--	struct acpi_pld_info *pld;
- 	acpi_status status;
- 
- 	/*
--- 
-2.43.0
-
+   -eric
 

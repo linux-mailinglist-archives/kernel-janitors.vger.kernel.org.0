@@ -1,50 +1,62 @@
-Return-Path: <kernel-janitors+bounces-2278-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2282-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87514887654
-	for <lists+kernel-janitors@lfdr.de>; Sat, 23 Mar 2024 02:10:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E25F1887754
+	for <lists+kernel-janitors@lfdr.de>; Sat, 23 Mar 2024 07:58:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8FC21C22B26
-	for <lists+kernel-janitors@lfdr.de>; Sat, 23 Mar 2024 01:10:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2895228134C
+	for <lists+kernel-janitors@lfdr.de>; Sat, 23 Mar 2024 06:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86D923BF;
-	Sat, 23 Mar 2024 01:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFF2C15B;
+	Sat, 23 Mar 2024 06:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LaGo48FI"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="LV4eFyY8"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8DAA41;
-	Sat, 23 Mar 2024 01:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from smtp.smtpout.orange.fr (smtp-27.smtpout.orange.fr [80.12.242.27])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D06046A0;
+	Sat, 23 Mar 2024 06:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711156229; cv=none; b=Z3CeGJ53pTVVXx4GkZ6pIJuu7TeTTSS6bYeJGvOtf+Z/ucJBdGShB9ZkuFuwaQttQL0HmbQHoozibIiPfjDROIjCudxkpjY7FTew18OA8wTLBTk5mBTIZLGZqMDZ6NEKthRrJVs9jNnl0yNmDx8Cv13SOyTY0L4OOLIYoaOOvDw=
+	t=1711177105; cv=none; b=AVgNw+oWW/ga9tPW0tOStXhADjQDdArIuQwgCZSOwVG5vCSM9EVxr3ikpd3ifCynFu4e1GaY0k6Zc07Xf5LJ676yL6cJGSB0Zem/3ne8MDF+DqSXKPSTjhC4ZhyLYlhmoBxJ11P1GHH90SHlWWtVqaGmzyStpQcZxREI1LfJC3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711156229; c=relaxed/simple;
-	bh=50PefJZSTcgeBQSLtNejEsHNZTUKJEsfoi+Slynip1s=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=dcuVsenUffllVozlgvuDrOMqfM33RNp9zrDQQ/6zQWjeXmd6vaUrXcJk+LcHQmXdxpojHClAoccR3EB9JqRrTrVBV1/eIwbyrg5fY/BFKmcqE8vj3sGWvl+VLXHHkYejRHFz6DzOvxOZTyfdNMm2Ey7VHmPoEuqmrfVLj/0qc+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LaGo48FI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F25E9C433A6;
-	Sat, 23 Mar 2024 01:10:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711156229;
-	bh=50PefJZSTcgeBQSLtNejEsHNZTUKJEsfoi+Slynip1s=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=LaGo48FI+kZrqJRK7zdXjDZ4odEa8O8XbG+uVJh9a0nAx3UHYwMEWPMNCtm3DjQFW
-	 rUiP2yCJGglLP7ytKBsLkXgq0G88FX11c/TAr3js79RQ+bEliDawl0SA4Md3cwFZH8
-	 u+5Yb0opuoDFYPZNajR26Pck7kw9HIqoIELO/6pZ7TwdOrnlwuzobOkDe6QLAsMcPs
-	 WpvHMNtvWBUUQHjqThzBbOXGze+di5AJ1Yn0uMf0QgrgugKEXD//5ho0QW1P72QNUx
-	 +YwsafULuNo9voeWMupcBI4Xj0Nm7PN1GsqCItUrcWoqWOpVrZ0/X8DWEDvjsUp48L
-	 mQehKflQdv6uQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id E128AD8BCE4;
-	Sat, 23 Mar 2024 01:10:28 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1711177105; c=relaxed/simple;
+	bh=Schhh1ve6wJUNgn1/lfBoSPo6hj6Yunp8gYcjsPdOuc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n6Z0DsjnakPgWCn1mRsgQRvk/QGJwZQ1wt+1AY95vypCBBu6EaITWv0sZB6lOvIAC033CyXJMxa6vM6tV3jiYx2L0tTEF3mu3Dvatn5tdnS0e8DtUL4iHr0hd1Au0I3e7CJuJ9P9rf7naC/FBr1ZR6K2lv35Zd2JzTxnP1RjBHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=LV4eFyY8; arc=none smtp.client-ip=80.12.242.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([86.243.17.157])
+	by smtp.orange.fr with ESMTPA
+	id nvJZrKeyIixjunvJZrMrek; Sat, 23 Mar 2024 07:57:14 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1711177034;
+	bh=zIEiZSYagjBeVyihcNf+XJegMipzYh1x7R7LSTamGZ4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=LV4eFyY8loUYYNskJclNqY/+asvPjt0rC093GmiXnwldLZOvTY0haDYH9XzPCvI/H
+	 CSmr2WKwsIAb1uCKHOGGerrCuRwOAr1toNrFwWJz/R9fJ64ZL3337GrhvQowDBnd4k
+	 10qKPLMtozpq8UkaFUseVjxrgbuRPI9FIicMFIvzmfybvFQDW55vZQ23/oJUyCpiII
+	 xK3GnY9RxBj1bVsJDzVDXq3kamok5u1rLseZEaKfv66pNuOwrnwzphTmE6S6/b4EE0
+	 HI8uSNZZzOgCagKPIytI8gqqd78GztySDKRpXddwVcgSSOgKUPXLqUyLgaXfBBPURc
+	 G6zKpQKnP+P6w==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 23 Mar 2024 07:57:14 +0100
+X-ME-IP: 86.243.17.157
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: gregkh@linuxfoundation.org,
+	jbrunet@baylibre.com,
+	ruslan.bilovol@gmail.com
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH 0/3] usb: gadget: u_audio:
+Date: Sat, 23 Mar 2024 07:57:02 +0100
+Message-ID: <cover.1711176700.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -52,45 +64,24 @@ List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net] nexthop: fix uninitialized variable in
- nla_put_nh_group_stats()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <171115622891.16003.9139794414566350599.git-patchwork-notify@kernel.org>
-Date: Sat, 23 Mar 2024 01:10:28 +0000
-References: <f08ac289-d57f-4a1a-830f-cf9a0563cb9c@moroto.mountain>
-In-Reply-To: <f08ac289-d57f-4a1a-830f-cf9a0563cb9c@moroto.mountain>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: idosch@nvidia.com, dsahern@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, petrm@nvidia.com,
- keescook@chromium.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-janitors@vger.kernel.org
 
-Hello:
+The first patch is a fix that has no practital consequences in the real
+world. So I consider it more as a clean-up than as a fix.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+The 2 other patches are just clean-ups to be more consistent with
+string related API usages within this file.
 
-On Thu, 21 Mar 2024 17:42:18 +0300 you wrote:
-> The "*hw_stats_used" value needs to be set on the success paths to prevent
-> an uninitialized variable bug in the caller, nla_put_nh_group_stats().
-> 
-> Fixes: 5072ae00aea4 ("net: nexthop: Expose nexthop group HW stats to user space")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> ---
-> v2: Set the variable in nh_grp_hw_stats_update() instead of
->     nla_put_nh_group_stats().
-> 
-> [...]
+All 3 patches are compile tested only.
 
-Here is the summary with links:
-  - [v2,net] nexthop: fix uninitialized variable in nla_put_nh_group_stats()
-    https://git.kernel.org/netdev/net/c/9145e2249ed6
+Christophe JAILLET (3):
+  usb: gadget: u_audio: Fix the size of a buffer in a strscpy() call
+  usb: gadget: u_audio: Use the 2-argument version of strscpy()
+  usb: gadget: u_audio: Use snprintf() instead of sprintf()
 
-You are awesome, thank you!
+ drivers/usb/gadget/function/u_audio.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.44.0
 
 

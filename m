@@ -1,46 +1,46 @@
-Return-Path: <kernel-janitors+bounces-2289-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2291-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 452168883D5
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Mar 2024 01:21:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6D288A06C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Mar 2024 13:54:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFAFB1C221AE
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Mar 2024 00:21:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4EEAB616E3
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Mar 2024 11:08:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9975719F51D;
-	Sun, 24 Mar 2024 22:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E222237B60;
+	Mon, 25 Mar 2024 02:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GrNrPf+N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lr/+Vgqr"
 X-Original-To: kernel-janitors@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E644E19F501;
-	Sun, 24 Mar 2024 22:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21501EC645;
+	Sun, 24 Mar 2024 22:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711320178; cv=none; b=qwo4I0+ftczx8lsjuE4G5og9MdkIMSYJDKtku9Dg1mbhuAi9dGZgeCAveyX4XpHkjtSmzGzp0kGlvHPBvDtsA0yE8jjBlu0VtRbEMOViNn9L1RBhcX5vcM+6fDAKK/+4/Rz665dbIXX0w38B7gNrsx1CXRPuNpEo/NuQjWgF8iQ=
+	t=1711320950; cv=none; b=nInpGBgEn9jo6nJCBVy/PywLAVXmGBgTZhaqAVabBKq3XDX6zspUDBHtYG2g5R92SqCvFrk5nbcKAZakKhtUG7Zw1EnWLTMLlurR1Pz0GkYeOTjY3SQMKm3EZzrlwBjx93WEEpC0qmvo1YEJpnwXtL/IFnrqZMNNC1g1jBCuVjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711320178; c=relaxed/simple;
-	bh=4R1K5XCsgWuPw6D5zIv86PhgnTtk3Z9jomPfPWJlF9k=;
+	s=arc-20240116; t=1711320950; c=relaxed/simple;
+	bh=sdiZ1qUDoyOouFFJuBLt5ddv90gXD8wwmSNJapd092Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S70vOJ1hQBk8iXze55/EoU7LLOVpyGpszywEy1WQxsMVhctpRx7NGX/6xfpMJm8MOITdv3NOiCsIaAO3Um4MRxOTlDGhxLPkdryC9d8O0fdDHPFKfA+c5g+Y6RX6KAntCoi0+qtycIQbv0MQcLI07Y8M3Uj2JRnJPKVm5sOgiRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GrNrPf+N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A038AC43394;
-	Sun, 24 Mar 2024 22:42:56 +0000 (UTC)
+	 MIME-Version; b=cBlFiPFp5iuS//tqWL8hSbNCUdW9V9w2HXy5lxsY7M8UXdwMuLO/R2fAIV/XeGKpgSCUR7bAVrJ7vO9YXA60mEBI2hkAn5IQtj7IZUP395ITNL6A+m2T6bjCqA8D8QL9GEzXR4Z7BaXFn2ZLhkukR/Bpc7BcGSkDrQLtbw3SiKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lr/+Vgqr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CDBC433F1;
+	Sun, 24 Mar 2024 22:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711320177;
-	bh=4R1K5XCsgWuPw6D5zIv86PhgnTtk3Z9jomPfPWJlF9k=;
+	s=k20201202; t=1711320949;
+	bh=sdiZ1qUDoyOouFFJuBLt5ddv90gXD8wwmSNJapd092Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GrNrPf+Nvh54K+Eu6Z/Rz5tP4Br3AfUZwNGUhHD/f9UIZHCh0l29TaIvE9/2zPhcy
-	 PTG5VbQeTnlrHY24g1J1b8siFyf5DCZBMnStcyygIF2GvgoN4kZJrSOFyEmG0Z2eFD
-	 O6H4HxiikJL+7RZdBEKQpRTaPsxrwn26Uw7MG/OrgW60sG/18IrL1VAzGAPhucbGoe
-	 wHBfNvD9WiBZ/b1kSa35G90LTCiqrdHez0ZgjmOLCiazVl+2r01Vqt1JSxWjkk+rqh
-	 XD6EkQrE9lk9G/8J+PzJISCorukqutU8pEzcZ2KaIkJqytyJDKPqfBWNn4ssWRixGU
-	 f9GB9/MlSJcwQ==
+	b=lr/+VgqrE6NyKVnXd+Gs5IRVEG94K8jla2UQYRfNPa8GnUyLB5lVaJnZwtFux67gv
+	 F4cLLu+YHXGet20mUvMRDk5/7XHMFIfYAnvTxRMC8gX1bZuuucdHITDwgocXObdd2t
+	 IC18kRwMF5T9d7OZXBA7XIiBb2vf+fo4yuJhoBFa5vIS4KXTUlELlaQcnYjvbrVudY
+	 hPd03y9Me5J0dyadD5QJCIm2H8hb25Yo+kDkEXVwPB+SAQr2XR2WsBNCfJL2F3IamO
+	 0omegl4/MD/5iz7ol4WXScPOULiVJs8W9IKK/UVphGUTQg8Y1HeVKM2hZM6Wsxm5tQ
+	 SwQZMJuhyhpRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -49,12 +49,12 @@ Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	kernel-janitors@vger.kernel.org,
 	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 485/715] perf pmu: Fix a potential memory leak in perf_pmu__lookup()
-Date: Sun, 24 Mar 2024 18:31:04 -0400
-Message-ID: <20240324223455.1342824-486-sashal@kernel.org>
+Subject: [PATCH 6.7 513/713] perf pmu: Fix a potential memory leak in perf_pmu__lookup()
+Date: Sun, 24 Mar 2024 18:43:59 -0400
+Message-ID: <20240324224720.1345309-514-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240324223455.1342824-1-sashal@kernel.org>
-References: <20240324223455.1342824-1-sashal@kernel.org>
+In-Reply-To: <20240324224720.1345309-1-sashal@kernel.org>
+References: <20240324224720.1345309-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -86,7 +86,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
-index 88b9aa7d3a27a..6b82f4759ce69 100644
+index 33e783fc908fe..aaa013af52524 100644
 --- a/tools/perf/util/pmu.c
 +++ b/tools/perf/util/pmu.c
 @@ -1019,10 +1019,9 @@ struct perf_pmu *perf_pmu__lookup(struct list_head *pmus, int dirfd, const char

@@ -1,55 +1,53 @@
-Return-Path: <kernel-janitors+bounces-2295-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2292-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 316EF88A15B
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Mar 2024 14:16:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A43FE88A4A6
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Mar 2024 15:35:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BB012C6412
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Mar 2024 13:16:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3041FB219A0
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Mar 2024 13:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C81F158A3C;
-	Mon, 25 Mar 2024 09:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B0D13D243;
+	Mon, 25 Mar 2024 08:47:12 +0000 (UTC)
 X-Original-To: kernel-janitors@vger.kernel.org
 Received: from mail.nfschina.com (unknown [42.101.60.195])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id B7A803D82DA;
-	Mon, 25 Mar 2024 03:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 23457157475;
+	Mon, 25 Mar 2024 06:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711338124; cv=none; b=MU0kzQRnTDWBEHcK1F/uoAHjjp4uS17lkAwTXNUMzxHoFMG5s/tZE+QKvYnZeGVXDT6bHM6PIS6deSEA0HJKwuegLIyZtpXSPyD5TTRISdn8wNX/1EIS2F+nJor1L1++6DPjch/qyODJ43mJXLYLyR2FXnx/77k3MG0sCIPO31Y=
+	t=1711348383; cv=none; b=M1WzJHQ1QONwKU/S1bFkgDrCXU+K1D9SjHUKAiziFkJNcJSeNXJLPz5iH1+PQweShRsUJ00LfXK4mgKjm//1rFggFf9Lks2EvoYpQb3QT9iNVGdjjhMpnLvHdaXDwuNVVOWlqK8c9K8QYkjG9kIJIYkpoQY2fEsW/YG/zEVLXIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711338124; c=relaxed/simple;
-	bh=KGBViHtyWl4RTc5Yv34/CbkultLm1irMrCSdjeeHfsM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gkvEsWa9A6bFiOf7IvQYN4L8r1Opoj0CAZEplhi4HHi4Qu4VJYzzX/Sx1Y+WOtyZkRJ4kDfuVOsfedd13Z6ZCQr3NdIiRqasXlH3auEdQQ2+ERsffpoSrNp06NxMtvKE0M0Sd+r9OytHCPNruTkbMeQVYeMTuK199LZuO5LrTbI=
+	s=arc-20240116; t=1711348383; c=relaxed/simple;
+	bh=OckePRxIwMwlzlvfeeZnYH2Mn9sWTcwL/alzK8BGPnc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=U9CuX7hQ/cCA4nMGXlgq0PrRvGoOl9Tqm1Njbl8OD+1qNd9V7EWVSe4F0kp4U3fawwK0ocVcLz4iS4jN2WDmmgnLcyZ+wMK8K675QZMYRVFjpUGVnbo0s+471Yr938yze6hlvkE+AIUOj9IkGMaCRg8Evf/IICPBHM2MmREB/Uo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
 Received: from localhost.localdomain (unknown [180.167.10.98])
-	by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPSA id 4E0ED6026BC81;
-	Mon, 25 Mar 2024 11:41:22 +0800 (CST)
+	by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPSA id E650A6029A552;
+	Mon, 25 Mar 2024 14:32:37 +0800 (CST)
 X-MD-Sfrom: suhui@nfschina.com
 X-MD-SrcIP: 180.167.10.98
 From: Su Hui <suhui@nfschina.com>
-To: arnaud.pouliquen@foss.st.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	nathan@kernel.org,
-	ndesaulniers@google.com,
-	morbo@google.com,
-	justinstitt@google.com
+To: Felix.Kuehling@amd.com,
+	alexander.deucher@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch
 Cc: Su Hui <suhui@nfschina.com>,
-	alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org,
+	Philip.Yang@amd.com,
+	alex.sierra@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
 	kernel-janitors@vger.kernel.org
-Subject: [PATCH] ASoC: sti: uniperif: fix the undefined bitwise shift behavior problem
-Date: Mon, 25 Mar 2024 11:40:33 +0800
-Message-Id: <20240325034032.1031885-1-suhui@nfschina.com>
+Subject: [PATCH] drm/amdkfd: return negative error code in svm_ioctl()
+Date: Mon, 25 Mar 2024 14:31:49 +0800
+Message-Id: <20240325063148.3950639-1-suhui@nfschina.com>
 X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -59,66 +57,33 @@ List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Clang static checker(scan-build):
-sound/soc/sti/uniperif_player.c:1115:12: warning:
-The result of the left shift is undefined because the right operand is
-negative [core.UndefinedBinaryOperatorResult]
+svm_ioctl() should return negative error code in default case.
 
-When UNIPERIF_CONFIG_BACK_STALL_REQ_SHIFT(ip) equals to -1, the result of
-SET_UNIPERIF_CONFIG_BACK_STALL_REQ_DISABLE(ip) is undefined.
-
-Here are some results of using different compilers.
-		1UL >> -1	1UL << -1
-gcc 10.2.1	0x2		0
-gcc 11.4.0	0		0x8000000000000000
-clang 14.0.0	0x64b8a45d72a0	0x64b8a45d72a0
-clang 17.0.0	0x556c43b0f2a0	0x556c43b0f2a0
-
-Add some macros to ensure that when right opreand is negative or other
-invalid values, the results of bitwise shift is zero.
-
-Fixes: e1ecace6a685 ("ASoC: sti: Add uniperipheral header file")
+Fixes: 42de677f7999 ("drm/amdkfd: register svm range")
 Signed-off-by: Su Hui <suhui@nfschina.com>
 ---
- sound/soc/sti/uniperif.h | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+Ps: When I try to compile this file, there is a error :
+drivers/gpu/drm/amd/amdkfd/kfd_migrate.c:28:10: fatal error: amdgpu_sync.h:
+No such file or directory.
 
-diff --git a/sound/soc/sti/uniperif.h b/sound/soc/sti/uniperif.h
-index 2a5de328501c..1cbff01fbff0 100644
---- a/sound/soc/sti/uniperif.h
-+++ b/sound/soc/sti/uniperif.h
-@@ -12,17 +12,28 @@
+Maybe there are some steps I missed or this place need to be corrected?
+
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index f0f7f48af413..41c376f3fd27 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -4147,7 +4147,7 @@ svm_ioctl(struct kfd_process *p, enum kfd_ioctl_svm_op op, uint64_t start,
+ 		r = svm_range_get_attr(p, mm, start, size, nattrs, attrs);
+ 		break;
+ 	default:
+-		r = EINVAL;
++		r = -EINVAL;
+ 		break;
+ 	}
  
- #include <sound/dmaengine_pcm.h>
- 
-+#define SR_SHIFT(a, b)		({unsigned long __a = (a); \
-+				unsigned int __b = (b); \
-+				__b < BITS_PER_LONG ? \
-+				__a >> __b : 0; })
-+
-+#define SL_SHIFT(a, b)		({unsigned long __a = (a); \
-+				unsigned int __b = (b); \
-+				__b < BITS_PER_LONG ? \
-+				__a << __b : 0; })
-+
- /*
-  * Register access macros
-  */
- 
- #define GET_UNIPERIF_REG(ip, offset, shift, mask) \
--	((readl_relaxed(ip->base + offset) >> shift) & mask)
-+	(SR_SHIFT(readl_relaxed(ip->base + offset), shift) & mask)
- #define SET_UNIPERIF_REG(ip, offset, shift, mask, value) \
- 	writel_relaxed(((readl_relaxed(ip->base + offset) & \
--	~(mask << shift)) | (((value) & mask) << shift)), ip->base + offset)
-+	~SL_SHIFT(mask, shift)) | SL_SHIFT(((value) & mask), shift)),\
-+	ip->base + offset)
- #define SET_UNIPERIF_BIT_REG(ip, offset, shift, mask, value) \
--	writel_relaxed((((value) & mask) << shift), ip->base + offset)
-+	writel_relaxed(SL_SHIFT(((value) & mask), shift), ip->base + offset)
- 
- /*
-  * UNIPERIF_SOFT_RST reg
 -- 
 2.30.2
 

@@ -1,166 +1,121 @@
-Return-Path: <kernel-janitors+bounces-2418-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2420-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B0A898F1E
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Apr 2024 21:39:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBAA5899654
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Apr 2024 09:14:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D9FCB2561D
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Apr 2024 19:39:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C14A1F28F61
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Apr 2024 07:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC82B1350C8;
-	Thu,  4 Apr 2024 19:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F352C69B;
+	Fri,  5 Apr 2024 07:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=inadvantage.onmicrosoft.com header.i=@inadvantage.onmicrosoft.com header.b="owTxKCsu"
+	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="F4rmytWg"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2129.outbound.protection.outlook.com [40.107.237.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7FB12D76B;
-	Thu,  4 Apr 2024 19:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.129
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712259532; cv=fail; b=B+vVwbmLhQFWDUOKhMd7TE8IHhvjHNtzQuKKjlLKtrBfFtExlWAhMcZgnDIy71skfzD8cZxdL9WIrSqR88ow2iEolPUDKBun3C4NyNjBQaNwC6wW5Ue65S3a/S1jT7et+S+KwZII4f3mCKKvpU/YVMqMWQRRuuiMw1o9a23YlF0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712259532; c=relaxed/simple;
-	bh=KR8cAexXFI2fDjuJ3aI8P4sgbI7Kubt8XLxuejUkMP4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=XhnwEYbkCyd6s8pbSCJfubSeFFa39p2S4cTwc6HdYx7+zWkukc9eLl4p5/1BkbulwwpvpaH/uteq2vIN0KTGITyF0D8f6/T7lqk7J7yyyGaOI2ttmrhZssi2mGETIAbtxrdNBzu1krumAki7xJNO7zMW/A4lKl14wB2U/sD8gzc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=in-advantage.com; spf=pass smtp.mailfrom=in-advantage.com; dkim=pass (1024-bit key) header.d=inadvantage.onmicrosoft.com header.i=@inadvantage.onmicrosoft.com header.b=owTxKCsu; arc=fail smtp.client-ip=40.107.237.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=in-advantage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=in-advantage.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MUh/WjA2WQhpPlxVt0b7VAtHQ9r7SngJgWupQK3Pg35+Nbbb7UWhZJ5skF5PLJbjzRWqcEo0hPtKh3kouJ7u99SSKOS4WjJ/3m75+9cCGl38NsLE7NCxGEFtRxkkKKUlU/FKo8kGsypl7wSvK+cNvCyt/ljPZPSXuNYWvDOp9A2HT5YcMtwbHQF8URJlG9wUuxzhLDO/2b5S1kP09vYRvkkJBujwTTtEZrBQAvL6JSRO6i6khWOZNBWDpWXid4+cKTKifuJRxD8RgJbzGhfjnP5s4gl9Ru/6hihQzNhfheVqdkx/qgXDsiehms474h50bUkcWg1HgaoLgUxDOjQE0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z/CMUQOFkYNqFGd+JkUulm4Drr4qsPhY7JPV813+JX0=;
- b=Ef9mkGEYhaQKOPYhIYoHjFRDsV6MXVYXp+81mL0SZSMiNFhefhC7FgqszbZ3Jir7xfd9qZsjXVdXZZHY0E/597Ox9zaKvPV7IYgKtCJ3BbAp0V45KOJtd1bwYNFVR77o8oqgi07Th3ac3aFnGSKO4IqcLnf1rgFAvrWumIO+s9cjtjZ+fLWmJ3GIbSU6nLxj6nJECDwQwnVamaD0aP5dZSVtCBtGPJ40GkjBa0VJgTVzyfmvYKM08VhSekC4v3BshGfUhRIE0rtGMi3uGOVPbNtvvi37PtB2VMm22zVY29mmUSW3EDY+Qt4VW4kp3QSanUVbvE5ypwYnIkUiBU5p9w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=in-advantage.com; dmarc=pass action=none
- header.from=in-advantage.com; dkim=pass header.d=in-advantage.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB1B26AFD
+	for <kernel-janitors@vger.kernel.org>; Fri,  5 Apr 2024 07:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712301281; cv=none; b=Pc5/83mWBnfBbeJv4Q0F1FBKlMgHFNroFD1zJNKVUT3H7Yl4I1CPqoAxjWsnPBgfIqWQJPGkIzTIyzHXiDKXlQwKkWhSCY4cAQ7cHjZsgITSDJUjeH1EchqJaghpZD7To/Pfd0uL8LRNpX8VPWrO2kwpcYQtmCaVO79Fv5uFb1g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712301281; c=relaxed/simple;
+	bh=SaiKRf3RQbp8FV10MR4XbyWuycnREfYo3jf47AiQHiI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S4iMcVEl1e7OhxLcwmC4tUqbwvyZD96K2uFIAiQkAMR3pEfJeCmrXEaaP4AfyADQmnW3JmF1v8tbyKFlEmFUZC+ATEnDESa5gICdRSNzqSrYKQ+sf0EBC/nnFkVQMvU9FN7gAx4a17sxS2XlBgiMXkS4P8OZwMMNPt3eSE5n7Bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=F4rmytWg; arc=none smtp.client-ip=209.85.210.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6e6a5bd015dso814067a34.2
+        for <kernel-janitors@vger.kernel.org>; Fri, 05 Apr 2024 00:14:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=inadvantage.onmicrosoft.com; s=selector2-inadvantage-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z/CMUQOFkYNqFGd+JkUulm4Drr4qsPhY7JPV813+JX0=;
- b=owTxKCsujGpaahPxkVAKu7ko5y9qMoMhwk8F4ncSIuF5QRonTSp+zjhmXtpVQRaQE18thCVYtqB6ci2mqoopAM1RHfqbYd32Z8AzFooY0hvFOPnRssZnoCIsHWJ0cWf2c2oATzHPTdtZeF6+sscePNc6I6Krd9QCTUOTRaJu7ZQ=
-Received: from DS0PR10MB6974.namprd10.prod.outlook.com (2603:10b6:8:148::12)
- by PH0PR10MB5681.namprd10.prod.outlook.com (2603:10b6:510:146::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Thu, 4 Apr
- 2024 19:38:41 +0000
-Received: from DS0PR10MB6974.namprd10.prod.outlook.com
- ([fe80::1e22:8892:bfef:6cb6]) by DS0PR10MB6974.namprd10.prod.outlook.com
- ([fe80::1e22:8892:bfef:6cb6%5]) with mapi id 15.20.7409.042; Thu, 4 Apr 2024
- 19:38:40 +0000
-Date: Thu, 4 Apr 2024 14:38:37 -0500
-From: Colin Foster <colin.foster@in-advantage.com>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] mfd: ocelot-spi: Use spi_sync_transfer()
-Message-ID: <Zg8BvZbrwbi6uzLc@euler>
-References: <7af920eb686b719cb7eb39c832e3ad414e0e1e1a.1712258667.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7af920eb686b719cb7eb39c832e3ad414e0e1e1a.1712258667.git.christophe.jaillet@wanadoo.fr>
-X-ClientProxiedBy: MN2PR17CA0036.namprd17.prod.outlook.com
- (2603:10b6:208:15e::49) To DS0PR10MB6974.namprd10.prod.outlook.com
- (2603:10b6:8:148::12)
+        d=tweaklogic.com; s=google; t=1712301278; x=1712906078; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=M9skp/veFntESVv5IBHSeh0fw1XOzAJyP4HZp0g89cM=;
+        b=F4rmytWgo6milu2bsaV3MoFR738b7PdQOldSqtJSnokLVD6WG9h3QzVYbt1nqH5YqJ
+         E9/w4YutP8rKGE4qP3HBoJSxhDqasAAjLxknPBAYADa2kftYv3viLE3EvXBb9Vj9EzgI
+         RX8P9gyrzk9BqhcQkNXY+yurwKkvyjEHQcyjhO6rYjTr8B1UoFAgc93Ow/PAXVgVr6m3
+         PVFHZzFCB+AZL3pJCcGkE7H7kjOtvhwR+iLjzdOUjuL7iN77B/E6P4wKFcSLYOrSxSUx
+         WJzZvURGaWnC6U+p1Sic1tDD4jkMqTeYlBfhs19GwNL7zNfeZJNcWENjyAD5t/PJnLws
+         ZKZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712301278; x=1712906078;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=M9skp/veFntESVv5IBHSeh0fw1XOzAJyP4HZp0g89cM=;
+        b=LsxZYWu0lKC+DejFVZmDyjjigg3ik8jm5IdinX9B/VCXdLy1GJ8EEOVV1eBCjcanJn
+         jCyxXT9ZIKaB7K1FJ4HASDcPadmufacxPEVFhBWETL1BiMhR5x00pjMX+iA0hvkRiPgu
+         aBESFQnIzeHRHXmKUI5MaNKLWYH803RJc7jjJs/tcufat6jBhOXFX6AeIWDD8b0rB71O
+         LVKZEYfjyTAJiQZIp2c8vyyrh193NM85CjpuTW0E8Z8QFQBSZAWaSu/BIsweP8ALiMcG
+         WqhKbvbmjjVHV79KceBgsg58nWYZipZqiuryii8GcTEpPVelqjpIqHFh7SDwC3cF+PoS
+         4Pug==
+X-Forwarded-Encrypted: i=1; AJvYcCUvEBDn9VRi4CvWOEf0SQemw9DvhoRe61Hs3zqg80eYj9niDwBl5aDznAnpD9Q3Nq1T1w/k63JgE0zPCEieLbRwsM4Lkb0r9z4ofsfsFg6U
+X-Gm-Message-State: AOJu0YxDVlklN/Ha0WLmAfacq9lADZvAJe9Yx0Mfp7TCXBEQMsDpjtK/
+	kCm7J0kCUaZLkBqYb4sRCnxRuO8RXRdP9OzgBXJS5NcCYt3Q7A5ngx7tayV1ziE=
+X-Google-Smtp-Source: AGHT+IGja6uppOhisB7znHWGeozcffmJLxLnLmJLpdn9gQKm01/J3UU1NMKfhr8BvFaTqUkqaPpdbw==
+X-Received: by 2002:a9d:7dce:0:b0:6e6:b9ed:694b with SMTP id k14-20020a9d7dce000000b006e6b9ed694bmr674113otn.26.1712301278118;
+        Fri, 05 Apr 2024 00:14:38 -0700 (PDT)
+Received: from [192.168.20.11] ([180.150.112.31])
+        by smtp.gmail.com with ESMTPSA id n17-20020a635911000000b005dc3fc53f19sm784922pgb.7.2024.04.05.00.14.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Apr 2024 00:14:37 -0700 (PDT)
+Message-ID: <7a54d993-8aff-472f-8132-85e0ca79ff13@tweaklogic.com>
+Date: Fri, 5 Apr 2024 17:44:31 +1030
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR10MB6974:EE_|PH0PR10MB5681:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	OLrzTjgiK9YGft7EJo9bqZXKSQCrWH/YRuJHoy/EH0/djd7swmw+yrCpgZh6H9r48CR+xMq3FkNNhYvIJ1uJwoc54CbJj6wLa64mvadH8JNFRM9V73+uJTPGP4yuHcQlD7nCSMCxRg/Qd8FcWYLfKehFPGz/rYvepBl6O/3TzoG/qeT06eGcn/+fphJz1YY9qKn526r3WAeHgsZqrrymTNL1HhqVA6JZ+G5wtaO/61Nkrb+jEN4x9T+XwvsuxAbvJKaxpaZRi3W/OxED4wAWZgH5mBPV9+Ke3GDCZURA2ParmrkB0UTUqxEpJkiRBtarUMgzOf0c5d+EuxWVYGe3bN7INjGMm8oul9ps8MJMbavIRuV5HnmcEX7JGsh0lWVuDzyyPy0JMHxf+VPJxwAtye8W3Bh9nocvmvztDseMIhm7QXJ+tqLH5y4xMDH+ryF4QVhDYKe2PSoxqIItxLSAvO9y5g9PDSHXIfQgY6Iel5J6r9R/3Vc7Lk4pzKidMxiW2mFq0xTLpKv3MuUvqKnwgZWpgiI2dATu6+ZwA4xSrOk/OGqaKUyp+xZQnp98YcSc3lm9FCkn/LLLVRCcn+/LIMICzp6A+cf+fNiJ7l3dPd/44apb/w6j1r6bO8k83yFnVP7GXFgLQomHOKpuZpdp4XegVbq3rk8CRHpXqi+EBBM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB6974.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TwwKzI6TdwgmgSkNlHyhd7qC8GsNoU8wJqJ3Y5TQFAz/9hX76HCazF8F54Pz?=
- =?us-ascii?Q?YTtoXoRDXbqwbN8yDf0TV66Bx+IUMlQnYAzzo5OLqKeTytQZBj1D689uWbuy?=
- =?us-ascii?Q?sHg1FBpOt3kGIYIbICFonhkxmvpqh4NKCAueP/CqgOlNcw14dGl2l9ucYNnL?=
- =?us-ascii?Q?gDo94EGnu8SXwq6c4K+O+3AjFWzBI4e60MnV8b3wBOYBezE/vL6qdUlb+yNE?=
- =?us-ascii?Q?83TEf75kfJ+XyS9CKWkmFzcJkwO9yXbF7YdDhY6vxOG1f9zeTxtOpbtJGgjs?=
- =?us-ascii?Q?wuH703tWc2C18y/r4/fE0AjRWxARtZZ2WE5ELU7Bgg1MgJ0apmpoJq3v/M4T?=
- =?us-ascii?Q?86Wv6CMZ5YcGs3DIbY9H5qffSLlUMU0luVIieloEd/9T1hmE8kSNsh9kWdBc?=
- =?us-ascii?Q?RsbwdRtvjwDR07vWOL3Q0uGyccIR+RBj+HXgYWrW34kZfd5uI9uYa9MXT9oJ?=
- =?us-ascii?Q?q2c9oc2e8DKyMD/xg7BBHyYtrBVYCoupC2ec0v01Vu6bkAm0mgfhmpa3AhcW?=
- =?us-ascii?Q?susuAhhlh3GmCzwCaOuLBNW7eVcmQtNX17dgj2XvJup5oV1J14KQb5zHYFf7?=
- =?us-ascii?Q?MbycKnI8U6dr5jHhOSG4AQreKlULyH+tvTCP1pMAzhCAZ5FdcroeU3wmaEO+?=
- =?us-ascii?Q?69puOy4VoZmpcteFWrBf+ryY4c5BmSnS1zG33u1kMAH6/4O3EzJswv6C9x8/?=
- =?us-ascii?Q?ZR0fS/Wionwvz7H7Tb7C/tEsgX6dlm1YzBOqV52olxkxD/Q7kHAEdvThwD9s?=
- =?us-ascii?Q?syOMIZf0jef3fAgrDyx5dTAArb59EnJgWJiE84J05B9Yc6V13B2xk2tdJRZv?=
- =?us-ascii?Q?KZo8EeTAw0D7jh0gcWIHdFf0HTxw6oz+rGc7STx/mMy3OLMInwmV29lG3PG3?=
- =?us-ascii?Q?+1SJ/9z8ODEgaIxdHYwje27F+mMqyb+r++8SJG9CtJsyH5PdsnvpePVlxwX6?=
- =?us-ascii?Q?WTgv39Va8UyB2EXGNadXviqtu9lmzD44FR6jvb6Dl55WjGfZ1ZqObeS/bo7d?=
- =?us-ascii?Q?wdKeOUs3/9m9jIeYeYAPdPZMk4G3T6nWQZrMyoCdileZ1RaXeGtHQFf5x3s5?=
- =?us-ascii?Q?zqPGqT/jYVuXePWaTcpWu2+n7NipFiCo88WSVyM1tqZUIabak6xwvhvwLxG+?=
- =?us-ascii?Q?/8+SFi9AE28ywDW9VmBWKx0IxCTGIer0zSBE+FOpwx9hXy7sDnkE7qJ5MybZ?=
- =?us-ascii?Q?XSPHzj/SVNZP39cqkWmAHnU5CgT3GP/2MWQYGcJnPQ2ismuskbLccISLPtST?=
- =?us-ascii?Q?lsJFh5lRI1wz7mFp3bb3XZjIwJgIjfaYEel8s52NWeQPUU2pF81geUlDh2QY?=
- =?us-ascii?Q?hW+5OZjtMg1XWzq6i657ax646dQBcsXZB8gHP8GEo+mqWOcS0Vwg/hZB+Em5?=
- =?us-ascii?Q?DVzEifrTMu3yrFPcBWLi3GKaIR2oGGonbLDXdfsgQSPsgQ2nOjPYsYwJrVn2?=
- =?us-ascii?Q?u1QOqxNLerLzaOpS36fezZZ0S5hgmT22rkLZpwsV7INJirs4i3enEd1ab7lX?=
- =?us-ascii?Q?dc//Z5S7i2FfVLimFDf13K5LoUR03setpCoPm4+pNU829kzK1DsmzDq1zNbo?=
- =?us-ascii?Q?d8qBFyMcRksPkn16CduRQie7wfFVsVdA53lrlejHJJ33uR+NUxOOSIHHNCb4?=
- =?us-ascii?Q?Nw=3D=3D?=
-X-OriginatorOrg: in-advantage.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ad8fd30-5c13-49ac-edd5-08dc54ded451
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB6974.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2024 19:38:40.3151
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 48e842ca-fbd8-4633-a79d-0c955a7d3aae
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Jee8yzdzx/iCDNmSLhA4fVlSBl3wjSBH3FQqeofIjE45g0ivPfNu/cmwG97B+w45h8DC9UyrbE5vxlLH68IDXNqEIrhoD2WQIqxc40jQh3s=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB5681
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: light: apds9306: Fix off by one in
+ apds9306_sampling_freq_get()
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
+References: <69c5cb83-0209-40ff-a276-a0ae5e81c528@moroto.mountain>
+Content-Language: en-US
+From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+In-Reply-To: <69c5cb83-0209-40ff-a276-a0ae5e81c528@moroto.mountain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 04, 2024 at 09:25:09PM +0200, Christophe JAILLET wrote:
-> Use spi_sync_transfer() instead of hand-writing it.
-> It is less verbose.
+On 4/4/24 18:01, Dan Carpenter wrote:
+> The > comparison needs to be >= to prevent an out of bounds access.
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Fixes: 620d1e6c7a3f ("iio: light: Add support for APDS9306 Light Sensor")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 > ---
->  drivers/mfd/ocelot-spi.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+>   drivers/iio/light/apds9306.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/mfd/ocelot-spi.c b/drivers/mfd/ocelot-spi.c
-> index 94f82677675b..b015c8683f1b 100644
-> --- a/drivers/mfd/ocelot-spi.c
-> +++ b/drivers/mfd/ocelot-spi.c
-> @@ -145,7 +145,6 @@ static int ocelot_spi_regmap_bus_read(void *context, const void *reg, size_t reg
->  	struct device *dev = context;
->  	struct ocelot_ddata *ddata;
->  	struct spi_device *spi;
-> -	struct spi_message msg;
->  	unsigned int index = 0;
->  
->  	ddata = dev_get_drvdata(dev);
-> @@ -166,9 +165,7 @@ static int ocelot_spi_regmap_bus_read(void *context, const void *reg, size_t reg
->  	xfers[index].len = val_size;
->  	index++;
->  
-> -	spi_message_init_with_transfers(&msg, xfers, index);
-> -
-> -	return spi_sync(spi, &msg);
-> +	return spi_sync_transfer(spi, xfers, index);
->  }
->  
+> diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
+> index 4d8490602cd7..49fa6b7d5170 100644
+> --- a/drivers/iio/light/apds9306.c
+> +++ b/drivers/iio/light/apds9306.c
+> @@ -635,7 +635,7 @@ static int apds9306_sampling_freq_get(struct apds9306_data *data, int *val,
+>   	if (ret)
+>   		return ret;
+>   
+> -	if (repeat_rate_idx > ARRAY_SIZE(apds9306_repeat_rate_freq))
+> +	if (repeat_rate_idx >= ARRAY_SIZE(apds9306_repeat_rate_freq))
+>   		return -EINVAL;
+Good find.
 
-Thanks! I am fighting an unrelated SPI regression, so I tested against 6.7
+Reviewed-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
 
-Reviewed-by: Colin Foster <colin.foster@in-advantage.com>
-Tested-by: Colin Foster <colin.foster@in-advantage.com>
+Regards,
+Subhajit Ghosh
+>   
+>   	*val = apds9306_repeat_rate_freq[repeat_rate_idx][0];
 
 

@@ -1,79 +1,87 @@
-Return-Path: <kernel-janitors+bounces-2441-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2438-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C68D589B9EC
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Apr 2024 10:14:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65E1589B9CA
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Apr 2024 10:11:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FE8D1F21CD9
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Apr 2024 08:14:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 067651F21C73
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Apr 2024 08:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E11D537E6;
-	Mon,  8 Apr 2024 08:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F83D3C460;
+	Mon,  8 Apr 2024 08:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JtK9dDMH"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BCdJ1pjI"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DAF52F8E
-	for <kernel-janitors@vger.kernel.org>; Mon,  8 Apr 2024 08:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267E838393
+	for <kernel-janitors@vger.kernel.org>; Mon,  8 Apr 2024 08:09:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712563830; cv=none; b=JO4QMRz2C6cLRa2365oV5FQ6l2+H9n8jsU+oSqsPx8mU5ENsfFsVlyKwartFmJI7HpdX59hRYIJfkVgux3UtnmrNvV55YRLuKOqKpeWz9DLHWIeechbyTHd6AQsuvX3JFTjH5et1OxXVvEF3MO2Gup7FxZz9llAhmsnp402zl/0=
+	t=1712563801; cv=none; b=o1C83FzqZuGKZoX41slshd+HIS+VEDCq85TCk2j6vUCohV3Ra8UgF2gpDtCrDWVoAzHbmtDnyZ65hONJ/bFZOXENQtwavH/Uk9D7AhuSt1Xgfe4TMisFWxF5hb4v4i9UE9drhBY9aWrvsJnWXsHFRYi/9PrVDDE8l6GQDjEpIQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712563830; c=relaxed/simple;
-	bh=virOewUX4t0oSLmoki5IIgzfGSQ60/H3437FkDr3qko=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=pHA2zEQEn9Q1fs5q034zPUrh3MQM1uE9csu1L3uKAiIXP9My06Z0+gKSkgP3hIzR65Z02e5K9qFwlyf2oUziE0HOOHMwLxHUUWrbEutV024+6PO7niDDY9CzPsVzlIYaE1vq1Uy8Zfq835454nGB3ki1JT9uTQNpp4r2bwMxVOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JtK9dDMH; arc=none smtp.client-ip=209.85.208.46
+	s=arc-20240116; t=1712563801; c=relaxed/simple;
+	bh=ljkAHH/jrVsEddYmqwbcAhxir0nJCPPqH96atvjx+I8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZS1tzAATXuPytOoCLY/lHJxXMtbw6plhlC7iPA9xjjku3rXVKxU640QIknkAiz1YWjYgx6L6NZDJ+tb675VurbGApX1Tjyp3YxRZl+f9O17C5go1OWl6S7XtRmAl4UWF4+EJEVfOYmpJaY9btS7V/DZ3pbBlCxAKggvM8Oni4QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BCdJ1pjI; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-563cb3ba9daso4073908a12.3
-        for <kernel-janitors@vger.kernel.org>; Mon, 08 Apr 2024 01:10:29 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a51addddbd4so255356766b.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 08 Apr 2024 01:09:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712563828; x=1713168628; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SO3oSKHhB+QUpEgYOl7F+vhVd4MWO5gWULhDTn9lHJk=;
-        b=JtK9dDMHhI40zGAm112hD9FH+/Um82S5KZTsm3vXdSoVMMsXwePpUt/H4ASWhyXgH8
-         anE5e4xDNptqeEcyFZLOftnk9m+qbNFZ2Sy/4fgI+ErCudRGXKyn1G8p6nONzJK5nmZ1
-         M9FxZpGGc6F14bAjkhEGD/1eoc6rwsg/lT8nGs+lODyaUGT62X5xxiZh2V6FU0o0EPRb
-         SWqwE+ZfP7Ftu1uWPbAzbziLNF+TNsdBRLktzTNzPhfnDrVTQ/xvB9V/aOCOLHSvZeZT
-         2WlwsVdfBrm50l5LYBzDATMNhfcaQkTCsc0oPUYS+pSBBpbt97kxBjrP/dmxA+dXnEfQ
-         5lmA==
+        d=linaro.org; s=google; t=1712563797; x=1713168597; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OzIHovojG3644yJzi7Rp4zPvS+LnsKi9BT3OOCmERoA=;
+        b=BCdJ1pjInKKk4vrgVcjnsJf+I8ArtH02GFeLNUq5rIpogQRb1hlTw5Z4a3CIC9dQ86
+         p99pc2LF+33dZHwTcmQ1PXNyRNgdShtYxKUSWlLafAORk5KWI3oB/Ej8E8U0MpM8EJlY
+         qpkdpWMfD8j733hkxoa0lhQ8kmu+Quh1PTpL/yIXyID5KDMxHta/P9lXZ3uyOkRE1FNP
+         NVbd3Z2+aDKxlS+UCRpPT6VnHCKMul0ZxQ4TisDo8oMpguE1aYKRNXfWum1OD/3yOZFA
+         jUaYsiHZiRh/Emp4+Hs73LZBgkDILK2QonUpJAWjV06+OC6Mh1L222fKXGtzA9bfNqtI
+         dvdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712563828; x=1713168628;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SO3oSKHhB+QUpEgYOl7F+vhVd4MWO5gWULhDTn9lHJk=;
-        b=VPy9X5rVlypidNPwsXAH9py3hzMxBSboGTr6VqSNJxuFEdnDlTwwI1K11XgtDNgqwh
-         4Rq/Vdoe88kNPbYl1U3ftgOG1BVSl7X8I7WNlRJthFu/DpJ5wgK0c4AuIVSY7idTlo2+
-         bYavAnuJhqT0IbHALmcVNMS4QIsyJ+X8N+rrUs6O/vyoQT/9YZ2p44U76Owz5biLkBRO
-         JO/+NkL3WYu30dJ+BSnWXw/pQeGm+2vAxSpnO6jq0Ax6rekNv/jGmTPbzHWU+JTn2wJq
-         IiXQAVyFGmaWKNfzrgnE1CbRfLs2T6EkMpTKXuavn5/4ppLm8BxYgutX69fIA9e/wrut
-         j8JA==
-X-Forwarded-Encrypted: i=1; AJvYcCV8XhJrIzzr9teHWgM9HZKF6DCLYhhfJWOO/lIrfurLwNfJMZA25PA78A7aZyLSlIKlGnQa/LvsJ2Q3S5RvbTgNtGIMkwcMgWAHFWjUJJ0A
-X-Gm-Message-State: AOJu0YwAeJNXPIY5Rp2h+I2rRIHfjOgHq3rUkrNNsfc8MgGqWtWynx7R
-	tqKq/i8soCfxAQpGGZZi4YQBhgXgayW7I4mbQ5t3Ue2KtS9rC8ArYTOtnXrIWok=
-X-Google-Smtp-Source: AGHT+IGBP2Eb1evno6OQER1fBynnrKOVTRDH6lrULwXK4u5X7YCnyIyHK40Fs4HT+0CKsXZ9E+hNfQ==
-X-Received: by 2002:a17:906:ae4f:b0:a47:4bd6:9857 with SMTP id lf15-20020a170906ae4f00b00a474bd69857mr4337354ejb.64.1712563827422;
-        Mon, 08 Apr 2024 01:10:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712563797; x=1713168597;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OzIHovojG3644yJzi7Rp4zPvS+LnsKi9BT3OOCmERoA=;
+        b=ojZV0jJHBmyLUAslEfhJt3jMZbEhEGPJio7+E7wALiqqlCnhL4tL68ztOzvNTqrV2+
+         73R8ktvrfBKdtayA4wTo7uEyeWRA4wZBbD6PIyEaNC1dAZ1fuQUBXzl4N5aCVbZ4B4d3
+         Px/MyZx+Ts3n5xgZRcphIdzRWIs0Hcwmy6NBc8wp1iHGB4/s5+gdyXYtNFe6EVlBu5Z+
+         82sGWfHa46GW1HYXNltgsVGZvDvgZrSuxPxVwr3JwjE68Qb4IxiZ5knwm4L0tZqi9MF1
+         VuSjXwbBMZVwuK+abVkunG/y4kUY+X/yc0nUJLWq/FFMqiabaUxCv8QPvYhnsKJvy3FM
+         jewA==
+X-Forwarded-Encrypted: i=1; AJvYcCXrkwk9XptyqynHFiXeKcOQP7j7CcVrAb8uGcZHsavioe1Wr3k0rxxp/fz3C5ddZXpkxdxDHyVwwbFj7zZ3e81INkbdDLYm/QYhAEM3bsHA
+X-Gm-Message-State: AOJu0Yxjy+NIueM+Rhk/eTuOvOmPUZC/e4aPGzNMev6tUq2PYMaJVx0Q
+	sKyn1DKCip/r4UW3ZYTULjMh7UZGhDTKHY6HYGuFtyDH5VNRtBFpyHyKN8ANflM=
+X-Google-Smtp-Source: AGHT+IHtvCDCPVlkweFZtEXFJMtCJqeKZm0fgLqDOmu+n81huoTOcfZOWzp5QNMYK38WJkLMK2XiTQ==
+X-Received: by 2002:a17:906:3391:b0:a4e:768a:144f with SMTP id v17-20020a170906339100b00a4e768a144fmr4666050eja.36.1712563797196;
+        Mon, 08 Apr 2024 01:09:57 -0700 (PDT)
 Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id r11-20020a1709067fcb00b00a4e9359fbe8sm4091818ejs.44.2024.04.08.01.10.26
+        by smtp.gmail.com with ESMTPSA id gt17-20020a1709072d9100b00a51b3d4bb39sm3081020ejc.59.2024.04.08.01.09.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Apr 2024 01:10:27 -0700 (PDT)
-Date: Mon, 8 Apr 2024 10:38:02 +0300
+        Mon, 08 Apr 2024 01:09:56 -0700 (PDT)
+Date: Mon, 8 Apr 2024 11:09:51 +0300
 From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Richard Fitzgerald <rf@opensource.cirrus.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH] ASoC: soc-card: Fix a reversed if condition
-Message-ID: <155bb76e-dc57-4a5c-b0eb-acee5ebde9f4@moroto.mountain>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH 2/2] thermal/drivers/mediatek/lvts_thermal: Improve some
+ memory allocation
+Message-ID: <d97f2a57-d318-455b-a860-8bd7972c8aaf@moroto.mountain>
+References: <42a87fb9837f1760d1ad4eb7162a7536785dc6f5.1712520052.git.christophe.jaillet@wanadoo.fr>
+ <8cb69f245311a348164b0b5ca3dbc59386746035.1712520052.git.christophe.jaillet@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -82,31 +90,43 @@ List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+In-Reply-To: <8cb69f245311a348164b0b5ca3dbc59386746035.1712520052.git.christophe.jaillet@wanadoo.fr>
 
-This if condition is reversed.  But fortunately, it has very little
-impact on runtime behavior.
+On Sun, Apr 07, 2024 at 10:01:49PM +0200, Christophe JAILLET wrote:
+> diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
+> index 3003dc350766..b133f731c5ba 100644
+> --- a/drivers/thermal/mediatek/lvts_thermal.c
+> +++ b/drivers/thermal/mediatek/lvts_thermal.c
+> @@ -204,7 +204,7 @@ static const struct debugfs_reg32 lvts_regs[] = {
+>  
+>  static int lvts_debugfs_init(struct device *dev, struct lvts_domain *lvts_td)
+>  {
+> -	struct debugfs_regset32 *regset;
+> +	struct debugfs_regset32 *regsets;
+>  	struct lvts_ctrl *lvts_ctrl;
+>  	struct dentry *dentry;
+>  	char name[64];
+> @@ -214,8 +214,14 @@ static int lvts_debugfs_init(struct device *dev, struct lvts_domain *lvts_td)
+>  	if (IS_ERR(lvts_td->dom_dentry))
+>  		return 0;
+>  
+> +	regsets = devm_kcalloc(dev, lvts_td->num_lvts_ctrl,
+> +			       sizeof(*regsets), GFP_KERNEL);
+> +	if (!regsets)
+> +		return 0;
 
-Fixes: ef7784e41db7 ("ASoC: soc-card: Add KUnit test case for snd_soc_card_get_kcontrol")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- sound/soc/soc-card-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I understand that this preserved the behavior from the original code,
+but the original code was wrong.  This should return -ENOMEM.
 
-diff --git a/sound/soc/soc-card-test.c b/sound/soc/soc-card-test.c
-index 075c52fe82e5..a9fe7d243807 100644
---- a/sound/soc/soc-card-test.c
-+++ b/sound/soc/soc-card-test.c
-@@ -148,7 +148,7 @@ static int soc_card_test_case_init(struct kunit *test)
- 	priv->card->owner = THIS_MODULE;
- 
- 	ret = snd_soc_register_card(priv->card);
--	if (!ret)
-+	if (ret)
- 		return ret;
- 
- 	return 0;
--- 
-2.43.0
+> +
+>  	for (i = 0; i < lvts_td->num_lvts_ctrl; i++) {
+>  
+> +		struct debugfs_regset32 *regset = &regsets[i];
+>  		lvts_ctrl = &lvts_td->lvts_ctrl[i];
+
+The blank line should come after the declaration.
+
+regards,
+dan carpenter
 
 

@@ -1,150 +1,157 @@
-Return-Path: <kernel-janitors+bounces-2548-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2540-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335EA8A41F7
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Apr 2024 12:58:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3840D8A4172
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Apr 2024 11:10:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D19A71F2128D
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Apr 2024 10:58:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDAA5282376
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Apr 2024 09:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170932E85E;
-	Sun, 14 Apr 2024 10:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6EA22612;
+	Sun, 14 Apr 2024 09:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="WZCWlAUo"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vx7uI7K4"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from msa.smtpout.orange.fr (msa-210.smtpout.orange.fr [193.252.23.210])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9DF2E633;
-	Sun, 14 Apr 2024 10:57:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.23.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF59928E11
+	for <kernel-janitors@vger.kernel.org>; Sun, 14 Apr 2024 09:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713092272; cv=none; b=NqeRugkpu6/5iRCU5jsqT7qQE7lS7HEAe+lmVwg9iNbn9FjBLkNu0Nlk/jKUoj2MkMw7ZZMCXZvhVQYm6PWtNr3ES6IwDQitn0HetiY2XzNpDAvplxfg6VnqrfKsBC1/7rkMKikLU3hu0Oqzl+98cvNv8+E09riBzWuHp0Lo+7s=
+	t=1713085793; cv=none; b=dQDsIgL3K8YvlbRKByoVUeHsBdLezkdUwY81gLMSrtlG59BxSq6/4a+hVr6wbf407rk8pEK0fD9E0ieMgSv1BX/U+CRMqRW1nzI5vy2QRCoeZQ8YQDMK/IHqxoUJWoguSfUNqOn4fIThcBvXxOjRAXphHrsh8EJ0YrNI5OlBSdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713092272; c=relaxed/simple;
-	bh=9a+P8s5l61kleZJLDGYRTvAA1Uvt+ypc9gUtrvX2hfA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L8dkE0EPNX7D6omgDtmH/n7pex7NKgEVYjkmYGMZucgATm9sy+N35UkOAi0g0sQgRUIaLjojV0WwopAA4Y34bd9x1zFdula8vB3jXEqrOS+uhtUL8ePCRDoMjevExu9oPWDNH7cUKECmnXucgqEC8CYL9eXrxfjA1MWrvkDGHUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=WZCWlAUo; arc=none smtp.client-ip=193.252.23.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.18] ([86.243.17.157])
-	by smtp.orange.fr with ESMTPA
-	id vvikrl4O6JyTUvvilr9PzZ; Sun, 14 Apr 2024 11:00:23 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1713085223;
-	bh=iNPLWQIyLfvsOYmfzzP6klM4872RS0pQRSfJloAU0Bo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=WZCWlAUoAHWXdlxf1WopMVd8jtdvonKbAEhcslDW5nqpjv5b0/jyIpgs6GbNV9zW0
-	 O8JZXQmm2xmdSV0Jzw14OdjfeuUtDFP3zbsAskgbA8JlT6NJ7ERU25C+xlHWl8wath
-	 QX7F9A8X6eC9iFBoWqnvDDp4LfKPi4W6z5XCUpzlhAT2tu+GSykRg9WLVl2R7jxriP
-	 qH005UFj67g944fX1TxQ0FnataxYhMAzEreKG/WBnA/lGX4B4ZqMbVyHJBCtBAF2g8
-	 7eXnqfXBMD5p1z2sZjUyDgxgmx8DIfMTE5Q6tCqC/eGihksTgYRJMFvZtiat95BWqo
-	 7oQphDLSxSBHA==
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 14 Apr 2024 11:00:23 +0200
-X-ME-IP: 86.243.17.157
-Message-ID: <487dcede-4ad3-4987-aff4-937513d2fa14@wanadoo.fr>
-Date: Sun, 14 Apr 2024 11:00:18 +0200
+	s=arc-20240116; t=1713085793; c=relaxed/simple;
+	bh=mx81azu7WGqDtDaPoKpPXOlm5ztzVujTkyngWrhVR+Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s+yrw+Yg6mpA8hue8qlfThNj0IUwsGBRQyu7MgRL7z2F4TXDLlFw/S1hNyM6a7GI+w6lzZD1kegxeGT1x7t4VYCRU6a6PkI+hHj0byovRB3yJq5V3lHNbXGUfGbwpSSqmvBQUuG4JdzExad7MLGy8An1wAGT+eflpXUpwKj71As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vx7uI7K4; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1713085790;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KDn9p0oKJIowoxHQ+QZq8N5Xvgpd2J6FJtOvcnaAQTg=;
+	b=Vx7uI7K4S6TFu/JWrl5OP6vn1eQcbi6w6ql8a+o0AYyaHsBcH4IFOOHouwxLuQGW/t8N9+
+	wIusonrIRoXEfT/ugS1xggQpyQvoabH2NGfQYL/fnGtpYmX7X2sLiOsxnuxxq4tohlWQRp
+	124/loK6efo7uAsZYDLo+8vr8zqrw60=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-358-YXa48Vu_MqumXHeYJZ7zAg-1; Sun, 14 Apr 2024 05:09:43 -0400
+X-MC-Unique: YXa48Vu_MqumXHeYJZ7zAg-1
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2d87dad1640so18034011fa.3
+        for <kernel-janitors@vger.kernel.org>; Sun, 14 Apr 2024 02:09:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713085782; x=1713690582;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KDn9p0oKJIowoxHQ+QZq8N5Xvgpd2J6FJtOvcnaAQTg=;
+        b=gu3aCmpHoNxsU5+adNuch6gJO285QuaL+mDAQNhxO/AqeiBZCGpENYKvPIAIfPGX44
+         wguKYHGVAq1QlL/GQ18TiJ0PetB9SAV6IAPpU1kcbaDGmBpIYvYJRYsOQObCsA7paFZl
+         8jfBvQCmerkWQ6e6junM5/1qEUOhhJAYIp2lRUHpr9IZVTAXGrScbODqIQJo/VLybe4I
+         YHSMB5+y+corPrbx3geF8dqECihO0Zpd9K3qriLazXh/zIuWmlfEIm2M8MyJOCjXeQRL
+         LKinNoqLgS3DTXsGvhmYJOg8tOPmEvTjaIAnTBqZabtK9w6hJHVYuDdj26oc+lV6fygL
+         JeMw==
+X-Forwarded-Encrypted: i=1; AJvYcCWfaRU8nhAlGKeix/uA/tT3EDe22yt3xqeu+FaP36m8a8N6eyR39DbDJ4teh3P3vKSz3zkgXSkK3WAUfxIBCU3eagfGRBGBITVUI1Mh4Ll7
+X-Gm-Message-State: AOJu0YzV/oqWrby+V1lYHs4PEqcCi459hGVLGZrwMwMfdbOunFitBtpx
+	nwSQhTzDWlI1Ft84uWcYTdYG0qC6CtuWeNC65Vc3aawBPEeJQ7X9Bigp5dJ4g2Vv3ldYwg7Jp2Q
+	nDodeddE14aki3qXjyEpGUYrcFcH8tbFznqPyq91LK1y0jDBAZkQ+s4fybuKn6NgQEQ==
+X-Received: by 2002:a2e:3509:0:b0:2d9:ecc1:6d56 with SMTP id z9-20020a2e3509000000b002d9ecc16d56mr4549908ljz.11.1713085782022;
+        Sun, 14 Apr 2024 02:09:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFnvXuyxDizZiI5lyVmq1CswBaXk7vrRoCt8wmpz3FQXQtnkzsP0CH3Qy864TeyyCiCUv5HDg==
+X-Received: by 2002:a2e:3509:0:b0:2d9:ecc1:6d56 with SMTP id z9-20020a2e3509000000b002d9ecc16d56mr4549901ljz.11.1713085781463;
+        Sun, 14 Apr 2024 02:09:41 -0700 (PDT)
+Received: from redhat.com ([31.187.78.68])
+        by smtp.gmail.com with ESMTPSA id u2-20020a05600c4d0200b0041668053ca9sm10311768wmp.0.2024.04.14.02.09.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Apr 2024 02:09:40 -0700 (PDT)
+Date: Sun, 14 Apr 2024 05:09:38 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Jason Wang <jasowang@redhat.com>, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org
+Subject: Re: [PATCH] vhost-vdpa: Remove usage of the deprecated
+ ida_simple_xx() API
+Message-ID: <20240414050922-mutt-send-email-mst@kernel.org>
+References: <bd27d4066f7749997a75cf4111fbf51e11d5898d.1705350942.git.christophe.jaillet@wanadoo.fr>
+ <20240414043334-mutt-send-email-mst@kernel.org>
+ <a7eceabf-12cb-41ff-8e2b-f3b21d789c17@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fsi: occ: Remove usage of the deprecated ida_simple_xx()
- API
-To: Jeremy Kerr <jk@ozlabs.org>, Joel Stanley <joel@jms.id.au>,
- Alistar Popple <alistair@popple.id.au>, Eddie James <eajames@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
- linux-fsi@lists.ozlabs.org
-References: <6e17f2145ce2bbc12af6700c8bd56a8a7bdb103d.1705738045.git.christophe.jaillet@wanadoo.fr>
-Content-Language: en-MW
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <6e17f2145ce2bbc12af6700c8bd56a8a7bdb103d.1705738045.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <a7eceabf-12cb-41ff-8e2b-f3b21d789c17@wanadoo.fr>
 
-Le 20/01/2024 Ã  09:07, Christophe JAILLET a Ã©critÂ :
-> ida_alloc() and ida_free() should be preferred to the deprecated
-> ida_simple_get() and ida_simple_remove().
+On Sun, Apr 14, 2024 at 10:59:06AM +0200, Christophe JAILLET wrote:
+> Le 14/04/2024 à 10:35, Michael S. Tsirkin a écrit :
+> > On Mon, Jan 15, 2024 at 09:35:50PM +0100, Christophe JAILLET wrote:
+> > > ida_alloc() and ida_free() should be preferred to the deprecated
+> > > ida_simple_get() and ida_simple_remove().
+> > > 
+> > > Note that the upper limit of ida_simple_get() is exclusive, buInputt the one of
+> > 
+> > What's buInputt? But?
 > 
-> Note that the upper limit of ida_simple_get() is exclusive, but the one of
-> ida_alloc_range() is inclusive. So, this upper limit, INT_MAX, should have
-> been changed to INT_MAX-1.
+> Yes, sorry. It is "but".
 > 
-> But, it is likely that the INT_MAX 'idx' is valid that the max value passed
-> to ida_simple_get() should have been 0.
+> Let me know if I should send a v2, or if it can be fixed when it is applied.
 > 
-> So, allow this INT_MAX 'idx' value now.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> The change related to the INT_MAX value is speculative.
-> Review with care. (or I can re-submit with INT_MAX-1, to be safe :))
-> ---
+> CJ
 
-Hi,
+Yes it's easier if you do. Thanks!
 
-polite reminder.
-
-CJ
-
-
-
->   drivers/fsi/fsi-occ.c | 17 ++++++++---------
->   1 file changed, 8 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/fsi/fsi-occ.c b/drivers/fsi/fsi-occ.c
-> index da35ca9e84a6..f7157c1d77d8 100644
-> --- a/drivers/fsi/fsi-occ.c
-> +++ b/drivers/fsi/fsi-occ.c
-> @@ -656,17 +656,16 @@ static int occ_probe(struct platform_device *pdev)
->   		rc = of_property_read_u32(dev->of_node, "reg", &reg);
->   		if (!rc) {
->   			/* make sure we don't have a duplicate from dts */
-> -			occ->idx = ida_simple_get(&occ_ida, reg, reg + 1,
-> -						  GFP_KERNEL);
-> +			occ->idx = ida_alloc_range(&occ_ida, reg, reg,
-> +						   GFP_KERNEL);
->   			if (occ->idx < 0)
-> -				occ->idx = ida_simple_get(&occ_ida, 1, INT_MAX,
-> -							  GFP_KERNEL);
-> +				occ->idx = ida_alloc_min(&occ_ida, 1,
-> +							 GFP_KERNEL);
->   		} else {
-> -			occ->idx = ida_simple_get(&occ_ida, 1, INT_MAX,
-> -						  GFP_KERNEL);
-> +			occ->idx = ida_alloc_min(&occ_ida, 1, GFP_KERNEL);
->   		}
->   	} else {
-> -		occ->idx = ida_simple_get(&occ_ida, 1, INT_MAX, GFP_KERNEL);
-> +		occ->idx = ida_alloc_min(&occ_ida, 1, GFP_KERNEL);
->   	}
->   
->   	platform_set_drvdata(pdev, occ);
-> @@ -680,7 +679,7 @@ static int occ_probe(struct platform_device *pdev)
->   	rc = misc_register(&occ->mdev);
->   	if (rc) {
->   		dev_err(dev, "failed to register miscdevice: %d\n", rc);
-> -		ida_simple_remove(&occ_ida, occ->idx);
-> +		ida_free(&occ_ida, occ->idx);
->   		kvfree(occ->buffer);
->   		return rc;
->   	}
-> @@ -719,7 +718,7 @@ static int occ_remove(struct platform_device *pdev)
->   	else
->   		device_for_each_child(&pdev->dev, NULL, occ_unregister_of_child);
->   
-> -	ida_simple_remove(&occ_ida, occ->idx);
-> +	ida_free(&occ_ida, occ->idx);
->   
->   	return 0;
->   }
+> > 
+> > > ida_alloc_max() is inclusive. So a -1 has been added when needed.
+> > > 
+> > > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> > 
+> > 
+> > Jason, wanna ack?
+> > 
+> > > ---
+> > >   drivers/vhost/vdpa.c | 6 +++---
+> > >   1 file changed, 3 insertions(+), 3 deletions(-)
+> > > 
+> > > diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+> > > index bc4a51e4638b..849b9d2dd51f 100644
+> > > --- a/drivers/vhost/vdpa.c
+> > > +++ b/drivers/vhost/vdpa.c
+> > > @@ -1534,7 +1534,7 @@ static void vhost_vdpa_release_dev(struct device *device)
+> > >   	struct vhost_vdpa *v =
+> > >   	       container_of(device, struct vhost_vdpa, dev);
+> > > -	ida_simple_remove(&vhost_vdpa_ida, v->minor);
+> > > +	ida_free(&vhost_vdpa_ida, v->minor);
+> > >   	kfree(v->vqs);
+> > >   	kfree(v);
+> > >   }
+> > > @@ -1557,8 +1557,8 @@ static int vhost_vdpa_probe(struct vdpa_device *vdpa)
+> > >   	if (!v)
+> > >   		return -ENOMEM;
+> > > -	minor = ida_simple_get(&vhost_vdpa_ida, 0,
+> > > -			       VHOST_VDPA_DEV_MAX, GFP_KERNEL);
+> > > +	minor = ida_alloc_max(&vhost_vdpa_ida, VHOST_VDPA_DEV_MAX - 1,
+> > > +			      GFP_KERNEL);
+> > >   	if (minor < 0) {
+> > >   		kfree(v);
+> > >   		return minor;
+> > > -- 
+> > > 2.43.0
+> > 
+> > 
+> > 
 
 

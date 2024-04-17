@@ -1,57 +1,52 @@
-Return-Path: <kernel-janitors+bounces-2608-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2609-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99FDA8A7E36
-	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Apr 2024 10:28:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2C88A7E5D
+	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Apr 2024 10:33:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB2B71C219A9
-	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Apr 2024 08:28:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFD6BB25246
+	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Apr 2024 08:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D634D7F7F3;
-	Wed, 17 Apr 2024 08:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88EDB127E17;
+	Wed, 17 Apr 2024 08:32:19 +0000 (UTC)
 X-Original-To: kernel-janitors@vger.kernel.org
 Received: from mail.nfschina.com (unknown [42.101.60.195])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 88FF36CDA8;
-	Wed, 17 Apr 2024 08:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 4E36458ADE;
+	Wed, 17 Apr 2024 08:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713342472; cv=none; b=JSK+vNlQWvp2Mkvj/H3ChGucSEIDh63A52k2+Ac/wWczdoMhjfJZHLB3USI/kAqFzfk7k5xOGcwd4U/wkvikQL6ulPfZ32yH4RJf91ssu2mZ92jPR9NW7SM3/NDzVhVFKaVGRajsKykhnyEHSJ+spkDQcOvzxvIx48S9/eFEWec=
+	t=1713342739; cv=none; b=nygRaRPxJe3RGvKbXlUneT5dI5RonQ3AOQ/hRgykw/T9WCDWU/Db+RhQKf9ht5lv9kiF0L4r4rubSV+TIeeDAR5Pijow1A/Hxx+W9OFAME5vuC4Q/R7BGuDW1CtsH2E+2rJEd0eKs2VkaYSyXU/KmLGP7Z6xzvpBzekpU4/fR4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713342472; c=relaxed/simple;
-	bh=CtQMNvV+gUrG6qOniXmLWrED15xV7xKGBBCUUCjRea8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HXh+V65edHhGcMu9QH448WEVtVMgkUdzm/oE720BmTqMYNGN7ekJe9nMLZzxNkDvRhbXbosEzRgLYZRZANV6j+69DO6p4LHvqDVXR5OOMk3co4jQU4fLLl0tCuVdQVGPcBQ6CcgGfMSSdwGn3xcOgc67voXa4p02uUYq7VYVBhQ=
+	s=arc-20240116; t=1713342739; c=relaxed/simple;
+	bh=iD9NnLJfAZU8fCgqT+cPRna6Exsx7/eFsEB1T7DYLNw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gv3eQ7OZh2hgvsQz/GdShj0DIxkQnGAF7gEY24hZEKFL35KJlee2sa1JWejos8/uVWbQTN/MiH1AnZwGU1Z0D1R/aoVxOhQ6LOCips+XaxLXQAqW9YO+Fz16W5ImH3HudHKDil7tCZJFRqFnddwYQVBJ0zOnKqUYDEprsFrzBYc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
 Received: from localhost.localdomain (unknown [180.167.10.98])
-	by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPSA id 8304B6061879B;
-	Wed, 17 Apr 2024 16:27:30 +0800 (CST)
+	by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPSA id 398FA6061BF44;
+	Wed, 17 Apr 2024 16:32:11 +0800 (CST)
 X-MD-Sfrom: suhui@nfschina.com
 X-MD-SrcIP: 180.167.10.98
 From: Su Hui <suhui@nfschina.com>
-To: njavali@marvell.com,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	jejb@linux.ibm.com,
-	martin.petersen@oracle.com,
-	nathan@kernel.org,
+To: nathan@kernel.org,
 	ndesaulniers@google.com,
 	morbo@google.com,
 	justinstitt@google.com
 Cc: Su Hui <suhui@nfschina.com>,
-	rhicksted@marvell.com,
-	hare@suse.de,
-	himanshu.madhani@oracle.com,
-	qutran@marvell.com,
-	linux-scsi@vger.kernel.org,
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	hch@tuxera.com,
+	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	llvm@lists.linux.dev,
 	kernel-janitors@vger.kernel.org
-Subject: [PATCH] scsi: qla2xxx: edif: Fix an error code problem in qla24xx_sadb_update()
-Date: Wed, 17 Apr 2024 16:27:01 +0800
-Message-Id: <20240417082700.2238557-1-suhui@nfschina.com>
+Subject: [PATCH] fs: hfsplus: fix an error code problem in hfsplus_sync_fs()
+Date: Wed, 17 Apr 2024 16:31:36 +0800
+Message-Id: <20240417083135.2245257-1-suhui@nfschina.com>
 X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -62,30 +57,30 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 Clang Static Checker (scan-build) Warning:
-drivers/scsi/qla2xxx/qla_edif.c:line 1568, column 3
-Value stored to 'rval' is never read.
+fs/hfsplus/super.c: line 236, column 3
+Value stored to 'error2' is never read.
 
-Return the error code rather than zero to dismiss this warning.
+Fix this typo error by assigning 'error2' to 'error'.
 
-Fixes: dd30706e73b7 ("scsi: qla2xxx: edif: Add key update")
+Fixes: 52399b171dfa ("hfsplus: use raw bio access for the volume headers")
 Signed-off-by: Su Hui <suhui@nfschina.com>
 ---
- drivers/scsi/qla2xxx/qla_edif.c | 2 +-
+ fs/hfsplus/super.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_edif.c b/drivers/scsi/qla2xxx/qla_edif.c
-index dcde55c8ee5d..6f1aac36a144 100644
---- a/drivers/scsi/qla2xxx/qla_edif.c
-+++ b/drivers/scsi/qla2xxx/qla_edif.c
-@@ -1836,7 +1836,7 @@ qla24xx_sadb_update(struct bsg_job *bsg_job)
- 	bsg_job_done(bsg_job, bsg_reply->result,
- 	    bsg_reply->reply_payload_rcv_len);
- 
--	return 0;
-+	return rval;
- }
- 
- static void
+diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
+index 97920202790f..5ee9cbccdff9 100644
+--- a/fs/hfsplus/super.c
++++ b/fs/hfsplus/super.c
+@@ -233,7 +233,7 @@ static int hfsplus_sync_fs(struct super_block *sb, int wait)
+ 				  sbi->s_backup_vhdr_buf, NULL, REQ_OP_WRITE |
+ 				  REQ_SYNC);
+ 	if (!error)
+-		error2 = error;
++		error = error2;
+ out:
+ 	mutex_unlock(&sbi->alloc_mutex);
+ 	mutex_unlock(&sbi->vh_mutex);
 -- 
 2.30.2
 

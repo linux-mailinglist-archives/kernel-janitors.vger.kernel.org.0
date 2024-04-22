@@ -1,118 +1,156 @@
-Return-Path: <kernel-janitors+bounces-2683-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2685-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 532B38ACA87
-	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Apr 2024 12:24:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 035718ACE44
+	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Apr 2024 15:32:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 035C1281293
-	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Apr 2024 10:24:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80FF51F2205E
+	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Apr 2024 13:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EB813FD75;
-	Mon, 22 Apr 2024 10:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877C714F9F1;
+	Mon, 22 Apr 2024 13:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="oTHUNRus"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HeI52t5p"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-16.smtpout.orange.fr [80.12.242.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1532713E405;
-	Mon, 22 Apr 2024 10:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9461314F9E1
+	for <kernel-janitors@vger.kernel.org>; Mon, 22 Apr 2024 13:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713781479; cv=none; b=l0W1sCuxpLHAe/OT7QbJ7KbzytR+7QFEGCegsx37wxDr/0pYqpSc16DiGVDJ07xeqEtY51cDBJZzT6lgL3dUNDGE44lO6BVY/nF5eNqHZcSRfvwT33r6piZ8p5nndTHos1hPPrp53hzvC9Y34CShPybkx7yTOgN6oVPhc9U2WXs=
+	t=1713792720; cv=none; b=A823kNdfV/gWNqdv+L78FzZrY6A8Q0PW6ZeJaO/IGx7YGfKqsfU8i87asyssMJkzd8SpJv1Qa5ejDx+GDc4WPDYv514fXhXeUJNyaEt3CaG58dNrPuStXA+ccxXJpRgGsGvwJvvdk1O6JgRjFFKkx4ibtuNYJfYeFMQp08yNjQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713781479; c=relaxed/simple;
-	bh=hx1H2/KTWnm+iopGGZ2Sz91oasiY4UwfCIVVPQyi0m4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tm9z1tQtdYro4iibKyE4gJbfi1GIYsXABpcEinPTe5MB3dL+HHScbmHwCs1OKIwewWkZe0w30p5+wkU26D6EBXqm1MTKP66+5F967PRmzoq4GDFw9Ex13h5uryGkB9MQOgB6ZHdwMURkHWpfqijsWHs8TqkJrWFTLDgI19JCYZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=oTHUNRus; arc=none smtp.client-ip=80.12.242.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from fedora.home ([86.243.17.157])
-	by smtp.orange.fr with ESMTPA
-	id yqqPr8npHhQSByqqarJn76; Mon, 22 Apr 2024 12:24:28 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1713781468;
-	bh=+5BQBZK9oCOuonQNxMEsho7X/755sEqmuR+eW6M9akU=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=oTHUNRusDFEkufBQoPYgUNC7neHCHwCZ10sQf4n3RqgRoXOB2h2yWNjjoyoFWBokz
-	 Mw8L58M6MRMpi1t9BctLz8V4aZ3+H6H1dXB2ZtoGOUNDPnqZxWiAqKtSHpn4UjthCi
-	 tLQdpLVZgCLERoP/zyEF9pVVlisHrRkT04AcgMUo/Bbu6RF3JkJGeZ6sDhRpR1fCUr
-	 vTOm4pwngn55gQLpeEXWBxh3wRAMavBaaC2e1+WN0Lp9ANdrXaDsM8/EBh2Czdy0rE
-	 vI6RTYsRf62vbh+HrochU2oFOcn3OgAIT6jbDdKuXQyfdzhirPmMoFrHdDpvoyvTv0
-	 m7e0L+xEp/Meg==
-X-ME-Helo: fedora.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 22 Apr 2024 12:24:28 +0200
-X-ME-IP: 86.243.17.157
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: David.Laight@ACULAB.COM,
-	rasmus.villemoes@prevas.dk,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v2 2/2] seq_file: Simplify __seq_puts()
-Date: Mon, 22 Apr 2024 12:24:07 +0200
-Message-ID: <7cebc1412d8d1338a7e52cc9291d00f5368c14e4.1713781332.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <a8589bffe4830dafcb9111e22acf06603fea7132.1713781332.git.christophe.jaillet@wanadoo.fr>
-References: <a8589bffe4830dafcb9111e22acf06603fea7132.1713781332.git.christophe.jaillet@wanadoo.fr>
+	s=arc-20240116; t=1713792720; c=relaxed/simple;
+	bh=awX5B76+HzKgX2w5I2DsXCUaJAK/mYe3tND15fSkqMY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t7tdMWNdlg/XGg5Qc2pzOStgS7OcAO/8CPbwfZB8Tao98VeX8CddYXh2ppLWTUeSxm/lsrw2oVVyhFNrY2J9HNhFTPMiJJzcD5w1iFHRStyQXTm/3QekMQTtSvV0gt2fbdquDx1fUNUFlPD469vHpMllaCnc1KQCqAOn9eqLZ44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HeI52t5p; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1713792717;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ANX+xaTgZeaaXkTxg9wkNgDys/2r+xl16Yffp7Qdk4w=;
+	b=HeI52t5pmDLAUOI7ed32Q4LZxYVb8qc097HSrgD+/hAE0KluPwbqj/fPlLPMt4QIoEqHNS
+	GVAvhOpivNcoaTrKCgVZJBnTOAmstokZINDaaHVL7AvZg+Mpjq7sSWSRruep8wya3qzeNM
+	Pnd+i7+Tu29ZiT15z0fIUC/fpu8jLVU=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-634-tPHV3FwoPXClnDmywPoYsQ-1; Mon, 22 Apr 2024 09:31:56 -0400
+X-MC-Unique: tPHV3FwoPXClnDmywPoYsQ-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a51a2113040so210576666b.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 22 Apr 2024 06:31:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713792715; x=1714397515;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ANX+xaTgZeaaXkTxg9wkNgDys/2r+xl16Yffp7Qdk4w=;
+        b=UxmRCg3KFY/b4pGdcX6v5reBrLQNcD0PqRbDgd8TxtH1qUzd+OenF/U8Py02SMTI6d
+         CDw+2Y92W7G41U3Qy0ddMKgD+rIm5UVIfHHKf1z0CCpdePu3g95RvH3BTRvD+r5qXoVX
+         V+IuGIs6ZOlmm6KTv5LPBmRVNGw+ygg6F32WFMlRzLPvMn6kwy0Iwe0Q1RspPIA4sp9c
+         K1BFqh6eNmXyjMw7FCgYsstxufGI68ydUV5aJ76ciRF16mj0ze4N3qsexsVkH3oNmeOn
+         MHk7sg6+yscTeZXVJPSKsABfViMSsrV6ryoqdP2tnpQINa2YqVAvx/ov/zWWqTpOBTiy
+         i5uw==
+X-Gm-Message-State: AOJu0Yzce4Swy9DAGtCfkneh1SDGJ9v+lbUzIm5Z/0Jgs0yoXOgh8e20
+	a3OBUSY+OHo8zx3sovjtS+7fx8oiqyfjKvtjCxbd0bQl8Ox4IRNEj6RpDQE7CGGPszOanDSiuVs
+	lqp2Mnmk47RLCkk6QKkM9BOHkByNNzWyQkGl0NfHBiGSc4PoMy3nOPAh4HG0RsAx3LQ==
+X-Received: by 2002:a17:907:94cb:b0:a55:b272:ea02 with SMTP id dn11-20020a17090794cb00b00a55b272ea02mr2618065ejc.75.1713792714911;
+        Mon, 22 Apr 2024 06:31:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG82ZH8/Jtju0mhAdG8/PW4XqvBdwQxaB7D0jxdPhLmOnBwNV/D0nX8zuy+43rjCw52vpCfaQ==
+X-Received: by 2002:a17:907:94cb:b0:a55:b272:ea02 with SMTP id dn11-20020a17090794cb00b00a55b272ea02mr2618055ejc.75.1713792714632;
+        Mon, 22 Apr 2024 06:31:54 -0700 (PDT)
+Received: from [10.40.98.157] ([78.108.130.194])
+        by smtp.gmail.com with ESMTPSA id bk2-20020a170907360200b00a55a8ec5879sm2130351ejc.116.2024.04.22.06.31.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Apr 2024 06:31:54 -0700 (PDT)
+Message-ID: <25965583-4d8a-4e7a-9a2e-83ec2faa4187@redhat.com>
+Date: Mon, 22 Apr 2024 15:31:53 +0200
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH][next] platform/x86/intel/pmc: Fix PCH names in comments
+To: Colin Ian King <colin.i.king@gmail.com>,
+ Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+ David E Box <david.e.box@intel.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ platform-driver-x86@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240418215202.879171-1-colin.i.king@gmail.com>
+Content-Language: en-US
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20240418215202.879171-1-colin.i.king@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Change the implementation of the out-of-line __seq_puts() to simply be
-a seq_write() call instead of duplicating the overflow/memcpy logic.
+Hi,
 
-Suggested-by: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Changes in v2:
-   - New patch
+On 4/18/24 11:52 PM, Colin Ian King wrote:
+> The PCH names in the pmc drivers are incorrect in the comments,
+> fix these.
+> 
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 
-Now than most (if not all) seq_puts() calls will be turned into a
-seq_write() or seq_putc() at compilation time, the added function call in
-__seq_puts() should not be noticeable.
+Thank you for your patch, I've applied this patch to my review-hans 
+branch:
+https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
 
-It could be even better to just remove this __seq_puts() and call
-seq_write(m, s, strlen(s)) directly in seq_puts() if it can't be
-optimized at compile time.
----
- fs/seq_file.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+Note it will show up in my review-hans branch once I've pushed my
+local branch there, which might take a while.
 
-diff --git a/fs/seq_file.c b/fs/seq_file.c
-index 8ef0a07033ca..e676c8b0cf5d 100644
---- a/fs/seq_file.c
-+++ b/fs/seq_file.c
-@@ -671,14 +671,7 @@ EXPORT_SYMBOL(seq_putc);
- 
- void __seq_puts(struct seq_file *m, const char *s)
- {
--	int len = strlen(s);
--
--	if (m->count + len >= m->size) {
--		seq_set_overflow(m);
--		return;
--	}
--	memcpy(m->buf + m->count, s, len);
--	m->count += len;
-+	seq_write(m, s, strlen(s));
- }
- EXPORT_SYMBOL(__seq_puts);
- 
--- 
-2.44.0
+Once I've run some tests on this branch the patches there will be
+added to the platform-drivers-x86/for-next branch and eventually
+will be included in the pdx86 pull-request to Linus for the next
+merge-window.
+
+Regards,
+
+Hans
+
+
+
+> ---
+>  drivers/platform/x86/intel/pmc/arl.c | 2 +-
+>  drivers/platform/x86/intel/pmc/lnl.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/platform/x86/intel/pmc/arl.c b/drivers/platform/x86/intel/pmc/arl.c
+> index 34b4cd23bfe5..e10527c4e3e0 100644
+> --- a/drivers/platform/x86/intel/pmc/arl.c
+> +++ b/drivers/platform/x86/intel/pmc/arl.c
+> @@ -1,7 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  /*
+>   * This file contains platform specific structure definitions
+> - * and init function used by Meteor Lake PCH.
+> + * and init function used by Arrow Lake PCH.
+>   *
+>   * Copyright (c) 2022, Intel Corporation.
+>   * All Rights Reserved.
+> diff --git a/drivers/platform/x86/intel/pmc/lnl.c b/drivers/platform/x86/intel/pmc/lnl.c
+> index 068d72504683..ec89e7dda103 100644
+> --- a/drivers/platform/x86/intel/pmc/lnl.c
+> +++ b/drivers/platform/x86/intel/pmc/lnl.c
+> @@ -1,7 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  /*
+>   * This file contains platform specific structure definitions
+> - * and init function used by Meteor Lake PCH.
+> + * and init function used by Lunar Lake PCH.
+>   *
+>   * Copyright (c) 2022, Intel Corporation.
+>   * All Rights Reserved.
 
 

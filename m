@@ -1,147 +1,110 @@
-Return-Path: <kernel-janitors+bounces-2738-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2740-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4838B096F
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Apr 2024 14:27:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB3F18B0A70
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Apr 2024 15:08:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C8A01C2403E
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Apr 2024 12:27:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BFDA1F22055
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Apr 2024 13:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7A515B11F;
-	Wed, 24 Apr 2024 12:26:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OqV6jfm6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD1B15B55A;
+	Wed, 24 Apr 2024 13:08:30 +0000 (UTC)
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163DE15ADAE;
-	Wed, 24 Apr 2024 12:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AED615B133;
+	Wed, 24 Apr 2024 13:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713961589; cv=none; b=Qegq5WcolITvwor9UkO0hxO5tdS+U2I8fJd/PLegc0uCqaW9gKtFgwAPdrNH7TUm2mCIRm7NEjYKBHrrjaAvce201EgmaMj/yHXU+DmYpsDgyodoIxTaWsD8Yzh/XPCKUPdgO9HdpFft2pgPf41Nj7/BdEgX6G7Z9X3qZ6utFqA=
+	t=1713964109; cv=none; b=k/SkUSULbIuS0IAKKfYJRwZLGvCQdzZPWlrrdpJfezPE5hXo82ysRPXQHGwQFBNGJ4oXuzsy6lpx6Kp4kQ/Wjd5Q7SZoMZUJg1K74zBVXjHiqK3wDLtVTXyF7suqSe9sU7zRoVO+hpU8iMbvs3AE6XuagbBYokWndjZLZ+A4EkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713961589; c=relaxed/simple;
-	bh=pENaq1F7irNnXDi2tqew8U6t/paLMwTAdvNSKq0Z4zM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KbiYL4QJ1iEQ5GN4pAtUEaDoh8+TBijE63FZTYLOj1Rv0eBPDnYuoUOsqdSa1Z3hyFe9dx5nsGJBnAO1B7VNNPrM5MsINju8ghm7iDHd1p8hbrxFbXcZ4o9sQxqcS7qIJpea0/Lnmzbw+KNgmpkNW/r3zX+rDHZUBX9OZBWoJeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OqV6jfm6; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1713964109; c=relaxed/simple;
+	bh=3fuD80C0yX/OfK7PbQv1+C5LFnM/rJsnB/YJ4shBc40=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l/FGyAa5lQDJwPR9aocG27/teSBhf3O3JcbyyZ6bkI2epxHSL48leod3AMo7ndbaAx1woOz3vOpR6a4TiJqBh/C70DeK4a4ZLZFvepXC9lME9G1cZqpQVbUPTq8ucaSXTSvA0a2L9/4bT3ydz8dYOD8EpokWLE3CBR/6sP7KZkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-572040691c9so1608885a12.1;
-        Wed, 24 Apr 2024 05:26:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713961586; x=1714566386; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+rdUuC6v/k+XVeWN6GsjQ32OKOeNoWrrRy+0NsEkvrY=;
-        b=OqV6jfm6FiqSb1JS2mULvh03zYC11KgLFeucABNpQolicHowgO+r/b0WY46hdFSjsf
-         TGMGzrtqOX7lnK0UuJqyxLcyVE1xZh33gNIocmW+3QeL3xl0jVLv3xbrigWb8IIpynxB
-         g1E/+xTwGvJC/abW5R6dLJ1bSSv8hrSgjS7XYupBoxod6aSR7MN9sWv7C/MB5Xu0CjiW
-         BF94EH1nDwUVcZRcs9mMz4LVIY5qawqBKAQnECHLlSlve8i413OQQlZakamGKzx09xi4
-         65lXtAnh9VXLy+OVa4JzpzMXKEtuyjQiYvoBxCqTeBX/DYUCTjyd2MI/IBIIk5VhFMkd
-         rLfg==
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-de47485532cso6767279276.3;
+        Wed, 24 Apr 2024 06:08:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713961586; x=1714566386;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+rdUuC6v/k+XVeWN6GsjQ32OKOeNoWrrRy+0NsEkvrY=;
-        b=evtICmYPkWWrH1ss0bPX30HsY8EMM+P1kBmICyWZDlYNv2XV9GZE9MARjbRU3Q+XNA
-         3b1P9gdGSKXGwuVAOzqTRilx22hcmpwKK+1ImvoVkatACAEnDFmyHZWlcDnKOQEBIKW8
-         K5m4e5v5S/WhinheM4H1BP62WNfQZFUdDVlvk4hc9SjjcKuuTG0zUANYMC/J80mNxYoL
-         W2N2n+F4OXN0Jy5F2fvNoySUUZpmcevWM0q6rUXfspZUMM7KE/YuTvrG0Pjqk7ffbqkH
-         4P6OpUU4z3nFSJVyOeihfuM66xX77JY5gqClEmy3IIYBAAtlyyahhtGNMA5k5Y+TVOqw
-         e2UQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVo+oMjoiy9Z6lnhOs8ztNdPwe8Isv5bE0L5IqrQC2UdBzScy01NbSraAnhZl7eTmjjh+Izvi49Y9yikFUXFiLa3AB8oowcmIkZdHd6KOGRMaemeMN+v6cEsE8pBGU9kSKL5sigFpEZ0EOGwXfNaIT0aKs9bF27sfW1WHrvVTyJDkzV4yAf7eat
-X-Gm-Message-State: AOJu0YzRz/R2yH48HMhdJCWF60C8bdiNTzsIEzOV2aISieMd1cEOcvzq
-	qkrZ6D86r4Ds6pNEkhD00Df2agPEm61MRy5cfhhJCl9xFV8ztoOt
-X-Google-Smtp-Source: AGHT+IEhYR/0oIc/UbYhCWFPOMnJ7hBf7xrAGXFnwFIUU3o/7hThyqIDCatGp2KdXpmqCDltGTfWgA==
-X-Received: by 2002:a05:6402:22a5:b0:571:da40:22d9 with SMTP id cx5-20020a05640222a500b00571da4022d9mr5090846edb.10.1713961586077;
-        Wed, 24 Apr 2024 05:26:26 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
-        by smtp.gmail.com with ESMTPSA id ef9-20020a05640228c900b00571bde3b0a4sm7497051edb.34.2024.04.24.05.26.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Apr 2024 05:26:25 -0700 (PDT)
-Message-ID: <87c6e65dadbb3ed0c9b4506e809eb3976b12f204.camel@gmail.com>
-Subject: Re: [PATCH] iio: dac: adi-axi: fix a mistake in
- axi_dac_ext_info_set()
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Dan Carpenter <dan.carpenter@linaro.org>, Nuno Sa <nuno.sa@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
-	 <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel-janitors@vger.kernel.org
-Date: Wed, 24 Apr 2024 14:30:02 +0200
-In-Reply-To: <df7c6e1b-b619-40c3-9881-838587ed15d4@moroto.mountain>
-References: <df7c6e1b-b619-40c3-9881-838587ed15d4@moroto.mountain>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.0 
+        d=1e100.net; s=20230601; t=1713964106; x=1714568906;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oJ5BaNcJprdgWoCnp6hifCqMZXethulac/N0JRYezqc=;
+        b=nWqLFOmC0KkPWxirPdqYWwNRPuQT4sFL6ilAkDMLOozpGTH4wqsMP+RSCUxer0ZGtE
+         in5yFLIZyeS+uNTcp9Ej0nzQkAachjTVOTPE8VgIgZpgakXJSQ1AX0Uya04eEBihxcJd
+         QQ+nFZchC/eOkq8qHp/g+sw+WqJx6HxzeKxotHpq1kFEoFsqawfH9cZDxcWtdCeLcsMI
+         sFkxmzzgn9sqNhgpcMh3U0vJA4b40Lm0uEtvWladNHDyKC90n5CTsVyj7Vtt7y88HLrI
+         tpO2JsiopS0ya+sJaNV/Ab/XOIK+ZXLEvWCFlOpPLIjER2lTMo8LlKfg9rMPjxYoEb2I
+         5x1A==
+X-Forwarded-Encrypted: i=1; AJvYcCWny6uf315iyDjREG6Lk5ofvKF7ZKjbCp/tp6MjQqQoG4IB/1Ij8gRt4zEXlfqNp/u8JvSE2IjMfzoE3D4MompvGBz7uBk9l0FC6CpXp3ATVIafsn8WAOwizPrKOn0DeeXo5zWhShr5kW5c1CWhgFq2HpBOoOzX3c7CEYWrepSKg+uZpXViN3WOpOwTVlrSUmB1a4B178OI2GZiIVrMLy0zJttoi33OHwe84W0=
+X-Gm-Message-State: AOJu0YzsDJZCsRZH+WSSuaPnvtoK5njXROv1jnRpQJXfGqYjPHX08w6E
+	LBWKDLSoKki5PwRgvrfL93vCb5rgDgkmrSprGA2vBrfOIU/m+pmnTEPHKKvr
+X-Google-Smtp-Source: AGHT+IHbtuXioDSTdMMCWEC0d6JTra4ZL3MywkCb1c+6NwLJBwwXPHyYQ4s0oOHWjqA/RrDCdDSBMw==
+X-Received: by 2002:a25:9007:0:b0:dc8:5e26:f501 with SMTP id s7-20020a259007000000b00dc85e26f501mr2335788ybl.61.1713964105938;
+        Wed, 24 Apr 2024 06:08:25 -0700 (PDT)
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com. [209.85.219.177])
+        by smtp.gmail.com with ESMTPSA id x3-20020a056902102300b00dcc0cbb0aeesm3054498ybt.27.2024.04.24.06.08.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Apr 2024 06:08:25 -0700 (PDT)
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-de56d4bb72bso824676276.2;
+        Wed, 24 Apr 2024 06:08:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU2iKYg8qorvBN+dQENDMcQ3IyKMLOROmOmEWtwZgo3Y6jdAuqlRZ73jNLuhIsXqwx8Sy5O5YQtnPfnALonwje9f8ng/P6TT3xUW5wijT6Ft9NGlyVP+10X2QAgHFxiENl3ih0PuPfunSPIGkWcpu6iG9OHBnTycPcNC5dxHeul0rh5/txtHfLnMiVyZsRiZ3jhV9QcN9ryw1I1HeLQFsl3h3bq7h7BwD6K81s=
+X-Received: by 2002:a25:ab8c:0:b0:de4:7603:e888 with SMTP id
+ v12-20020a25ab8c000000b00de47603e888mr2549826ybi.29.1713964105488; Wed, 24
+ Apr 2024 06:08:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <658e6b1b23d5b66646bb830361b8c55ccf797771.1713025170.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <658e6b1b23d5b66646bb830361b8c55ccf797771.1713025170.git.christophe.jaillet@wanadoo.fr>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 24 Apr 2024 15:08:13 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdW0G_Sdvq8RTR1y8xRPqCiZi-u_FbbYdbS3g+k9YnFZvQ@mail.gmail.com>
+Message-ID: <CAMuHMdW0G_Sdvq8RTR1y8xRPqCiZi-u_FbbYdbS3g+k9YnFZvQ@mail.gmail.com>
+Subject: Re: [PATCH] clk: renesas: r8a7740: Remove an unused field in struct div4_clk
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Dan,
+On Sat, Apr 13, 2024 at 6:19=E2=80=AFPM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
+> In "struct div4_clk", the 'flags' field is unused.
+>
+> Remove it and update the 'div4_clks' array accordingly.
+>
+> Found with cppcheck, unusedStructMember.
+>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-On Wed, 2024-04-24 at 14:45 +0300, Dan Carpenter wrote:
-> The last parameter of these axi_dac_(frequency|scale|phase)_set()
-> functions is supposed to be true for TONE_2 and false for TONE_1. The
-> bug is the last call where it passes "private - TONE_2".=C2=A0 That
-> subtraction is going to be zero/false for TONE_2 and and -1/true for
-> TONE_1.=C2=A0 Fix the bug, and re-write it as "private =3D=3D TONE_2" so =
-it's
-> more obvious what is happening.
->=20
-> Fixes: 4e3949a192e4 ("iio: dac: add support for AXI DAC IP core")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> ---
-> This is from code review.=C2=A0 Untested.
-> ---
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Auch, good catch! Agreed that private =3D=3D AXI_DAC_*_TONE_2 makes it more
-readable.
+i.e. will queue in renesas-clk for v6.10.
 
-I guess Jonathan may just squash this in the driver (was pushed this weeken=
-d).
-Anyways, FWIW:
+Gr{oetje,eeting}s,
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+                        Geert
 
-> =C2=A0drivers/iio/dac/adi-axi-dac.c | 6 +++---
-> =C2=A01 file changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.=
-c
-> index 9047c5aec0ff..880d83a014a1 100644
-> --- a/drivers/iio/dac/adi-axi-dac.c
-> +++ b/drivers/iio/dac/adi-axi-dac.c
-> @@ -383,15 +383,15 @@ static int axi_dac_ext_info_set(struct iio_backend
-> *back, uintptr_t private,
-> =C2=A0	case AXI_DAC_FREQ_TONE_1:
-> =C2=A0	case AXI_DAC_FREQ_TONE_2:
-> =C2=A0		return axi_dac_frequency_set(st, chan, buf, len,
-> -					=C2=A0=C2=A0=C2=A0=C2=A0 private - AXI_DAC_FREQ_TONE_1);
-> +					=C2=A0=C2=A0=C2=A0=C2=A0 private =3D=3D AXI_DAC_FREQ_TONE_2);
-> =C2=A0	case AXI_DAC_SCALE_TONE_1:
-> =C2=A0	case AXI_DAC_SCALE_TONE_2:
-> =C2=A0		return axi_dac_scale_set(st, chan, buf, len,
-> -					 private - AXI_DAC_SCALE_TONE_1);
-> +					 private =3D=3D AXI_DAC_SCALE_TONE_2);
-> =C2=A0	case AXI_DAC_PHASE_TONE_1:
-> =C2=A0	case AXI_DAC_PHASE_TONE_2:
-> =C2=A0		return axi_dac_phase_set(st, chan, buf, len,
-> -					 private - AXI_DAC_PHASE_TONE_2);
-> +					 private =3D=3D AXI_DAC_PHASE_TONE_2);
-> =C2=A0	default:
-> =C2=A0		return -EOPNOTSUPP;
-> =C2=A0	}
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 

@@ -1,112 +1,98 @@
-Return-Path: <kernel-janitors+bounces-2748-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2750-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F39D68B0D2C
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Apr 2024 16:51:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF20E8B0DA7
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Apr 2024 17:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0027F1C24A77
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Apr 2024 14:51:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CB81284A93
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Apr 2024 15:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD0F15EFB5;
-	Wed, 24 Apr 2024 14:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB31215F408;
+	Wed, 24 Apr 2024 15:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X78OGA4f"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="ojYUiW+j"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from smtp.smtpout.orange.fr (smtp-20.smtpout.orange.fr [80.12.242.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB34C15ECDE
-	for <kernel-janitors@vger.kernel.org>; Wed, 24 Apr 2024 14:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A196715ECFA;
+	Wed, 24 Apr 2024 15:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713970307; cv=none; b=YpD2156jen9LTvz4dsOh8gC9BKU4kAxGu0IkuLOH7tqnUZ2aAh3A43YfYAEkvs2W+nJ4yKOvDENEuEiaWKxmNy14iycBgvhR+fRlRvK1XxALNimqsGGVus+hnqRKfrW308rynbb+gVD4SzTzDQLiaESevZMiIgiK4qWf9UOjyVU=
+	t=1713971445; cv=none; b=hMohp8le6FvV7CcLNwSIBy64qcGtE1U0MaNWwH7gvHnMu0ZGAc94mP82AF2B0Q6MjIXyHMPKJPdr7kuOWwtK9TBvP9y7Ps8n3uAXY45DnbfkrWQdvDKdtVgDLk/ApWajEA7YLcKfj4qhLkyCxh4Dc0m+a2JW9TvK4phO5N8sPM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713970307; c=relaxed/simple;
-	bh=L5PgwQXqh35ljEV/QfjmAhY+dATTVZXtCGt9GLB66PA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=T5/RTTS3lQYMyH2eICiIrGvF3ISEew9QUdtq1geZi+gGyCID8P9GPK4UqdK6/iB0VWaBz9ZYo+zm7TN1fHWsv4Wj8HHOoqljTV52/rlCgIT+7pyYiS29SGjeJFUAtXIiJdVCjAF7Y30u+nAAeFZAVxCk/F1iVPXwxEezdKtv6K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X78OGA4f; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ae9176aad8so2277878a91.2
-        for <kernel-janitors@vger.kernel.org>; Wed, 24 Apr 2024 07:51:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713970306; x=1714575106; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CI1RTUkbvNrBSkw+K5Z39nzZbpfRzSvThM/4gtY5VFY=;
-        b=X78OGA4fwe0/X+KjwaAwYyNgu+35YHb0vTrhK7LdBdREAUTNLhIidK7p4XiJuHKZ81
-         Qe/87ErcEWReDflfs7bIzsVt8t5zNZzeBfw4zdxhfh9YONQwgcD/95LmhAVah6txl0mi
-         36cPnqW0mIY3wfpor/TJA36iN1JfTlMEKwzLZK5Crw+cDWAwgHbElwzwtZnyOnfRHuvg
-         RaQCcXFzJJ9d8yq2m6ctIQf0CRfonqe+1BAquEjLISrBJKbcIP6NnR26/6cROr4UHIm5
-         dj+Jf1P/mmlbKwOPEwO4t0tvn0q6NqL9AvZ3Yf1Zfrbl4/asZ5wi2wzaJ/e5Zkngj83/
-         nKSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713970306; x=1714575106;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CI1RTUkbvNrBSkw+K5Z39nzZbpfRzSvThM/4gtY5VFY=;
-        b=pUFmgn5bXl8zek6lu9d2e1wNFwq0tsyfiZp13FgSfLVk4iupQZBPtXq6NOIPzERhsX
-         MFaH41SknVFGPN1RxpV18Nc4TXOaUl+fgn2vei+tEkOzPw8F109CxiXuPz3xhedtJ2sp
-         zNBQVaRCfhe0nZPXixsv+UYmgQLBAVyVf9Kj7gzFFh9ohoCvOxAMPxRWCxCJA2xRGspC
-         9/W+r7zVCjHgOL7AcnzfOhOIi/Mb0Xc56HM+ehy9MOGI0h8SpIGmBhUSJ1UYzYwD0REr
-         8/GNF18Gq51jsmGC09p/BQMm+aeFi52Jfh9kb81ZuYsQt5N6zjg8L/j9eBzRRT0Y4cXg
-         SFBg==
-X-Forwarded-Encrypted: i=1; AJvYcCWhlBme9EiTROlVKS6uZyNImjns/5OXZxH99cOaB9OC+lJGPj39DNh8iwoKAMDcZ6AOuqhp0Lmfn959yGewD9fCPUGw132beEcdnTn+Zq3P
-X-Gm-Message-State: AOJu0YwPC7TdGngrMfkeclLBDQQP68ZvRD0t5yZt0pgN7m/A7iJyEA4i
-	pisalXkjrrV1REG1ax8oycFH5H2u8psCRqKwthh9DdtOMLbvu6VwjGRY7pidxptdFenPGp3qAan
-	53Q==
-X-Google-Smtp-Source: AGHT+IEkGEBGl103CCfB1x44lCEAhqJw73hICMcBVrYM5jo0ROCAmB4Ygu81wDS3jT7KCqkV6HSuf6vVHaE=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:90a:9f8d:b0:2ae:cb7e:b5b3 with SMTP id
- o13-20020a17090a9f8d00b002aecb7eb5b3mr10285pjp.6.1713970305856; Wed, 24 Apr
- 2024 07:51:45 -0700 (PDT)
-Date: Wed, 24 Apr 2024 07:51:44 -0700
-In-Reply-To: <20240424-e31c64bda7872b0be52e4c16@orel>
+	s=arc-20240116; t=1713971445; c=relaxed/simple;
+	bh=GFl2gu8Goy0sQALB4lF37DA+Kra9rUwAZesJFurH4rs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GfQ9efHDCjULwkptqB7+zUc+YCA3L2oXNfVWGAKa1EtIvlasNzmj941CxT2u17TA6aNbzmxUanQPE5PUSsc13LkBFrjKfF/1UganpatyTryTyT414g4L1nIhNMr7j6Z5D3WqdeodzXdemX31B8oeJ9N4F+r0SdZI9hYmTeN2uRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=ojYUiW+j; arc=none smtp.client-ip=80.12.242.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([86.243.17.157])
+	by smtp.orange.fr with ESMTPA
+	id zeGYrqtWgiGtUzeGYr9Zdc; Wed, 24 Apr 2024 17:10:35 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1713971435;
+	bh=52xXeYcoGXz0lSYfxzazhbEEwDc4t9B8gSUrHzsiJZY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=ojYUiW+jkhTC2+vHxP5BROWhlLUgGzgMGXDqSHxECTHdhp9qv0QpvOnKeH/WJqM4U
+	 JrH2nDSMqjfAuk7z+iJWsbs9HMg9WJbeIYVU0V0gNt6G28+GJEyO8/pCJO6+f5tMEs
+	 lIOTu4n+By+gmnLool45OGoCGMksgA6t8NVhxTkTIYBrFSq3Smt3K02kTxlc9ADJLc
+	 1AzXM7cIqHxiTmzQS2pSpAgLLsu1YoEyRGrGSv9xLq5HvGNoTrDpyZp+dU3eKbQXEe
+	 jhnv6iqZdQfNWCwzkZ/N2ycq5oyLKzG3JdhHvMs2os4b03GePA1JC7JE1vSJsfv+ag
+	 EDwtPNlpG6u5A==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 24 Apr 2024 17:10:35 +0200
+X-ME-IP: 86.243.17.157
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Lee Jones <lee@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH] mfd: ssbi: Remove an unused field in struct ssbi
+Date: Wed, 24 Apr 2024 17:10:29 +0200
+Message-ID: <8a76de25cefb533d94dfe35062bbd9a8e72f4bb9.1713971415.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240423073952.2001989-1-chentao@kylinos.cn> <878bf83c-cd5b-48d0-8b4e-77223f1806dc@web.de>
- <ZifMAWn32tZBQHs0@google.com> <20240423-0db9024011213dcffe815c5c@orel>
- <ZigI48_cI7Twb9gD@google.com> <20240424-e31c64bda7872b0be52e4c16@orel>
-Message-ID: <ZikcgIhyRbz5APPZ@google.com>
-Subject: Re: [PATCH] KVM: selftests: Add 'malloc' failure check in test_vmx_nested_state
-From: Sean Christopherson <seanjc@google.com>
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: Markus Elfring <Markus.Elfring@web.de>, Kunwu Chan <chentao@kylinos.cn>, 
-	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	kernel-janitors@vger.kernel.org, 
-	Muhammad Usama Anjum <usama.anjum@collabora.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Kunwu Chan <kunwu.chan@hotmail.com>, Anup Patel <anup@brainfault.org>, 
-	Thomas Huth <thuth@redhat.com>, Oliver Upton <oliver.upton@linux.dev>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 24, 2024, Andrew Jones wrote:
-> On Tue, Apr 23, 2024 at 12:15:47PM -0700, Sean Christopherson wrote:
-> ...
-> > I almost wonder if we should just pick a prefix that's less obviously connected
-> > to KVM and/or selftests, but unique and short.
-> >
-> 
-> How about kvmsft_ ? It's based on the ksft_ prefix of kselftest.h. Maybe
-> it's too close to ksft though and would be confusing when using both in
-> the same test?
+In "struct ssbi", the 'slave' field is unused.
+Remove it.
 
-I would prefer something short, and for whatever reason I have a mental block
-with ksft.  I always read it as "k soft", which is completely nonsensical :-)
+Found with cppcheck, unusedStructMember.
 
-> I'm not a huge fan of capital letters, but we could also do something like
-> MALLOC()/CALLOC().
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Compile tested only.
 
-Hmm, I'm not usually a fan either, but that could actually work quite well in this
-case.  It would be quite intuitive, easy to visually parse whereas tmalloc() vs
-malloc() kinda looks like a typo, and would more clearly communicate that they're
-macros.
+This is a left-over from commit 97f00f7120fe ("SSBI: Convert SSBI to device
+tree")
+---
+ drivers/mfd/ssbi.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/mfd/ssbi.c b/drivers/mfd/ssbi.c
+index b0b0be483dbf..f849f2d34ec7 100644
+--- a/drivers/mfd/ssbi.c
++++ b/drivers/mfd/ssbi.c
+@@ -64,7 +64,6 @@ enum ssbi_controller_type {
+ };
+ 
+ struct ssbi {
+-	struct device		*slave;
+ 	void __iomem		*base;
+ 	spinlock_t		lock;
+ 	enum ssbi_controller_type controller_type;
+-- 
+2.44.0
+
 

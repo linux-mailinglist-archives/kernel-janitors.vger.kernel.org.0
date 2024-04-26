@@ -1,182 +1,111 @@
-Return-Path: <kernel-janitors+bounces-2797-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2799-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB58B8B3AA8
-	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Apr 2024 17:08:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF858B3B30
+	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Apr 2024 17:23:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 666FB1F21CB3
-	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Apr 2024 15:08:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A521B1F21D79
+	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Apr 2024 15:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EB4149000;
-	Fri, 26 Apr 2024 15:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B39915AD8B;
+	Fri, 26 Apr 2024 15:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="evDT79gS";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="VbIG4GZT";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XxlbJUAG";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="lXxQTYOC"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="mTCujyM0"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D3814885D;
-	Fri, 26 Apr 2024 15:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D64114901C;
+	Fri, 26 Apr 2024 15:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714144125; cv=none; b=B211gA+zjNMN6X0PTfIT41S0H2TOR0d+qM0WzYnCQlEUc+tnOGKxBd5eXRIjxMNxUzNx2JgxKF8L0P7A9MxLxpwStM4PK3pHw/XaNa8eAp0PqEoYP9RZjAA0r6Jkm4+q2U+gweMvRLkTvx+v7LOzgGMjbbIfKs/YAKySbjpjUI4=
+	t=1714144774; cv=none; b=XQJKDZjRtqSB/1DX+bpgRsBWsUd91yS1+TZG2ZQ9toM6PkPBtA5FPjRkOXEYH61OfpYrLdu2as3DF/S4YjoAZOu8MgiIH23YB933fp0y45EJ8WuDymOt1eb44mSbIvmLdp+fRJ92ugwn4pHq7uh/U66bGfHl1L/D5H+S+8NpL+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714144125; c=relaxed/simple;
-	bh=UGBS6UWaXM1p5rTzuuVlN3dBmXfGiZm+cK1RKFexZvc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RSaFNx43RiYZl1+qjZaCkQSZeAPHQFAoV21wteuwf7FFuNiyrPAzXu5Yf/tD25K0W4lLG0TPYtZr57dAXkZQpxY+RA9uLdiV9r/LarpaRpfsgwJJq11Z6qn9mTu0r7u8EYR9iHIQAZjuwBHZqgYTSp0I8aG7im7/59jBDrxhEj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=evDT79gS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=VbIG4GZT; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XxlbJUAG; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=lXxQTYOC; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EB8135D23E;
-	Fri, 26 Apr 2024 15:08:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1714144114; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/RIal2x/fOxrYv19regwNkcgG8g/gUeT8uDQISy/Mj8=;
-	b=evDT79gSCBT5QeOYt6WVCxDps7iHTc4O2FfiaTNK6t+g3H79iGVj5r9Y6Lkgo6Avfsn/Pi
-	uzKqICSkLFBBBrP5ekfOrdkguCd38w2xluYyG9TsGq+SkVQl7I2oYFsMR/IZKZ5YoviFUt
-	FkqiNpjsA+3rHux+P4o85rYe6BsRyCg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1714144114;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/RIal2x/fOxrYv19regwNkcgG8g/gUeT8uDQISy/Mj8=;
-	b=VbIG4GZTMxUGY62z/vBjGhiRgYa31nl+h7HIVDvexGZpg1/cmvqmeATiHQyFC81htXazYz
-	/mHhv7ItLdJlJYDw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1714144113; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/RIal2x/fOxrYv19regwNkcgG8g/gUeT8uDQISy/Mj8=;
-	b=XxlbJUAGF3muCA8b0lx1Xqty/94yLat2QlpNGpZLiCwHe6wzP6VNaW6BUEdRCOKFHZUjjv
-	69cI+s9qhvfVJcglT8mzXQAZW1szOiQ9gM0j0d3CWsCcMvYOHa2mRRZl8ENfO71rVSA8pI
-	AeT6w0zR6QEp/re9BWgwWiffwDkFAnU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1714144113;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/RIal2x/fOxrYv19regwNkcgG8g/gUeT8uDQISy/Mj8=;
-	b=lXxQTYOCCXo18CBHN+JZqzwBFes4+s7brVZT6E30GjfK+VjLQnthnHH9JyM0TGASmUuDYd
-	+GAoQmslDCZjdaBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AC7A81398B;
-	Fri, 26 Apr 2024 15:08:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qBhYKHHDK2b1fAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Fri, 26 Apr 2024 15:08:33 +0000
-Date: Fri, 26 Apr 2024 17:08:44 +0200
-Message-ID: <87il042mbn.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Ivan Orlov <ivan.orlov0322@gmail.com>
-Cc: Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] ALSA: kunit: make read-only array buf_samples static const
-In-Reply-To: <81a9e3c2-2c44-406e-af19-90d9dcfe4a92@gmail.com>
-References: <20240425160754.114716-1-colin.i.king@gmail.com>
-	<20240425232250.GA205425@workstation.local>
-	<81a9e3c2-2c44-406e-af19-90d9dcfe4a92@gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1714144774; c=relaxed/simple;
+	bh=vxidtu2EwXjRXAhjK64ieOGkWMabWQIvC6Il/Dcmuwo=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=Ipnd2nqPKV818/4b2aW75Cmj8dLKjJzRwvQ6JUCAwBI1nW/2SJ8P6BAUd/D91PNajD9xQ4As6IY3XRXw3BTIbLgB/rhLiTKAK5P6S7W8ZBhjHcqwv6C/493ZhSSfVDnRjL1MOcfYNZ+HbuHxhQDYslseKD2JbDzKGfjWcapHl4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=mTCujyM0; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1714144741; x=1714749541; i=markus.elfring@web.de;
+	bh=vxidtu2EwXjRXAhjK64ieOGkWMabWQIvC6Il/Dcmuwo=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=mTCujyM0oewNuoXHvx7VcyZ//4b/QOs7jf8jIT8FQU8GhANIY/BzPbECljQmBWLB
+	 T0PacSl34ZmmdTKRWXxW4mhYiuYm6AyPC7P/jV/TVkhwLOnrYRQ0F6sKHHT46Bg5R
+	 NgeKkTE3WcbTVOS1vKLVgWuPwCa9j+2jVpzKoIuTx0ggIGKZOCwWZabMSVM1NXtgA
+	 edK2qlp9LoHEJQQdNcC5nhS3MoNqMwhSz34Xpm51oVV5idNov/46sW+m4l2qdOFcu
+	 6pTftFSwGD+P7MPlXFdP3YoOGa2DHk+d7aP7OjdX8SP5bry9/WOhe2my13dXenvTj
+	 UX5VIcKSU6DBpaw6gA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1N9431-1smtAA3783-0169wT; Fri, 26
+ Apr 2024 17:19:01 +0200
+Message-ID: <0c3cb2a1-a0b3-4a98-9bfc-3bf540c0eb78@web.de>
+Date: Fri, 26 Apr 2024 17:19:00 +0200
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Level: 
-X-Spamd-Result: default: False [-1.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TAGGED_RCPT(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[sakamocchi.jp,gmail.com,perex.cz,suse.com,vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
-X-Spam-Score: -1.80
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: lumingyindetect@126.com, linux-trace-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Steven Rostedt <rostedt@goodmis.org>
+References: <20240426091343.1222770-1-lumingyindetect@126.com>
+Subject: Re: [PATCH] tracing/probes: Fix memory leak issues in
+ traceprobe_parse_probe_arg_body()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240426091343.1222770-1-lumingyindetect@126.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:m6aIXWBUMnVwzLp30Zzzf9uS1KMKRZDZ4MzulBa72/k4CcmUebY
+ 4s0Ehh5JSYtre7wZPwQjFdzyTXr+67wIFXa7k1ZDRK+PY4TrcKtvVkNLVMOmjswV2tRKNCh
+ K+ubcsXJLD02iDZ+iyfxOHzVTCxPt4Ld1k2PB0cJS7eqrmvirwZqan9FNkjmUIJcn32bv4i
+ WcNpBo1+W8ledRrG34HTQ==
 X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:ClBff8ldaUU=;MeOJKjlOUSdZ4oxpAHnlRDxBb2X
+ tgV7Dk6mq79k6D5LD/jIl3g5lsLcMGxX0Hxjhhasha2yrbmJNJrFSjg/VLaFJD/4YCufbmJAg
+ 4PlCKRNempEXpLyGzMRlNqobBRNXxOuNcY8L+UpUv0k5h67nQqkQ84o+ekHOGG3vMK2EbJrUj
+ zLA7ouqu0cEmvEEgvlparnWYPCBNNnC7xSqogsipjGtEXTDDdTNEvUF29gRZ1Ww9avIjZqmbL
+ B0Dvkn878Nj4DSKz2dncXqYNL09ZXkjiUnL+ypw6OzJD8J5zRNmYWYjeDDH8R4fx+WYVHyjTJ
+ 9LMLBV6MbtV4GuLHMInnFbujEk3CpDSTaA8j/0AvbqrhE7MPIu+/LDO28XKkLkTGZ+5GBLlNW
+ 6bGI1ZrKX1OET0B/j3X6Owkr1f9ClKA4+aySNudwBLgj6IAK9K6fSAzdtqyQPoU8vgkHjuwRz
+ hMrWv4/0tisuqRsRg8aRRWCjOU+tmUTxG36L9ppeMeH1x2KWGzXUOkTpQeJSwHh68Z5kr4tzx
+ B64HuMtnSCamrNNjhqAz0RvwdE/I03W/bMygxQJ2+lURV5zd8RDhOxhFviSsjdw501gy66Jq+
+ 6WLHB+xM7C3BoT4BI0252TXx9J0MSk6aOknKgriq4DWCONEvTOx7GKLffP7oiyNuMq0Z1E9c6
+ soPiX9UfIuG7zDMl30ncvQ07D/f/kNTBM0uCTWEgJdm71fMw9rBnE301MkVdydE0EJRh3D740
+ gEmn/oYu5G68awHk8wS0ef5vxBgjrF3627Exiy9Wk0f2kzilrtXMZ44CdiwCT7WzXsAgcwli2
+ 3vQ5PVqZsTU/vvJ65fQBfnaDDw0OhMlsaAGEKa/XdIaSw=
 
-On Fri, 26 Apr 2024 14:05:34 +0200,
-Ivan Orlov wrote:
-> 
-> On 4/26/24 00:22, Takashi Sakamoto wrote:
-> > Hi,
-> > 
-> > On Thu, Apr 25, 2024 at 05:07:54PM +0100, Colin Ian King wrote:
-> >> Don't populate the read-only array buf_samples on the stack at
-> >> run time, instead make it static const.
-> >> 
-> >> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> >> ---
-> >>   sound/core/sound_kunit.c | 2 +-
-> >>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >> 
-> >> diff --git a/sound/core/sound_kunit.c b/sound/core/sound_kunit.c
-> >> index eb90f62228c0..e34c4317f5eb 100644
-> >> --- a/sound/core/sound_kunit.c
-> >> +++ b/sound/core/sound_kunit.c
-> >> @@ -167,7 +167,7 @@ static void _test_fill_silence(struct kunit *test, struct snd_format_test_data *
-> >>     static void test_format_fill_silence(struct kunit *test)
-> >>   {
-> >> -	u32 buf_samples[] = { 10, 20, 32, 64, 129, SILENCE_BUFFER_MAX_FRAMES };
-> >> +	static const u32 buf_samples[] = { 10, 20, 32, 64, 129, SILENCE_BUFFER_MAX_FRAMES };
-> >>   	u8 *buffer;
-> >>   	u32 i, j;
-> > 
-> > Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-> > 
-> > We can see the other similar cases in the kunit file. I'll post the fix
-> > later.
-> > 
-> 
-> Hi Takashi,
-> 
-> Hmm, correct me if I'm wrong, but I don't see any other significant
-> allocations on the stack in the test.
+=E2=80=A6
+> Therefore, the program should jump to the fail label instead of the out =
+label. This commit fixes this bug.
+>
+> Signed-off-by: LuMingYin <11570291+yin-luming@user.noreply.gitee.com>
 
-I guess he meant slightly different ones
-  https://lore.kernel.org/r/20240425233653.218434-1-o-takashi@sakamocchi.jp
+Please improve your patch attempt considerably.
+
+See also:
+https://kernelnewbies.org/FirstKernelPatch
 
 
-Takashi
+Are there further change opportunities to take better into account?
+https://elixir.bootlin.com/linux/v6.9-rc5/source/kernel/trace/trace_probe.=
+c#L1403
+
+Regards,
+Markus
 

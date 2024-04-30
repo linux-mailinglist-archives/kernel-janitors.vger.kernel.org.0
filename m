@@ -1,70 +1,69 @@
-Return-Path: <kernel-janitors+bounces-2870-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2872-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 592368B8042
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Apr 2024 21:03:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E998B80BF
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Apr 2024 21:44:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA4611F23424
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Apr 2024 19:03:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C05D91C22E52
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Apr 2024 19:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0EC194C8D;
-	Tue, 30 Apr 2024 19:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93668199E99;
+	Tue, 30 Apr 2024 19:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="FqFvg2W7"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="Y6qkihPR"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-20.smtpout.orange.fr [80.12.242.20])
+Received: from smtp.smtpout.orange.fr (smtp-27.smtpout.orange.fr [80.12.242.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A535D1BC59;
-	Tue, 30 Apr 2024 19:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20F2194C9D;
+	Tue, 30 Apr 2024 19:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714503804; cv=none; b=YuKUypEYMbtnWZ9hULOP+xrHLwBhDOX7pYdtN1DbGonB6wZ8nGRj4a0ujHnLuMf+KLQScXGkWdC2WBPXMC5WzqH+9oFbN9Klhhw92i17l8fmSKkQ/eiGWMmb884xACBtBpPt111wb1QR5HSjfaH7b9mud0bHHAtOy4HUV97xayw=
+	t=1714506289; cv=none; b=uGqetebOp5hhi3gn8zC0+iWB5TO+7ZUj5zbd/68TBOMMYwYQGDROwcY0gKwfmjOBtN7e3licKXKx/VxjJax17CLgPEr6QRTVeUwIGE7r+C45mHB+/neb3VYAjqHIIEUhmJ0CsTlQMQJPrhyOENud/tLlNCs2Gcm1npzMpgC5bZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714503804; c=relaxed/simple;
-	bh=A/3jgo7B0Ak18AEd05J73EHmxvmTkgnPJzFGXe2ZTuQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ij0h22QLUfAz8PJDEpNDFtCSAXIHP5DLnyg/IFcQ7Jx31YKjBtkIyMgcvu/R0NK3f96EgrjlnebAt4oL2Er+vdUIOploG8jbymSsOGRCL57hKTM8Nc3QVpe3rnNn6WT3kz8KXYVDv4h6Zf2eI3oFjoZj66VmyNye6WkBkXoppWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=FqFvg2W7; arc=none smtp.client-ip=80.12.242.20
+	s=arc-20240116; t=1714506289; c=relaxed/simple;
+	bh=Yh/0kVomvA82YnCAEzDosws8iXCLFew+YFzQx0chFOY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HFFWHWAFDhUePmCUObxjVzJm5Gfdjq+PNgl2NNFjqR+rJtSdLwsc6NPU71zGw+z62tZOU/DqqqXeA9zPhkE1e9fituLAH6d+M1bFBS0fvoLukqM1rDHiPyC/7fXhRfdOX6k1TUcPXz5jyMW7ZnOXdwudzaMmS+65/nWDK8i5R1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=Y6qkihPR; arc=none smtp.client-ip=80.12.242.27
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Received: from localhost.localdomain ([86.243.17.157])
 	by smtp.orange.fr with ESMTPA
-	id 1skxsYnM1PWAk1skxsYEec; Tue, 30 Apr 2024 21:03:14 +0200
+	id 1tGXsqFYLGyax1tGXss3dW; Tue, 30 Apr 2024 21:35:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1714503794;
-	bh=VEKXdsrN4FCUT2d2eWfWEpHgGeD3ZeJqsDSnHgARRQc=;
+	s=t20230301; t=1714505751;
+	bh=skKo5kEoG79r6I+m+tXF3MUHJgIN3Agmwa3aOsSEA5o=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=FqFvg2W7mwZwu3pd8aMBdiabZL+lLxGETx8aDFjgfSAYIVqZeJHGXaWc5IHQVTnP2
-	 9BNFKKRrxu+4nCH4x7IFk3lBu+89i3N4xdVVP0hWqGqGMclO5VUTOOZM5BNeyKeTI/
-	 ZI8Hkh57B0qnHXFLbgBctIaeTYxnQuQOHV7Cpwg2OP4IU+Ya1Nri8gY4Luai/nnydL
-	 Uhj0o4DfaBcEmH5Oy+FaQ08CALqKpbQF8uXCtbpc1xIvmua8aU7Irb5X3D5y96GV3J
-	 JEtgV6xojiG/ya/AJHoq1EQyU/ZYS/Qy94vaMh5z2sPJ/yOlmoylaqq46AHZat3XRW
-	 8UZ6OXjSVQ6dA==
+	b=Y6qkihPRSdTI4mGkFmI3rkql6GZAFYWajX5CbOBz7NPrpMB0fZaaMx1OU0j4milP/
+	 nBPv4d1a3bzLe6GaH6/mVP6jypYcEFUD9oI9eQVNlwEoSzipjv6GzGh2ZxUZ0HdL+b
+	 soQNlzkUmREM+hqL4f8iYZjoEkOUDVKz+3FEhTyDaVCJn2hrtCH5lV/+yz1SiYf6PO
+	 wcilfOX7XPFSrqVWGPPUb5ilCM6jtGv6DV+b7QHBrB4DAmK871udognHxQV57EZXxS
+	 We9vC8Pzli4CGyFrum4lO/Lyo4Zn2qE7KT3mPfVSyM9dTRVyVJd4b96TJy9Knh/eX6
+	 DXiY6czAp7JQw==
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 30 Apr 2024 21:03:14 +0200
+X-ME-Date: Tue, 30 Apr 2024 21:35:51 +0200
 X-ME-IP: 86.243.17.157
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Pavel Machek <pavel@ucw.cz>,
-	Lee Jones <lee@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	ChiaEn Wu <chiaen_wu@richtek.com>,
-	ChiYuan Huang <cy_huang@richtek.com>,
-	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-	Alice Chen <alice_chen@richtek.com>
+To: Avi Fishman <avifishman70@gmail.com>,
+	Tomer Maimon <tmaimon77@gmail.com>,
+	Tali Perry <tali.perry1@gmail.com>,
+	Patrick Venture <venture@google.com>,
+	Nancy Yuen <yuenn@google.com>,
+	Benjamin Fair <benjaminfair@google.com>,
+	Jean Delvare <jdelvare@suse.com>,
+	Guenter Roeck <linux@roeck-us.net>
 Cc: linux-kernel@vger.kernel.org,
 	kernel-janitors@vger.kernel.org,
 	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	linux-leds@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH v2] leds: mt6370: Remove an unused field in struct mt6370_priv
-Date: Tue, 30 Apr 2024 21:02:22 +0200
-Message-ID: <22704991f7acca6c2e687ff4bec7822087e1305a.1714503647.git.christophe.jaillet@wanadoo.fr>
+	openbmc@lists.ozlabs.org,
+	linux-hwmon@vger.kernel.org
+Subject: [PATCH 1/2] hwmon: (npcm750-pwm-fan) Remove an unused field in struct npcm7xx_cooling_device
+Date: Tue, 30 Apr 2024 21:35:37 +0200
+Message-ID: <74eee8aa739f94b8c6425ce3e37a427ca92243ea.1714505655.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -74,43 +73,33 @@ List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In "struct mt6370_priv", the 'reg_cfgs' field is unused.
-
-Moreover the "struct reg_cfg" is defined nowhere. Neither in this file, nor
-in a global .h file, so it is completely pointless.
-
-So, remove it.
+In "struct npcm7xx_cooling_device", the 'fan_clk_freq' field is unused.
+Remove it.
 
 Found with cppcheck, unusedStructMember.
 
-Fixes: 5c38376ef5b4 ("leds: rgb: mt6370: Add MediaTek MT6370 current sink type LED Indicator support")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
 Compile tested only.
 
-Changes in v2:
-  - Tweak the commit message   [AngeloGioacchino Del Regno]
-  - Add a Fixes: tag   [AngeloGioacchino Del Regno]
-  - Add a R-b: tag
-
-v1: https://lore.kernel.org/all/e389be5e1012dc05fc2641123883ca3b0747525a.1714328839.git.christophe.jaillet@wanadoo.fr/
+This field was added in the initial commit f1fd4a4db777 ("hwmon: Add
+NPCM7xx PWM and Fan driver") but was never used.
 ---
- drivers/leds/rgb/leds-mt6370-rgb.c | 1 -
+ drivers/hwmon/npcm750-pwm-fan.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/leds/rgb/leds-mt6370-rgb.c b/drivers/leds/rgb/leds-mt6370-rgb.c
-index 448d0da11848..359ef00498b4 100644
---- a/drivers/leds/rgb/leds-mt6370-rgb.c
-+++ b/drivers/leds/rgb/leds-mt6370-rgb.c
-@@ -149,7 +149,6 @@ struct mt6370_priv {
- 	struct regmap_field *fields[F_MAX_FIELDS];
- 	const struct reg_field *reg_fields;
- 	const struct linear_range *ranges;
--	struct reg_cfg *reg_cfgs;
- 	const struct mt6370_pdata *pdata;
- 	unsigned int leds_count;
- 	unsigned int leds_active;
+diff --git a/drivers/hwmon/npcm750-pwm-fan.c b/drivers/hwmon/npcm750-pwm-fan.c
+index 904816abb7c4..6d92a3b89198 100644
+--- a/drivers/hwmon/npcm750-pwm-fan.c
++++ b/drivers/hwmon/npcm750-pwm-fan.c
+@@ -197,7 +197,6 @@ struct npcm7xx_pwm_fan_data {
+ 	void __iomem *fan_base;
+ 	int pwm_modules;
+ 	unsigned long pwm_clk_freq;
+-	unsigned long fan_clk_freq;
+ 	struct clk *pwm_clk;
+ 	struct clk *fan_clk;
+ 	struct mutex pwm_lock[NPCM7XX_PWM_MAX_MODULES];
 -- 
 2.44.0
 

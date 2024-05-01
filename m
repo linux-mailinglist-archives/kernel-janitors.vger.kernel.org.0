@@ -1,62 +1,61 @@
-Return-Path: <kernel-janitors+bounces-2875-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2877-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC25C8B8540
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2024 07:14:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A0AB8B8554
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2024 07:32:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96DA8284569
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2024 05:14:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B99C1C212E1
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2024 05:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80FD843AD9;
-	Wed,  1 May 2024 05:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598754CB2E;
+	Wed,  1 May 2024 05:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="PS2aASDV"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="Su0SsbPE"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-18.smtpout.orange.fr [80.12.242.18])
+Received: from msa.smtpout.orange.fr (msa-210.smtpout.orange.fr [193.252.23.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26C51D68F;
-	Wed,  1 May 2024 05:14:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773BF48781;
+	Wed,  1 May 2024 05:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.23.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714540460; cv=none; b=LeeoovMrAL3sy8Ebh0idhywLrN/vx81h0Kj6DNQVCCoABqr/08BJdeb77srvgWf3Tpoc8k30U/cc3xku0kt7JXemIsEO3gK59sajHLdyMg7KX0wO6/ToXRRpkoKuafe4vo5hGDmcxeTKkKocBA0VLTJOmmH55vt3hz4wfzuISIA=
+	t=1714541551; cv=none; b=Gy6hAC5yBlZpi0qjlO/kewC0HqfhocqVwfEJlW4jNOLsyZqYXowfdfLXDadcBbtAKZ3pooyTYP9sFMoxoEkyIlvIzAXqMb6aivsRcvcIwA8g18aWkcUaTe/9QcWph5zmXR5Yzl0OiNRxeGRSlJzICI7lpMwYoO1W1r3sfYtzgb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714540460; c=relaxed/simple;
-	bh=RMWyAyYlUlSp9U/kE6nFI9ssssdGhoQ6D+bwcNf6+fg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P4OkQm8zlTVfoI+lUbx40mEpn7PWBC9D6LX63QYrEAJ0TqvY9LjbMq0WEflSq+xGe60o526sbUKNn/mTVWkD2kYJsvXg31IVWJZxnvXR5zipklcpJ709/mDJ2tTepkuKyWzky/UjXuyPQ/jQkkY5ofDchiseNCHfK5Xbyj1s3WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=PS2aASDV; arc=none smtp.client-ip=80.12.242.18
+	s=arc-20240116; t=1714541551; c=relaxed/simple;
+	bh=XGnwqzGVRVLKMqUxqhbPMjTk3pC1cEJXJekJTprHVbY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q7B8smJc+qBygTaL16I1elJwy8dYDPwqJtGvk9XFclyiqfjztidnY55l8rsQ3ObJC4Gbux0z5OIzKD6Mqabdz1xZ8TZ4iGgjuKG1KL3LqOEXUILF+VuLPmeWvHpWXRJGTTiYEZkeF5ThFszi8jVEvc5qUCk+1DCmRtcr6ctgG4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=Su0SsbPE; arc=none smtp.client-ip=193.252.23.210
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Received: from localhost.localdomain ([86.243.17.157])
 	by smtp.orange.fr with ESMTPA
-	id 229estbE3rs7M229esvot9; Wed, 01 May 2024 07:05:18 +0200
+	id 22YcsEsBRAF5O22YcsxtZ3; Wed, 01 May 2024 07:31:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1714539918;
-	bh=X1z/GNaSSMDxojxmVN0YxGfbCezIrv1/qyN8UGm7TgE=;
+	s=t20230301; t=1714541469;
+	bh=gkHbjdcpVGhYwhArziDiurlEAkgTgXQtE1ztZgQ3NT0=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=PS2aASDVNpLMOlRQ6EseNQ4ojnelR4JnXF0fuFJLIQdROzbT2X5jB2I5boEh12y3u
-	 YoAqw1DtZPnSRkmbp1x/SZFexfGOW1Mj4S/2LVquZTYvFXbBj/A/iv2ZY2rpXSzMtw
-	 ZCGL/KF1QGpghD9W40HGjdh0qaT25rSaG+dGyIlpUxmd5gMfE2ZNwXYM44uWx3oiA/
-	 15NpG/dlq82E9YiK5yeyN1R8VgPW6dK7/8F1dj1vZCBrvxT4+eDXlHd3/0Tq12uZHX
-	 zOml8gQVz5+Y89aw26IXU8/QQE8X5ENR8DQs+/A2ixDRyhWPi+hRn5GfqepXen3MFx
-	 asoAR9ryPtFoQ==
+	b=Su0SsbPEuir6j/Zux1shoe7hWU5cHbMmAjZeNs+AcGlPQSQzH6xK4g3hpG/lvEYMo
+	 4PIs7R86sjYyJBuc8U4bGpMUTnaiLPi7jJq1qJYqDndXtMdUsG+Bg3UiMlYt2oEqzH
+	 uLz1xQciAnlGsatK1tLkvNwo02V0pHtM7GQNygrpGOB443fIH8qyHwoLKojrFXi/hV
+	 1AhKneC8872Xdz8T3HJkWr/NEf91mmgnvUyuPlBQuTTZdAbnsBAnJ39g5dghr/OGVn
+	 ZvyOT1V7D551eaLhKwrldwt3LZdXQKLu0YFve9CyrMVNwAL5PfinnDdg+zo5Xt7nkI
+	 ylq36OpLmWmHw==
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 01 May 2024 07:05:18 +0200
+X-ME-Date: Wed, 01 May 2024 07:31:09 +0200
 X-ME-IP: 86.243.17.157
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Support Opensource <support.opensource@diasemi.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Cc: linux-kernel@vger.kernel.org,
 	kernel-janitors@vger.kernel.org,
 	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	linux-input@vger.kernel.org
-Subject: [PATCH] Input: da7280 - Remove an unused field in struct da7280_haptic
-Date: Wed,  1 May 2024 07:05:05 +0200
-Message-ID: <ac251b456933bcc6fe297b738f9304bd259185c1.1714539865.git.christophe.jaillet@wanadoo.fr>
+Subject: [PATCH 1/2] Input: tca6416-keypad - Remove an unused field in struct tca6416_keypad_chip
+Date: Wed,  1 May 2024 07:30:54 +0200
+Message-ID: <926c0f40040671565dcc54d5146a8f9511fb6d46.1714541432.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -66,7 +65,7 @@ List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In "struct da7280_haptic", the 'legacy' field is unused.
+In "struct tca6416_keypad_chip", the 'irqnum' field is unused.
 Remove it.
 
 Found with cppcheck, unusedStructMember.
@@ -75,24 +74,26 @@ Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
 Compile tested only.
 
-This field was added in the initial commit cd3f609823a5 ("hwmon: Input: new
-da7280 haptic driver") but was never used.
+It was added in the initial commit 30ba3ead0576 ("Input: add keypad driver
+for keys interfaced to TCA6416") and its users were removed in commit
+687fe7dfb736 ("Input: tca6416-keypad - always expect proper IRQ number in
+i2c client").
 ---
- drivers/input/misc/da7280.c | 1 -
+ drivers/input/keyboard/tca6416-keypad.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/input/misc/da7280.c b/drivers/input/misc/da7280.c
-index c1fa75c0f970..1629b7ea4cbd 100644
---- a/drivers/input/misc/da7280.c
-+++ b/drivers/input/misc/da7280.c
-@@ -230,7 +230,6 @@ struct da7280_haptic {
+diff --git a/drivers/input/keyboard/tca6416-keypad.c b/drivers/input/keyboard/tca6416-keypad.c
+index 677bc4baa5d1..044401d01bf6 100644
+--- a/drivers/input/keyboard/tca6416-keypad.c
++++ b/drivers/input/keyboard/tca6416-keypad.c
+@@ -45,7 +45,6 @@ struct tca6416_keypad_chip {
  	struct i2c_client *client;
- 	struct pwm_device *pwm_dev;
- 
--	bool legacy;
- 	struct work_struct work;
- 	int val;
- 	u16 gain;
+ 	struct input_dev *input;
+ 	int io_size;
+-	int irqnum;
+ 	u16 pinmask;
+ 	bool use_polling;
+ 	struct tca6416_button buttons[];
 -- 
 2.44.0
 

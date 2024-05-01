@@ -1,52 +1,51 @@
-Return-Path: <kernel-janitors+bounces-2876-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-2878-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3CB68B8552
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2024 07:32:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D0038B8565
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2024 07:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C132B221A4
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2024 05:32:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1ECC1F236E6
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2024 05:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404A5495E5;
-	Wed,  1 May 2024 05:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7C14AEF0;
+	Wed,  1 May 2024 05:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="qwz3qeDO"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="jmps/2J9"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-18.smtpout.orange.fr [80.12.242.18])
+Received: from msa.smtpout.orange.fr (msa-213.smtpout.orange.fr [193.252.23.213])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E60481A3;
-	Wed,  1 May 2024 05:32:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33432210EE;
+	Wed,  1 May 2024 05:42:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.23.213
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714541543; cv=none; b=UY2UtZ4sFK5Mv5iWjwffKD88BPTEFdRUc1kGkGWLUuHODWfFUbKr57y7i+kwFu279rRqfIDe3ZQWamBDJG+dHLfjKeWFfFntPoJxkRcD/cnqdAUa2YSEjhV7r0thglt+rXUlkugrVoJ2WGEsvGQ3ZXyrykgmbBII8yRF/UQozKA=
+	t=1714542164; cv=none; b=k71h1l+Uy2uWYH7S8svrxuu6GAWy0b6OfQ4+pfpAGtzQa+QTkHviUrgXz2qBFXtjdtf6/84fBGs9BfpivZy2MVKNu/bVTW+JgoMG2pJkQMC2UAfkXxH8clMCbsfWdwF+/ftF4kN05wfk9WEeaDYfMOXDtgTigrBqKYYiMbkP3xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714541543; c=relaxed/simple;
-	bh=ArOXPy7P1rDCISOetC7udZv3vahyD59OFDoMpu2TJss=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vb3XbVpkKmZkDTizkLPwiEi/s3zXBEBcsTskVtGpZhQ7H2JHWFUWouSRvA1BDsocEsQISoaBL+pndV82kTcB3sh+Dri2SdRjxR9N40pJRWd0rdtf85SO0AOeukU2XPyQnRRgA3+Iz4IAu+g9J6OMJgP0Al7szn06zduJF9M/Edg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=qwz3qeDO; arc=none smtp.client-ip=80.12.242.18
+	s=arc-20240116; t=1714542164; c=relaxed/simple;
+	bh=/bfHl25T1ErekIGpv7GqhWKjHMj3kURow4DUhvA1XuU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ucNSW4qncJMqo9XNqTrsPdAkGTZMgjxdXHIjWwIV65J8MhP+CZWhQeZv8WlHvDMG8ZxzN+gu2VfE3h+/vmhxzfujB6iktz9HFar/DjxZcoPQZI4V5+Cyqqx4KiGaU+11l30p0q6nl0t3l+n+jt+hFVPVvXucZ9xGGp+bi83p+eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=jmps/2J9; arc=none smtp.client-ip=193.252.23.213
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Received: from localhost.localdomain ([86.243.17.157])
 	by smtp.orange.fr with ESMTPA
-	id 22YcsEsBRAF5O22YosxtZt; Wed, 01 May 2024 07:31:18 +0200
+	id 22ihsnjwQ2DIx22ihsslTp; Wed, 01 May 2024 07:41:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1714541478;
-	bh=PKg24I0LA3FDiDUWAMdwYK2Up/UUtvN46WwgU2Vuv+U=;
+	s=t20230301; t=1714542091;
+	bh=GrXhC34dkfPzEz4DZ6QAKxewlmGX1gPA1Hzs/EClZkY=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=qwz3qeDOGFZtq2o1uiGHa2FXUydYvXEJCRia7jopwBrhcbjIOfFU0aKIOz5OjJBwl
-	 VlqhfRhpiK2pMCjHkOjpGjmBfm739M2qcXOaGlD1rsA7v/KDI7x4v0k4fblgNKdLhh
-	 VJb4+wX2NxcpVblrZTNGg4utZFgiKqSdmh2RJidzE5HlzzSQBHjrjaxXQPW0w8p3fI
-	 SLDGXVHMbJOm/BYWOSdwfc3Cim32m5/1Kdm7yo26ScUJSbTlxpko6RlDShJpSAiVBE
-	 jzGYY2zM/1H62BLeqh4FxxfQpA/hWQYnO00uyv0lecRt6Q7ChPTpCKoan+gmhTp67Q
-	 2AJIG5SBL0mzQ==
+	b=jmps/2J9fr/NqaIQGN8fIXN4GY6Y7XSLJhVlkhDNSleMCucp7sEJ6y6HJDl/iVzIj
+	 hVOctkISIgjfIQPd4omQ79rR2TcrT44uFA+9vMMP+qnitfKLU8f0Lk/DkLME6LRWkR
+	 ySms2KPSQ143zHxwabp3cQcg/hnxBtneRz1uCbP+q21iCEd86c/X0SLcgjN+Q+PFgX
+	 BhvSRVtyzztWL0L+iMnlXhh9DC8eBPIQ1EVVptMF6t7xFFNq0/HyKiw9bCTyocDTFA
+	 rVWaBI1gqB1gCNBaJ2Q7LI5eFnSSiwdYFM/GvP8ZhrkwLhM1bFYzq+iaPyCBuq9Tz/
+	 Eo9ZJgrsSqYlw==
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 01 May 2024 07:31:18 +0200
+X-ME-Date: Wed, 01 May 2024 07:41:31 +0200
 X-ME-IP: 86.243.17.157
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
@@ -54,12 +53,10 @@ Cc: linux-kernel@vger.kernel.org,
 	kernel-janitors@vger.kernel.org,
 	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	linux-input@vger.kernel.org
-Subject: [PATCH 2/2] Input: tca6416-keypad - Remove unused struct tca6416_drv_data
-Date: Wed,  1 May 2024 07:30:55 +0200
-Message-ID: <3e6fd1d0875ef3c90ecaab7adf7fd4a5e8e6f708.1714541432.git.christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] Input: matrix_keypad - Remove an unused field in struct matrix_keypad
+Date: Wed,  1 May 2024 07:41:21 +0200
+Message-ID: <4f1a946789445500b6118b9ee1d6ef5255f8c696.1714542052.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <926c0f40040671565dcc54d5146a8f9511fb6d46.1714541432.git.christophe.jaillet@wanadoo.fr>
-References: <926c0f40040671565dcc54d5146a8f9511fb6d46.1714541432.git.christophe.jaillet@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -68,7 +65,7 @@ List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-"struct tca6416_drv_data" is unused.
+In "struct matrix_keypad", the 'gpio_all_disabled' field is unused.
 Remove it.
 
 Found with cppcheck, unusedStructMember.
@@ -77,28 +74,25 @@ Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
 Compile tested only.
 
-It was added in the initial commit 30ba3ead0576 ("Input: add keypad driver
-for keys interfaced to TCA6416") but was never used.
+It was added in commit fb76dd10b911 ("Input: matrix_keypad - add support
+for clustered irq") and its users were removed in commit 8cf4b3683a71
+("Input: matrix_keypad - consolidate handling of clustered interrupt").
 ---
- drivers/input/keyboard/tca6416-keypad.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/input/keyboard/matrix_keypad.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/input/keyboard/tca6416-keypad.c b/drivers/input/keyboard/tca6416-keypad.c
-index 044401d01bf6..fbc674d7b9f0 100644
---- a/drivers/input/keyboard/tca6416-keypad.c
-+++ b/drivers/input/keyboard/tca6416-keypad.c
-@@ -32,11 +32,6 @@ static const struct i2c_device_id tca6416_id[] = {
+diff --git a/drivers/input/keyboard/matrix_keypad.c b/drivers/input/keyboard/matrix_keypad.c
+index 695c03e075b5..7a56f3d3aacd 100644
+--- a/drivers/input/keyboard/matrix_keypad.c
++++ b/drivers/input/keyboard/matrix_keypad.c
+@@ -37,7 +37,6 @@ struct matrix_keypad {
+ 	spinlock_t lock;
+ 	bool scan_pending;
+ 	bool stopped;
+-	bool gpio_all_disabled;
  };
- MODULE_DEVICE_TABLE(i2c, tca6416_id);
  
--struct tca6416_drv_data {
--	struct input_dev *input;
--	struct tca6416_button data[];
--};
--
- struct tca6416_keypad_chip {
- 	uint16_t reg_output;
- 	uint16_t reg_direction;
+ /*
 -- 
 2.44.0
 

@@ -1,112 +1,131 @@
-Return-Path: <kernel-janitors+bounces-3111-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-3116-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8028C458A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 May 2024 19:01:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 337E28C4646
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 May 2024 19:39:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A0602846DD
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 May 2024 17:01:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64C5A1C232BE
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 May 2024 17:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FE81C69E;
-	Mon, 13 May 2024 17:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7DDE22F0D;
+	Mon, 13 May 2024 17:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ytm5Iiil"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="NMO3deRZ"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from msa.smtpout.orange.fr (smtp-77.smtpout.orange.fr [80.12.242.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FB41CF8B;
-	Mon, 13 May 2024 17:01:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741632C1A0;
+	Mon, 13 May 2024 17:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715619669; cv=none; b=lBLwMaY16A+RgRR+byMtrpBB1OPCsRTnvOkpg9qPDbYKEMtXRqvD884NSWvfHY869j6Dr98jG0kNi0JsRDGer7K2dLG67BHck4JHa1l9Dkribz9COV61z11DTjSPldmqI3vbDo0iscCC7vOe/c3T0EfBodcujvGZRldjvGTjRFc=
+	t=1715621937; cv=none; b=pfJU4+ZsPDnrBFvQSBk3TNJ9K3cBH+/cM1PYrCnE84tlOc55wvQJ/HNWMToqVGkL//wCsDzoM9k44KhkafTgpJ2FkqAeFmHS3uMuuXrb5WPRtx2ZLoWi2W1VQTYCqDG3arWKnS0VbwmZ+Fo/o0l95EziySktYVBxpJgZ7TIBO/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715619669; c=relaxed/simple;
-	bh=z4tPhX+s7QYkqBxhFqtjNDO8qlvAQd0ektMTJgJI2Fk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sOso+Ss4t40MqszqDVFNZV+O0kZh/bECiu592EWrCT+eLWY3DnqoTR2KTJBxb4/hxTcbqeNdMQKfQALO4+ohaWPMxwYt5Jr81gipQ4XBC2Ki1HeVtsjDBzCw8WitHZ/Vhw2Chdl+t91E7jH41tiSKaNgT2maZaE22B6Juwy6mrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ytm5Iiil; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6f4302187c0so3834987b3a.1;
-        Mon, 13 May 2024 10:01:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715619667; x=1716224467; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zjyrbOMAEeAhSgORyPVPJODgsoTk91oJWHq0SRUfKJw=;
-        b=Ytm5IiilJN5XCxh4dQiqK7NnUl9VTnEYgVRoHNhwJF+ewSiGGLhKrWKM+cV0mxx7ru
-         daACmw8Lh6dIE802gb7YlaCiDTpBVKDjWHnYxqcNL979au9DCAd0XFFqZK7XwLTbyHSg
-         6BndxUfP0Io+JlhLt/Xt1xWWGpsHSy9z0l+92ahfTSsUImvSnZaQzaTvZOMUT8DUFskj
-         sFKW5WUyHb0rxXCnB4sntdYYIYrk+hE+0IVwBTROSV0DgrbtTflpraL1ZWSvC30ZWzYT
-         JwhaUO5P1yZ+r1vHhUlNwAr26IaAVJvVTvOISaOi+vzAoVTQKHxcKqwtfuDsJUHWjaEz
-         PLNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715619667; x=1716224467;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zjyrbOMAEeAhSgORyPVPJODgsoTk91oJWHq0SRUfKJw=;
-        b=OV2o65GvWLLaWqTjAs8AEskBSeQNt2gxjwgF17BSX38YOSsHaYYvk3w8VRb1ITHfut
-         GRIjJmV8ZJvHjm7vcGoByUWF9dAn3JVQaGl2ay5HTbstTSdJQW2tM2L5uq8PUQ9/OcSs
-         zU7o3UxQdbDGsO4ND1UxGHZo/GvCkLHDppVmLkJOto32r7AO7YpZ8Ma2OglQzVcfEUSF
-         7Gvbh9mpfqNJU9b8mONTueWSU8HPBVX2INHTKh7V6uQMOmyl/u+HWto5oP+1qaj/4YKV
-         LiZUXjWknpUrxuLQWX4tYUtNhv9dm5/MTszArBQTiALfa4g9pvNJ/pBpK5l9ezcjQpjp
-         c6aA==
-X-Forwarded-Encrypted: i=1; AJvYcCUItM+Shwb62ukm1SzZ1OoQTxXJm/8ubxTJragiazgrWZynuJOZxtUF89JdOu9W8/XX+7g5dqGTGPdOMclsFnKYnisfem/Mz6y+AT21VqyVGg1xI3E/bmw/vde4zhmC4BZDQITp7sPATMPH4OId60oWNOYfprwoH5asmschcJ596Y+M+WZNi2vLbEsunrsirvDj2hWJKiH0ZXtOejVm7bqf0w==
-X-Gm-Message-State: AOJu0YySFrcoNEWqs9CjSa8jq55nHf+jBBNAvfcLGWHnmyxlgxWGtJza
-	ebmD/1iYHVXv2rOUTYYHgK8RsGp7VDWgC7MuhasM05pwciDkN++T
-X-Google-Smtp-Source: AGHT+IF+HKRteWFX1nu/JhxanTGlUgwXpxwtCzZP1u4kEXer1USTBTds1a7jqu3AuSmZCNS1jjqFzA==
-X-Received: by 2002:a05:6a21:627:b0:1ad:7f1e:eac9 with SMTP id adf61e73a8af0-1afd1482da7mr15746264637.30.1715619666695;
-        Mon, 13 May 2024 10:01:06 -0700 (PDT)
-Received: from localhost (dhcp-141-239-159-203.hawaiiantel.net. [141.239.159.203])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-63411346d96sm6942717a12.81.2024.05.13.10.01.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 May 2024 10:01:06 -0700 (PDT)
-Sender: Tejun Heo <htejun@gmail.com>
-Date: Mon, 13 May 2024 07:01:04 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Illia Ostapyshyn <illia@yshyn.com>
-Cc: Zefan Li <lizefan.x@bytedance.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>, cgroups@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2] docs: cgroup-v1: Update page cache removal functions
-Message-ID: <ZkJHUNILS4VLL_PK@slm.duckdns.org>
-References: <20240507103426.544488-1-illia@yshyn.com>
+	s=arc-20240116; t=1715621937; c=relaxed/simple;
+	bh=Ze4YnXQ9+Ruy/YlREfo5kfMqxowQDPvZTQDp2yrWKWk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nDBM45R/YW/Z0bjmndlO+TO3szcvTk6BtCbPcCOSPkcpt1+GyYfbPZbM0URZ7ZCcvIwojO+QldE/buSgIHZMJhgzq0f4ROqDxACDHGXmWNb6xTUA9MbYjyGAySW/iKWb5rs9aQMydUhWbQxEv7sgweaQA23NIG0RZycclcVnxns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=NMO3deRZ; arc=none smtp.client-ip=80.12.242.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from localhost.localdomain ([86.243.17.157])
+	by smtp.orange.fr with ESMTPA
+	id 6ZcDs0lh7ME2z6ZcDsL7zL; Mon, 13 May 2024 19:37:36 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1715621857;
+	bh=mUQBjk+s3SNdJ92QJBlXrlaeh+q14MQJ4sqID/f3sz8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=NMO3deRZtCm5rDDebG9M7A7LwCm4uV4f+sAz704wyybGDhXxX8Or/waFg25iNWZ48
+	 KC88iB5AnZCkLGd4/ejfRKI6lDxfivEGiy42vwPOPvgV7EOAtmconRrWNG5abdIKP1
+	 NhsMyrL4lniKsWUSNxIvFs44Y9rs/14Zmq6w/TRgJpkkwBsrPrz0ETpc6LzgxDoU4A
+	 5s61tRwo132xm/WP5fXuHOWw2iZA5No1lav/OhJBGhdX3V9m9hsTOwdjjLwMw7KTb9
+	 a3t18nt/SSvlN5CCYR30dwt96vmTn2rkH/NYZSHs22JRiOBs44XiGLVgNDJTCrF7rQ
+	 sttZOFEvI3jxw==
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 13 May 2024 19:37:37 +0200
+X-ME-IP: 86.243.17.157
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	cezary.rojewski@intel.com,
+	pierre-louis.bossart@linux.intel.com,
+	peter.ujfalusi@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	kai.vehmanen@linux.intel.com,
+	srinivas.kandagatla@linaro.org,
+	bgoswami@quicinc.com,
+	daniel.baluta@nxp.com
+Cc: linux-sound@vger.kernel.org,
+	alsa-devel@alsa-project.org,
+	sound-open-firmware@alsa-project.org,
+	linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH 1/6] ASoC: topology: Constify an argument of snd_soc_tplg_component_load()
+Date: Mon, 13 May 2024 19:37:20 +0200
+Message-ID: <f2f983e791d7f941a95556bb147f426a345d84d4.1715526069.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240507103426.544488-1-illia@yshyn.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, May 07, 2024 at 12:34:27PM +0200, Illia Ostapyshyn wrote:
-> Commit 452e9e6992fe ("filemap: Add filemap_remove_folio and
-> __filemap_remove_folio") reimplemented __delete_from_page_cache() as
-> __filemap_remove_folio() and delete_from_page_cache() as
-> filemap_remove_folio().  The compatibility wrappers were finally removed
-> in ece62684dcfb ("hugetlbfs: convert hugetlb_delete_from_page_cache() to
-> use folios") and 6ffcd825e7d0 ("mm: Remove __delete_from_page_cache()").
-> 
-> Update the remaining references to dead functions in the memcg
-> implementation memo.
-> 
-> Signed-off-by: Illia Ostapyshyn <illia@yshyn.com>
+snd_soc_tplg_component_load() does not modify its "*ops" argument. It
+only read some values and stores it in "soc_tplg.ops".
 
-Applied to cgroup/for-6.10.
+This argument and the ops field in "struct soc_tplg" can be made const.
 
-Thanks.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ include/sound/soc-topology.h | 2 +-
+ sound/soc/soc-topology.c     | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/include/sound/soc-topology.h b/include/sound/soc-topology.h
+index f055c6917f6c..1eedd203ac29 100644
+--- a/include/sound/soc-topology.h
++++ b/include/sound/soc-topology.h
+@@ -178,7 +178,7 @@ static inline const void *snd_soc_tplg_get_data(struct snd_soc_tplg_hdr *hdr)
+ 
+ /* Dynamic Object loading and removal for component drivers */
+ int snd_soc_tplg_component_load(struct snd_soc_component *comp,
+-	struct snd_soc_tplg_ops *ops, const struct firmware *fw);
++	const struct snd_soc_tplg_ops *ops, const struct firmware *fw);
+ int snd_soc_tplg_component_remove(struct snd_soc_component *comp);
+ 
+ /* Binds event handlers to dynamic widgets */
+diff --git a/sound/soc/soc-topology.c b/sound/soc/soc-topology.c
+index 90ca37e008b3..b00ec01361c2 100644
+--- a/sound/soc/soc-topology.c
++++ b/sound/soc/soc-topology.c
+@@ -73,7 +73,7 @@ struct soc_tplg {
+ 	int bytes_ext_ops_count;
+ 
+ 	/* optional fw loading callbacks to component drivers */
+-	struct snd_soc_tplg_ops *ops;
++	const struct snd_soc_tplg_ops *ops;
+ };
+ 
+ /* check we dont overflow the data for this control chunk */
+@@ -2334,7 +2334,7 @@ static int soc_tplg_load(struct soc_tplg *tplg)
+ 
+ /* load audio component topology from "firmware" file */
+ int snd_soc_tplg_component_load(struct snd_soc_component *comp,
+-	struct snd_soc_tplg_ops *ops, const struct firmware *fw)
++	const struct snd_soc_tplg_ops *ops, const struct firmware *fw)
+ {
+ 	struct soc_tplg tplg;
+ 	int ret;
 -- 
-tejun
+2.45.0
+
 

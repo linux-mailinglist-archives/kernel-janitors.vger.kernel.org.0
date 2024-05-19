@@ -1,101 +1,123 @@
-Return-Path: <kernel-janitors+bounces-3193-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-3195-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CE088C942C
-	for <lists+kernel-janitors@lfdr.de>; Sun, 19 May 2024 11:10:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1DE88C9466
+	for <lists+kernel-janitors@lfdr.de>; Sun, 19 May 2024 13:19:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC9011C20A59
-	for <lists+kernel-janitors@lfdr.de>; Sun, 19 May 2024 09:10:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCE711C208FB
+	for <lists+kernel-janitors@lfdr.de>; Sun, 19 May 2024 11:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09EB22E84A;
-	Sun, 19 May 2024 09:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E89B44C64;
+	Sun, 19 May 2024 11:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="okS4Sb9h"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="jf8z4qKk"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from msa.smtpout.orange.fr (smtp-77.smtpout.orange.fr [80.12.242.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [217.72.192.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C454241E7;
-	Sun, 19 May 2024 09:10:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2116D8F4A;
+	Sun, 19 May 2024 11:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716109833; cv=none; b=abwgNEvQr2tUW8bG3U96qz1CYRdSTn79yo6FlR0zUCNRIWvAiO+biYWzqvn4KWN8zYG2EwJp61rD98LoOkVtGdbc192Owb7nZ0EvDxhWXSY+0aNImnIiswriKAuTothr6wm1RqGo6aMPJUbhju6ioJcSWDPrl7Pq52kaIF/a4CU=
+	t=1716117554; cv=none; b=YQZ/N9uA2nC3vLPUbQIjKzN9u+ELLaU9nTh58yMmj4Ul5QXdnBU4xWgAshVcf5x/77oX0/2qAUl40eK1vzafDRALkGyyzgXiA2xiMr1wd/VatMuYsyJ+Lj4Jdlq8deeFLS6L+ecWdCri4RThsgEWbVANYhn7/a2TZR5BjXRBHVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716109833; c=relaxed/simple;
-	bh=WHLI54myjQZgi0GBCy9D+0xHgarTdc8QkTWV2HYfM/4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b9fi5D7ChqClWT3i+Q6b6d5gmB6akvKVYDgiObLHPWdwmz+r31ON8ZMI02wkA2X3tf2X4QMElujOT7GGEL3jK2ARklIZRaopD4tD0uoRVsBuDxKmLNA9aOUbxwKpiNA0CTvlZKDnUnEmkhPMpmvy+i7rAcuu8r38gcqNLuLKdNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=okS4Sb9h; arc=none smtp.client-ip=80.12.242.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from localhost.localdomain ([86.243.17.157])
-	by smtp.orange.fr with ESMTPA
-	id 8cYSsFC8hNQ4U8cYespYD1; Sun, 19 May 2024 11:10:20 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1716109820;
-	bh=BuzLzcGApaGthL63ihFJK2+ain4oC/YEb1ozPZvoVBw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=okS4Sb9hoEuVjb/kMR4hDnZ7f6paQP6y+KGUUnGBCL3cEN9W2FRGXwRMKCtQiu7j8
-	 GwFGm+DxRbnK/KEb4xhXYM0qZB9XEHTgZWBXftEXsIh7Bi+Wr+Cf+N7EXmWrt2XmB2
-	 6D42KRIi34gw9NqHAD8RVWjp+i5Em6sh2J+lfdDhNXazdeaJvaBQ5NayMjaeDQeamH
-	 OtHdnCMjSOqdnF77nvm5QrzWz5uEE/9Erjdid7uya0HZycP+Y17WT6q4DON/3BeJX5
-	 /ZK9tzEykO9ORHOTdCr8HRdYPBdI7+glqOV4CBYU0npR9mRG8LI4B+1IHlgj+eB6M2
-	 gxMgDGkCLoadg==
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 19 May 2024 11:10:20 +0200
-X-ME-IP: 86.243.17.157
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Ilya Dryomov <idryomov@gmail.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Kees Cook <keescook@chromium.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	ceph-devel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH 2/2 net-next] libceph: Use __counted_by() in  struct ceph_snap_context
-Date: Sun, 19 May 2024 11:09:59 +0200
-Message-ID: <c883cccd53beb412f4806d28f48e8a3ddd4f0995.1716109606.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <5b7c72bdb52703bbfa5511ed500aed4babde1308.1716109606.git.christophe.jaillet@wanadoo.fr>
-References: <5b7c72bdb52703bbfa5511ed500aed4babde1308.1716109606.git.christophe.jaillet@wanadoo.fr>
+	s=arc-20240116; t=1716117554; c=relaxed/simple;
+	bh=o+j9jim2SFTtDeZRdbP+U9RKRjTg/+TlxstRhKWE3qc=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=RcBIEd0nlF8u6QJrFg24ytLxHON2m1Diwck8qmMC8lN6uGvkQDMJ0vOserDisp4SsTdXuI018D9GO6uLlMG9XLYvZe0ZZKFOMRkuGHTaEiLXpo4ZBS1yENiqideDcV40zSdYupAFFu/9cMCGrSs9nfLztRqYUAJWs5DUSEIrlqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=jf8z4qKk; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1716117528; x=1716722328; i=markus.elfring@web.de;
+	bh=pEfFZ5uWX6iBRbjnHbEDDBB0vDW86TmIDzEPatgkzPY=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=jf8z4qKktxGMtw2M8TM27RLbM2wxzTwYKljdcCo8pBRMcVsQiVZocuUSDObfVKZ8
+	 +JrDmzADJh0tLDAlnw4oVdFbJcZb5tmo32rl3z04fZUrLNLs9L89wYaLpVDGWoaLg
+	 LEJejOFHHrpcp0HnWvTyqzbzyAVGJocMgQ1rLRHn+nviUhsP1ImOPiscldHx59UhN
+	 fsz7hPgtOK32kEQ5DnnB7HBRGedkQiL5GxxFWLHR/vKjzM7JG7U0RiRLoccC0bEeo
+	 zaMSJmb5/3mh9MQWOnt6GiQILnVZ6UOi3ZURnfuhT7O1l9DestRVr9ftzidSwEVIy
+	 SeE3Ra7HE1rrcUn5EA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.82.95]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N6JxT-1salOr2p0z-016izN; Sun, 19
+ May 2024 13:18:48 +0200
+Message-ID: <b546e80f-b07e-4c29-a856-1db347939cd6@web.de>
+Date: Sun, 19 May 2024 13:18:46 +0200
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+ devicetree@vger.kernel.org, linux-sound@vger.kernel.org,
+ linux-i2c@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-clk@vger.kernel.org, kernel-janitors@vger.kernel.org
+Cc: LKML <linux-kernel@vger.kernel.org>, =?UTF-8?Q?Alvin_=C5=A0ipraga?=
+ <alvin@pqrs.dk>, Emil Svendsen <emas@bang-olufsen.dk>,
+ Andi Shyti <andi.shyti@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jaroslav Kysela <perex@perex.cz>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, Linus Walleij
+ <linus.walleij@linaro.org>, Mark Brown <broonie@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>,
+ Saravana Kannan <saravanak@google.com>, Stephen Boyd <sboyd@kernel.org>,
+ Takashi Iwai <tiwai@suse.com>
+References: <20240517-a2b-v1-1-b8647554c67b@bang-olufsen.dk>
+Subject: Re: [PATCH 01/13] a2b: add A2B driver core
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240517-a2b-v1-1-b8647554c67b@bang-olufsen.dk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:yvTbyO1e5gC/VYcAH6EfxvkQgIRu0/rRhJ/zMPP4ObyXuyBUpBv
+ dY/VPRz/E5LRfDODkJldDZJc/mFZYMnQHvwRMZsd1qaL5zsOcRGPB/7Z4WoW8Q7kbKH/lrM
+ 3wQ5WDZqp0wyznJRVbz+S3qLi1KYiVRpXALLtB1+F2vwmKcxXs/EwhVaVnfZLftxpd5iY7f
+ RF5e3LhwMg4nXWoDvrZWw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:gwN3dc436M0=;tpA+1NgyAhJH44JfOMHYIcQKkMs
+ yvG1VOsgPdl8OM6I/LH7KMzMsn+RMzCqJQrWgc4kwp290KfCsPk8MGTuZI4bGQDJ1X+eUWDik
+ MFj06ScZLuXHR52QE6Uq39O5FTfxQCc0jRbJXNjoDceXoATj4mgrxhJPsuxI3JnRwRnKbz5XL
+ vBspQGFERoDJCVQpheBcUCejnShFm/WQVTqA34eLDDrrr72M190AzAGRqzgP7RntJUm1JXx4W
+ 5cAJmjfqgMEPZO8mN0IhVljHM4V8yQs0umVqhHmkA5OJ686zu3J/86W4UEM5RUGBVY0fiS4RF
+ hN8at8TDqslzV38oRU/FiteLZswtdqJrTju6VJ43+grBxAklJxzMRIH8z71M15csrVWN46Q5x
+ b5UKIwfFcLF3fX5gygRtp/4VsRshzZJUfrgf6Y0fX2iZ1xPmGV+vfUsJss4bj/3S2+1wAWIYR
+ e6ZIHW7hzMlhmIIpRoRGfBT4TMzoC9rsXbzLz8T8JX/y9nRXTX+leL9Bi6ajI8/5mTmHuc8J3
+ YmEgwexnh25oZKo2lDWN4vVvCROcvdgGHDzylu5FmVvQOMHTAk+sTLEkaP0dtQbgmuABPLLb6
+ wtJ8j5aIJkG5XnbFO4Y99vPGoPVHj6uzMeGIRpUnEkjt+dhOjIPNQjXFnU1EAoWRnqlAP1j0L
+ XDvcQeKL+OOHkanR/XQi7UUUl2fPuyHXLKz8wUeWWI3hTNtUyw/nV6m9JSeqHa+9rxNjyRSdw
+ J9JvJfZlhWbQxVgiXtGptB5xlP9Q7/UpZ5R7VEccQLg6AnPLwTXHo9SGhVyFu2RtRhgu8QFmE
+ 0Yasz/CAB2jLcLkwMhbDkYHi50VAijJuDMihf7PKlFFsQ=
 
-Annotate the 'snaps' flexible array in "struct ceph_snap_context" with
-__counted_by() so that additional checks can be made, if enabled.
+=E2=80=A6
+> +++ b/drivers/a2b/a2b.c
+> @@ -0,0 +1,1252 @@
+=E2=80=A6
+> +static int a2b_node_uevent(const struct device *dev,
+> +			   struct kobj_uevent_env *env)
+> +{
+=E2=80=A6
+> +		if (add_uevent_var(env, "A2B_NODE_VENDOR=3D%02x", node->vendor))
+> +			return -ENOMEM;
+=E2=80=A6
+> +		if (add_uevent_var(env, "A2B_NODE_VERSION=3D%02x", node->version))
+> +			return -ENOMEM;
+=E2=80=A6
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Compile tested only
----
- include/linux/ceph/libceph.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/ceph/libceph.h b/include/linux/ceph/libceph.h
-index 4497d0a6772c..485efc8837d5 100644
---- a/include/linux/ceph/libceph.h
-+++ b/include/linux/ceph/libceph.h
-@@ -164,7 +164,7 @@ struct ceph_snap_context {
- 	refcount_t nref;
- 	u64 seq;
- 	u32 num_snaps;
--	u64 snaps[];
-+	u64 snaps[] __counted_by(num_snaps);
- };
- 
- extern struct ceph_snap_context *ceph_create_snap_context(u32 snap_count,
--- 
-2.45.1
+I suggest to merge three if statements into one in a branch of
+this function implementation.
 
+Regards,
+Markus
 

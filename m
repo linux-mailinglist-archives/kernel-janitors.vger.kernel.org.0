@@ -1,99 +1,103 @@
-Return-Path: <kernel-janitors+bounces-3187-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-3190-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00FF28C9383
-	for <lists+kernel-janitors@lfdr.de>; Sun, 19 May 2024 07:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 797058C93B4
+	for <lists+kernel-janitors@lfdr.de>; Sun, 19 May 2024 09:36:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42C9528142A
-	for <lists+kernel-janitors@lfdr.de>; Sun, 19 May 2024 05:50:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 306092816BA
+	for <lists+kernel-janitors@lfdr.de>; Sun, 19 May 2024 07:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9AD10957;
-	Sun, 19 May 2024 05:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816DD18044;
+	Sun, 19 May 2024 07:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="MBvHwGn5"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="laMt+PtV"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from msa.smtpout.orange.fr (smtp-70.smtpout.orange.fr [80.12.242.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6661C2E;
-	Sun, 19 May 2024 05:50:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BE115AC4;
+	Sun, 19 May 2024 07:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716097831; cv=none; b=rD8J8CwMF74rALt+iYZot6oGO9WMHXchrpQKWS+T8s1/4csYn9XJ7kU05T8ERUr/gKnHsYVEZJkzwNzGXVQTfTEijOv8Lctz6rqhwnlOzxmP7wf+FU46poPQs0hdyybJg6mHaFEIoPTFK7h0ig0TCzAn7RVsT26IKFadMRAHK+0=
+	t=1716104205; cv=none; b=S5n34EAQKauEE+SZzw4Uz8nkvRm+1SZbl3EYD0pJ1EfdpNZHkm++rqht0rehL3U1oSb5wgPqo8iQM4Ftq2lM+4ZdAocqpUT5NsIGr6rixwaQJBCezmDKTIKfaHpwKkL9zN5V204abDBXGwxPIh+Kf0lrFw29q71t+Mdi7EWAxf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716097831; c=relaxed/simple;
-	bh=0yvbC3YWgtKvkehK3zxwUez8A5+kamVe/0eOYjtGMTE=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=H+fKHUZwfEPWLwtdzmefkcJYnXgXCpFc0a7Ir/jd7gelWANkG/IZcRmVCIhKxgf1m4hCmj0Ge2GMgLZEIAfTpJXStwVp4Sfqc9KdGSOMAvtaSD1vLYwYKuuyuJiIymWFYK285xbX6jAxKUAdqvTTEUPhE8FfOjeU4L1zmzaK6tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=MBvHwGn5; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1716097818; x=1716702618; i=markus.elfring@web.de;
-	bh=0yvbC3YWgtKvkehK3zxwUez8A5+kamVe/0eOYjtGMTE=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=MBvHwGn5D8wKrTfcIuMVWEPKNyz5OGw8+xk6J8t5zAX0lxUX4IhLAQ3OR4OIzOsh
-	 gww8LHPLafO2HtjL62UG+vuNpd+a12PVSsjgYgou2453FMBw/TpW1usdkFuE31zMy
-	 +aih5j7EPMSxuM459acLa8LauxwitxrleQlu+jKnOjJkDXYlFCqFqwQg3pAyay5vM
-	 AXv+faCJJKk3CEho8601znrbi3e0DOLcBOliwyauzhH60cf2N600/LuJI3STqC6n4
-	 Qpv5tEiM1Lg2HI+GxVn5r39CkWthmbQcONv5wTXiFvpcEFod0jnXpLsYacegdCUTy
-	 3Gk8z7QQJujvjFk4NA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.82.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MGxQX-1sM3hZ1kpf-001zNa; Sun, 19
- May 2024 07:50:18 +0200
-Message-ID: <76413d53-4572-4a38-baff-8b01f6179c8e@web.de>
-Date: Sun, 19 May 2024 07:50:14 +0200
+	s=arc-20240116; t=1716104205; c=relaxed/simple;
+	bh=EvmQQWNeJGwNqewjsCWVicRfAYaNcgdeLiLjrEetQbE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AVMpLh2CoHaHPITJbPvaiPGAXKa+no//qK2VzxnEc6azHCAEKVbjRhA+keS4j5fpg/U5fYjG5bkuRU9lk4pLSRz84uyrM1OlY8Nl6fP5GtPLswXF9uE5aKulaqipPJCqep9/NoyhWkNEuEnh4PpXeYuGtxZ9ArSVCzHLPO8KVS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=laMt+PtV; arc=none smtp.client-ip=80.12.242.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from localhost.localdomain ([86.243.17.157])
+	by smtp.orange.fr with ESMTPA
+	id 8aYusLlTw69OH8aYusyjjq; Sun, 19 May 2024 09:02:30 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1716102150;
+	bh=DpV324OF1N6KWvT4lJQi/tT98cIN5IcDh30eoiZYvd0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=laMt+PtVCBzsbS0whtoPwaW+J+XwtrmW2Nl3RA2gKV94y/I0bEpUVtDm2QEr1x6X4
+	 3bNbLg8hPALHUdhBB+piZyiuMXEGjPbTIaS9/SryDTbieWwtwfwpbDrwvnItMnwwgI
+	 i403EWtgKbooMY70cFtTvgzzYh7GcQmSYX4jBx8KXcZMPMI/432UEj9TMWjKB/l0d0
+	 CHr0DwCpGvIgOiVmWsopRcLDYeKIfVmlbbbiLLW8+xOJvghTLOkn9k3k1z1RuzbRbG
+	 NcCsZO0vZ9MZH21WeAiY3pLlQTWrvoKj//5A2BPfQe7EmLWp+OHEamjbGcsY2/730G
+	 csRzU7MOETESg==
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 19 May 2024 09:02:30 +0200
+X-ME-IP: 86.243.17.157
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Mustafa Ismail <mustafa.ismail@intel.com>,
+	Shiraz Saleem <shiraz.saleem@intel.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-rdma@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH] RDMA/irdma: Annotate  flexible array with __counted_by() in struct irdma_qvlist_info
+Date: Sun, 19 May 2024 09:02:15 +0200
+Message-ID: <2ca8b14adf79c4795d7aa95bbfc79253a6bfed82.1716102112.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
- kernel-janitors@vger.kernel.org, linux-coco@lists.linux.dev
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Carlos Bilbao <carlos.bilbao.osdev@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
-References: <20240513181928.720979-1-michael.roth@amd.com>
-Subject: Re: [PATCH] KVM: SEV: Fix unused variable in guest request handling
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240513181928.720979-1-michael.roth@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:86xkhBNlc093D6q3cjQlgFMXciyeSHTew5huDwPDpF/M1QEcniy
- OoNcSNgh8nUXAwTF+r4oqO6RME/I3KJ1ET7oiMUWh2Hycqsd4C9LIym7n9Y8U54aUv6evK/
- LLFEm+nRuJqGGeCorG4SCSKPKBQ1+XmTaK/cOpSloGbCIQYC1UpQWSQBThymHXd5Rt95vkI
- GbZ9C5mA7mzozKI+V5Z+g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:lcVEq/oY1Bg=;kyVlebdxuhJMfY0uiZgFoH+b0rv
- QCfP9AOimSDxeM/p8p95KyMqLiTHTDa9tkZFsExgYnrxg65G5hNaBKI5ulbaNmawy5qHAQbOv
- 78IuREnkD0tDqo7etBb8zhSC2lty5SpkRflP8iiPe3gwVPwvO+2QZy+R7TSZjSitDrh2t/OZY
- dWrItoYRshEIq7OenouiAMDCWMVcmCdx97p4FI7MQ/Ev4cAYqgqseAX/uimQe77TJ9lKkGYEW
- dG1EMAva0LjNPZQ1g4Zf3stRdQ6/Ap0DS0+VROBupSIJSTsX/NVuSW+1l3mXuYt+K8jhXiGiN
- wqhF9xDEyfxDwmqayab5GqchHSYeYES4hWxmfWr3Mf4eiubuMEfo59DWs8T161zjBEuDyfEeG
- lyt1OMLA7jt3tLGV5OAw6fZ9JzE3T7NvX7MG/LtY0ek7yX6stDbfhGHioKPO5ZPkMqZZDli4i
- N111LrJu5WJfvmczOvDVCZLAtqXe4jJ3/ae4Q33f6GeRDFFyHGVIlAdDCH2dk2ZDQBKWRRRin
- BPxJV2qcAVhtryGoc4jBgEAD3+oYI846ol8J9NjgFwX85a/yE1epAponyWvMT4//rDDkWyBe/
- Gln1KmBxG9VdKGrha2wESWE5s4Ae0kaB5sZNaEILB96yiMIOdR5cRaULndKww/sJbhn8H6/5P
- yUQlNCROzbYrPPTZ2p85wdq0d1O5MiPjV4Zf+rH0kSMRO/wI/3kEgWUr4DE7tcRJO3Mjprkr9
- xRTzyJDdqKQKapMazVyvPVgKPvqXiL7GG5QOSt80uvJXQaumDmOjkzHoaYXZr8UzUxTnUd+6C
- lekuPcNLkXK00WxnCmdM04R7zrc0siPY2OJuXisq5U5C0=
+Content-Transfer-Encoding: 8bit
 
-> The variable 'sev' is assigned, but never used. Remove it.
+'num_vectors' is used to count the number of elements in the 'qv_info'
+flexible array in "struct irdma_qvlist_info".
 
-Would it be a bit nicer to use the word =E2=80=9COmit=E2=80=9D instead of =
-=E2=80=9CFix=E2=80=9D
-in the summary phrase?
+So annotate it with __counted_by() to make it explicit and enable some
+additional checks.
 
-Regards,
-Markus
+This allocation is done in irdma_save_msix_info().
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/infiniband/hw/irdma/main.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/infiniband/hw/irdma/main.h b/drivers/infiniband/hw/irdma/main.h
+index b65bc2ea542f..9f0ed6e84471 100644
+--- a/drivers/infiniband/hw/irdma/main.h
++++ b/drivers/infiniband/hw/irdma/main.h
+@@ -239,7 +239,7 @@ struct irdma_qv_info {
+ 
+ struct irdma_qvlist_info {
+ 	u32 num_vectors;
+-	struct irdma_qv_info qv_info[];
++	struct irdma_qv_info qv_info[] __counted_by(num_vectors);
+ };
+ 
+ struct irdma_gen_ops {
+-- 
+2.45.1
+
 

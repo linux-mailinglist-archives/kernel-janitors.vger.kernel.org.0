@@ -1,80 +1,65 @@
-Return-Path: <kernel-janitors+bounces-3242-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-3244-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC918CA18E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 20 May 2024 19:49:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C6A8CA3D7
+	for <lists+kernel-janitors@lfdr.de>; Mon, 20 May 2024 23:39:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC917B20DA9
-	for <lists+kernel-janitors@lfdr.de>; Mon, 20 May 2024 17:49:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D91651C20DCA
+	for <lists+kernel-janitors@lfdr.de>; Mon, 20 May 2024 21:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D36138493;
-	Mon, 20 May 2024 17:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4E2139D12;
+	Mon, 20 May 2024 21:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QOvTpvVr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZUHisKTI"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD98137C3F
-	for <kernel-janitors@vger.kernel.org>; Mon, 20 May 2024 17:49:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2BF1369BA;
+	Mon, 20 May 2024 21:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716227363; cv=none; b=f+O3URR6FY/Byc4mqUtr8/yr4YIwX8NtdI0T4E/l+e8ijo0o7xfY13SK4WYdIwH4UFVE0Ku6aWdEiB4fUNyQZdSnpL86UktKNwzWrgdyrMJe4JBacESd5+6BfB0w4e0YsGk0BC5uRhbm4+qJotnuOQfddgn82OXcp2WNwxDC1jc=
+	t=1716241139; cv=none; b=YfLcLKu6pVlvYHmqVNl/1q31IF1T29iKzYklvmKzmpOTT8d9eDGsFJ1gBEtgtIsPs80SJJGzNGiI5HPD/02sEfXitZm9kKQD/Woe2zi8kjHMvY5J2ZoJKf4Nn245TdDv7X5NM/KDDML1Ln6UT2neXhAMk4NrlSXltZqNPfcnXsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716227363; c=relaxed/simple;
-	bh=MJpuSgcxvqV4UwKfTH3b1ou3TMAnP03pjUJAZgV5i6k=;
+	s=arc-20240116; t=1716241139; c=relaxed/simple;
+	bh=yw2rCIrCQibFXCP4yX81inyprqmfwEEpDAwGlUMhIJY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FRoZI/iJK/D+AlKh98IthKpJNGX6fVS+HTti6+AHC9xznFuS0PHbj05C12CowVpjC0ghZb1xI0l2jnN+zRfDhaPkUldIzeKoNEp3mczIsQoduvvsQwf4TIygfTJ6iEM3LiMZcZ7/XCn9jb90XlT+zNwL+nT4WvtAgackWEpluqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QOvTpvVr; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716227361;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZZrUbAm2R7943JoyNmgrw2MQcGZgNrzrbVs07vVMy1k=;
-	b=QOvTpvVrOZ3CM5L8A7Ii7ZEuFAcHVn1kensJGukmK3Psx+Z7RL69v9bJGx1vADc4TUpqXQ
-	J5R02HI94El1NzL8lTmiMQHAXJVvlJoJIyTGWd/hX3Rtg57ybuURAanwq7Wk9uBtkf1xjs
-	VOFrTf8AOUF02kT1rWwnMoJePY2gHgA=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-571--dRa8A9bO1GVK8ETYXqSmA-1; Mon, 20 May 2024 13:49:17 -0400
-X-MC-Unique: -dRa8A9bO1GVK8ETYXqSmA-1
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a59c3cf5f83so686539966b.2
-        for <kernel-janitors@vger.kernel.org>; Mon, 20 May 2024 10:49:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716227356; x=1716832156;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZZrUbAm2R7943JoyNmgrw2MQcGZgNrzrbVs07vVMy1k=;
-        b=vHmFBrULX1fUm1fRtpekohfTrk7Mmxgt04Q0amr7FcWtPxIW8un9PeiGfbofN2aH8n
-         FA/xs5LEHl2SUMijFh2ziXcsHeAxHmcm9Tg3kjaJHekYmKHzm8kPGcPJrR/MGqppPrtC
-         Ud2raDbY9dm56xR5uA5A6PwY54WSxbxagsrdILL5EuCID0e5sPuTazICfPvFrb8k/2zk
-         qErtRNgGkdyih3Ft934TiBJ6YD4NnHpJnk9yveD9/xTLFUIfuNpY8DVxUjpIfRHgK/1+
-         I2tv6t24fnjlWzux7hltUkJxZ/yIKjcFcP++BBmRLIIyVr4Ht+Or18OIOUsWnjXTlB9A
-         KvYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU5wzkw3taV5leXLOkkGab+78L0yJSAisHvn/DfraUwuBY6z0c0qw2JfuxDK1+jwf7GYXFhDC2oPJmk7oWIBdKrCgwdm4L9JFvk2lCxB1Th
-X-Gm-Message-State: AOJu0YxANaoOR+o6+/dz2/llSXc187bn/aUZltVbbBY22QOHd9qDAN3h
-	0JiOJCEys32wcJMGkTaXYrg275RgFPiHUNLIFDCz+aDbz7Q8rT7tYRsb7mJPv42I4ThZk9vwRoV
-	OxH/t7uJXvB+BUdaHd5qZq09Mr8zox7DtIP2LJWYoZqSFmzqOZ0qDrI+d1miyTvWpVA==
-X-Received: by 2002:a17:907:da4:b0:a59:9e01:e788 with SMTP id a640c23a62f3a-a5a2d5d0228mr2025038666b.34.1716227356821;
-        Mon, 20 May 2024 10:49:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEgYGJtNUxZr1d8EH1WwxVSjgBenIzpG3s1njnGCUReQnYbY3i4NHmZt7xWOF9IUrJVori1jA==
-X-Received: by 2002:a17:907:da4:b0:a59:9e01:e788 with SMTP id a640c23a62f3a-a5a2d5d0228mr2025036466b.34.1716227356442;
-        Mon, 20 May 2024 10:49:16 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a17b0163csm1486276766b.163.2024.05.20.10.49.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 May 2024 10:49:15 -0700 (PDT)
-Message-ID: <5287fc2e-91c5-442b-b66c-6eb1fe334ce4@redhat.com>
-Date: Mon, 20 May 2024 19:49:14 +0200
+	 In-Reply-To:Content-Type; b=ci+av9u+G1frLXKJ5qVnCZn2WZa6z26euidktkhQGA9DGla6n1vlspwOCRI/cDPKWku6sxjc/ATuW+QXcQ/tyhvam7frLQ7cMHHSoHJikdAbnvi1tKAsaJzx81dS7R6IcYLFTLdb03Q1EZ7oSbKjIM/86MGz4K9AGBDKESbyTlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZUHisKTI; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716241138; x=1747777138;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=yw2rCIrCQibFXCP4yX81inyprqmfwEEpDAwGlUMhIJY=;
+  b=ZUHisKTIz38vSvQ1ClUt9pFSyv5xd4wDlQ1p9p9CV86gh/zCyt4SAEJV
+   WG6FL85exbt8/erL7IslWt/w5wE54dsemDwLgb6CLbU0wq8mtKGYLL5wC
+   WPVDRvjfv+76uiZY/o5caImCuhpXqDR7Nw6ACsrj2DLF7DxStCf0DX7dC
+   Oc2jMYDb6NO73vuHNmW+qZVTX4ibbB+NT2Ytu/6bYxMBmZV31TouvEw8i
+   1FsRokfPh66har7CmuSjCC7BBeyL3CDNOPFq8lb6LvPOJPOrBCeZd4RKM
+   k4xtn58cNmtSk4Kes+JKvQPuu1tlXbEphkTjSvOiE28k/VhQVHHxdhe+d
+   g==;
+X-CSE-ConnectionGUID: hn5TJ6scSuSC/ZAqkwPcrA==
+X-CSE-MsgGUID: GZFCZkNVSd6yIsOQFEwy/A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="12585216"
+X-IronPort-AV: E=Sophos;i="6.08,176,1712646000"; 
+   d="scan'208";a="12585216"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 14:38:56 -0700
+X-CSE-ConnectionGUID: DGQ7yuvzRpeP50GVaMCv6w==
+X-CSE-MsgGUID: 0MqdF6MhR2ehoTcJGZj5ig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,176,1712646000"; 
+   d="scan'208";a="70084551"
+Received: from daliomra-mobl3.amr.corp.intel.com (HELO [10.125.109.51]) ([10.125.109.51])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 14:38:55 -0700
+Message-ID: <c683b42c-f75c-427e-b6b0-66babce9b55e@linux.intel.com>
+Date: Mon, 20 May 2024 16:31:31 -0500
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -82,51 +67,48 @@ List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [v2] platform/x86: ISST: fix use-after-free in
- tpmi_sst_dev_remove()
-To: Markus Elfring <Markus.Elfring@web.de>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
- platform-driver-x86@vger.kernel.org, kernel-janitors@vger.kernel.org,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Zhang Rui <rui.zhang@intel.com>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Dan Carpenter <dan.carpenter@linaro.org>, Dan Carpenter <error27@gmail.com>
-References: <20240517144946.289615-1-harshit.m.mogalapalli@oracle.com>
- <d5203ff5-8ed4-48ea-8e58-a2e6680b0542@web.de>
- <6d1bf351-77cc-7fe9-2d62-8bd99789e4f1@linux.intel.com>
- <d73fe99b-dea3-4792-aa1c-c3317f296003@web.de>
-Content-Language: en-US, nl
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <d73fe99b-dea3-4792-aa1c-c3317f296003@web.de>
+Subject: Re: [PATCH 1/6] ASoC: topology: Constify an argument of
+ snd_soc_tplg_component_load()
+To: Mark Brown <broonie@kernel.org>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: lgirdwood@gmail.com, tiwai@suse.com, cezary.rojewski@intel.com,
+ peter.ujfalusi@linux.intel.com, yung-chuan.liao@linux.intel.com,
+ ranjani.sridharan@linux.intel.com, kai.vehmanen@linux.intel.com,
+ srinivas.kandagatla@linaro.org, bgoswami@quicinc.com, daniel.baluta@nxp.com,
+ linux-sound@vger.kernel.org, alsa-devel@alsa-project.org,
+ sound-open-firmware@alsa-project.org, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
+References: <f2f983e791d7f941a95556bb147f426a345d84d4.1715526069.git.christophe.jaillet@wanadoo.fr>
+ <1fb69d24-03af-4742-9f44-5a93704f5cfb@sirena.org.uk>
+ <b736e11e-430a-462b-898a-d5e1dcf7f74a@wanadoo.fr>
+ <baf1789a-a573-470f-b816-ca9bb0d7f299@sirena.org.uk>
+Content-Language: en-US
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <baf1789a-a573-470f-b816-ca9bb0d7f299@sirena.org.uk>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Markus,
 
-On 5/20/24 12:56 PM, Markus Elfring wrote:
->>> …
->>>> Fix this by reordering the kfree() post the dereference.
->>>
->>> Would a wording approach (like the following) be a bit nicer?
->>>
->>>    Move a kfree() call behind an assignment statement in the affected if branch.
->>
->> No, the suggested wording would make it less precise ("post the
->> dereference" -> "behind an assignment") and also tries to tell pointless
->> things about the location in the codei that is visible in the patch itself.
+
+On 5/20/24 08:24, Mark Brown wrote:
+> On Sat, May 18, 2024 at 10:34:33AM +0200, Christophe JAILLET wrote:
+>> Le 14/05/2024 à 12:21, Mark Brown a écrit :
 > 
-> Would you eventually like another wording variant a bit more?
+>>> As mentioned in submitting-patches.rst when submitting a patch series
+>>> you should supply a cover letter for that patch series which describes
+>>> the overall content of the series.  This helps people understand what
+>>> they are looking at and how things fit together.
 > 
->     Thus move a kfree() call behind a dereference of an invalid pointer.
+>> Ok.
+>> I usually do, but I thought that the subjects were self-explanatory enough
+>> in this case.
+> 
+>> Do you want me to resend?
+> 
+> It's fine this time.
 
-The original wording of the commit message really is fine as is,
-I see no need for Harshit to send a new version and I plan to
-merge this as is.
+no issues with
+https://github.com/thesofproject/linux/pull/4993, so
 
-Regards,
-
-Hans
-
-
+Tested-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 

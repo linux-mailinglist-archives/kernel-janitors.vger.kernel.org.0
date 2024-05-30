@@ -1,89 +1,120 @@
-Return-Path: <kernel-janitors+bounces-3422-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-3420-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02AA48D4DEE
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 May 2024 16:27:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A2938D4D8D
+	for <lists+kernel-janitors@lfdr.de>; Thu, 30 May 2024 16:09:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 348E31C23AE4
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 May 2024 14:27:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEB0AB2478A
+	for <lists+kernel-janitors@lfdr.de>; Thu, 30 May 2024 14:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6786E183074;
-	Thu, 30 May 2024 14:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4FE318306A;
+	Thu, 30 May 2024 14:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Md39lJSO"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="WTopETGU"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DDA17C207;
-	Thu, 30 May 2024 14:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB8117D8A9;
+	Thu, 30 May 2024 14:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717079166; cv=none; b=dWEem0N0/5cAqtbS2qc+EplVOAEBNWVZqQzA4VSSwB3fRoiemjFbj+vNLSazp2/Qx6IVA/8OHD2QIYRsddVRk5mKC1hWTb/zQ4ruI5ODr2aRsbNDDyOJ7qp57/269K+vpGyEnkuJl81ho5W+7mb03B/Yr1X5YW2h8mHr50jwgLM=
+	t=1717078099; cv=none; b=MIGaK3e6rN0x0WeMzVtGyCnxU7USCKLQ8yXHV8pjzpnwF0qhlWVMJGwFzd7RUJ0MWgHiTltdmWsDECtzAolLFW6wQQxGpCiC/uTLR75L925njG5648D8tESalyn/6olPD+Y/KaBOb+ZIuwCdmwn96OGFbAiWS8kvyvYqbt73W7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717079166; c=relaxed/simple;
-	bh=9jEmmMWKymF600ZOGE1JLvVfVJUEbG47TASDJMM3Gu4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=O9Vkm067rGEo2zWpnfcadm/F8CgeJKq/ZX7fVxSwCQCI9U//ng70fe6+oIM4++DR6s65VrfWmqUs9TCvDtD5E2mybPPMQ+p02hyHvq1EurCUZZhmxxvmI5lLDaSh2HL75tv6m+2mp9Mx4uMKsb48VrdFPpbu5epYyE+mQVWQMFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Md39lJSO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0339C2BBFC;
-	Thu, 30 May 2024 14:26:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717079166;
-	bh=9jEmmMWKymF600ZOGE1JLvVfVJUEbG47TASDJMM3Gu4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Md39lJSO6r/L4WHfGyyQsYRVVu+zeqdAkCRU/NsvNxSx/8Q41fUW+GERxfFMMCHKi
-	 YNAKlYPmCeWFB7y0xoZl7CrLmF7WusbvUq5xo0hKPWZQll5safEBkKn/HIMaOr3EGx
-	 mW26hO0bG3gB4E88C68RHkyc/49W3ISiPwzYPpgivLo9sijDUlxjxo1ENf0gY/tWmV
-	 UQ/li0/IbIc8/gxz9ZyRQ8lYtfonc8DJ7md4Y/0nSvmeqXRtAswcK9fvuaOnk50oLN
-	 3Sn/QHq1fPIOHFpb+i1GV+Jp9UkqkXXz7FGrKYXtngdIg/PoKUr+omE/EiJsSVJ8NE
-	 PltfNWcAkizmA==
-From: Leon Romanovsky <leon@kernel.org>
-To: Mustafa Ismail <mustafa.ismail@intel.com>, 
- Shiraz Saleem <shiraz.saleem@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
- Kees Cook <keescook@chromium.org>, 
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org, 
- linux-rdma@vger.kernel.org, linux-hardening@vger.kernel.org
-In-Reply-To: <2ca8b14adf79c4795d7aa95bbfc79253a6bfed82.1716102112.git.christophe.jaillet@wanadoo.fr>
-References: <2ca8b14adf79c4795d7aa95bbfc79253a6bfed82.1716102112.git.christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH] RDMA/irdma: Annotate flexible array with
- __counted_by() in struct irdma_qvlist_info
-Message-Id: <171707136517.115496.4990483419081659486.b4-ty@kernel.org>
-Date: Thu, 30 May 2024 15:16:05 +0300
+	s=arc-20240116; t=1717078099; c=relaxed/simple;
+	bh=EZ6CNDZ/17E/DkuT+VWNmITW9/kfR2rHBbFL3oFnVPw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=RckPjLl2p8ueT0WnxINvBllUNQBcX2SAgJYZcFrt81v97kPN2W7xpTTS9MOHyWQYn50QxOPrV7yL4fjk4ZQW/iOSK5ERf68zYUoeLnAmji42p+M1T2ktLJTs1h2eMjyZv8XEVog/jMQcHD/udl8ZNpkZIMSCDD5K0ADF5ZbKlD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=WTopETGU; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44U5hH0r015684;
+	Thu, 30 May 2024 14:07:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	s5xSVs/mPJRwYaKkrhVOTQmXac0Ej6Efg8321SwZZhI=; b=WTopETGUSoLaAfHj
+	yzsAv5EnJuQB+SALUtOVsJow/qAJHrbdkYAprpyf7UIizMkBFCzkQ94ZvaQGnRZr
+	gzl2DvXF2XFoGTR/+tIf+66a5EkkMkuSJdEb2KXJ1gvfJ5RRtLO1pHhHu2wb4ieL
+	pCi81c69EI2HcKNz5rd+3QFPjER0FJQUQ8HVZDPTfJ4i97x4ceCwxLKZYaJ0YIux
+	cZ+HCFxzGTRbPz1XvphL2iEkEzJH/NztJ61mFvbzP8osozOrny18z7T2ERFcFIn2
+	wqldoairb4vsR7cRDB7D2vBgdqAjvX6LUE44zy6vQSkYVh4XjIuV5pISQFn+CnNA
+	3xW74A==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ydyws3uyu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 May 2024 14:07:52 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44UE7qYU018637
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 May 2024 14:07:52 GMT
+Received: from [10.110.109.163] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 30 May
+ 2024 07:07:50 -0700
+Message-ID: <18ca9445-588c-4c41-b274-8f7f0ea589b5@quicinc.com>
+Date: Thu, 30 May 2024 07:07:49 -0700
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KEYS: trusted: add MODULE_DESCRIPTION()
+Content-Language: en-US
+To: Jarkko Sakkinen <jarkko@kernel.org>,
+        James Bottomley
+	<James.Bottomley@HansenPartnership.com>,
+        Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>,
+        Paul Moore <paul@paul-moore.com>, James
+ Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>
+CC: <linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>,
+        <linux-security-module@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+References: <20240529-md-trusted-v1-1-56c9a0ae8e28@quicinc.com>
+ <D1MQK4XPVIUW.2EUDV0050EY5L@kernel.org>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <D1MQK4XPVIUW.2EUDV0050EY5L@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14-dev
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 0eo2TFYGszRQoY_vu6BJyUxnh2959CFl
+X-Proofpoint-GUID: 0eo2TFYGszRQoY_vu6BJyUxnh2959CFl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-30_09,2024-05-30_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 phishscore=0
+ malwarescore=0 impostorscore=0 suspectscore=0 mlxscore=0 mlxlogscore=819
+ priorityscore=1501 spamscore=0 lowpriorityscore=0 bulkscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2405300107
 
-
-On Sun, 19 May 2024 09:02:15 +0200, Christophe JAILLET wrote:
-> 'num_vectors' is used to count the number of elements in the 'qv_info'
-> flexible array in "struct irdma_qvlist_info".
+On 5/29/2024 10:39 PM, Jarkko Sakkinen wrote:
+> On Thu May 30, 2024 at 4:02 AM EEST, Jeff Johnson wrote:
+>> Fix the 'make W=1' warning:
+>> WARNING: modpost: missing MODULE_DESCRIPTION() in security/keys/trusted-keys/trusted.o
 > 
-> So annotate it with __counted_by() to make it explicit and enable some
-> additional checks.
+> Maybe instead:
 > 
-> This allocation is done in irdma_save_msix_info().
+> """
+> KEYS: trusted: Add the missing MODULE_DESCRIPTION()
 > 
-> [...]
+> kbuild reports:
+> 
+> WARNING: modpost: missing MODULE_DESCRIPTION() in security/keys/trusted-keys/trusted.o
+> 
+> Add the missing MODULE_DESCRIPTION() macro invocation.
 
-Applied, thanks!
+Can do, v2 coming...
 
-[1/1] RDMA/irdma: Annotate flexible array with __counted_by() in struct irdma_qvlist_info
-      https://git.kernel.org/rdma/rdma/c/38c02d813aa321
-
-Best regards,
--- 
-Leon Romanovsky <leon@kernel.org>
 
 

@@ -1,114 +1,119 @@
-Return-Path: <kernel-janitors+bounces-3734-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-3739-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40409011FF
-	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Jun 2024 16:24:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28933901238
+	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Jun 2024 17:09:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4172DB20BDC
-	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Jun 2024 14:24:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0303B21748
+	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Jun 2024 15:09:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285F117A933;
-	Sat,  8 Jun 2024 14:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32EFC17921D;
+	Sat,  8 Jun 2024 15:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MkM/7s3B"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="avRfbVYm"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from smtp.smtpout.orange.fr (smtp-18.smtpout.orange.fr [80.12.242.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B572179967
-	for <kernel-janitors@vger.kernel.org>; Sat,  8 Jun 2024 14:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E088015699D;
+	Sat,  8 Jun 2024 15:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717856678; cv=none; b=SYWtomO3E9zWVkBDxDqlNDaP3/KYSZp3765mFXv8s+pm9Xjs8A7SdEz4BjsiHpLrEn9G+yv0g4xRaqj1Z97Fwk83gYoJ6X0D/Av4hYTgDZCR2Kl52iI7NkaWV2hXR9cTUBvhUTyPE9BueoaOuT4I5hxJZZiRL9nYldktP3IbWwQ=
+	t=1717859337; cv=none; b=ftyZUCCTiu7uvd/56gEXmDNBrPk1U3QeANtumF2n6QexvI71Hvj1/c6ZzGQ6pFZE8Q9Jil4BHO3AaXPWc4r1d19c1gzODTIBUK3XOIR/0agakhS1e1ToIqGRq0U/6he8rBr99vtvDbqa+erkrQW8r4inbDBKnS0z9OJfN66ahT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717856678; c=relaxed/simple;
-	bh=lUHuy8Zfz9urTlm/jQeycQ6F7jtrAN9u++rvVMTwTgM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=tDb+ovymTV1ft7crj+VmPiOnaf1CMKgrKo6FGIw2/2zz67X6aYiqnTrz+VJM0gi3e9oqbeqvn7M/H4kxNeYkuHq+kdaKb58/aj8mLbAc/3TnSJlic7zBadPmymHGCoLKIzeFBVCxTQRx3U9vIcCIm4MklvUytx7J+4AlQ9mI8MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MkM/7s3B; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-421757d217aso11604105e9.3
-        for <kernel-janitors@vger.kernel.org>; Sat, 08 Jun 2024 07:24:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1717856675; x=1718461475; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Y3xUXLeXJa7g57nR3Rih0dUWygv43+3NziJlOMTLS4c=;
-        b=MkM/7s3BdonbSLtkq+3dkQOqDYsf2ynPHvl4H/pU6e2hfJv/VmwW8+FK6V3loW7pwS
-         grguLgrudIcJ1ptPAq+XV6/JiYi47CPdYk96gcd6LiPGi+NJ8JHMep/GjrkNWsSPoIu8
-         sYPKYg6oSGDQD8gKLbQluMZoYjXraG6Oza+l9p7q8XrCD+DzcUo/jEY/chsE0+YfVjIu
-         VN1l1Jv3nec2flg09SmILpdIy2Dn5PrkaupHLzjGoRVrwGfGLx8S3Z3b+TDfT7FRsduV
-         7wZ6fNKL7JDfwUC0d6E30mtdMdj9rhPdyyTFvprvz1MWDLq4EHEiIe+CMlMvl0oDRHhC
-         yVWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717856675; x=1718461475;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y3xUXLeXJa7g57nR3Rih0dUWygv43+3NziJlOMTLS4c=;
-        b=oXPgIaVp6YyzsPHPgHMw1lWOIE+wROXCrbUO4BCUyesPxf5gyQ0864vSaYL2hQdVS4
-         Ehbyj5Y4SQgiYH16AA7Sbkh0bJ5+NCGwp6CQkLSL+1iPLuuWEZJ82m+Q6vWtp6C/agFz
-         evxNhriK+Mzm9dHBOWCwBfmDoNKgOsOF2IPAXuaq2GgJsyL3r2xAl0SSM/pwLjte798q
-         LPsdFE3Vqzw77ha6jcvM0SspI//zb3jeDVZe20DF/drgfsYY6EOMigukyIjl5xM/QGf6
-         w8EAVXeQM0OAxqiAlKN2e5KqIhao/GgaACGLdrMUmLE8ELhCnj4jqFiAHC4wmBMEwg8G
-         RLlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVOh0vUaEEl4PqLHHnyfTHEUjsth2LUb8MaSEoDlI8QBibsWW+2v2CQXtTL11SuBNNa3t79sLDM6UzZxWOvwFWFuxQNJfPRh2lePrfWfEqM
-X-Gm-Message-State: AOJu0YwvicHxD7eHPLAYfRD4eKzZln6POYp7ktMlrcsdiVu1Mww69vxZ
-	DTarhoYCTDpXwAI1iXyCaxGDQpzQUPSj5z4yL9YQi8QA+EFzJMz8eAcJi4yrqXTYekACYYXQhR4
-	p
-X-Google-Smtp-Source: AGHT+IFmaCUQ01iQpATq/GX8GTofXo5bwpAglPLwHfhcOwikEZDRyVKEQD6qy8rV6aM+BrXdDmp4sw==
-X-Received: by 2002:a05:600c:34d5:b0:420:fed7:2903 with SMTP id 5b1f17b1804b1-421649fbfa9mr53053035e9.15.1717856675259;
-        Sat, 08 Jun 2024 07:24:35 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4215c2c738bsm86538485e9.32.2024.06.08.07.24.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Jun 2024 07:24:34 -0700 (PDT)
-Date: Sat, 8 Jun 2024 17:24:31 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Artur Weber <aweber.kernel@gmail.com>
-Cc: Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH] ASoC: samsung: midas_wm1811: Fix error code in probe()
-Message-ID: <01590109-cf27-404b-88ff-b42bb73ca1c6@moroto.mountain>
+	s=arc-20240116; t=1717859337; c=relaxed/simple;
+	bh=/8Eaz0dOzW2Y/Aqj56RjuuuZa7c4BBPmMKiet5G1VG8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=myOjKu0KnGEoJptDoOE2RqXtTgQw4BRQ4zuc5XINRbE1w6f4SyoU3ZiCkZltWM5faOtFizgKDYPxk6qHoLvzBEfiBzeDWxaxxWVZ1EhbLcGNYy6aqeBKd9KzISOGmHZqaaGQtRYQuWlYtl4OuQj+VDlHCTBDblHDM9avZUPICd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=avRfbVYm; arc=none smtp.client-ip=80.12.242.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([86.243.222.230])
+	by smtp.orange.fr with ESMTPA
+	id Fx9Rs04TztVxQFx9RsAXo1; Sat, 08 Jun 2024 16:34:43 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1717857283;
+	bh=wdE+q4tYw0Mtn7ZcN10lEjC0L3+XOPxEbNZhXe9vMQQ=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=avRfbVYm3oI+Q1ijAAVS0vX3w7ecGwso5Kk+KnoGVjGFiOgMHOmeMl+H45CKj5MJA
+	 wPwRR3hnQuYrKqj0XLnQ126JXk4THpYfhecCwfl8JoACIbS8CSob86RnSb10mha9LL
+	 uw7b8Fy+G4mdAkVlwtgBVD/RmDClZhQFcUuS4UtDGcQcutA0WdY49E04fGO49UJaWE
+	 UzhYWymT1ajfeTKTYlO7LLDuKUUKRfSRrWU77MJMCHwiQisRUblrjUADHGmES8dZHQ
+	 wk8pP7xVeXJr0B2FVyafuyidHZEQdZuB4UV1T9xhVETDzvSk+AWX0r+4zt5hpUrbFH
+	 H4K0D2jll+SlQ==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 08 Jun 2024 16:34:43 +0200
+X-ME-IP: 86.243.222.230
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: jk@ozlabs.org,
+	joel@jms.id.au,
+	alistair@popple.id.au,
+	eajames@linux.ibm.com,
+	parthiban.veerasooran@microchip.com,
+	christian.gromm@microchip.com,
+	willy@infradead.org,
+	akpm@linux-foundation.org
+Cc: linux-fsi@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH RESEND 0/3] Remove usage of the deprecated ida_simple_xx() API
+Date: Sat,  8 Jun 2024 16:34:17 +0200
+Message-ID: <cover.1717855701.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+Content-Transfer-Encoding: 8bit
 
-This accidentally returns success instead of -EINVAL.
+The small serie removes the *last* usages of the deprecated
+ida_simple_xx() API.
 
-Fixes: c91d0c2e198d ("ASoC: samsung: midas_wm1811: Add GPIO-based headset jack detection")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- sound/soc/samsung/midas_wm1811.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The 3 patches have received either a R-b or A-b tag but never reached
+-next in the last 2 months.
 
-diff --git a/sound/soc/samsung/midas_wm1811.c b/sound/soc/samsung/midas_wm1811.c
-index 3a269c7de169..bbfe5fef59af 100644
---- a/sound/soc/samsung/midas_wm1811.c
-+++ b/sound/soc/samsung/midas_wm1811.c
-@@ -623,7 +623,7 @@ static int midas_probe(struct platform_device *pdev)
- 
- 		if (channel_type != IIO_VOLTAGE) {
- 			dev_err(dev, "ADC channel is not voltage\n");
--			return ret;
-+			return -EINVAL;
- 		}
- 
- 		priv->gpio_headset_key = devm_gpiod_get(dev, "headset-key",
+So, I've added the tags and I'm now adding Andrew Morton in To:, in
+order to help in the merge process.
+
+
+2 other patches related to this API are still pending somewhere and are
+not reposted here.
+
+[1] is related to tools/testing/ and will be re-sent as part of the
+final removal, as suggested by Matthew.
+It is A-b, but the name of the function used in the test should be
+updated as well (s/ida_simple_get_remove_test/ida_alloc_remove_test)
+
+[2] is a tiny clean-up of a comment. I'll resend it to the corresponding
+maintainer (Srinivas Kandagatla) later, but won't fight for it.
+
+
+Obviously, you can also pick up one or both of these patches as well :)
+
+CJ
+
+[1]: https://lore.kernel.org/all/81f44a41b7ccceb26a802af473f931799445821a.1705683269.git.christophe.jaillet@wanadoo.fr/
+[2]: https://lore.kernel.org/all/032b8035bd1f2dcc13ffc781c8348d9fbdf9e3b2.1713606957.git.christophe.jaillet@wanadoo.fr/
+
+Christophe JAILLET (3):
+  fsi: occ: Remove usage of the deprecated ida_simple_xx() API
+  most: Remove usage of the deprecated ida_simple_xx() API
+  proc: Remove usage of the deprecated ida_simple_xx() API
+
+ drivers/fsi/fsi-occ.c    | 17 ++++++++---------
+ drivers/most/core.c      | 10 +++++-----
+ drivers/most/most_cdev.c |  6 +++---
+ fs/proc/generic.c        |  6 +++---
+ 4 files changed, 19 insertions(+), 20 deletions(-)
+
 -- 
-2.43.0
+2.45.2
 
 

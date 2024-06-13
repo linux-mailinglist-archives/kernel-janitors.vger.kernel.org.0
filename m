@@ -1,93 +1,97 @@
-Return-Path: <kernel-janitors+bounces-3979-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-3981-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3FCE90766C
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2024 17:20:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 580FF90781D
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2024 18:19:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7FF61C21C08
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2024 15:20:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E88B4B23526
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2024 16:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9B5149C4C;
-	Thu, 13 Jun 2024 15:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5408E146A79;
+	Thu, 13 Jun 2024 16:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dgFyyKCP"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="2wCXN2VC"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3C0143759;
-	Thu, 13 Jun 2024 15:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6282926AE4;
+	Thu, 13 Jun 2024 16:19:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718292030; cv=none; b=SG82+jTuFZ1jTSwTE89GfHdcp3O2xoAqwg3D2+lUlejrmu9KvHBCfQds9VNXn1LwkVVHdXxEJJKo1amGFTU1O4TMqaVY4cC2h7p9w2e1JdLh8KovskwJqlRcOaB1KRpt4My8BYybe4MdV0e6VoWbLG1sQa5+XmUMn3nuLrasSho=
+	t=1718295563; cv=none; b=GmWjfnjJX11saRIqUxb+UMIfr67hzlhG1uvfP9BjEQPqMwbMQT22EzR+0PoT3tktFE+xvgxrWAdVlUXtuY+qzSF0GJaoaTRrWijHM6iSTQJ7QaiFwwQDfcwhsXsevT7GzbrympPGSijBtXPM+LWbUi9NuucMlws7rqImbp2q6+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718292030; c=relaxed/simple;
-	bh=Gh4uOL7q5FWJwHSZwLXH0gmGi2mBbI+MxDTZqV4SHus=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=bZICnqI2yDViA4kJFoDRVq9PbtFPqk+G3SxSTtcL5oqvTSfsudjWmgaG5wYCjdF2sFv/nV7EUXNkmV1W3T/OygnIr4swa0TfRcSXADqlhmAh7ZBkQs4GlxLt3i7WNatNkWcO43FefBX3mcruNtQTz+hYJHBF1qgMONMMWqu5s/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dgFyyKCP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9BD45C4AF1D;
-	Thu, 13 Jun 2024 15:20:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718292029;
-	bh=Gh4uOL7q5FWJwHSZwLXH0gmGi2mBbI+MxDTZqV4SHus=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=dgFyyKCPkQ2AWAucyYxvXgGGEdjAmEahdwAzJL0hmiGVf/xOBsRTpUnuLnKerkT5K
-	 /z71z8nGBj9bc3d3yjm2p+BeM4V5FArE/p8ASSKwaq1uKKuh2cVrlqRqZlCFayKPu0
-	 HB5cGAm3W9OAXnEZAiAJVf8x3cAecwxSPU87SD8yHfvC5qRV3r2xTQswANMpFUlPf/
-	 s2T1CVFeHwgun1q09AAbkLNVppvwueqNGY0qzLO0qmUnnCJZK3buIcOTG8sGskUztV
-	 TKcCxtZoRmrKWv84iJta1HO4OntuTXWr3Z2PzFfuOOw71LEadSICaU9PNkzfY/Zyzp
-	 mfeZ1dKAEHUpA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 8F9C0C43612;
-	Thu, 13 Jun 2024 15:20:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1718295563; c=relaxed/simple;
+	bh=WpIiOcbHwANqWVqIm5ExegY6R8ZGDJCuGoZEPhc3ft4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ix/NO2cM8wlZCPKVYkJ8+8X0FAZR591MkFE+BGAOZyuZWf4J/sIZ2kYI6IDeSXoJmWMVAsDKrMZU7xvZZQv8xlDVM+3kmZyyQQ0aumGWfZ0jZXOXIRwUBXAk5r3OmvpUUrMRWyzAn3g6vtWGomY3Dc+3llKdR7uK6OE+Zm7PINQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=2wCXN2VC; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4W0SKP5xgrz6Cnk9V;
+	Thu, 13 Jun 2024 16:19:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1718295559; x=1720887560; bh=EqUKSXP8U8eHmlIVt2N2fY/w
+	HbGNwccAvAZ1mcqBVuk=; b=2wCXN2VCrLeXob49GZxpU4hKceCTerxYyRVIGhxU
+	ZieUosDarLgSXfoyldgJ/5EH+1IC9OVlwfGNB1ZGjUglJDLj9m8TJpVxcd1aKNhi
+	VyQuh6SET0wRIE9VmNoSpQMEj9Ftl6mtl+XtUZ15DISzW1U8nTQxg/gMfuQO2u2N
+	J7g8ThqhX1B6ZafBPokbmmck4jd5rIZbpT35wxlZWc9vfGO1LR9L+wubE1K7kfgc
+	SPczzpJYsnIBM1UxhEHgbEf2t3gHmrDod40tsLuG0CiGgv22q0kO6Bl81EI39KST
+	U9asvy4lp2FYbQhv28/1LHHOcNBwb3PbCl7h8vlqO+mtMQ==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id RgN825rfIE8z; Thu, 13 Jun 2024 16:19:19 +0000 (UTC)
+Received: from [IPV6:2620:0:1000:5e10:c543:208b:8ce4:f55a] (unknown [104.132.0.90])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4W0SKK6mj8z6Cnk9Y;
+	Thu, 13 Jun 2024 16:19:17 +0000 (UTC)
+Message-ID: <132dedc1-ee11-44d8-b684-0ffbf994d164@acm.org>
+Date: Thu, 13 Jun 2024 09:19:16 -0700
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] platform/chrome: cros_ec_lpc: Fix error code in
- cros_ec_lpc_mec_read_bytes()
-From: patchwork-bot+chrome-platform@kernel.org
-Message-Id: 
- <171829202958.32437.16739284609802669464.git-patchwork-notify@kernel.org>
-Date: Thu, 13 Jun 2024 15:20:29 +0000
-References: <e0b43fb5-ecc8-4fb4-9b76-c06dea8cc4c4@moroto.mountain>
-In-Reply-To: <e0b43fb5-ecc8-4fb4-9b76-c06dea8cc4c4@moroto.mountain>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: ben@jubnut.com, bleung@chromium.org, tzungbi@kernel.org,
- groeck@chromium.org, chrome-platform@lists.linux.dev,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] scsi: ufs: qcom: add missing MODULE_DESCRIPTION() macro
+To: Jeff Johnson <quic_jjohnson@quicinc.com>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Can Guo <quic_cang@quicinc.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
  linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20240612-md-drivers-ufs-host-v1-1-df35924685b8@quicinc.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240612-md-drivers-ufs-host-v1-1-df35924685b8@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On 6/12/24 9:46 PM, Jeff Johnson wrote:
+> +MODULE_DESCRIPTION("QCOM specific hooks to UFS controller platform driver");
+>   MODULE_LICENSE("GPL v2");
 
-This patch was applied to chrome-platform/linux.git (for-next)
-by Tzung-Bi Shih <tzungbi@kernel.org>:
+That sounds weird to me. I think we are better of with no module
+description than with the above description.
 
-On Thu, 13 Jun 2024 16:55:14 +0300 you wrote:
-> We changed these functions to returning negative error codes, but this
-> first error path was accidentally overlooked.  It leads to a Smatch
-> warning:
-> 
->     drivers/platform/chrome/cros_ec_lpc.c:181 ec_response_timed_out()
->     error: uninitialized symbol 'data'.
-> 
-> [...]
+How about the following description?
 
-Here is the summary with links:
-  - platform/chrome: cros_ec_lpc: Fix error code in cros_ec_lpc_mec_read_bytes()
-    https://git.kernel.org/chrome-platform/c/77a714325d09
+"Qualcomm UFS host controller driver".
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Thanks,
 
-
+Bart.
 

@@ -1,111 +1,150 @@
-Return-Path: <kernel-janitors+bounces-4027-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-4031-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEC5B908327
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2024 07:05:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A07090844D
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2024 09:19:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 962BD1C21A84
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2024 05:05:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB8D4B2292B
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2024 07:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E711474B5;
-	Fri, 14 Jun 2024 05:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF287148FE0;
+	Fri, 14 Jun 2024 07:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="frsyOYeN"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="g/xzsFh2"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from msa.smtpout.orange.fr (out-66.smtpout.orange.fr [193.252.22.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D432F43
-	for <kernel-janitors@vger.kernel.org>; Fri, 14 Jun 2024 05:05:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED97914884C;
+	Fri, 14 Jun 2024 07:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718341507; cv=none; b=Uy9euJO6OHqNwmxK0EYGGAqlrz21o9M2gyuBy4otXbljFyPs5vrS/sOHK6waexJhzwrLRarl56IzZsRkVx6sST1f/L2PsY5Q0P6BVKq3lVOWMqweG2rRKeWPmkKJXZcM82z1N9oWshn2FBCUJvLz4yU6fuBHRWbccklSvCbdGD4=
+	t=1718349530; cv=none; b=DnH96pCmAYAxHxzhyQArK41VrywZrGHP+BazGpuBD0cpI1VOF+yi9re1gvNrC0zGbtG8jsI3gcz/bYA7oWya4WCXfabPhcz5jXLWfTR6/9+Qedms6wothiDJ+bHkHY//Rt6gFMjQlyPbzORHl7CA4rzQ6m+27ThJYvfaEhA1PZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718341507; c=relaxed/simple;
-	bh=IukhxcX3qDkzoO5Zy8Nrlq5s8wAmwy+/c7BkQCbdyC4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n4et2EM2DsElqwfHQ4Afi5F8d6H8xvFY+LabR7jyEln9wJ6sjW+wG6RiavDGk6pCiXjGvww4wK6t18sbMaHJsYFflq1k3Rz9pKxubSwDsnU1grsww2RrUaT2LA1rPQri5TiS2T6eHmDMcTHH89FCxMHL+/jyEFijpBB/86YpQaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=frsyOYeN; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42278f3aea4so17619375e9.1
-        for <kernel-janitors@vger.kernel.org>; Thu, 13 Jun 2024 22:05:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718341504; x=1718946304; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EWNNIgMpJqUN8OKFztHzayuDCT95LOD3ZJqMZeNQQ+c=;
-        b=frsyOYeNNhtC5G+KKj+t9vsEKuI8OGC4BgQ2i8q/RDNlss/jTB0geMP/Ys5pIqNQ9n
-         UzInjbAFKZvUv34qm9GzzhtP8Hz1+gvQ0BuvcIIbdllC61rXfPC7ll9f8W0YdliJGNgn
-         8LhdKVuWOxLPBmtHt+sMD/3QodxEm+uGZwytO+L6iXrG9Bl9995dz5w3bljh0qdAA7Ly
-         0fS0SY/h+mBWIOYzWA8aj4J0vn38BExFPn2lFmganm80tYH/1U/c5hTKOWAVXG0yUThM
-         6kAtYcdyKrlfHRpWLf0fOs4jkLpteubLMfBTntLE+3W+dAHGcIPYsDoQ5IBxoCVi1Cuu
-         RDqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718341504; x=1718946304;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EWNNIgMpJqUN8OKFztHzayuDCT95LOD3ZJqMZeNQQ+c=;
-        b=wzHba/jU/FcNar0tdjwU0BtbuiNUkylKxvN7Bbgoud3hbeJITggwCIapwToQqFCf+8
-         dPmAz8EAGnutzlDMZ09fsyhU0fWNM1BgAsvx6L1MjeykarQacVJY1RdGlgITxoIxrOxh
-         aIepM6BQUAG9WxM/rEvid3gpD0odbtLX/3QWdEa52Dl1M+vszcM0kbk3dtWsywiTi3jL
-         5bQU2U6SBt8raMMt/1vQyXFkguCmKF9goTOlMLlaPe9Jrq0G7hzEtSBhVWEj3Pi2HdUh
-         Qh1nv05AEAR8BPrt6Dln16OIA32bIs5k5ZtkUjDCsjFgfEQ6kzvxQYT4u1VAG2iSdAsn
-         UgdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVibQGQ7O84dopip0MXTbFbnwpJf/rw7EnXmg0qAe39ErD3NofRUvDmk/PzYEchPu+P8KMb0LVBZbQcK/dMcm+v2Vcf8HVkYrGAbiVDlOg/
-X-Gm-Message-State: AOJu0YwcYFrqrY5YPFdPgMOR81Zy4WaRDK04o9CpmRkhuhHkAqTxbgLi
-	XB4/eNwnUS7jCIN9SC4npsrdKxWPbdRWirTp5CD8FlLnyG8furJUb7lLzUtlr3WZQh1b7vHncKy
-	2
-X-Google-Smtp-Source: AGHT+IHAc0Yh7ji0lwnDCu2Lv4w/FZ4Yx74voqdotxBtp/d5ml1qvOCQlfNZBB82HLxJCmKCwVO2Zg==
-X-Received: by 2002:a05:600c:4ca9:b0:422:52c3:7fe0 with SMTP id 5b1f17b1804b1-4230482c1e9mr16109225e9.22.1718341504275;
-        Thu, 13 Jun 2024 22:05:04 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422874de5d5sm83206355e9.33.2024.06.13.22.05.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Jun 2024 22:05:03 -0700 (PDT)
-Date: Fri, 14 Jun 2024 08:05:00 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Ben Walsh <ben@jubnut.com>
-Cc: Benson Leung <bleung@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>,
-	Guenter Roeck <groeck@chromium.org>,
-	chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] platform/chrome: cros_ec_lpc: Handle zero length
- read/write
-Message-ID: <590a7d8c-6bfb-45f1-bc26-d99837cff2a2@moroto.mountain>
-References: <20240613212542.403-1-ben@jubnut.com>
+	s=arc-20240116; t=1718349530; c=relaxed/simple;
+	bh=6du1KfglJLoWLvTGWtPHrIfbGlhezcXOWIFkFAthN5w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D6iFw8799MnIu0/8aWqWWlyN38C19wyc8p4AyOfrwlyiQ8IzTk5OyXoB78p3PZ5jGh2/VOZPxEvZfG/d0Je1s9dwpzWofCW9MoHRHqclhdnYdgTlEXS1NUmtYVchY6Y54/6zhPmOqYaUUMSxRyxLRxK6esRKGS2NjbOw7vLqd/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=g/xzsFh2; arc=none smtp.client-ip=193.252.22.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([86.243.222.230])
+	by smtp.orange.fr with ESMTPA
+	id HrXUsAUflNbytHrXUsgDhP; Thu, 13 Jun 2024 22:59:24 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1718312364;
+	bh=vkHkCaWtDIfpH8ijSazjk6Jfhs+hqJsnwjns3+SaeCg=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=g/xzsFh2MkamRdsQKDv53s+bAw6tPvjMHfmSFNRtrNOApkoOHKjv8Wc8/TdKeyfHC
+	 ipqv5H/DVpYWUGNABFHxxry+9ml49vL45+z9DUtryf5awGJe4IKtn91XOCKo/UcemF
+	 LWS2tvL39XMnecXlmQK76b+veHt/RUwr0gTF5p+XivJpqZkj0eHJgUnQ/9fSDXHckf
+	 uThafhO/uCu9jHd4W8CVwelQm+aXU/6hIARUdCqqg7nfteQd2ljfqKlUEW0D1JELkH
+	 X9SbpLIpyg4rCTrU/jJSvugjpRUz1PYc7WmD47W0TZjy0vTSrA+Bk0IZ7D6tVYxwxl
+	 kzn6hRUxIzbzg==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 13 Jun 2024 22:59:24 +0200
+X-ME-IP: 86.243.222.230
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	sound-open-firmware@alsa-project.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH] ASoC: SOF: mediatek: Constify struct mtk_adsp_ipc_ops
+Date: Thu, 13 Jun 2024 22:59:09 +0200
+Message-ID: <a45d6b2b5ec040ea0fc78fca662c2dca3f13a49f.1718312321.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240613212542.403-1-ben@jubnut.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 13, 2024 at 10:25:42PM +0100, Ben Walsh wrote:
-> cros_ec_lpc_mec_read_bytes and cros_ec_lpc_mec_write_bytes call
-> cros_ec_lpc_mec_in_range, which checks if addresses are in the MEC
-> address range, and returns -EINVAL if the range given is not sensible.
-> 
-> However cros_ec_lpc_mec_in_range was also returning -EINVAL for a zero
-> length range.
-> 
-> A zero length range should not be an error condition.
-> cros_ec_lpc_mec_in_range now returns 1 in this case.
-> cros_ec_lpc_io_bytes_mec checks for zero length, and returns
-> immediately without beginning a transfer.
-> 
-> Signed-off-by: Ben Walsh <ben@jubnut.com>
+'struct mtk_adsp_ipc_ops' is not modified in these drivers.
 
-Ideally this would have a Fixes tag that points to my commit.
+Constifying this structure moves some data to a read-only section, so
+increase overall security.
 
-regards,
-dan carpenter
+In order to do it, "struct mtk_adsp_ipc" also needs to be adjusted to this
+new const qualifier.
+
+On a x86_64, with allmodconfig:
+Before:
+======
+   text	   data	    bss	    dec	    hex	filename
+  15533	   2383	      0	  17916	   45fc	sound/soc/sof/mediatek/mt8195/mt8195.o
+
+After:
+=====
+   text	   data	    bss	    dec	    hex	filename
+  15557	   2367	      0	  17924	   4604	sound/soc/sof/mediatek/mt8195/mt8195.o
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ include/linux/firmware/mediatek/mtk-adsp-ipc.h | 2 +-
+ sound/soc/sof/mediatek/mt8186/mt8186.c         | 2 +-
+ sound/soc/sof/mediatek/mt8195/mt8195.c         | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/firmware/mediatek/mtk-adsp-ipc.h b/include/linux/firmware/mediatek/mtk-adsp-ipc.h
+index 5b1d16fa3f56..6e86799a7dc4 100644
+--- a/include/linux/firmware/mediatek/mtk-adsp-ipc.h
++++ b/include/linux/firmware/mediatek/mtk-adsp-ipc.h
+@@ -40,7 +40,7 @@ struct mtk_adsp_chan {
+ struct mtk_adsp_ipc {
+ 	struct mtk_adsp_chan chans[MTK_ADSP_MBOX_NUM];
+ 	struct device *dev;
+-	struct mtk_adsp_ipc_ops *ops;
++	const struct mtk_adsp_ipc_ops *ops;
+ 	void *private_data;
+ };
+ 
+diff --git a/sound/soc/sof/mediatek/mt8186/mt8186.c b/sound/soc/sof/mediatek/mt8186/mt8186.c
+index bea1b9d9ca28..74522400207e 100644
+--- a/sound/soc/sof/mediatek/mt8186/mt8186.c
++++ b/sound/soc/sof/mediatek/mt8186/mt8186.c
+@@ -82,7 +82,7 @@ static void mt8186_dsp_handle_request(struct mtk_adsp_ipc *ipc)
+ 	}
+ }
+ 
+-static struct mtk_adsp_ipc_ops dsp_ops = {
++static const struct mtk_adsp_ipc_ops dsp_ops = {
+ 	.handle_reply		= mt8186_dsp_handle_reply,
+ 	.handle_request		= mt8186_dsp_handle_request,
+ };
+diff --git a/sound/soc/sof/mediatek/mt8195/mt8195.c b/sound/soc/sof/mediatek/mt8195/mt8195.c
+index 31dc98d1b1d8..24ae1d4959be 100644
+--- a/sound/soc/sof/mediatek/mt8195/mt8195.c
++++ b/sound/soc/sof/mediatek/mt8195/mt8195.c
+@@ -82,7 +82,7 @@ static void mt8195_dsp_handle_request(struct mtk_adsp_ipc *ipc)
+ 	}
+ }
+ 
+-static struct mtk_adsp_ipc_ops dsp_ops = {
++static const struct mtk_adsp_ipc_ops dsp_ops = {
+ 	.handle_reply		= mt8195_dsp_handle_reply,
+ 	.handle_request		= mt8195_dsp_handle_request,
+ };
+-- 
+2.45.2
 
 

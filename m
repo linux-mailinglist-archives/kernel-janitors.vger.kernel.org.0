@@ -1,48 +1,50 @@
-Return-Path: <kernel-janitors+bounces-4246-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-4247-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFED912575
-	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Jun 2024 14:35:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C227E912578
+	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Jun 2024 14:35:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17E3B281885
-	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Jun 2024 12:35:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C0261F21E50
+	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Jun 2024 12:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5403A1534FB;
-	Fri, 21 Jun 2024 12:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59ED3152E05;
+	Fri, 21 Jun 2024 12:34:36 +0000 (UTC)
 X-Original-To: kernel-janitors@vger.kernel.org
 Received: from norbury.hmeau.com (helcar.hmeau.com [216.24.177.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB2B1534E8;
-	Fri, 21 Jun 2024 12:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EFC1527BB;
+	Fri, 21 Jun 2024 12:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.24.177.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718973259; cv=none; b=iyt9waVXvqX/K/rItUbIwnUIQAm9FneNTk1nhK/B+udmTmEsj4OiIjU9qIvJvFA0BSVvUO4cM0kk99G2HGFsg4L003IjZVQrGxzX340pRbGujLPfNYuflCHBkiJezVAMxnlcfeQ7NnS8/WdFMtMqhrKmByMzSx/G1bBDy1zfJ80=
+	t=1718973275; cv=none; b=PwPglADWF8KH4mnWJZgAxL9Oz9RPvXeayJFl/9An0LwjEX2AGEEzWQ5wvNVxtuDG8mgNlzUGEKauaM3GBjP8u1OUy2D/knegZjMnGsxM0XyLFqg6nK9wBlAsVTdj1/fJ5z9Nd1Z3OnRxjb1sqkRfvSBsOnbcnroZril6Y3HCdKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718973259; c=relaxed/simple;
-	bh=HoQjIAwoupAiFgsGAC1OXVXb3HoopVh+bPPNvH9Vtbg=;
+	s=arc-20240116; t=1718973275; c=relaxed/simple;
+	bh=vUVvNctaPVLLYkhaC2RkdX9sgZkPkbhRqFGtCGGVTL4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NRXzM1iRCj7R1egyR2IqLJ8V+2zeST7qWZ+0EEEl5rK198+1ibvM9gJV9xXlrY3J0nF5pPB9bG5oMOt6kDTrYzY/PJqreYIE1rq73wLLuu9RVfZX4mkUBrg8O5bckgcI5UCZird5n4uFu+OONzkjPEImaVPK60pU9w4oFbcNKrg=
+	 Content-Type:Content-Disposition:In-Reply-To; b=pbrKaCWEV+PD0nzU/VrYNlKjJgDeEv6+7IJRCFeQlU2a6W5gyhtzdz1LUazRBxx0c1ke1ogmyaBLeNolr5hwOIGsVR0bPLTCTX2ZlpQ1FrEVHsJio02O4iAydtaWn4IxwA+HYvb4wjuFPM9CiTkzwp34mfuecYRd5ZHtiiQHZ2o=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=216.24.177.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 Received: from gwarestrin.arnor.me.apana.org.au ([192.168.103.7])
 	by norbury.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1sKdSk-002enf-05;
-	Fri, 21 Jun 2024 22:33:55 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 21 Jun 2024 22:33:54 +1000
-Date: Fri, 21 Jun 2024 22:33:54 +1000
+	id 1sKdSu-002enm-2W;
+	Fri, 21 Jun 2024 22:34:05 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 21 Jun 2024 22:34:05 +1000
+Date: Fri, 21 Jun 2024 22:34:05 +1000
 From: Herbert Xu <herbert@gondor.apana.org.au>
 To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Olivia Mackall <olivia@selenic.com>, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] hwrng: add missing Arm & Cavium MODULE_DESCRIPTION()
- macros
-Message-ID: <ZnVzMn0i2iNBR2Fc@gondor.apana.org.au>
-References: <20240613-md-arm64-drivers-char-hw_random-v1-1-8bc3cc208333@quicinc.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Russell King <linux@armlinux.org.uk>, linux-crypto@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] crypto: arm/poly1305 - add missing MODULE_DESCRIPTION()
+ macro
+Message-ID: <ZnVzPV295Zcs0Npk@gondor.apana.org.au>
+References: <20240613-md-arm-arch-arm-crypto-v1-1-0ff745c4220a@quicinc.com>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -51,22 +53,18 @@ List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240613-md-arm64-drivers-char-hw_random-v1-1-8bc3cc208333@quicinc.com>
+In-Reply-To: <20240613-md-arm-arch-arm-crypto-v1-1-0ff745c4220a@quicinc.com>
 
-On Thu, Jun 13, 2024 at 01:47:49PM -0700, Jeff Johnson wrote:
-> With ARCH=arm64, make allmodconfig && make W=1 C=1 reports:
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/hw_random/cavium-rng.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/hw_random/cavium-rng-vf.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/hw_random/arm_smccc_trng.o
+On Thu, Jun 13, 2024 at 05:57:05PM -0700, Jeff Johnson wrote:
+> With ARCH=arm, make allmodconfig && make W=1 C=1 reports:
+> WARNING: modpost: missing MODULE_DESCRIPTION() in arch/arm/crypto/poly1305-arm.o
 > 
-> Add the missing invocations of the MODULE_DESCRIPTION() macro.
+> Add the missing invocation of the MODULE_DESCRIPTION() macro.
 > 
 > Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 > ---
->  drivers/char/hw_random/arm_smccc_trng.c | 1 +
->  drivers/char/hw_random/cavium-rng-vf.c  | 1 +
->  drivers/char/hw_random/cavium-rng.c     | 1 +
->  3 files changed, 3 insertions(+)
+>  arch/arm/crypto/poly1305-glue.c | 1 +
+>  1 file changed, 1 insertion(+)
 
 Patch applied.  Thanks.
 -- 

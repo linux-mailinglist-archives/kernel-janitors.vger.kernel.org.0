@@ -1,64 +1,68 @@
-Return-Path: <kernel-janitors+bounces-4280-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-4282-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A971913D87
-	for <lists+kernel-janitors@lfdr.de>; Sun, 23 Jun 2024 20:09:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D909B913EB5
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2024 00:00:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 039C0281842
-	for <lists+kernel-janitors@lfdr.de>; Sun, 23 Jun 2024 18:09:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1238E1C20D50
+	for <lists+kernel-janitors@lfdr.de>; Sun, 23 Jun 2024 22:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915DD18410A;
-	Sun, 23 Jun 2024 18:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B68D1850BB;
+	Sun, 23 Jun 2024 21:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="LOzMV2Ib"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="UBh1C89c"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from msa.smtpout.orange.fr (smtp-77.smtpout.orange.fr [80.12.242.77])
+Received: from msa.smtpout.orange.fr (msa-215.smtpout.orange.fr [193.252.23.215])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7B52AD22;
-	Sun, 23 Jun 2024 18:09:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B22184106;
+	Sun, 23 Jun 2024 21:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.23.215
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719166163; cv=none; b=mdQgJt21YgiZfXTnqZO+7uRFRjClNld30A9Fuh8gnDSOrilOnd5Kbdifc4GvLnRD6kNn+JxyBqpYbq+LsJjS6a/ljkj+9+t9+CKfrgM8dgLY1W5+F/FK8PGfdorGgjom1Opios1SJUDrAiY4aUmqtU8CY9ZOhoEOLzoPrgaH6wE=
+	t=1719179993; cv=none; b=iJAEjY1n6zYjgEd9KzN02kNyT9F3boIMWWOgzesBpoD/RAU1USskyceYBZYtkSxPi0aXeIOLNdA76h/NmTBcS5pU0oRCIl4a6Qxo2UOxBC59lHVS1ODcAjiqTZxi985fZMVl3SGY21eI4w/rl7simD52xyYR+vMCEet3BHVbAmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719166163; c=relaxed/simple;
-	bh=J3vMmXnzQe6rhIKhDI1/B7ym+GQlPi5XIJq1ayivNTM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F6T3cexrO39jfnQG1bPrIbz4/kYVOwqhU123427Rh0Em9mF9v1nBDJh+th/8/QPvNhetTV7itTwRki6ldDJ9u9NOXfPu86CvDHepzzIgMT+hArSnsKEuY+jo0WkKXB97TT0g9UYFbakshY/rp9cgvU/V3pFmOVaS1j3jZPaLEMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=LOzMV2Ib; arc=none smtp.client-ip=80.12.242.77
+	s=arc-20240116; t=1719179993; c=relaxed/simple;
+	bh=v5DO2TAftI73ww3uvdwE1NNig1frErR46ykjHVHR9AA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kNHnBpH3STogmmA9TW+MJFn+oBuwKCVfjjBSdqOemNscGb4fScI62DNAfbC+r2IWKVidltkxyc1Q4rc3796Kc5r6rqBvnRboAJ/Ix4fwRkbzmrpotHyMGx6+ypPe3RJWXNwMndotPnVJwNlWA9AtDl1wbWmLplpGaLdjnMobmLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=UBh1C89c; arc=none smtp.client-ip=193.252.23.215
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Received: from fedora.home ([86.243.222.230])
 	by smtp.orange.fr with ESMTPA
-	id LRdBslRkGqHypLRdCsRNHd; Sun, 23 Jun 2024 20:08:02 +0200
+	id LTPSshmixRlahLTPSsC1Ba; Sun, 23 Jun 2024 22:02:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1719166082;
-	bh=zcGRcZWW7cYNaHFvJZxbefnI7dyccoMtktK8GbPAaWk=;
+	s=t20230301; t=1719172922;
+	bh=ynHaVTacZiZSj/BhHnX4o1QTUyOa26DsYCafYGhsZE4=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=LOzMV2Ib3hYVdxzXTxRS/vIMWOcazC6+fi/DkneBn489NlGZycGOzJqEyKLhkU5xb
-	 i8goEQEaHn0Cu7eSsaag/QdckMG25TsdAo5iUkQX0ghm1GiGYqaidXoUDeEH2VhLMG
-	 b86ou9M9RHWerz2CUr8QVUkhDKS/V7oteqUklsPqPaO0BrvvJ/qCvnyrNv3kqTYhf+
-	 j6tdSDAEN6n94c4ZGUYeyatz9Hf1ShXgDaHA3u9Nz11hzTd9ctfJnSrm3Dd9gNHJlM
-	 vcY42aEGZMUZxNZZoRBPsESbZuWS+5U+71nem5bQrG0+gRqHdzJUrSHdMUPiAt3eWs
-	 9ztcuhYyLnQeA==
+	b=UBh1C89cSr13phxYPzXWS+0Ot+tiBxc+1D//5F9pDWUKU2erMXrOPuko/W6Qql2p3
+	 NOEoiOx5NdJ+mbGA6/42sOApPf+zKqcDN0K7NQ39kxvDPl7K7l4PGvijUqZbOfVyFC
+	 KKaRz9AeelJuqJsy6aNMo8hhly+Cr9lUDv0sOKO8HZ/DO1ekbTEs5zFKU9AB8FgxrB
+	 QGZ1Pj6p42rme96nG/H/b5LnRBwpfK7dZBGonlmU4/uICqSQMtMXME71fuI4ZUlaCM
+	 LqKcZm1AWPxFcqsIEX7iAYoyXqwzCnz/s6iQ6DofijotncrfiMrOqhhCTy6J76jQs2
+	 4U1wjig3mvGfg==
 X-ME-Helo: fedora.home
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 23 Jun 2024 20:08:02 +0200
+X-ME-Date: Sun, 23 Jun 2024 22:02:02 +0200
 X-ME-IP: 86.243.222.230
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <sfrench@samba.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tom Talpey <tom@talpey.com>
+To: Chandrasekar Ramakrishnan <rcsekar@samsung.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
 Cc: linux-kernel@vger.kernel.org,
 	kernel-janitors@vger.kernel.org,
 	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	linux-cifs@vger.kernel.org
-Subject: [PATCH] ksmbd: Constify struct ksmbd_transport_ops
-Date: Sun, 23 Jun 2024 20:07:58 +0200
-Message-ID: <c06ecbfde4cc106603285ed96febf3b887425286.1719160522.git.christophe.jaillet@wanadoo.fr>
+	linux-can@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next] can: m_can: Constify struct m_can_ops
+Date: Sun, 23 Jun 2024 22:01:50 +0200
+Message-ID: <a17b96d1be5341c11f263e1e45c9de1cb754e416.1719172843.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -68,7 +72,7 @@ List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-'struct ksmbd_transport_ops' is not modified in these drivers.
+'struct m_can_ops' is not modified in these drivers.
 
 Constifying this structure moves some data to a read-only section, so
 increase overall security.
@@ -77,81 +81,75 @@ On a x86_64, with allmodconfig, as an example:
 Before:
 ======
    text	   data	    bss	    dec	    hex	filename
-  52184	   2085	    256	  54525	   d4fd	fs/smb/server/transport_rdma.o
+   4806	    520	      0	   5326	   14ce	drivers/net/can/m_can/m_can_pci.o
 
 After:
 =====
    text	   data	    bss	    dec	    hex	filename
-  52260	   2021	    256	  54537	   d509	fs/smb/server/transport_rdma.o
+   4862	    464	      0	   5326	   14ce	drivers/net/can/m_can/m_can_pci.o
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
 Compile tested-only
 ---
- fs/smb/server/connection.h     | 4 ++--
- fs/smb/server/transport_rdma.c | 4 ++--
- fs/smb/server/transport_tcp.c  | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/can/m_can/m_can.h          | 2 +-
+ drivers/net/can/m_can/m_can_pci.c      | 2 +-
+ drivers/net/can/m_can/m_can_platform.c | 2 +-
+ drivers/net/can/m_can/tcan4x5x-core.c  | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/server/connection.h b/fs/smb/server/connection.h
-index 0e04cf8b1d89..5c2845e47cf2 100644
---- a/fs/smb/server/connection.h
-+++ b/fs/smb/server/connection.h
-@@ -133,8 +133,8 @@ struct ksmbd_transport_ops {
- };
+diff --git a/drivers/net/can/m_can/m_can.h b/drivers/net/can/m_can/m_can.h
+index 3a9edc292593..92b2bd8628e6 100644
+--- a/drivers/net/can/m_can/m_can.h
++++ b/drivers/net/can/m_can/m_can.h
+@@ -91,7 +91,7 @@ struct m_can_classdev {
  
- struct ksmbd_transport {
--	struct ksmbd_conn		*conn;
--	struct ksmbd_transport_ops	*ops;
-+	struct ksmbd_conn			*conn;
-+	const struct ksmbd_transport_ops	*ops;
- };
+ 	ktime_t irq_timer_wait;
  
- #define KSMBD_TCP_RECV_TIMEOUT	(7 * HZ)
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 8faa25c6e129..cf4418f72772 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -164,7 +164,7 @@ enum {
- 	SMB_DIRECT_MSG_DATA_TRANSFER
- };
+-	struct m_can_ops *ops;
++	const struct m_can_ops *ops;
  
--static struct ksmbd_transport_ops ksmbd_smb_direct_transport_ops;
-+static const struct ksmbd_transport_ops ksmbd_smb_direct_transport_ops;
- 
- struct smb_direct_send_ctx {
- 	struct list_head	msg_list;
-@@ -2292,7 +2292,7 @@ bool ksmbd_rdma_capable_netdev(struct net_device *netdev)
- 	return rdma_capable;
- }
- 
--static struct ksmbd_transport_ops ksmbd_smb_direct_transport_ops = {
-+static const struct ksmbd_transport_ops ksmbd_smb_direct_transport_ops = {
- 	.prepare	= smb_direct_prepare,
- 	.disconnect	= smb_direct_disconnect,
- 	.shutdown	= smb_direct_shutdown,
-diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
-index 6633fa78e9b9..a84788396daa 100644
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -37,7 +37,7 @@ struct tcp_transport {
- 	unsigned int			nr_iov;
- };
- 
--static struct ksmbd_transport_ops ksmbd_tcp_transport_ops;
-+static const struct ksmbd_transport_ops ksmbd_tcp_transport_ops;
- 
- static void tcp_stop_kthread(struct task_struct *kthread);
- static struct interface *alloc_iface(char *ifname);
-@@ -649,7 +649,7 @@ int ksmbd_tcp_set_interfaces(char *ifc_list, int ifc_list_sz)
+ 	int version;
+ 	u32 irqstatus;
+diff --git a/drivers/net/can/m_can/m_can_pci.c b/drivers/net/can/m_can/m_can_pci.c
+index 45400de4163d..d72fe771dfc7 100644
+--- a/drivers/net/can/m_can/m_can_pci.c
++++ b/drivers/net/can/m_can/m_can_pci.c
+@@ -77,7 +77,7 @@ static int iomap_write_fifo(struct m_can_classdev *cdev, int offset,
  	return 0;
  }
  
--static struct ksmbd_transport_ops ksmbd_tcp_transport_ops = {
-+static const struct ksmbd_transport_ops ksmbd_tcp_transport_ops = {
- 	.read		= ksmbd_tcp_read,
- 	.writev		= ksmbd_tcp_writev,
- 	.disconnect	= ksmbd_tcp_disconnect,
+-static struct m_can_ops m_can_pci_ops = {
++static const struct m_can_ops m_can_pci_ops = {
+ 	.read_reg = iomap_read_reg,
+ 	.write_reg = iomap_write_reg,
+ 	.write_fifo = iomap_write_fifo,
+diff --git a/drivers/net/can/m_can/m_can_platform.c b/drivers/net/can/m_can/m_can_platform.c
+index df0367124b4c..983ab80260dd 100644
+--- a/drivers/net/can/m_can/m_can_platform.c
++++ b/drivers/net/can/m_can/m_can_platform.c
+@@ -68,7 +68,7 @@ static int iomap_write_fifo(struct m_can_classdev *cdev, int offset,
+ 	return 0;
+ }
+ 
+-static struct m_can_ops m_can_plat_ops = {
++static const struct m_can_ops m_can_plat_ops = {
+ 	.read_reg = iomap_read_reg,
+ 	.write_reg = iomap_write_reg,
+ 	.write_fifo = iomap_write_fifo,
+diff --git a/drivers/net/can/m_can/tcan4x5x-core.c b/drivers/net/can/m_can/tcan4x5x-core.c
+index a42600dac70d..f15619d31065 100644
+--- a/drivers/net/can/m_can/tcan4x5x-core.c
++++ b/drivers/net/can/m_can/tcan4x5x-core.c
+@@ -357,7 +357,7 @@ static int tcan4x5x_get_gpios(struct m_can_classdev *cdev,
+ 	return 0;
+ }
+ 
+-static struct m_can_ops tcan4x5x_ops = {
++static const struct m_can_ops tcan4x5x_ops = {
+ 	.init = tcan4x5x_init,
+ 	.read_reg = tcan4x5x_read_reg,
+ 	.write_reg = tcan4x5x_write_reg,
 -- 
 2.45.2
 

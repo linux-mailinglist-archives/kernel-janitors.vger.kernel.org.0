@@ -1,62 +1,62 @@
-Return-Path: <kernel-janitors+bounces-4325-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-4321-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA17916EE8
-	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Jun 2024 19:12:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26FE5916E4B
+	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Jun 2024 18:43:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5DFBB214A5
-	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Jun 2024 17:12:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B9901F22D5F
+	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Jun 2024 16:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C3D176FA2;
-	Tue, 25 Jun 2024 17:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B87175567;
+	Tue, 25 Jun 2024 16:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="b0exYH2Q"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="R8hRoBoj"
 X-Original-To: kernel-janitors@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0F14204F;
-	Tue, 25 Jun 2024 17:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D9E174EC6;
+	Tue, 25 Jun 2024 16:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719335535; cv=none; b=KHtHY8jm2yYbAD3vQWDJ6oPK7Yvn5YWZ0SXXA7N06KY45DoRYBnPMA1BTw14FeSa9Av+gAh8Vo7BqUd1IuJtdnhGC0Ky/NcoNKAgGYiiiv7CjPLeV2jZCoCD66SVHWKObIJDJIizt6npTUfIaIIcppigD+6I8hHnydDxBvT9Jcg=
+	t=1719333801; cv=none; b=uglADRwp5UUfjuhPXl35SAKAc9EZ3aVQI4O/8QbNhtTApzBbLNEy1mHKqAeBPGh5lfStYJpwAmLJyi6v0cymi2MiPi+rfEIhFSwJ8UeFRdMdfB+YLLeD8HLAVe+zh4UfGNXK4rowxzRqUKUZQUpfPO/glm4Tven2HJfXJ+m6x5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719335535; c=relaxed/simple;
-	bh=L9blIzOiyOQMTpDtc0cM0yFaL51Q+QqOq8ROY7HPUZc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=Ik/VEb4KRpPYkLO7y9hNiOyS4L82CKM19riRjNIvop3vB/UYJlFJKHRnhX6kq9hLwZVR72Kool6pObEW8Gfs0ZXzg85nT68RfIIMpHASP/CZzRc4s6a1tGKXgYPzWTG1TgDoRJeoDZx5ly0X2Gw8c6uOMu1RE70I4LaEuNvF368=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=b0exYH2Q; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1719333801; c=relaxed/simple;
+	bh=2L/weZesvpaS33GujX2m1IrTRFya4TVbCAXm5cfqiXM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=ILmRZI7sZrg8yDImhpDVdBzDUoFNIHkdQ8aVXu8FHCsDVrH6RKVQ4rC5CLiQ1t1E924yku/KMYyRrldBqSxxu1SoylvhF+PcRJ70vKCmocUcJGA1+WlYDrnZ3sjD1MGoEKRZ0mPOp2Jv5J2Ou59gaU6AN6DnWj0WCW0seO70xcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=R8hRoBoj; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45P8NwEE010135;
-	Tue, 25 Jun 2024 16:35:44 GMT
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45P8ZnhS017339;
+	Tue, 25 Jun 2024 16:42:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=nDLEPQk26/RrYJbffeyNSm
-	MC9qenZ25ho29a+rIJqt4=; b=b0exYH2QlSnReTMx9flEcz1lpe4/Nb/mt/4/C7
-	zzEIn+Fc6rZdMw35az0Kb+0VEVaEEs9zDo4JPOjpNmJC6ombV/VsunKsCCTIUYL1
-	wJxq0OUyKFX3KpBYjkHB+D+n7mBq6JiCTb7MuyyUFsWCQzt9vMJd1KsZil63uS+h
-	cN4AdahkZQ5Vmr9E2zdhv1lI1STekJ5CNxPB6lZnJ/A36BYFSWK10gHMb/gdAqAl
-	6YYIshrrUhp7w83Xygu3RCKoIncudVecu70gPlYGmyQJlycCjqylBJ9WG4T+I5b/
-	a6b1MMN/1OS0YRW1d+sdymf3vjkEI7a8HUfS6sr3+kTVXgXQ==
+	:mime-version:subject:to; s=qcppdkim1; bh=fnTd3X2IcxnuPJrt8M3MaL
+	pgA/56i9asApZb/lKpIcg=; b=R8hRoBojD9z7h+MWYh4dC5FkLEI07p7yiwnPT9
+	lF1JM2NjlkDFxgBxgzKh64teLkCA9gmH24gKt5TwcbFYhaOnwlWUuW8f1jYpY+X7
+	O7ZGGvgzzFT35jBQy3KXnBX0jppG3xEAw4fVs6fzvugIO5NIYK/G+VVif5jiB6Q8
+	7Qok55XhHGOrxDr7AEYYbotyYNfxKVcg1LkMEstzNV8950YU+CzK8I7/fjISehex
+	ALRhaIzw3MAOoTRL75IXuq+6Fhy65UmTDowKi2EWcUDilY1fDDVjnWzJRZjOwMv5
+	lRQRSs8MzRkvQxW9qVc+PLtCUPhRzTxTMBm3f+kix6tO4emg==
 Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ywqcef719-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ywqw9eue7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jun 2024 16:35:43 +0000 (GMT)
+	Tue, 25 Jun 2024 16:42:52 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45PGZgAV031103
+	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45PGgolS009442
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jun 2024 16:35:42 GMT
+	Tue, 25 Jun 2024 16:42:50 GMT
 Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 25 Jun
- 2024 09:35:42 -0700
+ 2024 09:42:50 -0700
 From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Date: Tue, 25 Jun 2024 09:35:41 -0700
-Subject: [PATCH v2] s390/lcs: add missing MODULE_DESCRIPTION() macro
+Date: Tue, 25 Jun 2024 09:42:49 -0700
+Subject: [PATCH v2] fs: nfs: add missing MODULE_DESCRIPTION() macros
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -65,77 +65,137 @@ List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20240625-md-s390-drivers-s390-net-v2-1-5a8a2b2f2ae3@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIANzxemYC/42OTQ6CMBCFr2K6dkzLP668h2FR2kEmkaJTaDCEu
- 1vwAi6/5L3vvVV4ZEIvrqdVMAbyNLoIyfkkTK/dA4FsZJHIJJOFymGw4NNagmUKyP4HDicoK13
- LouqUlJmI9RdjR8uhvjeRW+0RWtbO9LvwSW5eYNB+Qt7jPflp5M9xJKi99MdmUKCgLirTlmnel
- dLe3jMZcuZixkE027Z9ASE1DjnhAAAA
-To: Alexandra Winter <wintera@linux.ibm.com>,
-        Thorsten Winkler
-	<twinkler@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
-	<gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        "Christian
- Borntraeger" <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>
-CC: <linux-s390@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        "Jeff
- Johnson" <quic_jjohnson@quicinc.com>
+Message-ID: <20240625-md-fs-nfs-v2-1-2316b64ffaa5@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAInzemYC/22NwQ6CMBBEf4X07Jq2Ugye/A/DoS2LbCJFu0Awp
+ P9u4exhDi+ZmbcJxkjI4lZsIuJCTGPIoE+F8L0NTwRqMwstdSmNvsLQQscQckrdqRpdJZ2RIvf
+ fETtaj69Hk9lZRnDRBt/vDy8K8wqD5QnjXu+JpzF+D/Oi9tE/yaJAQVVaZbB25mKr+2cmT8Gf/
+ TiIJqX0A4T9RzPDAAAA
+To: Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker
+	<anna@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Jeff Layton
+	<jlayton@kernel.org>, Neil Brown <neilb@suse.de>,
+        Olga Kornievskaia
+	<kolga@netapp.com>, Dai Ngo <Dai.Ngo@oracle.com>,
+        Tom Talpey
+	<tom@talpey.com>, Trond Myklebust <trondmy@kernel.org>
+CC: <linux-nfs@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
 X-Mailer: b4 0.14.0
 X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: _OpMxqKNziW39itj1NFnZOOpArTyIsFz
-X-Proofpoint-ORIG-GUID: _OpMxqKNziW39itj1NFnZOOpArTyIsFz
+X-Proofpoint-ORIG-GUID: 3ufymTWmd9CZcxEu6-Paw8LvycJvOxtq
+X-Proofpoint-GUID: 3ufymTWmd9CZcxEu6-Paw8LvycJvOxtq
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-25_11,2024-06-25_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- mlxscore=0 lowpriorityscore=0 bulkscore=0 phishscore=0 spamscore=0
- suspectscore=0 priorityscore=1501 malwarescore=0 mlxlogscore=946
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2406250122
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 clxscore=1011 impostorscore=0 mlxscore=0
+ lowpriorityscore=0 malwarescore=0 mlxlogscore=999 phishscore=0 bulkscore=0
+ adultscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2406140001 definitions=main-2406250122
 
-With ARCH=s390, make allmodconfig && make W=1 C=1 reports:
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/s390/net/lcs.o
-
-Add the missing invocation of the MODULE_DESCRIPTION() macro.
+Fix the 'make W=1' warnings:
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nfs_common/nfs_acl.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nfs_common/grace.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nfs/nfs.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nfs/nfsv2.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nfs/nfsv3.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nfs/nfsv4.o
 
 Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 ---
 Changes in v2:
-- Modified the description (both in the patch and in the file prolog) per
-  feedback from Alexandra
-- Link to v1: https://lore.kernel.org/r/20240615-md-s390-drivers-s390-net-v1-1-968cb735f70d@quicinc.com
+- Updated the description in grace.c per Jeff Layton
+- Link to v1: https://lore.kernel.org/r/20240527-md-fs-nfs-v1-1-64a15e9b53a6@quicinc.com
 ---
- drivers/s390/net/lcs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfs/inode.c         | 1 +
+ fs/nfs/nfs2super.c     | 1 +
+ fs/nfs/nfs3super.c     | 1 +
+ fs/nfs/nfs4super.c     | 1 +
+ fs/nfs_common/grace.c  | 1 +
+ fs/nfs_common/nfsacl.c | 1 +
+ 6 files changed, 6 insertions(+)
 
-diff --git a/drivers/s390/net/lcs.c b/drivers/s390/net/lcs.c
-index 25d4e6376591..88db8378325a 100644
---- a/drivers/s390/net/lcs.c
-+++ b/drivers/s390/net/lcs.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0+
- /*
-- *  Linux for S/390 Lan Channel Station Network Driver
-+ *  Linux for S/390 LAN channel station device driver
-  *
-  *  Copyright IBM Corp. 1999, 2009
-  *  Author(s): Original Code written by
-@@ -2380,5 +2380,6 @@ module_init(lcs_init_module);
- module_exit(lcs_cleanup_module);
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index acef52ecb1bb..57c473e9d00f 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -2538,6 +2538,7 @@ static void __exit exit_nfs_fs(void)
  
- MODULE_AUTHOR("Frank Pavlic <fpavlic@de.ibm.com>");
-+MODULE_DESCRIPTION("S/390 LAN channel station device driver");
+ /* Not quite true; I just maintain it */
+ MODULE_AUTHOR("Olaf Kirch <okir@monad.swb.de>");
++MODULE_DESCRIPTION("NFS client support");
+ MODULE_LICENSE("GPL");
+ module_param(enable_ino64, bool, 0644);
+ 
+diff --git a/fs/nfs/nfs2super.c b/fs/nfs/nfs2super.c
+index 467f21ee6a35..b1badc70bd71 100644
+--- a/fs/nfs/nfs2super.c
++++ b/fs/nfs/nfs2super.c
+@@ -26,6 +26,7 @@ static void __exit exit_nfs_v2(void)
+ 	unregister_nfs_version(&nfs_v2);
+ }
+ 
++MODULE_DESCRIPTION("NFSv2 client support");
  MODULE_LICENSE("GPL");
  
+ module_init(init_nfs_v2);
+diff --git a/fs/nfs/nfs3super.c b/fs/nfs/nfs3super.c
+index 8a9be9e47f76..20a80478449e 100644
+--- a/fs/nfs/nfs3super.c
++++ b/fs/nfs/nfs3super.c
+@@ -27,6 +27,7 @@ static void __exit exit_nfs_v3(void)
+ 	unregister_nfs_version(&nfs_v3);
+ }
+ 
++MODULE_DESCRIPTION("NFSv3 client support");
+ MODULE_LICENSE("GPL");
+ 
+ module_init(init_nfs_v3);
+diff --git a/fs/nfs/nfs4super.c b/fs/nfs/nfs4super.c
+index 8da5a9c000f4..b29a26923ce0 100644
+--- a/fs/nfs/nfs4super.c
++++ b/fs/nfs/nfs4super.c
+@@ -332,6 +332,7 @@ static void __exit exit_nfs_v4(void)
+ 	nfs_dns_resolver_destroy();
+ }
+ 
++MODULE_DESCRIPTION("NFSv4 client support");
+ MODULE_LICENSE("GPL");
+ 
+ module_init(init_nfs_v4);
+diff --git a/fs/nfs_common/grace.c b/fs/nfs_common/grace.c
+index 1479583fbb62..27cd0d13143b 100644
+--- a/fs/nfs_common/grace.c
++++ b/fs/nfs_common/grace.c
+@@ -139,6 +139,7 @@ exit_grace(void)
+ }
+ 
+ MODULE_AUTHOR("Jeff Layton <jlayton@primarydata.com>");
++MODULE_DESCRIPTION("NFS client and server infrastructure");
+ MODULE_LICENSE("GPL");
+ module_init(init_grace)
+ module_exit(exit_grace)
+diff --git a/fs/nfs_common/nfsacl.c b/fs/nfs_common/nfsacl.c
+index 5a5bd85d08f8..ea382b75b26c 100644
+--- a/fs/nfs_common/nfsacl.c
++++ b/fs/nfs_common/nfsacl.c
+@@ -29,6 +29,7 @@
+ #include <linux/nfs3.h>
+ #include <linux/sort.h>
+ 
++MODULE_DESCRIPTION("NFS ACL support");
+ MODULE_LICENSE("GPL");
+ 
+ struct nfsacl_encode_desc {
 
 ---
-base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
-change-id: 20240615-md-s390-drivers-s390-net-78a9068f1004
+base-commit: 50736169ecc8387247fe6a00932852ce7b057083
+change-id: 20240527-md-fs-nfs-42f19eb60b50
 
 

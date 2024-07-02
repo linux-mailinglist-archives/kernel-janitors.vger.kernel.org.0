@@ -1,98 +1,106 @@
-Return-Path: <kernel-janitors+bounces-4439-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-4445-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE89923DC1
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2024 14:28:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6627B923E22
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2024 14:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4DCBB25FDB
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2024 12:28:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9889F1C21A9F
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2024 12:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B815517A91B;
-	Tue,  2 Jul 2024 12:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7A416EC15;
+	Tue,  2 Jul 2024 12:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="coy6VasB"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail.nfschina.com (unknown [42.101.60.195])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 238ED174EDF;
-	Tue,  2 Jul 2024 12:25:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.195
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF00715689B;
+	Tue,  2 Jul 2024 12:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719923144; cv=none; b=X725tF2PREo7RM6jHkkz6LC65GuxQYukscoVo6p+tHEEZBVEJexF8h+5vqNgp1FZQoyqFBIMlD20uY+ZUZmA1rwpGyWh7imFYsRCFpjAYxnXf9vbg3zrHGgXUC+jquOmy9fMavsvl1Np5tibLwO6O1bpKnjGK0SUQ/oHvVL6m/4=
+	t=1719924638; cv=none; b=oLhEorqS4MMwb0M2uesEGF8b112uxhsGmfYalwxk/FHPBrAj6pHACdnWOrPZ/IDs1t5xV3JOcUXEplGwfke57DEoLvyziKGTmDCivb+keIWccr9Iop9CBry2P9ZJec5CeAQcLmIOtfhY2MQS3vlOXVtSNJVEXF2/cpkSI+F+5Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719923144; c=relaxed/simple;
-	bh=QEHj1YJApM67xSQPt8/HlxK6R7veWsWbHV9VxRLTYK4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version; b=KwMi8R2JBJ/Ja/8WQhB6na5idmhm2W942P8GAGRjDuH21l4vjvPUmbuNKsB3WuLaIIC4leKxYf40DT3G1/ib9NfvaKtwOw0lYCi+26v0WnJ/u2rBX0GplaJPaPFOq88qR20fN+2km63R+Bwg5oMpT+ULuVdGwfWiI7fXA8Mo0yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
-Received: from localhost.localdomain (unknown [180.167.10.98])
-	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id 288AA6031A64D;
-	Tue,  2 Jul 2024 20:25:32 +0800 (CST)
-X-MD-Sfrom: suhui@nfschina.com
-X-MD-SrcIP: 180.167.10.98
-From: Su Hui <suhui@nfschina.com>
-To: arend.vanspriel@broadcom.com,
-	kvalo@kernel.org
-Cc: Su Hui <suhui@nfschina.com>,
-	johannes.berg@intel.com,
-	kees@kernel.org,
-	a@bayrepo.ru,
-	duoming@zju.edu.cn,
-	marcan@marcan.st,
-	petr.tesarik.ext@huawei.com,
-	colin.i.king@gmail.com,
-	linville@tuxdriver.com,
-	linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH wireless 9/9] wifi: cfg80211: avoid garbage value of 'wsec' in brcmf_cfg80211_{get,config_default}_key()
-Date: Tue,  2 Jul 2024 20:24:52 +0800
-Message-Id: <20240702122450.2213833-10-suhui@nfschina.com>
-X-Mailer: git-send-email 2.30.2
+	s=arc-20240116; t=1719924638; c=relaxed/simple;
+	bh=wZ4ce2/JHQtbnvdZNkk2cs0IMP+Jit6BbiJX6+NDK44=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hr0NsKHugdykzlxpk3LaQJ7lpndYXmWAbtpX8YuWxTGQ2AytWW2/DyfgagoQGN9GM7Cqw8t7Eye2J9tynbTdCzMnaJrpFIzrxvOJzbOS8eFZ3QJuQ+35g9XC4XGRMv1T/bDzBppm3WzYhO9r0T+c1Tramp4OjS5XsdgljzwhG3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=coy6VasB; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=hjgeQkxHClGKMnLDtElE5OXrX6B0Ogb3jMe/A0TWZuI=;
+	t=1719924628; x=1721134228; b=coy6VasBNpsYbku5gYtDtcIbx1Xwar2MdsVvMfINWQDXHWv
+	8gHtyfchLulGD2y+280qIlIhzJlHS/81thKqBympGursYWuFKx0N2P8vU9cqi4uYXCv2YeR2U8qsv
+	d6CZFC9PmqqnmuJ7fMSPnDjHnfBwd7pePDC1OD0srB+yJPR+lDssbUJAhkfsx6S/mZYkvCgJeMM5K
+	nRVgSXG4B7YBym0mgy6iDKwjGY7AsjiiAgIBh2tykni7Z6DtxXwIbmwKGoiU/WOP1tDRW5JD8ZIru
+	GFIm716v2LSFd3hcW+IVKrOF2DdzJpbSojyFuVseWrXf1FanTwJERg9LIHrdmZ4Q==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1sOcwr-00000005UvX-3u1H;
+	Tue, 02 Jul 2024 14:49:30 +0200
+Message-ID: <2db23d6f3bd62c955c76d30aa2dfc3f03c8c5748.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless 0/9] wifi: cfg80211: avoid some garbage values
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Su Hui <suhui@nfschina.com>, arend.vanspriel@broadcom.com,
+ kvalo@kernel.org
+Cc: kees@kernel.org, a@bayrepo.ru, quic_alokad@quicinc.com,
+ zyytlz.wz@163.com,  marcan@marcan.st, petr.tesarik.ext@huawei.com,
+ duoming@zju.edu.cn,  colin.i.king@gmail.com,
+ u.kleine-koenig@pengutronix.de,  quic_jjohnson@quicinc.com,
+ linville@tuxdriver.com, pieterpg@broadcom.com,  meuleman@broadcom.com,
+ frankyl@broadcom.com, stanley.hsu@cypress.com,  wright.feng@cypress.com,
+ ian.lin@infineon.com, chi-hsien.lin@cypress.com,  zajec5@gmail.com,
+ antonio@open-mesh.com, franky.lin@broadcom.com, 
+ linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, 
+ brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org, 
+ kernel-janitors@vger.kernel.org
+Date: Tue, 02 Jul 2024 14:49:25 +0200
 In-Reply-To: <20240702122450.2213833-1-suhui@nfschina.com>
+References: <20240702122450.2213833-1-suhui@nfschina.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-brcmf_fil_bsscfg_int_get() reads the value of 'wsec'.
-Initialize 'wsec' to avoid garbage value.
+On Tue, 2024-07-02 at 20:24 +0800, Su Hui wrote:
+>=20
+> Su Hui (9):
+>   wifi: cfg80211: avoid garbage value of 'io_type' in=20
+>     brcmf_cfg80211_attach()
+>   wifi: brcmfmac: avoid garbage value of 'status' in
+>     brcmf_c_download_blob()
+>   wifi: cfg80211: avoid garbage value of 'noise' in
+>     brcmf_cfg80211_dump_survey()
+>   wifi: cfg80211: avoid garbage value of 'chanspec' in
+>     brcmf_cfg80211_get_channel()
+>   wifi: cfg80211: avoid garbage value of 'freq' in
+>     brcmf_cfg80211_mgmt_tx()
+>   wifi: cfg80211: avoid garbage value of 'wsec' in
+>     brcmf_cfg80211_reconfigure_wep()
+>   wifi: cfg80211: avoid garbage value of 'wsec' in
+>     brcmf_cfg80211_add_key()
+>   wifi: cfg80211: avoid garbage value of 'val' in brcmf_set_key_mgmt()
+>   wifi: cfg80211: avoid garbage value of 'wsec' in
+>     brcmf_cfg80211_{get,config_default}_key()
+>=20
 
-Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
-Signed-off-by: Su Hui <suhui@nfschina.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Uh where did all those line breaks come from?
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 95193e09504f..eb8d7455d0ea 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -2707,7 +2707,7 @@ brcmf_cfg80211_config_default_key(struct wiphy *wiphy, struct net_device *ndev,
- 	struct brcmf_if *ifp = netdev_priv(ndev);
- 	struct brcmf_pub *drvr = ifp->drvr;
- 	u32 index;
--	u32 wsec;
-+	u32 wsec = 0;
- 	s32 err = 0;
- 
- 	brcmf_dbg(TRACE, "Enter\n");
-@@ -2907,7 +2907,7 @@ brcmf_cfg80211_get_key(struct wiphy *wiphy, struct net_device *ndev,
- 	struct brcmf_cfg80211_profile *profile = &ifp->vif->profile;
- 	struct brcmf_pub *drvr = cfg->pub;
- 	struct brcmf_cfg80211_security *sec;
--	s32 wsec;
-+	s32 wsec = 0;
- 	s32 err = 0;
- 
- 	brcmf_dbg(TRACE, "Enter\n");
--- 
-2.30.2
+anyway all the titles are wrong - all of this is brcmfmac, not cfg80211.
 
+johannes
 

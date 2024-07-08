@@ -1,103 +1,124 @@
-Return-Path: <kernel-janitors+bounces-4526-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-4528-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744C092A8EE
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jul 2024 20:27:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD8C92AA8E
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jul 2024 22:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27F2F282512
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jul 2024 18:27:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07DD71C21BCA
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jul 2024 20:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77E114A60C;
-	Mon,  8 Jul 2024 18:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E817114D2A3;
+	Mon,  8 Jul 2024 20:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="U42852Dn"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bpBFcbj4"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C454879FD;
-	Mon,  8 Jul 2024 18:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAAD146A98
+	for <kernel-janitors@vger.kernel.org>; Mon,  8 Jul 2024 20:26:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720463255; cv=none; b=gBkHT72ryvF7CjlCzLVKOTnTcnPq4hin99xWpxZYdhfdZI1wcPSyb6mGv44eQXbdoY9f7xkCiSe8A0ljzJhc2qRbipYCrt+g4rHHrXnJ2ZSwxW/vEUm6vy1PjkuM6KpgfQIRfMQ/gPq8bHYxbOkKRgMmSalV4eIu8Dwc18RXx34=
+	t=1720470418; cv=none; b=EYtRWzEc9/ZexvwglOYPuWZc16xSrxxFDZp5ZpqACXmdpRUAZvqp//gAixcKF6sVR7PzsBmsWOXjdp9Iyp7M4SsBWo0rfuKbsSUhKMnjDbNvgvuZTqQCw3U0gRJ0i8+mbeiQ7uQDz+WpSfzPZqq0mXikTUyfVBzLM+qpWpLAEL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720463255; c=relaxed/simple;
-	bh=nlMaB/JpuH88DM3GoVX7G0Uuyms0smFzf26TAoL12eY=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=FFRb2KmIobdBwftU8G7zoygme34lwJsbpCtePlFdHv0WRqPbDb+iiLNEcqUzA8vjHdhqEpjn0I29gV6x5HgmHyOnyyXZ6qQEXLbtStTo5B7mGv4KpEqeNOYDpgKxqSjYotJas7bf7sXTiF2SkHU1PdvnO30pybpsoLcUXn9XLAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=U42852Dn; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1720463221; x=1721068021; i=markus.elfring@web.de;
-	bh=nlMaB/JpuH88DM3GoVX7G0Uuyms0smFzf26TAoL12eY=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=U42852DnVa/l/aji1gejCv+ivNU+NkM4U5x6NGXf5TvqMP9Xk2pH/t4Jhzq7X3XP
-	 EbD4aiGoae03rLAynmSTj7EcqkN6Jwr1fCcLTNkoFZQsJtpT8hJFyZIqDGsNFpdd4
-	 8bIOvTlKrNCaZ3EpRcXQChvanqNrz+C6yAB44ejdhm9s98rz7IBnk/ZJJ4LriY+Kp
-	 bH998OUSPjblxjKtXkmw08Myiw9N0yqq7hPxVgkW3TwpNtb67yStLOK4r4qOvxWU4
-	 JUroRYfaehz5sQUiK1JL1ikR5EJhq0+vdqCFLF1s3P/aUQIcyyKTwqFhJLl4m0WiE
-	 M3TBaNM7ILgLHTVvpg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.91.95]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MYu16-1svjin0mFE-00P4Ko; Mon, 08
- Jul 2024 20:27:01 +0200
-Message-ID: <25435c69-d33b-49fe-be7f-c0d93af639fc@web.de>
-Date: Mon, 8 Jul 2024 20:26:46 +0200
+	s=arc-20240116; t=1720470418; c=relaxed/simple;
+	bh=iP0jvq7PGIFczaEA5bqaPg8rzTLnc33XdldzK181P5c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oJ5iUfCtrQmyGeot/mZJ/U7FmUKC70jc7dERcO2oTD8E5j5Qe4KTsHJyE2f0Sc7tiA6r044Q+o6L02t+N8vVPhxcgB0VEflQMrzQI81FNfGS2Wo5oLxkvaJ19I0XGuDAyZ4tbvQ3NQdXktKwW+PTC8nsr5ipVI6MihsTZYDacxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bpBFcbj4; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-651da7c1531so40073737b3.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 08 Jul 2024 13:26:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1720470415; x=1721075215; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kQqAxoPni/sISUNtLPGbi6yaKTLLkE7TWz06MwgXUpw=;
+        b=bpBFcbj4V+g9sYzyufrCz+ceNYlJ8B73U96MDIBLf8IBoUzymmB61yuip291Ci8fgF
+         iZNDkatbR/84jHsW26gu1p1J9s8dJOFOmTR2qa7TbXtLx3MNLGdagquAx3xGadeN13tg
+         hx2Dx3Y4W3rD8C9xMvbJOFUR9s+IS4u7OMhnLm4IAMIA6hN1vn4gWzBE973ffeeugQYe
+         d6MMfsRBTp2Rh8aj1A6o56UPpp1A4YMhfH/tNtkFPR36rZFhK+W9BsyZ4OZ8ETiC6lAA
+         t8ljsWtS5g2koclncYr7vQyW1giEPdUiHAdE1XIybYoSYuDoERDjDmojUzA+j0XcErYo
+         KBJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720470415; x=1721075215;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kQqAxoPni/sISUNtLPGbi6yaKTLLkE7TWz06MwgXUpw=;
+        b=pe7Pqud0OBaYTIXpcxheLY3traanngnFxHXKhE7VdPMKPTMO9zVuW0cr0z+eY69NMc
+         E5wVT8wztVv2H7iUWH4SueY55fuKsYIRqLH/L7gufMzCN143EC/d96knDEgb+GjNjYrR
+         m8Z8qv50rIGg6OaH7J0TKVkKPNJ5JWg2O9Vtur5Q6zPwW+0oWcDi53g7Uox+HTzRXXMV
+         G+N9v5BnEbE3FM4wPJK3u0rCQe9BvkCpuNNFCeSoNyzwmpdXVnQ70/JLOs2/1iH4XsBm
+         BYPezIABhY9SS73jLedDDihjKXJCdANO6XieNOwGVoDvbRdxrSyXkj0Ee8f+89p8BtL9
+         7jsA==
+X-Forwarded-Encrypted: i=1; AJvYcCWQPgg+biUFomKMzTPeDRah8U9apIIht9jy+ihPE9CXPoJhnnMUFkQtICd2zn+rodoFdNe0B2XMm+sIqmfXuo/yn4dYHNkwAT/SaHwHSgBM
+X-Gm-Message-State: AOJu0YzcNeNG6K3/wPDyDeI2+QKXRMEGuQfGW2q5+DO54YJ7VCsaQ8re
+	mXCc4o68dfD2ZBkVfNiWCsTuS5WKmsQL8z1UuPsYD2v3NXrccW3VLyQINObBTj9FEnXX9BVTcp9
+	yF99l4Ah1OxySWnCpEscMdJTboX87Su05KIL3Ig==
+X-Google-Smtp-Source: AGHT+IGO2ni/QPKZ5DyTQznLmq+yxlD7B6UffX80ITsFXuqHyccHxv2wbcoz3FyUQBIlQaTdDB4QDOW83uoQ6RkVu50=
+X-Received: by 2002:a81:ae04:0:b0:649:fa54:1f8c with SMTP id
+ 00721157ae682-658f11a595cmr7769077b3.48.1720470415272; Mon, 08 Jul 2024
+ 13:26:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Dan Carpenter <dan.carpenter@linaro.org>, linux-phy@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
- =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-Cc: kernel-janitors@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>,
- Kishon Vijay Abraham I <kishon@kernel.org>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Peter Griffin <peter.griffin@linaro.org>, Rob Herring <robh@kernel.org>,
- Sam Protsenko <semen.protsenko@linaro.org>, Vinod Koul <vkoul@kernel.org>
 References: <a956a3e2-c6ce-4f07-ad80-ec8a96e00d16@stanley.mountain>
-Subject: Re: [PATCH] phy: exynos5-usbdrd: fix error code in probe()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
 In-Reply-To: <a956a3e2-c6ce-4f07-ad80-ec8a96e00d16@stanley.mountain>
-Content-Type: text/plain; charset=UTF-8
+From: Sam Protsenko <semen.protsenko@linaro.org>
+Date: Mon, 8 Jul 2024 15:26:44 -0500
+Message-ID: <CAPLW+4kwiKUUdwPW-TjdXEWivWbh4dTe+LYqsR+YssYy6XSzvg@mail.gmail.com>
+Subject: Re: [PATCH] phy: exynos5-usbdrd: fix error code in probe()
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
+	Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Peter Griffin <peter.griffin@linaro.org>, Rob Herring <robh@kernel.org>, 
+	linux-phy@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:L1Gdda1KHAXM3MhKUbikQbsc/6T6hLXGu6hHFu4HvtGFPADfB02
- WlMPZMzYETWo0QrMiYcSyNHt23xaeUr92HSMZuqJX1AfiMd5bAuPiNA8FV764pis/yZNtQZ
- osO7PAeDwjfRYpDrD/leT18EEtrcjetiUalGglPNEOYDSSF/qelGMjCQSV4PEKzS5cnX/sZ
- i6VHdDyQUGfeY9oufJM8A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:2ZYuXBedkdA=;jzqSJq1FcYwTlwfIq9xFK4UBb9t
- p922l9+XcoZ53L1uXsFwWz+btk37W13Xlxmrjm0SIXsCUgrESut+KhOZYXXq7w0p8ZlfQfSJ/
- Jly2DeIhvYmlMB0I1v3D5gFM1zeyBn4j9MRGfibesQnM6oZc33Dj270/8DqhcXZTKOdpfHxCa
- Hx0QKn0qg+cutDaq1IwA6odNYKeU6MjdkGJtzEY7HuDEsBx+AW/Zu/kvkD4uxsMXaTQbJhOYO
- Ol1OXXagRkA3cQpUKRkmgPd20+YgCM3k5fc78/b4efLwi5HeKmeiE3Srin/gqrtSAc1ZPVWNr
- feNTxf3FG5zDHQIajNczj7ByM3OL7Rooohtqgo4tb7gvHGi5LAV52cMxYw4J6AQt1OTfVtUyo
- QubjONSTcweqXpH8EXexcoW5QCTOfqsOhKakO/RS2kW/N0gBtlp4bd+5y2EqnKb1pX1np5JMF
- 0gzqWSpidzLsxMcdNhyHQS0kcbX2sS10uEq4wfXkvsDIIfqGFo/h/8npMlG8rOpNC2mDv5j6J
- r7hIVjin5InYgLP6o0/S8UaZhJaOPZkj4jJCS8i1GRQaK6FbJGWkNGfm1Dl9PJHgqn/zoRakP
- xBK7zMRdhcZXrcf73k6EU9KVawX5Hc7lGR3aodOs/esEouNJHvpaMEhPXur3QacaXrXELc/9x
- w5X18yJddD2ZacBidkJEYAVDedkB98dsYeFxFtjGUgGxz1rbG/GWSv4Dl01SVumDR42soFoD7
- SVAK3wyn1DKh+e5jyNvDLTMfQKh8n+vlhWeZyeB3ZAFG30P7z+2LCbqm7VsCBeZq+2ELNgv4e
- RSu8ygyWqtmYw9Kx/3Kvy2+r8/WlsB+r2WaPTiCbSdH8g=
 
+On Mon, Jul 8, 2024 at 12:04=E2=80=AFPM Dan Carpenter <dan.carpenter@linaro=
+.org> wrote:
+>
 > Return negative -ENOMEM instead of positive ENOMEM.
+>
+> Fixes: 497ddafe915e ("phy: exynos5-usbdrd: convert Vbus supplies to regul=
+ator_bulk")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> ---
 
-Would you like to refer to the function name =E2=80=9Cexynos5_usbdrd_phy_p=
-robe=E2=80=9D
-in the summary phrase?
+Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
 
-Regards,
-Markus
+>  drivers/phy/samsung/phy-exynos5-usbdrd.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/phy/samsung/phy-exynos5-usbdrd.c b/drivers/phy/samsu=
+ng/phy-exynos5-usbdrd.c
+> index df52b78a120b..9cbf90142950 100644
+> --- a/drivers/phy/samsung/phy-exynos5-usbdrd.c
+> +++ b/drivers/phy/samsung/phy-exynos5-usbdrd.c
+> @@ -1745,7 +1745,7 @@ static int exynos5_usbdrd_phy_probe(struct platform=
+_device *pdev)
+>                                            sizeof(*phy_drd->regulators),
+>                                            GFP_KERNEL);
+>         if (!phy_drd->regulators)
+> -               return ENOMEM;
+> +               return -ENOMEM;
+>         regulator_bulk_set_supply_names(phy_drd->regulators,
+>                                         drv_data->regulator_names,
+>                                         drv_data->n_regulators);
+> --
+> 2.43.0
+>
 

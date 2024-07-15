@@ -1,54 +1,54 @@
-Return-Path: <kernel-janitors+bounces-4688-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-4690-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402B893130E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jul 2024 13:26:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA5EA931384
+	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jul 2024 13:55:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71F041C211E0
-	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jul 2024 11:26:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F5B51F2197B
+	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jul 2024 11:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249C41891AE;
-	Mon, 15 Jul 2024 11:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC81818A940;
+	Mon, 15 Jul 2024 11:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="DMhp4Ldi"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="LcPj6Qny"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310C5446DB;
-	Mon, 15 Jul 2024 11:26:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88215187868;
+	Mon, 15 Jul 2024 11:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721042810; cv=none; b=pAOmluiGovGjn8LkvhnidvhsZ9NEUOLjfs6kd2Gvo/RqxiDHArpgd0cjgAD0qYO//wLWpLiylGqNlc2KyWd5H5/Dj+dvxW29wUS96rgJfeB599eRaRbaCXG3yxNT2U0zFu1NhZxUR5vkObx0eBUDSlEoAFv9mikru/dMO5R+sPc=
+	t=1721044526; cv=none; b=ZOQnFXNXovL3Y3ZARduuLWYlJ0gSy2Nd7S7yVOiyCSKQRfDsyH35RJBA/Aw1pqH21nLrXDhudOb/WzZgbe/Hu5IiQmJYRBWUyJcVGVqIZ/s4m2lEKwSkkVl2ZGgDQf5eSvp0VIVy+v8L2sMQW5bNqVrJ6pIFQulTmUhJzKsh1KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721042810; c=relaxed/simple;
-	bh=jw9YV4v7bz4V4h3+r7GDDiBx+ysh6QXUgxwbAWpbBqE=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=SxzfcLL+nNYT4EW+GnzDjf88dOWeMDXJtHlE0z5m6JSJlqUTHLxSv7k9UOeOVPcIIrK7GUbProDWNkl+yIw3MPdfa/cZKoJixmO5+mTC8A96bqArYL6U4iIhoZydVQaw1EhiHmZOkvvsqmruEQ1pgoOGev7FVfU7gb9hdnsoUl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=DMhp4Ldi; arc=none smtp.client-ip=212.227.15.4
+	s=arc-20240116; t=1721044526; c=relaxed/simple;
+	bh=RrHXwtJA8vk2WaO7Dao7PE8d5VKXw+HfVBwPX30khoo=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=om7hWgfLq+6Cezci+dT0x6vtukEsDzw0Eyhsls1mg8QKHyKgDgUCcIL8ChIlBvux/0MwrDycegdYXgHUOlRKHUQUr8r3VYb5eYGarTNQqk5KotZ8x10mBJniCxbAKDYDQjRWdijM7VGhAWSGJ21j58P33c34KOPLFBAUIwKfuQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=LcPj6Qny; arc=none smtp.client-ip=212.227.17.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1721042785; x=1721647585; i=markus.elfring@web.de;
-	bh=e6D3UXu8XYGKga578156aed+uo3RT052v5jgKYnVAaY=;
+	s=s29768273; t=1721044521; x=1721649321; i=markus.elfring@web.de;
+	bh=YrYnfXpy81C1jpVdx1iEDBRM93/KVFVJhrGxbIs42Zo=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
 	 Subject:Content-Type:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=DMhp4LdiR7EKVsuEDI1bcGpjuOCZezcTSyJ2BSLwYiqVchCZbGzCyJNLaWzVVHfp
-	 erFxT0TontOSgtLGChyW4pIp04uW8Vqhp10IizfFVjfvk6zDJd4PlyIY1KrJl5YWc
-	 7VvKj+S27jT9Rs/xcSZh7eWLrrdLjMYT1q0S5GfRgqC7q+47Pc/+QiwkYuxs7ry8d
-	 Vlq2L5ZFxwdwEh54S7WcJ8l+Qxn11WdBWqxxbtKq5/uF3FH3j51glKVydFOW6bVdu
-	 5ighsJLHIxKbU5WUJmohlVdWiWiUlo977Qq+JVo/NjYSXIoep997EBlEFIbqixZtQ
-	 cHVEvdEvLqAV23jOIw==
+	b=LcPj6QnypY+VsekT+acYASqFKNLqImYS7DRHjBQp+n1/SfglgVldlH4/HOiOBTpA
+	 3qhRXeYA24kKuTfQXo8g55Mred03SGg0lOdu4JyF9I/S9CO8aBkqTO+xUR7jSHMhh
+	 f+A6WcUxbAhQdyKJnQcDYDS/NqxxgOTJuAie541juAvksSXQxVBaG6F+/TQ3I6OHP
+	 reK/ugu3iOABJIGyp/ANx4XoNEzXGoD3TlFH7G+PL/XmTquaXv2KIZbiNgvSNeVF3
+	 jxJ2MfJtFc/cxtp0Q/WNbQqve4l6x5T/NujHIPrvHna37dXwtcJfztbedqOGS9xf5
+	 /V9lcAAUsA7LCHUNLA==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.82.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mw9x2-1sAp3l38qa-00r8Mb; Mon, 15
- Jul 2024 13:26:25 +0200
-Message-ID: <af602b2e-4d92-4c54-9884-7db84700aa93@web.de>
-Date: Mon, 15 Jul 2024 13:26:20 +0200
+Received: from [192.168.178.21] ([94.31.82.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MzTLO-1s7Y7N2tOq-00r5Y2; Mon, 15
+ Jul 2024 13:48:25 +0200
+Message-ID: <cb21950b-286b-4630-9052-cff9e7e56337@web.de>
+Date: Mon, 15 Jul 2024 13:48:22 +0200
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -56,43 +56,40 @@ List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
+To: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ kernel-janitors@vger.kernel.org,
  Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
- Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
- Imre Deak <imre.deak@intel.com>, Jani Nikula <jani.nikula@intel.com>,
- Lyude Paul <lyude@redhat.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
- Wayne Lin <Wayne.Lin@amd.com>
+ Daniel Vetter <daniel@ffwll.ch>, Danilo Krummrich <dakr@redhat.com>,
+ David Airlie <airlied@gmail.com>, Karol Herbst <kherbst@redhat.com>,
+ Lyude Paul <lyude@redhat.com>
 Content-Language: en-GB
 Cc: LKML <linux-kernel@vger.kernel.org>
 From: Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] drm/dp_mst: Simplify character output in
- drm_dp_mst_dump_topology()
+Subject: [PATCH] drm/nouveau/debugfs: Simplify character output in
+ nouveau_debugfs_vbios_image()
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:QO2YEPyAv86lnrZfJDpzoSDqKV4xAgrbv8IoSX86Vh+u43DTEm8
- nX2dbrpFUgBrAqQQOdG8C58BJx5wUeshf2x/tXjlwiQCB3jXN5P/W040U5TLeRhi0BFtyoq
- GrOFbR3NF80kea7cNRU0OPfJJFPos/W59xQNJi6+PiX6CXq7NrHTgLLCLxHKpSVH2h9dFaJ
- wFRdBCBIUK+Cnwuu6yNyw==
+X-Provags-ID: V03:K1:71gomZOBeHsXTuuGCpKsfKlHuOH458fHULk6qYyu8eYyRHEy6wg
+ vxu79FguCXSArnOkasdaTOv+hNaMNrALYc4QlU5uT+/sl7qPLC4gHFGZkGt7LB9/4vc1+EQ
+ OGojZV0bf1SSPdsA+bzDjf0TCKn7tY9FpoBuDypjHKZpzOwR6qWxHEdWZrisg06jk0Ywm4F
+ kGsFCja0s75FSjAvjjJxQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:IrsSFhFRPpY=;kNdl2UoqtzFHi/6nBC+LGjxoqkD
- WyrAJmRRi6LX2fcoHCwyFkhBhfEsN78KzY/YNHSpaM7v1A/+VFvCUaLd81Dy1w8R/yT8vIJS8
- 9QdK2X+wk4qH3wet6QdumG4+RcSLxWE3ZsjO0ut5R2Flwoyp13bzu/GRBS96ehsT7bFst5cJz
- R2uGzHV5N3o+Jx2dfcWq1yDtUCD8S1baRIJ4cvBu+xARDEinteg2QJfzD7e+2BIClVADKKaDw
- fGLvgSnUWBovVb8LxDSYsfbVmcIJsb5oGBc+MqkgK1wqfaC9q4NOaY93n31zoqR6dxcCDwg03
- ulX7O4LvqoRfD3MmuMjt3NVM73rJHvSNTiVQxYDeRQByiQRQdWOAknrhPn4O5j9SuuyR8xcfn
- HoGrXmVJRxrYMrI3lsbmKMLXo8FTfRMy51pvmcIlaE6eSJ0kc4kNd4wlPl4h/o19/AcAsh1Gl
- zy6R+LZzUP+6nqrvVDIJQ3ytZz+0koxHR3qQjXjp1FUBLF6jkrYetjKMTtNQNl5Suk++E8Knh
- VvFsOm1FHyaKgBwjO7EpxAs6poPGzZsdgQonJn2C89N8Mp0v6N8d3f/YwmpVZcIb4r3Lniyoy
- c5gYaRR6Qqc3CAZCQ9DvmtCYubDU4MbnIBhNaa/nVByAN3wGGRHXyDl353n/AqEMO3qhse7pz
- VaxptlaPAdnpAFHXD0esZhx3uCJKsdc3to9TUBU74k+3wom5pNfOuRsvBqfcqT01UJtBZUQJy
- dXnIBNtQIPuqItTp3dhMScYGhs0Z43snLOZJtOHfbsRnWYKvQ1Gg67bA7M5Rt/jaCHNXgftKf
- gKSZU+PnKhnRQQVsXjbPdBQw==
+UI-OutboundReport: notjunk:1;M01:P0:4xIQXqzDzD4=;5jWXeTpY5ew0dytSbThixv/me/J
+ yKB+df1EI/IVm6ITgJBgqofOAF2ZlkEMWQTZqxmIl7V6svWyXRi6fdrjjy952RV+31k8bRa0V
+ w7byy1grRF+e1SUhjVZnRgoVkqt0kYuvq1ILbVs0LsG2emGq79Oy6ESKBtkyO3w3NY1UdSygD
+ rqjeH1U2yHKkJ1+FsYtDbbL7Xujbf+NvwXuz0RYDZm57NZNKXu4SPMdQr0GomziCQ8XltMrwy
+ S7UjShyqBK1ZcoDzWv898eG/CsgXmX6CkV3xXfyVV256yJqaCVYeb87w3b+MfNUaYal+ZbvtE
+ cgyizjuie8Fs0faiZWrXrk0gMN+pCji3lTk7EhS+l3pagZmPHLHnAQhDpuCXbwgTF8vpMUVJx
+ /MLaBJkKLLx5MqQjVx/oTJO3iSySZxAHzTKGrWcnOkgBHsZNcp4oKf1rC1NWzrbyQkGVKYPCw
+ 2PVjvSoFLehPmWadsI0K3d3oMLLuV9UTLrlugN3jtN7mWSglpUv2t1aqaSKgqfKiqM1HUQF2M
+ RG1VfWYpLrongS4tIJ5KoCblm2QL0Uw2N43uxCap8DUjo92DisP60xSU/vcU+QaRNGcvUkI4a
+ pmShL/0DUn5IVE54o+3MkwhfA28sEbv/Db53O2MeMLOElx6zf0YLAy6vtuWrZvyccZFcu/hfZ
+ GM4V0Vf2xdao2+0LvUbHNYcvaQhqIG1tWaJnIjS0Z+Qz+A9y/y3b7z8xXccniaUVRaV9j0xdT
+ K2qFK2ic9xovAQimaGwLzSpTyd8KxtOYbdVtVRgOYWJpgQpnOQ41E2A/k0sgYxjFJmABVRc1d
+ flSb5ReT85kPVBePb/QZOxjQ==
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Mon, 15 Jul 2024 13:12:10 +0200
+Date: Mon, 15 Jul 2024 13:36:54 +0200
 
 Single characters should be put into a sequence.
 Thus use the corresponding function =E2=80=9Cseq_putc=E2=80=9D for one sel=
@@ -103,23 +100,24 @@ This issue was transformed by using the Coccinelle software.
 Suggested-by: Christophe Jaillet <christophe.jaillet@wanadoo.fr>
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/gpu/drm/display/drm_dp_mst_topology.c | 2 +-
+ drivers/gpu/drm/nouveau/nouveau_debugfs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/d=
-rm/display/drm_dp_mst_topology.c
-index fc2ceae61db2..65c1700f3e40 100644
-=2D-- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -4963,7 +4963,7 @@ void drm_dp_mst_dump_topology(struct seq_file *m,
- 		seq_printf(m, "branch oui: %*phN devid: ", 3, buf);
+diff --git a/drivers/gpu/drm/nouveau/nouveau_debugfs.c b/drivers/gpu/drm/n=
+ouveau/nouveau_debugfs.c
+index e83db051e851..931b62097366 100644
+=2D-- a/drivers/gpu/drm/nouveau/nouveau_debugfs.c
++++ b/drivers/gpu/drm/nouveau/nouveau_debugfs.c
+@@ -42,7 +42,7 @@ nouveau_debugfs_vbios_image(struct seq_file *m, void *da=
+ta)
+ 	int i;
 
- 		for (i =3D 0x3; i < 0x8 && buf[i]; i++)
--			seq_printf(m, "%c", buf[i]);
-+			seq_putc(m, buf[i]);
- 		seq_printf(m, " revision: hw: %x.%x sw: %x.%x\n",
- 			   buf[0x9] >> 4, buf[0x9] & 0xf, buf[0xa], buf[0xb]);
- 		if (dump_dp_payload_table(mgr, buf))
+ 	for (i =3D 0; i < drm->vbios.length; i++)
+-		seq_printf(m, "%c", drm->vbios.data[i]);
++		seq_putc(m, drm->vbios.data[i]);
+ 	return 0;
+ }
+
 =2D-
 2.45.2
 

@@ -1,142 +1,113 @@
-Return-Path: <kernel-janitors+bounces-4910-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-4913-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9BC947578
-	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Aug 2024 08:42:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD4759475F4
+	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Aug 2024 09:23:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB9531C20F8A
-	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Aug 2024 06:42:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88989281742
+	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Aug 2024 07:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3BC14A0AD;
-	Mon,  5 Aug 2024 06:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2D6149C7D;
+	Mon,  5 Aug 2024 07:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="leducTY+"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qVIMX+Fk"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-22.smtpout.orange.fr [80.12.242.22])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0724F149002
-	for <kernel-janitors@vger.kernel.org>; Mon,  5 Aug 2024 06:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3401494C4
+	for <kernel-janitors@vger.kernel.org>; Mon,  5 Aug 2024 07:23:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722840088; cv=none; b=RIkAlXejhWOjPMRoLpWGwx3YJLTvdXGCHvccVdJMqR5pjd9+iTQt8kRvPc1pXJjsiFuHBaMuTF83TEvCoX1FlXOn2deM+dvkwNf+rOPguPXjKpaOMXLN3DaJcxX0mRpPFCosey7FXHJ60panXAluETSeWS4KS2RztOPf+3TUR4M=
+	t=1722842623; cv=none; b=AC4qrkgEYmohK2OEK+TaQ46OE+0tjyR2FPyZp71UEa2JNLAwMImyO3QdeweRzPncspAi4pT5P2Fx0DfwuzZdeDvaXFyseNIlv3YOVgwRqZqKkeYq3Ts4JbqyiJ720tPQ/vHa2irnhuS2e8OfUdnCAvqt1jve+g8E1GZWOFq225o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722840088; c=relaxed/simple;
-	bh=mYdDauKLkFehc0PPjkbY+QSlVdHIA1mUlEQXWR7Yk6g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G5Mo8cIQ3r+CWz6sgNEemed5F4H6HkBG8aDr4uyDS81k870EAoNWOj1ImrAhZcGDJ2cohkhheAsjdMVcs8t73qf0rhgDDABK2aulYvT2RKZqJnn4kLkaYsoDGzS/TkHovMtfjUMkId+FFZZm2tjwKPyC6mLjFxHM5YjneUeOg/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=leducTY+; arc=none smtp.client-ip=80.12.242.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from fedora.home ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id arOns5eD41n2IarPJsUUkH; Mon, 05 Aug 2024 08:41:25 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1722840085;
-	bh=fZnfV4gskIqv87dNYmFTGpAnTyJ6Dtl1w8GxFk9Ipsc=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=leducTY+nH174RYYnTi12fdGoxirXsmTUaoCHwknPPZws/E+6h0HBDwuc1Mtkcqjw
-	 C7U6juRV53WE3+xrABBaxXptE2+ZzEyMiII2Gp3cn/GTVvv3sN3LDuKlDbyX4jKHA5
-	 aGgDFHBbyTyGmGUPWY1YDoGz8vmVtoD6nNIr6p5VBCpCKJsLRR+gfl8gkg9WB6NaLe
-	 u8qUjB4ULngW2vz6aSxZTrunRjI7xEWb+xqznSPk11OQWaocEzZ0VpDPAfVPV8Rwur
-	 Q59OTLkzCtflgywuy296JcDEzY58E6o44Hy4ASu3RNnlt4Dz26olSGTxBSlXTHzofu
-	 EyL6pslWfeUXw==
-X-ME-Helo: fedora.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 05 Aug 2024 08:41:25 +0200
-X-ME-IP: 90.11.132.44
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: stas.yakovlev@gmail.com,
-	kvalo@kernel.org,
-	gregkh@linuxfoundation.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH v2 3/3] staging: rtl8192e: Constify struct lib80211_crypto_ops
-Date: Mon,  5 Aug 2024 08:40:39 +0200
-Message-ID: <dfda6343781ae3d50cd2ec7bbdcf76a489b6922a.1722839425.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <cover.1722839425.git.christophe.jaillet@wanadoo.fr>
-References: <cover.1722839425.git.christophe.jaillet@wanadoo.fr>
+	s=arc-20240116; t=1722842623; c=relaxed/simple;
+	bh=umFpxCUn+au3HF2NxksXKJAeihuMffW9VkiyHlVMD4k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GgRKXU6fsnp769C5nC8VPCUjh07/7hPqBI9M9yAIQwWNAcJ+iZm7hSB+bSOkyXkuMuGixqMZbDMgJIM0OkDYnONhXGxQcwk5MiluL3d1tJjtPC4E4CGWYlHoF95ken/lQ0+SB5xrRXOANMhjoyJVF0orZStTOZXDU4YHrdOZV20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qVIMX+Fk; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-52efd530a4eso15765538e87.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 05 Aug 2024 00:23:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1722842620; x=1723447420; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sodQ83Zi4tI79ZwD9QYiXR5Km+yKuCSvXk/CIGbleQQ=;
+        b=qVIMX+FkpbZYvB6jCVBNdEUBQEIbK/X9wSg+XrJq5sTIAc+fqFP5jFEFTBYI5Lo5fl
+         /9uuQvd2wIoOe8kFrOhBAjPTRoQdWk4a85H4hQ3fjVrxDPeEasEBWx/9D0N5n3qPu4Cy
+         6U5JGsAmWru0Ia0D2X1xrgbB6Y99vdjX3poeLLMNoospA8IJbsE1UMfaxrt+4fET+hfK
+         NMWvVPs13mJd9w6v7VX8vdWqJReErnYcgw3E6qJkuigZdMiY1h4lOFerCoQxD1hsb3Sn
+         o9wVZsDRetagQcNrnhmq2ArTPXYvKUJiGQTZpqfkiHAATPZUp3x6gmdqnfJW/BXHCdJT
+         vLwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722842620; x=1723447420;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sodQ83Zi4tI79ZwD9QYiXR5Km+yKuCSvXk/CIGbleQQ=;
+        b=bJfTofeuGizTUzmzUG67xjR8zVg19HbSi6gDyN8d5Rw2UAoUPTafG5g0PiU+D/bwPd
+         iTR+Ce3xfldC1cTrqHEZQpBOSFfK/t8TOvoeTn7eNS2uGdM7GpGsps5pMWGm+JtwHuoG
+         n3dJmy4Cxss2BbgU2mBCbv+74/0P/JEMLXihlRnMGAsRLOuj0Zk8R+nB6D7Wdok/yNcC
+         TD1HL8p1Ywn5arwNrx0TqdyAZdT+aAYUXe3jAYfVeIlnlHk5FIvvcrU2MSgXpnG9HThd
+         BqVVLrpc4uSXVJHezR5P8A6MjzTbOVNJPUMqHMm09GjNwBvDBjrPxFkTEQlvTiyJOFox
+         O41Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXu9pHYG2qmFku6gpCetmk3ELaB6Vy8DKh2jJErlEtMsl+Dfjw8+leuxBwRbR9dzMI/S5bTq6p0LMutXLkRqo/QQhVD29obRaoN1LXSnP4l
+X-Gm-Message-State: AOJu0YwKMj0iEF+5MfdDvWh7VXrOcv8wrmb7v1vGfdYuFkX2xCt1OlmR
+	EVJUk5L3JU7C60rSJe4JExK1HnGi/nI38a84QnLkkENnzvPUdu/LAEUJiRBQUPnKq+mc5BgJEcS
+	ASaByEjPtIVqcDJ4WcBTJLDm43kOjCERMoLtsKQ==
+X-Google-Smtp-Source: AGHT+IHMEDV/XB6PuAMs/y2jmCQDs4ViBP5jan/yA0s8errZ3yGWl59Dy3YOXALgdmE/wb9d85ASLLh4iw4wGNH8EhY=
+X-Received: by 2002:a05:6512:ac6:b0:52f:159:2dc5 with SMTP id
+ 2adb3069b0e04-530bb39b813mr8199730e87.42.1722842619801; Mon, 05 Aug 2024
+ 00:23:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1720556038.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <cover.1720556038.git.christophe.jaillet@wanadoo.fr>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Mon, 5 Aug 2024 09:23:28 +0200
+Message-ID: <CACRpkdbp4HhXNutMgA-tBbQSzzO0zq9Tia3WS_fXNtgJ6Xr8ag@mail.gmail.com>
+Subject: Re: [PATCH 0/3] pinctrl: ti: ti-iodelay: Fix some error handling
+ paths + 2 unrelated clean-ups
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: lokeshvutla@ti.com, nm@ti.com, robh@kernel.org, tony@atomide.com, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Now that functions in lib80211 handle "const struct lib80211_crypto_ops",
-some structure can be constified as well.
+On Tue, Jul 9, 2024 at 10:37=E2=80=AFPM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
 
-Constifying these structures moves some data to a read-only section, so
-increase overall security.
+> The first patch is completly speculative. It is based on static analysis
+> when a function is called in the remove() function, but not in the
+> error handling path of the probe.
+> When looking deeper at it, it seems that part of
+> ti_iodelay_pinconf_init_dev() also needed to be fixed.
+>
+> /!\ This is completly speculative. So review with care /!\
+>
+>
+> Patch 2 and 3 are just constification patches spoted while looking at
+> the code.
+>
+> Christophe JAILLET (3):
+>   pinctrl: ti: ti-iodelay: Fix some error handling paths
+>   pinctrl: ti: ti-iodelay: Constify struct ti_iodelay_reg_data
+>   pinctrl: ti: ti-iodelay: Constify struct regmap_config
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Compile tested only.
+Patches 1 & 2 applied, patch 3 was already contributed by
+another developer.
 
-Changes in v2:
-  - No changes
-
-v1: https://lore.kernel.org/all/81be9eb42a2339eaa7466578773945a48904d3b5.1715443223.git.christophe.jaillet@wanadoo.fr/
----
- drivers/staging/rtl8192e/rtllib_crypt_ccmp.c | 2 +-
- drivers/staging/rtl8192e/rtllib_crypt_tkip.c | 2 +-
- drivers/staging/rtl8192e/rtllib_crypt_wep.c  | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/staging/rtl8192e/rtllib_crypt_ccmp.c b/drivers/staging/rtl8192e/rtllib_crypt_ccmp.c
-index 639877069fad..138733cb00e2 100644
---- a/drivers/staging/rtl8192e/rtllib_crypt_ccmp.c
-+++ b/drivers/staging/rtl8192e/rtllib_crypt_ccmp.c
-@@ -378,7 +378,7 @@ static void rtllib_ccmp_print_stats(struct seq_file *m, void *priv)
- 		   ccmp->dot11rsna_stats_ccmp_decrypt_errors);
- }
- 
--static struct lib80211_crypto_ops rtllib_crypt_ccmp = {
-+static const struct lib80211_crypto_ops rtllib_crypt_ccmp = {
- 	.name			= "R-CCMP",
- 	.init			= rtllib_ccmp_init,
- 	.deinit			= rtllib_ccmp_deinit,
-diff --git a/drivers/staging/rtl8192e/rtllib_crypt_tkip.c b/drivers/staging/rtl8192e/rtllib_crypt_tkip.c
-index dc0917b03511..74dc8326c886 100644
---- a/drivers/staging/rtl8192e/rtllib_crypt_tkip.c
-+++ b/drivers/staging/rtl8192e/rtllib_crypt_tkip.c
-@@ -678,7 +678,7 @@ static void rtllib_tkip_print_stats(struct seq_file *m, void *priv)
- 		   tkip->dot11RSNAStatsTKIPLocalMICFailures);
- }
- 
--static struct lib80211_crypto_ops rtllib_crypt_tkip = {
-+static const struct lib80211_crypto_ops rtllib_crypt_tkip = {
- 	.name			= "R-TKIP",
- 	.init			= rtllib_tkip_init,
- 	.deinit			= rtllib_tkip_deinit,
-diff --git a/drivers/staging/rtl8192e/rtllib_crypt_wep.c b/drivers/staging/rtl8192e/rtllib_crypt_wep.c
-index 10092f6884ff..aa18c060d727 100644
---- a/drivers/staging/rtl8192e/rtllib_crypt_wep.c
-+++ b/drivers/staging/rtl8192e/rtllib_crypt_wep.c
-@@ -209,7 +209,7 @@ static void prism2_wep_print_stats(struct seq_file *m, void *priv)
- 	seq_printf(m, "key[%d] alg=WEP len=%d\n", wep->key_idx, wep->key_len);
- }
- 
--static struct lib80211_crypto_ops rtllib_crypt_wep = {
-+static const struct lib80211_crypto_ops rtllib_crypt_wep = {
- 	.name			= "R-WEP",
- 	.init			= prism2_wep_init,
- 	.deinit			= prism2_wep_deinit,
--- 
-2.45.2
-
+Yours,
+Linus Walleij
 

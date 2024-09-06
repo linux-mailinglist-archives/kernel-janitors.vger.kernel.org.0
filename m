@@ -1,86 +1,124 @@
-Return-Path: <kernel-janitors+bounces-5240-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-5242-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDBA896EBA9
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2024 09:11:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D737296EC99
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2024 09:53:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A33D282923
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2024 07:11:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C29F1F21B2F
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2024 07:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9360014F108;
-	Fri,  6 Sep 2024 07:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941A114E2DA;
+	Fri,  6 Sep 2024 07:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="EfUTrArE"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DdydkiUT"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B79E145B11;
-	Fri,  6 Sep 2024 07:10:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A622B14C5B5
+	for <kernel-janitors@vger.kernel.org>; Fri,  6 Sep 2024 07:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725606644; cv=none; b=DNgeoqDZAzo8P1krnlUJtOEtX9pYnY9DTNkIG5YfV1E+iQtSdz7O9gHDIzLvBNxnDJFSpH4elnJcfUSj1XmlASXyoYfSrHfiBK7gDH1S5/o9MqUMnuu/kqKJouMwGoSL3Y7PQ/AHHPFwvmbjh0KIvs3cluZYwRRr4dbEAIW8+4g=
+	t=1725609215; cv=none; b=PVFQq7PFsWVsJ2jHeVBodZl+AwdBvntn+kvNWmNxtT/mA0NiJLql/iAT6LRKWK+xC96an3C1vh+PB3H4dWpGppc7Fzw0zQ8ZI0EwFESmz1+IEu+3+zeAPyr9tGZ1pwuD21Ioth2ZwW7RVoFPX0zwydB+k5HkE52GeFpkQntAZN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725606644; c=relaxed/simple;
-	bh=Ds7RT2fVT/UbrmuVwfHzcEs0c0ik9tAfLKssDNBJXZk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GLmdJnNFmTeScMcg0dR8MWMkM1lC5hWlivTczZ05/6wVJBN+TCmfftMhQRfd4GWHGjhUiT98EY53UwmCcAdv4FiPqj7y6Ru2IgvjlGoHRAE4lhL2FhsWS/E8XbFcuT1PdUktxoTc1R5I4xSEKEGg5v5yweBkJt9xEbIXtu8yubI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=EfUTrArE; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=ToMMlBX7EEWJ20/agcgqyPHaIBkdoV0RP+7ViTCkwws=; b=EfUTrArEUtkQp+PmyqsOPvY7oX
-	MJ3FKI79nUaykR74o7QpSliRvFFeLoHRAOfLXXuWn1cRC4G5PTS0BVXYNQA5KEicRlwYMS1reJaN7
-	MsaAU/t4Jf3VXnMiJlRmGiUXa3uSeLq0IJY7v7SldRMQbC1hWJJZKJ1ZNcCeP4M8g674vXE8oeXlh
-	gnJePzvfkidao7NTisLuQ7cnKtNvPmLKEbW28RvuayKggx31mOD5j0mCSwbC3+ujy06uQ+mGt7lXY
-	ecoAUvsJmZQGBnE/X1woX+ASszCde2fFfOtmfnCY40glWYp49R/FNy4+jtvL+fQHKLWntdXI+Iw6A
-	9SYwJAFg==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1smSxB-000WbE-2l;
-	Fri, 06 Sep 2024 15:10:36 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 06 Sep 2024 15:10:35 +0800
-Date: Fri, 6 Sep 2024 15:10:35 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Colin Ian King <colin.i.king@gmail.com>
-Cc: Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	"David S . Miller" <davem@davemloft.net>, qat-linux@intel.com,
-	linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] crypto: qat - Remove trailing space after \n
- newline
-Message-ID: <Ztqq68WWG13hoPce@gondor.apana.org.au>
-References: <20240901160717.143334-1-colin.i.king@gmail.com>
+	s=arc-20240116; t=1725609215; c=relaxed/simple;
+	bh=pDoHJPiqr2uHxsG5WH6Q4c/4CQBkbqkQjiVwGn4FLVU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=f1VwpHpPfI0wlC6OsTuY2PzBFdvbyIXzAl1Sn+oO23z7xYEeI7bcu1eOPqv1y+IcT4oRO5peqnupsmETHq+TSubpLU3hgV42HGzl2dbCw3IzoF2vDvBbl4mW2B/Y+0NEYsA86Pj+/Yx6HifYyY5abc9EEdMD5AzC3jlYSeAhTxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DdydkiUT; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725609211;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FLWAMf4F16Cm/iVBIMV8eWypdRb0d5qIVCKf1JBr3N4=;
+	b=DdydkiUT7MHnTt1HbSyQQrzkGjoDHEubRtSqmIF0qUfkdNpS/g3cSaNWVcQOBETug9zX/w
+	2oFcdQmkB8mK4YUVhH8+nKPydE9NgO1q9FmPuzn1eAk3uHuEU8DuvEXqREMeXmnFce95MP
+	cmAtzgBzxQ+KpR3Cg/ozPaFcZ1L7BUM=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-418-a4kX6PO1MkObox8hdhz-5A-1; Fri, 06 Sep 2024 03:53:28 -0400
+X-MC-Unique: a4kX6PO1MkObox8hdhz-5A-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a86931aa0efso152127966b.3
+        for <kernel-janitors@vger.kernel.org>; Fri, 06 Sep 2024 00:53:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725609207; x=1726214007;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FLWAMf4F16Cm/iVBIMV8eWypdRb0d5qIVCKf1JBr3N4=;
+        b=MBPFuYNgLfmVuSTqlN416YQUo3NQbRmPFdt1xYloLlVL4RRcmkx+CvXvKXbmemE1B9
+         1AjrCMecQhOiFzcnXIHRuI6TRexx5NJJp9Fm0I1LbB2DtfXEYf54zsPn6KFn5zY14Skw
+         jKml43zx45bsWyCXiSsxPfqRx3vXBmh5wr9OmTh6drBKzsdml/pMDb6QxlBhrwrjd8lN
+         E+r+g2evHXHnUU1yx113j3ppYDx5WYFASJ2f37Q7t27h8PQmpdQA/TYPgwWvzcBz+o1b
+         55QlkLVYIQ5Wj/pvvrF+0QBgoFQc14Db73cwrg8FS3DlM9wJ5bfSq9KBVXlF0TjzWREg
+         O6qA==
+X-Gm-Message-State: AOJu0Yw7KHGHAainNuy/8AGPz5Uav3T0JMY0uVTBbWNCNPVolCipccXU
+	qF4FToHo/ugslUaWBZN6LbkUPxdQUQ3pltFVuh/YWdg+ER3TDjwjGRpZc36UunphGV5Cn8WQ0sW
+	Vlb6/X6s+HkQTN/YvobD4xEQChl9G9bSrtfdMpzzp6MyhziNImmyUFC0iQyX/kjZOmQ==
+X-Received: by 2002:a17:907:96a1:b0:a86:a7ef:5c9e with SMTP id a640c23a62f3a-a8a888d048fmr94571966b.59.1725609207046;
+        Fri, 06 Sep 2024 00:53:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFC4LXTl7rqt8bWyFmvt87c820Tjb3KUs14y5WiuLk422+QPG/y6q18RItWc+sk62ze6W26+A==
+X-Received: by 2002:a17:907:96a1:b0:a86:a7ef:5c9e with SMTP id a640c23a62f3a-a8a888d048fmr94569666b.59.1725609206522;
+        Fri, 06 Sep 2024 00:53:26 -0700 (PDT)
+Received: from lbulwahn-thinkpadx1carbongen9.rmtde.csb ([2a02:810d:7e40:14b0:4ce1:e394:7ac0:6905])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8a8a141a46sm61126166b.22.2024.09.06.00.53.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Sep 2024 00:53:25 -0700 (PDT)
+From: Lukas Bulwahn <lbulwahn@redhat.com>
+X-Google-Original-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+To: =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Subject: [PATCH] MAINTAINERS: adjust file entry in U-BOOT ENVIRONMENT VARIABLES
+Date: Fri,  6 Sep 2024 09:53:15 +0200
+Message-ID: <20240906075321.51507-1-lukas.bulwahn@redhat.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240901160717.143334-1-colin.i.king@gmail.com>
+Content-Type: text/plain; charset=yes
+Content-Transfer-Encoding: 8bit
 
-On Sun, Sep 01, 2024 at 05:07:17PM +0100, Colin Ian King wrote:
-> There is a extraneous space after a newline in a pr_err message.
-> Remove it.
-> 
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
->  drivers/crypto/intel/qat/qat_common/qat_uclo.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
-Patch applied.  Thanks.
+Commit 2fcea44e1ba1 ("dt-bindings: nvmem: convert U-Boot env to a layout")
+moves u-boot,env.yaml, but does not adjust the file entry in the U-BOOT
+ENVIRONMENT VARIABLES section referring to this file. Hence,
+./scripts/get_maintainer.pl --self-test=patterns complains about a broken
+reference.
+
+Adjust the file entry after the device-tree binding has been moved.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+---
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c28f04234ad1..b4ed239518ae 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -23563,7 +23563,7 @@ F:	drivers/media/pci/tw686x/
+ U-BOOT ENVIRONMENT VARIABLES
+ M:	Rafał Miłecki <rafal@milecki.pl>
+ S:	Maintained
+-F:	Documentation/devicetree/bindings/nvmem/u-boot,env.yaml
++F:	Documentation/devicetree/bindings/nvmem/layouts/u-boot,env.yaml
+ F:	drivers/nvmem/u-boot-env.c
+ 
+ UACCE ACCELERATOR FRAMEWORK
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.46.0
+
 

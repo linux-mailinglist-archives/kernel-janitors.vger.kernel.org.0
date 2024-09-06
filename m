@@ -1,126 +1,86 @@
-Return-Path: <kernel-janitors+bounces-5250-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-5251-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D83896F89D
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2024 17:48:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB0AE96FBBB
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2024 21:01:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 182401F263BB
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2024 15:48:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6942C28ECC8
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2024 19:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7F71D31B7;
-	Fri,  6 Sep 2024 15:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7361C9DE7;
+	Fri,  6 Sep 2024 19:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Po2zFaQV"
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="ne72PVYf"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A971D2F65;
-	Fri,  6 Sep 2024 15:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBDB4315F;
+	Fri,  6 Sep 2024 19:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725637702; cv=none; b=P6lGoaDXAAq+/khCcBsXTJQ6DoGNOZxk7LUOxrfJy6KbGhFVv6dkWXsAzzBTqQOdb4ch8RPMgWITEPfGqwOEYoZqwN4RuNaGvMKxSOilw52QWPuLNKfFaUxySJTXEwloMqbd1wnMuRgEJOKDudDN736Z9qFdNSOYD3TDcTLhAtk=
+	t=1725649287; cv=none; b=ZnBgaaldkGlHdNymd6DkyqIRTo9sqYWYWLzYHlwTRw+c5bhT2tR/mzOarWjQELjTRIswofDewpSfXJa2DSjxifAgVqIkbqJYgof9/3LT0cBTz/O0RGOjFVW7A5TStAGYqAOksfULMWNvexutYqVG7h4p15Yb5YJiTvlAodua4mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725637702; c=relaxed/simple;
-	bh=KmcM3UCxcc7R3t7reYXNQQgCkdkc8cBRJX7dLKQVRTk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QD5AjbdHUYGUAC7vCpin2w+VYH1+WYShotwDp/LH9SzdcJC3M3MLPAoQkeYh45cpqXtBxHVli7wCS4k1Qvk0Pr/kgvRN71YP6fqnx94oI0OFafp9zVJNyjAXbGK92UZhCWHd7OLM3hiNgWqqQWFYSz2tL9+bgxZRAzKXNH8y7DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Po2zFaQV; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=QnV59Anz5y/x5uuidyf42ziLN+anSmW8b4PnB5tiUmg=; b=Po2zFaQVmZezwNAoU3m9YQ0bGD
-	WF8auzB1ZJ4+0AbVdTQqPDOVVLUoIYsdvX6qbYZlT2I9N2Af1azxdWZa8ZcFIqW2GwsSSxMvnGzjz
-	d4B+5hOL004jbS1d8FD3QYAepS1wOUAL2fwNf8HYQ/kvCOGmURF6PJqZRYV2s8OYqazY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1smbBw-006qC7-4j; Fri, 06 Sep 2024 17:48:08 +0200
-Date: Fri, 6 Sep 2024 17:48:08 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jacky Chou <jacky_chou@aspeedtech.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH net-next] net: ftgmac100: Fix potential NULL dereference
- in error handling
-Message-ID: <6c60860b-dd3c-4d1c-945b-edb8ef6a8618@lunn.ch>
-References: <3f196da5-2c1a-4f94-9ced-35d302c1a2b9@stanley.mountain>
- <SEYPR06MB51342F3EC5D457CC512937259D9E2@SEYPR06MB5134.apcprd06.prod.outlook.com>
+	s=arc-20240116; t=1725649287; c=relaxed/simple;
+	bh=MpEVbAyPkgS2RIDaDY2kT7HecOMe0wDRZ7Yd1eprxdQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=kwGq5VJOzR7b6yqwTTwZXUyieswT5lccyWqB4RxVlNqR0W+ZpbRfDTY2I3Udqvij87BFUFVJI7MO78tmPbziuUZWQpsElzJGROcFWONGTGa6eV8OGNqtEgICIkJzLO85v5K3Js3MyC4/I8KM+ufvy5sBnGitp8T3Yzee2fnbKFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=ne72PVYf; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 301EE42B32
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1725649285; bh=NDIPdnmQy9ilSKlrSZ9WvuqVY9Kkt4YQ0i0oKUR7mN8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ne72PVYfK3YAWJva+kDDD6zo20e/ppZDuRCNg4qv+nzgmPhfMlmWuNs3FfLBFzSUC
+	 +nSHoThHZfRIJR9e+Ap4V/9rfgLki74Y25GJDSiGFyNTI3/4Xo9DCCRpQ76lOCij0s
+	 WqVIwRtQOrRBhZG2ujxRHmNx5iqWIhxAKF+8/IiyQQl+y2X3Ykw5G4wI2vOgP1J+QS
+	 u3L4iXD0t8bL5tNhue8XaN67et/+XFeRSLeZnPeUIJR8qQuNRs42Kz7zO78A7BvHmb
+	 GKAmPwH3h3VJFw+YsJru3cmy7XQRLUm3szRXVXn4bQoDJsyeANvVDnGMAODjOm2M6X
+	 U9D5tXmA3m4PA==
+Received: from localhost (c-24-9-249-71.hsd1.co.comcast.net [24.9.249.71])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 301EE42B32;
+	Fri,  6 Sep 2024 19:01:25 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Andrew Kreimer <algonell@gmail.com>
+Cc: workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org, Andrew
+ Kreimer <algonell@gmail.com>
+Subject: Re: [PATCH] docs/process: fix typos
+In-Reply-To: <20240906081615.5409-1-algonell@gmail.com>
+References: <20240906081615.5409-1-algonell@gmail.com>
+Date: Fri, 06 Sep 2024 13:01:24 -0600
+Message-ID: <874j6sehdn.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SEYPR06MB51342F3EC5D457CC512937259D9E2@SEYPR06MB5134.apcprd06.prod.outlook.com>
+Content-Type: text/plain
 
-On Fri, Sep 06, 2024 at 06:06:14AM +0000, Jacky Chou wrote:
-> Hello,
-> 
-> > 
-> > We might not have a phy so we need to check for NULL before calling
-> > phy_stop(netdev->phydev) or it could lead to an Oops.
-> > 
-> > Fixes: e24a6c874601 ("net: ftgmac100: Get link speed and duplex for NC-SI")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> > ---
-> >  drivers/net/ethernet/faraday/ftgmac100.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/ethernet/faraday/ftgmac100.c
-> > b/drivers/net/ethernet/faraday/ftgmac100.c
-> > index f3cc14cc757d..0e873e6f60d6 100644
-> > --- a/drivers/net/ethernet/faraday/ftgmac100.c
-> > +++ b/drivers/net/ethernet/faraday/ftgmac100.c
-> > @@ -1565,7 +1565,8 @@ static int ftgmac100_open(struct net_device
-> > *netdev)
-> >  	return 0;
-> > 
-> >  err_ncsi:
-> > -	phy_stop(netdev->phydev);
-> > +	if (netdev->phydev)
-> > +		phy_stop(netdev->phydev);
-> When using " use-ncsi" property, the driver will register a fixed-link phy device and 
-> bind to netdev at probe stage.
-> 
-> if (np && of_get_property(np, "use-ncsi", NULL)) {
-> 
-> 		......
-> 
-> 		phydev = fixed_phy_register(PHY_POLL, &ncsi_phy_status, NULL);
-> 		err = phy_connect_direct(netdev, phydev, ftgmac100_adjust_link,
-> 					 PHY_INTERFACE_MODE_MII);
-> 		if (err) {
-> 			dev_err(&pdev->dev, "Connecting PHY failed\n");
-> 			goto err_phy_connect;
-> 		}
-> } else if (np && of_phy_is_fixed_link(np)) {
-> 
-> Therefore, it does not need to check if the point is NULL in this error handling.
-> Thanks.
+Andrew Kreimer <algonell@gmail.com> writes:
 
-Are you actually saying:
+> Fix typos in documentation.
+>
+> Signed-off-by: Andrew Kreimer <algonell@gmail.com>
+> ---
+>  Documentation/process/backporting.rst    | 6 +++---
+>  Documentation/process/coding-style.rst   | 2 +-
+>  Documentation/process/maintainer-tip.rst | 2 +-
+>  3 files changed, 5 insertions(+), 5 deletions(-)
 
-        if (netdev->phydev) {
-                /* If we have a PHY, start polling */
-                phy_start(netdev->phydev);
-        }
+Unfortunately, this one doesn't apply; backporting.rst was already fixed
+by somebody else.  Can you respin your remaining changes against current
+docs-next and resubmit?
 
-is wrong, it is guaranteed there is always a phydev?
+Thanks,
 
-	Andrew
+jon
 

@@ -1,167 +1,115 @@
-Return-Path: <kernel-janitors+bounces-5243-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-5245-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EFE996ECF6
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2024 09:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7B096ED10
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2024 10:02:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A5FE1F277F5
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2024 07:57:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 344E31F26F45
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2024 08:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03AD015278E;
-	Fri,  6 Sep 2024 07:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6F3156887;
+	Fri,  6 Sep 2024 08:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ae7PY2sX"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960E21514EE
-	for <kernel-janitors@vger.kernel.org>; Fri,  6 Sep 2024 07:57:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.85.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBBD156677;
+	Fri,  6 Sep 2024 08:01:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725609453; cv=none; b=HxH1IbuorqrK0ACylRHfjQuNZDonNbPP6vyA3o9ul5dEi7a2YgLfIrwbomHoofwGAVoYp14dlxNWH37UCrCDwS1ahA7+3Lx7iuO9iUi5P55LnpeIXyPr7tecil9H50s4pqem8DeJGKbm39oC9vs3u9KBply0To6l2Uz9a7Ujj+s=
+	t=1725609713; cv=none; b=JroZ64TWefKX8mX1ld3KBd6VzkoXpiVIjjqd7yEXyR3syMi4nXMMEhpklub2gmOmRDzvwgF2nyAOtewpO1hBAlnsRMjgkFEq1kOuV1aMoVXlywVLi8um+Pxrm+U1gi8lMMP/hziFZSaVYdB0hPoorDq4Bef7DVsmA3O9EDFxiG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725609453; c=relaxed/simple;
-	bh=If1Z3ucK+BshlFAuR4+9cyHkrKZMcAXU5BabL5q1yY4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=LBFW1hkSNznrHr+vZZDDUMKo9kpIs9ZEhvYytePjQbyLOFnyzPTgU9VbKo3JXMNjpT/KAZavH3rteUj9P6LVqaSUjM7IUOO9OFbesd9LYbZh1mdpln5PwNoMtvFEkFRmemPrbYM/DjAgQyjVlaBkgvGEIhdOVCm/z5FqUZhs0/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.85.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-272-62-3r_aIMM6qyocEmmOHaQ-1; Fri, 06 Sep 2024 08:57:28 +0100
-X-MC-Unique: 62-3r_aIMM6qyocEmmOHaQ-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Fri, 6 Sep
- 2024 08:56:44 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Fri, 6 Sep 2024 08:56:44 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Mauro Carvalho Chehab' <mchehab+huawei@kernel.org>, Christophe JAILLET
-	<christophe.jaillet@wanadoo.fr>, Hans de Goede <hdegoede@redhat.com>
-CC: Mauro Carvalho Chehab <mchehab@kernel.org>, Sakari Ailus
-	<sakari.ailus@linux.intel.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "kernel-janitors@vger.kernel.org"
-	<kernel-janitors@vger.kernel.org>, "linux-media@vger.kernel.org"
-	<linux-media@vger.kernel.org>, "linux-staging@lists.linux.dev"
-	<linux-staging@lists.linux.dev>
-Subject: RE: [PATCH] media: atomisp: Use clamp_t() in
- ia_css_eed1_8_vmem_encode()
-Thread-Topic: [PATCH] media: atomisp: Use clamp_t() in
- ia_css_eed1_8_vmem_encode()
-Thread-Index: AQHbACQzagH7UmA9AUeCwJRVG1DaELJKYshg
-Date: Fri, 6 Sep 2024 07:56:44 +0000
-Message-ID: <8c8b5727abf44e429727b70365cc3048@AcuMS.aculab.com>
-References: <155aba6ab759e98f66349e6bb4f69e2410486c09.1722084704.git.christophe.jaillet@wanadoo.fr>
- <20240906081542.5cb0c142@foz.lan>
-In-Reply-To: <20240906081542.5cb0c142@foz.lan>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+	s=arc-20240116; t=1725609713; c=relaxed/simple;
+	bh=A73/f2cF8wsLXqf9u1MYyL/XHsVItL+vlFVV1EmpWV8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U5q0+Q3eiD154BlfJJkechdpii9DJIG6ZT178nDxoo1LyAEpUM6/wbcuv/ri5qt8uhgJWLYmJGMd5SHlJaf2IifTBiMAptl1+ZpyRoDna6QQrVADkfRfeVyk7XpIuYNVwnvhHLlOLM1qWBM3QZMQ4e6VZ+1QDQFqav8BELfSpZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ae7PY2sX; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-42c7b5b2d01so17518605e9.3;
+        Fri, 06 Sep 2024 01:01:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725609710; x=1726214510; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hkyikhZMpOT8gzw/xg+wgtlCLgPqat5O+1E0+bcDLIQ=;
+        b=ae7PY2sXCaVmU3BNZrO9zOZ9/D3lDKTrnUo02pI8APKbEFgj59lccuEYsJbyKbE1GX
+         A4EMt6IE+3+PeU4cK712tixlEervLx0NhgZVaQwW903YBrWqyzbgBXh/TrGwwDVtwhPc
+         tUFDRcTYVTV5VhWDcOt+t3PeP8eWojC8FQirq6PYhcE+1kaTPtBzRo10jLAn5H3QcGN4
+         ZZTsfdtwwEQsZkvLMEDu+3k9cUSaOZop3DedE8hypeeXte5WNN+dHL3vJFhJPn4GeO/M
+         1+L+80oTkvru2YgRrKU3jJYQbSRButNep4fkHcQZuZWdH7HhK0Tv1P+LZnlBpKc0CcbG
+         y1nA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725609710; x=1726214510;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hkyikhZMpOT8gzw/xg+wgtlCLgPqat5O+1E0+bcDLIQ=;
+        b=W/Rbl4+5c7qSBrBF4pz+BjnaP1PX+TkNv+kumsTUudo3Y3j44R2dvXaymK3EUfF0Hp
+         2Qp6jU7DaeYZkoXUCnxI+Tpsy+9men9kSdeiyVKWaGnUHhgNpK6NJ9TsT9j7HsmTTHra
+         w6F56sDrUnX54T25a6sJiCpDHo825K6325z363vilWjfzEZjh8sNFHOBofHkT1vUeHwI
+         mYawuPWMwhUloCVfMmyow/PMsL7+Z0IvGZ0g//ZZrRrSCtndbmWuLSOEka7Ku/kJtpvF
+         5XaulBtaSnFAiNPqI9k1xmTjStOcqBRfObKYZv0Cf4FiHzlpaVhLT5VtlMyzU+oMpBiv
+         P9YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU+V2ZDJQmgynu7QLMb91dsZJOs6Q9AIgXgyNFeOkpb2xdFEZLu9KDmYK+uAzmwZJDh+XfPzXy/VE97Rjx2@vger.kernel.org, AJvYcCUQpTPjbzoJNe6of4/Ut8sKwCGF2sjkQ+8Mw7FjJy0kRAL0eHIudes24QZn+Qe1ecvGe60DPqycFzr7vEGc7So=@vger.kernel.org, AJvYcCVbSvCPkQzGqrf/AJmv5Vlpq7fkc7nh3d7LfCeNG1QwBH/sIsxYnOgOLOeF4S+8qCHbBggeotFPr1ki@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzKtVeAlHc8ukZsokBRF36R6fD604bSshqtTMbbG7MRg1HTpyG
+	HVptbD5iYZXpXPTZXArYLzyq7PQIbSHaXBYmI768FBdpMsilRT3A8gOsObyv
+X-Google-Smtp-Source: AGHT+IE9zvSX1pGjBvhr0lwumfMe5aPctcurwZt1TsZp7JV2U5tLPlrVh/c7rhSvpwdty9ypTHJMZw==
+X-Received: by 2002:a05:600c:510e:b0:426:545b:ec00 with SMTP id 5b1f17b1804b1-42c9f98b589mr14070935e9.19.1725609709052;
+        Fri, 06 Sep 2024 01:01:49 -0700 (PDT)
+Received: from void.void ([141.226.13.165])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ca05c29bfsm11954555e9.5.2024.09.06.01.01.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Sep 2024 01:01:48 -0700 (PDT)
+From: Andrew Kreimer <algonell@gmail.com>
+To: Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Carl Vanderlip <quic_carlv@quicinc.com>,
+	Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Andrew Kreimer <algonell@gmail.com>
+Subject: [PATCH] accel/qaic: Fix a typo
+Date: Fri,  6 Sep 2024 11:00:59 +0300
+Message-ID: <20240906080136.4423-1-algonell@gmail.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-From: Mauro Carvalho Chehab
-> Sent: 06 September 2024 07:16
->=20
-> Em Sat, 27 Jul 2024 14:51:56 +0200
-> Christophe JAILLET <christophe.jaillet@wanadoo.fr> escreveu:
->=20
-> > Using clamp_t() instead of min_t(max_t()) is easier to read.
-> >
-> > It also reduces the size of the preprocessed files by ~ 193 ko.
-> > (see [1] for a discussion about it)
-> >
-> > $ ls -l ia_css_eed1_8.host*.i
-> >  4829993 27 juil. 14:36 ia_css_eed1_8.host.old.i
-> >  4636649 27 juil. 14:42 ia_css_eed1_8.host.new.i
-> >
-> > [1]: https://lore.kernel.org/all/23bdb6fc8d884ceebeb6e8b8653b8cfe@AcuMS=
-.aculab.com/
-> >
-> > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> > ---
-> >  .../isp/kernels/eed1_8/ia_css_eed1_8.host.c   | 24 +++++++++----------
-> >  1 file changed, 12 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/drivers/staging/media/atomisp/pci/isp/kernels/eed1_8/ia_cs=
-s_eed1_8.host.c
-> b/drivers/staging/media/atomisp/pci/isp/kernels/eed1_8/ia_css_eed1_8.host=
-.c
-> > index e4fc90f88e24..96c13ebc4331 100644
-> > --- a/drivers/staging/media/atomisp/pci/isp/kernels/eed1_8/ia_css_eed1_=
-8.host.c
-> > +++ b/drivers/staging/media/atomisp/pci/isp/kernels/eed1_8/ia_css_eed1_=
-8.host.c
-> > @@ -172,25 +172,25 @@ ia_css_eed1_8_vmem_encode(
-> >  =09=09base =3D shuffle_block * i;
-> >
-> >  =09=09for (j =3D 0; j < IA_CSS_NUMBER_OF_DEW_ENHANCE_SEGMENTS; j++) {
-> > -=09=09=09to->e_dew_enh_x[0][base + j] =3D min_t(int, max_t(int,
-> > -=09=09=09=09=09=09=09     from->dew_enhance_seg_x[j], 0),
-> > -=09=09=09=09=09=09=09     8191);
-> > -=09=09=09to->e_dew_enh_y[0][base + j] =3D min_t(int, max_t(int,
-> > -=09=09=09=09=09=09=09     from->dew_enhance_seg_y[j], -8192),
-> > -=09=09=09=09=09=09=09     8191);
-> > +=09=09=09to->e_dew_enh_x[0][base + j] =3D clamp_t(int,
-> > +=09=09=09=09=09=09=09       from->dew_enhance_seg_x[j],
-> > +=09=09=09=09=09=09=09       0, 8191);
-> > +=09=09=09to->e_dew_enh_y[0][base + j] =3D clamp_t(int,
-> > +=09=09=09=09=09=09=09       from->dew_enhance_seg_y[j],
-> > +=09=09=09=09=09=09=09       -8192, 8191);
->=20
-> Such change introduces two warnings on smatch:
->=20
-> drivers/staging/media/atomisp/pci/isp/kernels/eed1_8/ia_css_eed1_8.host.c=
-:
-> drivers/staging/media/atomisp/pci/isp/kernels/eed1_8/ia_css_eed1_8.host.c=
-:177
-> ia_css_eed1_8_vmem_encode() warn: assigning (-8192) to unsigned variable =
-'to->e_dew_enh_y[0][base +
-> j]'
-> drivers/staging/media/atomisp/pci/isp/kernels/eed1_8/ia_css_eed1_8.host.c=
-:
-> drivers/staging/media/atomisp/pci/isp/kernels/eed1_8/ia_css_eed1_8.host.c=
-:182
-> ia_css_eed1_8_vmem_encode() warn: assigning (-8192) to unsigned variable =
-'to->e_dew_enh_a[0][base +
-> j]'
->=20
-> Should dew_enhance_seg_x and dew_enhance_seg_y be converted to signed?
+Fix a typo in documentation.
 
-Someone clearly needs to read the code and work out what it is doing.
+Signed-off-by: Andrew Kreimer <algonell@gmail.com>
+---
+ Documentation/accel/qaic/qaic.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-First stage is to use clamp() (not clamp_t) to get warnings from the
-compiler for the RHS.
-The snippet implies that the _x values are unsigned but the _y ones
-can be negative.
-Holding negative values in unsigned variables is a recipe for disaster.
-
-=09David
-
-
->=20
->=20
-> Thanks,
-> Mauro
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
+diff --git a/Documentation/accel/qaic/qaic.rst b/Documentation/accel/qaic/qaic.rst
+index efb7771273bb..628bf2f7a416 100644
+--- a/Documentation/accel/qaic/qaic.rst
++++ b/Documentation/accel/qaic/qaic.rst
+@@ -93,7 +93,7 @@ commands (does not impact QAIC).
+ uAPI
+ ====
+ 
+-QAIC creates an accel device per phsyical PCIe device. This accel device exists
++QAIC creates an accel device per physical PCIe device. This accel device exists
+ for as long as the PCIe device is known to Linux.
+ 
+ The PCIe device may not be in the state to accept requests from userspace at
+-- 
+2.46.0
 
 

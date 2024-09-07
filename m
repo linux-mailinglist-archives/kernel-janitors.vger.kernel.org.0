@@ -1,89 +1,64 @@
-Return-Path: <kernel-janitors+bounces-5262-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-5264-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D323C970251
-	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Sep 2024 15:10:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 699B3970291
+	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Sep 2024 16:00:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B721283056
-	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Sep 2024 13:10:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDF251F22324
+	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Sep 2024 14:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF29015C13B;
-	Sat,  7 Sep 2024 13:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E6315D5BB;
+	Sat,  7 Sep 2024 14:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OYiwctEG"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="gDtvx9jA"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from msa.smtpout.orange.fr (smtp-66.smtpout.orange.fr [80.12.242.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53E915ADA7;
-	Sat,  7 Sep 2024 13:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FDD15575B;
+	Sat,  7 Sep 2024 14:00:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725714622; cv=none; b=F3NcsJkXZBYog6sK545gKPDJ0rET06Ozb6F3xyfg5Ch/7ppy4WoNpUyR+qFQFk9dyP7SRDkC8Fm6HTqS5y5xWjOtGz47vJky+AzDQqmDWsGGJhLsdQ1X2dCKZOpigc+mDyR831JUzghOtiw+zq6QrpwB0qsU5yCp5il79PgOKcI=
+	t=1725717629; cv=none; b=Ffv++o9yRwxX6m+cflnsry5NzbdZXH81XWiYUOOdRx+IGD3nE5KzJVwRPeup6Y0ibCinheVlHbXOgki3MnZHTIlpnsgLZZ7+55mW9d/ffBXCvAl76dZOySWpaq8WhCJII6StAvTj7AsZqhFmJPaMBt0TxKfpA1yzUiiIeeRGBKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725714622; c=relaxed/simple;
-	bh=CxPCxWvN8cI6T67bY/RNZ7fNp8GmAqt/ncYb97a2G1U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uObm3oaEPElFx9MzUl6vK9YRo+vC0ELj32iaFqeN7wN7/wA+Xojvnp1T6ghu7MtrCsgWhEHAmJ7bFFA5oo9DAe+HAl54/B9cL+QbWIQ9qxrLHbTzScOI9Ynl2JCzhDdC1+x4lnhqhii2p6mJFwAdGGtAv6V2CATQ65WEsX1wYh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OYiwctEG; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-427fc97a88cso24160865e9.0;
-        Sat, 07 Sep 2024 06:10:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725714619; x=1726319419; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SnZ926g9psemexTKOW5FYwYvLAMVycIhWdzHzhBre4A=;
-        b=OYiwctEGeqWcDvyeb7inx8u3+UNbkOAuElMDS/rYzvXIz01dt5csYQ2KyPshK29g4k
-         iL3sjDFpU/xq4fE3OakPOerpqAVZVnimoNIRY7pw4vEGuB1bo7mwiPwNM2YSj8h7t+LB
-         V9/Q0h3uq/f5u9Unkm1V7O0FAVOBou8t33hgdWGyhLyO3++ZrYUG4CldaNZol2oJAeA/
-         j3TWxDL2GrHl2b9DfQcVVqzGtF9Bq7mLuwl1M8B9jwRlEajqrihqH3im/aMpuVjc4pDl
-         IegcyvhWhY6pdxBic3vU/AxgP2OwqkBG/CK0mH04tT6Kvjlg3gAFbL1V9B9VTdpI2nLa
-         +9JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725714619; x=1726319419;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SnZ926g9psemexTKOW5FYwYvLAMVycIhWdzHzhBre4A=;
-        b=SzLprqBSizCtb9sqBakCHa9r0HXvqwuI6lwN7S5AYkI/ofOXmWrfSi4Qdodz9JJXov
-         OYRk+HOla4aCh97gUHBJtQQHouRnIG4pelTmaJyUgtgsJJyIAVKCko3d0WaQnzo4kvsJ
-         iKlGt60kTLWzYV7IyYmj/axoG/sNmgp9NcXsqM/rW9qXy5JbhGmpESgKGo/j00JCVQnf
-         oMwFA7j5+UlcAENCKU1SSOsZCyFjyIe3M76m8TiLBar4O4QFCW/hH0h94bnDDH6ZrFMs
-         GyIMnGv1Dy/Q9DN4+mVP5AB6n72nLBMjl8jXnvV33wG1pF6IOJcZc/5hTJTMg1ceE3on
-         u2lg==
-X-Forwarded-Encrypted: i=1; AJvYcCVcF7tZPeGWPjuH6uWlE7RU/Wz9pvCQopApPpYyvUHofyckRqyWUwoj+4D1vcMVkIsGg4wO47lvFFZEu/wL@vger.kernel.org, AJvYcCVkJwBLsldKl8/Ek0JtbD6jgGqww4AnerXGeRv0Di+aZN0jzM86L7ptMK6mmcdqwCXjke8NxRIgdoCoGacCYLbpDg==@vger.kernel.org, AJvYcCXHPLnvMAT2bxGrGKVxNVU4ManHyQSWylEtsP5/2xi0C/jiYoS8kfMVdPq+t6rCL0AzEioa4rVoAjlB6xMoz2o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTXpsvteFVDpjKLgpWlmwxN5TvtOhuDTEVmNVyXkMBcvZOYXpj
-	CJMO62zU20dkeXlQOQf8imAWsyPvpbk8MOvc3MrS7czyM9X1liZG
-X-Google-Smtp-Source: AGHT+IH8sPoSI1MlkKkQgd88D2zs4MDzS00EQ3O94oBq2M4RIL+h/FbKuQgMGDgd6hTzGMt/mgH3sg==
-X-Received: by 2002:a05:600c:3483:b0:426:5440:854a with SMTP id 5b1f17b1804b1-42c9f97b8abmr41014505e9.1.1725714619042;
-        Sat, 07 Sep 2024 06:10:19 -0700 (PDT)
-Received: from void.void ([141.226.8.125])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378956d35c4sm1391535f8f.87.2024.09.07.06.10.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Sep 2024 06:10:18 -0700 (PDT)
-From: Andrew Kreimer <algonell@gmail.com>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Liang Kan <kan.liang@linux.intel.com>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1725717629; c=relaxed/simple;
+	bh=s27k5mEy8VSUEgorKgZR16XXq3J5gswprF0OHfkaZts=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Yo4ve4TU8KXHydAzJdCyrjYbs5ZeisL8GPw1A5aui69UVNB4EHIW98+7StSHa32gvvd1Wph71AltwOkTTIxo87Zn+mmowaixjEFQoASjvtDqrlQy/jOPpWxinTgY9lt7vnMwZ9i+gIWC84OnWglpi3lokwqQ7MS5wcug2rFyrYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=gDtvx9jA; arc=none smtp.client-ip=80.12.242.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id mvqKs8Zr7lt0qmvqKsJ2Fc; Sat, 07 Sep 2024 15:51:13 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1725717073;
+	bh=hNavVn77VF0lTtMSxrk81smDP2O/T7hN077eeKQGcV8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=gDtvx9jApf+CYTLvtwgutidBZrrFxmNH+eiWJAOmz3Ju2pfIvkZsbwwx/sz0wulkp
+	 5iLLdckTEVxw+eqp4IGLQIIU5HMUsylQohKsn5Jwc4ZKjJB7YzLaIpIbGzPKStO2xq
+	 ANzskTB36HG3wGNilPejxmCnT2cxLOu79ux+5wrguzDow9t15nQ52VjgZDM9qk/RtH
+	 JzNQZjLA6t2zKz+vek0UKPP1lLEXWqYL0HXoopWKwUCr9mgTNQhBuTsbWJe3Doz1Yt
+	 F2Y/mWDX0VG+JtKmfC4sVAklADEoI95hr9FfkbT5V90gNfeTL3JZ66vrjnnxD++5RL
+	 VqCkmVsvc5+fQ==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 07 Sep 2024 15:51:13 +0200
+X-ME-IP: 90.11.132.44
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Cosmin Tanislav <cosmin.tanislav@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
 	kernel-janitors@vger.kernel.org,
-	Andrew Kreimer <algonell@gmail.com>
-Subject: [PATCH] perf tools: Fix a typo
-Date: Sat,  7 Sep 2024 16:10:01 +0300
-Message-ID: <20240907131006.18510-1-algonell@gmail.com>
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-iio@vger.kernel.org
+Subject: [PATCH] =?UTF-8?q?iio:=20addac:=20ad74xxx:=20Constify=20struct=20?= =?UTF-8?q?iio=5Fchan=5Fspec=E2=80=8B?=
+Date: Sat,  7 Sep 2024 15:51:07 +0200
+Message-ID: <da291278e78b983ea2e657a25769f7d82ea2a6d0.1725717045.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -91,29 +66,170 @@ List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Fix a typo in comments.
+'struct iio_chan_spec' are not modified in these drivers.
 
-Reported-by: Matthew Wilcox <willy@infradead.org>
-Signed-off-by: Andrew Kreimer <algonell@gmail.com>
+Constifying this structure moves some data to a read-only section, so
+increase overall security.
+
+On a x86_64, with allmodconfig:
+Before:
+======
+   text	   data	    bss	    dec	    hex	filename
+  35749	   5879	    384	  42012	   a41c	drivers/iio/addac/ad74115.o
+  32242	   3297	    384	  35923	   8c53	drivers/iio/addac/ad74413r.o
+
+After:
+=====
+   text	   data	    bss	    dec	    hex	filename
+  39109	   2519	    384	  42012	   a41c	drivers/iio/addac/ad74115.o
+  33842	   1697	    384	  35923	   8c53	drivers/iio/addac/ad74413r.o
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- tools/perf/builtin-help.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Compile tested only
+---
+ drivers/iio/addac/ad74115.c  | 18 +++++++++---------
+ drivers/iio/addac/ad74413r.c | 21 +++++++++++----------
+ 2 files changed, 20 insertions(+), 19 deletions(-)
 
-diff --git a/tools/perf/builtin-help.c b/tools/perf/builtin-help.c
-index b2a368ae295a..0854d3cd9f6a 100644
---- a/tools/perf/builtin-help.c
-+++ b/tools/perf/builtin-help.c
-@@ -417,7 +417,7 @@ static void open_html(const char *path)
- static int show_html_page(const char *perf_cmd)
- {
- 	const char *page = cmd_to_page(perf_cmd);
--	char *page_path; /* it leaks but we exec bellow */
-+	char *page_path; /* it leaks but we exec below */
+diff --git a/drivers/iio/addac/ad74115.c b/drivers/iio/addac/ad74115.c
+index 12dc43d487b4..bdbdd67536ff 100644
+--- a/drivers/iio/addac/ad74115.c
++++ b/drivers/iio/addac/ad74115.c
+@@ -191,7 +191,7 @@ enum ad74115_gpio_mode {
+ };
  
- 	if (get_html_page_path(&page_path, page) < 0)
- 		return -1;
+ struct ad74115_channels {
+-	struct iio_chan_spec		*channels;
++	const struct iio_chan_spec	*channels;
+ 	unsigned int			num_channels;
+ };
+ 
+@@ -1295,46 +1295,46 @@ static const struct iio_info ad74115_info = {
+ 	_AD74115_ADC_CHANNEL(_type, index, BIT(IIO_CHAN_INFO_SCALE)	\
+ 					   | BIT(IIO_CHAN_INFO_OFFSET))
+ 
+-static struct iio_chan_spec ad74115_voltage_input_channels[] = {
++static const struct iio_chan_spec ad74115_voltage_input_channels[] = {
+ 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV1),
+ 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+ };
+ 
+-static struct iio_chan_spec ad74115_voltage_output_channels[] = {
++static const struct iio_chan_spec ad74115_voltage_output_channels[] = {
+ 	AD74115_DAC_CHANNEL(IIO_VOLTAGE, AD74115_DAC_CH_MAIN),
+ 	AD74115_ADC_CHANNEL(IIO_CURRENT, AD74115_ADC_CH_CONV1),
+ 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+ };
+ 
+-static struct iio_chan_spec ad74115_current_input_channels[] = {
++static const struct iio_chan_spec ad74115_current_input_channels[] = {
+ 	AD74115_ADC_CHANNEL(IIO_CURRENT, AD74115_ADC_CH_CONV1),
+ 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+ };
+ 
+-static struct iio_chan_spec ad74115_current_output_channels[] = {
++static const struct iio_chan_spec ad74115_current_output_channels[] = {
+ 	AD74115_DAC_CHANNEL(IIO_CURRENT, AD74115_DAC_CH_MAIN),
+ 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV1),
+ 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+ };
+ 
+-static struct iio_chan_spec ad74115_2_wire_resistance_input_channels[] = {
++static const struct iio_chan_spec ad74115_2_wire_resistance_input_channels[] = {
+ 	_AD74115_ADC_CHANNEL(IIO_RESISTANCE, AD74115_ADC_CH_CONV1,
+ 			     BIT(IIO_CHAN_INFO_PROCESSED)),
+ 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+ };
+ 
+-static struct iio_chan_spec ad74115_3_4_wire_resistance_input_channels[] = {
++static const struct iio_chan_spec ad74115_3_4_wire_resistance_input_channels[] = {
+ 	AD74115_ADC_CHANNEL(IIO_RESISTANCE, AD74115_ADC_CH_CONV1),
+ 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+ };
+ 
+-static struct iio_chan_spec ad74115_digital_input_logic_channels[] = {
++static const struct iio_chan_spec ad74115_digital_input_logic_channels[] = {
+ 	AD74115_DAC_CHANNEL(IIO_VOLTAGE, AD74115_DAC_CH_COMPARATOR),
+ 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV1),
+ 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+ };
+ 
+-static struct iio_chan_spec ad74115_digital_input_loop_channels[] = {
++static const struct iio_chan_spec ad74115_digital_input_loop_channels[] = {
+ 	AD74115_DAC_CHANNEL(IIO_CURRENT, AD74115_DAC_CH_MAIN),
+ 	AD74115_DAC_CHANNEL(IIO_VOLTAGE, AD74115_DAC_CH_COMPARATOR),
+ 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV1),
+diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
+index 2410d72da49b..1e2f6d9804e3 100644
+--- a/drivers/iio/addac/ad74413r.c
++++ b/drivers/iio/addac/ad74413r.c
+@@ -45,8 +45,8 @@ struct ad74413r_channel_config {
+ };
+ 
+ struct ad74413r_channels {
+-	struct iio_chan_spec	*channels;
+-	unsigned int		num_channels;
++	const struct iio_chan_spec	*channels;
++	unsigned int			num_channels;
+ };
+ 
+ struct ad74413r_state {
+@@ -1138,34 +1138,34 @@ static const struct iio_info ad74413r_info = {
+ 	AD74413R_ADC_CHANNEL(IIO_CURRENT,  BIT(IIO_CHAN_INFO_SCALE)	\
+ 			     | BIT(IIO_CHAN_INFO_OFFSET))
+ 
+-static struct iio_chan_spec ad74413r_voltage_output_channels[] = {
++static const struct iio_chan_spec ad74413r_voltage_output_channels[] = {
+ 	AD74413R_DAC_CHANNEL(IIO_VOLTAGE, BIT(IIO_CHAN_INFO_SCALE)),
+ 	AD74413R_ADC_CURRENT_CHANNEL,
+ };
+ 
+-static struct iio_chan_spec ad74413r_current_output_channels[] = {
++static const struct iio_chan_spec ad74413r_current_output_channels[] = {
+ 	AD74413R_DAC_CHANNEL(IIO_CURRENT, BIT(IIO_CHAN_INFO_SCALE)),
+ 	AD74413R_ADC_VOLTAGE_CHANNEL,
+ };
+ 
+-static struct iio_chan_spec ad74413r_voltage_input_channels[] = {
++static const struct iio_chan_spec ad74413r_voltage_input_channels[] = {
+ 	AD74413R_ADC_VOLTAGE_CHANNEL,
+ };
+ 
+-static struct iio_chan_spec ad74413r_current_input_channels[] = {
++static const struct iio_chan_spec ad74413r_current_input_channels[] = {
+ 	AD74413R_ADC_CURRENT_CHANNEL,
+ };
+ 
+-static struct iio_chan_spec ad74413r_current_input_loop_channels[] = {
++static const struct iio_chan_spec ad74413r_current_input_loop_channels[] = {
+ 	AD74413R_DAC_CHANNEL(IIO_CURRENT, BIT(IIO_CHAN_INFO_SCALE)),
+ 	AD74413R_ADC_CURRENT_CHANNEL,
+ };
+ 
+-static struct iio_chan_spec ad74413r_resistance_input_channels[] = {
++static const struct iio_chan_spec ad74413r_resistance_input_channels[] = {
+ 	AD74413R_ADC_CHANNEL(IIO_RESISTANCE, BIT(IIO_CHAN_INFO_PROCESSED)),
+ };
+ 
+-static struct iio_chan_spec ad74413r_digital_input_channels[] = {
++static const struct iio_chan_spec ad74413r_digital_input_channels[] = {
+ 	AD74413R_ADC_VOLTAGE_CHANNEL,
+ };
+ 
+@@ -1270,7 +1270,8 @@ static int ad74413r_setup_channels(struct iio_dev *indio_dev)
+ {
+ 	struct ad74413r_state *st = iio_priv(indio_dev);
+ 	struct ad74413r_channel_config *config;
+-	struct iio_chan_spec *channels, *chans;
++	const struct iio_chan_spec *chans;
++	struct iio_chan_spec *channels;
+ 	unsigned int i, num_chans, chan_i;
+ 	int ret;
+ 
 -- 
 2.46.0
 

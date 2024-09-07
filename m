@@ -1,108 +1,235 @@
-Return-Path: <kernel-janitors+bounces-5263-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-5265-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D4297028E
-	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Sep 2024 15:59:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2664E9702E9
+	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Sep 2024 17:22:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE75BB219EB
-	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Sep 2024 13:59:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2201F1C2189E
+	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Sep 2024 15:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37AE15D5AB;
-	Sat,  7 Sep 2024 13:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D9F15F3F3;
+	Sat,  7 Sep 2024 15:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="SYH5bcSp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+oVUUX5"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-21.smtpout.orange.fr [80.12.242.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F8C1591F1;
-	Sat,  7 Sep 2024 13:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A50134B1;
+	Sat,  7 Sep 2024 15:22:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725717549; cv=none; b=h71TXYzU1+sjeV4bNgekHBqvQQ7nM51ucL6iOPcj02lLD4LUFet0W7U2wlUtLUtmbqZFVy0idbX4/YRgoo964dju1Zps4iERVTVkD3oZ1eFbbkitAwRpKAk5cGWEtqpy9ZHyyhB/i2rCC3MniZhjOxob9YNqYBhcUlB/gJAgSuo=
+	t=1725722554; cv=none; b=sKMt1Zwk4Nf5M+goPFpnIqvIJr/u4loLgMXb5NL4DsDZPcyMdxwCthrRz2kjEBUOnDhN9f7Dn/f2MChIAIEhM03AxPtrrZCRnEMnQzGbh0XzzYp59ydK+Yj7vO1XWPWjyAGqQ85N/oeVgrTKrmgg+MOigbvjdLc+RQuqCmEI5KI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725717549; c=relaxed/simple;
-	bh=SqANuviM84Av24qoAk3zFpgfL+6iOF2E8YUfIHlf9hU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XI79+ZI2ZFTYSI5K3iIJk52un48/aD+YSt6AaCIiry6iP/v7gLCS04DyTgt89HcBjxftjvZcUQO3xfAzMrUHd4kSpJ+zP3tcW+E6GYtWZW5dodaYdeGdHtEjnC7VHTJa/X4P8g+zVIbRSpsLqxVsvpQ4ERg+dgpuS2LVblZyG0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=SYH5bcSp; arc=none smtp.client-ip=80.12.242.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from fedora.home ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id mvxns88H1730VmvxnssasU; Sat, 07 Sep 2024 15:58:59 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1725717539;
-	bh=32/HoL3jcmr5qRrQpL/j/PmxL/AzMzQm8GZ2DrNSaj4=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=SYH5bcSp2M88X2ZraPu/u7TNfNAsBTnp3PHyY7KTnJpgeDHJDgOJdwMleML/RCM58
-	 wVqvs1uFJBfqUofUptcQdrPCKyBOINK5cBXlT6QxlW4lOs40BM3w+VRNqa1nGHpPsq
-	 i9OKzavdcUxMthx0qta40gM4byrjb1/YLLnM5nnTG9SkzwicwGDthFJn27R2uESweG
-	 Fs7o21d0MoH5p2ukXIuoUjt+xLsIW4ScdGhPiaKx8UfO6pNBXZ72qz0L5MCMtr4xWm
-	 hrw28A1sZ//tzKXXBzQTULG1wh0td2A1WlhwAh7usAgCJ2cSiUduHuh/WJEwI/CbH4
-	 TkRgu9Ti7d+5Q==
-X-ME-Helo: fedora.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 07 Sep 2024 15:58:59 +0200
-X-ME-IP: 90.11.132.44
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	linux-renesas-soc@vger.kernel.org,
-	linux-phy@lists.infradead.org
-Subject: [PATCH v2] phy: renesas: rcar-gen3-usb2: Fix an error handling path in rcar_gen3_phy_usb2_probe()
-Date: Sat,  7 Sep 2024 15:58:52 +0200
-Message-ID: <4efe2d0419cbe98163e2422ebe0c7896b8a5efed.1725717505.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1725722554; c=relaxed/simple;
+	bh=/xoS0KLcsD6th5CKrXDqMl+P3JjyyA0HfpOnHXW8ETo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JgyhGH1SoBIJLxNUb2FYXkSgQG6S6IGP6XbKth6TjHpks6LvhgXdJ7ghLTxuF9qn9iek/dcmu9/j7w/EUkQjCukpoVqGavfdEMRIy3tGZSxNR7KnwQnPruZdKg419MuXZYYo6MUzSsXpYDutMrQdbrm/Tb4i2juV6+WXu8cfAHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+oVUUX5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E117C4CEC2;
+	Sat,  7 Sep 2024 15:22:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725722554;
+	bh=/xoS0KLcsD6th5CKrXDqMl+P3JjyyA0HfpOnHXW8ETo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=W+oVUUX59EP0zFLzTloBipHC5+yUQSx0zWgxulpGGtv3vKFeW7o/jNFFHf5JDw6or
+	 5iy06SZv6iS+/VPQGIXJICZHXChB7e95BQSXEXZgZUhss85mc3hjHvg+2ktVa9cjBz
+	 O4lQGGoXN2FE2k4653o0vWxS6NHuRxwTiF5Wq5xvVBK/F2bBR8k2UAeTTCXZyYW5SB
+	 g2OuJaKdM8udMRA8vNPlziXzyy3THetx0E3BsrzP2G4Y9x9sneFT2N4ZB+Jfeq+VWI
+	 gyWJsfPFtN2L35aQTe4LyFAVpleAkQXrCVe5G43v0H2d11wWzu9pRmzbV+vR+qNfy5
+	 +dvTR4GyohuEg==
+Date: Sat, 7 Sep 2024 16:22:27 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+ linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: addac: ad74xxx: Constify struct iio_chan_spec
+Message-ID: <20240907162227.16fc102e@jic23-huawei>
+In-Reply-To: <da291278e78b983ea2e657a25769f7d82ea2a6d0.1725717045.git.christophe.jaillet@wanadoo.fr>
+References: <da291278e78b983ea2e657a25769f7d82ea2a6d0.1725717045.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-If an error occurs after the rcar_gen3_phy_usb2_init_bus(),
-reset_control_assert() must be called, as already done in the remove
-function.
+On Sat,  7 Sep 2024 15:51:07 +0200
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-This is fine to re-use the existing error handling path, because even if
-"channel->rstc" is still NULL at this point, it is safe to call
-reset_control_assert(NULL).
+> 'struct iio_chan_spec' are not modified in these drivers.
+> 
+> Constifying this structure moves some data to a read-only section, so
+> increase overall security.
+> 
+> On a x86_64, with allmodconfig:
+> Before:
+> ======
+>    text	   data	    bss	    dec	    hex	filename
+>   35749	   5879	    384	  42012	   a41c	drivers/iio/addac/ad74115.o
+>   32242	   3297	    384	  35923	   8c53	drivers/iio/addac/ad74413r.o
+> 
+> After:
+> =====
+>    text	   data	    bss	    dec	    hex	filename
+>   39109	   2519	    384	  42012	   a41c	drivers/iio/addac/ad74115.o
+>   33842	   1697	    384	  35923	   8c53	drivers/iio/addac/ad74413r.o
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Looks obviously correct.  Hopefully looks are not being deceiving.
 
-Fixes: 4eae16375357 ("phy: renesas: rcar-gen3-usb2: Add support to initialize the bus")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Changes in v2:
-  - Re-use 'error' to simplify the patch   [claudiu beznea]
-  - Update the commit description to explain why it is safe.
+Applied.  Note this is probably next cycle material now given timing.
+Jonathan
 
-v1: https://lore.kernel.org/all/fc9f7b444f0ca645411868992bbe16514aeccfed.1725652654.git.christophe.jaillet@wanadoo.fr/
----
- drivers/phy/renesas/phy-rcar-gen3-usb2.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-index 58e123305152..ccb0b54b70f7 100644
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -803,6 +803,7 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 	return 0;
- 
- error:
-+	reset_control_assert(channel->rstc);
- 	pm_runtime_disable(dev);
- 
- 	return ret;
--- 
-2.46.0
+> ---
+> Compile tested only
+> ---
+>  drivers/iio/addac/ad74115.c  | 18 +++++++++---------
+>  drivers/iio/addac/ad74413r.c | 21 +++++++++++----------
+>  2 files changed, 20 insertions(+), 19 deletions(-)
+> 
+> diff --git a/drivers/iio/addac/ad74115.c b/drivers/iio/addac/ad74115.c
+> index 12dc43d487b4..bdbdd67536ff 100644
+> --- a/drivers/iio/addac/ad74115.c
+> +++ b/drivers/iio/addac/ad74115.c
+> @@ -191,7 +191,7 @@ enum ad74115_gpio_mode {
+>  };
+>  
+>  struct ad74115_channels {
+> -	struct iio_chan_spec		*channels;
+> +	const struct iio_chan_spec	*channels;
+>  	unsigned int			num_channels;
+>  };
+>  
+> @@ -1295,46 +1295,46 @@ static const struct iio_info ad74115_info = {
+>  	_AD74115_ADC_CHANNEL(_type, index, BIT(IIO_CHAN_INFO_SCALE)	\
+>  					   | BIT(IIO_CHAN_INFO_OFFSET))
+>  
+> -static struct iio_chan_spec ad74115_voltage_input_channels[] = {
+> +static const struct iio_chan_spec ad74115_voltage_input_channels[] = {
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV1),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+>  };
+>  
+> -static struct iio_chan_spec ad74115_voltage_output_channels[] = {
+> +static const struct iio_chan_spec ad74115_voltage_output_channels[] = {
+>  	AD74115_DAC_CHANNEL(IIO_VOLTAGE, AD74115_DAC_CH_MAIN),
+>  	AD74115_ADC_CHANNEL(IIO_CURRENT, AD74115_ADC_CH_CONV1),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+>  };
+>  
+> -static struct iio_chan_spec ad74115_current_input_channels[] = {
+> +static const struct iio_chan_spec ad74115_current_input_channels[] = {
+>  	AD74115_ADC_CHANNEL(IIO_CURRENT, AD74115_ADC_CH_CONV1),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+>  };
+>  
+> -static struct iio_chan_spec ad74115_current_output_channels[] = {
+> +static const struct iio_chan_spec ad74115_current_output_channels[] = {
+>  	AD74115_DAC_CHANNEL(IIO_CURRENT, AD74115_DAC_CH_MAIN),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV1),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+>  };
+>  
+> -static struct iio_chan_spec ad74115_2_wire_resistance_input_channels[] = {
+> +static const struct iio_chan_spec ad74115_2_wire_resistance_input_channels[] = {
+>  	_AD74115_ADC_CHANNEL(IIO_RESISTANCE, AD74115_ADC_CH_CONV1,
+>  			     BIT(IIO_CHAN_INFO_PROCESSED)),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+>  };
+>  
+> -static struct iio_chan_spec ad74115_3_4_wire_resistance_input_channels[] = {
+> +static const struct iio_chan_spec ad74115_3_4_wire_resistance_input_channels[] = {
+>  	AD74115_ADC_CHANNEL(IIO_RESISTANCE, AD74115_ADC_CH_CONV1),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+>  };
+>  
+> -static struct iio_chan_spec ad74115_digital_input_logic_channels[] = {
+> +static const struct iio_chan_spec ad74115_digital_input_logic_channels[] = {
+>  	AD74115_DAC_CHANNEL(IIO_VOLTAGE, AD74115_DAC_CH_COMPARATOR),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV1),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+>  };
+>  
+> -static struct iio_chan_spec ad74115_digital_input_loop_channels[] = {
+> +static const struct iio_chan_spec ad74115_digital_input_loop_channels[] = {
+>  	AD74115_DAC_CHANNEL(IIO_CURRENT, AD74115_DAC_CH_MAIN),
+>  	AD74115_DAC_CHANNEL(IIO_VOLTAGE, AD74115_DAC_CH_COMPARATOR),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV1),
+> diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
+> index 2410d72da49b..1e2f6d9804e3 100644
+> --- a/drivers/iio/addac/ad74413r.c
+> +++ b/drivers/iio/addac/ad74413r.c
+> @@ -45,8 +45,8 @@ struct ad74413r_channel_config {
+>  };
+>  
+>  struct ad74413r_channels {
+> -	struct iio_chan_spec	*channels;
+> -	unsigned int		num_channels;
+> +	const struct iio_chan_spec	*channels;
+> +	unsigned int			num_channels;
+>  };
+>  
+>  struct ad74413r_state {
+> @@ -1138,34 +1138,34 @@ static const struct iio_info ad74413r_info = {
+>  	AD74413R_ADC_CHANNEL(IIO_CURRENT,  BIT(IIO_CHAN_INFO_SCALE)	\
+>  			     | BIT(IIO_CHAN_INFO_OFFSET))
+>  
+> -static struct iio_chan_spec ad74413r_voltage_output_channels[] = {
+> +static const struct iio_chan_spec ad74413r_voltage_output_channels[] = {
+>  	AD74413R_DAC_CHANNEL(IIO_VOLTAGE, BIT(IIO_CHAN_INFO_SCALE)),
+>  	AD74413R_ADC_CURRENT_CHANNEL,
+>  };
+>  
+> -static struct iio_chan_spec ad74413r_current_output_channels[] = {
+> +static const struct iio_chan_spec ad74413r_current_output_channels[] = {
+>  	AD74413R_DAC_CHANNEL(IIO_CURRENT, BIT(IIO_CHAN_INFO_SCALE)),
+>  	AD74413R_ADC_VOLTAGE_CHANNEL,
+>  };
+>  
+> -static struct iio_chan_spec ad74413r_voltage_input_channels[] = {
+> +static const struct iio_chan_spec ad74413r_voltage_input_channels[] = {
+>  	AD74413R_ADC_VOLTAGE_CHANNEL,
+>  };
+>  
+> -static struct iio_chan_spec ad74413r_current_input_channels[] = {
+> +static const struct iio_chan_spec ad74413r_current_input_channels[] = {
+>  	AD74413R_ADC_CURRENT_CHANNEL,
+>  };
+>  
+> -static struct iio_chan_spec ad74413r_current_input_loop_channels[] = {
+> +static const struct iio_chan_spec ad74413r_current_input_loop_channels[] = {
+>  	AD74413R_DAC_CHANNEL(IIO_CURRENT, BIT(IIO_CHAN_INFO_SCALE)),
+>  	AD74413R_ADC_CURRENT_CHANNEL,
+>  };
+>  
+> -static struct iio_chan_spec ad74413r_resistance_input_channels[] = {
+> +static const struct iio_chan_spec ad74413r_resistance_input_channels[] = {
+>  	AD74413R_ADC_CHANNEL(IIO_RESISTANCE, BIT(IIO_CHAN_INFO_PROCESSED)),
+>  };
+>  
+> -static struct iio_chan_spec ad74413r_digital_input_channels[] = {
+> +static const struct iio_chan_spec ad74413r_digital_input_channels[] = {
+>  	AD74413R_ADC_VOLTAGE_CHANNEL,
+>  };
+>  
+> @@ -1270,7 +1270,8 @@ static int ad74413r_setup_channels(struct iio_dev *indio_dev)
+>  {
+>  	struct ad74413r_state *st = iio_priv(indio_dev);
+>  	struct ad74413r_channel_config *config;
+> -	struct iio_chan_spec *channels, *chans;
+> +	const struct iio_chan_spec *chans;
+> +	struct iio_chan_spec *channels;
+>  	unsigned int i, num_chans, chan_i;
+>  	int ret;
+>  
 
 

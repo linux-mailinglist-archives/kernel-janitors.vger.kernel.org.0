@@ -1,163 +1,132 @@
-Return-Path: <kernel-janitors+bounces-5298-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-5301-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C65B397140D
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Sep 2024 11:43:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1644097159B
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Sep 2024 12:45:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4837F1F23D8A
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Sep 2024 09:43:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C004F1F221CE
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Sep 2024 10:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12EDA1B3B07;
-	Mon,  9 Sep 2024 09:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0224D1B4C51;
+	Mon,  9 Sep 2024 10:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="jRuMaP3k"
+	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="N3Jbr3qp"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF33C2B9B7;
-	Mon,  9 Sep 2024 09:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F89179658;
+	Mon,  9 Sep 2024 10:45:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725874989; cv=none; b=ImWq2EBb5kN7wyg4xwjHMizI3H74eeaLkUB499yevxJHEMaglTkQ22ilPAJpENeeISaJ0wJWIbDR0wQQl2CRDf6E/z4MrUhpFPdKBEunVulNZVyk3mJzIGddf3aJBWmVSvQtlZvaSbGdJQMu4D1ueI66QEyHSAeHb1CibUFIn6A=
+	t=1725878735; cv=none; b=nZo5Fw3Tdnlp6MydX7y3wTr7WCdwixMqfarC5ei8R8s25D00E5PdXyem0AlTwYaCsYGc7r06Kpu2RJ5CxCJ8ua1lzBqLB8pU+9YFYmuj4qi7Xg2LAUJTCOeC2eDNzdh5p3tF+785NUIkF7REDdst3hKXkjO/jm+qeuc1YmQbwPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725874989; c=relaxed/simple;
-	bh=oaQTAchEaBkSQcwrLccybjUtspKB7+exoP4r1K4V8Q4=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=u1bRmRgpEVanbU/3SLcbcZhAj0HRd+y3NIi52FOcaXudT5FGouDmt4IlRKaDvPif2RKpPSaUxw404FEaszAyvG87chON6Jd0dyGtScqdwYODCBCXyPfSBDmrNrq2JkqTiAex78tzwhOMHiYP++5rQb73cmqhUdYqhcFE38kzXWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=jRuMaP3k; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1725874946; x=1726479746; i=markus.elfring@web.de;
-	bh=EBlqzeibcHmLE8jmEMvY/kGvwXFkAdrNBvVf/DUWlqQ=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:From:To:
-	 Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=jRuMaP3kv/79914X8WkyFcRufIcKEX1mn6+C3ACulpE1FKCVk4WN2pliQPxLddu5
-	 2iOcXpyeEShRv5pJnxYaV5bQF73LcEBCQRIQhgFcEjrNzPjIG54dqi2N1Xoomm/AF
-	 RAvJHyXe3dbJOnt7OjtZnErFGqo1X5Rrx91P1SHFt5Yz4XQoHgdavxivTw4Wzbc0Q
-	 BUC3P4OHjZ4dXpTpSC1zJwpgeHsv4qNBUMWscFh9iTAiUmCZv8fkKrBUCYY7/sKom
-	 13beFEvK/fSEBlsHH8kyANynfLlsOaA2wX/nYZMmzppU1N9g/maHX1cyfw7+YQb19
-	 WlxX4ZOzuDZHSIzLVg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.91.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1M1aIB-1sl7o90LFL-00EbI9; Mon, 09
- Sep 2024 11:42:26 +0200
-Message-ID: <d4136720-e6c8-490b-933a-4a884412b38a@web.de>
-Date: Mon, 9 Sep 2024 11:42:23 +0200
+	s=arc-20240116; t=1725878735; c=relaxed/simple;
+	bh=5Ta/4DSgQoX8eSaZBH8uX7f7kA1cIdCF5+cIjyuspMo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 References:In-Reply-To; b=Zf9Dz49W4CZcGqmUYcAYXhLryRmB9k8FdKkcvljkfcj9FNXRwTOvTVtpXCc77O5Ia8fGloVu0FCOlzuqSyD0iGEm5Jie+tWVVKirMa59s5C2LkEoDuValhma8uSLmBjnWlIu8nkOFmllKsCvodKu4NMvlYw/PMENH1MfZEZ3FLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=N3Jbr3qp; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
+	s=submission; t=1725877000; x=1727177000;
+	bh=09mAxXk5yZQ1FHGrWz6yzqQxvAU0gLKA91bNZ0jSFDQ=; h=From;
+	b=N3Jbr3qplkKFBNIhWyfhI0/ftYyX1QYS8sQtNXWbN6B4OTsw0dTznEX6ZRLyoymWo
+	 HblPc/hQ2j7f/kU05dM76Ik8FCzMapfz6qEOyYqq3X+0XuFnGXZvbZaUl/zTBQKuc+
+	 NLQS4o9zMk8yn42kiCou+9ZO+6PP7jqHIU6Gy1GwJ3tG/S6mRISTDhH4tIIhLeSUUr
+	 ADQlUMLkfgTwGfaEvtDCHp4v/jX4iTP5h935D9Jio6oEigV7QYS+lbkGbvWmVx+j3t
+	 BXLsZh4manj+XP55OuTvas4SmbtfP9DxzzFxW49mHtfA2pq/rum70p67GUJJlR+U+Z
+	 kto3xhVBsrzZQ==
+Received: from localhost (internet5.mraknet.com [185.200.108.250])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 489AGc2d025308
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Mon, 9 Sep 2024 12:16:40 +0200 (CEST)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] drm/amdgpu: Move a variable assignment behind a null
- pointer check in amdgpu_ras_interrupt_dispatch()
-From: Markus Elfring <Markus.Elfring@web.de>
-To: kernel-janitors@vger.kernel.org, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, Alan Liu <HaoPing.Liu@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>, Alex Hung <alex.hung@amd.com>,
- Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
- Aurabindo Pillai <aurabindo.pillai@amd.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Candice Li <candice.li@amd.com>, Charlene Liu <charlene.liu@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
- David Tadokoro <davidbtadokoro@usp.br>, Eryk Brol <eryk.brol@amd.com>,
- Felix Kuehling <felix.kuehling@amd.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Hamza Mahfooz <hamza.mahfooz@amd.com>,
- Harry Wentland <harry.wentland@amd.com>,
- Hawking Zhang <Hawking.Zhang@amd.com>, hersen wu <hersenxs.wu@amd.com>,
- Jiapeng Chong <jiapeng.chong@linux.alibaba.com>, Jun Lei <jun.lei@amd.com>,
- Leo Li <sunpeng.li@amd.com>, Lijo Lazar <lijo.lazar@amd.com>,
- Ma Jun <Jun.Ma2@amd.com>, Mikita Lipski <mikita.lipski@amd.com>,
- Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
- Stanley Yang <Stanley.Yang@amd.com>, Tao Zhou <tao.zhou1@amd.com>,
- Tom Rix <trix@redhat.com>, Victor Zhao <Victor.Zhao@amd.com>,
- Wayne Lin <Wayne.Lin@amd.com>, Wenjing Liu <wenjing.liu@amd.com>,
- Xinhui Pan <Xinhui.Pan@amd.com>, YiPeng Chai <YiPeng.Chai@amd.com>,
- Zhan Liu <zhan.liu@amd.com>
-Cc: cocci@inria.fr, LKML <linux-kernel@vger.kernel.org>
-References: <40c60719-4bfe-b1a4-ead7-724b84637f55@web.de>
- <1a11455f-ab57-dce0-1677-6beb8492a257@web.de>
- <2258ce64-2a14-6778-8319-b342b06a1f33@web.de>
- <0d4b92ab-f7c2-4f18-f3c3-c0f82ba47fc8@web.de>
-Content-Language: en-GB
-In-Reply-To: <0d4b92ab-f7c2-4f18-f3c3-c0f82ba47fc8@web.de>
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:0FinRSsoYLcUBzW5CselKtDxWi72MFZcC3KilliEKBsQUeKXYei
- FR2I8NrqAgdIr7ze6KALJPaM7wknBcUXSmvlGyO7sm9JokMjRgJonKx2kUM2LDr2R2qlBew
- oHpIeeJnmJltdTUQ2q2AREeQHxSuBS/F94J2yTpY+UIAZtqw2TB5gH2spYfpgruDPCjvV+f
- dPM9jIAK7/z0nl5PCkokg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:4mNfO0uCz2s=;QgAKWGK+oCVd1C58nJsisjfUumH
- UMZmClwq9WwbmEwKs0+o3InvaH49mHbVoA43aHpnciXuMv++wM97ehl85Nab5/LXN0js53AiO
- EzYUt9sYSBwxlWlR+9nFnwyG/TDN73Kv8BkgsREn3EA7hFIbppbXE+zmt+MabpUhiIK66iJ03
- aXjpemLGO7cZhg5mcC2VGg1tf/bs2hdO0PmiGFxOATsywO80kwExz8zHnPHQAZrsvG0i7a+sA
- xSjvaCOz5t84lyOuaL7csvkuQ7lp2PghHkcDb0ZfpBlN/J1zmj+62HIPRyWS7HwGWYFJcZFpg
- k+FAOoQ7JazBLKMLigp+yG2X6dO7PVjV4uGwAwkWNCvrrnGtNfHQQGjg0bD+resJXlx2Voqjv
- OXRlDX5OPmmPXiDJrqk/sLY8LVVTphwEXblDdXb9RqoyRlmYxusqGpcF+SUiPpAOIAe5xGo8+
- 5TCdEqgocUXf2JbtOgJ9ayZ8JrLKFbYe6TPdJpyOrI7nyxTG6HKgi9dE/Gnw4KG8/4kWZPy6k
- Pw+99s3sXF0SR0OxlIP+Fkl4DRslS1Vui5yj4jzEwiZaVoNp/jPG4SRBkdzWycNAlIPr8h7pB
- AiUokGue70Z16SqzBH+ZJNWb7CwJu9whs/ZITLd1cShfdDaXav+gEVWBa4EtRNMprGrKZsQwO
- oGpFqHnJSf0ZYOP+xNVgjLETz0/LvRK5H9LcsqiXRaB0K7sx1IH6hgEixESofMowET5qtP8BN
- DnvYQwP227HLP4OM7L50krSK+sVZ0p2IGxOMUUtgTaUvVJY2vP7dORRcd8kx3dyEcCov491na
- 5yIA4CEHwoVpxpFHGIbbbRMA==
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 09 Sep 2024 12:16:38 +0200
+Message-Id: <D41OC3PTUHE6.1V0FU4PAW4O9Q@matfyz.cz>
+Cc: <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        "Liam
+ Girdwood" <lgirdwood@gmail.com>,
+        "Mark Brown" <broonie@kernel.org>
+Subject: Re: [PATCH] regulator: 88pm886: Constify struct regulator_desc
+To: "Christophe JAILLET" <christophe.jaillet@wanadoo.fr>
+From: "Karel Balej" <balejk@matfyz.cz>
+References: <0261f8b951a489859ee0fa41c584804b2e3f1557.1725783921.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <0261f8b951a489859ee0fa41c584804b2e3f1557.1725783921.git.christophe.jaillet@wanadoo.fr>
 
-> Date: Tue, 11 Apr 2023 10:52:48 +0200
+Christophe JAILLET, 2024-09-08T10:25:56+02:00:
+> 'struct regulator_desc' is not modified in this driver.
 >
-> The address of a data structure member was determined before
-> a corresponding null pointer check in the implementation of
-> the function =E2=80=9Camdgpu_ras_interrupt_dispatch=E2=80=9D.
+> Constifying this structure moves some data to a read-only section, so
+> increase overall security, especially when the structure holds some
+
+"increases"?
+
+> function pointers.
 >
-> Thus avoid the risk for undefined behaviour by moving the assignment
-> for the variable =E2=80=9Cdata=E2=80=9D behind the null pointer check.
+> On a x86_64, with allmodconfig:
+> Before:
+> =3D=3D=3D=3D=3D=3D
+>    text	   data	    bss	    dec	    hex	filename
+>    3251	   6928	     16	  10195	   27d3	drivers/regulator/88pm886-regulat=
+or.o
 >
-> This issue was detected by using the Coccinelle software.
+> After:
+> =3D=3D=3D=3D=3D
+>    text	   data	    bss	    dec	    hex	filename
+>    9795	    360	     16	  10171	   27bb	drivers/regulator/88pm886-regulat=
+or.o
 >
-> Fixes: c030f2e4166c3f5597c7e7a70bcd9ab383695de4 ("drm/amdgpu: add amdgpu=
-_ras.c to support ras (v2)")
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> --
+> Compile tested only
 > ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  drivers/regulator/88pm886-regulator.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/a=
-md/amdgpu/amdgpu_ras.c
-> index 4069bce9479f..a920c7888d07 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-> @@ -1730,11 +1730,12 @@ int amdgpu_ras_interrupt_dispatch(struct amdgpu_=
-device *adev,
->  		struct ras_dispatch_if *info)
+> diff --git a/drivers/regulator/88pm886-regulator.c b/drivers/regulator/88=
+pm886-regulator.c
+> index a38bd4f312b7..68c83a4ebda8 100644
+> --- a/drivers/regulator/88pm886-regulator.c
+> +++ b/drivers/regulator/88pm886-regulator.c
+> @@ -56,7 +56,7 @@ static const struct linear_range pm886_buck_volt_ranges=
+2[] =3D {
+>  	REGULATOR_LINEAR_RANGE(1600000, 80, 114, 50000),
+>  };
+> =20
+> -static struct regulator_desc pm886_regulators[] =3D {
+> +static const struct regulator_desc pm886_regulators[] =3D {
+>  	{
+>  		.name =3D "LDO1",
+>  		.regulators_node =3D "regulators",
+> @@ -340,9 +340,9 @@ static struct regulator_desc pm886_regulators[] =3D {
+>  static int pm886_regulator_probe(struct platform_device *pdev)
 >  {
->  	struct ras_manager *obj =3D amdgpu_ras_find_obj(adev, &info->head);
-> -	struct ras_ih_data *data =3D &obj->ih_data;
-> +	struct ras_ih_data *data;
->
->  	if (!obj)
->  		return -EINVAL;
->
-> +	data =3D &obj->ih_data;
->  	if (data->inuse =3D=3D 0)
->  		return 0;
->
+>  	struct pm886_chip *chip =3D dev_get_drvdata(pdev->dev.parent);
+> +	const struct regulator_desc *rdesc;
+>  	struct regulator_config rcfg =3D { };
+>  	struct device *dev =3D &pdev->dev;
+> -	struct regulator_desc *rdesc;
+>  	struct regulator_dev *rdev;
+>  	struct i2c_client *page;
+>  	struct regmap *regmap;
+> --=20
+> 2.46.0
 
-I would like to point out that another software adjustment got the desired
-development attention (on 2024-05-11).
+Reviewed-by: Karel Balej <balejk@matfyz.cz>
 
-See also:
-Commit 4c11d30c95576937c6c35e6f29884761f2dddb43 ("drm/amdgpu:
-Fix the null pointer dereference to ras_manager")
-
-Regards,
-Markus
+Thanks,
+K. B.
 

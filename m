@@ -1,107 +1,84 @@
-Return-Path: <kernel-janitors+bounces-5535-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-5538-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E8FF97CBCF
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2024 17:55:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D5A97CC76
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2024 18:22:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D9761F2272A
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2024 15:55:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C970281451
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2024 16:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6EC1A257B;
-	Thu, 19 Sep 2024 15:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0C21AC420;
+	Thu, 19 Sep 2024 16:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="dc4V6tCq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WlJ5eFln"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF23C19F48B;
-	Thu, 19 Sep 2024 15:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE031A08B6;
+	Thu, 19 Sep 2024 16:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726761238; cv=none; b=fX6UuD5+DEwO7QIAdYOeJxnIQjrmlMBcQhf7FPVuq6+qpxFv4IfLst/dVwaZt4z7cbsnK0Q0aln/u0pOxKcOeWJv+p/HRcejTURHztXnFE439ilpzrtRBiFpENf+X6ghJRS+ZsriWP+igGc07IWzY61ttGbC5xldB9Qlzq7sR5I=
+	t=1726762638; cv=none; b=HORS4z6lIfHWEVp94aGZFz/io3WIrZbZxuG9DPOBC/skCHFSMewdPRO2C8DtyAJ/zB1qOzPu/j+I/RBPsgrsTG478G4jfiHL+MthE4a5Grfj0DSkqS5wwQROdnzA2CNycdA6WdAFVoQqbCUFxR6lsmXxd2DiHn+NdZhAEq5gWiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726761238; c=relaxed/simple;
-	bh=zVEQrw60kxsl1CHQ6HIuRwS9WUna+raI1w5AQCgTfPE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s068RK2Mrz+73CAWzmp3VYWqOQF/1+/QJxAEOT/ocivhnyaTh5xib2DMxl02R3V2scXpDFnqYWGaql3sAACqOSQjtn3trA6G7OsNH04ioinyd0J3O6iwxbzyOEegqkqYeroeH83L3HHvfrteCoRTrrbwxlBxpijC3wYxujtP3nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=dc4V6tCq; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48J9LYYi011988;
-	Thu, 19 Sep 2024 15:53:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-type:content-transfer-encoding; s=
-	corp-2023-11-20; bh=tryf5cIGdDYFQkJ03qgbJZ1tlpYLNfvFJcEkNYA8CGQ=; b=
-	dc4V6tCq080oTDQlLVnbRQxyqOWwEZuwvwW+zJX/cTicVuUUQNmFOfQ8p5KE1gN6
-	34qLSJs8ix3fOovKoDu66QHFi/q/QAkeItsi26QmJWnlRVpdwe6bZeFClKObn6Q8
-	a8Yyuh9rduuOr+rhQQfriS0xPCnZsfC7IOcYUU/1DWIGDcvKMz6CJVfkJUsIE0JG
-	auNYiisohvISNgnnWoJuwcB6C6xwb+tCzTU+K9WH2ddYOvKfGOBXYHnPuqK1RaAR
-	AEAvlC+uhLAoVcQj/8sXPzSrPQeH8PhZbI6m/tsvhK7SWmCrEDU4L7Mh2HAqDs4l
-	dZ/wrvcb7LAUWewcZWTZ7A==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41n3sfvgcw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 19 Sep 2024 15:53:54 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 48JESdaT011058;
-	Thu, 19 Sep 2024 15:53:53 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41nyb9xjer-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 19 Sep 2024 15:53:53 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 48JFri8t031813;
-	Thu, 19 Sep 2024 15:53:53 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 41nyb9xj7h-9;
-	Thu, 19 Sep 2024 15:53:53 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        linux-scsi@vger.kernel.org, Colin Ian King <colin.i.king@gmail.com>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] scsi: zalon: Remove trailing space after \n newline
-Date: Thu, 19 Sep 2024 11:52:55 -0400
-Message-ID: <172676112040.1503679.16855048011099883592.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240902141202.308632-1-colin.i.king@gmail.com>
-References: <20240902141202.308632-1-colin.i.king@gmail.com>
+	s=arc-20240116; t=1726762638; c=relaxed/simple;
+	bh=sjj4xoGZyqBiJoPJLOdx5QdG3kIiMdBBPYT8rVH+FNU=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=UWsMkn+ajnE5uOgbLiKNEdaIiBVCb2RX64tM1ZFiwCvnX0Tllj/Fqf50OJ77SPQV9uF5/2H3NhW7NH0YfubgUvbFalAPwqQCpGkdIsmk03nU6S+oBdCox7L/v16yS3RV+QMKZfdXGvcGG4dQ1NIfgAhGyLcOXxfWCAhaWgoUbsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WlJ5eFln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1157C4CEC4;
+	Thu, 19 Sep 2024 16:17:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726762638;
+	bh=sjj4xoGZyqBiJoPJLOdx5QdG3kIiMdBBPYT8rVH+FNU=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=WlJ5eFln1Ei+yDSLAvwG5p1jF8wz+GnlJS3mfddEyWXqJwBQXKPMdpSE8zB4ZCiws
+	 MbsO+o1pskEjg1J1F/2NqrTvrNu+g/W7uJ1xkyoLA05bJuJUncKPPlLX50KkSiew8A
+	 B+tZQDCChDF4NrMSY37IFBKg9FcMd+mHg1aReOGuQ9ep3mwSXLPBs7IquMVlcbwU08
+	 UxWrebmN1/U4RvSyTdFJy6E0iXib7kg/hGgyXDkzpHLAWg2ix9PrBmvGn8L01aXmAA
+	 OBU4U14L6EeWodnfz7DPrlvecK78wxko4HaB1HC+XJvMqwRMKnSM/8QRbIb59db+Ep
+	 RN0gCKIzG50ag==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-19_12,2024-09-19_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=932 bulkscore=0
- adultscore=0 malwarescore=0 suspectscore=0 phishscore=0 spamscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2408220000 definitions=main-2409190105
-X-Proofpoint-GUID: gyXogmA7GsFCFjHNpyVuy17CTfer_yC0
-X-Proofpoint-ORIG-GUID: gyXogmA7GsFCFjHNpyVuy17CTfer_yC0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH][next] wifi: mac80211: make read-only array svc_id static
+ const
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240912144456.591494-1-colin.i.king@gmail.com>
+References: <20240912144456.591494-1-colin.i.king@gmail.com>
+To: Colin Ian King <colin.i.king@gmail.com>
+Cc: Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
+ ath12k@lists.infradead.org, kernel-janitors@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <172676263461.263986.17402367834704723969.kvalo@kernel.org>
+Date: Thu, 19 Sep 2024 16:17:16 +0000 (UTC)
 
-On Mon, 02 Sep 2024 15:12:02 +0100, Colin Ian King wrote:
+Colin Ian King <colin.i.king@gmail.com> wrote:
 
-> There is a extraneous space after a newline in a dev_printk message,
-> remove it. Also fix non-tabbed indentation of the statement.
+> Don't populate the read-only array svc_id on the stack at run time,
+> instead make it static const.
 > 
-> 
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Applied to 6.12/scsi-queue, thanks!
+Patch applied to ath-next branch of ath.git, thanks.
 
-[1/1] scsi: zalon: Remove trailing space after \n newline
-      https://git.kernel.org/mkp/scsi/c/57bada8a5e69
+f8acfee2f8e0 wifi: ath12k: make read-only array svc_id static const
 
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+https://patchwork.kernel.org/project/linux-wireless/patch/20240912144456.591494-1-colin.i.king@gmail.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://docs.kernel.org/process/submitting-patches.html
+
 

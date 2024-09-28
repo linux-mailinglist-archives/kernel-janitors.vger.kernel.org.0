@@ -1,119 +1,162 @@
-Return-Path: <kernel-janitors+bounces-5657-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-5659-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA48F988EEF
-	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Sep 2024 12:05:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0942988FA0
+	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Sep 2024 16:28:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 642621F218B2
-	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Sep 2024 10:05:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6004AB21646
+	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Sep 2024 14:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB9519F41E;
-	Sat, 28 Sep 2024 10:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4103188925;
+	Sat, 28 Sep 2024 14:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EFIZs3W1"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="nLSDTbXA"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from msa.smtpout.orange.fr (msa-210.smtpout.orange.fr [193.252.23.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B91A19DFB5
-	for <kernel-janitors@vger.kernel.org>; Sat, 28 Sep 2024 10:05:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCC618872C;
+	Sat, 28 Sep 2024 14:28:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.23.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727517938; cv=none; b=ErE4OQyQnvo9kUPBRLycZ1EVLpPK8/zM9YykwAaB5TUQguIBH9mEDWer+UA/WW67AtRWUezlNeT+g0x83lU4Rig3IAL8U17MkGEuXYyGlk2xlzYwJWVFV/3bgZd/5f9eitYtIDFiQJDIz945Ua+rGIVb9Q5l/E9ZAC2DsvxLKD8=
+	t=1727533721; cv=none; b=qOnrFQFzB8rk1oqfDqwIXw4jBTP131XzxGtQBNvdtNuTKh/QNgoBhCj3eUMVSlw3yFia6++y52wxI0sRSwgNRTtIVRzmaUGdLN94oo68ifaxH7LHXIL5vt0wuptfU8Tiah5vNxyF1naBNNAvP53fmtmCj2Nhwf7jcUGARkkvIHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727517938; c=relaxed/simple;
-	bh=nysf4iZQmwHqPE9b3am1r0Q+jJLgASIeYoXVo9KcmOc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=vAkpPC2COZ3S8TOEmThMVJp8UZPQML7kVLV92eHc/AEILe9PLGBLgV5ekcDvTAYZfsOe7ADKE/nqZd/0wy6hj8XglPcCyVjU8IErdWrFvBGn1VxfQfQW+S2+VLI2p7SIjhpvV12AmwdYmV7UDs5pQ7E3LGkSHcPYRAPlBgF04+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EFIZs3W1; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-42cbc38a997so17730495e9.1
-        for <kernel-janitors@vger.kernel.org>; Sat, 28 Sep 2024 03:05:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727517933; x=1728122733; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=x0UkuD3GuJbEJOo86vgUIxaJ+Z37a87v7S3JRkIjSIg=;
-        b=EFIZs3W1+t49WVMXmO0Qhi+izUpOTnAODaFO8STl6XOaV7aCALjiZ9/w2H0zRipd51
-         YjUqKkmBY5z3xVDYudIcT2eBaZ6VWzTCsaWcqxvlRyIADJKdFD/V85R2kwTpleTIONnO
-         /uKwuqyPOuDsr0QaOM+zssyB7SZFfA+9zZrvMAC3BqN4IreNvMzr8Ody6K1C/J0I81P7
-         RYZotmAKzcs7x0QovjYNHHNuPzDHfGVLVxjSSYTH7P7XRIe0veGMwphX2i95S3F7JcJE
-         rlRhiPGWnRg6vXbQIiAjQqpiMQyM3ALeVsSFvnWad2WdEjZQd9qUmNTn7/byaZANduhq
-         YdrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727517933; x=1728122733;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x0UkuD3GuJbEJOo86vgUIxaJ+Z37a87v7S3JRkIjSIg=;
-        b=kZ47XLu5pFvRHdSFkzEjLc6NZAVaOKuki/aEGrn3xYkAiaK/o8lTysiwS1p4q8NOCJ
-         9/n1zpdzSwhexiFkFHze9NAVWQqMNEZ/mjfGVn8oBlyhxFcJ1nz+dtMxn/4nmTM7TBaS
-         XMH08CrQYfQ7rc8itqrUVjTyr+4te3mJbSxJqXjadw2dgOMcRDjvd9UazSHSlJ/dWFXt
-         8v3sqzU8PyzT6416fdC/kCL0seQP6M8ZPIXyXtNWvD1IWCWNrE09FF6iIaSJibu4V7X+
-         Zuu2AZc1ikVasI8xmXwe87pwabDkSpBWGR36E42OsqNU3QHPi6X9ZeMnMcHuiJKwsjmI
-         avnA==
-X-Forwarded-Encrypted: i=1; AJvYcCVFbLfbafF8ifFHhWBfxb+ad9DeEi+ILBGYpX0mMoCXljDE7DMlmI7Y1PE51666djdf0GrFJLmwa/qznwOkuNQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9TQYsE/iyEUlSR9ecT3V+w49HNGfovkqCs0iPL4+PKIDg3U0l
-	T+DgSgxJOscACb/KEEAVQWfTy+QZmpk3gshsgBr1PPPc2t6+cwxkOk1b1C85pEE=
-X-Google-Smtp-Source: AGHT+IHAOnv7oc28ECrLbwz3MYtI2XlwEqYRbMn63MqyesZiRUO48orsjcjBjVWP4TAofwPjbOtNpQ==
-X-Received: by 2002:a05:600c:1d08:b0:42c:b697:a62c with SMTP id 5b1f17b1804b1-42f521ce1a4mr63796565e9.5.1727517933542;
-        Sat, 28 Sep 2024 03:05:33 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37cd575e322sm4431080f8f.110.2024.09.28.03.05.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Sep 2024 03:05:33 -0700 (PDT)
-Date: Sat, 28 Sep 2024 13:05:08 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Damian Muszynski <damian.muszynski@intel.com>,
-	Tero Kristo <tero.kristo@linux.intel.com>,
-	Jie Wang <jie.wang@intel.com>,
-	Shashank Gupta <shashank.gupta@intel.com>,
-	Lucas Segarra Fernandez <lucas.segarra.fernandez@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Adam Guerin <adam.guerin@intel.com>, qat-linux@intel.com,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH] crypto: qat - (qat_4xxx) fix off by one in uof_get_name()
-Message-ID: <cca43549-7715-44ba-a1c0-61dd027ed3b5@stanley.mountain>
+	s=arc-20240116; t=1727533721; c=relaxed/simple;
+	bh=LxBfLDca3y7GXmYSOcEDkNSiCSlNQVHL6/9tsSzamrs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fjSucDZtaY1Ifm9nukXz+pMI2/vy3BYQ3e90lET1vozor5DRUR7EHUej0TKC5d2Qs6KskCQQFlkp/B8L8P152GT0OB9pFA3LAz+6jlc5qnNVHIbR9d00EXHgkji5vXdMuKOgGzl7iVBVYMpj32HWyLVDxB7z74yImB5KYYP5mvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=nLSDTbXA; arc=none smtp.client-ip=193.252.23.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id uYQysbPCMfghUuYQysPT8c; Sat, 28 Sep 2024 16:28:35 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1727533715;
+	bh=faBUoY8IWHAosm+2lxACEFiJwibniF/ByuqHBImJHYw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=nLSDTbXAG4WmOc53jIgq6NA53lVuJwZRRUfEd+C5eBpYBIa/8o5TDvbw9fWe7dCBn
+	 orZI+E62zjFGKK4ylSyy3VJJhixbXn7Aj/BcQFOQqUKeAmda7j/5gjusejxQMua1sm
+	 R3JJAEgwsoNDq6UkWgw54ZzZw5h3o9cZ5n1JNwhcmCKvx9MPdVBdDMQC7gZW8D2osG
+	 URVmbf0bHVBQc2N/1FgPqUxPwgEtkyFWZNVT3Mp8nLWb/cllk6/Dg9zotq9Ld/SvQ5
+	 CZSD9zB/MjdGkmluX5MIXwQvq21XSwczlE4CSjTtLBtRd+1Dz/vAJmT/ACmcEFeitZ
+	 dt4VgFn04XF2Q==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 28 Sep 2024 16:28:35 +0200
+X-ME-IP: 90.11.132.44
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Jani Nikula <jani.nikula@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH] drm/i915/backlight: Remove a useless kstrdup_const()
+Date: Sat, 28 Sep 2024 16:28:24 +0200
+Message-ID: <3b3d3af8739e3016f3f80df0aa85b3c06230a385.1727533674.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.46.1
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+Content-Transfer-Encoding: 8bit
 
-The fw_objs[] array has "num_objs" elements so the > needs to be >= to
-prevent an out of bounds read.
+"name" is allocated and freed in intel_backlight_device_register().
+The initial allocation just duplicates "intel_backlight".
 
-Fixes: 10484c647af6 ("crypto: qat - refactor fw config logic for 4xxx")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Later, if a device with this name has already been registered, another
+dynamically generated one is allocated using kasprintf().
+
+So at the end of the function, when "name" is freed, it can point either to
+the initial static literal "intel_backlight" or to the kasprintf()'ed one.
+
+So kfree_const() is used.
+
+However, when built as a module, kstrdup_const() and kfree_const() don't
+work as one would expect and are just plain kstrdup() and kfree().
+
+
+Slightly change the logic and introduce a new variable to hold the
+address returned by kasprintf() should it be used.
+
+This saves a memory allocation/free and avoids these _const functions,
+which names can be confusing when used with code built as module.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Compile tested only.
 
-diff --git a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
-index 9fd7ec53b9f3..bbd92c017c28 100644
---- a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
-+++ b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
-@@ -334,7 +334,7 @@ static const char *uof_get_name(struct adf_accel_dev *accel_dev, u32 obj_num,
+For the records, this patch is a clean-up effort related to discussions at:
+  - https://lore.kernel.org/all/ZvHurCYlCoi1ZTCX@skv.local/
+  - https://lore.kernel.org/all/20240924050937.697118-1-senozhatsky@chromium.org/
+---
+ drivers/gpu/drm/i915/display/intel_backlight.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/display/intel_backlight.c b/drivers/gpu/drm/i915/display/intel_backlight.c
+index 9e05745d797d..bf7686aa044f 100644
+--- a/drivers/gpu/drm/i915/display/intel_backlight.c
++++ b/drivers/gpu/drm/i915/display/intel_backlight.c
+@@ -914,9 +914,9 @@ int intel_backlight_device_register(struct intel_connector *connector)
+ {
+ 	struct drm_i915_private *i915 = to_i915(connector->base.dev);
+ 	struct intel_panel *panel = &connector->panel;
++	const char *name, *new_name = NULL;
+ 	struct backlight_properties props;
+ 	struct backlight_device *bd;
+-	const char *name;
+ 	int ret = 0;
+ 
+ 	if (WARN_ON(panel->backlight.device))
+@@ -949,10 +949,7 @@ int intel_backlight_device_register(struct intel_connector *connector)
  	else
- 		id = -EINVAL;
+ 		props.power = BACKLIGHT_POWER_OFF;
  
--	if (id < 0 || id > num_objs)
-+	if (id < 0 || id >= num_objs)
- 		return NULL;
+-	name = kstrdup_const("intel_backlight", GFP_KERNEL);
+-	if (!name)
+-		return -ENOMEM;
+-
++	name = "intel_backlight";
+ 	bd = backlight_device_get_by_name(name);
+ 	if (bd) {
+ 		put_device(&bd->dev);
+@@ -963,11 +960,11 @@ int intel_backlight_device_register(struct intel_connector *connector)
+ 		 * compatibility. Use unique names for subsequent backlight devices as a
+ 		 * fallback when the default name already exists.
+ 		 */
+-		kfree_const(name);
+-		name = kasprintf(GFP_KERNEL, "card%d-%s-backlight",
+-				 i915->drm.primary->index, connector->base.name);
+-		if (!name)
++		new_name = kasprintf(GFP_KERNEL, "card%d-%s-backlight",
++				     i915->drm.primary->index, connector->base.name);
++		if (!new_name)
+ 			return -ENOMEM;
++		name = new_name;
+ 	}
+ 	bd = backlight_device_register(name, connector->base.kdev, connector,
+ 				       &intel_backlight_device_ops, &props);
+@@ -987,7 +984,7 @@ int intel_backlight_device_register(struct intel_connector *connector)
+ 		    connector->base.base.id, connector->base.name, name);
  
- 	return fw_objs[id];
+ out:
+-	kfree_const(name);
++	kfree(new_name);
+ 
+ 	return ret;
+ }
 -- 
-2.45.2
+2.46.1
 
 

@@ -1,245 +1,232 @@
-Return-Path: <kernel-janitors+bounces-5672-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-5676-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C40989FAC
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Sep 2024 12:47:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8327198A044
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Sep 2024 13:22:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2B7128386F
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Sep 2024 10:47:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5CE01C215CB
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Sep 2024 11:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B731E18CBEF;
-	Mon, 30 Sep 2024 10:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C835F18D64B;
+	Mon, 30 Sep 2024 11:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Cvc7KL44"
+	dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b="N5Crvn6K"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail2-relais-roc.national.inria.fr (mail2-relais-roc.national.inria.fr [192.134.164.83])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A5915C140
-	for <kernel-janitors@vger.kernel.org>; Mon, 30 Sep 2024 10:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDA318A926;
+	Mon, 30 Sep 2024 11:21:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.134.164.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727693230; cv=none; b=L+FErXx1VJegJh/W/GYMfG4BuJZamjRIjQctfGh2BG92BZnt/4LWjZ/86vcdGJPBp4v7tBSah9uE4tB9JSWq0hR8A98bGa3tSFq8E4YrLPkqTPDCMw3Bhrl9dedj1QulpXJvcB3Rlh72W5LmeK+WSdffZUQSyLz5mZZehlm+K+8=
+	t=1727695303; cv=none; b=kSu9CAI+ScKlSUuIn1DvxRezgW6Y1TL9l4xF8GDjp9vu6aekQokRutr1paDy+SSwl0Zt1Ij1nvGrtl0GuDdlHUG2ufp2AEf2RT9+UeA40j1OliYcgIvZSIcpLVaId+iWTSaM1TDXZVniSJ9Xg9cS/8TRwyKQrx4rGkApmpc/E9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727693230; c=relaxed/simple;
-	bh=Ao+LRs1XoQz1P06fH12+5l1sB5B65wYj/uSqNqdb0+0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m+BvHbeWWeQZPD4ByzvaTtzPgCOCL3ebXzntROY2OaWoKDMD6vd00fPcN+ED/I1mEtADINQo6xAUtn7J37cG7Y693AhP+HZBcIzZwDcNEnd741nYrxLprK7Pi43ITtpALrkZRnts/3I2x50cLN/VW4Z8fGW7yJqzmFKfvNZLN60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Cvc7KL44; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5c42f406e29so5891333a12.2
-        for <kernel-janitors@vger.kernel.org>; Mon, 30 Sep 2024 03:47:08 -0700 (PDT)
+	s=arc-20240116; t=1727695303; c=relaxed/simple;
+	bh=rgAYbIHR+nhPtrrRBq3CzRqixIFEvPXFZ9pgtqmmkAg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ROhyPYffgSwvQDgDORnIJTC12zIIBI+gCs6Lda8MKoiXmcZCBwdVBaIBEgM5/FGpV/xs89ge33ssn193gCriXY0rnogV90f7RvCAsUd5JXLv+SKKjWkYfOEC868WRKD9RTHXo0qtfvTCc0mcwD0NjReJhZfv0PX7ezy8d7bJX6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr; spf=pass smtp.mailfrom=inria.fr; dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b=N5Crvn6K; arc=none smtp.client-ip=192.134.164.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inria.fr
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1727693226; x=1728298026; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Ao+LRs1XoQz1P06fH12+5l1sB5B65wYj/uSqNqdb0+0=;
-        b=Cvc7KL44e02uZa+MlFJY6rq9G9/d3nEEYitFo0BYbtrN0zIBdzSUOnFOLYarQYLLHp
-         z7JxHjvUa9W1fozrKaJgx0pCm/HISLSoKd7VJMWW/s5vek3jBcaFroYZU6LezPJxMBq1
-         ASByPZ58HvuTBHJ3B9hadJsNrTNm2juud0uroTjgcNTEoJlqrQfuUVLOYfing+W0NBzw
-         ZEn/kxYME5sNxT+nO1fmjJaTW4ygx0G2IxYHji0PSv4t2M69Doem5AlcFK7zyQeZX/db
-         X3JBOgG4Ok9oR76yIyS3TWgNTsUPsq6O5BBhXvSNF+LB/zvuhTexA+Qph5whr70IYE0q
-         y6fA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727693226; x=1728298026;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ao+LRs1XoQz1P06fH12+5l1sB5B65wYj/uSqNqdb0+0=;
-        b=FSiv8NCtYUU7zHLFSLFiJK6RcZ8OJhFB4p9hymcTi9Dkklhw5IAahEGcECDVusewAK
-         uZ4jm7/mkOemdno0cU0+FMntrCS5RtZ4/QvaMDUhuhxZQA8JrTOp1/ZKN+GRVwuBtvhQ
-         xl+73BnqHP+WbwJhBKuyuXYI0qCKFg6pv5g96es/XfF6xSPa2AXqTwyafL7ne3OLOTsf
-         K6TphZRwd1RBe/o/syggWtt6g1Z5tFGRkEIX8hRZ893bAuW8NHtwgflIvvEYCU1Ht3f6
-         W4OQJMozK8ihqgd1FnFvFIMdET9g0Vo2h5CQrl7q4Aqr2L3LIVWmeealf0Wyo/Z05CNx
-         PvaQ==
-X-Gm-Message-State: AOJu0YzW+xUHitAR445Oy0ob3XWSamWtCs9vQK0QtcrS37wKn8XwEk7u
-	7NoGLScoT2mXA1cWpQY21N55gNcDL3uMNYxY04WF5pUzjw/3JZVzimhFrWwY0LA=
-X-Google-Smtp-Source: AGHT+IEsiqN8PN9XPakbZut5c5B1JwST+qP4mTd08GJfvdaiyyQjqym6xFUbrn8lAXARktXpjJDjEQ==
-X-Received: by 2002:a05:6402:5203:b0:5c8:8fe7:739c with SMTP id 4fb4d7f45d1cf-5c88fe7753amr4189870a12.7.1727693226478;
-        Mon, 30 Sep 2024 03:47:06 -0700 (PDT)
-Received: from ?IPV6:2003:e5:8714:8700:db3b:60ed:e8b9:cd28? (p200300e587148700db3b60ede8b9cd28.dip0.t-ipconnect.de. [2003:e5:8714:8700:db3b:60ed:e8b9:cd28])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c88245e990sm4314142a12.52.2024.09.30.03.47.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Sep 2024 03:47:06 -0700 (PDT)
-Message-ID: <2f589a3d-91c9-4ebb-9206-97dd418fba47@suse.com>
-Date: Mon, 30 Sep 2024 12:47:05 +0200
+  d=inria.fr; s=dc;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=9JFHu5GN4m1ZIa7hFOr/S0cR7gAkAibwxtDh3yT9bKQ=;
+  b=N5Crvn6Kq6KpHSPNN73aCiDy+RvsqlM0pHtSseTwUaXi/R+AUcNhRU/s
+   cjlHPMFgIZOJllRTItDSSyRCzG1SoWucsK69kp3cC+hyWG6w77VR7U5lk
+   50vSZgwZFWWTGfQ7neSTgSg1frKowyQAjCduh7p7sY9rw2OBXSFMSw4B2
+   4=;
+Authentication-Results: mail2-relais-roc.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
+X-IronPort-AV: E=Sophos;i="6.11,165,1725314400"; 
+   d="scan'208";a="185956867"
+Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.90.48])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 13:21:25 +0200
+From: Julia Lawall <Julia.Lawall@inria.fr>
+To: linux-gpio@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	audit@vger.kernel.org,
+	linux-mtd@lists.infradead.org,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-usb@vger.kernel.org,
+	linux-mm@kvack.org,
+	maple-tree@lists.infradead.org,
+	alsa-devel@alsa-project.org,
+	Sanyog Kale <sanyog.r.kale@intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	dccp@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Jan Kara <jack@suse.cz>,
+	drbd-dev@lists.linbit.com,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org,
+	nvdimm@lists.linux.dev,
+	linux-leds@vger.kernel.org,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	tipc-discussion@lists.sourceforge.net,
+	Robin Murphy <robin.murphy@arm.com>,
+	iommu@lists.linux.dev,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	linux-trace-kernel@vger.kernel.org,
+	Neil Brown <neilb@suse.de>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-nfs@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org,
+	linux-wireless@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org
+Subject: [PATCH 00/35] Reorganize kerneldoc parameter names
+Date: Mon, 30 Sep 2024 13:20:46 +0200
+Message-Id: <20240930112121.95324-1-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] xen: Fix config option reference in XEN_PRIVCMD
- definition
-To: Lukas Bulwahn <lbulwahn@redhat.com>, Jiqian Chen <Jiqian.Chen@amd.com>,
- Huang Rui <ray.huang@amd.com>, Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- xen-devel@lists.xenproject.org
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
- Lukas Bulwahn <lukas.bulwahn@redhat.com>
-References: <20240930090650.429813-1-lukas.bulwahn@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <20240930090650.429813-1-lukas.bulwahn@redhat.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------VC7ijhQQ1OR8bXsGkE3wS3yb"
+Content-Transfer-Encoding: 8bit
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------VC7ijhQQ1OR8bXsGkE3wS3yb
-Content-Type: multipart/mixed; boundary="------------RdCSKKeehgV62wBlowbHNvAk";
- protected-headers="v1"
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-To: Lukas Bulwahn <lbulwahn@redhat.com>, Jiqian Chen <Jiqian.Chen@amd.com>,
- Huang Rui <ray.huang@amd.com>, Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- xen-devel@lists.xenproject.org
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
- Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Message-ID: <2f589a3d-91c9-4ebb-9206-97dd418fba47@suse.com>
-Subject: Re: [PATCH] xen: Fix config option reference in XEN_PRIVCMD
- definition
-References: <20240930090650.429813-1-lukas.bulwahn@redhat.com>
-In-Reply-To: <20240930090650.429813-1-lukas.bulwahn@redhat.com>
+Reorganize kerneldoc parameter names to match the parameter
+order in the function header.
 
---------------RdCSKKeehgV62wBlowbHNvAk
-Content-Type: multipart/mixed; boundary="------------T4rLNh4WFf3MVKVM9IdGtEUz"
+The misordered cases were identified using the following
+Coccinelle semantic patch:
 
---------------T4rLNh4WFf3MVKVM9IdGtEUz
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+// <smpl>
+@initialize:ocaml@
+@@
 
-T24gMzAuMDkuMjQgMTE6MDYsIEx1a2FzIEJ1bHdhaG4gd3JvdGU6DQo+IEZyb206IEx1a2Fz
-IEJ1bHdhaG4gPGx1a2FzLmJ1bHdhaG5AcmVkaGF0LmNvbT4NCj4gDQo+IENvbW1pdCAyZmFl
-NmJiN2JlMzIgKCJ4ZW4vcHJpdmNtZDogQWRkIG5ldyBzeXNjYWxsIHRvIGdldCBnc2kgZnJv
-bSBkZXYiKQ0KPiBhZGRzIGEgd2VhayByZXZlcnNlIGRlcGVuZGVuY3kgdG8gdGhlIGNvbmZp
-ZyBYRU5fUFJJVkNNRCBkZWZpbml0aW9uLA0KPiByZWZlcnJpbmcgdG8gQ09ORklHX1hFTl9Q
-Q0lERVZfQkFDS0VORC4gSW4gS2NvbmZpZyBmaWxlcywgb25lIHJlZmVycyB0bw0KPiBjb25m
-aWcgb3B0aW9ucyB3aXRob3V0IHRoZSBDT05GSUcgcHJlZml4LCB0aG91Z2guIFNvIGluIGl0
-cyBjdXJyZW50IGZvcm0sDQo+IHRoaXMgZG9lcyBub3QgY3JlYXRlIHRoZSByZXZlcnNlIGRl
-cGVuZGVuY3kgYXMgaW50ZW5kZWQsIGJ1dCBpcyBhbg0KPiBhdHRyaWJ1dGUgd2l0aCBubyBl
-ZmZlY3QuDQo+IA0KPiBSZWZlciB0byB0aGUgaW50ZW5kZWQgY29uZmlnIG9wdGlvbiBYRU5f
-UENJREVWX0JBQ0tFTkQgaW4gdGhlIFhFTl9QUklWQ01EDQo+IGRlZmluaXRpb24uDQo+IA0K
-PiBGaXhlczogMmZhZTZiYjdiZTMyICgieGVuL3ByaXZjbWQ6IEFkZCBuZXcgc3lzY2FsbCB0
-byBnZXQgZ3NpIGZyb20gZGV2IikNCj4gU2lnbmVkLW9mZi1ieTogTHVrYXMgQnVsd2FobiA8
-bHVrYXMuYnVsd2FobkByZWRoYXQuY29tPg0KDQpSZXZpZXdlZC1ieTogSnVlcmdlbiBHcm9z
-cyA8amdyb3NzQHN1c2UuY29tPg0KDQpUaGFua3MgZm9yIHRoZSBmaXghDQoNCg0KSnVlcmdl
-bg0KDQo=
---------------T4rLNh4WFf3MVKVM9IdGtEUz
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+let parse_doc l =
+  let pieces = List.map String.trim (String.split_on_char '*' l) in
+  let l = String.concat " " pieces in
+  match String.split_on_char ':' l with
+    x::xs -> x
+  | _ -> ""
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+let params ps =
+  List.rev
+    (List.fold_left
+       (fun prev (pm,_) ->
+	 let ty =
+	   String.trim(Pretty_print_c.string_of_fullType pm.Ast_c.p_type) in
+	 if ty = "void" && pm.Ast_c.p_namei = None
+	 then prev
+	 else
+	   let name =
+	     match pm.Ast_c.p_namei with
+	       Some name -> name
+	     | None -> failwith "function parameter has no name" in
+	   (String.trim (Pretty_print_c.string_of_name name),ty)::prev)
+       [] ps)
 
-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
-kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
-=3DeeAB
------END PGP PUBLIC KEY BLOCK-----
+@r@
+comments c;
+identifier fn;
+position p;
+parameter list ps;
+type T;
+@@
 
---------------T4rLNh4WFf3MVKVM9IdGtEUz--
+T@c fn@p(ps) { ... }
 
---------------RdCSKKeehgV62wBlowbHNvAk--
+@script:ocaml@
+p << r.p;
+c << r.c;
+(_,ps) << r.ps;
+@@
 
---------------VC7ijhQQ1OR8bXsGkE3wS3yb
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+let isdoc c ps =
+  List.length ps > 1 &&
+  (let c = String.trim c in
+  String.length c > 3 && String.sub c 0 3 = "/**" && String.get c 3 != '*') in
 
------BEGIN PGP SIGNATURE-----
+let subset l1 l2 =
+  List.for_all (fun x -> List.mem x l2) l1 in
 
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmb6gakFAwAAAAAACgkQsN6d1ii/Ey99
-kwf/dSv6dy3yrmpTlaXzpJil9FqrEO+dzqANIx9bAIwa0byNVv2n5RzhOxijyh65qNcrkwPwtzdf
-5S55lVDAzF28cXo8V6hrn6rLOhX9JSMloUH3UHINwc9fsQ8OJmZ1RNwRTEISFMzr3XwxqQJZvS+u
-jfig+SnIibRElcGyGEBqBspOrxuhvDfrOhs/zceiQ+ORCGNj113R96wSKz1JYZ65+7o77/B4tRiM
-6Vk2ZKfgeL5+ysJBmiDcDwireo32aBdvZJnfzaBy/n6Nxw4BfJpHTYQPD7q/FqY+vSLw5vbOS1es
-E7+lWy6+31GxY7NP8Sd9pQ8GAhjRUvTamkCFY0HmOQ==
-=17Y+
------END PGP SIGNATURE-----
+let (cb,cm,ca) = List.hd c in
+match List.rev cb with
+  c::_ when isdoc c ps ->
+    let pieces = String.split_on_char '@' c in
+    (match pieces with
+      _::tl ->
+	let d_names = List.map parse_doc tl in
+	(* check parameters *)
+	let p_names = List.map fst (params ps) in
+	if d_names <> [] && not(d_names = p_names)
+	then
+	  begin
+	    if List.sort compare d_names = List.sort compare p_names
+	    then Coccilib.print_main "out of order" p
+	    else if subset d_names p_names
+	    then Coccilib.print_main "doc is missing a parameter" p
+	    else if subset d_names p_names
+	    then Coccilib.print_main "doc has an extra parameter" p
+	  end
+    | _ -> ())
+| _ -> ()
+// </smpl>
 
---------------VC7ijhQQ1OR8bXsGkE3wS3yb--
+---
+
+ arch/arm/mach-omap2/prm2xxx_3xxx.c              |    1 -
+ arch/powerpc/platforms/ps3/interrupt.c          |    2 +-
+ arch/powerpc/platforms/ps3/repository.c         |    2 +-
+ drivers/base/firmware_loader/main.c             |    2 +-
+ drivers/comedi/drivers/comedi_8254.c            |    2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c          |    2 +-
+ drivers/gpu/drm/amd/display/dc/core/dc.c        |    2 +-
+ drivers/gpu/drm/drm_gem_framebuffer_helper.c    |    3 +--
+ drivers/gpu/drm/drm_gpuvm.c                     |    2 +-
+ drivers/gpu/drm/radeon/radeon_ib.c              |    2 +-
+ drivers/iommu/iommu.c                           |    2 +-
+ drivers/leds/leds-gpio-register.c               |    2 +-
+ drivers/mfd/atmel-smc.c                         |    4 ++--
+ drivers/misc/mei/bus.c                          |    2 +-
+ drivers/mtd/ubi/eba.c                           |    2 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c  |    2 +-
+ drivers/net/ethernet/intel/e1000/e1000_hw.c     |    2 +-
+ drivers/net/ethernet/intel/i40e/i40e_common.c   |    7 +++----
+ drivers/net/ethernet/intel/ice/ice_common.c     |    2 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_common.c |    2 +-
+ drivers/nvdimm/dimm_devs.c                      |    2 +-
+ drivers/pci/hotplug/pci_hotplug_core.c          |    2 +-
+ drivers/pinctrl/pinmux.c                        |    2 +-
+ drivers/slimbus/messaging.c                     |    2 +-
+ drivers/soc/qcom/qmi_interface.c                |    2 +-
+ drivers/soundwire/stream.c                      |    2 +-
+ drivers/usb/gadget/config.c                     |    4 ++--
+ fs/char_dev.c                                   |    2 +-
+ fs/dcache.c                                     |    4 ++--
+ fs/seq_file.c                                   |    2 +-
+ kernel/audit.c                                  |    2 +-
+ kernel/resource.c                               |    2 +-
+ kernel/sysctl.c                                 |    1 -
+ kernel/trace/ring_buffer.c                      |    2 +-
+ lib/lru_cache.c                                 |    2 +-
+ lib/maple_tree.c                                |    2 +-
+ mm/mmu_notifier.c                               |    2 +-
+ net/dccp/feat.c                                 |    2 +-
+ net/mac80211/mesh_hwmp.c                        |    6 +++---
+ net/mac80211/mesh_pathtbl.c                     |   10 +++++-----
+ net/socket.c                                    |    2 +-
+ net/sunrpc/xprt.c                               |    2 +-
+ net/tipc/link.c                                 |   14 +++++++-------
+ net/tipc/msg.c                                  |    2 +-
+ sound/pci/hda/hda_codec.c                       |    2 +-
+ 45 files changed, 60 insertions(+), 64 deletions(-)
 

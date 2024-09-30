@@ -1,161 +1,130 @@
-Return-Path: <kernel-janitors+bounces-5669-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-5671-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D9A989C46
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Sep 2024 10:12:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B01989DA8
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Sep 2024 11:07:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AC2328193A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Sep 2024 08:12:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E48421F212BD
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Sep 2024 09:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F28417B433;
-	Mon, 30 Sep 2024 08:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861CD1865EA;
+	Mon, 30 Sep 2024 09:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="DmCvRyfY";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="FskE9PLO";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="DmCvRyfY";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="FskE9PLO"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="G+4e/pEq"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835A41684A5;
-	Mon, 30 Sep 2024 08:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BD317E8F7
+	for <kernel-janitors@vger.kernel.org>; Mon, 30 Sep 2024 09:07:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727683895; cv=none; b=UUepEciTqDPhOktJ5CbYblYJMYJvmDD+QRpPAUUX977tZeuB8hzzQu4herJrCZfacoV1UgcH/a/90O53851pPYRS6ls8Zr69Jo9NV2c2NznRI59gHZ+AS8NIYAydncb6l44H51iiA/lZYpQn8LURcUstfXwOX//qUgM9L0s5GIw=
+	t=1727687225; cv=none; b=pe23TObvNntbjwyZo1gXw8dEdfvIWyn8oviDLgiKqn0FotOZ8TiKkVBcbhTT8q5x6I6Z1LzSlpJVbLq99LpMVaKKiin0FXB8nanTZA6I6r89hheTZ89NAnzaBZe3DsxeHYDmNITjDCgU2t3xLZBRSY+KNm7rGd27MeLQiKiDOgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727683895; c=relaxed/simple;
-	bh=TzB84r0iFDPe/VaTNH2xAUFC3wyMnWjYZ4iaTCQF/Xc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dLfRq0ojIAr8krJdEnev5O2MyNXPbsNDYFG7JweNzHMUkb285gmgRf43hZzgcLYqAgAS1mqfU61rzTiy6OuRSL33cvmNMfVbpEkTJ55R0SUQbQDK2g50XzjOyy6M7vlqEszABsQpQQ4ghqngySz/kWd6dU9Kncsovy1pcdwoqDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=DmCvRyfY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=FskE9PLO; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=DmCvRyfY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=FskE9PLO; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A648F21A45;
-	Mon, 30 Sep 2024 08:11:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1727683890; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FhwzsLxSvo+Wgucyg8+WppQrJsKAkiBfMHeUqalfwZM=;
-	b=DmCvRyfYi27RukWiH3z2cn8gBi6DBL+YsQdGDMJZ0+PZz6fGtyC/xi0Ro+Jm5EdB7E0b38
-	sfY4HNva5MxhX0RN/ntU/wr9h9DCuNBFwxD585PezEU8IDPv1Bua3QuHdXSfI4le/59ctH
-	D8Xq38TrU+dEiuW4QV8U1g+mRZ+Z5Zw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1727683890;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FhwzsLxSvo+Wgucyg8+WppQrJsKAkiBfMHeUqalfwZM=;
-	b=FskE9PLOrexbRvjcEa/35qJhtDHy0Xh7XNKtc94zOMryfAiWh8NnR70A5FaHCT/vFOP2F2
-	lRnCLwJdyPjUn9BA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DmCvRyfY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FskE9PLO
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1727683890; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FhwzsLxSvo+Wgucyg8+WppQrJsKAkiBfMHeUqalfwZM=;
-	b=DmCvRyfYi27RukWiH3z2cn8gBi6DBL+YsQdGDMJZ0+PZz6fGtyC/xi0Ro+Jm5EdB7E0b38
-	sfY4HNva5MxhX0RN/ntU/wr9h9DCuNBFwxD585PezEU8IDPv1Bua3QuHdXSfI4le/59ctH
-	D8Xq38TrU+dEiuW4QV8U1g+mRZ+Z5Zw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1727683890;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FhwzsLxSvo+Wgucyg8+WppQrJsKAkiBfMHeUqalfwZM=;
-	b=FskE9PLOrexbRvjcEa/35qJhtDHy0Xh7XNKtc94zOMryfAiWh8NnR70A5FaHCT/vFOP2F2
-	lRnCLwJdyPjUn9BA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 741A113A8B;
-	Mon, 30 Sep 2024 08:11:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BwgjGzJd+maQFgAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 30 Sep 2024 08:11:30 +0000
-Date: Mon, 30 Sep 2024 10:12:23 +0200
-Message-ID: <877catk1aw.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
+	s=arc-20240116; t=1727687225; c=relaxed/simple;
+	bh=DE13EWTiMILf5JKwU/GXueM8kuKIjVMYjFc9TjYGgkQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ug4zuVzXc0s60rszPADa0K2Sj5I/mFZ03n+t/ilqRvEZgTB8p4iXiPoGQ2on/aiOBFkKpmiTMrknsodYIe5OJz+FPtGbnxrcJjw7H94Nutm76Cqv9dhYjq+XpPDP0tuCo8Y8AxENB8436ZUTOkGIWffMbuKhjOaKu68Es3/QHio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=G+4e/pEq; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727687222;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4u01cAsPRXMfLMKHduDcaVv7r4IZcMZeUecRC7OIn6Q=;
+	b=G+4e/pEqFU2TGSNTgWhy9k42g5S7eOfPtLV/ssFUxZXjWrYz/48wNs3pxY6WJzvJZT3lrI
+	1zlrnv+juti8XrWTjJtFw6pbpiREuUcsx4qIpN38mntj0KH6nXZ3t3TaEIUunwdxOgD2pw
+	hY7Tm3+QJ+fxhsV2iXNeC2OWG/zaHCM=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-696-lMSqdDBzO1Wy7RThmm5CZw-1; Mon, 30 Sep 2024 05:07:00 -0400
+X-MC-Unique: lMSqdDBzO1Wy7RThmm5CZw-1
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7ac8d3dbe5bso482032085a.3
+        for <kernel-janitors@vger.kernel.org>; Mon, 30 Sep 2024 02:07:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727687220; x=1728292020;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4u01cAsPRXMfLMKHduDcaVv7r4IZcMZeUecRC7OIn6Q=;
+        b=Sxv7ngsC9uhl0H0Q8Xd7QTfstsR8hrvn8k+RrhGptZRezAm3L2fwFHsCNGU773NZZT
+         QNIJrYXTAFBaS8WVjG7E20UlHg+92UWFrLqB8fL7t6GDvWFulJ4tsy8wX4ZrCJ7SOkCq
+         MIzPbK0IVR2cd/USCUlJ8i997bsjqqTaxn9SzKYA+ASzB8pkiJ1UFqCf8X8FMWc1qjti
+         xTv2GDU6ol/S8HsY6DrFIXnF5mkCk7sug2LiPJa/pJy+P+u0GgeCO5lxalzaykzAp8nN
+         cpMJ1YKL2IdzsvcO4csLWlwvZ0FT8DrzoJwcy/JRYn9adnaP4rTJJt9HTw3l7PG94T9o
+         8Wiw==
+X-Gm-Message-State: AOJu0YykwBCqdepBC7uTewtvSbQbeTne09X9e5l6KzjEY/8grnPo0B3V
+	WDGbelgLBvniF2RLrA4DxY0xKLSipDUuCuoW+pANA4x2LUfRBOx4Cnsf/paawkdSK6PYxj1SaX7
+	CairWEb1Dx3T5J0ZC2+wZipv5xnBioMEUp/RMYYCeSY5twemAxX+OTvbj4/AqozdxlQ==
+X-Received: by 2002:a05:620a:4411:b0:7a3:785a:dc1c with SMTP id af79cd13be357-7ae378c2881mr1647589985a.50.1727687220324;
+        Mon, 30 Sep 2024 02:07:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEY5T8VGvZ3aIE0DDn8rVPjKRXbu6y6uMYwxygTdlRa8sPUaFmTF1esGtF8Kbf2pgk46TSyvw==
+X-Received: by 2002:a05:620a:4411:b0:7a3:785a:dc1c with SMTP id af79cd13be357-7ae378c2881mr1647588585a.50.1727687219962;
+        Mon, 30 Sep 2024 02:06:59 -0700 (PDT)
+Received: from lbulwahn-thinkpadx1carbongen9.rmtde.csb ([2a02:810d:7e40:14b0:4ce1:e394:7ac0:6905])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ae377f0ea7sm394435285a.61.2024.09.30.02.06.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Sep 2024 02:06:59 -0700 (PDT)
+From: Lukas Bulwahn <lbulwahn@redhat.com>
+X-Google-Original-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+To: Jiqian Chen <Jiqian.Chen@amd.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	xen-devel@lists.xenproject.org
+Cc: kernel-janitors@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Takashi Iwai <tiwai@suse.de>,
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH] ALSA: mixer_oss: Remove some incorrect kfree_const() usages
-In-Reply-To: <63ac20f64234b7c9ea87a7fa9baf41e8255852f7.1727374631.git.christophe.jaillet@wanadoo.fr>
-References: <63ac20f64234b7c9ea87a7fa9baf41e8255852f7.1727374631.git.christophe.jaillet@wanadoo.fr>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Subject: [PATCH] xen: Fix config option reference in XEN_PRIVCMD definition
+Date: Mon, 30 Sep 2024 11:06:50 +0200
+Message-ID: <20240930090650.429813-1-lukas.bulwahn@redhat.com>
+X-Mailer: git-send-email 2.46.1
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: A648F21A45
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FREEMAIL_TO(0.00)[wanadoo.fr];
-	ARC_NA(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[wanadoo.fr];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.de:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.51
-X-Spam-Flag: NO
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu, 26 Sep 2024 20:17:36 +0200,
-Christophe JAILLET wrote:
-> 
-> "assigned" and "assigned->name" are allocated in snd_mixer_oss_proc_write()
-> using kmalloc() and kstrdup(), so there is no point in using kfree_const()
-> to free these resources.
-> 
-> Switch to the more standard kfree() to free these resources.
-> 
-> This could avoid a memory leak.
-> 
-> Fixes: 454f5ec1d2b7 ("ALSA: mixer: oss: Constify snd_mixer_oss_assign_table definition")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
-Applied now.  Thanks.
+Commit 2fae6bb7be32 ("xen/privcmd: Add new syscall to get gsi from dev")
+adds a weak reverse dependency to the config XEN_PRIVCMD definition,
+referring to CONFIG_XEN_PCIDEV_BACKEND. In Kconfig files, one refers to
+config options without the CONFIG prefix, though. So in its current form,
+this does not create the reverse dependency as intended, but is an
+attribute with no effect.
 
+Refer to the intended config option XEN_PCIDEV_BACKEND in the XEN_PRIVCMD
+definition.
 
-Takashi
+Fixes: 2fae6bb7be32 ("xen/privcmd: Add new syscall to get gsi from dev")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+---
+ drivers/xen/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/xen/Kconfig b/drivers/xen/Kconfig
+index 62035fe16bb8..72ddee4c1544 100644
+--- a/drivers/xen/Kconfig
++++ b/drivers/xen/Kconfig
+@@ -261,7 +261,7 @@ config XEN_SCSI_BACKEND
+ config XEN_PRIVCMD
+ 	tristate "Xen hypercall passthrough driver"
+ 	depends on XEN
+-	imply CONFIG_XEN_PCIDEV_BACKEND
++	imply XEN_PCIDEV_BACKEND
+ 	default m
+ 	help
+ 	  The hypercall passthrough driver allows privileged user programs to
+-- 
+2.46.1
+
 

@@ -1,75 +1,54 @@
-Return-Path: <kernel-janitors+bounces-5825-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-5828-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2EE998F6B5
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Oct 2024 21:04:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68DBC98F6E6
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Oct 2024 21:16:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A610528326C
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Oct 2024 19:04:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 046C01F21BA7
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Oct 2024 19:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6E71AB6E2;
-	Thu,  3 Oct 2024 19:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12301ABEBB;
+	Thu,  3 Oct 2024 19:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hjv8EIL/"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="SJ2Pq8Z7"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [217.72.192.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44ADA1A4F36;
-	Thu,  3 Oct 2024 19:04:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998141AAE0C;
+	Thu,  3 Oct 2024 19:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727982264; cv=none; b=c7me6XCK9i4ZfTCqhSu1NmoMH96RIsZtbiplsIyDhu/MiXTOv5XbkAsPwtOpEjU6QeI+iYLjCIZSGla3UsGcnFOoyyUCPZyXp3sMCwiqxte0apnUPJwCZMEfA9aPvZO2KvRXU07yTSdtFPhedzYiJLxPYckbxBPj2+/8Qbnhx6o=
+	t=1727982958; cv=none; b=K5WI/6TbDrAazAWt9UNahszixBkPF/dtitzeZRqi7IsL1IhhAjQEAn0TLWpXWy29BB32m4hnuDqG0qUYZIkeRc4Qh9yncr7/dzM60ivMZr/GlKZKcq43zziF5xlSmsc8cDH/In4n33YVNtHA0t3p3K98j+61XtMc4e7Hh/Ut4wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727982264; c=relaxed/simple;
-	bh=95h3/bTRg8PKeuo/I1qGeBlrCewe0f4o27NjXvQTMNA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JQjMCIkspst+JvFtbM8H4G1nQ0VYZoRxmWRXfL7fS9S28PqsqgJOMd0BftgUi9/84cglxEdH6O2y+6ldwqRIG2tVvgYCQNiq13BxT+5Bb12DXdGu73NJo1FlH/4uAfnt/DHTBh18wyFkQKttY9lZ6+3l5uSFr4vlW9PiLrKA/08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hjv8EIL/; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7a99fd4ea26so110874985a.1;
-        Thu, 03 Oct 2024 12:04:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727982262; x=1728587062; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=aPWVZ9h8Ykb7Ey6pieYHHbCq60X7ntHCLSFMkz5AWkw=;
-        b=Hjv8EIL/w3gHWvP2KWoTVGl5GWIgXs4z4qdHRR7n6Bjp3HSpPHFnBRw8WnT6uhilc+
-         8E7km5GeWwFwtHb09tRk6Nyd3jE9xfnMUfC0LuKDHOFsop6AWdr9fbBdDCbixmknE4HP
-         mg7Nj62qmPFpMKN+SnH7po7kzI8lBsmKKnNqoO7k0IyiQPduCiM+CLs/BN/GMvfo0Jo3
-         76IazYzfpFSy4dzvv44ynHcMmdyPecPAeMzx6yy5I7brcZDGmp+KM1dC3iDkp2OYbIGB
-         8B0NWxobEGF6k8pRMFxOrkQY3zIEIpliw5ydFCjZTWQFymCyGOCpu6ZSNREWont8Eu/u
-         cfOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727982262; x=1728587062;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aPWVZ9h8Ykb7Ey6pieYHHbCq60X7ntHCLSFMkz5AWkw=;
-        b=uDLMrIRzZV6XC0iOzLGJxR/tfHNuHP15vUbnURB7y9901LSrezpeH9qrw+Zp7ZQ56e
-         CxWb5W7+tm9IfwIv4u1hZBRrOf4efZxEGPgCZAzU0s6ygmSGs1Ll9xv4Vb2/cK6gH/AJ
-         NLa66yBVIAaqAVSA8cPL3CmmEGwbmFLNJvQ9TqZULpk5IxiMPRiTGQK+TMlebQPrrpdI
-         Wuj4jfc/zngu1KG/x6al2AU2ID/+kYSSisu33xQS2vqKp8Jo32TzwM8+It33o9mw8bCP
-         UqqTdwp9i68sn34+oH83wRLbWRP218q37n8XkjBEJjU1fzrPpiBEOxEgFUuGEC0jahfr
-         vn7w==
-X-Forwarded-Encrypted: i=1; AJvYcCWZLZ6b3FmhVsgHtlg52p4BE5wLnoTWZ15QIyAG0jkvW19GU5B8UgNejt7X4Qbzc3mGPjuDVMz/2AwPJ/JQdZc=@vger.kernel.org, AJvYcCX1qDKQJTvbONnPYGWGukwt1XwtuY7Rp86qJhBfVSTZ8IYs8VhJ4T5X+nJ5Ynus9SB6N4RwmiIw@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTaCY4luKe9RyEnalB2P6oe06FdAsPbvvId/5Ha4pRWr7Dcv7R
-	4O/aipfbXh/6FIVPRCiMarGGkhT7BmDohMHTOcNhCrEEO3KBCpmr
-X-Google-Smtp-Source: AGHT+IHCo03EOF4oZLxl67aMAsd4dpPiswfSx6WN1zvrnrzDKC8Wder1rcB7FTdoEdoJBAMR15bJoQ==
-X-Received: by 2002:a05:620a:24d4:b0:79f:14de:2a09 with SMTP id af79cd13be357-7ae6f421aebmr40148185a.8.1727982261956;
-        Thu, 03 Oct 2024 12:04:21 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ae6b39a797sm73015985a.46.2024.10.03.12.04.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Oct 2024 12:04:21 -0700 (PDT)
-Message-ID: <a3892753-6a24-4056-89d1-01698bc50ecb@gmail.com>
-Date: Thu, 3 Oct 2024 12:04:18 -0700
+	s=arc-20240116; t=1727982958; c=relaxed/simple;
+	bh=AuV7jr56rgKXdA217F8aRGhBLc23+CUe4EUfjlTBVCY=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=KyddiiXtL6rX1pXu7EHDhZe63hJ7Ek0zGtwkk02yVItj63biYiq144MYQCju81+dby/3eo47hZIajeGM1Q1uDSiJqKNdmcZ5e9nGvotNQR4vGFW5s7lMfuB7Mqd2k59fL/kMHAnzBw5PGz46N4AllCyE16ZpXnszpkaLRGzG2kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=SJ2Pq8Z7; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1727982947; x=1728587747; i=markus.elfring@web.de;
+	bh=AaP0qWhGGgqVyRMzRZmYOxh81E6npbjdyrfjXu/1pB8=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=SJ2Pq8Z76afHD93q40L/p58/ED5FLkoHuS4k3BYHQt2ASJlB+8pP3rDAD+yQDGJP
+	 mgmvPnv4yD/hwzhSvDjYRFOJBeWdw0RMsowfiCUA6rB3WtP/hguqQqZmtN1hfVMQC
+	 1+rTVi8/e6+5wvyFA/s9IQcGXn+xmGC33aQx2Vny3Ql2O5ejDOJM7QbSelIDv4ZX7
+	 YP/vY9HyKc78IbNRWj95jWEsc7FdpH3pSwLnh1tKoZmdxSoffxEPbQOW2WNM+OCsU
+	 6wJUirOZ/BR2FJoYwETQkKhTYJ573VCD+HB1C0bh3vJgve7HXDY4IKd1cUYDtjjdi
+	 Nt6jbjmGZMkJpA1cMw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.87.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mmhjw-1sCcQ11fOw-00kOTx; Thu, 03
+ Oct 2024 21:15:47 +0200
+Message-ID: <189b93e2-4e81-438d-9c77-cbe4d9d7a0d9@web.de>
+Date: Thu, 3 Oct 2024 21:15:45 +0200
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -77,65 +56,92 @@ List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: phy: bcm84881: Fix some error handling paths
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
- netdev@vger.kernel.org
-References: <3e1755b0c40340d00e089d6adae5bca2f8c79e53.1727982168.git.christophe.jaillet@wanadoo.fr>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- HGuUuzv+GKZ6nsysJw==
-In-Reply-To: <3e1755b0c40340d00e089d6adae5bca2f8c79e53.1727982168.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: linuxppc-dev@lists.ozlabs.org,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
+Content-Language: en-GB
+Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org
+From: Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] macintosh: Use common error handling code in
+ via_pmu_led_init()
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:xF2I4rW6AIKfWOc/S3lQWWNGf0PtzYaiK1MvvYtpD8mYytLpCm7
+ OMzdbD/ZVw8qOeweyX6aLZ0/oOH1BX9xPTfu9SZVnieWGUGzXfqpyPvsGr8Gz1/sC71P4/J
+ eMnn9EFTJ7HB1FXqVjPIXLVgfYVJKO948lmgZpxa8uinsbzNNV1NMe1T932S+gedPxEGWpu
+ WkLgPXkiCx9LxlpqECP5w==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Q9w2VK3Frdg=;TCpeb/UB/P4yquJ0czLNBRasXX3
+ C6QTxf007WG66fhad2u5iiJUsp81HPEDTAom+/9zHjUpvF/j1UsMynR26V7BLBqPhRd3Iz31Y
+ foE5533Ue4O8jqVLK3kbBr1YEUvugNTCkORQ6lSN3LPSv74n9FAETg3NXnnGEri9VkH/CH7Ga
+ bEvy36kr70igJbVU4/vRdGmG2c01yr2baQ01r8tpTjywpla5F9xHVPSK+Idclx2uws/MFi8nX
+ 6RfcK+h8VZQO5hikb32Yhurw+SVNw4j4v0IWYdg+dOJK/DaCOHbywajJlNxByce6pfxdOGNE/
+ 6Tm4YPVaMf6K6BCsWxDWtn6BsXiGjzhwcQ80ot1lYNlYS+QMD8p+M2izXZX6CIue8JiAsPMww
+ 2CEmO0teyN6aDzaomwIDqVw7AQZPT2AyRFYoM46WwKAkFzSCOMxdz+5+oQvMB1BS4fUbdIjrv
+ gYWJvklyR5tvRYdt/u8LFgVYJUAk3ZA/wog1V5Fy5K5V0spfRIKFgjTpVgs+rx28z/ntfKtOg
+ 5enN47GIsBEFxqXz2XZr1Dcedr6hZTGznVm8rywJYIoDy84mSRZf4VCIH+V1p4knPAgTTBV4M
+ zSwXT9ERquWwwULCjfk0mmVRk14etXLVuIGhrJm/nb76umGK0qSej+fAUUa97/yuUkzbShS86
+ oQ6FgkJkSCWcfkcYujCe1ER6NII8f/EDaSt6i0ZeoAq4R/rtgxmShPvKaJQzfeB0vAtElQwWn
+ cBoIJHF2vRpRMuCv5xjj3fNgPbYSAVpJWt5iqD4n8wyHCTHtDdCmocE60tFDuYGcRQaGzwcdn
+ pYmTwKKTZCFYyFVjTk27pA3A==
 
-On 10/3/24 12:03, Christophe JAILLET wrote:
-> If phy_read_mmd() fails, the error code stored in 'bmsr' should be returned
-> instead of 'val' which is likely to be 0.
-> 
-> Fixes: 75f4d8d10e01 ("net: phy: add Broadcom BCM84881 PHY driver")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Thu, 3 Oct 2024 21:06:42 +0200
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
---
-Florian
+Add a jump target so that a bit of exception handling can be better reused
+at the end of this function implementation.
+
+This issue was detected by using the Coccinelle software.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ drivers/macintosh/via-pmu-led.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/macintosh/via-pmu-led.c b/drivers/macintosh/via-pmu-l=
+ed.c
+index a4fb16d7db3c..fc1af74b6596 100644
+=2D-- a/drivers/macintosh/via-pmu-led.c
++++ b/drivers/macintosh/via-pmu-led.c
+@@ -92,18 +92,15 @@ static int __init via_pmu_led_init(void)
+ 	if (dt =3D=3D NULL)
+ 		return -ENODEV;
+ 	model =3D of_get_property(dt, "model", NULL);
+-	if (model =3D=3D NULL) {
+-		of_node_put(dt);
+-		return -ENODEV;
+-	}
++	if (!model)
++		goto put_node;
++
+ 	if (strncmp(model, "PowerBook", strlen("PowerBook")) !=3D 0 &&
+ 	    strncmp(model, "iBook", strlen("iBook")) !=3D 0 &&
+ 	    strcmp(model, "PowerMac7,2") !=3D 0 &&
+-	    strcmp(model, "PowerMac7,3") !=3D 0) {
+-		of_node_put(dt);
+-		/* ignore */
+-		return -ENODEV;
+-	}
++	    strcmp(model, "PowerMac7,3") !=3D 0)
++		goto put_node;
++
+ 	of_node_put(dt);
+
+ 	spin_lock_init(&pmu_blink_lock);
+@@ -112,6 +109,10 @@ static int __init via_pmu_led_init(void)
+ 	pmu_blink_req.done =3D pmu_req_done;
+
+ 	return led_classdev_register(NULL, &pmu_led);
++
++put_node:
++	of_node_put(dt);
++	return -ENODEV;
+ }
+
+ late_initcall(via_pmu_led_init);
+=2D-
+2.46.1
+
 

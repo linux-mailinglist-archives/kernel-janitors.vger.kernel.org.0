@@ -1,147 +1,107 @@
-Return-Path: <kernel-janitors+bounces-5828-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-5830-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68DBC98F6E6
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Oct 2024 21:16:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D5A98F70E
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Oct 2024 21:34:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 046C01F21BA7
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Oct 2024 19:16:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4B861F21C0A
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Oct 2024 19:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12301ABEBB;
-	Thu,  3 Oct 2024 19:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3951AC447;
+	Thu,  3 Oct 2024 19:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="SJ2Pq8Z7"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="nU6efexJ"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mout.web.de (mout.web.de [217.72.192.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from msa.smtpout.orange.fr (msa-215.smtpout.orange.fr [193.252.23.215])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998141AAE0C;
-	Thu,  3 Oct 2024 19:15:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39C11A76CF;
+	Thu,  3 Oct 2024 19:34:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.23.215
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727982958; cv=none; b=K5WI/6TbDrAazAWt9UNahszixBkPF/dtitzeZRqi7IsL1IhhAjQEAn0TLWpXWy29BB32m4hnuDqG0qUYZIkeRc4Qh9yncr7/dzM60ivMZr/GlKZKcq43zziF5xlSmsc8cDH/In4n33YVNtHA0t3p3K98j+61XtMc4e7Hh/Ut4wk=
+	t=1727984059; cv=none; b=o4rqntPRGKWSqwobIIO/EkKsRCWOzGv70qsMLkySCS25nkCcYLlE9p2ct4soxMqD8+j0hjW0/wZWtMrdEUBStb9VzHDAqkpa9qTp4onJilhVqe7k76MQPI3PvxICx52hcv2EDDGUXtJhU5ru44Aw5DTe1RmZoUGx7SbfDsWvGLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727982958; c=relaxed/simple;
-	bh=AuV7jr56rgKXdA217F8aRGhBLc23+CUe4EUfjlTBVCY=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=KyddiiXtL6rX1pXu7EHDhZe63hJ7Ek0zGtwkk02yVItj63biYiq144MYQCju81+dby/3eo47hZIajeGM1Q1uDSiJqKNdmcZ5e9nGvotNQR4vGFW5s7lMfuB7Mqd2k59fL/kMHAnzBw5PGz46N4AllCyE16ZpXnszpkaLRGzG2kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=SJ2Pq8Z7; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1727982947; x=1728587747; i=markus.elfring@web.de;
-	bh=AaP0qWhGGgqVyRMzRZmYOxh81E6npbjdyrfjXu/1pB8=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
-	 Subject:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=SJ2Pq8Z76afHD93q40L/p58/ED5FLkoHuS4k3BYHQt2ASJlB+8pP3rDAD+yQDGJP
-	 mgmvPnv4yD/hwzhSvDjYRFOJBeWdw0RMsowfiCUA6rB3WtP/hguqQqZmtN1hfVMQC
-	 1+rTVi8/e6+5wvyFA/s9IQcGXn+xmGC33aQx2Vny3Ql2O5ejDOJM7QbSelIDv4ZX7
-	 YP/vY9HyKc78IbNRWj95jWEsc7FdpH3pSwLnh1tKoZmdxSoffxEPbQOW2WNM+OCsU
-	 6wJUirOZ/BR2FJoYwETQkKhTYJ573VCD+HB1C0bh3vJgve7HXDY4IKd1cUYDtjjdi
-	 Nt6jbjmGZMkJpA1cMw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.87.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mmhjw-1sCcQ11fOw-00kOTx; Thu, 03
- Oct 2024 21:15:47 +0200
-Message-ID: <189b93e2-4e81-438d-9c77-cbe4d9d7a0d9@web.de>
-Date: Thu, 3 Oct 2024 21:15:45 +0200
+	s=arc-20240116; t=1727984059; c=relaxed/simple;
+	bh=WyZWEWlhds0xrBVDq7MOYOUjniUReyXJlQLd/zaY5tE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ugoZ7BoOl2NpuLmkazhiK0X6HEsXxuM2S8OLtkhkyt6zXgz3K5uIHPIo1ztLEqmNe0PFZmKiXcnvdwsJxmCwGeYRJnHCBHImdn48hQnizvRAqdlVodJZzDE7E+tniRIlqJwu6oO71eUXjP+kHr69dgJNYwPyjADGlrlbuTjmeSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=nU6efexJ; arc=none smtp.client-ip=193.252.23.215
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id wRaPsP5U3vjJewRaQsN4s2; Thu, 03 Oct 2024 21:34:07 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1727984047;
+	bh=2SDPvfeI4Lzg8Uj2ZPpyRvlMXWAOYBlC3P/o4uoQmrY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=nU6efexJ2AzkRnAdtD4BvewOlLJBUkfpSsJpWrc+misqdWwPWs8ZEOMrxMZ6/jwqr
+	 E/wuAgK2Tu985JV2ummHBR+zWsXPnz84ADc9O/ZEngzDnwkDuSm9tWsGaTxoFtAeO8
+	 7O4pW6NB2VHzxUdNHeWDeJHFVPAi321xpNXQexkg0J9PZMiVXQa5eyPr1pOEGC0/Rd
+	 SkkJFtsq0RLTKjdzMHlMz2Vv1IJq8Qa67W7r/dLilY23+VwqtE4B3cpNhb43d3IgXR
+	 s0HoI/eZi6HlyeU7RKgifP8ZiQ0lKdPYBzcYAuS24s1UhtWx4cV7ELjyd/c+6TzN7v
+	 kODvm3gRFZJGg==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 03 Oct 2024 21:34:07 +0200
+X-ME-IP: 90.11.132.44
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Takashi Iwai <tiwai@suse.de>,
+	linux-sound@vger.kernel.org
+Subject: [PATCH] ALSA: gus: Fix some error handling paths related to get_bpos() usage
+Date: Thu,  3 Oct 2024 21:34:01 +0200
+Message-ID: <d9ca841edad697154afa97c73a5d7a14919330d9.1727984008.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: linuxppc-dev@lists.ozlabs.org,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Johannes Berg <johannes@sipsolutions.net>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
-Content-Language: en-GB
-Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org
-From: Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] macintosh: Use common error handling code in
- via_pmu_led_init()
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:xF2I4rW6AIKfWOc/S3lQWWNGf0PtzYaiK1MvvYtpD8mYytLpCm7
- OMzdbD/ZVw8qOeweyX6aLZ0/oOH1BX9xPTfu9SZVnieWGUGzXfqpyPvsGr8Gz1/sC71P4/J
- eMnn9EFTJ7HB1FXqVjPIXLVgfYVJKO948lmgZpxa8uinsbzNNV1NMe1T932S+gedPxEGWpu
- WkLgPXkiCx9LxlpqECP5w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Q9w2VK3Frdg=;TCpeb/UB/P4yquJ0czLNBRasXX3
- C6QTxf007WG66fhad2u5iiJUsp81HPEDTAom+/9zHjUpvF/j1UsMynR26V7BLBqPhRd3Iz31Y
- foE5533Ue4O8jqVLK3kbBr1YEUvugNTCkORQ6lSN3LPSv74n9FAETg3NXnnGEri9VkH/CH7Ga
- bEvy36kr70igJbVU4/vRdGmG2c01yr2baQ01r8tpTjywpla5F9xHVPSK+Idclx2uws/MFi8nX
- 6RfcK+h8VZQO5hikb32Yhurw+SVNw4j4v0IWYdg+dOJK/DaCOHbywajJlNxByce6pfxdOGNE/
- 6Tm4YPVaMf6K6BCsWxDWtn6BsXiGjzhwcQ80ot1lYNlYS+QMD8p+M2izXZX6CIue8JiAsPMww
- 2CEmO0teyN6aDzaomwIDqVw7AQZPT2AyRFYoM46WwKAkFzSCOMxdz+5+oQvMB1BS4fUbdIjrv
- gYWJvklyR5tvRYdt/u8LFgVYJUAk3ZA/wog1V5Fy5K5V0spfRIKFgjTpVgs+rx28z/ntfKtOg
- 5enN47GIsBEFxqXz2XZr1Dcedr6hZTGznVm8rywJYIoDy84mSRZf4VCIH+V1p4knPAgTTBV4M
- zSwXT9ERquWwwULCjfk0mmVRk14etXLVuIGhrJm/nb76umGK0qSej+fAUUa97/yuUkzbShS86
- oQ6FgkJkSCWcfkcYujCe1ER6NII8f/EDaSt6i0ZeoAq4R/rtgxmShPvKaJQzfeB0vAtElQwWn
- cBoIJHF2vRpRMuCv5xjj3fNgPbYSAVpJWt5iqD4n8wyHCTHtDdCmocE60tFDuYGcRQaGzwcdn
- pYmTwKKTZCFYyFVjTk27pA3A==
+Content-Transfer-Encoding: 8bit
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Thu, 3 Oct 2024 21:06:42 +0200
+If get_bpos() fails, it is likely that the corresponding error code should
+be returned.
 
-Add a jump target so that a bit of exception handling can be better reused
-at the end of this function implementation.
+Fixes: a6970bb1dd99 ("ALSA: gus: Convert to the new PCM ops")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+This patch is speculative. Review with care.
+---
+ sound/isa/gus/gus_pcm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-This issue was detected by using the Coccinelle software.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- drivers/macintosh/via-pmu-led.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/macintosh/via-pmu-led.c b/drivers/macintosh/via-pmu-l=
-ed.c
-index a4fb16d7db3c..fc1af74b6596 100644
-=2D-- a/drivers/macintosh/via-pmu-led.c
-+++ b/drivers/macintosh/via-pmu-led.c
-@@ -92,18 +92,15 @@ static int __init via_pmu_led_init(void)
- 	if (dt =3D=3D NULL)
- 		return -ENODEV;
- 	model =3D of_get_property(dt, "model", NULL);
--	if (model =3D=3D NULL) {
--		of_node_put(dt);
--		return -ENODEV;
--	}
-+	if (!model)
-+		goto put_node;
-+
- 	if (strncmp(model, "PowerBook", strlen("PowerBook")) !=3D 0 &&
- 	    strncmp(model, "iBook", strlen("iBook")) !=3D 0 &&
- 	    strcmp(model, "PowerMac7,2") !=3D 0 &&
--	    strcmp(model, "PowerMac7,3") !=3D 0) {
--		of_node_put(dt);
--		/* ignore */
--		return -ENODEV;
--	}
-+	    strcmp(model, "PowerMac7,3") !=3D 0)
-+		goto put_node;
-+
- 	of_node_put(dt);
-
- 	spin_lock_init(&pmu_blink_lock);
-@@ -112,6 +109,10 @@ static int __init via_pmu_led_init(void)
- 	pmu_blink_req.done =3D pmu_req_done;
-
- 	return led_classdev_register(NULL, &pmu_led);
-+
-+put_node:
-+	of_node_put(dt);
-+	return -ENODEV;
- }
-
- late_initcall(via_pmu_led_init);
-=2D-
-2.46.1
+diff --git a/sound/isa/gus/gus_pcm.c b/sound/isa/gus/gus_pcm.c
+index bcbcaa924c12..16f9bbb43a54 100644
+--- a/sound/isa/gus/gus_pcm.c
++++ b/sound/isa/gus/gus_pcm.c
+@@ -364,7 +364,7 @@ static int snd_gf1_pcm_playback_copy(struct snd_pcm_substream *substream,
+ 
+ 	bpos = get_bpos(pcmp, voice, pos, len);
+ 	if (bpos < 0)
+-		return pos;
++		return bpos;
+ 	if (copy_from_iter(runtime->dma_area + bpos, len, src) != len)
+ 		return -EFAULT;
+ 	return playback_copy_ack(substream, bpos, len);
+@@ -381,7 +381,7 @@ static int snd_gf1_pcm_playback_silence(struct snd_pcm_substream *substream,
+ 	
+ 	bpos = get_bpos(pcmp, voice, pos, len);
+ 	if (bpos < 0)
+-		return pos;
++		return bpos;
+ 	snd_pcm_format_set_silence(runtime->format, runtime->dma_area + bpos,
+ 				   bytes_to_samples(runtime, count));
+ 	return playback_copy_ack(substream, bpos, len);
+-- 
+2.46.2
 
 

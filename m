@@ -1,34 +1,34 @@
-Return-Path: <kernel-janitors+bounces-5856-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-5857-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F7F991493
-	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2024 07:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 441BE9914A4
+	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2024 07:39:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 461F91F241EF
-	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2024 05:33:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8EC31F24961
+	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2024 05:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18596482DD;
-	Sat,  5 Oct 2024 05:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB044D599;
+	Sat,  5 Oct 2024 05:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="Iq/k3omc"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="etrrLw9m"
 X-Original-To: kernel-janitors@vger.kernel.org
 Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9D920322;
-	Sat,  5 Oct 2024 05:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A043D67A0D;
+	Sat,  5 Oct 2024 05:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728106420; cv=none; b=ET2tk02hKG26YPVzvpJWpqlAZdTnaaVVw77fcUxCITFvX7Wb2k7M9qYl3rKDg+AfdbpLLG6h0waS38ECVDKkQG5nHmIIgktyqZKAKKBpECwKv2TCyi5o7G4o8souyY/nUiYj0WRBl2ZhuqnGtGJWNOK8T//3UnfbOL+EuJiz2TU=
+	t=1728106729; cv=none; b=WcyKh1bdGj0V27DRNt1f40BbcL2VAY+q6IS5u4ehBnapfntCm5tYads+WxpDz8WbhV4Ou7w6SBa9mrn6y0J4uet7sIf7ERJBojyrlAsYXGW3FsSMhYe/za1YrHiAXNarAgFq40e123oNCopzPig1QwAvy5O++XyxtnVTSiFXm30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728106420; c=relaxed/simple;
-	bh=JLAHUlMGK64tSZS78sK2PdZORF9TTxDPVoLMTDNWlUs=;
+	s=arc-20240116; t=1728106729; c=relaxed/simple;
+	bh=atLFrNZEDjDQjjFLmt6CxKrY9olvExa9lyJvDKFFrYs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P3KjjmIKSD/HaWw2rNGj5BPcSD1wEQ8DacNJTDOBD8jlDeFxfh4J6p4IRXVLV0DDwfNZPVGQMN2k9GhdKSimvnwSQirBqBbNE0/9PMvTvFidz6LDsmg0Aj/Q9YSXY5VTqIU09IfQ/QDGIAPWAwoxtbZ7pJ/0h1xOQArrPq/mm6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=Iq/k3omc; arc=none smtp.client-ip=144.6.53.87
+	 Content-Type:Content-Disposition:In-Reply-To; b=gVDDXrhuDT8cQ3MuTSW1Nx8eJoXyJRMi/W1tW2OwI0t0bLO0fHmW0QCvW3Qimq9UQy6URcRQAYA2igTapd3SY/qzJPEOY+z9gAs6P5LMOo34pwF1Y3fPqGoLcCw5W95IgfKQOOLWXOGgh9xTpOglrhYfwqQZBQ3R5cszCyDMthU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=etrrLw9m; arc=none smtp.client-ip=144.6.53.87
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
@@ -37,29 +37,34 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=X+KSg5pqVuDdlzPZYx3Ft/0ljTXwMqHSn6caduN4iRw=; b=Iq/k3omcJppIOUY/n4izstSu4e
-	+kXnkkDqgtthRdQ9+hGMkbzHce371sahpMI/eY1uzIvQUtabDVRfDbGfesEbrQhJrCOrAtZ3SfWvT
-	khEZ4tFP2unBcqtjuY8ZHjRk+yl97aGMQu7UR5nHCz67k9UZpN8YHFtrFc35REE4FiaqI2s5ZHG1C
-	df9FBpquF0Z6XgmI/9AN5tesr0TqgUrgPrAvhx4qpMSDputrqvl3B+JeEZTPkLrjfIXAjC8qiCrCF
-	kRyf0LgN4asqAEUB47dR7QCLPf68eHft0bGsgBGW8GzVUjc54Diot4z0rSW83QqF4wXOIDu1bAUjf
-	GD+kL8tQ==;
+	bh=1GMpXlsg1kAimabeSQ+m/nn+r6XfSsq4cKbfKqdPwSE=; b=etrrLw9mZskuvQAM70eW/kKkHA
+	yV/CJmSCvZDIk8TMypFBxMc+qo5aqhhpu/U32KcbbYCMmNaHWHyj7PHLenmUD7kmXSzyfhqntEgfc
+	Cqn7cNGB8kTzBWlSk0WQZPIIp2RG1mbj1pTkNl6p5wODw+ryjxKBDndSa6m66S7+PhcGuCbOVQPTa
+	Jap86VT6v7ye37OqD+M1BFLkE8CfMVke76AozOcoLsS/QXBumzhYrPWv2cq+zZSHvsAniVwjlYYoM
+	qWonPEUcWNKxTCVJQKVjGtPOFYs1DE1gmrQacxI5/wEiMYtpeJvdwgPNGC3Nma77fg8k3guBijYQQ
+	gglxT0PA==;
 Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
 	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1swxG5-0071XI-39;
-	Sat, 05 Oct 2024 13:33:28 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 05 Oct 2024 13:33:27 +0800
-Date: Sat, 5 Oct 2024 13:33:27 +0800
+	id 1swxL3-0071cv-2f;
+	Sat, 05 Oct 2024 13:38:36 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 05 Oct 2024 13:38:35 +0800
+Date: Sat, 5 Oct 2024 13:38:35 +0800
 From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: kernel-janitors@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2] crypto: lib/mpi - Extend support for scope-based
- resource management
-Message-ID: <ZwDPp4bU1J5uEgQe@gondor.apana.org.au>
-References: <bc5ce9ad-acbd-4f3b-91d6-10cf62bf5afc@web.de>
- <202409180725.ZV8DCvII-lkp@intel.com>
- <91d10516-4ba9-4fe0-8f63-86205cc4f88c@web.de>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Jie Wang <jie.wang@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Damian Muszynski <damian.muszynski@intel.com>,
+	Tero Kristo <tero.kristo@linux.intel.com>,
+	Shashank Gupta <shashank.gupta@intel.com>,
+	Lucas Segarra Fernandez <lucas.segarra.fernandez@intel.com>,
+	Dong Xie <dong.xie@intel.com>, qat-linux@intel.com,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] crypto: qat - (qat_420xx) fix off by one in
+ uof_get_name()
+Message-ID: <ZwDQ2zEEnYYn4tth@gondor.apana.org.au>
+References: <796ecd7c-54ad-4bec-b748-3e156cc0a1aa@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -68,17 +73,20 @@ List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <91d10516-4ba9-4fe0-8f63-86205cc4f88c@web.de>
+In-Reply-To: <796ecd7c-54ad-4bec-b748-3e156cc0a1aa@stanley.mountain>
 
-On Wed, Sep 18, 2024 at 11:26:23AM +0200, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Wed, 18 Sep 2024 11:06:35 +0200
+On Sat, Sep 28, 2024 at 01:05:01PM +0300, Dan Carpenter wrote:
+> This is called from uof_get_name_420xx() where "num_objs" is the
+> ARRAY_SIZE() of fw_objs[].  The > needs to be >= to prevent an out of
+> bounds access.
 > 
-> Scope-based resource management became supported for some
+> Fixes: fcf60f4bcf54 ("crypto: qat - add support for 420xx devices")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> ---
+>  drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-This patch needs to be sent to linux-crypto.
-
-Thanks,
+Patch applied.  Thanks.
 -- 
 Email: Herbert Xu <herbert@gondor.apana.org.au>
 Home Page: http://gondor.apana.org.au/~herbert/

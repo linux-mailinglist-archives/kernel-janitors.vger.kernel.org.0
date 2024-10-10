@@ -1,121 +1,121 @@
-Return-Path: <kernel-janitors+bounces-5940-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-5942-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1302199825D
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2024 11:34:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B59B09984EE
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2024 13:25:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC8CD1F22C09
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2024 09:34:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33384B26326
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2024 11:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1441BE84E;
-	Thu, 10 Oct 2024 09:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC421C32E5;
+	Thu, 10 Oct 2024 11:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="INirg5Ug"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="lJU3XipM"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB2A1BE245;
-	Thu, 10 Oct 2024 09:33:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4408EF9CB;
+	Thu, 10 Oct 2024 11:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728552835; cv=none; b=dapzRyWf1UFoTebdSMUqrysmanuQrOeb8+nqVEdqjckrLyzL6C9bq+Ti7ew0loxc8ZedSstsIQ1K+rd8305a/bGBeOP3akkcpzWN+Kwk4QsiHUqh+Mw4pRu8ios1aiGKEVj3Gvn1h7ef4Q43LTtcRZiI3NGop/pWg/PR+XR6dKA=
+	t=1728559498; cv=none; b=InQCUQURrZJXy2KopfSLwNiiMGblaTDM2DJRM0l0CyqwgCNx3NwGn5Q2bb6+oQP1HiqSQZfHabSclAK/4fyQ4lt7NHQfHthsiNVM1rjTSnfJ451Ce/aOm+WhTGwwWAf+3Bd/G1B+fWGQLjEO7Tc3sYVLdTpbXhucqxnw+KfcU/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728552835; c=relaxed/simple;
-	bh=re5Q+qO/hHoNx+eKZZ1hEuECNny9DIdvg8+EGAFqVig=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IyMtn1WuFby4mAfPOqs6As7CcDP5mZbYl4y7l5J2xu5IwCt3d8s4/W5ToyX+b1Ytli6lAN5rsE1WaVFjMQMQh7gaNSqFN1sZFop28gfZOmPDw3U/SbBkv+IFKP9TV+fR5aDo/jw4KmyMy5mHoGTJmfkCZNhqmtexlRKQ94/k9G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=INirg5Ug; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728552833; x=1760088833;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=re5Q+qO/hHoNx+eKZZ1hEuECNny9DIdvg8+EGAFqVig=;
-  b=INirg5Ug+4+Ch0DdJMisIg58FBycSy7vUfj9mDBi9tOuXkxC7hsCt3f2
-   oU3Dhgg/6U19j7PSBr70wiGN27jtNr1BOKx3Ps9n02VVofn1mMTn+JGXt
-   z8J/FKOfXknV7J3ApkleUFRGFLQi6dFrb3Q/lYEH+NV9v5oALsNn/vCno
-   TvbRKvIintG4K9ZGJGzJxWHo5grXJxmADeBT1YU3ddhkxBPfCuHQMwlTk
-   pie09uYhx7QGG8PdrI5W3SSZO6nk9fow3WdOkSxwNhYyIoWVOtmzQ5rgU
-   GSgZjg8qHxC6SqmmAmuTgzy6q4s85LFPjm3s92cIpCo+mohkpY6OMxIvP
-   A==;
-X-CSE-ConnectionGUID: UgRKTbP2RVyH5++iiGp5iA==
-X-CSE-MsgGUID: PZLH6j5NS/qB2R7sGeA3FQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="27710352"
-X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; 
-   d="scan'208";a="27710352"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 02:33:52 -0700
-X-CSE-ConnectionGUID: QgsLcRwqRKuJVaJxSY/Zcw==
-X-CSE-MsgGUID: SKqVmDLOQ/maIfi6mzE8lA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; 
-   d="scan'208";a="76143171"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa006.fm.intel.com with ESMTP; 10 Oct 2024 02:33:49 -0700
-Received: from [10.245.97.255] (unknown [10.245.97.255])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id E7C982876E;
-	Thu, 10 Oct 2024 10:33:46 +0100 (IST)
-Message-ID: <6f64b79b-391e-4c78-98ac-8741b82201b4@intel.com>
-Date: Thu, 10 Oct 2024 11:33:45 +0200
+	s=arc-20240116; t=1728559498; c=relaxed/simple;
+	bh=ywceDmzYQKH28KRgkOB9nGjXZGaXYWHDTS1DHsIk3Xk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IUuLrkdglHhx44mApQ+EQFXIKRBLA8kVLdD9+H5nnVY0EFblvRJ+e40vmW4us2EYqIwLbufF7EWcvY70Bo4saly8+aC8AfZUQPLYZFWK7z33uesqXuj+3/ij+uB959dIg9EAQBlcEhGa+vndDrh1DE+o647jvVIS4gMPjnChG+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=lJU3XipM; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49ABMduX002819;
+	Thu, 10 Oct 2024 11:24:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=+Lt5TvzGhT9DI465dwqRMgLKs/FyG
+	03acJyUMNDMqLk=; b=lJU3XipMDhMxFK5PrptopagRJT+BsXO2p/dV/UFKndEuX
+	4UN88zW7V9u3npraMwVgr7ngRDdoX7al+rFEUbdlZ4hTz6U7l3sdhItAL6OxHtrc
+	ITAXFxGohb+5jqMV6l895TwZVnd7l2SZyuI3TyTUHOmuIYyv75s9u/smTWyaz3N0
+	qV+LFe/BgNeFzitlHwMmY3R/90rXnqUTX7hqMV3A726aXu88A1cbV8Yjqsn2IfpA
+	DsG9qFw76Vw39ryyf6E7xFeFMZ1gYeHTn26xAZ6F7AvnYaw3gDHNHOLVUqfALiQ/
+	kjFXlI8Fuw35sLzxPDPFTYv9LKUUMMBQV/i59v6SA==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42306ejh49-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 10 Oct 2024 11:24:49 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49ABCS2V011625;
+	Thu, 10 Oct 2024 11:24:48 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 422uwg6x7p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 10 Oct 2024 11:24:48 +0000
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49ABOl9C031014;
+	Thu, 10 Oct 2024 11:24:47 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 422uwg6x6y-1;
+	Thu, 10 Oct 2024 11:24:47 +0000
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+To: Linus Walleij <linus.walleij@linaro.org>,
+        Chen Wang <unicorn_wang@outlook.com>,
+        Inochi Amaoto <inochiama@outlook.com>,
+        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: dan.carpenter@linaro.org, kernel-janitors@vger.kernel.org,
+        error27@gmail.com
+Subject: [PATCH] pinctrl: sophgo: fix double free in cv1800_pctrl_dt_node_to_map()
+Date: Thu, 10 Oct 2024 04:18:18 -0700
+Message-ID: <20241010111830.3474719-1-harshit.m.mogalapalli@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3] drm/xe/guc: Fix dereference before NULL check
-To: Dan Carpenter <dan.carpenter@linaro.org>,
- "Everest K.C." <everestkc@everestkc.com.np>
-Cc: lucas.demarchi@intel.com, thomas.hellstrom@linux.intel.com,
- rodrigo.vivi@intel.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
- skhan@linuxfoundation.org, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20241010064636.3970-1-everestkc@everestkc.com.np>
- <1a5407c4-3b0f-48a1-940a-cc6b3ff3fb12@stanley.mountain>
-Content-Language: en-US
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
-In-Reply-To: <1a5407c4-3b0f-48a1-940a-cc6b3ff3fb12@stanley.mountain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-10_08,2024-10-09_02,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ spamscore=0 adultscore=0 phishscore=0 suspectscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2409260000 definitions=main-2410100075
+X-Proofpoint-GUID: sbJPztGdrITMqyNO9QML_0_1Qb3O_iJw
+X-Proofpoint-ORIG-GUID: sbJPztGdrITMqyNO9QML_0_1Qb3O_iJw
 
+'map' is allocated using devm_* which takes care of freeing the allocated
+data, but in error paths there is a call to pinctrl_utils_free_map()
+which also does kfree(map) which leads to a double free.
 
+Use kcalloc() instead of devm_kcalloc() as freeing is manually handled.
 
-On 10.10.2024 08:54, Dan Carpenter wrote:
-> On Thu, Oct 10, 2024 at 12:46:34AM -0600, Everest K.C. wrote:
->> The pointer list->list is dereferenced before the NULL check.
->> Fix this by moving the NULL check outside the for loop, so that
->> the check is performed before the dereferencing.
->> The list->list pointer cannot be NULL so this has no effect on runtime.
->> It's just a correctness issue.
->>
->> This issue was reported by Coverity Scan.
->> https://scan7.scan.coverity.com/#/project-view/51525/11354?selectedIssue=1600335
->>
->> Fixes: a18c696fa5cb ("drm/xe/guc: Fix dereference before Null check")
+Fixes: a29d8e93e710 ("pinctrl: sophgo: add support for CV1800B SoC")
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+---
+This is based on static analysis with smatch, only compile tested.
+---
+ drivers/pinctrl/sophgo/pinctrl-cv18xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-hmm, this seems wrong, shouldn't this be:
-
-Fixes: 0f1fdf559225 ("drm/xe/guc: Save manual engine capture into
-capture list")
-
->> Signed-off-by: Everest K.C. <everestkc@everestkc.com.np>
->> ---
-> 
-> Perfect!  Thanks.
-> 
-> Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-> 
-> regards,
-> dan carpenter
-> 
+diff --git a/drivers/pinctrl/sophgo/pinctrl-cv18xx.c b/drivers/pinctrl/sophgo/pinctrl-cv18xx.c
+index d18fc5aa84f7..57f2674e75d6 100644
+--- a/drivers/pinctrl/sophgo/pinctrl-cv18xx.c
++++ b/drivers/pinctrl/sophgo/pinctrl-cv18xx.c
+@@ -221,7 +221,7 @@ static int cv1800_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 	if (!grpnames)
+ 		return -ENOMEM;
+ 
+-	map = devm_kcalloc(dev, ngroups * 2, sizeof(*map), GFP_KERNEL);
++	map = kcalloc(ngroups * 2, sizeof(*map), GFP_KERNEL);
+ 	if (!map)
+ 		return -ENOMEM;
+ 
+-- 
+2.39.3
 
 

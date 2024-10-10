@@ -1,136 +1,134 @@
-Return-Path: <kernel-janitors+bounces-5941-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-5943-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BFDC9984D5
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2024 13:22:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC4F9986DF
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2024 14:58:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB9B51C2427B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2024 11:22:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41C221F24E8E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2024 12:58:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11631C245C;
-	Thu, 10 Oct 2024 11:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559A51C8FC3;
+	Thu, 10 Oct 2024 12:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ktta9DT/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W3/Z4rw+"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB1333CD2;
-	Thu, 10 Oct 2024 11:22:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350E61C7B84;
+	Thu, 10 Oct 2024 12:57:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728559329; cv=none; b=ckK8+gGX1GK8HHBSF/FRBestU3QD1Q7voaJdBHEHGBr4RqWlPBTG678dkKeGG1+4uTVb7UHbwopcsBvL2b6OF6LuCvgVLR8ArN7HmpDyTH2voyjleBWkGYgzHb+OJ+qpEmuT9A9N6tMDsiB5MEfz8mdI2SZryVRTmHgc4tqK2L4=
+	t=1728565079; cv=none; b=KuD0QHnNQAIWLcMBWvynUx2afT95auqUxJdwWLrgXj9g1Gj8cmWtpuGkV8Xx9xEmMUcWoCuQF5BIN9brmbrRnTU0jFMIL7iFahipA7CBMPUJ+hYASVUR0uT8Z1Ntf75DK0zDJlblJAihmA5ZLKrfONwi8ZhilaORk5Bqye+Xz9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728559329; c=relaxed/simple;
-	bh=xBOiaZ6QpT8eVqruUMXNPd/eR72qjUQHCYtEiemiRCw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=P+Lnz2516vOmX01vq5kIU2BNoTA2WaY1x4sVfDs6CzGhmXm7mIH7Uaw+bI+SLxGi9u/3T4FI8w1wJQjl/Trl0fhb4L0huqK4sJch9yrPpIhA/UrhCLU4zX6+UXbIASFHF9Epxk+Oe8xg3QmFlCWsojqLdR1CkLE0HyoRwy3f/Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ktta9DT/; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5c883459b19so862645a12.2;
-        Thu, 10 Oct 2024 04:22:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728559326; x=1729164126; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JckSSufIviovUZkUcMEHSF3a41RUVzp568xffw5Iahs=;
-        b=ktta9DT/XQk7fTlA3UjAg470IcLLuwX4dG+Sea6MoKkItpXMiS3e6mh84z6mPQBhlG
-         LGTZR8sTstn/qUNUhc0ZTD8/emjhdr86Me3PHLzwzwVvRXIURzgZIRrQQB60GI0Xg5Pg
-         LxQIu40l0ZUgzE+AuxGhlcbJHgV221l1Dz/+NTbsYfCHikU94kbjfaSQ7o169exn4/ux
-         ndgz3fhoJZBm+cA141R3PEowDL/AkvSJwJLW9zRrrz9iDPiFyTR5kMJj7W1ZmziIkJz2
-         wrdSQQnILBtAfHZwnMhklFFECQ8mxlueL8SwoR3yD0V8aqopMOQcwigkeSWH2/Hgcp35
-         0jNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728559326; x=1729164126;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JckSSufIviovUZkUcMEHSF3a41RUVzp568xffw5Iahs=;
-        b=ghNW7qHVHmYtU+gXA5FzZJ4wBY7cIsRw+ijzZb8c/NjwtbLs4SgX73Vruhfo17dv82
-         5bHGZ1zYr/rWAZLW9dnnBSGr6VWnapUYAImeAD5eoRTkvtJi1UxSq1BGxr/8W3wDac3Q
-         OZe1SfRmfGSo4RwEOXBapbLKo5ayZ3jpAdGK3Uj/4G8T1SiH3f08PP/ZOBjxTyqRyobC
-         JcDR90GVlJgCoPtf6bzrLP3wiQN7ZDqj9lB4siJrptzCU9bLySqbGyLf6ebrUOQD0PrM
-         53rnjm951UVbtDFosschId1Yx2NSj50bUsZhPBNabljqH2ilwP/628Fn0+uuGzeWI5i/
-         uMoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWQ1m27wUytHF6lUQss+H3GSyDnTqEwe/r+wvDAHo4GJDyuQ3L+o9QelS+7vw3H8ztj/DHlxyfSNPsauZE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywi1Ie5pwmXlCvqSx1kcL4lwJi1qZ44SdZYKPKd/lNmAlEMzVkq
-	qx515IQneLZyxDd+R2+3eLIauEi2fxyGg26AGKTka9Y9eN2qPDXheTQuIpnD
-X-Google-Smtp-Source: AGHT+IE9jQYtbc132fpV9cXJCTAdP6bxnOpxNEz+fnN/RwAvvgCjaaXajnFV2/oUWVMdVi2FqZHy0g==
-X-Received: by 2002:a05:6402:548a:b0:5c8:9f3d:d906 with SMTP id 4fb4d7f45d1cf-5c91d5bd0b8mr3492737a12.18.1728559325850;
-        Thu, 10 Oct 2024 04:22:05 -0700 (PDT)
-Received: from localhost (craw-09-b2-v4wan-169726-cust2117.vm24.cable.virginm.net. [92.238.24.70])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c9370d22fesm640154a12.19.2024.10.10.04.22.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2024 04:22:05 -0700 (PDT)
-From: Colin Ian King <colin.i.king@gmail.com>
-To: Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Xinhui Pan <Xinhui.Pan@amd.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Leo Liu <leo.liu@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Cc: kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/amdgpu: Fix potential integer overflow on shift of a int
-Date: Thu, 10 Oct 2024 12:22:04 +0100
-Message-Id: <20241010112204.636188-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1728565079; c=relaxed/simple;
+	bh=T3JPdNWgqvuOuTKAeftYpFlj5uZXKBpVl1V80k/cnn0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JvoF98S9I2lxLbejYXvWyKO3ctAsFkhlifSxpX7H2HHLQVmN+q7mTA6vTvlZPOkbu/GQR1lYi9+7P9iC3RWaWQTyGd5uBF2sXha52vuCiSVEBcyXOzzGApOwjb9OZqxSBRwU2zndvSc4B07rtpzhJbNCVk8Z1ZiDXvLqE9U7Kt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W3/Z4rw+; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728565078; x=1760101078;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=T3JPdNWgqvuOuTKAeftYpFlj5uZXKBpVl1V80k/cnn0=;
+  b=W3/Z4rw+Q2aRXy1hgMxV2I3gI/mPPSjT5vDP1MQf7pLn16Z50HweTCoP
+   BpjfmeUgmDuKVTYBSsmR6LsaXC6P+QrFPnNgRQ6gsk0p+otU4ADLARt1K
+   N58OVl+g20CUXJRxeGR5NHDmpA8KrKXuzaupOgWBv7YXv/pR2q8cAPfss
+   HjBOwsoOQpg1MUFY8dqDCpVhCzu5P5LDQ1iXKt2/DENpn39qzV+5dooEd
+   1zbg/1nNrEm5erYDZ+9uJ9PbqI5wWhfdIiIMN5VCeUijv/EFVZH4e/y0V
+   +FENhcjd10VXvWCN9sTy+Pw/EZa6zlPaL1eLVraYHZnJjNaQHl3p8pKCL
+   g==;
+X-CSE-ConnectionGUID: bVsi51XvQeaVP/lQ5XjKtA==
+X-CSE-MsgGUID: ewG099Q2RGOdGRWPKYAV/w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="31617171"
+X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
+   d="scan'208";a="31617171"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 05:57:57 -0700
+X-CSE-ConnectionGUID: 7jc+Nv4dRmuik6D1op2Ydg==
+X-CSE-MsgGUID: BvLH9yeESWelwBLj91QW5A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
+   d="scan'208";a="114049337"
+Received: from oandoniu-mobl3.ger.corp.intel.com (HELO [10.245.244.227]) ([10.245.244.227])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 05:57:55 -0700
+Message-ID: <648981da5fcf3118b10932eabc07b74c99bf53f4.camel@linux.intel.com>
+Subject: Re: [PATCH][next] drm/xe/guc: Fix inverted logic on snapshot->copy
+ check
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: John Harrison <john.c.harrison@intel.com>, Colin Ian King
+ <colin.i.king@gmail.com>, Lucas De Marchi <lucas.demarchi@intel.com>, 
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Julia Filipchuk
+ <julia.filipchuk@intel.com>, intel-xe@lists.freedesktop.org, 
+ dri-devel@lists.freedesktop.org
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 10 Oct 2024 14:57:52 +0200
+In-Reply-To: <7feb0520-0cd3-46fc-8b44-a78d1c3a65bf@intel.com>
+References: <20241009160510.372195-1-colin.i.king@gmail.com>
+	 <7feb0520-0cd3-46fc-8b44-a78d1c3a65bf@intel.com>
+Autocrypt: addr=thomas.hellstrom@linux.intel.com; prefer-encrypt=mutual;
+ keydata=mDMEZaWU6xYJKwYBBAHaRw8BAQdAj/We1UBCIrAm9H5t5Z7+elYJowdlhiYE8zUXgxcFz360SFRob21hcyBIZWxsc3Ryw7ZtIChJbnRlbCBMaW51eCBlbWFpbCkgPHRob21hcy5oZWxsc3Ryb21AbGludXguaW50ZWwuY29tPoiTBBMWCgA7FiEEbJFDO8NaBua8diGTuBaTVQrGBr8FAmWllOsCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQuBaTVQrGBr/yQAD/Z1B+Kzy2JTuIy9LsKfC9FJmt1K/4qgaVeZMIKCAxf2UBAJhmZ5jmkDIf6YghfINZlYq6ixyWnOkWMuSLmELwOsgPuDgEZaWU6xIKKwYBBAGXVQEFAQEHQF9v/LNGegctctMWGHvmV/6oKOWWf/vd4MeqoSYTxVBTAwEIB4h4BBgWCgAgFiEEbJFDO8NaBua8diGTuBaTVQrGBr8FAmWllOsCGwwACgkQuBaTVQrGBr/P2QD9Gts6Ee91w3SzOelNjsus/DcCTBb3fRugJoqcfxjKU0gBAKIFVMvVUGbhlEi6EFTZmBZ0QIZEIzOOVfkaIgWelFEH
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 
-The left shift of int 32 bit integer constant 1 is evaluated using 32 bit
-arithmetic and then assigned to and operated upon using a 64 bit unsigned
-integer. In the case where the shift is 32 or more this can lead to an
-overflow. Avoid this by shifting using the BIT_ULL macro instead.
+On Wed, 2024-10-09 at 09:32 -0700, John Harrison wrote:
+> On 10/9/2024 09:05, Colin Ian King wrote:
+> > Currently the check to see if snapshot->copy has been allocated is
+> > inverted and ends up dereferencing snapshot->copy when free'ing
+> > objects in the array when it is null or not free'ing the objects
+> > when snapshot->copy is allocated. Fix this by using the correct
+> > non-null pointer check logic.
+> >=20
+> > Fixes: d8ce1a977226 ("drm/xe/guc: Use a two stage dump for GuC logs
+> > and add more info")
+> > Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
+>=20
+> Thanks for the fix.
 
-Fixes: f0b19b84d391 ("drm/amdgpu: add amdgpu_jpeg_sched_mask debugfs")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Pushed to drm-xe-next. Thanks.
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
-index 95e2796919fc..136a0c8d8c7a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
-@@ -357,14 +357,14 @@ static int amdgpu_debugfs_jpeg_sched_mask_set(void *data, u64 val)
- 	if (!adev)
- 		return -ENODEV;
- 
--	mask = (1 << (adev->jpeg.num_jpeg_inst * adev->jpeg.num_jpeg_rings)) - 1;
-+	mask = (BIT_ULL(adev->jpeg.num_jpeg_inst * adev->jpeg.num_jpeg_rings)) - 1;
- 	if ((val & mask) == 0)
- 		return -EINVAL;
- 
- 	for (i = 0; i < adev->jpeg.num_jpeg_inst; ++i) {
- 		for (j = 0; j < adev->jpeg.num_jpeg_rings; ++j) {
- 			ring = &adev->jpeg.inst[i].ring_dec[j];
--			if (val & (1 << ((i * adev->jpeg.num_jpeg_rings) + j)))
-+			if (val & BIT_ULL((i * adev->jpeg.num_jpeg_rings) + j))
- 				ring->sched.ready = true;
- 			else
- 				ring->sched.ready = false;
-@@ -388,7 +388,7 @@ static int amdgpu_debugfs_jpeg_sched_mask_get(void *data, u64 *val)
- 		for (j = 0; j < adev->jpeg.num_jpeg_rings; ++j) {
- 			ring = &adev->jpeg.inst[i].ring_dec[j];
- 			if (ring->sched.ready)
--				mask |= 1 << ((i * adev->jpeg.num_jpeg_rings) + j);
-+				mask |= BIT_ULL((i * adev->jpeg.num_jpeg_rings) + j);
- 		}
- 	}
- 	*val = mask;
--- 
-2.39.5
+/Thomas
+
+
+
+>=20
+> > ---
+> > =C2=A0 drivers/gpu/drm/xe/xe_guc_log.c | 2 +-
+> > =C2=A0 1 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/gpu/drm/xe/xe_guc_log.c
+> > b/drivers/gpu/drm/xe/xe_guc_log.c
+> > index 93921f04153f..cc70f448d879 100644
+> > --- a/drivers/gpu/drm/xe/xe_guc_log.c
+> > +++ b/drivers/gpu/drm/xe/xe_guc_log.c
+> > @@ -122,7 +122,7 @@ void xe_guc_log_snapshot_free(struct
+> > xe_guc_log_snapshot *snapshot)
+> > =C2=A0=C2=A0	if (!snapshot)
+> > =C2=A0=C2=A0		return;
+> > =C2=A0=20
+> > -	if (!snapshot->copy) {
+> > +	if (snapshot->copy) {
+> > =C2=A0=C2=A0		for (i =3D 0; i < snapshot->num_chunks; i++)
+> > =C2=A0=C2=A0			kfree(snapshot->copy[i]);
+> > =C2=A0=C2=A0		kfree(snapshot->copy);
+>=20
 
 

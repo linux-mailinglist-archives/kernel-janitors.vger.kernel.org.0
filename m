@@ -1,147 +1,210 @@
-Return-Path: <kernel-janitors+bounces-6013-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-6016-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A64C99B9A4
-	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Oct 2024 15:41:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A47299BB71
+	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Oct 2024 22:19:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F24081F215A3
-	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Oct 2024 13:41:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 287341C20A42
+	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Oct 2024 20:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 139971448DF;
-	Sun, 13 Oct 2024 13:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF1815624B;
+	Sun, 13 Oct 2024 20:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="opCJ1633"
+	dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b="exIvs+i/"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D61231CA8
-	for <kernel-janitors@vger.kernel.org>; Sun, 13 Oct 2024 13:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581047F48C;
+	Sun, 13 Oct 2024 20:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.134.164.104
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728826876; cv=none; b=fi8jTOyFJdNxDHu76xi5Ir5IPKgoL1WcadatBz/b/Aa8VsL+ElkUFTVhrt1l//JRD984TNGi6lKbjDfpYzxzZ2D/BvGVUDhDOVaNzdAXSwPNRbivrZFrJqqhIsCkT4VqyK04xjcrYqB7a55+ls8iGCrg9XIy3iqYDUdM1COX8pM=
+	t=1728850693; cv=none; b=HfBruTqb7LNmJUiO4htNyniHlxe8R8otcYTeado2p2kykbJRcUj6rTMiYNrMd1hmjmna15fcZ3COAuOgexZphAIM8j/a0dKz/0hh0ztfYuo9Q8hdOfVNNlxNoFok5gbsHP/G8dl4f308Vebp9JPjXfzxIXLeAH9a7/Dohv0Cp9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728826876; c=relaxed/simple;
-	bh=BSsnnOfdhmDaVaOr5JfKQ4veB20AKY2gMhI35W1IDcc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X3DENJDkUCVHqaC5lNxMN0dWKjp/dgboCC4xFPEmnsCO4PJvr3JgQ8ju3V17LG1SUhH3+h5UyY0KrPqVohySFYH/XFYpjF5we1QhUiId6/5PYrf6LVxcE9+OB+OGOZe5v6ZitwYuQo2B+NdtbvI7eOcdZVKob5+G33/sva4Hd1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=opCJ1633; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5c40aea5c40so6598050a12.0
-        for <kernel-janitors@vger.kernel.org>; Sun, 13 Oct 2024 06:41:14 -0700 (PDT)
+	s=arc-20240116; t=1728850693; c=relaxed/simple;
+	bh=2uXmFeIEmUi172m67TxMp84JNKzsDgsI9o/AeKyM2yc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ResDTWNsgJvHCWHNpBfkWHFiYGyNcQzG3Tvro7hAjRNjYGfZ3YsuWd/s2/77VW3nPiYGPNL/Gkro6wAPWnNtwhxzVsylwhAy3XlRnCHOENMbDolvurAinI2hltmlTOCw/U06xSi5ebtpEy2+LLaXEf4B1ZA1e5qRK3MISLGnkKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr; spf=pass smtp.mailfrom=inria.fr; dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b=exIvs+i/; arc=none smtp.client-ip=192.134.164.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inria.fr
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728826873; x=1729431673; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aDIoBQ9YvQk/WPHiA1xukRw9F4LXWDJBsa2YUNZUMcA=;
-        b=opCJ1633q1U/FPqoRXlGcHR4J3kVEHTakkdwaWB1HefjDe+11fTZ5r4KoLpMmF0bX2
-         hjcGI8GcJxPO/k8/5lPJL0zRqNRV8Qsola6L3umnvAKhQqj/8P3BKUqPdpOCvE2XKyMF
-         SInGpL4UAULJFLhu89wUMmtMOBrEN+VbcOVlg6j1Djya/SpzIvDQVwc0WZw0dlZXgxIS
-         shXMi0PVfODQWYkFcU3DWAfi7FUA+5hz+1FD5If9lD2B6TM4b8Y/i2yT9wt7TW6fqXI5
-         wIjsPT0c8KS4O/8uX8hRom+04nhDVFeCm3iEeI7WfsNXvkNU6kImLZ1IS9/GgQ4mEQy9
-         z5Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728826873; x=1729431673;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aDIoBQ9YvQk/WPHiA1xukRw9F4LXWDJBsa2YUNZUMcA=;
-        b=pubzhw3ICEEKm0xb2DgZ4x4mqCBEfIbW27mqNCkkdwG4D2ab098kFU7HzDe74GuqVS
-         AGaUPb3j8puj6iNnn25oHISZ9Xg0GuIS9FuvtjaO1EkDh4leVhbvq/fC+0kfnkjFN9S+
-         O3QpR3TGVibjvQdLMti5BPV9kuBTzF6BCyC7sL3Aj6WKpuWWwrgkDTH7Iwn9y1R/DXur
-         +LDiWNF/S6FNrlpdSRLkfp5vBw5CeGbqkn+d9x+CuVIdkr6yYPIEfT8N1NNuHdF6LPqZ
-         3pidDxBcOaT7pW1Flo3gk3Q4HT8v1+4o6nPNy7wdePEfyhsMJEBlTJfoso5vcp36HQAS
-         CBAw==
-X-Forwarded-Encrypted: i=1; AJvYcCW3T20aAp6ziMAEoH6sGZi9PLnpM+4x65Mo3Qa4wxhiFkB/bkDycGZlRAZizd015O8wqDHCnSdKzzoA1rXf0mc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlX2yF9QpacXTfEjvq3lbHZGbYAYrlwE2O5YKm20SJLqeZ3zrK
-	xDZ8/tc2Y2yZRyaElsIUZIRz70B2g2+WxihIrzni4ee/umDdkaczhyNph1m3sJc=
-X-Google-Smtp-Source: AGHT+IFwr5789q2rbkowSIKm0Pi3d3HKo85MzqqbcL5zX+y8/Sv/FkZN0o1+dV1o6r6DNh6wikURkg==
-X-Received: by 2002:a05:6402:2688:b0:5c8:88f2:adf6 with SMTP id 4fb4d7f45d1cf-5c94754c124mr7916665a12.13.1728826872833;
-        Sun, 13 Oct 2024 06:41:12 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c9370d273fsm3931876a12.16.2024.10.13.06.41.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Oct 2024 06:41:12 -0700 (PDT)
-Date: Sun, 13 Oct 2024 16:41:08 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Markus Elfring <Markus.Elfring@web.de>, linuxppc-dev@lists.ozlabs.org,
-	Jani Nikula <jani.nikula@intel.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Naveen N Rao <naveen@kernel.org>,
+  d=inria.fr; s=dc;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Sja7FWx2J2pFF7H03F4ldwixL8Qb/r4LwdjP0v1pkNc=;
+  b=exIvs+i/vmrrOC1BhG1dWTdYhowcV77JbThYwDdjK0/Wqiaqq9Fr0cce
+   rNzCFJlH0Zl3Gc94qiLI1s9PCSVuCYpsLvZjcvp+ULtzzTXbcfRvMqOYM
+   ncj7g6L1s1poZOa9BL666TBGtZjDcSWk9IcDnPVvWZAmigUTgCebAcAqC
+   Y=;
+Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
+X-IronPort-AV: E=Sophos;i="6.11,201,1725314400"; 
+   d="scan'208";a="98968275"
+Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.90.48])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2024 22:17:57 +0200
+From: Julia Lawall <Julia.Lawall@inria.fr>
+To: linux-nfs@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	vbabka@suse.cz,
+	paulmck@kernel.org,
+	Tom Talpey <tom@talpey.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Neil Brown <neilb@suse.de>,
+	linux-can@vger.kernel.org,
+	bridge@lists.linux.dev,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	linux-kernel@vger.kernel.org,
+	wireguard@lists.zx2c4.com,
+	netdev@vger.kernel.org,
+	ecryptfs@vger.kernel.org,
+	linux-block@vger.kernel.org,
 	Nicholas Piggin <npiggin@gmail.com>,
-	Paul Mackerras <paulus@samba.org>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	LKML <linux-kernel@vger.kernel.org>,
-	kernel-janitors@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH] powermac: Use of_property_match_string() in
- pmac_has_backlight_type()
-Message-ID: <e50907a9-6df7-4cbf-97a6-47acd5d8ce01@stanley.mountain>
-References: <b7e69e04-e15c-41ec-b62b-37253debc654@web.de>
- <d9bdc1b6-ea7e-47aa-80aa-02ae649abf72@csgroup.eu>
- <ede25e03-7a14-4787-ae1b-4fc9290add5a@web.de>
- <c629e544-f768-4063-bd2c-f72382bdf69b@csgroup.eu>
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org
+Subject: [PATCH 00/17] replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+Date: Sun, 13 Oct 2024 22:16:47 +0200
+Message-Id: <20241013201704.49576-1-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c629e544-f768-4063-bd2c-f72382bdf69b@csgroup.eu>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 11, 2024 at 06:25:45PM +0200, Christophe Leroy wrote:
-> > diff --git a/arch/powerpc/platforms/powermac/backlight.c b/arch/powerpc/platforms/powermac/backlight.c
-> > index 12bc01353bd3..79741370c40c 100644
-> > --- a/arch/powerpc/platforms/powermac/backlight.c
-> > +++ b/arch/powerpc/platforms/powermac/backlight.c
-> > @@ -57,18 +57,10 @@ struct backlight_device *pmac_backlight;
-> >   int pmac_has_backlight_type(const char *type)
-> >   {
-> >   	struct device_node* bk_node = of_find_node_by_name(NULL, "backlight");
-> > +	int i = of_property_match_string(bk_node, "backlight-control", type);
-> > 
-> > -	if (bk_node) {
-> > -		const char *prop = of_get_property(bk_node,
-> > -				"backlight-control", NULL);
-> > -		if (prop && strncmp(prop, type, strlen(type)) == 0) {
-> > -			of_node_put(bk_node);
-> > -			return 1;
-> > -		}
-> > -		of_node_put(bk_node);
-> > -	}
-> > -
-> > -	return 0;
-> > +	of_node_put(bk_node);
-> > +	return i >= 0;
-> 
-> Could have been:
-> 
-> 	return !IS_ERR_VALUE(i);
-> 
+Since SLOB was removed and since
+commit 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
+it is not necessary to use call_rcu when the callback only performs
+kmem_cache_free. Use kfree_rcu() directly.
 
-IS_ERR_VALUE() macro should only be used when you're dealing with memory
-addresses.  What I mean is there places in mm/ where we pass addresses as
-unsigned long values instead of pointers.  For example, get_unmapped_area()
-returns unsigned long.  The IS_ERR_VALUE() macro is necessary for that.
+The changes were done using the following Coccinelle semantic patch.
+This semantic patch is designed to ignore cases where the callback
+function is used in another way.
 
-For regular error codes, we can just check for negatives.  we don't have do
-anything fancy.
+// <smpl>
+#spatch --all-includes --include-headers
 
-Of course, you can find counter examples, like msm_iommu_attach_dev() or
-st_fdma_of_xlate().  <small joke>But in those cases, it's done to deliberately
-to ensure that the code will never accidentally get built on 64bit systems.
-</small joke>
+@r@
+expression e;
+local idexpression e2;
+identifier cb,f,g;
+position p;
+@@
 
-regards,
-dan carpenter
+(
+call_rcu(...,e2)
+|
+call_rcu(&e->f,cb@p)
+|
+call_rcu(&e->f.g,cb@p)
+)
 
+@r1@
+type T,T1;
+identifier x,r.cb;
+@@
+
+ cb(...) {
+(
+   kmem_cache_free(...);
+|
+   T x = ...;
+   kmem_cache_free(...,(T1)x);
+|
+   T x;
+   x = ...;
+   kmem_cache_free(...,(T1)x);
+)
+ }
+
+@s depends on r1@
+position p != r.p;
+identifier r.cb;
+@@
+
+ cb@p
+
+@script:ocaml@
+cb << r.cb;
+p << s.p;
+@@
+
+Printf.eprintf "Other use of %s at %s:%d\n" cb (List.hd p).file (List.hd p).line
+
+@depends on r1 && !s@
+expression e;
+identifier r.cb,f,g;
+position r.p;
+@@
+
+(
+- call_rcu(&e->f,cb@p)
++ kfree_rcu(e,f)
+|
+- call_rcu(&e->f.g,cb@p)
++ kfree_rcu(e,f.g)
+)
+
+@r1a depends on !s@
+type T,T1;
+identifier x,r.cb;
+@@
+
+- cb(...) {
+(
+-  kmem_cache_free(...);
+|
+-  T x = ...;
+-  kmem_cache_free(...,(T1)x);
+|
+-  T x;
+-  x = ...;
+-  kmem_cache_free(...,(T1)x);
+)
+- }
+
+@r2 depends on !r1@
+identifier r.cb;
+@@
+
+cb(...) {
+ ...
+}
+
+@script:ocaml depends on !r1 && !r2@
+cb << r.cb;
+@@
+
+Printf.eprintf "need definition for %s\n" cb
+// </smpl>
+
+---
+
+ arch/powerpc/kvm/book3s_mmu_hpte.c  |    8 ------
+ block/blk-ioc.c                     |    9 ------
+ drivers/net/wireguard/allowedips.c  |    9 +-----
+ fs/ecryptfs/dentry.c                |    8 ------
+ fs/nfsd/nfs4state.c                 |    9 ------
+ kernel/time/posix-timers.c          |    9 ------
+ net/batman-adv/translation-table.c  |   47 ++----------------------------------
+ net/bridge/br_fdb.c                 |    9 ------
+ net/can/gw.c                        |   13 ++-------
+ net/ipv4/fib_trie.c                 |    8 ------
+ net/ipv4/inetpeer.c                 |    9 +-----
+ net/ipv6/ip6_fib.c                  |    9 ------
+ net/ipv6/xfrm6_tunnel.c             |    8 ------
+ net/kcm/kcmsock.c                   |   10 -------
+ net/netfilter/nf_conncount.c        |   10 -------
+ net/netfilter/nf_conntrack_expect.c |   10 -------
+ net/netfilter/xt_hashlimit.c        |    9 ------
+ 17 files changed, 23 insertions(+), 171 deletions(-)
 

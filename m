@@ -1,91 +1,220 @@
-Return-Path: <kernel-janitors+bounces-6036-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-6040-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6AC699BDF4
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Oct 2024 05:04:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27BB199C0E2
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Oct 2024 09:13:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 641A22820EF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Oct 2024 03:04:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92F821F23747
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Oct 2024 07:13:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E74454670;
-	Mon, 14 Oct 2024 03:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040051482F6;
+	Mon, 14 Oct 2024 07:13:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="Xe54NCsc"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BA5196;
-	Mon, 14 Oct 2024 03:04:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3284714601C;
+	Mon, 14 Oct 2024 07:13:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728875046; cv=none; b=a/dTDeBjvdhWXL8PHohb6BgEDplJS4SbZSi1S9xAwEkJK72gDLNJZFbgzifb58WauvOv6ok1bqI1rESbGiqubdnrNRTU1qPQEPvMXu+WpzV2lrydL4E4ZrnSVigQtydhnNTAPsu/tYlXqdNt0292dkzWR84VyL2SJSZ9sGu5338=
+	t=1728890007; cv=none; b=bGZTiFmrEllWazbOK099mTNwClKGLhhe9EAy3g32EbJjq05wq51c87yZpXcN9i00YzYlD+GEK8WCqsLkY3tNkvd+OhTJOMZQekUf8VcAV3hedYsN2olsPyJkt6f+2OAb+Vk3WtJSDWC2893UAejctO0/jQjwCsHlSlJZ5hGwf+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728875046; c=relaxed/simple;
-	bh=wi//xKA17vRkcbTb40CDhI5yUW/c0y31lrn/7YX8/Ys=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Jidrrh0X75Ya0S5WKfLGIuG4JZY708doPyWFJX+Tc7oKNAal6GDAAnU+LkC9nIPFLw93WIgsLaOSmNJ8R4yI0/a4wVi+pQh0wkFg1E2wmX6321rXFOqueOVSDOwoV7eQ+xNroF6uB8x+3ltcH+gviFhp8fiewt1NuVCgsDEO4sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a9a0ef5179dso72507566b.1;
-        Sun, 13 Oct 2024 20:04:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728875042; x=1729479842;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wi//xKA17vRkcbTb40CDhI5yUW/c0y31lrn/7YX8/Ys=;
-        b=dmyfYtCU1dhNC5L0OT9a2cpT5ZrsqlxxA7T4DDQUCXREetaDYpO6VFBreMWueUiHuG
-         E63kv/88zXMqnKXw41KAdBVLIVn+QMeuXrDw9Hc5Ji6micRswSkfTSLKyj6naO/DylO7
-         YVWj5maurl7uHXY7s1pPaRh8ZMORhLiVnKjdb+Nd8xkCshngEe88KaC67KWYtuBzVJGQ
-         iqDrcBQKDPHOJVQbdF0gYhG6de5RaCl22WGuTePHBmyU9YCn6rlv3N5BKeODUt4G7bSg
-         wiKKqvXif6+e2aMCRg5vemK4NfRzkolxzW0UxzQxHpZmrJcHxjMJ/nAHnwoF2BQv9eLX
-         7c7w==
-X-Forwarded-Encrypted: i=1; AJvYcCUbW0pjVYzq4/ipE8SbdvMMtNQ7fCBblWtQiJFTffyzXAu2H/UvYRDkKrjTyQHF9hzJhxqmrPRr@vger.kernel.org, AJvYcCUqnxA7WW/p7DQuJzf+LiEqs1sJLWifDe5eyiRTUCwjPVROpvO5G2cvQZwgoKlW7K9g3mezcJ+awJEvG2/dMv0=@vger.kernel.org, AJvYcCX2yXFKcJYSS5ObWPXKWm2QH9BuFf1LJ1QeKqdS3+d1PVuLO8SUAyQlQA75KgxWGiDpd+a6dLBSfAJG@vger.kernel.org, AJvYcCXZIB9VxP74OBl1EW7bgXzWsWmOD5MSlEmyDawl3DkDCj8hwEDsnJiCN7oyWJhvlf5bJtgCQfaQJ0tGQ/15@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7vbP85qbKacFkQ4TXfjcJGWDiR+tiwK1Mx9CasZix9GsFJ+I1
-	joIzhyMFs4sbpFcDYnK+TZhDp4vu+xmaQ2c1eEfP6K4XG6BpIhx1e6R1g2/C49CKMzbiql2xN/a
-	L0YOhIco/wM8rITA18aWz+hnkc8Y=
-X-Google-Smtp-Source: AGHT+IFNiMGbY/5Zo805pZfKtRSxuh/9OJ5e3DgonSSpqNK1J1+bOAyc8dhhBwU4LB+KnrEKnjMkRHHeVnQRBcJhBGw=
-X-Received: by 2002:a17:907:3e23:b0:a99:43e1:21ad with SMTP id
- a640c23a62f3a-a99b9585822mr939308266b.45.1728875042463; Sun, 13 Oct 2024
- 20:04:02 -0700 (PDT)
+	s=arc-20240116; t=1728890007; c=relaxed/simple;
+	bh=zgxvLRR3w3kjqFDgWGHDCjUaqXkNWkNYk3LGPt7EkZU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jXlZ52MIsYQGOfWBCkOLIqh9/VJqLoLXg6jEV3fyUbMlt9c4WSJ3tYDMJdZGHH81yR0a3l8SuPOlKK/gWtxPtFH3qHBBS2sEQylh6J9jS66V3Ok7IxYT64qs1Oxqaju96njo54uqywuI3CF90DTc4uMkmA71Gz7XzZlGWKBVMuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=Xe54NCsc; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1728889420;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=httTAT48fu+3mO0g6dqX16B/PSb/AZaAB5kFQ49ZHpw=;
+	b=Xe54NCscJgu36LAoRk5nICKys82aNg3+GsjFGnInFdAafoHCnhLMlKiQlH9O9rDNupMsmm
+	/gCyhwOm/RbFmKrvS8PEkAkjJHf6xiJMhZO9BSLdAZ/l8T36cBzyTFNdE+PqZhdfV+RWWB
+	5M1lZzm3KwY8vIO/cfRIt4BhpcJeJdI=
+From: Sven Eckelmann <sven@narfation.org>
+To: Julia Lawall <Julia.Lawall@inria.fr>, vbabka@suse.cz,
+ linus.luessing@c0d3.blue
+Cc: Marek Lindner <mareklindner@neomailbox.ch>,
+ kernel-janitors@vger.kernel.org, paulmck@kernel.org,
+ Simon Wunderlich <sw@simonwunderlich.de>, Antonio Quartulli <a@unstable.cc>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject:
+ Re: [PATCH 06/17] batman-adv: replace call_rcu by kfree_rcu for simple
+ kmem_cache_free callback
+Date: Mon, 14 Oct 2024 09:03:30 +0200
+Message-ID: <6091264.lOV4Wx5bFT@ripper>
+In-Reply-To: <20241013201704.49576-7-Julia.Lawall@inria.fr>
+References:
+ <20241013201704.49576-1-Julia.Lawall@inria.fr>
+ <20241013201704.49576-7-Julia.Lawall@inria.fr>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241013201704.49576-1-Julia.Lawall@inria.fr> <20241013201704.49576-11-Julia.Lawall@inria.fr>
-In-Reply-To: <20241013201704.49576-11-Julia.Lawall@inria.fr>
-From: Vincent MAILHOL <mailhol.vincent@wanadoo.fr>
-Date: Mon, 14 Oct 2024 12:03:51 +0900
-Message-ID: <CAMZ6RqL2+srRF15spoLqXhe40w02TEDpAzb+gnbVgD-os-f87Q@mail.gmail.com>
-Subject: Re: [PATCH 10/17] can: gw: replace call_rcu by kfree_rcu for simple
- kmem_cache_free callback
-To: Julia Lawall <Julia.Lawall@inria.fr>
-Cc: Oliver Hartkopp <socketcan@hartkopp.net>, kernel-janitors@vger.kernel.org, vbabka@suse.cz, 
-	"Paul E . McKenney" <paulmck@kernel.org>, Marc Kleine-Budde <mkl@pengutronix.de>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	linux-can <linux-can@vger.kernel.org>, netdev <netdev@vger.kernel.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="nextPart4957463.31r3eYUQgx";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-Hi Julia,
+--nextPart4957463.31r3eYUQgx
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+Date: Mon, 14 Oct 2024 09:03:30 +0200
+Message-ID: <6091264.lOV4Wx5bFT@ripper>
+In-Reply-To: <20241013201704.49576-7-Julia.Lawall@inria.fr>
+MIME-Version: 1.0
 
-Thanks for the patch.
-
-On Mon. 14 Oct. 2024, 05:21, Julia Lawall <Julia.Lawall@inria.fr> wrote:
+On Sunday, 13 October 2024 22:16:53 CEST Julia Lawall wrote:
 > Since SLOB was removed and since
 > commit 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
 > it is not necessary to use call_rcu when the callback only performs
 > kmem_cache_free. Use kfree_rcu() directly.
->
+> 
 > The changes were made using Coccinelle.
->
+> 
 > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> 
+> ---
+>  net/batman-adv/translation-table.c |   47 ++-----------------------------------
+>  1 file changed, 3 insertions(+), 44 deletions(-)
 
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+
+This was tried and we noticed that it is not safe [1]. So, I would get 
+confirmation that commit 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() 
+from kmem_cache_destroy()") is fixing the problem which we had at that time. 
+The commit message sounds like it but I just want to be sure.
+
+Kind regards,
+	Sven
+
+[1] https://lore.kernel.org/r/20240612133357.2596-1-linus.luessing@c0d3.blue
+
+> 
+> diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+> index 2243cec18ecc..b21ff3c36b07 100644
+> --- a/net/batman-adv/translation-table.c
+> +++ b/net/batman-adv/translation-table.c
+> @@ -208,20 +208,6 @@ batadv_tt_global_hash_find(struct batadv_priv *bat_priv, const u8 *addr,
+>  	return tt_global_entry;
+>  }
+>  
+> -/**
+> - * batadv_tt_local_entry_free_rcu() - free the tt_local_entry
+> - * @rcu: rcu pointer of the tt_local_entry
+> - */
+> -static void batadv_tt_local_entry_free_rcu(struct rcu_head *rcu)
+> -{
+> -	struct batadv_tt_local_entry *tt_local_entry;
+> -
+> -	tt_local_entry = container_of(rcu, struct batadv_tt_local_entry,
+> -				      common.rcu);
+> -
+> -	kmem_cache_free(batadv_tl_cache, tt_local_entry);
+> -}
+> -
+>  /**
+>   * batadv_tt_local_entry_release() - release tt_local_entry from lists and queue
+>   *  for free after rcu grace period
+> @@ -236,7 +222,7 @@ static void batadv_tt_local_entry_release(struct kref *ref)
+>  
+>  	batadv_softif_vlan_put(tt_local_entry->vlan);
+>  
+> -	call_rcu(&tt_local_entry->common.rcu, batadv_tt_local_entry_free_rcu);
+> +	kfree_rcu(tt_local_entry, common.rcu);
+>  }
+>  
+>  /**
+> @@ -254,20 +240,6 @@ batadv_tt_local_entry_put(struct batadv_tt_local_entry *tt_local_entry)
+>  		 batadv_tt_local_entry_release);
+>  }
+>  
+> -/**
+> - * batadv_tt_global_entry_free_rcu() - free the tt_global_entry
+> - * @rcu: rcu pointer of the tt_global_entry
+> - */
+> -static void batadv_tt_global_entry_free_rcu(struct rcu_head *rcu)
+> -{
+> -	struct batadv_tt_global_entry *tt_global_entry;
+> -
+> -	tt_global_entry = container_of(rcu, struct batadv_tt_global_entry,
+> -				       common.rcu);
+> -
+> -	kmem_cache_free(batadv_tg_cache, tt_global_entry);
+> -}
+> -
+>  /**
+>   * batadv_tt_global_entry_release() - release tt_global_entry from lists and
+>   *  queue for free after rcu grace period
+> @@ -282,7 +254,7 @@ void batadv_tt_global_entry_release(struct kref *ref)
+>  
+>  	batadv_tt_global_del_orig_list(tt_global_entry);
+>  
+> -	call_rcu(&tt_global_entry->common.rcu, batadv_tt_global_entry_free_rcu);
+> +	kfree_rcu(tt_global_entry, common.rcu);
+>  }
+>  
+>  /**
+> @@ -407,19 +379,6 @@ static void batadv_tt_global_size_dec(struct batadv_orig_node *orig_node,
+>  	batadv_tt_global_size_mod(orig_node, vid, -1);
+>  }
+>  
+> -/**
+> - * batadv_tt_orig_list_entry_free_rcu() - free the orig_entry
+> - * @rcu: rcu pointer of the orig_entry
+> - */
+> -static void batadv_tt_orig_list_entry_free_rcu(struct rcu_head *rcu)
+> -{
+> -	struct batadv_tt_orig_list_entry *orig_entry;
+> -
+> -	orig_entry = container_of(rcu, struct batadv_tt_orig_list_entry, rcu);
+> -
+> -	kmem_cache_free(batadv_tt_orig_cache, orig_entry);
+> -}
+> -
+>  /**
+>   * batadv_tt_orig_list_entry_release() - release tt orig entry from lists and
+>   *  queue for free after rcu grace period
+> @@ -433,7 +392,7 @@ static void batadv_tt_orig_list_entry_release(struct kref *ref)
+>  				  refcount);
+>  
+>  	batadv_orig_node_put(orig_entry->orig_node);
+> -	call_rcu(&orig_entry->rcu, batadv_tt_orig_list_entry_free_rcu);
+> +	kfree_rcu(orig_entry, rcu);
+>  }
+>  
+>  /**
+> 
+> 
+
+
+--nextPart4957463.31r3eYUQgx
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCZwzCQwAKCRBND3cr0xT1
+y7i+AQDVLdYz744YITcGjxNtokduQbc/TMXye8cDpvnUIRqeswEA3w/Kg7zDNvz2
+rI43KEYfCJOuJv0+vY4mZmhJob37RQw=
+=/WZq
+-----END PGP SIGNATURE-----
+
+--nextPart4957463.31r3eYUQgx--
+
+
+
 

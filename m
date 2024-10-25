@@ -1,81 +1,111 @@
-Return-Path: <kernel-janitors+bounces-6221-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-6223-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D4199B0961
-	for <lists+kernel-janitors@lfdr.de>; Fri, 25 Oct 2024 18:12:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A37689B12FC
+	for <lists+kernel-janitors@lfdr.de>; Sat, 26 Oct 2024 00:55:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 150F01F21A89
-	for <lists+kernel-janitors@lfdr.de>; Fri, 25 Oct 2024 16:12:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D54CC1C22096
+	for <lists+kernel-janitors@lfdr.de>; Fri, 25 Oct 2024 22:55:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4780117DFFC;
-	Fri, 25 Oct 2024 16:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54504217F27;
+	Fri, 25 Oct 2024 22:55:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SHZm9cF9"
 X-Original-To: kernel-janitors@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D592E21A4AA;
-	Fri, 25 Oct 2024 16:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85C71D270A;
+	Fri, 25 Oct 2024 22:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729872728; cv=none; b=to1Qxc0sHi7x85yodDi0dEudRU8fTwB4vUnOMZ88MaOTc0s1j385AOjekFRF0qGRU/d6oMKiutKSXQX5HimOMsTjRHrDIgZqd+ML3eJ48nmb09FJ6jQC8Y08BM5uzYF7e4i/3QEb6WhIOH5dBIYu4Ktske3RpsO7502tetV8TXc=
+	t=1729896947; cv=none; b=Bm+Is0A+HvRw5J2qIRwSq4lK3DV82lh273UpdMjW3f279I1MQtI0tYESSS/A/C4ABc/UWEU854UaghqmaFg1HmvDfD4AEvXqJlnfJbyNTbTH+PX/Knliph7Xua4JBqEJPYvGlfuImKNlIaNVlGhlvtkGiaIE1V8lMa+7oYgs8Mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729872728; c=relaxed/simple;
-	bh=5x9aUksHXptTvLe0+WGuDdukxDof2ob3CdvqqtXeaGw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=hQLZOZCQ22IzYMaD0z594tD/5mmVEES8te8McvM2FetU2K3AUVSnM7fzah3Ll4GXozQsEX55NamCvEYC9YJD+kCB5Uyr0r8fFpaxMcoXbEHX1NRbZ30Z/AY2bdAvKmNaYC5zyCAAfPeRgNr0+rchCUpN/AV4qvc2v8dkiRLh34I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F7FC4CEC3;
-	Fri, 25 Oct 2024 16:12:08 +0000 (UTC)
-Received: from wens.tw (localhost [127.0.0.1])
-	by wens.tw (Postfix) with ESMTP id C90575F870;
-	Sat, 26 Oct 2024 00:12:05 +0800 (CST)
-From: Chen-Yu Tsai <wens@csie.org>
-To: Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, 
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org, 
- linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-sunxi@lists.linux.dev
-In-Reply-To: <44745f27034fa670605cd16966a39b7fe88fe5a6.1726863905.git.christophe.jaillet@wanadoo.fr>
-References: <44745f27034fa670605cd16966a39b7fe88fe5a6.1726863905.git.christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH] clk: sunxi-ng: Constify struct ccu_reset_map
-Message-Id: <172987272580.802486.16073827596015670054.b4-ty@csie.org>
-Date: Sat, 26 Oct 2024 00:12:05 +0800
+	s=arc-20240116; t=1729896947; c=relaxed/simple;
+	bh=IHkS8BTrqxwHtztrBN/xoBUkJLXL+FDXRMjX5jjYfPU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nrQXmVrPgrO/ndMIrnVXBaQRfjNd+wEMzbmPWGow28LeklnGgBuhE2AnL9bRMD0SfqK4LBhm7U+XjnmSiKtTOQLkzizn4+QwCcYJMmfJtP5oIeodiTvq7g9o3GRkUUCsO/Qr7NBp7+aeDk+5Bg2nuz1tWAEqEK6dXMJvcnbh0eA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SHZm9cF9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3357CC4CEC3;
+	Fri, 25 Oct 2024 22:55:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729896947;
+	bh=IHkS8BTrqxwHtztrBN/xoBUkJLXL+FDXRMjX5jjYfPU=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=SHZm9cF91BRtU2TDY138Df20qEaWVv72Eviv+RR3DsqHFdwFcr8gL5KXqKL5jq+Q1
+	 PHYeZJfKx/44QkVvrXSGR1WqaZ5CBtI6BQYkXu+GyMNdSnWhhfPJj133ZezE0Pcmb3
+	 73LWHE1bK9sAdCTIaUm7gB9FBnSpJ1v5PuSgkha+chZdv0Xqgb1/K1z5Axg56sxSo9
+	 TPsS8t89TTU7vUT1F6K1zvWn2hduGiO3acEE9CetA3UO7BbMH8dsU8B4tmfTZsBFBC
+	 yW1nQjRKzhzqDl3bY2sp521WFfJbwXhvzpLo8IgvE4ZgV2Q0djkuBEk6dx3X9TIvuw
+	 p6f1YMBg6HCRQ==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id C7E8ACE0D99; Fri, 25 Oct 2024 15:55:46 -0700 (PDT)
+Date: Fri, 25 Oct 2024 15:55:46 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang1211@gmail.com>, rcu@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH next] rcu: Unlock correctly in rcu_dump_cpu_stacks()
+Message-ID: <cdc3a34a-9533-4f0c-bd2a-3796aeed161c@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <b3b2a438-92d8-4b63-a71e-ad3a155b96d4@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b3b2a438-92d8-4b63-a71e-ad3a155b96d4@stanley.mountain>
 
-On Fri, 20 Sep 2024 22:25:24 +0200, Christophe JAILLET wrote:
-> 'struct ccu_reset_map' are not modified in these drivers.
+On Fri, Oct 25, 2024 at 10:06:43AM +0300, Dan Carpenter wrote:
+> The unlock needs to be outside the } close curly braces for this if
+> statement.  Otherwise it leads to a deadlock.
 > 
-> Constifying this structure moves some data to a read-only section, so
-> increase overall security.
+> Fixes: 744e87210b1a ("rcu: Finer-grained grace-period-end checks in rcu_dump_cpu_stacks()")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+
+Good catch!
+
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+
+This is a regression from this past merge window, if I am keeping track.
+So it is a candidate for going in before the next merge window opens.
+
+							Thanx, Paul
+
+> ---
+>  kernel/rcu/tree_stall.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> On a x86_64, with allmodconfig, as an example:
-> Before:
-> ======
->    text	   data	    bss	    dec	    hex	filename
->    1533	   2224	      0	   3757	    ead	drivers/clk/sunxi-ng/ccu-sun20i-d1-r.o
+> diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
+> index 8994391b95c7..925fcdad5dea 100644
+> --- a/kernel/rcu/tree_stall.h
+> +++ b/kernel/rcu/tree_stall.h
+> @@ -357,8 +357,8 @@ static void rcu_dump_cpu_stacks(unsigned long gp_seq)
+>  					pr_err("Offline CPU %d blocking current GP.\n", cpu);
+>  				else
+>  					dump_cpu_task(cpu);
+> -			raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
+>  			}
+> +			raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
+>  		}
+>  		printk_deferred_exit();
+>  	}
+> -- 
+> 2.45.2
 > 
-> [...]
-
-Applied to clk-for-6.13 in git@github.com:linux-sunxi/linux-sunxi.git, thanks!
-
-[1/1] clk: sunxi-ng: Constify struct ccu_reset_map
-      commit: c7e09a613bbddd0eea086e475855aba3b2410148
-
-Best regards,
--- 
-Chen-Yu Tsai <wens@csie.org>
-
 

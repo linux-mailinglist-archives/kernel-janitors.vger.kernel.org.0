@@ -1,66 +1,67 @@
-Return-Path: <kernel-janitors+bounces-6306-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-6311-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44DC09B9E29
-	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Nov 2024 10:25:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A732C9B9E58
+	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Nov 2024 10:37:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2266281169
-	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Nov 2024 09:25:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51C5D1F2308A
+	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Nov 2024 09:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF2D16191B;
-	Sat,  2 Nov 2024 09:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529DE170853;
+	Sat,  2 Nov 2024 09:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="mDjWcPGK"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="c8YjrpZm"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from msa.smtpout.orange.fr (msa-217.smtpout.orange.fr [193.252.23.217])
+Received: from msa.smtpout.orange.fr (msa-215.smtpout.orange.fr [193.252.23.215])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AE315A856;
-	Sat,  2 Nov 2024 09:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.23.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABF516F858;
+	Sat,  2 Nov 2024 09:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.23.215
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730539522; cv=none; b=KSSLOGg+8/vibKKjz6pijOjLueGcqL7aMDJ3/tYXgN6DklSArJGVElI6yjt8T8SwHC94UY5E4M4Tx4eGHq5HzF+xPnQLcRu9JcRnsV0L2WUbSgrJrT3CiIjorlKH6YMZ727mpRaBaTmUMXo0uLgzl84nnSVUd6O1kbhe+kv7Pps=
+	t=1730540215; cv=none; b=I7Hqx0QFW05f8FpGDh8tEKbDJsFIJ+uguQelOh+Usenvjw3wmaYOZlHoP3v+xHX3W2guPbOX86n3+iz/uwsPV/5VWxPYBtUUaZhcvGa2JKrT1Y4r0Db2rSaV209OstYQjAPNgPgDM68iv4/ybHQxVgGhgcoV+ZDeFprnEAITIqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730539522; c=relaxed/simple;
-	bh=xFcOfOlnBAmZ1ouPT3PdXVy1XSEuzkRieAToIoF+dmw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L9ksJ/TrM7qa5m6LDVLlZi4vugAgZw2EnI8eg4nvxNAHk79gFdgNrU8Lzvzepsh5BV4uZDUK7neB6iBAk+mRzCochZGwqYL/eHp7wb7rucsN/mmhM9pgpQIW9YvkUq3eGJWAzlNE01jnULAYRkxOasnoihzlEb3hZmqAED31ez4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=mDjWcPGK; arc=none smtp.client-ip=193.252.23.217
+	s=arc-20240116; t=1730540215; c=relaxed/simple;
+	bh=pD9cojqUe+KJn35bihc4SauN478RJaUcb4L87yKECgs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a2+bynv+zj4au7FtRbKCBAKX/bcuWNZpBrMym+PkRKaitptq+oHFHwUyYKeYS3nCRWrUESB6wamDK9DO51OHFsAgowCtgglHDY2QSTIXpoyQXu4ek6hNyMNxvihkNFq2NhaBuy5V24DVTlsjVScLcjnpTZ5JbXVONFaB2E/e02M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=c8YjrpZm; arc=none smtp.client-ip=193.252.23.215
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Received: from localhost.localdomain ([90.11.132.44])
 	by smtp.orange.fr with ESMTPA
-	id 7ANftLM9g0BU07ANftAu4d; Sat, 02 Nov 2024 10:25:17 +0100
+	id 7AQMtOujKH3SU7AQMtmj7y; Sat, 02 Nov 2024 10:28:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1730539517;
-	bh=DIxqU9y3ZKraAtE/x5LoAuiso/aNBNvfgUhvN7CYOys=;
+	s=t20230301; t=1730539684;
+	bh=rRLq5/V3PO4gXtH6o+mulzRrZWABZdF58Y31jxMMc3U=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=mDjWcPGKbwJsbtIUTzyHl8Ds1bZZxz8XaeFzkCFPKIcfgOu0ivOOPj41Cj5b2NSKM
-	 DU6rEiexeUPBrg/yGlZdwprj/0i64ApDIaYQj/lKjE3gWV3mjtELo1+pWrE8gkZwrB
-	 yitgCg7mIxmrRGKep3xPNF7SL8qp+L962dYobQj90PM/1/4RIyvuYSstr6Qw/ygOht
-	 0bgPGXv6BFy12QTaiVZCjFNIDbv6GU5kFzEqGU7qlaeE1K78fpHab+lsRXZfbBS1qf
-	 yePoHUUzN4O8saUesswPJLKuHf8W0qhznKtsoUtfaSxzvC8IHwYHEYSruBG+KCtvzB
-	 SQXgY4R0G+8pg==
+	b=c8YjrpZmsvFwBnjpwxrFAdK7mea3CIj0+tWGaxX0Vg+oIh4RU5q7Cjn/7OuTP1MVy
+	 3e4BJ4uuxxtV6pQgXorppHZ8imyXiQZRhgH8yFKH436BRBM5y4WrQkReeqGEOk6Aab
+	 2g1hHEawaAZBWTuNmAy4Li+9Pe2KZsT/7gTXD2VtKllM6pxSIuocblVarY7BrRy4LQ
+	 k453TwuhuiRZllLCXz80bZfXpwNU51OR+mIq7MwxHEA1P19Km2vPlUIxePV132FH6y
+	 rgT+KJHkaLCazdwlPsizGrA8E8a9M9MzRD37Wm42oG/cEk+63ly8KIW71ZyRJYCMV7
+	 4LD0iV2UEry+g==
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 02 Nov 2024 10:25:17 +0100
+X-ME-Date: Sat, 02 Nov 2024 10:28:04 +0100
 X-ME-IP: 90.11.132.44
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Kees Cook <kees@kernel.org>
+To: Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Russell King <linux@armlinux.org.uk>
 Cc: linux-kernel@vger.kernel.org,
 	kernel-janitors@vger.kernel.org,
 	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] fs: binfmt: Fix a typo
-Date: Sat,  2 Nov 2024 10:25:04 +0100
-Message-ID: <34b8c52b67934b293a67558a9a486aea7ba08951.1730539498.git.christophe.jaillet@wanadoo.fr>
+	linux-arm-kernel@lists.infradead.org,
+	linux-omap@vger.kernel.org
+Subject: [PATCH] ARM: OMAP2+: Fix a typo
+Date: Sat,  2 Nov 2024 10:27:51 +0100
+Message-ID: <ec20fd5c347bf74963532e95282f850d209d84d5.1730539664.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -70,27 +71,27 @@ List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A 't' is missing in "binfm_misc".
+A 'a' is missing in "powerdomin".
 Add it.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- fs/binfmt_misc.c | 2 +-
+ arch/arm/mach-omap2/powerdomain.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index 31660d8cc2c6..df6a229b5e62 100644
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -998,7 +998,7 @@ static int bm_fill_super(struct super_block *sb, struct fs_context *fc)
- 		/*
- 		 * If it turns out that most user namespaces actually want to
- 		 * register their own binary type handler and therefore all
--		 * create their own separate binfm_misc mounts we should
-+		 * create their own separate binfmt_misc mounts we should
- 		 * consider turning this into a kmem cache.
- 		 */
- 		misc = kzalloc(sizeof(struct binfmt_misc), GFP_KERNEL);
+diff --git a/arch/arm/mach-omap2/powerdomain.c b/arch/arm/mach-omap2/powerdomain.c
+index 2441d96b7144..a4785302b7ae 100644
+--- a/arch/arm/mach-omap2/powerdomain.c
++++ b/arch/arm/mach-omap2/powerdomain.c
+@@ -523,7 +523,7 @@ int pwrdm_get_mem_bank_count(struct powerdomain *pwrdm)
+  * Set the powerdomain @pwrdm's next power state to @pwrst.  The powerdomain
+  * may not enter this state immediately if the preconditions for this state
+  * have not been satisfied.  Returns -EINVAL if the powerdomain pointer is
+- * null or if the power state is invalid for the powerdomin, or returns 0
++ * null or if the power state is invalid for the powerdomain, or returns 0
+  * upon success.
+  */
+ int pwrdm_set_next_pwrst(struct powerdomain *pwrdm, u8 pwrst)
 -- 
 2.47.0
 

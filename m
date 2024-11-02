@@ -1,98 +1,119 @@
-Return-Path: <kernel-janitors+bounces-6311-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-6307-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A732C9B9E58
-	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Nov 2024 10:37:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5C59B9E31
+	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Nov 2024 10:31:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51C5D1F2308A
-	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Nov 2024 09:37:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55B191F22D0A
+	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Nov 2024 09:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529DE170853;
-	Sat,  2 Nov 2024 09:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6063515C15A;
+	Sat,  2 Nov 2024 09:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="c8YjrpZm"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YbIXG55G"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from msa.smtpout.orange.fr (msa-215.smtpout.orange.fr [193.252.23.215])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABF516F858;
-	Sat,  2 Nov 2024 09:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.23.215
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD9074C14
+	for <kernel-janitors@vger.kernel.org>; Sat,  2 Nov 2024 09:31:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730540215; cv=none; b=I7Hqx0QFW05f8FpGDh8tEKbDJsFIJ+uguQelOh+Usenvjw3wmaYOZlHoP3v+xHX3W2guPbOX86n3+iz/uwsPV/5VWxPYBtUUaZhcvGa2JKrT1Y4r0Db2rSaV209OstYQjAPNgPgDM68iv4/ybHQxVgGhgcoV+ZDeFprnEAITIqc=
+	t=1730539881; cv=none; b=swgZLn/dB1wweNS6U+FqA/YwVH7h3juHnrMXhcyA04UVD2zyDjZxPQpLwm9vQYTooBEoem3d15LTrtqSI8SOun4aF7uZe4ofMid352DDIjCOVJULbvw2lKfCi/I83ewjyZqYlST1tThb26OA83EXFcj9RsbIo21IsvvpQN0YmEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730540215; c=relaxed/simple;
-	bh=pD9cojqUe+KJn35bihc4SauN478RJaUcb4L87yKECgs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a2+bynv+zj4au7FtRbKCBAKX/bcuWNZpBrMym+PkRKaitptq+oHFHwUyYKeYS3nCRWrUESB6wamDK9DO51OHFsAgowCtgglHDY2QSTIXpoyQXu4ek6hNyMNxvihkNFq2NhaBuy5V24DVTlsjVScLcjnpTZ5JbXVONFaB2E/e02M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=c8YjrpZm; arc=none smtp.client-ip=193.252.23.215
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from localhost.localdomain ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id 7AQMtOujKH3SU7AQMtmj7y; Sat, 02 Nov 2024 10:28:04 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1730539684;
-	bh=rRLq5/V3PO4gXtH6o+mulzRrZWABZdF58Y31jxMMc3U=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=c8YjrpZmsvFwBnjpwxrFAdK7mea3CIj0+tWGaxX0Vg+oIh4RU5q7Cjn/7OuTP1MVy
-	 3e4BJ4uuxxtV6pQgXorppHZ8imyXiQZRhgH8yFKH436BRBM5y4WrQkReeqGEOk6Aab
-	 2g1hHEawaAZBWTuNmAy4Li+9Pe2KZsT/7gTXD2VtKllM6pxSIuocblVarY7BrRy4LQ
-	 k453TwuhuiRZllLCXz80bZfXpwNU51OR+mIq7MwxHEA1P19Km2vPlUIxePV132FH6y
-	 rgT+KJHkaLCazdwlPsizGrA8E8a9M9MzRD37Wm42oG/cEk+63ly8KIW71ZyRJYCMV7
-	 4LD0iV2UEry+g==
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 02 Nov 2024 10:28:04 +0100
-X-ME-IP: 90.11.132.44
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Russell King <linux@armlinux.org.uk>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-omap@vger.kernel.org
-Subject: [PATCH] ARM: OMAP2+: Fix a typo
-Date: Sat,  2 Nov 2024 10:27:51 +0100
-Message-ID: <ec20fd5c347bf74963532e95282f850d209d84d5.1730539664.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1730539881; c=relaxed/simple;
+	bh=H8Gb3WLJbngLpNTN81q7DwfW5UpCvmMUw/IR5xIOfr8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=qUAynSoIH98BKOSmE/OPC33UDiY2mbs5cw1UiPpXsevx9wtCGTRNM7xDYjN5wpLKYWDCMlsmE6+/5O1HkrcthgjHTmwn/QVVhTABYbSsaetxZBmfMrtbBbuTw8s1iDeSE9ZMcAb3LoL2yS7HtHFlBHsioRMddhYziY0izvCkpLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YbIXG55G; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4314b316495so23176775e9.2
+        for <kernel-janitors@vger.kernel.org>; Sat, 02 Nov 2024 02:31:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1730539878; x=1731144678; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Y20IPLl0T1Inu0ZWcS2TQ9J2Ib1jjVRfeGEd17R1p8c=;
+        b=YbIXG55GqcQ4NPSVURngZzFPwMzQYTqsc2WZft4XTzMn9JhbGbXjxNf1vNesUGKl28
+         yZad2LQll6+By0vhwVBMsARyXLYFPrIg8L4vdfnsbcY/czATgHH6xt5Pyk2OsJmzXj3z
+         MCOLcFs2Wm18LdOqP1xwst92qdyZVT5xu4Tct3e2IzTGtJZ8ERFymk/EDdf14x/3MHlY
+         1dsfvrNtqz8HPjZz0MCeo+3ezwOCs0mnA1pCK9Fw9L3g5QXApbw5U1P97u0kfBDOWRRO
+         p+AOz6Gd5PwsFwgitA9EYV0iFahtoU6ioutXKq5eJX1n6+WmyI8KFlbdtIhPp2d1GZKr
+         mkFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730539878; x=1731144678;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y20IPLl0T1Inu0ZWcS2TQ9J2Ib1jjVRfeGEd17R1p8c=;
+        b=awNyelDo2tQfaE05XeJ4OWOpwFTfamWFCMWGU0NCSvhFqYcXftkFlScevIhhdCx5YI
+         hGeUio5qzwSig18i67prRTB/P4fl3V6V8hAaBeQ0JMvVuVEP8x8MuTF1bQWwpNWPgnoz
+         L8K8sNyFY+IY4YbrO6QiH3zHYWA0LiN2ExZbfgs0wkeKausllF7sflpXkO5EOPoLhj54
+         bqNfSur9/UtmsdqBF6CpI1bBeiQOfPEoMdkkBg25f+Ha0G7yAh6qFvQlLaJk3iPCQh5H
+         TMnXMdgqoAM8XrawebAyBO0Zp0V4fiAGjcX5LsDhdRH5pHxrSAgchD7zqQJ5vVo877mr
+         TCvA==
+X-Forwarded-Encrypted: i=1; AJvYcCV2/K+CUCOD/SuZoLpH3gtvTBmnT3t6NEuMYTV8jGb1+YcbGeg91YLebZCO4bJD1zwNkA7qync9i/djqKTC9+M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPLMnSp9gVXaFN/lPJt2A9T4xGmayyYCCLp1jayL+iB0+pi4GT
+	GQ9Cs6vFDkpxMt1qNNA+2ddyeZAqumiFwOJo70W9uQWxdSvdQCzAG923inNwzko=
+X-Google-Smtp-Source: AGHT+IElQhl8RTx1u2Qv+Hf698kNw66wgtCjAXGbW3mdm/POfTMzJMzs4xEy2zd12QkNz0gSnIZD7Q==
+X-Received: by 2002:a05:600c:a08:b0:431:4a83:2d80 with SMTP id 5b1f17b1804b1-4327b6c1c78mr88114585e9.0.1730539878363;
+        Sat, 02 Nov 2024 02:31:18 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4327d5ac37csm88619985e9.10.2024.11.02.02.31.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Nov 2024 02:31:17 -0700 (PDT)
+Date: Sat, 2 Nov 2024 12:31:14 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Tycho Andersen <tandersen@netflix.com>
+Cc: Kees Cook <kees@kernel.org>, Eric Biederman <ebiederm@xmission.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH next] exec: Fix a NULL vs IS_ERR() test in
+ bprm_add_fixup_comm()
+Message-ID: <18f60cb9-f0f7-484c-8828-77bd5e6aac59@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-A 'a' is missing in "powerdomin".
-Add it.
+The strndup_user() function doesn't return NULL, it returns error
+pointers.  Fix the check to match.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Fixes: 7bdc6fc85c9a ("exec: fix up /proc/pid/comm in the execveat(AT_EMPTY_PATH) case")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 ---
- arch/arm/mach-omap2/powerdomain.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/exec.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/powerdomain.c b/arch/arm/mach-omap2/powerdomain.c
-index 2441d96b7144..a4785302b7ae 100644
---- a/arch/arm/mach-omap2/powerdomain.c
-+++ b/arch/arm/mach-omap2/powerdomain.c
-@@ -523,7 +523,7 @@ int pwrdm_get_mem_bank_count(struct powerdomain *pwrdm)
-  * Set the powerdomain @pwrdm's next power state to @pwrst.  The powerdomain
-  * may not enter this state immediately if the preconditions for this state
-  * have not been satisfied.  Returns -EINVAL if the powerdomain pointer is
-- * null or if the power state is invalid for the powerdomin, or returns 0
-+ * null or if the power state is invalid for the powerdomain, or returns 0
-  * upon success.
-  */
- int pwrdm_set_next_pwrst(struct powerdomain *pwrdm, u8 pwrst)
+diff --git a/fs/exec.c b/fs/exec.c
+index 7e24d585915e..c5c291502dca 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1512,10 +1512,10 @@ static int bprm_add_fixup_comm(struct linux_binprm *bprm,
+ 		return 0;
+ 
+ 	bprm->argv0 = strndup_user(p, MAX_ARG_STRLEN);
+-	if (bprm->argv0)
+-		return 0;
++	if (IS_ERR(bprm->argv0))
++		return PTR_ERR(bprm->argv0);
+ 
+-	return -EFAULT;
++	return 0;
+ }
+ 
+ static struct linux_binprm *alloc_bprm(int fd, struct filename *filename, int flags)
 -- 
-2.47.0
+2.45.2
 
 

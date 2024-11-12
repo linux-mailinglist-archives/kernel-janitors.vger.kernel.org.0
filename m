@@ -1,99 +1,136 @@
-Return-Path: <kernel-janitors+bounces-6424-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-6426-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9527F9C6510
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Nov 2024 00:23:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 536E59C6444
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2024 23:30:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E6ABB36EB2
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2024 21:02:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AC2D1F235BB
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2024 22:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD0F21A4A3;
-	Tue, 12 Nov 2024 21:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5724721B424;
+	Tue, 12 Nov 2024 22:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="MHtkKfjl"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="FtkvhmsP"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-17.smtpout.orange.fr [80.12.242.17])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE9A13FD99;
-	Tue, 12 Nov 2024 21:02:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297271FEFD9
+	for <kernel-janitors@vger.kernel.org>; Tue, 12 Nov 2024 22:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731445352; cv=none; b=CKd9lO4SA6/sshioZ9xz5VoY/eGnpKh4njuCipZf9sP7kJNT9BKOaJ0cuIm6Fu4Tw40PtuyEQjIM2k6dhkz3rYU90fjYMNDyhLqhXhI6aog66OzzT7fTIo3JbvIjHJzHP73DKBcUl9YSFsu11xXD+AqX+RY/eVZEdpFvj4o5Ekc=
+	t=1731450597; cv=none; b=QSDzmFap20igAIBa3GA4RTJ87WGjVGDpmMmdb1JbH8LVk6TnjvTTlYiy+icJbK+6SiZ5D4tZUkhFaPglQWE/RzdCq8FUUp8CEFimSiqdUYxpmQ7TmjKInO1WMrzXR0L+zxvrrGsbVSwX78y2vTrTLpcZUj6jzTHTKocUTBfuapQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731445352; c=relaxed/simple;
-	bh=zM/yV7Sqqn3L0LKsqpE/sHVlA1LHzAmE6utNVl3Ahvw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DZ4IgDOgqbdFxtpvzIVVgTKqNg8aSAPyjsDBrj/RUq5S5gJwNb4lWVexOGVtNdGZbJNEoKwx/K9/8p8cEzNmBbzMzdb6HWvY+cnOLGIQrFObpdrzxtZE93zMWxKvf22FMiSf3O0I8jG0iiOKx16p7M1h/CI3EzEkxTv7mRbtzFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=MHtkKfjl; arc=none smtp.client-ip=80.12.242.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from localhost.localdomain ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id Ay0kt5zlow8U4Ay0kt7lCL; Tue, 12 Nov 2024 22:01:19 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1731445279;
-	bh=fsqOGr2Zhrw+aZU6nyolhdzki25Q9IQLpHrgqpUTkwM=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=MHtkKfjlLa8z4OTJs3qgB6ABuLU2DcnSq2GNKpXo+KBDw2+lbQHMia4n5jL5ZGVnC
-	 L5Hq11I++Lz3M3y5F1kM33VJvawfRfXJfxqNH8i/2Fvt7Z09MX0Au9J1JgK/V8R+so
-	 hpCfkK5FuVMtFxBAW3Jcld8a+1qxNDx4qu+boUSMu5Fk1tVAS4wWj7894yUpN2Qekn
-	 PGTWM+Sa1TKS9xs+U8KcU9rld2GJm+HrfsOsT+uBdwznVYghSdVPFlrC702OiVMyMd
-	 T5osH+H2Tv5ssim/zzMTdmh4ZEwBuMuzBg4/LA09xpwFKS2wmPsX7sUgauxTAICmxu
-	 1nuMysk/dzKUA==
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 12 Nov 2024 22:01:19 +0100
-X-ME-IP: 90.11.132.44
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	linux-i2c@vger.kernel.org
-Subject: [PATCH] Documentation: i2c: Constify struct i2c_device_id
-Date: Tue, 12 Nov 2024 22:01:00 +0100
-Message-ID: <c8e6da4adb7381ee27e8e11854c9d856382cdc93.1731445244.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1731450597; c=relaxed/simple;
+	bh=qjBP7bdvStDQrKNammPad8Fnlc6kW/7F8hV3YzwDMZ0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fmJQ+lOcuK/miXszt9EGlVvllBoagrIS7Uz4OPEnNf4Qpy94MmRlGb2O6vYH/UYzfDkRa/gO7NDoepIab5gevu9WX9Fu90FHmrRO87yKaVGNPfbTZW03DetFVFC5Snih8fE4cJNutiND68XzzLxNj6x15Vb4H0zdUrjz9cYX/QQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=FtkvhmsP; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2fb5a9c7420so55451491fa.3
+        for <kernel-janitors@vger.kernel.org>; Tue, 12 Nov 2024 14:29:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1731450592; x=1732055392; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WMLlYAFDqKDkf0WiPqQcIBDe5t9vWTyk5bdOv0ivtJ0=;
+        b=FtkvhmsPnR4px0NWYjCFGA6z9iQGnabPPefbRwUr/jfjDqGHBL+dBotOFImsfCS8uR
+         +jzYhNzKSrAjo8AyMGJhtEbCsEPYT8K8HADELlVGCGBdvs9FJDdgfuToMB+Ibne0A5hk
+         YFLUloibaEN6F8N0p/6vOUoBZqNP5nS8pFRYM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731450592; x=1732055392;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WMLlYAFDqKDkf0WiPqQcIBDe5t9vWTyk5bdOv0ivtJ0=;
+        b=hrf48VCaqZVPHerSLl/JBpTp+f8oCNkxutH3pZW3d3BKswu2H0dbLm+taXSrhnHxOW
+         LXrXOsgyphFJwJdSL/zZRDDPRTjbtJKE2gG4lBxZy6PzmO1cVoGULd4sDEAbPbcNjbQB
+         /zyZDiGzYNy/18wxVOYLCivrGT9vUgFtcxybi2eMjFoXN0TCHpFGbMS/npN9m4o50r6x
+         LOwa9QM8++BWzdb/5xhqFUz88kiopxXLWHORHzONgF664LP0vFVRYp3fRSVk5nX/iJ3f
+         bqkH6UJ9tdSB0jKRTd6HwRm4u6YiWi9qrlIIMFTBDjZvg/e1u3fHEu7EGRhOhe+R1m75
+         G2BQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW3+i5eCGjsJ8YZSBp2jV368VAomI0U4tt0OnD0BfgtCuhL1UM/ZcMa4V/qORPORa6qPhCPWF0RV5W70a/k0Ic=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRavH30y2DzMQhYc6LZs62wso6PMepGqpVAfFY0KAZu0VG2GkK
+	WA3BdhPmo+sO0n+EYSA4JppZVu/MUHE5nVKVm94aRC4xNkvxX9JPTFqtkXfkyIfrWet6IBQtI0g
+	haw==
+X-Google-Smtp-Source: AGHT+IG4E2SAG34vLvyhjHb29//bFPm1q3bz6NHDjpxkuCD8r7AT8YZ3PpnOgX05XnU6PUpqv47OdQ==
+X-Received: by 2002:a2e:a586:0:b0:2fb:5688:55a4 with SMTP id 38308e7fff4ca-2ff2016d735mr73482381fa.17.1731450592225;
+        Tue, 12 Nov 2024 14:29:52 -0800 (PST)
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com. [209.85.208.170])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ff4dcd757bsm88151fa.82.2024.11.12.14.29.50
+        for <kernel-janitors@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Nov 2024 14:29:51 -0800 (PST)
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2fb5a9c7420so55450961fa.3
+        for <kernel-janitors@vger.kernel.org>; Tue, 12 Nov 2024 14:29:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVAu+TFqB6F1NVVzFH1hH4iFMCrIDqgnW1emZI6gKSYZRmwfUYXJyk1oZsG0B+9+ocgECQDjKF12DK+9PrBjQo=@vger.kernel.org
+X-Received: by 2002:a05:651c:158f:b0:2fc:9622:794b with SMTP id
+ 38308e7fff4ca-2ff201af817mr81726791fa.24.1731450590306; Tue, 12 Nov 2024
+ 14:29:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <bdba1f49b4b48e22628482b49ce81f8e1f0d97b1.1731445901.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <bdba1f49b4b48e22628482b49ce81f8e1f0d97b1.1731445901.git.christophe.jaillet@wanadoo.fr>
+From: Doug Anderson <dianders@chromium.org>
+Date: Tue, 12 Nov 2024 14:29:35 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=XJ=KVbopwovCvqR=WKi-pdpj3c5dZ57c+uUMh1ryk=+A@mail.gmail.com>
+Message-ID: <CAD=FV=XJ=KVbopwovCvqR=WKi-pdpj3c5dZ57c+uUMh1ryk=+A@mail.gmail.com>
+Subject: Re: [PATCH] drm/bridge: Constify struct i2c_device_id
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Jagan Teki <jagan@amarulasolutions.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Constify the i2c_device_id structure in the doc to give a cleaner starting
-point.
+Hi,
 
-Also remove an empty line which is usually not added.
+On Tue, Nov 12, 2024 at 1:12=E2=80=AFPM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
+>
+> 'struct i2c_device_id' is not modified in these drivers.
+>
+> Constifying this structure moves some data to a read-only section, so
+> increase overall security.
+>
+> On a x86_64, with allmodconfig, as an example:
+> Before:
+> =3D=3D=3D=3D=3D=3D
+>    text    data     bss     dec     hex filename
+>   15566     987      32   16585    40c9 drivers/gpu/drm/bridge/chipone-ic=
+n6211.o
+>
+> After:
+> =3D=3D=3D=3D=3D
+>    text    data     bss     dec     hex filename
+>   15630     923      32   16585    40c9 drivers/gpu/drm/bridge/chipone-ic=
+n6211.o
+>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> Compile tested-only.
+> ---
+>  drivers/gpu/drm/bridge/chipone-icn6211.c   | 2 +-
+>  drivers/gpu/drm/bridge/lontium-lt9211.c    | 2 +-
+>  drivers/gpu/drm/bridge/lontium-lt9611.c    | 2 +-
+>  drivers/gpu/drm/bridge/lontium-lt9611uxc.c | 2 +-
+>  drivers/gpu/drm/bridge/ti-sn65dsi83.c      | 2 +-
+>  drivers/gpu/drm/bridge/ti-sn65dsi86.c      | 2 +-
+>  6 files changed, 6 insertions(+), 6 deletions(-)
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- Documentation/i2c/writing-clients.rst | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/Documentation/i2c/writing-clients.rst b/Documentation/i2c/writing-clients.rst
-index 0b8439ea954c..121e618e72ec 100644
---- a/Documentation/i2c/writing-clients.rst
-+++ b/Documentation/i2c/writing-clients.rst
-@@ -31,12 +31,11 @@ driver model device node, and its I2C address.
- 
- ::
- 
--  static struct i2c_device_id foo_idtable[] = {
-+  static const struct i2c_device_id foo_idtable[] = {
- 	{ "foo", my_id_for_foo },
- 	{ "bar", my_id_for_bar },
- 	{ }
-   };
--
-   MODULE_DEVICE_TABLE(i2c, foo_idtable);
- 
-   static struct i2c_driver foo_driver = {
--- 
-2.47.0
-
+Acked-by: Douglas Anderson <dianders@chromium.org>
 

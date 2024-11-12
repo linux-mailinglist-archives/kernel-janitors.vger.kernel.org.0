@@ -1,108 +1,129 @@
-Return-Path: <kernel-janitors+bounces-6416-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-6421-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7762D9C5FE9
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2024 19:09:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FBD69C61A5
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2024 20:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A64BB3B5F5
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2024 16:20:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48763BA6F70
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2024 18:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CFF205136;
-	Tue, 12 Nov 2024 16:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED76217914;
+	Tue, 12 Nov 2024 18:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nhA9dOsY";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oHT3w37J"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="de6F0h7+"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE35C20494F
-	for <kernel-janitors@vger.kernel.org>; Tue, 12 Nov 2024 16:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 353A9213125;
+	Tue, 12 Nov 2024 18:22:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731428430; cv=none; b=WZN/K0YBZNe+JmuQ+Q/wIggF36mOxlBNcSqAoOCKCy+TjhqqivwgtpT/BHPSomLjY9RLrbm+zh3Uk0le48Td543sDkbuQUsbF45d0HAHx5wj3YVxiezcmjtvbeALAh+BafkjkxPWrLSmu0rZTkl2MJo6n2HCGcsiolqfpB4CfQ0=
+	t=1731435742; cv=none; b=OxGeJSjWTqtAxCGB3Kx1ymibDkHJkEcTEjxo8iWBrNog4PS4khIK/Y4ut9uqVODmrOzlt+xOGPM3awflLuCyQcxvuYcOALKeLndNsErEMJNqTJQM3lV0qkObZuh4CqWxgheWHaW5ilfo1wgb7TgumOLiwE/pthbGgkN2AOVUaws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731428430; c=relaxed/simple;
-	bh=kT/ta0BjrBum/OraAqfdb+N4Gy//ectNDOqvgMI46rg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t0r67I7RkB/qQz6nor1VrlhcrAkWKHNrQt5A2AgS04FPETGoyQUtRNdSbkst8iwoVrjMSCSrWA1aHBDoKataMBJP8Qrywb7noD/wlJKhfKHR719zsA0WHMtDx+uEBjxmSPj+XneI8F5f8C4kEVBP2Pk43sdjVrjIYDzA1gJG0XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nhA9dOsY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oHT3w37J; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 12 Nov 2024 17:20:23 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1731428424;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q90bkERe6YhsoeONJXZvnBhmqp1lWJFNK9oSdTqjLZY=;
-	b=nhA9dOsYMM3apDQF4XBzJ5szDo3ZVuM76jShmQJivXCH8J7rvMBrwBjHoUl/RVoz4osbwA
-	trzkDDAMJnNkopqFyGn/vfUHfSt9pLVyLgAEOOk8aNsta3MkNI5KKY9pkl7eVGMOVSbYnT
-	trC+D49AGbO4Tg+5hE35dfVGhCHV1vFM0gF5w2GMvzgfpGKCB7tPk6gWtwkGO38LGLIVDf
-	dum2L2y1ggfILOEd+fi0jIP5s33IfhhEKmVNtUOALkOszdGNM2o4uyMg+Gwe/vMIXKyWsj
-	06gIiJuVsyOfm0L90P71opUF/l8ern1rsBxo9txH5MrduEmGKOw/Hf7wAn0mYQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1731428424;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q90bkERe6YhsoeONJXZvnBhmqp1lWJFNK9oSdTqjLZY=;
-	b=oHT3w37JWwnx5bNMNq156la6gFK2XR3aTpeDoXUw/4sf0ofEAugeiFbJht8uqRD/LupVb9
-	aLA57u68R/GHsLDQ==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH] scftorture: Handle NULL argument passed to
- scf_add_to_free_list().
-Message-ID: <20241112162023.glRj_YAz@linutronix.de>
-References: <2375aa2c-3248-4ffa-b9b0-f0a24c50f237@stanley.mountain>
+	s=arc-20240116; t=1731435742; c=relaxed/simple;
+	bh=dm411aeuElhk98z7KlbEChgibpFt0Ls8H3nVP5qWzns=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=odd9561Wb0qYniyWBC1jtAEAtBPNonHvFj4YlWvE/BRNQnRaa+puKDVEqu7GIPQtYsbcI3gU1DweTjE0d8R6Wb4vWt6dKmh8F9afO7zryjMw7RlzFUrQIoA89bsid4UU0M5B/lnQyhSUr7TsUfua2r2epuP/hh+EC7FOBrdRYOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=de6F0h7+; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-431688d5127so47834425e9.0;
+        Tue, 12 Nov 2024 10:22:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731435739; x=1732040539; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rGw8I43GoIEdw75f9gcID3EPkPrgfiDyB1X473+QaOg=;
+        b=de6F0h7+D7Aj+IXEmLqLMeI4+B+KJJYz5dtynCic+UpeeMiKkmsovwtwdINNnlXksQ
+         K/gY76AYXUknbhs+LvhEpqb1r4tLRPKn7ipSRoAghwz5kttCOq+CYEPdWTWM7D3IIo5i
+         d/FUBfoTAHgFi4kFTX0SrC6NR2OQweebFvd1fQW9DXt638JlvWSHeWPr6fp1JcInv2yZ
+         MMB0M9DTbplhAubksMlqawi8kk3wdqTEmA8tfxJSHJN/IwyNVF5+7x7W6qfYy/dUXo8F
+         VWYdpGEA0kcT0d17dHWm8WGvTdGnee06jgDliRDHxIKgOPGM/5uk2ibpDBulOTp45fRm
+         1fOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731435739; x=1732040539;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rGw8I43GoIEdw75f9gcID3EPkPrgfiDyB1X473+QaOg=;
+        b=riBfQCtkSeOMv2yGvObaMJgqEOfZut7kqbriO7wvhtrCNw8ML93t2BzkcvjR9sn6yC
+         dobrjjY/yaBsaxQknGSswXOWmln5Lf3vun34Ew+hLODB1dnrd4aWKydBWNcujA0yI5Ds
+         /L01ZiTNBkbw3NAAtANmc7uzEFgLYkux5w9qsyneJ+H486s/kLE2zCeesErHHxo7CzIc
+         L9K/Qg5c52hVCNOe7n9iTYbnfQDXdmy8Hqa0Oi4LPqP4VFxJFnGvMsAOdhKKB5Fhqw+I
+         avaW5nDF15ehxzqxiXX98ngBtsJuacDO5ixb0Cn9S912N2n8StGesp54rnVCxQvD6q0A
+         6YJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVRE7Vr2cf4R8s0gIrf1ZXNR3zO+WvDWwLly1mB1XjnQf4nrshaiAAksLEcPLZSbvVvWl/jfNwDd04QJlZv@vger.kernel.org, AJvYcCVRuA8tQ8T+d2FTLUpALeH/Ta2EXgvbyhWegBWIGwMqaAE8y8dVLITstv1ZUJ+nGOCr3zjWqYmz0fW3K7CW@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1OqhBFw5rJRuCHlDbaIJGyuFwGSf/jF+hVxH949u9VTir/jP8
+	qHriI++qSj4GRwPMkoCbJn3yIjX8iJnnTx+A+lAutSmmZfW2yMm6
+X-Google-Smtp-Source: AGHT+IHQJ9DcCw2M41pZGval9nx2PIlFgi2G38OFndiORIwfTgf0326SaoN/rywDWnrSrr2FwxlJzQ==
+X-Received: by 2002:a05:600c:4507:b0:431:5c1c:71b6 with SMTP id 5b1f17b1804b1-432b750a433mr165118395e9.17.1731435739344;
+        Tue, 12 Nov 2024 10:22:19 -0800 (PST)
+Received: from localhost ([194.120.133.65])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381ed97e62csm15903604f8f.37.2024.11.12.10.22.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Nov 2024 10:22:18 -0800 (PST)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Rob Clark <robdclark@gmail.com>,
+	Sean Paul <sean@poorly.run>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][V2] drm/msm/a5xx: remove null pointer check on pdev
+Date: Tue, 12 Nov 2024 18:22:18 +0000
+Message-Id: <20241112182218.1119158-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2375aa2c-3248-4ffa-b9b0-f0a24c50f237@stanley.mountain>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-Dan reported that after the rework the newly introduced
-scf_add_to_free_list() may get a NULL pointer passed. This replaced
-kfree() which was fine with a NULL pointer but scf_add_to_free_list()
-isn't.
+The call chain on a5xx_gpu_init is such that pdev is not going to be
+null, so the null check on pdev can be removed. This also cleans up
+a static analysis warning where pdev is dereferenced before the null
+check which cannot actually occur.
 
-Let scf_add_to_free_list() handle NULL pointer.
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/2375aa2c-3248-4ffa-b9b0-f0a24c50f237@stanley.mountain
-Fixes: 4788c861ad7e9 ("scftorture: Use a lock-less list to free memory.")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
 
-Thank you Dan. I had to look twice, that `scfsp' above looked almost
-identical.
+V2: rewrite Subject, remove null check on pdev
 
- kernel/scftorture.c | 2 ++
- 1 file changed, 2 insertions(+)
+---
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/kernel/scftorture.c b/kernel/scftorture.c
-index eeafd3fc16820..d86d2d9c46248 100644
---- a/kernel/scftorture.c
-+++ b/kernel/scftorture.c
-@@ -155,6 +155,8 @@ static void scf_add_to_free_list(struct scf_check *scfcp)
- 	struct llist_head *pool;
- 	unsigned int cpu;
+diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+index ee89db72e36e..4edf9109d1d8 100644
+--- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+@@ -1760,11 +1760,6 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
+ 	unsigned int nr_rings;
+ 	int ret;
  
-+	if (!scfcp)
-+		return;
- 	cpu = raw_smp_processor_id() % nthreads;
- 	pool = &per_cpu(scf_free_pool, cpu);
- 	llist_add(&scfcp->scf_node, pool);
+-	if (!pdev) {
+-		DRM_DEV_ERROR(dev->dev, "No A5XX device is defined\n");
+-		return ERR_PTR(-ENXIO);
+-	}
+-
+ 	a5xx_gpu = kzalloc(sizeof(*a5xx_gpu), GFP_KERNEL);
+ 	if (!a5xx_gpu)
+ 		return ERR_PTR(-ENOMEM);
 -- 
-2.45.2
+2.39.5
 
 

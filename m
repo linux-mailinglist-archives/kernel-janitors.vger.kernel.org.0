@@ -1,102 +1,108 @@
-Return-Path: <kernel-janitors+bounces-6420-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-6416-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE3669C5ECB
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2024 18:22:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7762D9C5FE9
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2024 19:09:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3612283853
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2024 17:22:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A64BB3B5F5
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2024 16:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A34F212D16;
-	Tue, 12 Nov 2024 17:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CFF205136;
+	Tue, 12 Nov 2024 16:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QLDH6lZU"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nhA9dOsY";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oHT3w37J"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD531189B8A
-	for <kernel-janitors@vger.kernel.org>; Tue, 12 Nov 2024 17:22:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE35C20494F
+	for <kernel-janitors@vger.kernel.org>; Tue, 12 Nov 2024 16:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731432137; cv=none; b=fF60LB5LErCWCRWWq+rJSJt7ErIPu6XT0F4n16BHGczFjpknOKLRR3LQkk1MdnmOZn9hmCWN2v5feQWyMIyaG7xRZzDkU7LbLQLbFXEtp31kgNO7L1zkFgOwlJLJG/OwTzM2vcmc4LUgfjsfTvOu/IC6/JK9rAIrV4r6mtrC7hI=
+	t=1731428430; cv=none; b=WZN/K0YBZNe+JmuQ+Q/wIggF36mOxlBNcSqAoOCKCy+TjhqqivwgtpT/BHPSomLjY9RLrbm+zh3Uk0le48Td543sDkbuQUsbF45d0HAHx5wj3YVxiezcmjtvbeALAh+BafkjkxPWrLSmu0rZTkl2MJo6n2HCGcsiolqfpB4CfQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731432137; c=relaxed/simple;
-	bh=r1Y26rWuL55b2h/Wg51aWlCb8jZ7cV/tlzqaXPQg+FA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B/Rf9uqcG4yKKXtCagRpth0Dc9cy82WH9YNfOl+XXKrFEIXcInoGgH4edn5Qg4TuLqPao4Z5TaukHW6APPK9IbKrR5DgIfESSLXwhu3d09EG46XWf1P+2q+UJ6AVd6f/m5FNvF6aODOFWVWdp6Xzxc00N0zDbfqzQIg2kw0Hk6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QLDH6lZU; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <5c2c6883-d81a-4869-9f32-48d23c0728ea@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1731432130;
+	s=arc-20240116; t=1731428430; c=relaxed/simple;
+	bh=kT/ta0BjrBum/OraAqfdb+N4Gy//ectNDOqvgMI46rg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t0r67I7RkB/qQz6nor1VrlhcrAkWKHNrQt5A2AgS04FPETGoyQUtRNdSbkst8iwoVrjMSCSrWA1aHBDoKataMBJP8Qrywb7noD/wlJKhfKHR719zsA0WHMtDx+uEBjxmSPj+XneI8F5f8C4kEVBP2Pk43sdjVrjIYDzA1gJG0XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nhA9dOsY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oHT3w37J; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 12 Nov 2024 17:20:23 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1731428424;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Rfw+wN9AUH3h9IWdAAjZRROFX4GdxCR15t9sueSJP5E=;
-	b=QLDH6lZUK7ldFBFFY60D1IJpEJpv6E6CdX/D0wMreRUW5s13VDtpQ6iWetQwB2fRloelJT
-	P3wvGndCwU3q+yyxxJhHZCgficVY9HnxmwVTsxE+/TdfnUFdIvMPCJ16mn43n+W3FxNnEw
-	dh1Svbb5dK9UzKQS5LfKFQmN8wlWqLY=
-Date: Tue, 12 Nov 2024 12:22:05 -0500
+	bh=Q90bkERe6YhsoeONJXZvnBhmqp1lWJFNK9oSdTqjLZY=;
+	b=nhA9dOsYMM3apDQF4XBzJ5szDo3ZVuM76jShmQJivXCH8J7rvMBrwBjHoUl/RVoz4osbwA
+	trzkDDAMJnNkopqFyGn/vfUHfSt9pLVyLgAEOOk8aNsta3MkNI5KKY9pkl7eVGMOVSbYnT
+	trC+D49AGbO4Tg+5hE35dfVGhCHV1vFM0gF5w2GMvzgfpGKCB7tPk6gWtwkGO38LGLIVDf
+	dum2L2y1ggfILOEd+fi0jIP5s33IfhhEKmVNtUOALkOszdGNM2o4uyMg+Gwe/vMIXKyWsj
+	06gIiJuVsyOfm0L90P71opUF/l8ern1rsBxo9txH5MrduEmGKOw/Hf7wAn0mYQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1731428424;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q90bkERe6YhsoeONJXZvnBhmqp1lWJFNK9oSdTqjLZY=;
+	b=oHT3w37JWwnx5bNMNq156la6gFK2XR3aTpeDoXUw/4sf0ofEAugeiFbJht8uqRD/LupVb9
+	aLA57u68R/GHsLDQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH] scftorture: Handle NULL argument passed to
+ scf_add_to_free_list().
+Message-ID: <20241112162023.glRj_YAz@linutronix.de>
+References: <2375aa2c-3248-4ffa-b9b0-f0a24c50f237@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH next] drm: zynqmp_dp: Unlock on error in
- zynqmp_dp_bridge_atomic_enable()
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Michal Simek <michal.simek@amd.com>, dri-devel@lists.freedesktop.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- kernel-janitors@vger.kernel.org
-References: <b4042bd9-c943-4738-a2e1-8647259137c6@stanley.mountain>
- <20241112052754.GB21062@pendragon.ideasonboard.com>
- <37be000a-3ef8-4df4-aefa-b4d73487ad27@linux.dev>
- <20241112164305.GA24067@pendragon.ideasonboard.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <20241112164305.GA24067@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2375aa2c-3248-4ffa-b9b0-f0a24c50f237@stanley.mountain>
 
-On 11/12/24 11:43, Laurent Pinchart wrote:
-> On Tue, Nov 12, 2024 at 09:41:58AM -0500, Sean Anderson wrote:
->> On 11/12/24 00:27, Laurent Pinchart wrote:
->> > Hi Dan,
->> > 
->> > Thank you for the patch.
->> > 
->> > On Mon, Nov 11, 2024 at 12:06:10PM +0300, Dan Carpenter wrote:
->> >> We added some locking to this function, but accidentally forgot to unlock
->> >> if zynqmp_dp_mode_configure() failed.  Use a guard lock to fix it.
->> >> 
->> >> Fixes: a7d5eeaa57d7 ("drm: zynqmp_dp: Add locking")
->> >> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
->> > 
->> > Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
->> > 
->> > Sean, how about replacing all the mutex_lock()/mutex_unlock() calls
->> > you've added in a7d5eeaa57d7 with guards ?
->> 
->> I have no objection to that.
-> 
-> Would you send a patch ? Otherwise I can do it.
-> 
+Dan reported that after the rework the newly introduced
+scf_add_to_free_list() may get a NULL pointer passed. This replaced
+kfree() which was fine with a NULL pointer but scf_add_to_free_list()
+isn't.
 
-I can send a patch, but it will not be for a week or two.
+Let scf_add_to_free_list() handle NULL pointer.
 
---Sean
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/2375aa2c-3248-4ffa-b9b0-f0a24c50f237@stanley.mountain
+Fixes: 4788c861ad7e9 ("scftorture: Use a lock-less list to free memory.")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+
+Thank you Dan. I had to look twice, that `scfsp' above looked almost
+identical.
+
+ kernel/scftorture.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/kernel/scftorture.c b/kernel/scftorture.c
+index eeafd3fc16820..d86d2d9c46248 100644
+--- a/kernel/scftorture.c
++++ b/kernel/scftorture.c
+@@ -155,6 +155,8 @@ static void scf_add_to_free_list(struct scf_check *scfcp)
+ 	struct llist_head *pool;
+ 	unsigned int cpu;
+ 
++	if (!scfcp)
++		return;
+ 	cpu = raw_smp_processor_id() % nthreads;
+ 	pool = &per_cpu(scf_free_pool, cpu);
+ 	llist_add(&scfcp->scf_node, pool);
+-- 
+2.45.2
+
 

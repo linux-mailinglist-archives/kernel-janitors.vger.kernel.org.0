@@ -1,118 +1,85 @@
-Return-Path: <kernel-janitors+bounces-6517-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-6519-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A9E9D0341
-	for <lists+kernel-janitors@lfdr.de>; Sun, 17 Nov 2024 12:22:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0AC69D0375
+	for <lists+kernel-janitors@lfdr.de>; Sun, 17 Nov 2024 13:05:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 134C4B24AF2
-	for <lists+kernel-janitors@lfdr.de>; Sun, 17 Nov 2024 11:22:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A790B25033
+	for <lists+kernel-janitors@lfdr.de>; Sun, 17 Nov 2024 12:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED4F616F27E;
-	Sun, 17 Nov 2024 11:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA71F192D6A;
+	Sun, 17 Nov 2024 12:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="g3uU7i02"
+	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="bHCwnzmC"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-29.smtpout.orange.fr [80.12.242.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7265733E7;
-	Sun, 17 Nov 2024 11:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE3C1885A5;
+	Sun, 17 Nov 2024 12:04:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731842530; cv=none; b=NvMM2NlOlGHtj4mfhQWks0hmNhTGVM+vWcieIyVAg3eto4r+hIK7nhzTLUp0fWyA0WobaLhBizsz2uyvubEq/tM4z+O5+jhfaee2Lo9vm6tKH7c0ORPsdPu1FwhCWRP/oBFJSw6jal7RZI6C+x5HCTBF4G3CrSjl4LmwvVXhTLg=
+	t=1731845066; cv=none; b=E3OUlUdEmIDEBQYnBYNErJoDcOQ/LN7pCV2xioLDnSwdNh/aGYb1Dwjm4fykRt9CT5JXO+hyfn3xi0B0USD97BB0Fxn+sEyuXmFVQFEtdtJ6tX//EjpJKFG5i9TLnRBb0Ul/weencjIKbEfef26z77dHQHRW7cPjRGnLkR4jOGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731842530; c=relaxed/simple;
-	bh=GL6L0RdEB3pV7TqNFOrFDekS6axn/OVeGdxC9qw5byM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tOsyRwhh4opw+/55JS/vk1HLDgl8OujH/40NQ5R/erV3/R9x/giQ93xXtE9g9bzegje2LdbBPTKHlbquOd3slRLrD7AVG9aNL5JhepCs0hFNNlZC6vTBHOhMgNCHNMIHa6RxBinRbZp7bzUtR7DS5KJdNSW5Ra3nl+0UKM7Pkwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=g3uU7i02; arc=none smtp.client-ip=80.12.242.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from localhost.localdomain ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id CdLltujfVkz9DCdLltiABX; Sun, 17 Nov 2024 12:21:58 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1731842518;
-	bh=wutmjbunPazncW+7ACgp5eT9w4BJnbyk7q/fyDFLZ9g=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=g3uU7i02kt7I5UMCR2YSd0Jh7XdjTBkf1sV5I1IvB/dWjRSWhguCsUDnUcPk9SjIQ
-	 xDbA/sY5wzXGp8+lUTDjx2fYMIK+VM/BprxDh/mzNzDLzaFTigAq1Hoc/IMPxrGRgY
-	 yqA2uh+d8/VzX1GnsqNb4qS5v8Iar4rlm+iGqNfcHgGXZGryfmrV7xDXJMq7kAN91Y
-	 JyYvVYr2+ybGGGY+e7EVDLVvyXFZCP6CqVg1QbNvsA7+wIQU+PEWXsGIqQSmnZ+BLd
-	 JF7rqbpM7vRTqz1nBMLz3TAqN9PhVDxzsu0uCkF/T2TkPAYdSfR9bSUBG7OXrejMFw
-	 x+wqWFVIao+EQ==
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 17 Nov 2024 12:21:58 +0100
-X-ME-IP: 90.11.132.44
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
-	Aisheng Dong <aisheng.dong@nxp.com>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] irqchip/imx-irqsteer: Fix irq handling if an error occurs in imx_irqsteer_irq_handler()
-Date: Sun, 17 Nov 2024 12:21:43 +0100
-Message-ID: <ad6514c771fef0ac2d1b3c050c6db5d5e0fd034d.1731842478.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1731845066; c=relaxed/simple;
+	bh=H6Q/+kkZnvVk8G0hRNlWD8uGHYHGc/V8PwsN7PfAurg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=MhpWE9ng4LFFDiXR/Vmz3mkdbN4ryriW4f33Pnxur91l8rG2j6tiJGZBGjFPi9Ne4+eWX8URrXuVhuNQSABixFpbbXFO3n9tC/0gWmdPJB/v2lgC8grPBjfKm6zuafnN46DXVg8qGtv2rMSZnqKWAV1nPE6VCjxdFhbBie2n5ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=bHCwnzmC; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1731845059;
+	bh=tllPr++YWNmN/ICehcrJsGBTpJU5ev+6G1o94E8aVEA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=bHCwnzmC4Wn699TTaIvMmA7oqAQUCB0vBZAcYQFnrPziGiTbunbYU+CXdS38yDvH6
+	 YU112WNOjKnnI7JSMJzmw/a0svprG00zS9a6LPP4NJJT/jjzlFbVdAm/RM/h/U+tns
+	 TsykHb5IN7FOSJM573KL+qqNfifuTL8r1hG6UNvh5joUZD+KBNkc1Fn7IYJrs5Ptwk
+	 QPaqtA4agDbcLESUFhw4fys+mFWvc6kPxuKH/D9lsAIxlZt3ypiZTruEU9Mv61lufm
+	 a1hIO9QaUkphJcq/soI8cLFSVRrGlaI+MEFOmOa7tMCM3TlCNsxG9p8p3+SqPMR261
+	 Neh+mkXQjvunQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XrqDc2cRjz4xdS;
+	Sun, 17 Nov 2024 23:04:16 +1100 (AEDT)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: linux-nfs@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>
+Cc: kernel-janitors@vger.kernel.org, vbabka@suse.cz, paulmck@kernel.org, Tom Talpey <tom@talpey.com>, Dai Ngo <Dai.Ngo@oracle.com>, Olga Kornievskaia <okorniev@redhat.com>, Neil Brown <neilb@suse.de>, linux-can@vger.kernel.org, bridge@lists.linux.dev, b.a.t.m.a.n@lists.open-mesh.org, linux-kernel@vger.kernel.org, wireguard@lists.zx2c4.com, netdev@vger.kernel.org, ecryptfs@vger.kernel.org, linux-block@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, netfilter-devel@vger.kernel.org, coreteam@netfilter.org
+In-Reply-To: <20241013201704.49576-1-Julia.Lawall@inria.fr>
+References: <20241013201704.49576-1-Julia.Lawall@inria.fr>
+Subject: Re: (subset) [PATCH 00/17] replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+Message-Id: <173184457524.887714.2708612402334434298.b4-ty@ellerman.id.au>
+Date: Sun, 17 Nov 2024 22:56:15 +1100
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-chained_irq_enter(() should be paired with a corresponding
-chained_irq_exit().
+On Sun, 13 Oct 2024 22:16:47 +0200, Julia Lawall wrote:
+> Since SLOB was removed and since
+> commit 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
+> it is not necessary to use call_rcu when the callback only performs
+> kmem_cache_free. Use kfree_rcu() directly.
+> 
+> The changes were done using the following Coccinelle semantic patch.
+> This semantic patch is designed to ignore cases where the callback
+> function is used in another way.
+> 
+> [...]
 
-Here, if (hwirq < 0), a early return occurs and chained_irq_exit() is not
-called.
+Applied to powerpc/topic/ppc-kvm.
 
-Add a new label and a goto for fix it.
+[13/17] KVM: PPC: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+        https://git.kernel.org/powerpc/c/1db6a4e8a3fc8ccaa4690272935e02831dc6d40d
 
-Fixes: 28528fca4908 ("irqchip/imx-irqsteer: Add multi output interrupts support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Compile tested only.
-
-Review with care, irq handling is sometimes tricky...
----
- drivers/irqchip/irq-imx-irqsteer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
-index 75a0e980ff35..59abe5a8beb8 100644
---- a/drivers/irqchip/irq-imx-irqsteer.c
-+++ b/drivers/irqchip/irq-imx-irqsteer.c
-@@ -135,7 +135,7 @@ static void imx_irqsteer_irq_handler(struct irq_desc *desc)
- 	if (hwirq < 0) {
- 		pr_warn("%s: unable to get hwirq base for irq %d\n",
- 			__func__, irq);
--		return;
-+		goto out;
- 	}
- 
- 	for (i = 0; i < 2; i++, hwirq += 32) {
-@@ -153,6 +153,7 @@ static void imx_irqsteer_irq_handler(struct irq_desc *desc)
- 			generic_handle_domain_irq(data->domain, pos + hwirq);
- 	}
- 
-+out:
- 	chained_irq_exit(irq_desc_get_chip(desc), desc);
- }
- 
--- 
-2.47.0
-
+cheers
 

@@ -1,117 +1,83 @@
-Return-Path: <kernel-janitors+bounces-6518-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-6522-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E2729D0361
-	for <lists+kernel-janitors@lfdr.de>; Sun, 17 Nov 2024 13:04:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D13D59D03B8
+	for <lists+kernel-janitors@lfdr.de>; Sun, 17 Nov 2024 13:27:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15AD9B23CD5
-	for <lists+kernel-janitors@lfdr.de>; Sun, 17 Nov 2024 12:04:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88FC71F23187
+	for <lists+kernel-janitors@lfdr.de>; Sun, 17 Nov 2024 12:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40B3185B5F;
-	Sun, 17 Nov 2024 12:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4C2199E9D;
+	Sun, 17 Nov 2024 12:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="RA6qYfnM"
+	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="de3N7xye"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-21.smtpout.orange.fr [80.12.242.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB4CA937;
-	Sun, 17 Nov 2024 12:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F16186E58;
+	Sun, 17 Nov 2024 12:25:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731845039; cv=none; b=BIG4olsoJRRnVUwYE22ECiNIUR75fW5V5t4hP0WCN1379tu0D4seCSAHsIpRJWrXADt69xtKAFqrksBb9TbDlKF/7uFHM6mKxZoEPr2fdQvd6Wn7bY1wxx5Gy0SS7RPJf7Aft+Npckeh6bjX2rYlnKfU6SZwLBoMOm6ZN/tXASs=
+	t=1731846330; cv=none; b=edI/EPiFrVrOwAtoqabqOQ5HCOctbNWmp+J1ijcLl0+nVq+TvP9M8WM53ait0fZ6iyo332SNnCj7Xk440x5rp/qUUCUMz9tHBwvneHjPcPVSjpCIur8NsWsIhEc7TAu8y0ogJAkOuW+4JEasH+9YHF8LlOnEWp4okHvZKtyJlqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731845039; c=relaxed/simple;
-	bh=U44pX1OyuYqTVUwfaSVxarNW1wSY/enpy9dFasbbbqo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uljfwCjnOpaC8TR1crB95tp8d1/HSNIp/VXC6bCUUFmsbMUIJsLiT4byj0b4Ic9WnvgdEP1Wbk/7Syf8jPd+Hd3cG+wDblGWiE+8mVRqg5YA2hPGck5ss1K3L2qEQAHAW+yLwA36kWzO5kLXRIm+WYMx96p4ZrAQHCpoJRdZdis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=RA6qYfnM; arc=none smtp.client-ip=80.12.242.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from localhost.localdomain ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id Ce0FtKvGCPqyaCe0GtWgzY; Sun, 17 Nov 2024 13:03:48 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1731845028;
-	bh=F86dYHhTvuTsM0pNGR7yup3yM38zQaZLLpJ4MuMSPEk=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=RA6qYfnMtS4P7V9Zq0yBEygn8/KuBN1SNPfWjxCqVfhLZr2rNX044LTOu2zPQvQsV
-	 ZvajoS82pGIMDAyx0scSznzvcZWKoJ73xGGChp8RcKsmuW20UcjNTUo/3i0tR/k7Z5
-	 eWkvkp2BvbuuL7WtJRdllnGUzVZae9YRrkAaPrwzXKIt33FNTpkDahi7Syo3sDlSmK
-	 dwORZ6R37qho4XntvmGu2/2nam4cLTXbdVngwZKJ9Y1gsiGSW5rSOp85mhVTz9Rplw
-	 WH8a65A3n3JA8zUBzgqHg9bK3e0LX73+iOB/XdAvowMObmzP4UelQd5M1rD4q/d6Tt
-	 BjLBfdpEjZfFw==
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 17 Nov 2024 13:03:48 +0100
-X-ME-IP: 90.11.132.44
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Krzysztof Kozlowski <krzk@kernel.org>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH] pinctrl: samsung: Fix irq handling if an error occurs in exynos_irq_demux_eint16_31()
-Date: Sun, 17 Nov 2024 13:03:32 +0100
-Message-ID: <f148d823acfb3326a115bd49a0eed60f2345f909.1731844995.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1731846330; c=relaxed/simple;
+	bh=v0SczrddyMYujY9dYZIJhDs68nkrXtTFyaJ2w+eGWUo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=rjUhkXKtGv/g0faY1kTcQ7V4JCKHhIR0DPh9ygJhFgwX0uL1oaXWiJwcbAY1SM7HEXcMhxsnkQVZptfSS9HDZtA0KmOAKFMSCFLRGSKqe1gddxkdfw7DW1lvMk6CyZ/gjxvSltOyYx++CyDMIGNHcO/I0GdM4ieeIN0TjBY0XuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=de3N7xye; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1731846323;
+	bh=3Q8GF405lgPrVBMNIcWwlkYcIcKlMKmYZQRNZamOSn8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=de3N7xyekklCVojBYAsLV7SwZQaYEA5qDTjTXw8a8r3iLi8xPMcUsFxoI3AWHUK/Q
+	 4ziG7DmSyzGQafjZ4A+8hy8pI9Tv9+b5icFGZLsQ8jcHBEF8U5n4ljXk0HOsAVI9Zv
+	 qSCn5qk7a9Me7PFPL55Q3+ociPNKooHr8TI4j5X6JYWyWXkILKv/tjKuaqmtUnoaZN
+	 k95mU8mj3KruLMC1Z2bvT5AwPt29bo/SsFYXm0J46zYslL4P0QnSPy3EfWpNqHdKce
+	 Jjt5YrL49S86/zMeewnM5OzHIX7rd6zH2jqnEGWrNdaFqy6NJ2qhQbk1QG9MAYOnb9
+	 P8E6m6UO+fTsw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xrqhy405Kz4xf3;
+	Sun, 17 Nov 2024 23:25:22 +1100 (AEDT)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: Scott Wood <oss@buserror.net>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Paul Gortmaker <paul.gortmaker@windriver.com>, linuxppc-dev@lists.ozlabs.org, Lukas Bulwahn <lbulwahn@redhat.com>
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, Lukas Bulwahn <lukas.bulwahn@redhat.com>
+In-Reply-To: <20240927095203.392365-1-lukas.bulwahn@redhat.com>
+References: <20240927095203.392365-1-lukas.bulwahn@redhat.com>
+Subject: Re: [PATCH] powerpc: remove dead config options for MPC85xx platform support
+Message-Id: <173184539765.890800.8133214752125480117.b4-ty@ellerman.id.au>
+Date: Sun, 17 Nov 2024 23:09:57 +1100
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-chained_irq_enter(() should be paired with a corresponding
-chained_irq_exit().
+On Fri, 27 Sep 2024 11:52:03 +0200, Lukas Bulwahn wrote:
+> Commit 384e338a9187 ("powerpc: drop MPC8540_ADS and MPC8560_ADS platform
+> support") and commit b751ed04bc5e ("powerpc: drop MPC85xx_CDS platform
+> support") removes the platform support for MPC8540_ADS, MPC8560_ADS and
+> MPC85xx_CDS in the source tree, but misses to remove the config options in
+> the Kconfig file. Hence, these three config options are without any effect
+> since then.
+> 
+> [...]
 
-Here, if clk_enable() fails, a early return occurs and chained_irq_exit()
-is not called.
+Applied to powerpc/next.
 
-Add a new label and a goto for fix it.
+[1/1] powerpc: remove dead config options for MPC85xx platform support
+      https://git.kernel.org/powerpc/c/f20b0a03674cef555a5f48b65f81b82868b17cdd
 
-Fixes: f9c744747973 ("pinctrl: samsung: support a bus clock")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Compile tested only.
-
-Review with care, irq handling is sometimes tricky...
----
- drivers/pinctrl/samsung/pinctrl-exynos.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/pinctrl/samsung/pinctrl-exynos.c b/drivers/pinctrl/samsung/pinctrl-exynos.c
-index b79c211c0374..ac6dc22b37c9 100644
---- a/drivers/pinctrl/samsung/pinctrl-exynos.c
-+++ b/drivers/pinctrl/samsung/pinctrl-exynos.c
-@@ -636,7 +636,7 @@ static void exynos_irq_demux_eint16_31(struct irq_desc *desc)
- 		if (clk_enable(b->drvdata->pclk)) {
- 			dev_err(b->gpio_chip.parent,
- 				"unable to enable clock for pending IRQs\n");
--			return;
-+			goto out;
- 		}
- 	}
- 
-@@ -652,6 +652,7 @@ static void exynos_irq_demux_eint16_31(struct irq_desc *desc)
- 	if (eintd->nr_banks)
- 		clk_disable(eintd->banks[0]->drvdata->pclk);
- 
-+out:
- 	chained_irq_exit(chip, desc);
- }
- 
--- 
-2.47.0
-
+cheers
 

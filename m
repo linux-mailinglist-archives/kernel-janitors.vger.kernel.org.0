@@ -1,87 +1,120 @@
-Return-Path: <kernel-janitors+bounces-6520-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-6524-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E479D03AE
-	for <lists+kernel-janitors@lfdr.de>; Sun, 17 Nov 2024 13:27:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 263279D03ED
+	for <lists+kernel-janitors@lfdr.de>; Sun, 17 Nov 2024 14:04:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48A77B25D9B
-	for <lists+kernel-janitors@lfdr.de>; Sun, 17 Nov 2024 12:27:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C71D41F22E38
+	for <lists+kernel-janitors@lfdr.de>; Sun, 17 Nov 2024 13:04:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65DC198857;
-	Sun, 17 Nov 2024 12:25:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="mTU1+u6c"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D21190468;
+	Sun, 17 Nov 2024 13:04:46 +0000 (UTC)
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A672B183CCA;
-	Sun, 17 Nov 2024 12:25:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC2E33E7;
+	Sun, 17 Nov 2024 13:04:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731846328; cv=none; b=peEy5TPddAbekjb+CxxKwwcOyU5nRzmLXf29TFmo6qkglRFfq+JjRxQcHllvjgdX4uI2hVsNWwWlJSbkmRbRIyrdOlzPF1nEk5LDknuPAhKlflSX3kFizdFN8MCnyjYWLckaIPP/+ixYHi1Z39pd7jh+QUIU0Ko6KFeJe7stcaQ=
+	t=1731848686; cv=none; b=XlXambFHcFn3blwuIFxz2m9ZJ/A3sKdfQk2pBCz3gD+4qKJx4+0XhYO/ai1VAisTkfzHQiKEFjFh2/UMuqFTonh3Ve2t57aADLob7SCJfwcW95gDHSAqBjKALMzLrB4AW+8fBoaiSvUclDOwtrVaLp9Gw4goEdOvEtd7W8Eydbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731846328; c=relaxed/simple;
-	bh=2Vzu3RlYgWlUg+kP8l3nTLXS8GOcuKbfykkwWU/BOFg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=LNQ/gtUOCrqCVL+bkvrll8bT2wbdXPTXG/AQzCW4TNqBig9lun9ZzyhGtaoC8TmFCule8Yti7BWeCAriCC+bdZRkdQJNsC5ycPVA0+rOU5HuQ013kHkoKAw+9UV6Jvu0Txm96BfjvUC8xIX0YFwaUlYTEi5x8JaXgd1B/c5Wj/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=fail (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=mTU1+u6c reason="signature verification failed"; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1731846322;
-	bh=tp2Q+8b3zGUBih3afpuzhAn88G4uKrpXKwQ9ivMWqHM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=mTU1+u6copmZDAjfqnXWv+2ujIPjQ3JtoGu9so550WGMXDTKHgPRUtKWL5WTQKacA
-	 ukYIXyZnvXaIaM7phYyg2ffevuNcZwkVM+fGzA0yJe4hA6ivVJfsyMN2k5es56Dca2
-	 xnyEpYxwi2vRkSTSXt4SDnE54vHeCtrhpgtS0p+MhXC1a/iPqUZ6noNUE4xD/tX6x3
-	 9xyLmagErBzssEeKDZj2zkr4owFCFT2YctuTq6qJ9KGCJplX90TRwhVHol5EujIAFV
-	 JLHuHIFQhKPYuj26daIFU9Gqj0sP+YYyQFfmqJ5wJevMLVh4tXn5ub20TQGEUboHP9
-	 4WeeB6bi4EbDw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xrqhp5Zp2z4xf5;
-	Sun, 17 Nov 2024 23:25:14 +1100 (AEDT)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linux-gpio@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>
-Cc: kernel-janitors@vger.kernel.org, audit@vger.kernel.org, linux-mtd@lists.infradead.org, Zhihao Cheng <chengzhihao1@huawei.com>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org, linux-mm@kvack.org, maple-tree@lists.infradead.org, alsa-devel@alsa-project.org, Sanyog Kale <sanyog.r.kale@intel.com>, Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, dccp@vger.kernel.org, linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>, drbd-dev@lists.linbit.com, linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, nvdimm@lists.linux.dev, linux-leds@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, tipc-discussion@lists.sourceforge.
- net, Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-trace-kernel@vger.kernel.org, Neil Brown <neilb@suse.de>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-wireless@vger.kernel.org, intel-wired-lan@lists.osuosl.org
-In-Reply-To: <20240930112121.95324-1-Julia.Lawall@inria.fr>
-References: <20240930112121.95324-1-Julia.Lawall@inria.fr>
-Subject: Re: (subset) [PATCH 00/35] Reorganize kerneldoc parameter names
-Message-Id: <173184539760.890800.14513086226459117952.b4-ty@ellerman.id.au>
-Date: Sun, 17 Nov 2024 23:09:57 +1100
+	s=arc-20240116; t=1731848686; c=relaxed/simple;
+	bh=5SdhV08GdrhDRJV+bla6w9G+eu0AYSqpX38VRYxaB9g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=QxYSgHCAgKrySL/xKak0CQa9e00PewGhRQi5VUFptHSpqkqB5HkSWYUHA43ksclv4MbxkCmjbcLxNVNVboPV0WQXGxBEvNZT02KWrAWPMMAfroJ530lje7SG/8meORW+zohpzYF2bpFaHQwR5ce0ge/O5DlRhzm1s354ZXbFLVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from [192.168.2.102] (213.87.151.247) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Sun, 17 Nov
+ 2024 16:04:16 +0300
+Message-ID: <caafe4bf-7854-4ca9-b782-f317599ed1c8@omp.ru>
+Date: Sun, 17 Nov 2024 16:04:15 +0300
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ata: Constify struct pci_device_id
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Damien Le Moal
+	<dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+	<linux-ide@vger.kernel.org>
+References: <8bddfee7f6f0f90eeb6da7156e30ab3bd553deb1.1731704917.git.christophe.jaillet@wanadoo.fr>
+Content-Language: en-US
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
+Organization: Open Mobile Platform
+In-Reply-To: <8bddfee7f6f0f90eeb6da7156e30ab3bd553deb1.1731704917.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 11/17/2024 12:51:43
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 19
+X-KSE-AntiSpam-Info: Lua profiles 189220 [Nov 17 2024]
+X-KSE-AntiSpam-Info: Version: 6.1.1.7
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 41 0.3.41
+ 623e98d5198769c015c72f45fabbb9f77bdb702b
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info:
+	127.0.0.199:7.1.2;omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: ApMailHostAddress: 213.87.151.247
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 19
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/17/2024 12:54:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 11/17/2024 10:50:00 AM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-On Mon, 30 Sep 2024 13:20:46 +0200, Julia Lawall wrote:
-> Reorganize kerneldoc parameter names to match the parameter
-> order in the function header.
+On 11/16/24 12:08 AM, Christophe JAILLET wrote:
+
+> 'struct pci_device_id' is not modified in these drivers.
 > 
-> The misordered cases were identified using the following
-> Coccinelle semantic patch:
+> Constifying this structure moves some data to a read-only section, so
+> increase overall security.
 > 
-> // <smpl>
-> @initialize:ocaml@
-> @@
+> On a x86_64, with allmodconfig, as an example:
+> Before:
+> ======
+>    text	   data	    bss	    dec	    hex	filename
+>    4245	   1454	      4	   5703	   1647	drivers/ata/ata_generic.o
 > 
-> [...]
+> After:
+> =====
+>    text	   data	    bss	    dec	    hex	filename
+>    4725	    974	      4	   5703	   1647	drivers/ata/ata_generic.o
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Applied to powerpc/next.
+[...]
+   No longer an "official" PATA reviewer, but FWIW:
 
-[11/35] powerpc/ps3: Reorganize kerneldoc parameter names
-        https://git.kernel.org/powerpc/c/276e036e5844116e563fa90f676c625bb742cc57
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-cheers
+MBR, Sergey
+
 

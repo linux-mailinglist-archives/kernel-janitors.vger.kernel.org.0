@@ -1,129 +1,124 @@
-Return-Path: <kernel-janitors+bounces-6599-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-6601-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191D29E13B9
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Dec 2024 08:01:41 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24B269E17E6
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Dec 2024 10:39:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAB04B2264B
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Dec 2024 07:01:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF168163AA6
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Dec 2024 09:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5A418660A;
-	Tue,  3 Dec 2024 07:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB101E0094;
+	Tue,  3 Dec 2024 09:39:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="y6xBdlZJ"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D792A4A29;
-	Tue,  3 Dec 2024 07:01:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AA41DE4FD
+	for <kernel-janitors@vger.kernel.org>; Tue,  3 Dec 2024 09:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733209290; cv=none; b=tOdfQ8YcHdSbHW33pfV/Kh0CwBmC3lGPtduftzwi/Jrmzi6ipdUzL9i0U5yaghPnqYyo6Ix4Z6R+jSWhr7IYW+XugaQ+LJrdSumZed4kwjU9yF9f/N/vZEmjI10lBGewiI1UNDgCt0JPZ8hxeEgHbiflXTHBrvSay7K5mN07ILw=
+	t=1733218750; cv=none; b=cCZtBckhQKbGopz/2xZruZQp4/yb41dXty1vj0ZPbtp1kH8/Sv3lWaybtPOFIianBUFrSgJ3dE7yfqh2BIy5Yq26fNeYVCvGyp1nxVI4nmL9wDiiHUxsKyEEgc1wVNn4PXXMpx2vgqpIpRhRUElxVgsT+d3nFTWzax2zcuGGSBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733209290; c=relaxed/simple;
-	bh=a8m0iZZnSkGyezFsgxGEnCsf3O79sGQ+Wzj4Vv87syc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bT+IA3aaQkjDpd79duEZJIQ15qBSHadN/HKIrGkCuoTikJaaP3b5kKGTHZuWNxWqf0i/cXhRfmNDDlW9HmXsokKnDrJjmVmaucoYLEDIc12R93hyDzb6LUjE5TkQ5Bn1Bm0B9uw+XdDvvM68q+2TFMQBWsk8MN2Jj5WRxUXD9AE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B213C4CECF;
-	Tue,  3 Dec 2024 07:01:28 +0000 (UTC)
-Message-ID: <e818a5d3-9df8-460e-8cf9-62adc32836e1@xs4all.nl>
-Date: Tue, 3 Dec 2024 08:01:26 +0100
+	s=arc-20240116; t=1733218750; c=relaxed/simple;
+	bh=f4yo24MCyvcNw5BjdCp4RT4JHWYru/YdElzMFQMZDkg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XszsBSwM+X3bL7N+ODTR/XreJIEjGBw1VRXpbToPLQz5z748GRZuQjWtcUE5/1aAufz3xRk0k8dx+/Wjkk4g4u4ASgJ48NDXKqNzArsq6RHfDKyWkCC4IGRwANyRW7MvkaYRmJmyhOiSHOojOPgQkrePOhkPZaQkqv8bmxyFOao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=y6xBdlZJ; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-434a766b475so48638325e9.1
+        for <kernel-janitors@vger.kernel.org>; Tue, 03 Dec 2024 01:39:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1733218747; x=1733823547; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kAfAbX2jpmVWuMhv4f3fZGpU5CJs4ntFjeUeVvna/QY=;
+        b=y6xBdlZJDIxUvbRYDMQ3a0rvI04pw8wKHjWx+Sn+fwkgPJn9t5rClPcmRiln8vUCev
+         BDTlovrblcX/vAZpPXlOi9ca72C8bCYZDILRjYPZ+OYi1XFOF5UhBnjjxo19D3iIvsyc
+         k8rpKomDLIq1Tt8RqsQ9LF4lNtBfOod5E/M1yfLs+V+jdPZRHiEE7AHSSq8eL4a65RDu
+         oKExQJk5pZRLpNpdp+/Jyl1T4zemAJpHCWFZ+/G9xXL9kl9Ul9vimkviYkZipVlgQVS+
+         ZNN6+YSNsB/S8n8IML5GL9zWM0i0mLHGwjP3+jTjct1gG94M5EAsWfYYlmmHca649/9V
+         JrsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733218747; x=1733823547;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kAfAbX2jpmVWuMhv4f3fZGpU5CJs4ntFjeUeVvna/QY=;
+        b=H3qSVFJ52GG6WjJStkQumvjo3+OSmCZapaaiqOVKsFZl1lkchMeJRrCrcDe6rv7d/l
+         495ZnOMqMV5UAwfg0IjOGZfr9Dm1wuqcABQ5bQa2L3em/hXpGfTjKP28nL74Gq1QrOYv
+         aumktRXuzYL9TLeBokQyzqU8FCf65N607yAWPNOfoSDEcvCNObZ72UWF7RRY4Qt3jLMj
+         ylzDNqvmYbvIjepTbyWMQqpXZKRM2euAYCA1Y7S9UuzoUGp9D7ZY4gzHjRINqQvQYIqS
+         QCo8fpMZSzVl+uhM0k/23s6dH8xUd9kNHFLP2argR4NNaINPKT4jezbLMubhZ7QcsVPj
+         pgUA==
+X-Forwarded-Encrypted: i=1; AJvYcCW5DKMIPAdKDvzd9eIFc2xL3dnUyu6bmpjM+bUGOxAulXHS4Uvp5KqoJcsw2xrA69C+A+00tb0H/hNh7H9Pikg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtbzJQN/naNaLs17pJ2yUvWHFlysILzKMVndwEFUOcVH0ZTa1O
+	liW6FnkYu4kgoqLHgSGXe4qa9kHETQOVTmcv1xVxuJJ7IePAAUNHcl7TwNd9k1w=
+X-Gm-Gg: ASbGncsfs0TTd/cylscf8kGEf7KPHjl65+IAY+vdCKrYRCqL85kzehPVJuAx6ypX6ul
+	boBcWi1Ho0PUqrv0UPSkz6n9DBhg18lC5emrU19LdGU6fqaNjVE2O1D68lpvzNfjo9NLbptyA3s
+	wOCEZMnTbgmNuF7yCfAQEoIHDdITzdU1Dq/xpCYlVHRGzQvd0/ZuaEs4V61sOLbSP9/J2Lcmy6U
+	IhfjyKB3R52gJVq7REpDQsyMbel7En8M4MnReXphNnWL4E+xUjcpzA=
+X-Google-Smtp-Source: AGHT+IFuW8hsbnPhok9NFkBE4GSNLWnfGNwEuWOJe5NvY0AGJzwDm00YwQeKFz6uXex+mAAN6s/h6g==
+X-Received: by 2002:a05:600c:138a:b0:431:52da:9d67 with SMTP id 5b1f17b1804b1-434d09b1831mr16625405e9.3.1733218747389;
+        Tue, 03 Dec 2024 01:39:07 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434b0f32589sm186562195e9.28.2024.12.03.01.39.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 01:39:06 -0800 (PST)
+Date: Tue, 3 Dec 2024 12:39:02 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Cc: Yevgeny Kliteynik <kliteyn@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Muhammad Sammar <muhammads@nvidia.com>, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net] net/mlx5: DR, prevent potential error pointer
+ dereference
+Message-ID: <bf47a26a-ec69-433b-9cf9-667f9bccbec1@stanley.mountain>
+References: <aadb7736-c497-43db-a93a-4461d1426de4@stanley.mountain>
+ <ad93dd90-671b-4c0e-8a96-9dab239a5d07@intel.com>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: remove dead TI wl128x FM radio driver
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Cc: Lukas Bulwahn <lbulwahn@redhat.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
- kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
- Lukas Bulwahn <lukas.bulwahn@redhat.com>
-References: <20241028083030.26351-1-lukas.bulwahn@redhat.com>
- <CACMJSeu32-cnn01WoLbv4ffbMt3CfF0MTqbkxZHvu+4HQio=Mw@mail.gmail.com>
- <2024102922-faceplate-recycling-b47b@gregkh>
-Content-Language: en-US, nl
-From: Hans Verkuil <hverkuil@xs4all.nl>
-Autocrypt: addr=hverkuil@xs4all.nl; keydata=
- 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
-In-Reply-To: <2024102922-faceplate-recycling-b47b@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ad93dd90-671b-4c0e-8a96-9dab239a5d07@intel.com>
 
-Hi Greg,
-
-On 29/10/2024 01:30, Greg Kroah-Hartman wrote:
-> On Mon, Oct 28, 2024 at 08:06:52PM +0100, Bartosz Golaszewski wrote:
->> On Mon, 28 Oct 2024 at 09:30, Lukas Bulwahn <lbulwahn@redhat.com> wrote:
->>>
->>> From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
->>>
->>> Commit 78fe66360ed6 ("misc: ti-st: st_kim: remove the driver") deletes the
->>> ti-st driver and its corresponding config option TI_ST.
->>>
->>> With that deletion, the Texas Instruments WL128x FM Radio driver is now
->>> dead as well. Delete this obsolete driver.
->>>
->>> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
->>
->> Amen!
->>
->> Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On Tue, Dec 03, 2024 at 10:32:13AM +0100, Mateusz Polchlopek wrote:
 > 
-> Should I take this through the same tree that the misc driver was
-> removed in?  If so, please let me know.
+> 
+> On 11/30/2024 11:01 AM, Dan Carpenter wrote:
+> > The dr_domain_add_vport_cap() function genereally returns NULL on error
+> 
+> Typo. Should be "generally"
+> 
 
-Sorry for the late reply, I missed your email. In any case, I'll take
-this patch.
+Sure.
 
-Regards,
+> > but sometimes we want it to return ERR_PTR(-EBUSY) so the caller can
+> > retry.  The problem here is that "ret" can be either -EBUSY or -ENOMEM
+> 
+> Please remove unnecessary space.
+> 
 
-	Hans
+What are you talking about?
+
+regards,
+dan carpenter
+
+
 

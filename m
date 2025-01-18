@@ -1,50 +1,64 @@
-Return-Path: <kernel-janitors+bounces-6893-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-6895-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B3AA15B5C
-	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jan 2025 05:00:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9CC6A15DC2
+	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jan 2025 16:51:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEB53188AFE6
-	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jan 2025 04:00:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6FC6166641
+	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jan 2025 15:51:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11E7813B2B8;
-	Sat, 18 Jan 2025 04:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767A019E7F8;
+	Sat, 18 Jan 2025 15:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UEloBdND"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="n/lSAdsl"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-69.smtpout.orange.fr [80.12.242.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354E013DDAA;
-	Sat, 18 Jan 2025 04:00:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A72273F9;
+	Sat, 18 Jan 2025 15:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737172812; cv=none; b=tNBPycxRvame2vDcftaGDXbhTGCS7//qEi5SeNe5vloz/N4I/WfOiZmMw/oXzR03Szi2w+gpaGjyGcXuiXfzRLj8xlQ2SB04eYGUwom3F2kkkyK+b/c9Px9TsrEjmfpRZl67ivgYVmXyQZ7yKsMV51INiVtY2bdBvJbtGDNGKpM=
+	t=1737215484; cv=none; b=u1UQ4Oam1xEtBYoaW68WvJAccgGh9f0iuDrCTa3zt1JHGeNazmuHBNdC2m0qwvMYXzxuDl2uRlUKbik3hZQKCqhz22FO9rjoZ12nuQRCar+/DAOcYhqto01uGdN8pWtm0la8SXpMOyBLS3EHG3vWQjc8tEZYKgthwRxbzcfzRqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737172812; c=relaxed/simple;
-	bh=jFv8EUCLu6ozxPuVJTFgfwgeNm5H76i/O7yykL5YHfY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=H77OAQ0Q5tqK2arbU6Hptc4muAjkJAC8wraStCqsyl/b5fRF6DvgulCC3cHO9QgzssSjz9NLvw69edn5Tf0+b5FvGLZ+z/FZuCAXffCHG/cg4//liQHBchkmy0xGGwV0BVTrvkCb5biBomsMsNcBO5oLSBOde8xmbwqA+NyQ38Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UEloBdND; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B3A0C4CED1;
-	Sat, 18 Jan 2025 04:00:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737172811;
-	bh=jFv8EUCLu6ozxPuVJTFgfwgeNm5H76i/O7yykL5YHfY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=UEloBdNDm3PtybiuUjrI0tf6/ciu6iE6k7oHpvCis7qsJ00zxguqV5qLgGHFzJOut
-	 Sm81r3ryuSopv4eIAbtczpqN3aFGrE53u3sOHXlVA4nOuiFxp7Xewsu/e0uh60r0oz
-	 w5GRHOlAxTRlKlK8QgawxCmBm3mE/Q8qJlBJKRUuKhHzss7s7mErIHW84X4U16c0c9
-	 02mV7faaIdetUhPuSJv/ntoKZId+giNGCymPTVjKjWGN+eltogj7cqqYUagjDzdoIx
-	 9xT03wCNbYFbtnF2aDm7RdIYgyO8zYpvx7qPqsJmx+W2x8FSHIa46DoZxsHOkKgWi7
-	 yQAHV5moij/xg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 34166380AA62;
-	Sat, 18 Jan 2025 04:00:36 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1737215484; c=relaxed/simple;
+	bh=/lyRBA3Zy7BHX9j5/Yd+fA4f0AbOSlx3mF5PTWtDtjo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R37sZrdOgjzUtajU4d5XTnacl283ZTtD9aMt2vPdzFGlpoS09sRTc3/C2+JRxYm//AllhBh4MxdxejE0ZiAG/N2Ltbgvu46tklzWsRZ7VyK7DtXWUoCew25I6xNRPg6sLeACAB1Bl9P5leUjulAMQlc6DYonybUcPSKpKHPvF6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=n/lSAdsl; arc=none smtp.client-ip=80.12.242.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id ZB6MtxSpjzpxCZB6QtMswE; Sat, 18 Jan 2025 16:51:14 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1737215474;
+	bh=FyWZR02z5B82iDwG7bL2VhnFmSHoovMQD3DXVbQ6qZ4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=n/lSAdslvDLa8YGCFWvMBFTWTPKhqk6i5rTQhjjXJ5/zzjfF+WJjFaohHmkEFNXi6
+	 qNMuoSNm+V7ualri+WrbDJlps2iHiCNAnGx7an5EY6zvw/JBoxdB3HfgYIZ+CAK4SJ
+	 wVjp8xMJ/0kLXdfjYeLdrKTAZI/k8sKrvnGFCBU+3XgqtY8lPTYRwKeaWRr0olHaSo
+	 rUhto9Hzh7VuIrETyBPvMT99HkKm/jDEg7i8rF2iamOfXICTdymf/2hLxnbJNHP4WL
+	 iLq4eXd7PVlSyPlnWcJ7PCW6+/nsCTJOMdR+AbqDhGtATsaCSKfy37jGs7YyixZ1y8
+	 OkSGhkXBuSgdg==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 18 Jan 2025 16:51:14 +0100
+X-ME-IP: 90.11.132.44
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sanjay R Mehta <sanju.mehta@amd.com>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	dmaengine@vger.kernel.org
+Subject: [PATCH 1/3] dmaengine: ptdma: Fix an error handling parth in pt_pci_probe()
+Date: Sat, 18 Jan 2025 16:51:01 +0100
+Message-ID: <ae19d76a10773d6ebee0e08cef49786eb20fd052.1737215423.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -52,44 +66,47 @@ List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH][next] net/mlx5: fix unintentional sign extension on shift of
- dest_attr->vport.vhca_id
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173717283499.2332438.5321768112783382973.git-patchwork-notify@kernel.org>
-Date: Sat, 18 Jan 2025 04:00:34 +0000
-References: <20250116181700.96437-1-colin.i.king@gmail.com>
-In-Reply-To: <20250116181700.96437-1-colin.i.king@gmail.com>
-To: Colin Ian King <colin.i.king@gmail.com>
-Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, moshe@nvidia.com, kliteyn@nvidia.com,
- mbloch@nvidia.com, netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Hello:
+If an error occurs after a successful pt_get_irqs() call, it should be
+undone by a corresponding pt_free_irqs(), as already done in the remove
+function.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Fixes: fa5d823b16a9 ("dmaengine: ptdma: Initial driver for the AMD PTDMA")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Compile tested only
+---
+ drivers/dma/amd/ptdma/ptdma-pci.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-On Thu, 16 Jan 2025 18:17:00 +0000 you wrote:
-> Shifting dest_attr->vport.vhca_id << 16 results in a promotion from an
-> unsigned 16 bit integer to a 32 bit signed integer, this is then sign
-> extended to a 64 bit unsigned long on 64 bitarchitectures. If vhca_id is
-> greater than 0x7fff then this leads to a sign extended result where all
-> the upper 32 bits of idx are set to 1. Fix this by casting vhca_id
-> to the same type as idx before performing the shift.
-> 
-> [...]
-
-Here is the summary with links:
-  - [next] net/mlx5: fix unintentional sign extension on shift of dest_attr->vport.vhca_id
-    https://git.kernel.org/netdev/net-next/c/41c5d104f338
-
-You are awesome, thank you!
+diff --git a/drivers/dma/amd/ptdma/ptdma-pci.c b/drivers/dma/amd/ptdma/ptdma-pci.c
+index 22739ff0c3c5..7f12474bd39f 100644
+--- a/drivers/dma/amd/ptdma/ptdma-pci.c
++++ b/drivers/dma/amd/ptdma/ptdma-pci.c
+@@ -182,7 +182,7 @@ static int pt_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		if (ret) {
+ 			dev_err(dev, "dma_set_mask_and_coherent failed (%d)\n",
+ 				ret);
+-			goto e_err;
++			goto e_free_irqs;
+ 		}
+ 	}
+ 
+@@ -192,10 +192,12 @@ static int pt_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		ret = pt_core_init(pt);
+ 
+ 	if (ret)
+-		goto e_err;
++		goto e_free_irqs;
+ 
+ 	return 0;
+ 
++e_free_irqs:
++	pt_free_irqs(pt);
+ e_err:
+ 	dev_err(dev, "initialization failed ret = %d\n", ret);
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.48.1
 
 

@@ -1,115 +1,194 @@
-Return-Path: <kernel-janitors+bounces-6965-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-6967-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 427FEA23BDA
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jan 2025 11:05:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC95A24429
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jan 2025 21:36:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 315923A994E
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jan 2025 10:05:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C51F1881FC0
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jan 2025 20:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC36F199384;
-	Fri, 31 Jan 2025 10:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307681F3D4F;
+	Fri, 31 Jan 2025 20:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="bU3a09iw"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="jBy55Lhx"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-26.smtpout.orange.fr [80.12.242.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F034145A18;
-	Fri, 31 Jan 2025 10:05:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C851B87E9;
+	Fri, 31 Jan 2025 20:36:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738317942; cv=none; b=Vtxn/fCInexs/lYHCH3vTIyIFRikQ+06apIBPFlY2OKK2GYQuJuaNiVA0x0Dv6ATqksoA1pCQs5U7n2rtUYz6STl6fMGmPxrHVpBEjD4J662UwtKJ6ii0b0Sv4cRomhkaJahjU8W/yxvpmSe9SGqXp/WNJWzNxXa/YhuM46E9cY=
+	t=1738355778; cv=none; b=cFFmGUrqa+Af+Lvk/jRmcH5oAxNZV/hjlUDer/jYq+ZAQ1W+12b0SA+qsvlGpOt648CK2gHcrIoBN639LX5fSOxr8LBBHTzKtg1wUAANM2Dnfh7PFb3Edh47JFHkrqeGhudg/q2kNtnxUuHY4V51kZAmEzybCsGD/sxlYS4wA3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738317942; c=relaxed/simple;
-	bh=v/2tW1mr3a7X6+KuJtaKbQN6WobPyIwVcZDc9rIfc4k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rKaH8FN5ee3elTE8D+keT1zUZEdzgmgH+6PYHsG0FuUJXsBIgiahK3u0F+I+cayc5CYwnysla8Y0987k6fysEG9FbzwIXba2XZxYNhyQWR9L96wAcSdvL9tnvnLMs6o+3nVpm6T9R4iuyOHmrn/JrSSxGSN0F3hpBrXMdW/9Rz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=bU3a09iw; arc=none smtp.client-ip=212.227.17.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1738317934; x=1738922734; i=markus.elfring@web.de;
-	bh=v/2tW1mr3a7X6+KuJtaKbQN6WobPyIwVcZDc9rIfc4k=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=bU3a09iwEa5ICO93iHuImDsr5ElGZaC23E3XiyU5nIZCo8PZD2couY8h7zyA0rFV
-	 TMOr8MiFR0s2QwzR79j508FqowaxmNKp6vKy3gwo8S3i9MiqiIq31BRQbNnKn+Wu+
-	 /GWTqwaI2YfXHddmGqvVoBQ3aC12zzWtK9MyNQWHLn4aaBjndBzGDvySlVCDz7qZI
-	 aDTezq8C7neC9ue0PmrTsHxv/ep6aDdE3U6OliFl2Rl9ObJuCsT7EFcMQXg8pFMQL
-	 Onq/S8YmPS2MuN/ohdWT+UTP37gBT0MK9My3u01r4m3uBS/0D0IoKx6Z/VQSlfXgW
-	 od61ia3vmnzZ+t26oA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.70.48]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MDMzM-1tm1d228L0-00Gy5G; Fri, 31
- Jan 2025 11:05:34 +0100
-Message-ID: <e0c6e1d8-a04b-4405-8e40-22ec9a7f8b21@web.de>
-Date: Fri, 31 Jan 2025 11:05:22 +0100
+	s=arc-20240116; t=1738355778; c=relaxed/simple;
+	bh=IQEen1Ym519bikzRVlyFo73+QCjlAbmDJBZwPkI1o0M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hqPNNrslGT83AFLX7Wb6KxmzrpxfNnj0xdQVBhLhCllgsClp4ciDCHI+yBF3p7lYimQDAv0usyH2n/dK5iR5jRtmUfgRLteQ8z3PkiUTLnOoIQj742QgFjpgh1gPT0GAwbQhmUV/g5sAu498Km0APiWIKoqCIpvBNtuU0IA8foc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=jBy55Lhx; arc=none smtp.client-ip=80.12.242.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id dxbjtZeDwYkukdxbntGonS; Fri, 31 Jan 2025 21:27:25 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1738355245;
+	bh=sH6U79vAbkJEv6QpI+M8a0wqTeJsJi1zHoHqBJ5qz4Y=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=jBy55LhxLjhbaQPjE4gzrk3eKy83vlFaXb+KaqTYxQaclPgQ811QYskrjWf75xHNH
+	 1xAoSaq6wejxUPiWFEjjLjhn7aNXsZJV+bgHy3xn1HJCUMeU8pIm60ZXdRpHcaBPDl
+	 q/0Mg+mjo7P7dk5YiWZehkJ3GkW101zOzres5YHSMoyrCgGkRs9KBBAgZ+rUpkwxtw
+	 5eQ5P2X4xddg7Y/Iq8KrEnKugdi9XEHifzN0Q8bCc6HVu6IJQWqp/MTFSe3JblarZH
+	 agamySABWcIHMsdavysJLEmvdDWY5E7lhrPtpMOqoF+BFb5cY45IS91ObOB9mTxGfQ
+	 xMRfIppjv3x3Q==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 31 Jan 2025 21:27:25 +0100
+X-ME-IP: 90.11.132.44
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Tony Luck <tony.luck@intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	James Morse <james.morse@arm.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Robert Richter <rric@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-edac@vger.kernel.org
+Subject: [PATCH] EDAC/igen6: Constify struct res_config
+Date: Fri, 31 Jan 2025 21:27:02 +0100
+Message-ID: <a06153870951a64b438e76adf97d440e02c1a1fc.1738355198.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: coccinelle: misc: secs_to_jiffies script: Create dummy report
-To: Andrew Morton <akpm@linux-foundation.org>,
- Julia Lawall <Julia.Lawall@inria.fr>,
- Easwar Hariharan <eahariha@linux.microsoft.com>,
- Ricardo Ribalda <ribalda@chromium.org>,
- Victor Gambier <victor.gambier@inria.fr>, cocci@inria.fr
-Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org,
- Nicolas Palix <nicolas.palix@imag.fr>
-References: <20250129-secs_to_jiffles-v1-1-35a5e16b9f03@chromium.org>
- <fe13604a-2626-4641-908e-87eeaca53288@web.de>
- <CANiDSCvufe0nK_NLykSRLb9RmttNOhw3-mm6aiC=gj41Hxtgiw@mail.gmail.com>
- <fce88885-8c10-4f22-a19c-3b04430aec3d@web.de>
- <35764b92-edf0-490f-beea-c36207de4cc2@inria.fr>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <35764b92-edf0-490f-beea-c36207de4cc2@inria.fr>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:HM/PaLfpWy3mNJ1btQkbUC48XTQLmL2z+E8xWqOsjYv/xDWnSFh
- JVAYb9qX48HQHg98Bd5p+J02oq0AgaSunuvzaS5C8RdSnoq+aa7c+K06ASoDTFJa4PSVQSc
- wolP4nbA1fRgUNu7Cskk5yrxJDlVcQZVJz6NhmvRZJ8SmpLnyyGL3u6fShABh2SBnmjaYmG
- F9/umCKyiJp7fA7wuJMCg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:rrMajmTh5+Q=;k0WsUkaGp1LRfrGr2AC67cFc5ut
- L5Iz/qsOc8P+peCEPfHF6XQWZXFValPm5M8/REtzJWdL/qheLoK8rdCN9xP0NiwtG7mssFztW
- 95aLirtstMvOsLi+AGdVoA9hSUZrIEF4AEoarZGeCNX/xjeafbMXGSbBbBkiStL7c3emxwOiN
- NAbsQOyaZ0uafAds4zvdAv3i8Vout3OPx9Kr2Kfaf1Q4uJBnLIdlYbJYRTCQQcmrrBFGhRAZ/
- ok/gNrxWndkNYUbwxqOBzz8WFJcmZ+aiSx2Q40zik/RQdE97FbicT0ukQWKU1X6xJWXOBzN7Q
- uvH150uF1rzEZV77Xvz9SvmlnZo6RKQQM3RnVSJqtLUPnuNt7fOepd/oChG1NkUHY+5HMp3Mb
- jHlm05dmI9zke7lkf3dx0xdlH8AKrvdvDlNjMIGy/haX0TBgXgPY8SFxRk3ZSj8FurR84bd2/
- ZqqhSprJ9Ud+hzJsvk1Oll3QAdLm3hwU1TOk5KeC//t4dhN9Ry5iSqpgZNV5rHoXH8Z1vpO5z
- HBZivPn9W1tneyPEaoKerZTBUheXMJE7GQuUOZ8flnzm5ifDAHFkrjfrDYMLyBYyPg3XLg92w
- 7I+eZKFcdLU2OR2Px8Fh61ZUGux0sF3+bDQI+RhCXgLcBVvP1gawfawrMrkE6Cbnk+uqydmIr
- yZ/Xrn+3CfxhVVjCMh/+b6YKeUXiQSB7w7jAToD17wWCe7Tvnta9AOPe6DEpmbkXjwNoKkIAP
- 1O1N6B8SoXtiRYYGOAYJV2lPXOGfrTXmZIsVtHrt2TT0NoLNyfhC8FyAZFmUgjD1lASdZeYpc
- B0Az87IKjzeR1XnLzQ2TwVx/wBpKfKj4AjvmtSmDZw8HyRVyPYLqdMT4Rgmr+OcbDeIy8m1Zw
- kJRTL65jq3fXeD/a8q3vZKjw6opBB56NFg3osd7fBrM8dd+LPyVn/tV37soHSKBg26j9ML2O5
- u7EtMALW8TldF/PkRRqyzaKfMxJs3BBx0H0VQBVTcFBLMNudLVhnAt+EwcgxyLCav6SRh7xOw
- FmtfV8K0eOTHJ9lkCt37zVARk6OLzP/KfCJ8eYN2P3aoklWWGBWJIKGAkj5Q9278+xW63G32/
- LecQ+tUgXGpTKfd08S+LHDuS7Q0DtuS8e5OyrXWO2uN4nll4JPprP5znj8q84vIx9dYkJOEoJ
- 4MaCdbSn5ezuKkh5gCIaOCNNEZrHWEdHXzWqfx/ShfzfQVgCmf9MJ6sQ3mV8iZofEnMci4H/T
- s8MTgZdbua4pLjJWehJj8OPW9LaxQqmNh35fUAMGrGwC3JEwePzCCJeQdLJ+aZQ5Yk3+oA4YH
- tjB1s2rFhRbz5HkHkwnuGAakBEveTsM6rasqYn9UET1osIY4JFPmEHRk0L2m5Y2z0CX
+Content-Transfer-Encoding: 8bit
 
-> Either provide a fully working example or stop nitpicking useful patches for projects you don't maintain.
+'struct res_config' are not modified in this driver.
 
-Would you like to support any of my contributions a bit more?
-[PATCH 01/16] coccinelle: misc: secs_to_jiffies: Patch expressions too
-https://lore.kernel.org/cocci/e06cb7f5-7aa3-464c-a8a1-2c7b9b6a29eb@web.de/
-https://sympa.inria.fr/sympa/arc/cocci/2025-01/msg00122.html
-https://lkml.org/lkml/2025/1/30/307
+Constifying these structures moves some data to a read-only section, so
+increase overall security, especially when the structure holds some
+function pointers.
 
-Regards,
-Markus
+On a x86_64, with allmodconfig, as an example:
+Before:
+======
+   text	   data	    bss	    dec	    hex	filename
+  36777	   2479	   4304	  43560	   aa28	drivers/edac/igen6_edac.o
+
+After:
+=====
+   text	   data	    bss	    dec	    hex	filename
+  37297	   1959	   4304	  43560	   aa28	drivers/edac/igen6_edac.o
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Compile tested-only.
+---
+ drivers/edac/igen6_edac.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
+index fdf3a84fe698..38e624209b0f 100644
+--- a/drivers/edac/igen6_edac.c
++++ b/drivers/edac/igen6_edac.c
+@@ -125,7 +125,7 @@
+ #define MEM_SLICE_HASH_MASK(v)		(GET_BITFIELD(v, 6, 19) << 6)
+ #define MEM_SLICE_HASH_LSB_MASK_BIT(v)	GET_BITFIELD(v, 24, 26)
+ 
+-static struct res_config {
++static const struct res_config {
+ 	bool machine_check;
+ 	int num_imc;
+ 	u32 imc_base;
+@@ -472,7 +472,7 @@ static u64 rpl_p_err_addr(u64 ecclog)
+ 	return ECC_ERROR_LOG_ADDR45(ecclog);
+ }
+ 
+-static struct res_config ehl_cfg = {
++static const struct res_config ehl_cfg = {
+ 	.num_imc		= 1,
+ 	.imc_base		= 0x5000,
+ 	.ibecc_base		= 0xdc00,
+@@ -482,7 +482,7 @@ static struct res_config ehl_cfg = {
+ 	.err_addr_to_imc_addr	= ehl_err_addr_to_imc_addr,
+ };
+ 
+-static struct res_config icl_cfg = {
++static const struct res_config icl_cfg = {
+ 	.num_imc		= 1,
+ 	.imc_base		= 0x5000,
+ 	.ibecc_base		= 0xd800,
+@@ -492,7 +492,7 @@ static struct res_config icl_cfg = {
+ 	.err_addr_to_imc_addr	= ehl_err_addr_to_imc_addr,
+ };
+ 
+-static struct res_config tgl_cfg = {
++static const struct res_config tgl_cfg = {
+ 	.machine_check		= true,
+ 	.num_imc		= 2,
+ 	.imc_base		= 0x5000,
+@@ -506,7 +506,7 @@ static struct res_config tgl_cfg = {
+ 	.err_addr_to_imc_addr	= tgl_err_addr_to_imc_addr,
+ };
+ 
+-static struct res_config adl_cfg = {
++static const struct res_config adl_cfg = {
+ 	.machine_check		= true,
+ 	.num_imc		= 2,
+ 	.imc_base		= 0xd800,
+@@ -517,7 +517,7 @@ static struct res_config adl_cfg = {
+ 	.err_addr_to_imc_addr	= adl_err_addr_to_imc_addr,
+ };
+ 
+-static struct res_config adl_n_cfg = {
++static const struct res_config adl_n_cfg = {
+ 	.machine_check		= true,
+ 	.num_imc		= 1,
+ 	.imc_base		= 0xd800,
+@@ -528,7 +528,7 @@ static struct res_config adl_n_cfg = {
+ 	.err_addr_to_imc_addr	= adl_err_addr_to_imc_addr,
+ };
+ 
+-static struct res_config rpl_p_cfg = {
++static const struct res_config rpl_p_cfg = {
+ 	.machine_check		= true,
+ 	.num_imc		= 2,
+ 	.imc_base		= 0xd800,
+@@ -540,7 +540,7 @@ static struct res_config rpl_p_cfg = {
+ 	.err_addr_to_imc_addr	= adl_err_addr_to_imc_addr,
+ };
+ 
+-static struct res_config mtl_ps_cfg = {
++static const struct res_config mtl_ps_cfg = {
+ 	.machine_check		= true,
+ 	.num_imc		= 2,
+ 	.imc_base		= 0xd800,
+@@ -551,7 +551,7 @@ static struct res_config mtl_ps_cfg = {
+ 	.err_addr_to_imc_addr	= adl_err_addr_to_imc_addr,
+ };
+ 
+-static struct res_config mtl_p_cfg = {
++static const struct res_config mtl_p_cfg = {
+ 	.machine_check		= true,
+ 	.num_imc		= 2,
+ 	.imc_base		= 0xd800,
+@@ -1374,7 +1374,7 @@ static void unregister_err_handler(void)
+ 	unregister_nmi_handler(NMI_SERR, IGEN6_NMI_NAME);
+ }
+ 
+-static void opstate_set(struct res_config *cfg, const struct pci_device_id *ent)
++static void opstate_set(const struct res_config *cfg, const struct pci_device_id *ent)
+ {
+ 	/*
+ 	 * Quirk: Certain SoCs' error reporting interrupts don't work.
+-- 
+2.48.1
+
 

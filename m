@@ -1,167 +1,153 @@
-Return-Path: <kernel-janitors+bounces-6989-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-6991-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AC83A27091
-	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Feb 2025 12:44:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 329C6A271C0
+	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Feb 2025 13:24:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F95E1884DD3
-	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Feb 2025 11:44:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16A48188272F
+	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Feb 2025 12:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16CBE20C47E;
-	Tue,  4 Feb 2025 11:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C565020DD7A;
+	Tue,  4 Feb 2025 12:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aA7eikKr"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dzKwy/C9"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46EA20C00C
-	for <kernel-janitors@vger.kernel.org>; Tue,  4 Feb 2025 11:44:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A9620A5D0;
+	Tue,  4 Feb 2025 12:23:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738669482; cv=none; b=X6NSrl74xke0Y7mQso5Lz8brr3mLYlSawWy/h4GnBKBbwyrL0DXXnzEHBim0tCdB6kFsmHpbxeB8AQCcbTfNG7BZiW5g3UV3w5FC5q0G1gOgLFCQasgcSEZvEbIqaCqrsJzLR/l9zVly/FjceGb3Hodu6tkyxw4N18kY5Rmngvs=
+	t=1738671811; cv=none; b=nBsUFidueI8Wk61+XqrAcbWLlmpNnof5aNYDVbW2uWpUPFAztcUw87auAyINaQhQVCg/DkLda1JOcmtQam+GbOPswlvKWKbNzX99KVymQR0fVmWTweZ5IlGGnjZGFVEzyKxmpluXcKYf2SM+Cr9s8WPrtIwf92kAbyig0M0g5hE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738669482; c=relaxed/simple;
-	bh=mN7tslh+i2S6HSh5V2VOg1tYyph90nCPYwFf0QHyu/g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fj0rKJ0SwxGL2xTGYE6Ef6QqT0YwMJkgkbRtLZhxwPvcY+ju4/8E/8TVjn3zthfi/OXfXtK2RQJcLYHXyCedrcoQIBrd0nv4X6HZQzy6wEWbwazg8rWW6YK7p0/X5wKDmnaAHtBbxesVXUxf8BcuYk+8m7I1RB5bCGA5uextRxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aA7eikKr; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738669479;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s9iIjxxwva3fm5ewtrniN91za3PWyU6iE2xOK2M8hJs=;
-	b=aA7eikKr0O3t/r64cqKRVygGg7iiLC8zbmV9Mc0bM9xvmuzCvbyrdAzK39GvM6/37511yH
-	WHLfNOHfAa0rEpxTLCMiM41g4wun1dsx+z+hy3Bm6UENaqa5+cgeRuxCCoj4swlPC69zwe
-	xGE8WSv7tGgWFSY4gty7YPS7rDsJfeY=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-152-GOdhx5WaNF2B2l4l2D1_eg-1; Tue, 04 Feb 2025 06:44:38 -0500
-X-MC-Unique: GOdhx5WaNF2B2l4l2D1_eg-1
-X-Mimecast-MFC-AGG-ID: GOdhx5WaNF2B2l4l2D1_eg
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2f9c774c1c1so1146032a91.0
-        for <kernel-janitors@vger.kernel.org>; Tue, 04 Feb 2025 03:44:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738669477; x=1739274277;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s9iIjxxwva3fm5ewtrniN91za3PWyU6iE2xOK2M8hJs=;
-        b=SMMDo4veRTWQQ/WP/LLJot9FgdR0ZBx+rtMYkrHW+ErBKZmra+mdiQmXhBRpS/td9f
-         hiqiGjEcLnzSsR3KzDlgmBJr3CXo3ieACGRkiGfZhOgh5nk4uIHNuS8P2159kwYn5rez
-         /HxEcafksLfbYN8fnmuHI2jk6r+BOEpZUR3P6ZtmxDq7TR7IngVl57tFDVNs65FKSsuS
-         2mdXR86KQikTGTixaS48n1ayni0QyRU19stVnBXA37FXRajNrBcZwG261zRV8ZQ3eK21
-         rXNk90btv2fPA4uTNS5xpj6Q8haOfXuY/9bipOWjvr+/55K1Ot0WNwVyJiRSAtJ+X8PZ
-         +lrA==
-X-Forwarded-Encrypted: i=1; AJvYcCX42CaTBLc7G60L3+0cgHRZlgx/Fqw3WyX6CbvDlf3it3fIbV5JLC0KxZgVl5akMZtq59Gt0thns/4NT+acTmo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySt+13pN36pK3GuJjevCPLAc+x8Twe0kmdCSfP/V7sCXzGuD/9
-	FVZulTPwiGwCFul9gviKzWDKbRhkk8AjCEe3ia5F1ggvzCrOSP3sBxI/eS0PWCIgcEhLxl5b/cl
-	nLFwtkHLNUItGbg4hQNs9A0p90wUjkKWvUPWkJmdAnZWN68k3BYLywbcK/i1xHEXhAMrG67I1Uf
-	PJRCF7ss2lmkuaKWa5uQteOyD5XqCQ8SLkfew6fLcr
-X-Gm-Gg: ASbGncswNGUtfUZn8vBUe63U/fi6ebn+vA0pVGAeKW3i8xbjpoGsZ9OHjeXBuPrdFFN
-	Ah1uvgnwspra5Dt+aUd281wbxN63ZKOhipGvBbwe94imR83OKMVLkljHXrZJC15HZRa5qxOzxs0
-	CkHny/x2gIKz7cirWnRhCK
-X-Received: by 2002:a17:90b:264e:b0:2ee:f80c:6892 with SMTP id 98e67ed59e1d1-2f83abb3532mr35197896a91.3.1738669477480;
-        Tue, 04 Feb 2025 03:44:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFT1215YnlE/ZrpMQgdXRPpcUHi+R5LKcJT0ZErl0b04QYANkPy1LfVqSEokWJgpg/IOvaQL+JB/pyKlW4LRIs=
-X-Received: by 2002:a17:90b:264e:b0:2ee:f80c:6892 with SMTP id
- 98e67ed59e1d1-2f83abb3532mr35197867a91.3.1738669477224; Tue, 04 Feb 2025
- 03:44:37 -0800 (PST)
+	s=arc-20240116; t=1738671811; c=relaxed/simple;
+	bh=dG5tGVtQZTw25dqMdtJ1/zyy7NY53LArQnmaSzSHXlM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EtLNAwN0xG48sfNxt9QeGXVIpaKX+4gjcJPPnAS+rsiMosCLHGG4J5mEqD8T+UoWRWTMmfiXMqm6F115tYl0Rn5ZUWWzv93gA+GkHg5w5xzlPxmaKyS3Oxcwn0fVhDHlqIPs5nwo7x8LFwd4YsAuI+juJYDhvUHWELqOhSU47gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=dzKwy/C9; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5145NlQ3008384;
+	Tue, 4 Feb 2025 12:23:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=UJ/Pfi
+	/BfkwkEFANDeCNiXq+lhOSzYk/7Ikhm8IpmLU=; b=dzKwy/C9ik+0HIjNHd8nTE
+	2zQpVD00//xmxf2wXK9XbKi6izU2Mq5Vv8s730Ducof6Ip34iQN6vogG+E6LGQJ0
+	OpNSPWPyCWlk6fesqHMxr54iMLIiQmJh9qALHv7VWDklJCJPEU3X57MFrJo45eE9
+	YbzwpYBbNuAEkq/iN5MHV7V4/iOTvt5okOcJLcQPZ5imXRKyy3klIyl3bhzgfSR/
+	gmlM708D+g/Be8EQcSzM1xrxCrj/tLAGSLQwNm9tRyqLJyqygbbHLZZZkZhCXqKQ
+	9AXUW+kcRynr80GU3vqnT6xmUGphKfEF+WUqBaxwfTPut/upvv9zvt2m3MX7ltUw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44kcq7sw41-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Feb 2025 12:23:24 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 514CNOG2024827;
+	Tue, 4 Feb 2025 12:23:24 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44kcq7sw3y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Feb 2025 12:23:24 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 514Bda3b016416;
+	Tue, 4 Feb 2025 12:23:23 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44hwxsbmcv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Feb 2025 12:23:23 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 514CNJVT17891722
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 4 Feb 2025 12:23:19 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B085D20542;
+	Tue,  4 Feb 2025 12:23:19 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2E25520544;
+	Tue,  4 Feb 2025 12:23:19 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.171.94.245])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Tue,  4 Feb 2025 12:23:19 +0000 (GMT)
+Date: Tue, 4 Feb 2025 13:23:17 +0100
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Colin Ian King <colin.i.king@gmail.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank
+ <frankja@linux.ibm.com>,
+        David Hildenbrand <david@redhat.com>,
+        Paolo
+ Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+        kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KVM: selftests: Fix spelling mistake "initally" ->
+ "initially"
+Message-ID: <20250204132317.67d85b69@p-imbrenda>
+In-Reply-To: <20250204105647.367743-1-colin.i.king@gmail.com>
+References: <20250204105647.367743-1-colin.i.king@gmail.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250117125522.99071-1-lukas.bulwahn@redhat.com> <20250204113614.GD893@willie-the-truck>
-In-Reply-To: <20250204113614.GD893@willie-the-truck>
-From: Lukas Bulwahn <lbulwahn@redhat.com>
-Date: Tue, 4 Feb 2025 12:44:25 +0100
-X-Gm-Features: AWEUYZlGlZEjRarXyn4DMZdt0GYLGOVYedjIdYC8RRdsZP_eC31hKcwXeaYXrKs
-Message-ID: <CAOc5a3O-8wrQq3oNJC+H9ncFt0yxcm4O+QSgPk4QckF6Ak5pGg@mail.gmail.com>
-Subject: Re: [PATCH] arm64: Kconfig: Remove selecting replaced HAVE_FUNCTION_GRAPH_RETVAL
-To: Will Deacon <will@kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-trace-kernel@vger.kernel.org, 
-	Catalin Marinas <catalin.marinas@arm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	linux-arm-kernel@lists.infradead.org, kernel-janitors@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: -yyIbkPcCIgxgjB2b6kv5fNBMi9Us86a
+X-Proofpoint-ORIG-GUID: X91T-z-FZSsJTojqkAtvXmRXxkwbzcY3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-04_05,2025-01-31_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
+ suspectscore=0 mlxlogscore=999 spamscore=0 priorityscore=1501
+ malwarescore=0 impostorscore=0 bulkscore=0 adultscore=0 clxscore=1011
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502040096
 
-On Tue, Feb 4, 2025 at 12:36=E2=80=AFPM Will Deacon <will@kernel.org> wrote=
-:
->
-> On Fri, Jan 17, 2025 at 07:55:22AM -0500, Lukas Bulwahn wrote:
-> > From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-> >
-> > Commit a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with ftrace_regs"=
-)
-> > replaces the config HAVE_FUNCTION_GRAPH_RETVAL with the config
-> > HAVE_FUNCTION_GRAPH_FREGS, and it replaces all the select commands in t=
-he
-> > various architecture Kconfig files. In the arm64 architecture, the comm=
-it
-> > adds the 'select HAVE_FUNCTION_GRAPH_FREGS', but misses to remove the
-> > 'select HAVE_FUNCTION_GRAPH_RETVAL', i.e., the select on the replaced
-> > config.
-> >
-> > Remove selecting the replaced config. No functional change, just cleanu=
-p.
-> >
-> > Fixes: a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with ftrace_regs"=
-)
-> > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-> > ---
-> >  arch/arm64/Kconfig | 1 -
-> >  1 file changed, 1 deletion(-)
->
-> Hmm. There are still a couple of CONFIG_HAVE_FUNCTION_GRAPH_RETVAL guards
-> kicking around:
->
-> include/linux/ftrace.h:#ifdef CONFIG_HAVE_FUNCTION_GRAPH_RETVAL
-> kernel/trace/fgraph.c:#ifdef CONFIG_HAVE_FUNCTION_GRAPH_RETVAL
->
-> so it's not clear we can just remove the option from arm64 without
-> breaking ftrace_return_to_handler(). What am I missing?
->
+On Tue,  4 Feb 2025 10:56:47 +0000
+Colin Ian King <colin.i.king@gmail.com> wrote:
 
-Will,
+> There is a spelling mistake in a literal string and in the function
+> test_get_inital_dirty. Fix them.
+> 
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 
-I believe you are looking at a tree, which did not include commit
-a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with ftrace_regs") yet.
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-A quick look:
-
-$ git checkout  a3ed4157b7d8~1
-HEAD is now at 41705c4262aa fgraph: Pass ftrace_regs to entryfunc
-$ grep "CONFIG_HAVE_FUNCTION_GRAPH_RETVAL" . -R
-./include/linux/ftrace.h:#ifdef CONFIG_HAVE_FUNCTION_GRAPH_RETVAL
-./kernel/trace/fgraph.c:#ifdef CONFIG_HAVE_FUNCTION_GRAPH_RETVAL
-
-$ git checkout  a3ed4157b7d8
-Previous HEAD position was 41705c4262aa fgraph: Pass ftrace_regs to entryfu=
-nc
-HEAD is now at a3ed4157b7d8 fgraph: Replace fgraph_ret_regs with ftrace_reg=
-s
-$ grep "CONFIG_HAVE_FUNCTION_GRAPH_RETVAL" . -R
-$
-
-Once commit a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with
-ftrace_regs") is applied, grepping for
-CONFIG_HAVE_FUNCTION_GRAPH_RETVAL should not have any further use of
-that config.
-
-I was looking at linux-next at the time of writing that patch.
-
-Lukas
+> ---
+>  tools/testing/selftests/kvm/s390/cmma_test.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/kvm/s390/cmma_test.c b/tools/testing/selftests/kvm/s390/cmma_test.c
+> index e32dd59703a0..85cc8c18d6e7 100644
+> --- a/tools/testing/selftests/kvm/s390/cmma_test.c
+> +++ b/tools/testing/selftests/kvm/s390/cmma_test.c
+> @@ -444,7 +444,7 @@ static void assert_no_pages_cmma_dirty(struct kvm_vm *vm)
+>  			 );
+>  }
+>  
+> -static void test_get_inital_dirty(void)
+> +static void test_get_initial_dirty(void)
+>  {
+>  	struct kvm_vm *vm = create_vm_two_memslots();
+>  	struct kvm_vcpu *vcpu;
+> @@ -651,7 +651,7 @@ struct testdef {
+>  } testlist[] = {
+>  	{ "migration mode and dirty tracking", test_migration_mode },
+>  	{ "GET_CMMA_BITS: basic calls", test_get_cmma_basic },
+> -	{ "GET_CMMA_BITS: all pages are dirty initally", test_get_inital_dirty },
+> +	{ "GET_CMMA_BITS: all pages are dirty initially", test_get_initial_dirty },
+>  	{ "GET_CMMA_BITS: holes are skipped", test_get_skip_holes },
+>  };
+>  
 
 

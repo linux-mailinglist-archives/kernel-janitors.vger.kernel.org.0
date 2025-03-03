@@ -1,102 +1,115 @@
-Return-Path: <kernel-janitors+bounces-7363-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-7357-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56DA2A4EAA1
-	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Mar 2025 19:08:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F35D8A4E95C
+	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Mar 2025 18:39:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E2D5179FFE
-	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Mar 2025 18:03:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD8C17A3479
+	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Mar 2025 17:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04AE827CCD1;
-	Tue,  4 Mar 2025 17:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA8B2980A8;
+	Tue,  4 Mar 2025 17:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="pMWhQSZ7"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AE2vC9EL"
 X-Original-To: kernel-janitors@vger.kernel.org
 Received: from beeline3.cc.itu.edu.tr (beeline3.cc.itu.edu.tr [160.75.25.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E880827CB3E
-	for <kernel-janitors@vger.kernel.org>; Tue,  4 Mar 2025 17:42:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A6826036B
+	for <kernel-janitors@vger.kernel.org>; Tue,  4 Mar 2025 17:11:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=160.75.25.117
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741110170; cv=pass; b=KPME0d2axfwwN3gqGvaJI0JqIcP2wKKIuVeg1sFqyZuOZIFVNyFZICfRxjBC6By3ao8roIdmzHFiRaFq0iUMCCbtbffxtZ1aVsSCdYCoXxh4Svl8UPJHCAN6f1aD6T/6HnWjg1An64k0R4qMMQhGECNaL3hnitTgx6qFepMakFU=
+	t=1741108291; cv=fail; b=ktvCw7aEH7ZAspBp4R2EnPzaxoK+91ohNZW2r71Pb0GL04ZVfIJwJg3TpMeupp9VRC3mTAp4+SKm6obrc0tUjzg83B4QLZ4gbJT+Fi+kEqOotXHBRuwiuP6Xd/NFxafnLLWc+7f1NYfXMes1B6+BAPlx8lEOCEIv1eg6cCUcwiw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741110170; c=relaxed/simple;
-	bh=jMjxzuU5ybybM0n8xvB9Cmcz8tDPN1BHkYcTdsgjICY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=WCT/PfHuahEguPsRUTrBkGgxwL9PsHGSEYwu6d5xPmIFGqwIw9n12FB0k56CsXixrx/3U7F846NXTq3VMZwfzTeZd9iY6HPEKXbOro02y5SnOxSLzc/Ihp+vyZ+2InfAeJEMw37gtMRxUq2Blh60rrPYH2+21s6qC0qLwnhQMSI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=pMWhQSZ7; arc=none smtp.client-ip=212.227.15.3; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; arc=pass smtp.client-ip=160.75.25.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+	s=arc-20240116; t=1741108291; c=relaxed/simple;
+	bh=6j7hTQM6mjnR72Hy2bRNMRgFNcMjTw/1upucggLcOSQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KxFBeTiwXedzROdyWHqKRSbLx7YdHc1T7EJXkz5Q4bc+p+rqowDQZuAV8e4LZC+SzYCkGBZ8+8L9g95tsxt0OxIGoA0DHnFWIFA9FkcTa/Aaoxm0ylLmHGshF3Li8Q7yRlQcfJ7JH28YzpVwhwwle+hN3sPe4MwWE5PSZEoyPpk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=fail (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AE2vC9EL reason="signature verification failed"; arc=none smtp.client-ip=10.30.226.201; arc=fail smtp.client-ip=160.75.25.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
-Received: from lesvatest1.cc.itu.edu.tr (unknown [10.146.128.1])
+Received: from lesvatest1.cc.itu.edu.tr (lesvatest1.cc.itu.edu.tr [10.146.128.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by beeline3.cc.itu.edu.tr (Postfix) with ESMTPS id 1878040D1F46
-	for <kernel-janitors@vger.kernel.org>; Tue,  4 Mar 2025 20:42:47 +0300 (+03)
+	by beeline3.cc.itu.edu.tr (Postfix) with ESMTPS id D390A40CEC9C
+	for <kernel-janitors@vger.kernel.org>; Tue,  4 Mar 2025 20:11:27 +0300 (+03)
 X-Envelope-From: <root@cc.itu.edu.tr>
+Authentication-Results: lesvatest1.cc.itu.edu.tr;
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AE2vC9EL
 Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
-	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6fp65pgMzG0dG
-	for <kernel-janitors@vger.kernel.org>; Tue,  4 Mar 2025 18:33:02 +0300 (+03)
+	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6gSf1sRxzG28p
+	for <kernel-janitors@vger.kernel.org>; Tue,  4 Mar 2025 19:02:58 +0300 (+03)
 Received: by le1 (Postfix, from userid 0)
-	id 1325F4272C; Tue,  4 Mar 2025 18:32:56 +0300 (+03)
+	id A28D74275A; Tue,  4 Mar 2025 19:02:43 +0300 (+03)
 Authentication-Results: lesva1.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=pMWhQSZ7
-X-Envelope-From: <linux-kernel+bounces-541781-bozkiru=itu.edu.tr@vger.kernel.org>
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AE2vC9EL
+X-Envelope-From: <linux-kernel+bounces-541805-bozkiru=itu.edu.tr@vger.kernel.org>
 Authentication-Results: lesva2.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=pMWhQSZ7
-Received: from fgw2.itu.edu.tr (fgw2.itu.edu.tr [160.75.25.104])
-	by le2 (Postfix) with ESMTP id 7BF6D41EF6
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 16:19:02 +0300 (+03)
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by fgw2.itu.edu.tr (Postfix) with SMTP id 4DF6A2DCE0
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 16:19:02 +0300 (+03)
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AE2vC9EL
+Received: from fgw1.itu.edu.tr (fgw1.itu.edu.tr [160.75.25.103])
+	by le2 (Postfix) with ESMTP id AC51241D59
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 16:25:49 +0300 (+03)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by fgw1.itu.edu.tr (Postfix) with SMTP id 600FB3063EFE
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 16:25:49 +0300 (+03)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2BB5188C8B8
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:19:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1FDB16586C
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA57C212B1F;
-	Mon,  3 Mar 2025 13:18:28 +0000 (UTC)
-Received: from mout.web.de (mout.web.de [212.227.15.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25CD0212B2E;
+	Mon,  3 Mar 2025 13:25:33 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575711F19A;
-	Mon,  3 Mar 2025 13:18:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7C120F095;
+	Mon,  3 Mar 2025 13:25:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741007905; cv=none; b=UJJWiUWktX4xwiPojMYMvc8iZRAuk/7GoWfha53iwNqWs32mv1Exxwm81VhR4+UdYayJciREXYx96TXh9LEs9LM9FvnVnIjQO3jSgIGpSzUsWpZedgDVub1IM/Oq9t63+3GdSSYEzHrP4y8A2LCMtjzAV4IHupTF8De2cb3PPqo=
+	t=1741008330; cv=none; b=hkHxhp6FykX7hdR3oatkJ1PNeHrZ7hp8XXADJwRsoP++5Hp4iSwWHY6cKoloXh259Cg/qMvI9lvvYlNx4SlT3aEGSPmhSx1qjAJbZlDo0uXiDB0qdvooogfDMVQhzbNo0JMmSbDZLz+re0m62dLEkjwAX4qa10E+QlDG4ZBOxug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741007905; c=relaxed/simple;
-	bh=jMjxzuU5ybybM0n8xvB9Cmcz8tDPN1BHkYcTdsgjICY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=VmXFfhMjxRxTbx9v1w99aU5J5FoElwbkbkqKlMmD4c80H2RpiK/B46vgQre1bSVwul/ef7pIF4IkhcXTnE1jlXYVhy49+whZAEqZ8gNY30fqykIWnqBW9iY5FOAyxXYtqvKM6pYZe3Osg/2NqkQmWqe/EB6D0os17w+9SmZz1ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=pMWhQSZ7; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1741007901; x=1741612701; i=markus.elfring@web.de;
-	bh=haP3YnQ1hTaM4n45Pmancys67feBgEgblRKSuXDvr1A=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:From:To:
-	 Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=pMWhQSZ7mmW6WnDrAnSZ/723yKkMZsWgqcHn2JYzn1A2XzjyBQm/ik2Ej2mC1NQH
-	 GS13QOP1KrUfaS9mzQLNqpYvcAXt+ZrVgZNDc8I985hG21SwlbBCjbbyuHewMB0j2
-	 RfUayrlNt2Wq4kVnJ7kkrs/JOnFoliDCRErARsIXSntPWj7AN7XGGIEdC//pfHwBe
-	 C65KCMh/qrJaLbD5iw/e5SYFHMqa8zoI5j6/qFfTybG52f5DLtpbv2CDqt02CG0fl
-	 5XvG3fzPCoxLs+DE5EQh32/D4va8BUxB+HX1cOrQEgmk5eC+PfTdnHTOkS0zaZd89
-	 eX2aliMELA8jm5EZnw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.93.19]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N9LIO-1tAIuH18K4-00yGaQ; Mon, 03
- Mar 2025 14:18:21 +0100
-Message-ID: <22e24ec8-283f-49e9-b7b0-555e8113c250@web.de>
-Date: Mon, 3 Mar 2025 14:18:18 +0100
+	s=arc-20240116; t=1741008330; c=relaxed/simple;
+	bh=wdhoR6ywow1PwN5lQx32sLFLsyyGs0zWpCWAU/kybBw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qlaji457fPF8gj4ElLj9PWF8WrqM32BFAmDLd5EiIVtIXal1RfTP8rE3+GLNv1dm2ZDsZDQVbqiakC3MSgkyFeegRaiT9rlXkId9faQRsQFDi78yjOONmhzWu7VODmU7gwCGavRb9cVOtzxS/5ncd/J8xTCQk2ERrVCYBTkf85w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AE2vC9EL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D43CC4CED6;
+	Mon,  3 Mar 2025 13:25:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741008329;
+	bh=wdhoR6ywow1PwN5lQx32sLFLsyyGs0zWpCWAU/kybBw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AE2vC9EL+ZJH5AFoHN1UKXS2gOyOcmx1+SvK2w7Uf2aPcon+J2diYucaWf2XPXKan
+	 6alVVReitG6Nqb8N9a5rWIhA0l+8EFEeGooHKwrojhEEvPQ6QmbIoxfhqX2VOql2A2
+	 VWMWrNTPzQDiUqOKGak5WVDbOzkwb1rpNxFueUhlZ4QRKxYWDKzXYLdL8WQbni7F3P
+	 6nKKRi71wdGzy6RSYizLyBewg1tf6Goi0NWhiwTlmwdwzMQBy5Xo7GuwfHAN8KG6Pf
+	 c3ZA1llyqOzFf73lnYpdou3nwcRy+hiRbRQHZXN1b4bifkaIO3RGbO1O2/H9S0V8oN
+	 xvC8zztWQrV7g==
+From: Maxime Ripard <mripard@kernel.org>
+To: Anusha Srivatsa <asrivats@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Maxime Ripard <mripard@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH next] drm/vc4: hdmi: Fix some NULL vs IS_ERR() bugs
+Date: Mon,  3 Mar 2025 14:25:25 +0100
+Message-ID: <174100832301.41636.4338334342828265261.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <a952e2b4-d4b8-49ac-abd9-9967c50f4a80@stanley.mountain>
+References: <a952e2b4-d4b8-49ac-abd9-9967c50f4a80@stanley.mountain>
 Precedence: bulk
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -104,111 +117,25 @@ List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH RESEND] iwlwifi: Adjust input parameter validation in
- iwl_sta_calc_ht_flags()
-From: Markus Elfring <Markus.Elfring@web.de>
-To: kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org, Benjamin Berg <benjamin.berg@intel.com>,
- Gregory Greenman <gregory.greenman@intel.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Johannes Berg <johannes.berg@intel.com>,
- Kalle Valo <kvalo@kernel.org>,
- Miri Korenblit <miriam.rachel.korenblit@intel.com>,
- Paolo Abeni <pabeni@redhat.com>, Sriram R <quic_srirrama@quicinc.com>
-Cc: cocci@inria.fr, LKML <linux-kernel@vger.kernel.org>,
- Simon Horman <horms@kernel.org>
-References: <40c60719-4bfe-b1a4-ead7-724b84637f55@web.de>
- <1a11455f-ab57-dce0-1677-6beb8492a257@web.de>
- <9cb634c8-d6e6-32bc-5fd6-79bf6b274f96@web.de>
-Content-Language: en-GB
-In-Reply-To: <9cb634c8-d6e6-32bc-5fd6-79bf6b274f96@web.de>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:klaLpxqRowNpOLqo5TgPE5pwLuOQZxsO7wlnEJEJTMtovuceQzK
- 9j5rbUI7I/TUnJK5L4CF9gFQ/eXeg/hblRTs/rM+HoQQF+nLiHgvC/yTerLULFGe/c3bjBb
- MarWJxxg7QLtmxPmtF6LdNp6dF/otzHpWAAhCXfm4i7bDtKLPYB1jL9ij0B0MigrfUOTzCo
- MJ5lJiYrKHkil1c2EPwtA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:8hjet2llDHg=;XzADO0IesvNkdn8ez1GDiDig+Fz
- zTe+5Ine+8o3lhtscOx2xxi399ryECeYZas5pCUHajSWwa2tGmdwuInMoma4aFSTyAtiZPsT8
- Td3ElBtGnXvSZPt2JqexXGkv2th3KLL4Ksn6WUyuSs60H4HXN0PkhqDUMGBc3RB5t4JF7sQfT
- m1o7WJsk8vTAsrhDgRw1ZvFiCqEML2kYSTkJex2XIqjQ7lCXtgVEdfA14+qsl+FdpQOFHFT/0
- b6el7Rh3ECXRN/hJH96cfwNPbCIUxZNeVXegFDlQXhDnDNlIjz5iMEr8q/CX2O6m+X3x2yYFY
- v2amNEe2oyJROYUyGCzI9IHecp5McECXojybvKBRSdSrXxH1rT2B1GTvCNZGg3aqVC6GY9wQs
- YJjK1j4mQC7OdbxrjNQj05YszK8t98EsRL9YXExRvbylVnGj68YlKDuZmdRITkNUEB6NhOXrt
- 9ENDovRTtJiy67JzRlDE3pKxcPiMHfNPJeMuEO5DpxC2Ca0NPuuq6joFmFz6u1tny/f6gGFvF
- CwLnm6PYRtyXliEVUEn3UUSmDQTz8qyhLs1YDiBIlfeHeZxOaCMscP4YmSn09lyxFef31utby
- 9e/uuey3/Jb0I+EZMPUlcH+R23S6MB5gWQ3dFKyQa0f4IypJ389rcODASgUmiXOj5yJYd1u6h
- 18/XyDfamrCdIDiv8Licz9/xCiJNJ8IcJteTAMtttm7VFfDjpwlNTvnHVsyP+l+s4ArmONhUD
- XczPFTFaUcmcyFNmNE1+Jf4oEaB8JHXup56yNPoPdXUB6O5mvI/uRDflz8PPQDB3cDowMDC2K
- fJI5d8OkAD38Lr2Y7HnRdBtpy4YiG/JvLBoDMiMdwdwjku861gIE4yA9KZ5atkEG8iZsiVQNG
- Fp5RrdyblFAmPqP+tokyt0D02ZaqcVWwaXCJxBtF/bom3uKwkcFeZajNEHvzXJeRimFFxuRSx
- iTVGaRkdxNOJpP/dncIAe+YYdMSVbCcaPK8BtL5BgehI9VSW730Q+I8Geqoovlt5z0r5C3SyP
- Sg3sMcN6rbx4eRDJOjdxC7OxPDQ+wq98GAyjOCXUT5kRlB8+qBGyQ4xtCwdswHicA1amiAULB
- mb7YvyaJRDSVf6JNK115i3QuY5Btciqw5FVf4+X7UmnoDROerESuHj38PUsb1WoBhg9Z4hItd
- egqapByLzxK/qytebvoMt39/lcwCM9K6VqwRXThr3O/FQk5pmyrSkJsa96UD7aS19COdjUN3C
- 8vJyHRwOqwn4h0JhsvpgBpMZbA7Xobq7zhjU+IPlCtOJcCB6ycaFsFgxPk6Z/XVY8nh8gT89k
- cYx7F5B3JDlXk6E1236nBVcknM7JRLrPnkZ/LEGDzy9wvDplvGK301Ntv0TxPsf3//NbNRc3M
- q/WBsCJCPfXChuIyUY8QNUwh8NbKe56CRjUR3vHSvZctplmyU9Hat8/WJ2yOkA43RHGhLrvre
- NgFLOXuXjSyn+3kQuRcx4J6xC2XA=
 X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
-X-ITU-Libra-ESVA-ID: 4Z6fp65pgMzG0dG
+X-ITU-Libra-ESVA-ID: 4Z6gSf1sRxzG28p
 X-ITU-Libra-ESVA: No virus found
 X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
-X-ITU-Libra-ESVA-Watermark: 1741714866.99136@Eeg64q2GSg/4Vc+zj+dSeg
+X-ITU-Libra-ESVA-Watermark: 1741712956.83978@zpag3I9ETzCpuAYT6fUGvQ
 X-ITU-MailScanner-SpamCheck: not spam
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 19 Apr 2023 19:19:34 +0200
+On Fri, 28 Feb 2025 12:38:17 +0300, Dan Carpenter wrote:
+> The devm_platform_ioremap_resource_byname() function doesn't return NUL=
+L,
+> it returns error pointers.  Update the checking to match.
+>=20
+>=20
 
-The address of a data structure member was determined before
-a corresponding null pointer check in the implementation of
-the function =E2=80=9Ciwl_sta_calc_ht_flags=E2=80=9D.
+Applied to misc/kernel.git (drm-misc-next).
 
-Thus avoid the risk for undefined behaviour by moving the assignment
-for the variable =E2=80=9Csta_ht_inf=E2=80=9D behind the null pointer chec=
-k.
-
-This issue was detected by using the Coccinelle software.
-
-Fixes: 046d2e7c50e3 ("mac80211: prepare sta handling for MLO support")
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/sta.c b/drivers/net/wi=
-reless/intel/iwlwifi/dvm/sta.c
-index cef43cf80620..74814ce0155e 100644
-=2D-- a/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-@@ -147,7 +147,7 @@ static void iwl_sta_calc_ht_flags(struct iwl_priv *pri=
-v,
- 				  struct iwl_rxon_context *ctx,
- 				  __le32 *flags, __le32 *mask)
- {
--	struct ieee80211_sta_ht_cap *sta_ht_inf =3D &sta->deflink.ht_cap;
-+	struct ieee80211_sta_ht_cap *sta_ht_inf;
-
- 	*mask =3D STA_FLG_RTS_MIMO_PROT_MSK |
- 		STA_FLG_MIMO_DIS_MSK |
-@@ -156,7 +156,11 @@ static void iwl_sta_calc_ht_flags(struct iwl_priv *pr=
-iv,
- 		STA_FLG_AGG_MPDU_DENSITY_MSK;
- 	*flags =3D 0;
-
--	if (!sta || !sta_ht_inf->ht_supported)
-+	if (!sta)
-+		return;
-+
-+	sta_ht_inf =3D &sta->deflink.ht_cap;
-+	if (!sta_ht_inf->ht_supported)
- 		return;
-
- 	IWL_DEBUG_INFO(priv, "STA %pM SM PS mode: %s\n",
-=2D-
-2.40.0
-
+Thanks!
+Maxime
 
 

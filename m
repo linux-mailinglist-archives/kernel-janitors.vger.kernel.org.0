@@ -1,95 +1,109 @@
-Return-Path: <kernel-janitors+bounces-7481-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-7483-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F136A5A521
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Mar 2025 21:40:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66CA3A5B5B6
+	for <lists+kernel-janitors@lfdr.de>; Tue, 11 Mar 2025 02:20:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 229753AD499
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Mar 2025 20:40:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A912A16F55C
+	for <lists+kernel-janitors@lfdr.de>; Tue, 11 Mar 2025 01:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8C51E1A2D;
-	Mon, 10 Mar 2025 20:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258FB1E5203;
+	Tue, 11 Mar 2025 01:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n5v+qJjr"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="nmSpbTLx"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C374B1DEFE7;
-	Mon, 10 Mar 2025 20:40:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC8D1E0E0C;
+	Tue, 11 Mar 2025 01:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741639209; cv=none; b=bMXSwOe+iN4xVRfL1HFVH1tbUdiU+Hih0m7RmCNrNh4NkmLQevnjdJOulJJhD5KMGFG3xGuqh4DXkGs8kCZ2XvuO84YWQCmv7njFeR4huNKRk44i+TJ87ji/kq+fAuATMmHo2LD4xF/x25OUivyE9EUN1rhvxUPPSJS0Cyb46bk=
+	t=1741655992; cv=none; b=XzcnYlljv6CgbLC/1x0Bdpj6bet5YnQ1TK2mJBsqptv+gR7sOKgXgF3gr8xjE+fTuOpw4r9XHz1EFyIVFJ8H37CGeBAR+JppWA4W535P3CQc7r9f4k9+isfaM7sTlJUL6/vOfUBet80uzK6WYq289ghclPSRVm6ptCg1args0JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741639209; c=relaxed/simple;
-	bh=mzi6YTCCkVyl0WFrGQ3Nu4sAhX4Qm2Bqn1ozXtQ0AjI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Y95ufWpsnQH6oOTGbdnec/Td+74bUojTqDkxn9CLZJ74tsVXDcLOEbZB711HCqMLmqYtRbH4sW73cmbl3HelWgDbC/01LXd9Kk3IScw85gfwGXjRRTr95T0u8Y45GQHHRsXHuPiwTvVKJdpBuyw7sJJkCkQWr45abW8BG6hhPVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n5v+qJjr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A048DC4CEED;
-	Mon, 10 Mar 2025 20:40:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741639209;
-	bh=mzi6YTCCkVyl0WFrGQ3Nu4sAhX4Qm2Bqn1ozXtQ0AjI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=n5v+qJjr1j5sJuh2S26te73xS0ebtvETJRtDaUvwI4LdnmTSRQNZ5GfSiQliojyPW
-	 DsnPMFeVrN02VjahMqQh9Z1YuaJc5P+if4UYhbB30su9VKNV8JeDcGVCcZvbi3IpyQ
-	 AoIhb+EoFzTIf/f12hjiynWE0XTcdHcJXb5Fn0IM366XuUwAKYrfOqXHCeFELa7lAz
-	 x/uJ5kFzMcYaC4fzAAicHtxDg/wsg9bi4J/r6vC0hvHLuCl1laYkXrLzK1ZgRKNvCG
-	 YTe5O3d9Gf1IiHK8Q3v8tY76yoxocTO1u8K59RmI4QZDJQCHVVGS2CpBoAGJcpCFa6
-	 6JQQXqunL2D8w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAF43380AACB;
-	Mon, 10 Mar 2025 20:40:44 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1741655992; c=relaxed/simple;
+	bh=aCK2nQDN+edReumwWrIzdC0XtveCwKi3spfmTynOlXU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TwI3CQG8/H1Iwuc6oBNIm7owHqIknUZ7SXr8SPCM36h1Sc4bSRA+7Eqcfvc+lZn3CWJhlKhWYSAxfuUE85D/GbcYPTaCcP5x7GBWNO0AeT73wi9Zh4zTNCwYcM+TeeBiHe2TH0abIlkP8viJd+uJ+WofRNU9WuPUGZEiJmg76Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=nmSpbTLx; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52ALfsYx014719;
+	Tue, 11 Mar 2025 01:19:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2023-11-20; bh=8/RuX3GwU88Td658DflKrFkdi94VCyG7/q6o+rS03Vo=; b=
+	nmSpbTLxnRxd+EafKN6/L/AxiRQ2yWRRwEFrCSsP2Yr03G4O1qdq0AbJMRhU0+80
+	/19D628J3mAAoVGJ5TxfZ7UgLqjlQV0WPmDZEAza35x0zSXpmQwyncLc9EBvrWDU
+	ubZcK+GQZASi33aIlsElbHpCfn68gAyTOnuwH3YIsBVFZgnzfZ6GW5bgRf1QF0UO
+	eWPt5trusLZdVTqZ6j3YMP9bk/kjtSIOOPedWzfaWOxagOpdxUo/l9dw+nDUZEfX
+	Gjx2b4yjrAtW3ErqMwTBOMP3+HJfbSJ7jCQ7pwvBRbdLLBiG6TM9th/TwjqtFjAb
+	KR1DrJ0plAUZU/QKgXvThw==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 458cacbvd7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 11 Mar 2025 01:19:43 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 52B0UFCK014999;
+	Tue, 11 Mar 2025 01:19:42 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 458cbencmj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 11 Mar 2025 01:19:42 +0000
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 52B1Jfr8014960;
+	Tue, 11 Mar 2025 01:19:42 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 458cbencm8-2;
+	Tue, 11 Mar 2025 01:19:42 +0000
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Heiko Stuebner <heiko@sntech.de>, linux-scsi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org,
+        Colin Ian King <colin.i.king@gmail.com>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] scsi: ufs: rockchip: Fix spelling mistake "susped" -> "suspend"
+Date: Mon, 10 Mar 2025 21:19:01 -0400
+Message-ID: <174165504936.528513.7895453741464348013.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250225101142.161474-1-colin.i.king@gmail.com>
+References: <20250225101142.161474-1-colin.i.king@gmail.com>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] eth: fbnic: fix memory corruption in
- fbnic_tlv_attr_get_string()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174163924349.3688527.16911619738250606292.git-patchwork-notify@kernel.org>
-Date: Mon, 10 Mar 2025 20:40:43 +0000
-References: <2791d4be-ade4-4e50-9b12-33307d8410f6@stanley.mountain>
-In-Reply-To: <2791d4be-ade4-4e50-9b12-33307d8410f6@stanley.mountain>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: lee@trager.us, alexanderduyck@fb.com, kuba@kernel.org,
- kernel-team@meta.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-11_01,2025-03-07_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0 spamscore=0
+ mlxlogscore=892 malwarescore=0 suspectscore=0 mlxscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502100000
+ definitions=main-2503110007
+X-Proofpoint-ORIG-GUID: ZUjgEaKxxcf7JcaIfoORJdytE4gc3wBU
+X-Proofpoint-GUID: ZUjgEaKxxcf7JcaIfoORJdytE4gc3wBU
 
-Hello:
+On Tue, 25 Feb 2025 10:11:42 +0000, Colin Ian King wrote:
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 7 Mar 2025 12:28:48 +0300 you wrote:
-> This code is trying to ensure that the last byte of the buffer is a NUL
-> terminator.  However, the problem is that attr->value[] is an array of
-> __le32, not char, so it zeroes out 4 bytes way beyond the end of the
-> buffer.  Cast the buffer to char to address this.
+> There is a spelling mistake in a dev_err message. Fix it.
 > 
-> Fixes: e5cf5107c9e4 ("eth: fbnic: Update fbnic_tlv_attr_get_string() to work like nla_strscpy()")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 > 
-> [...]
 
-Here is the summary with links:
-  - [net-next] eth: fbnic: fix memory corruption in fbnic_tlv_attr_get_string()
-    https://git.kernel.org/netdev/net-next/c/991a1b09920b
+Applied to 6.15/scsi-queue, thanks!
 
-You are awesome, thank you!
+[1/1] scsi: ufs: rockchip: Fix spelling mistake "susped" -> "suspend"
+      https://git.kernel.org/mkp/scsi/c/24e81b821724
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Martin K. Petersen	Oracle Linux Engineering
 

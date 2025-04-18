@@ -1,144 +1,139 @@
-Return-Path: <kernel-janitors+bounces-7757-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-7759-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2526A9370E
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Apr 2025 14:29:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31591A9377B
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Apr 2025 14:51:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AEB419E252D
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Apr 2025 12:29:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D425D19E85DF
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Apr 2025 12:52:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3092750F9;
-	Fri, 18 Apr 2025 12:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D92276036;
+	Fri, 18 Apr 2025 12:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CnDyTiNl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EWP8VhYc"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0581A3168;
-	Fri, 18 Apr 2025 12:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E28274FCF;
+	Fri, 18 Apr 2025 12:51:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744979333; cv=none; b=NS559o9O6/0r/S6Vhys/Ytp8WrlSh0cwT3i0KegjVAu18GalSgUeaRmdC5XCOzGn3qEIFCBYd83qvK9Kf92uzLc80TfSS8bPB7e4Avl6heSYu141nGkba0U0B8P3J32aBTCvu8cv5a70/x6XvzeDZ9qtXaBUfLzNfCpayEnHd6o=
+	t=1744980705; cv=none; b=V6hToU7JgWbqkN/iErGfRfMl970N/P8yAOg4wKZAtVHQzX9Celq3+v6u9+MVQwjYUrP9DJyHr+J4nGLrmBBVUMC2hTAWWp3wp/1iywf4KfpG+hrVs5XFghcMk1CkIPEqE4xwQX8GVINnOb/7oglE90sv6PS5UZFhp100v15IiZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744979333; c=relaxed/simple;
-	bh=ilxE+AXvg/NkPCparHHXLro/i6ZYsW2R0eQyBLPfXW4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T5CEeWwvKpqpdyNusQoWvBNn1N8wa0AE0GqjlMbbhyZQhANqA962nPAd+nFIRSot1oG5lS2H6uprAL/BRQSo4gM5MRBWzYNsKsT2vliHqfQY3igj+Rl0Y9dMgtqWlR9rak6RGEShpWOdkTMAFpDe3wCB9fIFsHxBFm3I01wTI1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CnDyTiNl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A13CC4CEE2;
-	Fri, 18 Apr 2025 12:28:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744979333;
-	bh=ilxE+AXvg/NkPCparHHXLro/i6ZYsW2R0eQyBLPfXW4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CnDyTiNlnqdqB+YYUT48Fr1Qp0GnOVNXI3DoY3NZIXDNc8WbtLm+ZzimWGBEwldnW
-	 fI7Hs6NV6dgz9iey/D8j0ygJwboEOSavL77Nbm0tyY+cZlH5E1CplRnyDP08sePYKU
-	 GQHsmzDWam4S0tHJD2sYU7GJs9weHq/viQwuFrD3dLz/L2x9OYZdFSTTt2+IbafwfP
-	 otzZHeAV+mvQWkElFaW1d+MWar1i2D7f+9z4n7KvyzKmDjx+7F9igF1di2icH0rZPH
-	 J0AXweDYfShtEiL0tCOHd4wHg+4734MErZ8P4Nk8fYPC+J8/8SFF/JsTSZcn1pczMG
-	 Q3WBgaUiFkEow==
-Date: Fri, 18 Apr 2025 14:28:50 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] net: airoha: Fix an error handling path in airoha_probe()
-Message-ID: <aAJFgqrOFL_xAqtW@lore-desk>
-References: <f4a420f3a8b4a6fe72798f9774ec9aff2291522d.1744977434.git.christophe.jaillet@wanadoo.fr>
+	s=arc-20240116; t=1744980705; c=relaxed/simple;
+	bh=Tx6xVN7cw+waCo9fc73br/PHvimvHBxuXDpSvbHxWCc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=n4kCjYiP9MkM+4sv3gNdQY9B++KkuHG44SEXpPzONROACstlAlWsuy2Cpr2hNKIOtkHZq6/S1rj74T5iSoEvompZNbQkfyYGnWk/YLRNON3/8ijAOqsZOd7VWFD+j+o1kKwe9/8VXGHqMbqj1UoOsl5t4abck5DtuNk04VJD8mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EWP8VhYc; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43d0618746bso13227055e9.2;
+        Fri, 18 Apr 2025 05:51:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744980702; x=1745585502; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fSI7eAOwKER7UtUiex4GHzeLYi9Hq3SA4vwSh7WcZHw=;
+        b=EWP8VhYccRqhGCM1wFXi0fkAv6OU4IYnDTWZRtEsyp1lZk0QNo9Qn9E43QSqiWRnI3
+         kICaMdbnlSiBzgRS1WK/5AKEOBd7OqH8PwDgopyP/fW1zP1pRH1zEI3WqgR0BSTTN5HJ
+         iktwv3uIZUe91gwYT9+9PVkq49t+GBZH6/7dEiRskqMOOmGRh/Gks3rgxrFUbOiPJgHp
+         L5iadlRrBVCRZixwrq+zEkhyae0tTSxw0HfEf+KkjjAMk3mK3oNAPh7JFFUV06SiB89t
+         z6YKOVTVn5tmhIN0Sd3JOzPh9ldUp6GlTpJXAikzQmOJc43lFCvlESUi+MFyvLl9Jmxa
+         qzdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744980702; x=1745585502;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fSI7eAOwKER7UtUiex4GHzeLYi9Hq3SA4vwSh7WcZHw=;
+        b=WTt5BdQpdu1MgYOknFLOH7kFLOHx7QYhx+TKsnHwuT8zVVsYPEGYd3MqAyAa/L6xgR
+         bRxBpzm5c/ea058Eikm5+Mv36jFbpKdOT/XIBz6gHh88vnK9hagxh+FEohijxyqDRwNU
+         MZwGXSoziJjv6AZ7yXj8z41JPK3sE6lgNJW2WsbpuJaTntwRQVz0e2hZeylEyBiNDieZ
+         WhB/3gD2YE7de+LRUYOhFtt8NgADfFru7mgAwHmSsE2TWPM79tm44hln8sIokqS9Hmfe
+         4PZEvEBf2wlLDnssJKX7MCBPI9zfojwINQ2ktiZQBK3SFohjB++RMio2dJvy4MfUBQ+9
+         WOwA==
+X-Forwarded-Encrypted: i=1; AJvYcCWrURFJzvKF66ULDAP1Nb3jAYWmnAWqEq3BkoCdusl4uG5BKLx079ivfU66cxha8T3wZGipDozc1nuLLQ==@vger.kernel.org, AJvYcCXqpPwp1D/V/467pyF7jcbnnBd/AHMHPMdJqn75ACgR860lX1OO24mEi+EmXFvxlekMqUfYai8GUJrpSilj@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzz9dtWlToqOhFT8RpaMMPHmbFtIcaPRaFTP31U2L1+pFhyQNSH
+	EwSUIMxNimjltKqDP8W9LFonJIBvOWE6EjuBD+9y4OaNGepLNDo3MnBKMBdxtF7pEg==
+X-Gm-Gg: ASbGncsYFdkSYS7y1NfnJNQ8bxWjuAvlSkGJspMWeZsPfTQjtNkLCZZsGh0tuHqMwRs
+	KMyILHJXxcRfbQQ9/GDGc4mmA1Yxth/HXmjXX+SLJY+DNaoDsCickD01cStpwTYbM88+Aod3cC1
+	NLdDuWEr/w7u154g/UXFwbJxsHKWQKVS/sJECQKH2+oPWW/dm+BiJcTip8hnngdtafh8zFeuet5
+	PcoDXdc/yUSQrYUkcEVMzwgh15ff6TPSns4ovbAWZ/ACisvhSckUYJ08kIgxg0xAVJtYb715Nl2
+	TrgMcPq1o1h/ACOuLIEXWHY4owJR0on+HdDhyDPQ3g==
+X-Google-Smtp-Source: AGHT+IGRLN4xXyDof+aLmH9LIsvIdtLHzEudvt2mvZiXNlcTq7vBl8qMI8mV10llHh3CBdT7Fc0KOQ==
+X-Received: by 2002:a05:6000:2283:b0:390:d6ab:6c49 with SMTP id ffacd0b85a97d-39efba6ba65mr2283592f8f.35.1744980701688;
+        Fri, 18 Apr 2025 05:51:41 -0700 (PDT)
+Received: from localhost ([194.120.133.58])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-39efa433133sm2656282f8f.28.2025.04.18.05.51.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Apr 2025 05:51:41 -0700 (PDT)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Helge Deller <deller@gmx.de>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] fbdev/carminefb: Fix spelling mistake of CARMINE_TOTAL_DIPLAY_MEM
+Date: Fri, 18 Apr 2025 13:51:35 +0100
+Message-ID: <20250418125135.539908-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Y0SBIVyEi97tYwoG"
-Content-Disposition: inline
-In-Reply-To: <f4a420f3a8b4a6fe72798f9774ec9aff2291522d.1744977434.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
+There is a spelling mistake in macro CARMINE_TOTAL_DIPLAY_MEM. Fix it.
 
---Y0SBIVyEi97tYwoG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/video/fbdev/carminefb.c | 8 ++++----
+ drivers/video/fbdev/carminefb.h | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-> If an error occurs after a successful airoha_hw_init() call,
-> airoha_ppe_deinit() needs to be called as already done in the remove
-> function.
->=20
-> Fixes: 00a7678310fe ("net: airoha: Introduce flowtable offload support")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> Compile tested-only
-> ---
->  drivers/net/ethernet/airoha/airoha_eth.c | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
-net/airoha/airoha_eth.c
-> index 69e523dd4186..252b32ceb064 100644
-> --- a/drivers/net/ethernet/airoha/airoha_eth.c
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-> @@ -2631,6 +2631,8 @@ static int airoha_probe(struct platform_device *pde=
-v)
->  		}
->  	}
->  	free_netdev(eth->napi_dev);
-> +
-> +	airoha_ppe_deinit(eth);
->  	platform_set_drvdata(pdev, NULL);
-> =20
->  	return err;
-> --=20
-> 2.49.0
->=20
+diff --git a/drivers/video/fbdev/carminefb.c b/drivers/video/fbdev/carminefb.c
+index e56065cdba97..2bdd67595891 100644
+--- a/drivers/video/fbdev/carminefb.c
++++ b/drivers/video/fbdev/carminefb.c
+@@ -649,13 +649,13 @@ static int carminefb_probe(struct pci_dev *dev, const struct pci_device_id *ent)
+ 	 * is required for that largest resolution to avoid remaps at run
+ 	 * time
+ 	 */
+-	if (carminefb_fix.smem_len > CARMINE_TOTAL_DIPLAY_MEM)
+-		carminefb_fix.smem_len = CARMINE_TOTAL_DIPLAY_MEM;
++	if (carminefb_fix.smem_len > CARMINE_TOTAL_DISPLAY_MEM)
++		carminefb_fix.smem_len = CARMINE_TOTAL_DISPLAY_MEM;
+ 
+-	else if (carminefb_fix.smem_len < CARMINE_TOTAL_DIPLAY_MEM) {
++	else if (carminefb_fix.smem_len < CARMINE_TOTAL_DISPLAY_MEM) {
+ 		printk(KERN_ERR "carminefb: Memory bar is only %d bytes, %d "
+ 				"are required.", carminefb_fix.smem_len,
+-				CARMINE_TOTAL_DIPLAY_MEM);
++				CARMINE_TOTAL_DISPLAY_MEM);
+ 		goto err_unmap_vregs;
+ 	}
+ 
+diff --git a/drivers/video/fbdev/carminefb.h b/drivers/video/fbdev/carminefb.h
+index 297688eba469..c9825481d96b 100644
+--- a/drivers/video/fbdev/carminefb.h
++++ b/drivers/video/fbdev/carminefb.h
+@@ -7,7 +7,7 @@
+ 
+ #define MAX_DISPLAY	2
+ #define CARMINE_DISPLAY_MEM	(800 * 600 * 4)
+-#define CARMINE_TOTAL_DIPLAY_MEM	(CARMINE_DISPLAY_MEM * MAX_DISPLAY)
++#define CARMINE_TOTAL_DISPLAY_MEM	(CARMINE_DISPLAY_MEM * MAX_DISPLAY)
+ 
+ #define CARMINE_USE_DISPLAY0	(1 << 0)
+ #define CARMINE_USE_DISPLAY1	(1 << 1)
+-- 
+2.49.0
 
-Hi Christophe,
-
-I agree we are missing a airoha_ppe_deinit() call in the probe error path,
-but we should move it above after stopping the NAPI since if airoha_hw_init=
-()
-fails we will undo the work done by airoha_ppe_init(). Something like:
-
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/etherne=
-t/airoha/airoha_eth.c
-index 16c7896f931f..37d9678798d1 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -2959,6 +2959,7 @@ static int airoha_probe(struct platform_device *pdev)
- error_napi_stop:
- 	for (i =3D 0; i < ARRAY_SIZE(eth->qdma); i++)
- 		airoha_qdma_stop_napi(&eth->qdma[i]);
-+	airoha_ppe_init(eth);
- error_hw_cleanup:
- 	for (i =3D 0; i < ARRAY_SIZE(eth->qdma); i++)
- 		airoha_hw_cleanup(&eth->qdma[i]);
-
-
-Agree?
-
-Regards,
-Lorenzo
-
---Y0SBIVyEi97tYwoG
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaAJFggAKCRA6cBh0uS2t
-rKOIAQCwH4/D7rA5prRIS5BaxnLlZVf6GSFzAusPqDttCUbOqAD+KQkQkPThXEuJ
-VlYdxSyCO8mR3H/2/EGw9Cw368w4iws=
-=5A8k
------END PGP SIGNATURE-----
-
---Y0SBIVyEi97tYwoG--
 

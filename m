@@ -1,110 +1,96 @@
-Return-Path: <kernel-janitors+bounces-7776-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-7778-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC44A94D6F
-	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Apr 2025 09:44:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AB61A94E1F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Apr 2025 10:32:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61A0D3AB03B
-	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Apr 2025 07:43:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8600217114D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Apr 2025 08:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E4620E718;
-	Mon, 21 Apr 2025 07:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03EE72566FC;
+	Mon, 21 Apr 2025 08:31:47 +0000 (UTC)
 X-Original-To: kernel-janitors@vger.kernel.org
 Received: from mail.nfschina.com (unknown [42.101.60.213])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id AD6C219ABB6;
-	Mon, 21 Apr 2025 07:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 79D36288D2;
+	Mon, 21 Apr 2025 08:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.213
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745221431; cv=none; b=oLnic7KTXyl8hM+HyCuEg7dY42ZL5v1lfm/2PkwILO23RI8xW+vVcODAzjm0Bh8J8eTYsMNlx2en+mWcBujPSzFwvQvYDtvoMCq2pRjlq4oQP0e4pNxIxKqDbd4NAU5Mct04MEvk6qGqBBFgBGjmgjUjF9IOV947zX6KR10fMP0=
+	t=1745224306; cv=none; b=G+rMPiPN0pnjlXq5oq1qZY6hvJorn9qZvR66oJfhBmagrXFV9j9LBpBAovpouJuRHoWAY+BzmJfG5OSyQrorXru4jDWrsC382TULnB2IHchPw12dloxFOSojUhTFFUfKS9+wyUgWshmF3WJ9kxsJzmk/lQXcIfLbrhtzcdN53DY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745221431; c=relaxed/simple;
-	bh=9mr/4ygQi24ODHbaZeN0vo/LVPGCcnhTa5BHpr99sRM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type; b=dt1umVfZjN87aAtXiIbjY2RdNOkQkTv5abpXdvYZ2B88C5ziPFbL8i/g1mDAnbS3aHDQ9QfA+j+iBY+PVAX0Qe8S6DqmkrcoFa9p1gKAoF3UIKp7/KQyCeLYCnZMTGskFqWCEHQ7tJmlHQ2auO8xG7cjGpR0g+2y3/GdHDD/Skk=
+	s=arc-20240116; t=1745224306; c=relaxed/simple;
+	bh=BA7VZdnswUJ0BTvh/DJPgGayChaPc3t2wYtkXj3cQEA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PsEeeTPrIDZxTf/JzFbYSOBWqS+iVEql0cOF+vuRTgO0avfHI68cUT1wMFn23Jbe7RIHiN/HRaIIy7ZhrsVBmVS7STJl6zIziD5TbIlEiytrWnk0yQxEi1IVcuihvQdj3BGhC1FgCC9m63YGallnHLUa8gjNiQU9ZwtA7+R93YY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.213
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
-Received: from [172.30.20.101] (unknown [180.167.10.98])
-	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id C17DE60252AD4;
-	Mon, 21 Apr 2025 15:43:38 +0800 (CST)
-Message-ID: <bade4ad1-2be7-45a4-8232-0be5fe2e7ef7@nfschina.com>
-Date: Mon, 21 Apr 2025 15:43:37 +0800
+Received: from longsh.shanghai.nfschina.local (unknown [180.167.10.98])
+	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id 886DF60260748;
+	Mon, 21 Apr 2025 16:31:37 +0800 (CST)
+X-MD-Sfrom: suhui@nfschina.com
+X-MD-SrcIP: 180.167.10.98
+From: Su Hui <suhui@nfschina.com>
+To: herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	steffen.klassert@secunet.com,
+	christophe.jaillet@wanadoo.fr
+Cc: Su Hui <suhui@nfschina.com>,
+	linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH v2 0/2] crypto: some cleanup and hardening
+Date: Mon, 21 Apr 2025 16:31:15 +0800
+Message-Id: <20250421083116.1161805-1-suhui@nfschina.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] crypto: using size_add() for kmalloc()
-Content-Language: en-US
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>, davem@davemloft.net,
- herbert@gondor.apana.org.au
-Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-janitors@vger.kernel.org, linux-hardening@vger.kernel.org
-X-MD-Sfrom: suhui@nfschina.com
-X-MD-SrcIP: 180.167.10.98
-From: Su Hui <suhui@nfschina.com>
-In-Reply-To: <c86fcb5b-73d0-4d55-833f-26a16713e325@wanadoo.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 2025/4/21 15:10, Christophe JAILLET wrote:
-> Le 21/04/2025 à 07:51, Su Hui a écrit :
->> It's safer to use size_add() to replace open-coded aithmetic in 
->> allocator
->> arguments, because size_add() can prevent possible overflow problem.
->>
->> Signed-off-by: Su Hui <suhui@nfschina.com>
->> ---
->>   include/crypto/aead.h     | 3 ++-
->>   include/crypto/akcipher.h | 4 +++-
->>   include/crypto/kpp.h      | 3 ++-
->>   3 files changed, 7 insertions(+), 3 deletions(-)
->>
->> diff --git a/include/crypto/aead.h b/include/crypto/aead.h
->> index 0e8a41638678..cf212d28fe18 100644
->> --- a/include/crypto/aead.h
->> +++ b/include/crypto/aead.h
->> @@ -10,6 +10,7 @@
->>     #include <linux/atomic.h>
->>   #include <linux/container_of.h>
->> +#include <linux/overflow.h>
->
-> You could move this 1 line below, to keep alphabetical order.
-> And why do you say that it is redundant in your follow-up mail?
-Thanks for your suggestion, I didn't notice this alphabetical order at 
-first :( .
-Because I found that  <linux/crypto.h> includes <linux/slab.h>, and
-<linux/slab.h> includes <linux/overflow.h>, so this overflow.h is 
-redundant.
->
->>   #include <linux/crypto.h>
->>   #include <linux/slab.h>
-And I also found these <linux/{atomic,container_of,slab,types,list}.h> 
-is included by
-<linux/crypto.h>, I am trying to remove these redundant headers in v2 patch.
+using size_add() to hardening kmalloc() and remove some redundant include
+headers.
+Compile test only.
 
-It's sad that remving these duplicate header files didn't save any 
-compilation time,
-only save some code space.
->>   #include <linux/types.h>
->> @@ -433,7 +434,7 @@ static inline struct aead_request 
->> *aead_request_alloc(struct crypto_aead *tfm,
->> --- a/include/crypto/kpp.h
->> +++ b/include/crypto/kpp.h
->> @@ -11,6 +11,7 @@
->>     #include <linux/atomic.h>
->>   #include <linux/container_of.h>
->> +#include <linux/overflow.h>
->
-> You could move this 1 line below, to keep alphabetical order.
-This overflow.h is redundant too.
->
->>   #include <linux/crypto.h>
->>
->
+v2:
+ - remove redundant include headers in v1 (<linux/overflow.h>).
+ - add a patch to remove other redundant headers.
+
+v1:
+ - https://lore.kernel.org/all/20250421055104.663552-1-suhui@nfschina.com/
+
+Su Hui (2):
+  crypto: using size_add() for kmalloc()
+  crypto: remove some redundant include headers
+
+ include/crypto/acompress.h    | 4 ----
+ include/crypto/aead.h         | 6 +-----
+ include/crypto/aes.h          | 1 -
+ include/crypto/akcipher.h     | 4 ++--
+ include/crypto/algapi.h       | 3 ---
+ include/crypto/blowfish.h     | 1 -
+ include/crypto/cast5.h        | 1 -
+ include/crypto/cast6.h        | 1 -
+ include/crypto/drbg.h         | 2 --
+ include/crypto/hash.h         | 2 --
+ include/crypto/internal/des.h | 1 -
+ include/crypto/kpp.h          | 5 +----
+ include/crypto/krb5.h         | 1 -
+ include/crypto/pcrypt.h       | 1 -
+ include/crypto/poly1305.h     | 1 -
+ include/crypto/polyval.h      | 1 -
+ include/crypto/rng.h          | 2 --
+ include/crypto/serpent.h      | 1 -
+ include/crypto/skcipher.h     | 4 ----
+ include/crypto/sm4.h          | 1 -
+ 20 files changed, 4 insertions(+), 39 deletions(-)
+
+-- 
+2.30.2
+
 

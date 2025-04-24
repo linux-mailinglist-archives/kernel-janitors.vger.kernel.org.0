@@ -1,250 +1,177 @@
-Return-Path: <kernel-janitors+bounces-7857-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-7859-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48FF9A9B175
-	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Apr 2025 16:49:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2903AA9BA75
+	for <lists+kernel-janitors@lfdr.de>; Fri, 25 Apr 2025 00:12:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84E947A9E00
-	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Apr 2025 14:47:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A39E1925AC0
+	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Apr 2025 22:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5CA1B0406;
-	Thu, 24 Apr 2025 14:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B020D28935D;
+	Thu, 24 Apr 2025 22:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="LnJlDrOq"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail.nfschina.com (unknown [42.101.60.213])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 0088C15573A;
-	Thu, 24 Apr 2025 14:48:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.213
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC441FDD;
+	Thu, 24 Apr 2025 22:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745506117; cv=none; b=e7VbQqrPcyDoYiBMgmkUHR0ziuXU32i3XcM7R7fMTFQY2ybAkQZgtvEjOinciLUDMmFRWpjNirbcQsqwvVfJv5ZoKsmx6Ymj0pwV7P7o5iZmLplXxsh7tiN425HQAaKrXjtL8+/ekHc51BlEoWMrtE+9JnJdnzWpMrhyYySSLaA=
+	t=1745532751; cv=none; b=luiWeu8dtIKbsWFRMBRCiDn2Vy8GIyzxUkLGUp5Bv6n02zRr9Qea6QoiSbwX11P1e/HQkaCqqgsqLlrAAKrg45L6IhZf51XdTjg5JQZOK4OQ62BxoU1nAJgLouQJA4YN+cSE8YrimOXfDqoQ4yU+Y53iOVBy8zsORsUoef66G+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745506117; c=relaxed/simple;
-	bh=XB+Lspht3JiXhBFV+R5zHwFM9Ml8AwPDyWG7DuawO7Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version; b=O0zwT6ADiPogoAsKApxLEPcPZEtr26sYfwr1TgcQ12h4cBU313t+UyP+2SnGAQ/GcaP1lGQm/ccMy3rRpPRKsX09Hy3ig8GqtzlgD8gJBIDD2ZMgRCj0rnen6YGWOHviWw6d7pE+r0fTA4ylENFhR9XFjTl0M45BG2Tldwu9k9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.213
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
-Received: from longsh.shanghai.nfschina.local (unknown [180.167.10.98])
-	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPA id 0723760497EAF;
-	Thu, 24 Apr 2025 22:48:30 +0800 (CST)
-X-MD-Sfrom: suhui@nfschina.com
-X-MD-SrcIP: 180.167.10.98
-From: Su Hui <suhui@nfschina.com>
-To: jstultz@google.com,
-	tglx@linutronix.de,
-	sboyd@kernel.org
-Cc: Su Hui <suhui@nfschina.com>,
-	linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH 3/3] alarmtimer: switch spin_{lock,unlock}_irqsave() to guard()
-Date: Thu, 24 Apr 2025 22:48:20 +0800
-Message-Id: <20250424144819.24884-4-suhui@nfschina.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20250424144819.24884-1-suhui@nfschina.com>
+	s=arc-20240116; t=1745532751; c=relaxed/simple;
+	bh=P2dxkG/34cHk8pevsERny35FvJlvS1qfXDVtXAtik8Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GSZE6CEynpo6RRd5p5Ugv5tL8P0wCzUZ+j9Wp0mX4Gy2SjHQevKHd1i36xnHEuO76TtXzYwEquDEx8qF/uOlkw2IndV9DmzxF8dfHqrWZkygC4rlYLLsWcDWZg0sgO9Njqv4GfIpRPvWie6lqxHMD2sGIlWGhTxcjrQFdmeUL9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=LnJlDrOq; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1745532745; x=1746137545; i=deller@gmx.de;
+	bh=DCFXlP1lPVF5HDKqfxdGzygoHRAILaoMhdLJkypLEAY=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=LnJlDrOqsEdJ/0UDJ+wpBT+AJKiyarqEJYqBKDwuryN8wzdYMgWEC/Nod0riAsV0
+	 9fy3zMZrpMHl9qisVPJo2KVXToH7u217J/QuzTB/EOoDAzanuwNVsZZ+mixnsD9JD
+	 jJadG5sbFsXpTU+haiFYyOASZLxT4Rj5yMA7ZDP6F1RLK/CCdn1i0VgB7Swgr+32Z
+	 HcaZU+8ickY9P03Dtam68QpNq+FedZHku/068suChSZwXSsyqkaV1KL4KgUlGkmYY
+	 9klsgGXzGw9u/zdkrfNKlijEZ2Z9k7CW3vDGH3lx5yBKeV7gtAnl+MIUbh35hkmEB
+	 dfwsAghFQv5P6KE+IQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.173] ([109.250.63.181]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MbRjt-1ufDhA2sJd-00b9wn; Fri, 25
+ Apr 2025 00:12:25 +0200
+Message-ID: <e692bdb5-ee0c-4d2f-95bd-7675c03ce78a@gmx.de>
+Date: Fri, 25 Apr 2025 00:12:24 +0200
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH][next] fbdev/carminefb: Fix spelling mistake of
+ CARMINE_TOTAL_DIPLAY_MEM
+To: Colin Ian King <colin.i.king@gmail.com>, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250418125135.539908-1-colin.i.king@gmail.com>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <20250418125135.539908-1-colin.i.king@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:+EGv9gmjC6p0gfCjO6+H0FLrF46ATBsWbVMsIr0pGTz986+bh0N
+ FMY4oeXhFEnKQFDeg6vzY5WEUljO3/WvgT7rRW8QV7NQ6VRz8dzpee87cwtnBSTFahhSiKZ
+ txI5L54G3iq7NwchIJZ+Z82hy0NkoqBZiZYPZRKW8dlbBQJZsFDQ45uzNG10RcUjnP4truM
+ psqxk4omvGEjYmbW4mSaQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:ZpiFChDe+Wo=;s9SxWyEqfkXrjIKMYC8wO+1rdgo
+ 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
+ g==
 
-There are two code styles for the lock in alarmtimer, guard() and
-spin_{lock,unlock}_irqsave(). Switch all these to guard() to make code
-neater.
+On 4/18/25 14:51, Colin Ian King wrote:
+> There is a spelling mistake in macro CARMINE_TOTAL_DIPLAY_MEM. Fix it.
+>=20
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> ---
+>   drivers/video/fbdev/carminefb.c | 8 ++++----
+>   drivers/video/fbdev/carminefb.h | 2 +-
+>   2 files changed, 5 insertions(+), 5 deletions(-)
 
-Signed-off-by: Su Hui <suhui@nfschina.com>
----
- kernel/time/alarmtimer.c | 84 ++++++++++++++++++----------------------
- 1 file changed, 37 insertions(+), 47 deletions(-)
-
-diff --git a/kernel/time/alarmtimer.c b/kernel/time/alarmtimer.c
-index e5450a77ada9..920a3544d0cd 100644
---- a/kernel/time/alarmtimer.c
-+++ b/kernel/time/alarmtimer.c
-@@ -70,12 +70,10 @@ static DEFINE_SPINLOCK(rtcdev_lock);
-  */
- struct rtc_device *alarmtimer_get_rtcdev(void)
- {
--	unsigned long flags;
- 	struct rtc_device *ret;
- 
--	spin_lock_irqsave(&rtcdev_lock, flags);
--	ret = rtcdev;
--	spin_unlock_irqrestore(&rtcdev_lock, flags);
-+	scoped_guard(spinlock_irqsave, &rtcdev_lock)
-+		ret = rtcdev;
- 
- 	return ret;
- }
-@@ -83,7 +81,6 @@ EXPORT_SYMBOL_GPL(alarmtimer_get_rtcdev);
- 
- static int alarmtimer_rtc_add_device(struct device *dev)
- {
--	unsigned long flags;
- 	struct rtc_device *rtc = to_rtc_device(dev);
- 	struct platform_device *pdev;
- 	int ret = 0;
-@@ -101,22 +98,21 @@ static int alarmtimer_rtc_add_device(struct device *dev)
- 	if (!IS_ERR(pdev))
- 		device_init_wakeup(&pdev->dev, true);
- 
--	spin_lock_irqsave(&rtcdev_lock, flags);
--	if (!IS_ERR(pdev) && !rtcdev) {
--		if (!try_module_get(rtc->owner)) {
-+	scoped_guard(spinlock_irqsave, &rtcdev_lock) {
-+		if (!IS_ERR(pdev) && !rtcdev) {
-+			if (!try_module_get(rtc->owner)) {
-+				ret = -1;
-+				break;
-+			}
-+
-+			rtcdev = rtc;
-+			/* hold a reference so it doesn't go away */
-+			get_device(dev);
-+			pdev = NULL;
-+		} else {
- 			ret = -1;
--			goto unlock;
- 		}
--
--		rtcdev = rtc;
--		/* hold a reference so it doesn't go away */
--		get_device(dev);
--		pdev = NULL;
--	} else {
--		ret = -1;
- 	}
--unlock:
--	spin_unlock_irqrestore(&rtcdev_lock, flags);
- 
- 	platform_device_unregister(pdev);
- 
-@@ -198,7 +194,7 @@ static enum hrtimer_restart alarmtimer_fired(struct hrtimer *timer)
- 	struct alarm *alarm = container_of(timer, struct alarm, timer);
- 	struct alarm_base *base = &alarm_bases[alarm->type];
- 
--	scoped_guard (spinlock_irqsave, &base->lock)
-+	scoped_guard(spinlock_irqsave, &base->lock)
- 		alarmtimer_dequeue(base, alarm);
- 
- 	if (alarm->function)
-@@ -230,15 +226,15 @@ static int alarmtimer_suspend(struct device *dev)
- 	ktime_t min, now, expires;
- 	int i, ret, type;
- 	struct rtc_device *rtc;
--	unsigned long flags;
- 	struct rtc_time tm;
- 
--	spin_lock_irqsave(&freezer_delta_lock, flags);
--	min = freezer_delta;
--	expires = freezer_expires;
--	type = freezer_alarmtype;
--	freezer_delta = 0;
--	spin_unlock_irqrestore(&freezer_delta_lock, flags);
-+	scoped_guard(spinlock_irqsave, &freezer_delta_lock) {
-+		min = freezer_delta;
-+		expires = freezer_expires;
-+		type = freezer_alarmtype;
-+		freezer_delta = 0;
-+	}
-+
- 
- 	rtc = alarmtimer_get_rtcdev();
- 	/* If we have no rtcdev, just return */
-@@ -251,9 +247,8 @@ static int alarmtimer_suspend(struct device *dev)
- 		struct timerqueue_node *next;
- 		ktime_t delta;
- 
--		spin_lock_irqsave(&base->lock, flags);
--		next = timerqueue_getnext(&base->timerqueue);
--		spin_unlock_irqrestore(&base->lock, flags);
-+		scoped_guard(spinlock_irqsave, &base->lock)
-+			next = timerqueue_getnext(&base->timerqueue);
- 		if (!next)
- 			continue;
- 		delta = ktime_sub(next->expires, base->get_ktime());
-@@ -352,13 +347,13 @@ EXPORT_SYMBOL_GPL(alarm_init);
- void alarm_start(struct alarm *alarm, ktime_t start)
- {
- 	struct alarm_base *base = &alarm_bases[alarm->type];
--	unsigned long flags;
- 
--	spin_lock_irqsave(&base->lock, flags);
--	alarm->node.expires = start;
--	alarmtimer_enqueue(base, alarm);
--	hrtimer_start(&alarm->timer, alarm->node.expires, HRTIMER_MODE_ABS);
--	spin_unlock_irqrestore(&base->lock, flags);
-+	scoped_guard(spinlock_irqsave, &base->lock) {
-+		alarm->node.expires = start;
-+		alarmtimer_enqueue(base, alarm);
-+		hrtimer_start(&alarm->timer, alarm->node.expires,
-+			      HRTIMER_MODE_ABS);
-+	}
- 
- 	trace_alarmtimer_start(alarm, base->get_ktime());
- }
-@@ -381,13 +376,11 @@ EXPORT_SYMBOL_GPL(alarm_start_relative);
- void alarm_restart(struct alarm *alarm)
- {
- 	struct alarm_base *base = &alarm_bases[alarm->type];
--	unsigned long flags;
- 
--	spin_lock_irqsave(&base->lock, flags);
-+	guard(spinlock_irqsave)(&base->lock);
- 	hrtimer_set_expires(&alarm->timer, alarm->node.expires);
- 	hrtimer_restart(&alarm->timer);
- 	alarmtimer_enqueue(base, alarm);
--	spin_unlock_irqrestore(&base->lock, flags);
- }
- EXPORT_SYMBOL_GPL(alarm_restart);
- 
-@@ -401,14 +394,13 @@ EXPORT_SYMBOL_GPL(alarm_restart);
- int alarm_try_to_cancel(struct alarm *alarm)
- {
- 	struct alarm_base *base = &alarm_bases[alarm->type];
--	unsigned long flags;
- 	int ret;
- 
--	spin_lock_irqsave(&base->lock, flags);
--	ret = hrtimer_try_to_cancel(&alarm->timer);
--	if (ret >= 0)
--		alarmtimer_dequeue(base, alarm);
--	spin_unlock_irqrestore(&base->lock, flags);
-+	scoped_guard(spinlock_irqsave, &base->lock) {
-+		ret = hrtimer_try_to_cancel(&alarm->timer);
-+		if (ret >= 0)
-+			alarmtimer_dequeue(base, alarm);
-+	}
- 
- 	trace_alarmtimer_cancel(alarm, base->get_ktime());
- 	return ret;
-@@ -479,7 +471,6 @@ EXPORT_SYMBOL_GPL(alarm_forward_now);
- static void alarmtimer_freezerset(ktime_t absexp, enum alarmtimer_type type)
- {
- 	struct alarm_base *base;
--	unsigned long flags;
- 	ktime_t delta;
- 
- 	switch(type) {
-@@ -498,13 +489,12 @@ static void alarmtimer_freezerset(ktime_t absexp, enum alarmtimer_type type)
- 
- 	delta = ktime_sub(absexp, base->get_ktime());
- 
--	spin_lock_irqsave(&freezer_delta_lock, flags);
-+	guard(spinlock_irqsave)(&freezer_delta_lock);
- 	if (!freezer_delta || (delta < freezer_delta)) {
- 		freezer_delta = delta;
- 		freezer_expires = absexp;
- 		freezer_alarmtype = type;
- 	}
--	spin_unlock_irqrestore(&freezer_delta_lock, flags);
- }
- 
- /**
--- 
-2.30.2
-
+applied.
+Thanks!
+Helge
 

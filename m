@@ -1,84 +1,80 @@
-Return-Path: <kernel-janitors+bounces-7871-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-7873-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63A55A9DEA2
-	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Apr 2025 04:16:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96618A9E2CB
+	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Apr 2025 13:36:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B742717C093
-	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Apr 2025 02:16:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC54D173234
+	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Apr 2025 11:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4002B1A5BA6;
-	Sun, 27 Apr 2025 02:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF9A2528E4;
+	Sun, 27 Apr 2025 11:35:45 +0000 (UTC)
 X-Original-To: kernel-janitors@vger.kernel.org
 Received: from mail.nfschina.com (unknown [42.101.60.213])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id AF70BA55;
-	Sun, 27 Apr 2025 02:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 46D9B250C14;
+	Sun, 27 Apr 2025 11:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.213
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745720186; cv=none; b=S9HKC/fjuX8aq4/ROXCPDfyreQZflkGiFwaLabcLyvB69zINlhXrat5GBT7rhaAJpilxA92mMCrZ0Sgb3fA1LPDhw0a4YhqDWqFK/uVf/jmN+o0mQUAHcCEqFaGTuKKkr6aGYYnZghnUiU7PdhVDifXRCIDaKD2SsTtlikAPKTc=
+	t=1745753745; cv=none; b=B17vyKzwfZEcrWA4LymNtW8HjA33uF12TU5PyeNBVE2tln7DZR8fz6XXgMhivolVyx0ylsBK+pHNjeeIHoqweypBDEC5gntLZMtFIhMdyEznrG3aAED1MOQ4YqJJxAOTLoxccY9s5n2Syfkc2uh+z3BOLa3mWtbB4xpx9FTFkdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745720186; c=relaxed/simple;
-	bh=/q0FRE+v1qPsc0eFD8lo0CCwkZ5YXnSjk3zedmKHqR0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type; b=ffleMR9OJhZcwAbGiD/9vgAlKzXiFsK2DipAvVdf4D3BPIfwiTu0vy+grnRQoxCJu49cWsT5jSKyAyojQvVns/IHA4kWbbZYbSnnENvc2+ZGW03+PkTup6PhTZr8ZLEYNxzAV/MhZvtn6AvpQlrzyJDsCrOnEAmFlbuWJIPBCJM=
+	s=arc-20240116; t=1745753745; c=relaxed/simple;
+	bh=4iic99CSTrCgezl0wafUvtYGM6RZbIUL1twLDdeoMSc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rOKNQVcjIXfY5M+ejkJ9QGXN3jSin42N31bpFWtcM0t1/8MsHVn1l+7wlfqgQhRON9vmfFtaETLB9Et1/C/FqXU0vMmLX1uvJ42rMWoBw2kSitgM772hdx4NgeM3I+/UmvdpYJ+5jaGspQFMLYFQP+m9TIePPguDcXCniJBPres=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.213
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
-Received: from [172.30.20.101] (unknown [180.167.10.98])
-	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id 24EBC60171E8E;
-	Sun, 27 Apr 2025 10:16:00 +0800 (CST)
-Message-ID: <d306f10c-457e-493e-8d06-6d9bd90485ea@nfschina.com>
-Date: Sun, 27 Apr 2025 10:15:59 +0800
+Received: from longsh.shanghai.nfschina.local (unknown [180.167.10.98])
+	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id 9115F6019643E;
+	Sun, 27 Apr 2025 19:35:37 +0800 (CST)
+X-MD-Sfrom: suhui@nfschina.com
+X-MD-SrcIP: 180.167.10.98
+From: Su Hui <suhui@nfschina.com>
+To: jstultz@google.com,
+	tglx@linutronix.de,
+	sboyd@kernel.org
+Cc: Su Hui <suhui@nfschina.com>,
+	eahariha@linux.microsoft.com,
+	luiz.von.dentz@intel.com,
+	geert@linux-m68k.org,
+	anna-maria@linutronix.de,
+	ojeda@kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH v2 0/3] time: some cleanup for jiffies and alarmtimer
+Date: Sun, 27 Apr 2025 19:35:27 +0800
+Message-Id: <20250427113529.1473800-1-suhui@nfschina.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] alarmtimer: switch spin_{lock,unlock}_irqsave() to
- guard()
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: jstultz@google.com, tglx@linutronix.de, sboyd@kernel.org,
- linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Content-Language: en-US
-X-MD-Sfrom: suhui@nfschina.com
-X-MD-SrcIP: 180.167.10.98
-From: Su Hui <suhui@nfschina.com>
-In-Reply-To: <1ec38ba3-000f-4e26-b18f-95ffb3583836@stanley.mountain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2025/4/25 21:04, Dan Carpenter wrote:
-> On Thu, Apr 24, 2025 at 10:48:20PM +0800, Su Hui wrote:
->> @@ -230,15 +226,15 @@ static int alarmtimer_suspend(struct device *dev)
->>   	ktime_t min, now, expires;
->>   	int i, ret, type;
->>   	struct rtc_device *rtc;
->> -	unsigned long flags;
->>   	struct rtc_time tm;
->>   
->> -	spin_lock_irqsave(&freezer_delta_lock, flags);
->> -	min = freezer_delta;
->> -	expires = freezer_expires;
->> -	type = freezer_alarmtype;
->> -	freezer_delta = 0;
->> -	spin_unlock_irqrestore(&freezer_delta_lock, flags);
->> +	scoped_guard(spinlock_irqsave, &freezer_delta_lock) {
->> +		min = freezer_delta;
->> +		expires = freezer_expires;
->> +		type = freezer_alarmtype;
->> +		freezer_delta = 0;
->> +	}
->> +
->>   
-> Don't add the extra blank line here.
+There are some small cleanup for jiffies.c and alarmtimer.c.
+Compile test only.
 
-Will update in v2 patch, thanks for the suggestion.
+v2:
+ - remove some guard() useages in patch 3.
 
-Su Hui
+v1:
+ - https://lore.kernel.org/all/20250424144819.24884-1-suhui@nfschina.com/
+
+Su Hui (3):
+  time/jiffies: change register_refined_jiffies() to void __init
+  alarmtimer: remove dead return value in clock2alarm()
+  alarmtimer: switch some spin_{lock,unlock}_irqsave() to guard()
+
+ include/linux/jiffies.h  |  2 +-
+ kernel/time/alarmtimer.c | 62 +++++++++++++++++-----------------------
+ kernel/time/jiffies.c    |  5 +---
+ 3 files changed, 28 insertions(+), 41 deletions(-)
+
+-- 
+2.30.2
 
 

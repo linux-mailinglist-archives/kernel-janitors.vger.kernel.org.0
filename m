@@ -1,102 +1,84 @@
-Return-Path: <kernel-janitors+bounces-7890-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-7892-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A98AA3F12
-	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Apr 2025 02:34:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE82AA4161
+	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Apr 2025 05:28:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DA4C1B65EE7
-	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Apr 2025 00:31:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC8197B7C62
+	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Apr 2025 03:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714BE25B1D1;
-	Wed, 30 Apr 2025 00:17:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2qmY2zJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B901D7984;
+	Wed, 30 Apr 2025 03:27:47 +0000 (UTC)
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734DE248F50;
-	Wed, 30 Apr 2025 00:17:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.nfschina.com (unknown [42.101.60.213])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id D7C1913B2A4;
+	Wed, 30 Apr 2025 03:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.213
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745972221; cv=none; b=r4Q9zh5mXH9o1gPJ0g92WshephWj/OMQHTfcJ+OSjtAnzYPLts+q7A+hUghwD6GwCdkM0jarYLGFXRLdOcFB/9DKgr27I+2L1TqTazpnc55QaMUAhkyy7y/cxiUQXcoRp1DMWKJtOhZI8rFpaym4xLy7xjgQCadmTK7lUz9Ok+I=
+	t=1745983666; cv=none; b=OAKqzzzadGzBgcBdUbXn//Y3j9F17CZWcdt/qWJei+QxW9Jw2q5zH0C85vepio4gtr6suSRdaFzsqEgLBvNL9e3nBIwEpDR4cB8GlbXKrscooa1DHvtoOkQ6Bc+iAOq+LmCH/gO6N+u9DNGweQATcYZWIkMRPG5UjhBgyFayRfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745972221; c=relaxed/simple;
-	bh=aK9F9nwIdg1FphfT+Yfjld5zvSum/rAfg7pCxAMkINY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IO7r1IM6+9IRKsvlR9kVKX65JVV7UDkxjVsMwx/Dm1ZGckFMTO+Hvglw/01wbWkRGWP5IbS7/PU33a5tFR92SywjYcatUnRwHa7WNhNY/Dtf+3xpYjCFzMUvy+EHjAW2mLpHSJ1mzDW0P2FcJgC5VYcekY4y1mQx+DBLKlxCWXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2qmY2zJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643AEC4CEF1;
-	Wed, 30 Apr 2025 00:17:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745972220;
-	bh=aK9F9nwIdg1FphfT+Yfjld5zvSum/rAfg7pCxAMkINY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f2qmY2zJxR+ibK/Gxzvt5dyIAIgHEFb0wJlpCM1untRcEPWw80nYDj9aUM9LmQCTO
-	 lZMeo4qtAnYSRYO2HTwMS1dzOLylqleohStMuC5Oyqe5LZdl1JUkNhNHN0jO0Oyz9a
-	 6sQdEs5JxrYXJvueCGqanCFfEGPzCrRPVZGSOYjL/euAFpfKnkp31PCG8JRDf9Neuc
-	 DI8GsQL1+afXp9PUy9ic1RtHK/PbmlWXsZ3CUMCbVbN9SeWZDZACSxiucdE5CGHTcN
-	 OP8Tc+9y5Pd5/+g4+P5Ts4nNF4XLGI8BFtKNj4/adKwW2mNEWt7mEzDuG8CVf8waKs
-	 QMWDPQrJCcIIA==
-Date: Wed, 30 Apr 2025 01:16:56 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	kernel-janitors@vger.kernel.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH] regcache: Use sort()'s default swap() implementation
-Message-ID: <aBFr-OJlWHg5a0Lj@finisterre.sirena.org.uk>
-References: <20250428061318.88859-2-thorsten.blum@linux.dev>
- <edab112f-9449-4862-8f8a-0beae136e0c6@web.de>
+	s=arc-20240116; t=1745983666; c=relaxed/simple;
+	bh=rK/vyMj1pGJnHRMWWXareljKHaMXSwo1wcFJufulN5k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=O7imruCbRLqGTJQCZqbpZQ+bWf6PMhjwhnPYY/esD3gifPJ1VKcI58I1MdBA0cMCicStP2bOIRUtUbgZdxZpftSkgPwLKIluA5lfjwSBtKNe0t6Ux5DGWjypvT1Ga8dpKPcNAqau4lqq0zago0kKPVFehZVoGzT83jXHvSrQoFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.213
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
+Received: from longsh.shanghai.nfschina.local (unknown [180.167.10.98])
+	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id 07C9A6018852B;
+	Wed, 30 Apr 2025 11:27:37 +0800 (CST)
+X-MD-Sfrom: suhui@nfschina.com
+X-MD-SrcIP: 180.167.10.98
+From: Su Hui <suhui@nfschina.com>
+To: jstultz@google.com,
+	tglx@linutronix.de,
+	sboyd@kernel.org
+Cc: Su Hui <suhui@nfschina.com>,
+	eahariha@linux.microsoft.com,
+	luiz.von.dentz@intel.com,
+	anna-maria@linutronix.de,
+	ojeda@kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH v3 0/3] time: some cleanup for jiffies and alarmtimer 
+Date: Wed, 30 Apr 2025 11:27:31 +0800
+Message-Id: <20250430032734.2079290-1-suhui@nfschina.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="NFTx9axBbIHKVfre"
-Content-Disposition: inline
-In-Reply-To: <edab112f-9449-4862-8f8a-0beae136e0c6@web.de>
-X-Cookie: Well begun is half done.
+Content-Transfer-Encoding: 8bit
+
+There are some small cleanup for jiffies.c and alarmtimer.c.
+Compile test only.
+
+v3:
+ - add a WARN_ON_ONCE in patch 2.
+
+v2:
+ - remove some guard() useages in patch 3.
+ - https://lore.kernel.org/all/20250427113529.1473800-1-suhui@nfschina.com/
+
+v1:
+ - https://lore.kernel.org/all/20250424144819.24884-1-suhui@nfschina.com/
 
 
---NFTx9axBbIHKVfre
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Su Hui (3):
+  time/jiffies: change register_refined_jiffies() to void __init
+  alarmtimer: remove dead return value in clock2alarm()
+  alarmtimer: switch some spin_{lock,unlock}_irqsave() to guard()
 
-On Mon, Apr 28, 2025 at 11:00:46AM +0200, Markus Elfring wrote:
+ include/linux/jiffies.h  |  2 +-
+ kernel/time/alarmtimer.c | 62 +++++++++++++++++-----------------------
+ kernel/time/jiffies.c    |  5 +---
+ 3 files changed, 28 insertions(+), 41 deletions(-)
 
-> Would the following source code formatting become applicable?
->=20
-> +	sort(defaults, ndefaults, sizeof(*defaults), regcache_defaults_cmp, NUL=
-L);
+-- 
+2.30.2
 
-Feel free to ignore Markus, he has a long history of sending
-unhelpful review comments and continues to ignore repeated requests
-to stop.
-
---NFTx9axBbIHKVfre
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmgRa/UACgkQJNaLcl1U
-h9CyyQf9GfxP0Cy0bZ97n/ofMRRGMjpH6U3zALBxa2zXqCorH55hSQsEfUQRCfXJ
-UzR/jIdXczE7jdyZEQm+psDrDJegAOkYD2AWrLKF5U417evMcXcusr3chjfX2o4u
-0so9BBw4bpk3PAZMWlv5LadCc7gH/wJDfzPxOO59CO+pWTr3pwIpiotPYx5jDM0u
-KQ/VKWDOGyGXYGEvU+rA71pXDHV1Y+SSF9NehOS9zasrCiYxeXEjVTXABs61sYba
-6vjBWO9eIFXPurZ1fqkK7AbdtTq1UM6TleP293zosRUm+jw+DU9pAjb7OvTktbs9
-qyP6k5NsV9SweDj/sj6uIg2TCvUpyg==
-=siGj
------END PGP SIGNATURE-----
-
---NFTx9axBbIHKVfre--
 

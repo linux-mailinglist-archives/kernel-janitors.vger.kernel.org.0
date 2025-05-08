@@ -1,141 +1,129 @@
-Return-Path: <kernel-janitors+bounces-8014-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-8016-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92343AAFDE0
-	for <lists+kernel-janitors@lfdr.de>; Thu,  8 May 2025 16:55:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93F32AAFEFB
+	for <lists+kernel-janitors@lfdr.de>; Thu,  8 May 2025 17:21:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A42D1BA4A2E
-	for <lists+kernel-janitors@lfdr.de>; Thu,  8 May 2025 14:55:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF5B3B42E67
+	for <lists+kernel-janitors@lfdr.de>; Thu,  8 May 2025 15:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA5527A12E;
-	Thu,  8 May 2025 14:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1B6283FC9;
+	Thu,  8 May 2025 15:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="kmer2oUb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jiLzLgnN"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-75.smtpout.orange.fr [80.12.242.75])
-	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175E5278E63;
-	Thu,  8 May 2025 14:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F71127A44C;
+	Thu,  8 May 2025 15:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746716068; cv=none; b=N+sMNWFXctOSDPqYMMtWb8cmpxrnbAKA/xylZzC4gxHu1ACT4Ku0Ck/j5CY9v5R8fx0tT7pwm/YgNVFkH6JQTGhjn6q+Ae1TKxIQPMlWhoBwGYg+bOErJst9KWOommvAroPHoKKslNRGM0l9cQwLCVeYuT4MXoFRM69LEy1387g=
+	t=1746717031; cv=none; b=DCygWe6eKAA5jL7JIDg5UXjxmo3dWDVPyUJ7+eCSX09Ce4P7Y9fSvLH1s4RCtl+aC57d8+4TJ8+orGW1Cvx9to5Pi+UZo7+8HO+Xgf1YMa1NkzY94E8n+BiU+A/P1m6V3w3Rur8pDeE8lkUR8hNy1qIXVdeSVgTuZ0HIznak8Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746716068; c=relaxed/simple;
-	bh=MC2BQnBsUPBcodLDkOXLT9ic/41dY/hw+4954BIOFIc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z8b3bTAJvO2NShAF0txrxILNPTenlFEbchElKf4UiFMuAzmkS2PmmiAIGYJP1Zt7J6N+uzYhSTJMnN9Jr3wtwTM1CZ4iMfIKztu6bmlYLeuNarWQYH2w/bRjLxPNxL6VeDOpId4VBEhCahBv9ipiOjAuaUEl0oH/qLsun1P9BLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=kmer2oUb; arc=none smtp.client-ip=80.12.242.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from localhost.localdomain ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id D2cYuomdl816KD2cluwCrp; Thu, 08 May 2025 16:53:23 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1746716003;
-	bh=VqDEeskjv204T3o+wE2sZQ84XlTbJJpueq61qTFHyrU=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=kmer2oUbkAgOhVfov1utjfGjKAfmb/BJ5QcB46zCIaqQYavwLTUu29+A1ZPz5aOSf
-	 T7jQk01ZTHqW0tyOSQ4SDXlSFipu9KTipIfiaP5GKh6YNCkwh2SlIYGFmbMgO1ulMK
-	 41XW59fx5HzeD98srEdzP6BbYD5qAEE1nlPkUsUzAjE3ZZ872L2R6ZvJdSGJWCeKFs
-	 EF7/WzzWvzASRcdldvOC5ee8c//yRhxNxNMklIJIO3Irl0zV1KwSwfdp5En7DwPSZy
-	 tVSeKQPJ17oWKXq1CAsm/mmpXrIw+euQ33DAgvUL+deIzoVMYP6T7dOYMDyplHq924
-	 yiBRZo34NVqKQ==
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 08 May 2025 16:53:23 +0200
-X-ME-IP: 90.11.132.44
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Lorenzo Bianconi <lorenzo@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	s=arc-20240116; t=1746717031; c=relaxed/simple;
+	bh=dhECve019k+MAhaJXpnJX0vZpEJhKyOVtBrA+Jc60Gw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KKIKnS4rlhDv1km7tFA0zvNhEVSwvroycXF2naCYt3aSWnbvZ3eREKX5jyUiFXzh2/zuUzVtq9vGZJMawS4UiOOplzHM9iNmlp+dRXoHOTKleZ2n+hkKGqRZpOMqqwqKe6D9tW10ruLNLRtwzWzAGJm68A3S93KDZG7ebSBU/Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jiLzLgnN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A144EC4CEE7;
+	Thu,  8 May 2025 15:10:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746717031;
+	bh=dhECve019k+MAhaJXpnJX0vZpEJhKyOVtBrA+Jc60Gw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jiLzLgnNY0s2FTPN5+DxCy5Hc10iLZS6vuh/B+dVKZ6zKd/hSyVEe58/lA0bztS7m
+	 ymneFlZ/yNcmS1JXeh8kTaRgTz5yCcTkIK/jUSo8TmuSSw6fO+vGl2Ws+UplUycPtP
+	 lzWp5XeU8zpMwhowNEHlqbONMLjgB6e1qsLi2t6HE+UyGDvaVJNjNtlXqQcl3tQaj7
+	 +0cLGZF/sUQS2BjI1onrqLymbKDVh94UUXp7Dk6Z0OK4CYFRP0j2z6tEjIqCGsOEjb
+	 MmvOmdQFFn4kKRx6jCrBkW98MGqJmDnaMkgff4kBbIdgUaZBASIEA5NmQMfSdH3zOV
+	 M5I/xYSK1H5Yw==
+Date: Thu, 8 May 2025 17:10:28 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	netdev@vger.kernel.org
-Subject: [PATCH v2 4/4] net: airoha: Use dev_err_probe()
-Date: Thu,  8 May 2025 16:52:28 +0200
-Message-ID: <1b67aa9ea0245325c3779d32dde46cdf5c232db9.1746715755.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <5c94b9b3850f7f29ed653e2205325620df28c3ff.1746715755.git.christophe.jaillet@wanadoo.fr>
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 2/4] net: airoha: Fix an error handling path in
+ airoha_probe()
+Message-ID: <aBzJZCIvE9u_IAM-@lore-desk>
 References: <5c94b9b3850f7f29ed653e2205325620df28c3ff.1746715755.git.christophe.jaillet@wanadoo.fr>
+ <3791c95da3fa3c3bd2a942210e821d9301362128.1746715755.git.christophe.jaillet@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="V+aLiTt/t6jXV4qn"
+Content-Disposition: inline
+In-Reply-To: <3791c95da3fa3c3bd2a942210e821d9301362128.1746715755.git.christophe.jaillet@wanadoo.fr>
 
-Use dev_err_probe() to slightly simplify the code.
-It is less verbose, more informational and makes error logging more
-consistent in the probe.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Changes in v2:
-  - New patch
+--V+aLiTt/t6jXV4qn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Compile tested only.
----
- drivers/net/ethernet/airoha/airoha_eth.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+> If an error occurs after a successful airoha_hw_init() call,
+> airoha_ppe_deinit() needs to be called as already done in the remove
+> function.
+>=20
+> Fixes: 00a7678310fe ("net: airoha: Introduce flowtable offload support")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> Changes in v2:
+>   - Call airoha_ppe_init() at the right place in the error handling path
+>     of the probe   [Lorenzo Bianconi]
+>=20
+> Compile tested only.
+> ---
+>  drivers/net/ethernet/airoha/airoha_eth.c | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
+net/airoha/airoha_eth.c
+> index af8c4015938c..d435179875df 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> @@ -2967,6 +2967,7 @@ static int airoha_probe(struct platform_device *pde=
+v)
+>  error_napi_stop:
+>  	for (i =3D 0; i < ARRAY_SIZE(eth->qdma); i++)
+>  		airoha_qdma_stop_napi(&eth->qdma[i]);
+> +	airoha_ppe_init(eth);
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 2335aa59b06f..7404ee894467 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -2896,10 +2896,9 @@ static int airoha_probe(struct platform_device *pdev)
- 	eth->dev = &pdev->dev;
- 
- 	err = dma_set_mask_and_coherent(eth->dev, DMA_BIT_MASK(32));
--	if (err) {
--		dev_err(eth->dev, "failed configuring DMA mask\n");
--		return err;
--	}
-+	if (err)
-+		return dev_err_probe(eth->dev, err,
-+				     "failed configuring DMA mask\n");
- 
- 	eth->fe_regs = devm_platform_ioremap_resource_byname(pdev, "fe");
- 	if (IS_ERR(eth->fe_regs))
-@@ -2912,10 +2911,9 @@ static int airoha_probe(struct platform_device *pdev)
- 	err = devm_reset_control_bulk_get_exclusive(eth->dev,
- 						    ARRAY_SIZE(eth->rsts),
- 						    eth->rsts);
--	if (err) {
--		dev_err(eth->dev, "failed to get bulk reset lines\n");
--		return err;
--	}
-+	if (err)
-+		return dev_err_probe(eth->dev, err,
-+				     "failed to get bulk reset lines\n");
- 
- 	eth->xsi_rsts[0].id = "xsi-mac";
- 	eth->xsi_rsts[1].id = "hsi0-mac";
-@@ -2925,10 +2923,9 @@ static int airoha_probe(struct platform_device *pdev)
- 	err = devm_reset_control_bulk_get_exclusive(eth->dev,
- 						    ARRAY_SIZE(eth->xsi_rsts),
- 						    eth->xsi_rsts);
--	if (err) {
--		dev_err(eth->dev, "failed to get bulk xsi reset lines\n");
--		return err;
--	}
-+	if (err)
-+		return dev_err_probe(eth->dev, err,
-+				     "failed to get bulk xsi reset lines\n");
- 
- 	eth->napi_dev = alloc_netdev_dummy(0);
- 	if (!eth->napi_dev)
--- 
-2.49.0
+it was actually a typo in my previous email but this should be clearly
+airoha_ppe_deinit().
 
+Regards,
+Lorenzo
+
+>  error_hw_cleanup:
+>  	for (i =3D 0; i < ARRAY_SIZE(eth->qdma); i++)
+>  		airoha_hw_cleanup(&eth->qdma[i]);
+> --=20
+> 2.49.0
+>=20
+
+--V+aLiTt/t6jXV4qn
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaBzJZAAKCRA6cBh0uS2t
+rOayAQCaglkROsypWbnoARe9kkq6RYdKaAl4rjlfjKCEB8HWQQEAgs12WF2PhlvU
+iTcoAkcTJX4fuM85cyB9I8L+eeZi/wg=
+=QUnf
+-----END PGP SIGNATURE-----
+
+--V+aLiTt/t6jXV4qn--
 

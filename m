@@ -1,136 +1,122 @@
-Return-Path: <kernel-janitors+bounces-8478-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-8480-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4800AAEE873
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Jun 2025 22:43:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A858FAEE933
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Jun 2025 23:03:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4938D1BC0DCC
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Jun 2025 20:44:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85CED3BC35B
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Jun 2025 21:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A276235079;
-	Mon, 30 Jun 2025 20:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A572E9EB9;
+	Mon, 30 Jun 2025 21:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=crashcourse.ca header.i=@crashcourse.ca header.b="rVmEdNFg"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TOqinX38"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1E11F2BB5
-	for <kernel-janitors@vger.kernel.org>; Mon, 30 Jun 2025 20:43:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.212.143.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A559223DFD
+	for <kernel-janitors@vger.kernel.org>; Mon, 30 Jun 2025 21:01:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751316228; cv=none; b=qxHuyJ1JiXXBDDIhCvRGPH2AydIko3BN+mL1y2chZaykhzNRMJ79oJALEGGVSLdTZEfCXeLJWcCCz3ONZXYe7Hm2yPBsvE7+ZE2pCkOJgSyr3PyBI7Cz0JkRNNYST52WtXog5odbJf4etBedVdu1hU4voP9wSFZPcaLMm0gpdLs=
+	t=1751317319; cv=none; b=qKYg7O48MRGCtg2vOwnzuzT1oOoOt68VdnjdEApqIm7T21g7DknC8Ht1R3FdRkzdwx8V84ZuYVNLnaMqVLEObv4nq5G+pY/Iy6ah+Gr0YgT4zuO4lNsTpgH6qsFecX4VVIqbfJY/b/CEBQbFXfcTQkZFIVenYZLVC2ffM68r3F8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751316228; c=relaxed/simple;
-	bh=Hl2+BuTIsRx5YflGhLK0Qu87p9i0fcNT+oAY3LuiRHo=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=LYDHSscPemVHvC+gMTXUvCXUODkGJx5MgwylOQKUrRYbau49rEmykzEphnhsm/W4KcNmnh58GMD3TJuJfTGlrBqyUEZsTAfGcVvOLUQekCY5ZgvYbhTslWWuWzfTjxVKdlXd1wqwl8Z07Q7IuOYLgm4LOnJLKkbf4DcStnCDY0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=crashcourse.ca; spf=pass smtp.mailfrom=crashcourse.ca; dkim=pass (2048-bit key) header.d=crashcourse.ca header.i=@crashcourse.ca header.b=rVmEdNFg; arc=none smtp.client-ip=199.212.143.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=crashcourse.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crashcourse.ca
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=XRiXNMk+Eywrh4b/g8zccXTSLou0XxOssRWcHFu/K1g=; b=rVmEdNFg17WFytgekuzmZnslN+
-	X02OL99vfP27r/7m8zx5i2a/AxWfI1/WVsBZN5sW3AaOg+CAaa3uxSH2t+at5e6armTviCl3vnG0P
-	rvy4BAK0jpApaHLvS6844jES0u6k8jYluTNyKgGTewrojtQHQCAp2ZBQbohk0uB/+sLBsCnyFINF1
-	daId5lVEMKF+ZrELxpRQqGWI2LRuBEltK+p/enaDRTZtw/7hO961Upt1iFoxt+F4o7oBLnv++2haa
-	EEOqA2G9J0aK2CZBtCNpwTJPCkh7zGFQvR48sp7oYW/ofzZg2+twYYQFnmsmJLrMjcZ1xy4wRTlZD
-	FOaQrV7A==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:39068 helo=asus)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uWLLq-00000004KvK-1w7I;
-	Mon, 30 Jun 2025 16:43:44 -0400
-Date: Mon, 30 Jun 2025 16:43:38 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-cc: Kernel Janitors List <kernel-janitors@vger.kernel.org>, 
-    Lukas Bulwahn <lbulwahn@redhat.com>
+	s=arc-20240116; t=1751317319; c=relaxed/simple;
+	bh=owKTpdGWy/BM62JhQaU1xcUh1V2zGtOHCnSLni9e7Do=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jnp3WnQIyIO/ziDxXEo7zxGjCniPrw5SOtBQB+D1Txg0nDrny2FBxRENIu3MFkqV2x2nqZ0+IScpUoODzJnWQkbvTUZH4fkly6f4UR7TSlLIrzUgvXQdVqClZ7yCS5kN+dsXCw4cKuXQfl4rUjQwOmmLauSQuxxr2kOqyvaRGSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TOqinX38; arc=none smtp.client-ip=209.85.210.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7382ffcb373so2617011a34.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 30 Jun 2025 14:01:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1751317317; x=1751922117; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tr8kLcrZ02mzOFc6KZwH1AqdkxuW1grOlZ5WPPwFD6Y=;
+        b=TOqinX38Lw6zVRNkaHEBX4hqPkmEKh6wa48gsz/oTSO/Tw5R5SR/FnqV8dddMa5JQT
+         IHjlK/pS4kkeQKp+kK/q3eacdg/v5N866794EN54yZyeK0Xx4eVcafYWdb1J9lPZTApa
+         ES8o/c9HbEDUHSBmPixv+DMFtLirWBS05BMwEfCU8Lq0VRNeHc3QHTPceACwK2zGAKkv
+         Dmen8r4sdIZm4oDYdC+nA4uW65fSprRVlaEveO6eyaWbcvGa1m/Oww4RsFV3qIr2Tnm+
+         7UR+4RTGlfcexcQNT+uuawcB6g5msdluXEq8tLFxCSqEc18rKDoYpZKHHv2SxkUwLN5a
+         qbTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751317317; x=1751922117;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Tr8kLcrZ02mzOFc6KZwH1AqdkxuW1grOlZ5WPPwFD6Y=;
+        b=p0spaunhLXEdWkrX3RC7lWhBeAU8Cj5xbILQ+d8ZMmrUJBT2f9pBwS1BGksND6y8p4
+         hGXDh8J3u7HkUQlxjNo24SpY/IXLJLnGhKmrc7l1skf30ATnEDKcxboJ0CZ65FX3Hf+P
+         vZQUV0MPTSYm25o2wgfSDa6kh8VqwWW/TOnm+GBZSa75CqgGuN5UH0tyoRx077F1Y9CM
+         0S7olSiR7TeVPjfZWeo/a7GSjaFjUFD4ttjDl87OkeaguwvWfE0z6+Mnd4GNx7B4of3F
+         t08gajTV1ZLv2CQdS6UL5CtH0S4A91tiXtkb/ssp68sgH9ly87Q6JR+PlLsycmn5b1DG
+         QDXg==
+X-Gm-Message-State: AOJu0YxqAPwYx6ZXwcB/DcFFM5oYF+9lLaQRlLfhxpJiRy8bjKrOucNn
+	+fWqBoxeEcJP3XiikHHrfVOX0nk4XBJzfs6BYd7ienT4q82ht9zh6FN66XY+i4E9Fw4=
+X-Gm-Gg: ASbGncvX9SEM0ZbeX0MME5Dzn5f5lF7hhWaewe+GR7qfUnFgrfDlEL78NSRy806hRmp
+	PoJof8xOeP/xRf9rhCCVvREWVpfz9Wm+hiV8wpSOHK0OpaqdOf0wrxNvOVGC66HKJ0NLlRvxWb8
+	hxxOqPc+++911ncxgpIYiW6PV3IYMYl+7Xa9/Pohx7/xEwVsHVXcZ0xwqkYCMtvJQtXsVDFlK+1
+	uaTH6JzOCzf3pZpmomrYZoMmwJk+m/AlCIRjwXHt+XPdvCh+Wj8Jbmz7LUVoHwCVXFM+/QFXae8
+	Zw0fi5lXUP5chinKZ0Qa9M31yHtmWlae1TA3yoEfrFAFT6xVRB6LckFGxpavEfCNdkEh
+X-Google-Smtp-Source: AGHT+IEm405H8d92bRIpWIdXichYQ9jzYsxApHl6nPtIawE1DTSaOn4VgBqiYsSvvGzErytd7sZgcw==
+X-Received: by 2002:a05:6830:8009:b0:727:3b06:112 with SMTP id 46e09a7af769-73afc61553fmr7086582a34.14.1751317316942;
+        Mon, 30 Jun 2025 14:01:56 -0700 (PDT)
+Received: from localhost ([2603:8080:b800:f700:fb67:363d:328:e253])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73afb0069f4sm1816740a34.19.2025.06.30.14.01.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Jun 2025 14:01:56 -0700 (PDT)
+Date: Tue, 1 Jul 2025 00:01:54 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: Kernel Janitors List <kernel-janitors@vger.kernel.org>,
+	Lukas Bulwahn <lbulwahn@redhat.com>
 Subject: Re: First pass at janitorial kernel cleanup scripts
-In-Reply-To: <bc14c7e7-1188-4330-bc0b-cb0a60568cc1@suswa.mountain>
-Message-ID: <be53fc9d-529f-50c3-a3b1-f3caba54aad9@crashcourse.ca>
-References: <8c4e5d62-7980-bd16-df17-caf76862d4f5@crashcourse.ca> <bc14c7e7-1188-4330-bc0b-cb0a60568cc1@suswa.mountain>
+Message-ID: <f4f8cf3e-cbf3-4835-ba02-f5414f772a89@suswa.mountain>
+References: <8c4e5d62-7980-bd16-df17-caf76862d4f5@crashcourse.ca>
+ <bc14c7e7-1188-4330-bc0b-cb0a60568cc1@suswa.mountain>
+ <be53fc9d-529f-50c3-a3b1-f3caba54aad9@crashcourse.ca>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <be53fc9d-529f-50c3-a3b1-f3caba54aad9@crashcourse.ca>
 
-On Mon, 30 Jun 2025, Dan Carpenter wrote:
-
-> On Mon, Jun 30, 2025 at 02:02:25PM -0400, Robert P. J. Day wrote:
+On Mon, Jun 30, 2025 at 04:43:38PM -0400, Robert P. J. Day wrote:
+> > >   - are there header files that are never included anymore?
 > >
-> >   As promised, I have the first small number of kernel cleanup scripts
-> > that should inspire some obvious janitorial work:
-> >
-> >   https://crashcourse.ca/doku/doku.php?id=linux_kernel_cleanup
-> >
-> > There will be more scripts coming, and a lot of them will address some
-> > rather obvious cleanup that relates to identifying leftover cruft that
-> > was overlooked when something was removed from the kernel -- things
-> > like:
-> >
-> >   - are there things being #defined and never referenced?
->
-> Quite often people publish these deliberately.  They sort of function
-> as documentation.  At one company every time they expose anything
-> about the hardware interface it has to be approved by the legal dept
-> so they publish every single define that they can possibly think of
-> as early as possible so they don't have to go back and forth with
-> legal later on.
+> > That's a good idea.
+> 
+>   I have a script that tracks down exactly that sort of thing. I'm
+> just cleaning that up now. There seems to still be a fair bit of that.
+> As a representative example, there is a header file in the kernel
+> source tree:
+> 
+>   ./sound/soc/amd/include/acp_2_2_enum.h
+> 
+> Does anything include it? Nope:
+> 
+>   $ grep -r acp_2_2_enum.h *
+>   $
+> 
+> So my scripts still identify plenty of potential cleanup.
 
-  Ewwwwwwww ... I do not like that idea. I don't like stuff being
-"#define"d unless it's actually required by the proprocessor.
-Defining stuff as documentation is just ... ewwwwwwwwww.
->
-> >   - are there things defined in Kconfig files that are never used,
-> >     or vice versa?
->
-> Lukas Bulwahn does a lot of this work already.  It will be interesting
-> to see if there is anything his scripts miss.
+Yeah...  acp_2_2_enum.h was never used.  But AMD is the company I was
+thinking about which does some of these things to work around
+complications with legal.  There is a probably a reason for the header
+file to exist.
 
-  Is that the same L. Bulwahn of RISC-V fame? I might need to touch
-base.
->
-> >   - are there header files that are never included anymore?
->
-> That's a good idea.
+I feel like we have to tie this with a commit the removed the last user.
 
-  I have a script that tracks down exactly that sort of thing. I'm
-just cleaning that up now. There seems to still be a fair bit of that.
-As a representative example, there is a header file in the kernel
-source tree:
+regards,
+dan carpenter
 
-  ./sound/soc/amd/include/acp_2_2_enum.h
-
-Does anything include it? Nope:
-
-  $ grep -r acp_2_2_enum.h *
-  $
-
-So my scripts still identify plenty of potential cleanup.
-
-More later.
-
-rday
 

@@ -1,120 +1,136 @@
-Return-Path: <kernel-janitors+bounces-8492-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-8494-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E03AEF6A2
-	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Jul 2025 13:34:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FC5DAEF7AF
+	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Jul 2025 14:03:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE0D14A2377
-	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Jul 2025 11:34:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 171CF1C00D5F
+	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Jul 2025 12:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5D7325B301;
-	Tue,  1 Jul 2025 11:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0126274B5D;
+	Tue,  1 Jul 2025 11:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=crashcourse.ca header.i=@crashcourse.ca header.b="ys06cJVZ"
+	dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b="JQAjAJrC"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic301-21.consmr.mail.gq1.yahoo.com (sonic301-21.consmr.mail.gq1.yahoo.com [98.137.64.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552F2221281
-	for <kernel-janitors@vger.kernel.org>; Tue,  1 Jul 2025 11:34:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.212.143.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DCE22749E8
+	for <kernel-janitors@vger.kernel.org>; Tue,  1 Jul 2025 11:56:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.137.64.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751369657; cv=none; b=Pm2VaFbml+8VJuIsgtzKxenDgNGnf1NpHfKkMlJqt2GVglphRqL4aCWZ+AetGWym7uac3T83tHJboRnVehSF8s7k5o5oreCvnFbR0VZ5RiPKx3pLNu8ta1iED2WigLKs8A0Xks/B8EM4oTn2jfeF2neO3G4rA44dheOde0K2s94=
+	t=1751370980; cv=none; b=UYBsY9j7HO2g+FySKX5hdGCr+Vop12o+KYbdJLJneVYGqMwsL5aHaIEK0FJTfSwef/mCc9CZgRruyx30VnvMqk5yXrsvehXxtmefVObd3jkT9qSvR6EhgCqQIBoAjubBffRC5BLdlDe82T9Lweprt/nYulvS+3rupDj9McVXIvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751369657; c=relaxed/simple;
-	bh=dBgPVe4bIEIpwcFKebSjBxi9Mwj1VM4kDhGseOtEpME=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=QeccPIpXHem8qzB6rZWE3bwhhLFAkM9N0JJ7LBTErkVsE6lDV+4XLdxhEP3REbSE5rQErp5kQx3xiQWlSoemsNbwP+8Q7eYXmW/TfXTxjGm0TS+mk66E3/rUBOZHMQ8r5jl4OnHIYpRNOsa/cWJRIlcAUdLu0F3hM/4OHnEK9LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=crashcourse.ca; spf=pass smtp.mailfrom=crashcourse.ca; dkim=pass (2048-bit key) header.d=crashcourse.ca header.i=@crashcourse.ca header.b=ys06cJVZ; arc=none smtp.client-ip=199.212.143.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=crashcourse.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crashcourse.ca
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=XBHZug9kzeOCmE+cnYoUbgZz8XAZ55Pejq8xSlYg/KY=; b=ys06cJVZSXVu+s+ypDtWWjhqiG
-	hcBaxf/rcDAyjN8JSoWMncHp3rkHltCucuBcu6pUkC62lUn1zj82APmORDDiau/AljQRwmjGzqdim
-	xynQlFCMDimAMNIYWWlXHJj/W2CqO6D1uN8qsS//j+shbB+ytMCX6F+r7rWBA/as8OwZdZOr85hj4
-	aoQuiDQQUfeOwR0fJvWSB65rTjvVFxWSko1dBn7epl1R2arWpw55hUJXM24Kci9Q83/zkeW4JFiWX
-	okhWWmiRCtJU7tslQlSfaz0WinB16qsBzPe3n4D56yJ1BUD005sbA2WpyaGmf4jdjoGYriRL54ZZm
-	GqPRs5Cg==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:54876 helo=asus)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uWZFa-00000008QG6-26UM;
-	Tue, 01 Jul 2025 07:34:11 -0400
-Date: Tue, 1 Jul 2025 07:33:57 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Lukas Bulwahn <lbulwahn@redhat.com>
-cc: Kernel Janitors List <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH] crypto: caam - avoid option aliasing with the CONFIG_CAAM_QI
- build option
-In-Reply-To: <20250701112045.18386-1-lukas.bulwahn@redhat.com>
-Message-ID: <f80f2972-e148-1b59-5d5c-d1714a843433@crashcourse.ca>
-References: <20250701112045.18386-1-lukas.bulwahn@redhat.com>
+	s=arc-20240116; t=1751370980; c=relaxed/simple;
+	bh=hzuzRgmP/yoXgQh8FKoxrurOwmMjAhR3D+Whara43Ws=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FmxWMWJc+9nZHUPxItAIvqrOary+2sp6Z7+bqJ3SPm0G4oJ8V8o2k1SkGeL2n8WiEpMirzxB/F4XVgjOpOPWEtrnWkhN6zRPjQDTlr9y0VIjHtFTrhRVOTCe21bJVRcgvvQ4blF7VSiPNAsCW9BUCBw7G/jk6a461Go8rhR7q40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com; spf=pass smtp.mailfrom=aol.com; dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b=JQAjAJrC; arc=none smtp.client-ip=98.137.64.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aol.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1751370977; bh=gntt+k0Q9g+Ea+fbZ/JyDhnXZM80SSryV8+O9wXd6Z4=; h=Subject:From:To:Cc:Date:In-Reply-To:References:From:Subject:Reply-To; b=JQAjAJrCUX+nG0rCWLOgI5+m3X4pnNXjiEIrzWqvl3wg5aGJdFQ+76RVcQH7KNT3eqS0cK2MRmeoYB2FEk/qjoDtv3rcKzO7RtzueQw4wXQYBe0wuW5UsyjFmhldpqhR2xYPPqmU/B2zRJT+jjO+LM/TJqzBCdb7TjU8IVJuWo30BFL4jANWf+Bzh5ioIxlGaN6ipeBLpy2LGoQy/myNL7dsoqxuj8Kq2ReSfsrnzokfWCwDGamBFc0Xzo4eU+Kw/AWd4y6Xqz/fk2YIwcvxo+M9RaDSTVUTi8bG/JlDHbGpgYZU3ueaiQvp4vRv0X2P+4d9TXgGlz+DnuY/xbUntQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1751370977; bh=bC9No61RL4CQoU2MfCQx/3Trzuw/zinlrdR9yoWhsY7=; h=X-Sonic-MF:Subject:From:To:Date:From:Subject; b=sskew2MFfJRfT2lmyxh8Mu9bXb2gVPyFVc01RYW3GGEpgnBJAB5cic29R3UcfYPKb7YtWqpViK0Ro7SY5rwlBo2a0NXgcXfJ+KSEtBCfCqwFE2Kah2dgN7IRemyc3OewRiYyTBFj2dFGEveac8FTBquiJg92gTgHkZSzj/cXcfPcsaIdJzp31lMynmu+JdeqJuO9M69yv+3UqFKclHRNIQyzwWK2+7k/R6eZn+bsCUI8IUF7xoee2PDD3jWBQidCMNJg8QtC9GZ7HG1ESC/DgPKzYZmoxGyxGKjAPN3INrUCHktwnmciOZ7Gmzges5oLTrjege82TVUA9wkc/dzHpQ==
+X-YMail-OSG: UzesalwVM1mJqSuLYpBRQdPHfjZgfddJ_v7HnnxGh3dqTRjJ_FgM3GUg39rGxmh
+ kEC38OWmG8awEnn44Kmwf2YszBETJnex0Iiolpzmajkcnu9TXIa2_7kr942PQoHyvBlXZVO.Nuq3
+ UohXc39LQbN58RDHjgUs9X6CFrYvj1_Ukh1NeqWsIJr7eTN3eZKosL7IjvZflIC6RpfzHqDtQ4Vh
+ EJwvl58HTDDz_tNhca.jIB9dOyzZWjg.KjIOaXfGjI.uxkUyQgPh5xu36PSgwhzCmK4Tbb0vlv12
+ uc57PobrxWa8oXVc1ogqEWKBDBfjTpdlztetmaE53KD6C4pSEt0fTpfVo2R7HTWw.MdVJ_rBDVf.
+ RdFteBDZebqHzY5vZpUuSaRrHFOMLanYIvLTJ3f9SjJDKXr_zMagv1CQe3kW4R7.qb_yUFH9vZkb
+ _MhKWVmbM9QUB3pssmcHG4E2.4Ua.U4ihVXE58zRs4gg5lV9DzFK5Zc4T0Szov6y7SLjudoS7Y_F
+ 5klv0SaDFfhDjOzXA9L31k8dFllHbOn_0oboTgAROyFP8OB4_B9mG7urxCbxy.EAhakrDNMbQ7GF
+ vILHX9gKGeYjrV5q2jGPXvR745hb4KhpBEbfk3ooRT_89ZWi_ihe5u8uHlWD_ZQpwxBF0OSBBgq_
+ q1hEgRrCDwMl9BZ.Irrx.b.UvsR.TmD6TJt1FluEkOen1lGEK6sWSl6goolVzgVkARc38ti8n0wg
+ dKNBZGEdImjWRop0IBkRhC0fNl7_sKZR9nZy_SX2CSLGp59TWMkFJVg7tTJgAyLgEcDiV8QToMiy
+ 9AKNFgyyapEfdrOq.r0iDErVl55mB9wPa01L.7UZreZpn_nVLyiocPfFspKshHJAPvLe5NgB8H.T
+ SkPkAWYNmsLmcYfQ61WPjjirKnacgF53tyuWEBaNDxYwepCLQzDHsoMaW6ER_PMX9E.JmXuPVf3D
+ V9AHOJJHqA5hkb1tQhIaYFgEkupTWrrdjjUdZIj1K5aLH5DQGwSdUp9iW1x6xlc9YykdkjE5j3.x
+ GKHJHivgatIzEBbKnaytedlJJhhkDVSoVDAVscC8S5xZdQxD6VmBjQqzBPHxDLoRwHN4ogmOL5XY
+ uT6nQdX5cx28QaHWPA49lsiItdTILcTdrtOMO4lsGJxueSQa1u5dinlNg0NE6.PqtYC59IRcgpea
+ MqSn1NcLs783ShAui0GT0m0_SyFxytFu71bNr8WqW6YdBLyIasjLq8K51BesCxsl2UV3quO_FhAc
+ 5FZ9A1HISg1ivJ9f2_zaiTHmmUwIbo.DPOZJDQV2HFFXnQi0nQosT__En.Dy83Q22yXxkRb_3Ppb
+ 6KAxnRckESfaxWqTiG5xyXZuELsYD8xfS3_hD83eZ1cY9dlRjA7aX4Kw55kc1d4Kna6pVunU9ILY
+ iAqDVImhussu_yUQLo8T935Vg64Kkf1V8q.WsLMOEnb7Sc.LmQ0Q3XHWI6dlutASFMJ_KXzjk5Zp
+ EhGoD65bk8VRTTmZcCfLZh0VJccGRSaiCWilcVHcZ4EuD2X_Zb3BB2rmzw3GTk7U48uId1sDZ6NV
+ xfsaQ0Z8J4RJFlrl1ELUHar1LKp2u1qTsfdAxw3u5CNFMvOFnZ7eM2FBLraciEmePK2kiYBJdfgR
+ fwh44xp8uAvnZNb.nwGCbU56hqKv6X3g6XoKqqo97E2mMdXY40sBjGT6xegKgaxtto_n66gwZ88a
+ laWCHov_IglGAam3dLJ53IscwCSeL6o95CH_AJyNCZyFVEzIaTRN_g.91dwTX6vnexPjeOZk7Kkg
+ AM0E4ggEdFxQBsrXequ.4EK67KeZoM5cogrnzaFf84WWMO3xo8zGgHZn9DPUA9UQi0wn7JbeTpSL
+ ZOmhQ6LphbTk62GTcJINc5L.vdgmMI3WC8QhftR2iXqYeiHiY751Y9x8NgP2.axT4L2NYoEvo0R_
+ m4BVUZg.8AEi7E.cdWPWYHGwL07Sx4EK2JGjnJzPwa7sGuZU_3CUNJjhD690V4STe1LKNWRLnDI9
+ CorgJtoUL2vvZdCcL4vEbLNW49wlEBlnlu1bbMne607C1DBGtf2ruY664NkJLBT8dlbPsOP1eI8u
+ CM.vXqrc3EruFaYy2mhQ5Hv_Zdt20Mz0tXJzOLJfQmmGkH6Szoo52fgRDv8LTZ2hfAbb7hPOsZMl
+ DbZY2I8mcPnJzusKTgRLgiYD4HkYnkdlVthEm8YKUIYqAQNf0HsNJPbqvzVb0._c8YhtXCyZBLg1
+ E2n5KAUqpDW6JZYLmHuNNVKdqt.1awBw3C3rSVyKN0S4y1DfkG1xcdaj.qO.9WD30GR7hgg--
+X-Sonic-MF: <rubenru09@aol.com>
+X-Sonic-ID: 89cf28c5-4810-4135-8a5d-d624a22df7f4
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.gq1.yahoo.com with HTTP; Tue, 1 Jul 2025 11:56:17 +0000
+Received: by hermes--production-ir2-858bd4ff7b-l75cc (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 3d62bb3bb3a6558dee9bf77d66b96d15;
+          Tue, 01 Jul 2025 11:46:07 +0000 (UTC)
+Message-ID: <922e109fc0f9cd1197674451cc1281cace025f83.camel@aol.com>
+Subject: Re: [PATCH] drm/i915: replace DRM_DEBUG_SELFTEST with DRM_KUNIT_TEST
+From: Ruben Wauters <rubenru09@aol.com>
+To: Jani Nikula <jani.nikula@linux.intel.com>, Joonas Lahtinen	
+ <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+ Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <arlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>
+Cc: intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Date: Tue, 01 Jul 2025 12:46:05 +0100
+In-Reply-To: <8a3ef0b42de25db3faf384260b7abdce468cb65f@intel.com>
+References: <20250701025426.262129-1-rubenru09.ref@aol.com>
+	 <20250701025426.262129-1-rubenru09@aol.com>
+	 <8a3ef0b42de25db3faf384260b7abdce468cb65f@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.0-1 
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-Mailer: WebService/1.1.24076 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.aol
 
+On Tue, 2025-07-01 at 09:28 +0300, Jani Nikula wrote:
+> On Tue, 01 Jul 2025, Ruben Wauters <rubenru09@aol.com> wrote:
+> > DRM_DEBUG_SELFTEST was replaced with DRM_KUNIT_TEST.
+> >=20
+> > This patch replaces the select in Kconfig.debug to use the
+> > replacement.
+>=20
+> Why? That's the most important questions the commit messages should
+> answer.
 
-    (Most recipients dropped.)
+Sorry, I wrote the commit message quite late at night and forgot to
+include a lot of information, I will send a v2 with more information in
+the message.
 
-On Tue, 1 Jul 2025, Lukas Bulwahn wrote:
-
-> From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
->
-> In the Makefile, the new build option CONFIG_CAAM_QI is defined conditioned
-> on the existence of the CONFIG_CRYPTO_DEV_FSL_CAAM_CRYPTO_API_QI, which is
-> properly defined in the Kconfig file. So, CONFIG_CAAM_QI is just a local
-> alias for CONFIG_CRYPTO_DEV_FSL_CAAM_CRYPTO_API_QI.
->
-> There is little benefit in the source code of having this slightly shorter
-> alias for this configuration, but it complicates further maintenance, as
-> searching for the impact of CONFIG_CRYPTO_DEV_FSL_CAAM_CRYPTO_API_QI
-> requires to grep once, and then identify the option introduced and continue
-> searching for that. Further, tools, such as cross referencers, and scripts
-> to check Kconfig definitions and their use simply do not handle this
-> situation. Given that this is the only incidence of such a config alias in
-> the whole kernel tree, just prefer to avoid this pattern of aliasing here.
->
-> Use CONFIG_CRYPTO_DEV_FSL_CAAM_CRYPTO_API_QI throughout the Freescale
-> CAAM-Multicore platform driver backend source code.
->
-> No functional change.
->
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-
-... snip ...
-
-  hilariously, i was *just* about to use this symbol (CONFIG_CAAM_QI)
-as an example of finding what i call "badif" Kconfig symbols --
-symbols that are checked by the preprocessor but are *apparently* not
-defined in any Kconfig file. i'll write a separate note about this
-right away, but this very symbol was one that was flagged by my
-script that turned out to be just a bit trickier than i thought; your
-solution dealt with the "trickiness", though.
-
-  explanation coming shortly.
-
-rday
+> BR,
+> Jani.
+>=20
+> >=20
+> > Signed-off-by: Ruben Wauters <rubenru09@aol.com>
+> > ---
+> > =C2=A0drivers/gpu/drm/i915/Kconfig.debug | 2 +-
+> > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/gpu/drm/i915/Kconfig.debug
+> > b/drivers/gpu/drm/i915/Kconfig.debug
+> > index 1852e0804942..b15b1cecb3aa 100644
+> > --- a/drivers/gpu/drm/i915/Kconfig.debug
+> > +++ b/drivers/gpu/drm/i915/Kconfig.debug
+> > @@ -50,7 +50,7 @@ config DRM_I915_DEBUG
+> > =C2=A0	select DRM_VGEM # used by igt/prime_vgem (dmabuf interop
+> > checks)
+> > =C2=A0	select DRM_DEBUG_MM if DRM=3Dy
+> > =C2=A0	select DRM_EXPORT_FOR_TESTS if m
+> > -	select DRM_DEBUG_SELFTEST
+> > +	select DRM_KUNIT_TEST
+> > =C2=A0	select DMABUF_SELFTESTS
+> > =C2=A0	select SW_SYNC # signaling validation framework
+> > (igt/syncobj*)
+> > =C2=A0	select DRM_I915_WERROR
 

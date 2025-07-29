@@ -1,135 +1,123 @@
-Return-Path: <kernel-janitors+bounces-8729-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-8731-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56BAAB14DA6
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Jul 2025 14:27:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7BEB14E16
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Jul 2025 15:07:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7A6B3BFDAF
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Jul 2025 12:27:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 943DF18A2151
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Jul 2025 13:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184F0290DB5;
-	Tue, 29 Jul 2025 12:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C038A1DE4E7;
+	Tue, 29 Jul 2025 13:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=crashcourse.ca header.i=@crashcourse.ca header.b="gM2mcw67"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V1WzTPLj"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED584289E06
-	for <kernel-janitors@vger.kernel.org>; Tue, 29 Jul 2025 12:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.212.143.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4D279E1;
+	Tue, 29 Jul 2025 13:07:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753792057; cv=none; b=d7/aHGI9Rx3Ju5OFbPZgPqI+Jo+ZUOBpqesKnkuHAehmP6a49+sCPbTdzBg+4VxS0lT21t6CHSy5LlqsDxNyA9z5Zusmij3v0CqNDSsjL74L5Yd4C0YR+NRnPkwaa83uEZ1vdpO+eYaZsILf5jlR91rSaYHZ3xF+0yJoSu5zVzs=
+	t=1753794468; cv=none; b=QAAv1ImgL4PPaZ142ZzVm6q+MEyLWaCC5oWA2q1gkjyAJzuncPKhV7OALobUbNug80JCRVm0Qq2wOy0aX0ZRO80Ahn0N3KqErTAlRwxTxRJzrOMqlUBCwMT+Uz+1jMIWEDpxKOBdTYcNOCdcbb/kGPfgtnNbalqGL1QmsnnJLms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753792057; c=relaxed/simple;
-	bh=pDp3ZapBP56aS2hvAf0o7RGNnZrvBlc2naQJ+NtCoMU=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=RFfvc8oHl/SyTVX9/8FnkyDt4UtFcfiWGSVDAsu5cJCkVO1ue9JGwBI7v25DI1BgqoPeb2Kj2AazH+E0X7pameJU4FfZO4vndxhgZIlcN7rsnaLjNjTqObq+z0aQCB61bsOxuGVo7JhykEAWr4BXjSFi8ZbY1BJav1qxr+VDowE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=crashcourse.ca; spf=pass smtp.mailfrom=crashcourse.ca; dkim=pass (2048-bit key) header.d=crashcourse.ca header.i=@crashcourse.ca header.b=gM2mcw67; arc=none smtp.client-ip=199.212.143.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=crashcourse.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crashcourse.ca
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=NPShgVVZo1GIOR1E0799G06I9qRSPAcg6v2jFtO/Q/o=; b=gM2mcw67Ij9kkQQgNhOsaPeauY
-	Q35/NLRfM34cM+jd0vmvssTJj3JPdHUJcmXuY+ETHxXzsiA9zaERNe3N/tsf2Ty4TNbuctQglMJNq
-	WSSEWGNPtwhEkBPi+zI1xvo/JpSvxrgUv+szyPmk5VvdNEwXVs40kH9V2C7krSqkTBHoe7LbS0YqS
-	EOTpan2qbe7QVw6Ydc9CN3j4G+TL+NRgdDnM7lPw9LTq8EwhVIX4ECjTQpLX7EDK6DnK04jjEB+7B
-	3BUfaelWzbUvu0PQ8O69/3uz6eCVwgDEgUtRG+jRN9qy7NHaeV50ECCY3e6ptenybwweCGCdpRQv1
-	1TFg1lAA==;
-Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:33954 helo=asus)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1ugjQR-0000000G35r-3oZg
-	for kernel-janitors@vger.kernel.org;
-	Tue, 29 Jul 2025 08:27:26 -0400
-Date: Tue, 29 Jul 2025 08:27:18 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Kernel Janitors List <kernel-janitors@vger.kernel.org>
-Subject: more janitorial work: test for power of 2
-Message-ID: <e4d1b54c-a5e7-77ee-5314-0017ab8cae5b@crashcourse.ca>
+	s=arc-20240116; t=1753794468; c=relaxed/simple;
+	bh=/5lq2THeasyHOCc2K9ZWG3M2zFHYPDXCTF5PbfIXrss=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KiIXQs0qsiEJthMlfgP6XTzXyV3FWxB7+TfM6rzYvJQ0PAjScbcUG+7793cfhxD6ttc65XYkOQTm++tRajxdcj/Qo3c0RgJDihMNFT8SqSKJa/vkOsyD3mEg/GQ5xKRHPpwtWa6qJBSLT/ujNkOVfSnG7hQrYaRTf9apQHhvlA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V1WzTPLj; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3b77b8750acso694184f8f.0;
+        Tue, 29 Jul 2025 06:07:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753794465; x=1754399265; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EpVLcHS4Nm1t2biTb/caO1IN7OnTFd9yPWWzRn55f78=;
+        b=V1WzTPLjJV8bNuVzqywDIYl8y6z6hKYJAJZRA/IfcRPrpn1rU43vhhBaZsJFtSWr0C
+         J9noRMxCdyC/1Od+aslLMkrOEYRdqnrb68scm/ekcOUWer1H8LYyKP00u9TDhFEIbhK8
+         mtTZjQQ1JB7FGg9oxD3CX5PIfI6aAn/UWNBoMT34ZlRR0gbMcGu9DkrmrCWJpydBEkKJ
+         gbwZV2UPEm/+It0qJrpkMWUVjGqGAHPaFFWkTUq++HuEiSUDE/zFjpR+MeYTK4a096OM
+         7p4Cpa/iEx7p49CxG7Z99rB09MDdj/Kd5haAaCV7QSG3uu9Pl7OIMrT7Sw37etenKAGv
+         ZrZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753794465; x=1754399265;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EpVLcHS4Nm1t2biTb/caO1IN7OnTFd9yPWWzRn55f78=;
+        b=gjvDjPkSRzzZWJaGEyGhFceoo8UNOVVkFgXmjFN+fB8bnpwuJ4dpEKW9HNfyrrOg/6
+         ql39GfLCdxVf2e0tsgAphEb5Qe3n9mH87b15acutlY8D25bUl7FTafsT4uZ/QJ5lJXVr
+         SvKYRiyQyq1NCBQ7N3+QFO9ClSg55LsVV5u92MxidlruCnmwnkX1o1mrzkmjFbpFMY9r
+         0KqZIVbYz7xOJ7pxkkBZcWrpwRTsotkbDK4GOKjGEXf+dLCQJeRS26hQ5EqAq+WoEM9D
+         iQyqKH2MkN2XvkL4+/Xgygm3LBaQDrrNG+MozqCKrA8VBPGZaOD49199owP15jUEbPlB
+         D5yQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWonBOx7DLdljPKL7al9z9/8P3p6mEFUK1bULiuuWeeSh0hhS3h8KB+EckazUk5yGOXHqFlUwRVNsojTp8=@vger.kernel.org, AJvYcCXWR42vCEPP+3hf+pwh1hoNloGr47DKSXhY9JTOIEpttj0oWhqvSaY75H69uGUABZRfYSI4U1L6Q9+t@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZNFsicDiKYBlaOqVNHUMXdfHt+t15iaHiMCSX+rKarFrrZttQ
+	GYL3fWN7k364ihnS1/5mfyMzjSrhxDTZdPjAA3arwqPandp7Qszpve80
+X-Gm-Gg: ASbGncs5HoMrp9bS+pbx/xqRN8E1HArMgyqnfl5ZOSxvBx7MBC788BJB/lcffcqDUb3
+	gAH8HOfyqYXDn7rnOAqfivQjtwQWMYZh4/iC3XFhkA5H0guRy+IGpQhrMC7qXGx/49w5h4T9s5j
+	SxeiX0BoKdneY2uxOt2yaZjOrdfO4uyRX03ZrzeNFRZXycihgfw+psAZWWHBXYh7sJdD7pYglcN
+	w9Sl0BispxwnwxrloVLHpfkOFGX/p+2dKxz9vtPgLCe3cDee7N6A4dd1gLN71+oi7hZAbU/vGhT
+	YdXPGlFxlBznpB9z4MIEOZrXq1dYDKfzMcgxPFLdJAB+YP6nHuDIIBg5f0cs61daCsuwysWlyeY
+	R7iORvFI3HfRiM6/yEb9J
+X-Google-Smtp-Source: AGHT+IHEx5FwO4DXWDanHU3Y2+ONRatacPraDIuksMAXcs5g3kUlBrlE4dZCsrnykJphqMX68VBrmg==
+X-Received: by 2002:a05:6000:18ac:b0:3b7:775d:e923 with SMTP id ffacd0b85a97d-3b78e3d5a92mr1883541f8f.4.1753794464660;
+        Tue, 29 Jul 2025 06:07:44 -0700 (PDT)
+Received: from localhost ([87.254.0.133])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b78ba267e3sm4500678f8f.59.2025.07.29.06.07.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Jul 2025 06:07:44 -0700 (PDT)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-nfs@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] lockd: Remove space before newline
+Date: Tue, 29 Jul 2025 14:07:09 +0100
+Message-ID: <20250729130709.1932507-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
+There is an extraneous space before a newline in a dprintk message.
+Remove the space.
 
-  i mentioned this before but here's something that can be split over
-numerous subsystems so it can be done in bite-size pieces -- testing
-if an integer is a power of 2.
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ fs/lockd/svclock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  the basic test is simple: do a bitwise "and" between n and n-1, and
-if the result is zero, n must be a power of 2 (it is left as an
-exercise for the reader to convince themselves of that).  the script i
-used years ago was pretty simplistic and tested for different
-variations that included parentheses or not (so it's entirely possible
-the results are not perfect), but here's the script:
-
-  DIR=${1-*}
-
-  echo "PATTERN:     x & (x - 1):\n"
-  grep -Ern "([^\(\)]+) ?\& ?\(\1 ?- ?1\)" ${DIR}
-  echo "PATTERN:     x & ((x) - 1):\n"
-  grep -Ern "([^\(\)]+) ?\& ?\(\(\1\) ?- ?1\)" ${DIR}
-  echo "PATTERN:     (x) & (x - 1):\n"
-  grep -Ern "\(([^\(\)]+)\) ?\& ?\(\1 ?- ?1\)" ${DIR}
-  echo "PATTERN:     (x) & ((x) - 1):\n"
-  grep -Ern "\(([^\(\)]+)\) ?\& ?\(\(\1\) ?- ?1\)" ${DIR}
-
-from the top of the kernel source tree, you can run the script and
-pass as the argument the directory you want to scan; for example:
-
-=== start
-
-$ test_for_power_of_2.sh drivers/net/ethernet/mellanox
-PATTERN:     x & (x - 1):
-
-drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c:163:	if (!length ||
-(length & (length - 1)) ||
-drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c:691:
-if (flags & (flags - 1))
-drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c:697:
-if (flags & (flags - 1))
-drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c:702:
-if (flags & (flags - 1))
-drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c:709:
-if (flags & (flags - 1))
-drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_rule.c:680:
-byte_mask = byte_mask & (byte_mask - 1);
-PATTERN:     x & ((x) - 1):
-
-PATTERN:     (x) & (x - 1):
-
-PATTERN:     (x) & ((x) - 1):
-
-=== end
-
-  you can see the official kernel test for power-of-2 here:
-
-https://github.com/torvalds/linux/blob/master/include/linux/log2.h#L36
-
-so there is a *lot* of kernel code that can be simplified by using
-that boolean function.
-
-rday
+diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
+index c1315df4b350..a31dc9588eb8 100644
+--- a/fs/lockd/svclock.c
++++ b/fs/lockd/svclock.c
+@@ -980,7 +980,7 @@ nlmsvc_grant_reply(struct nlm_cookie *cookie, __be32 status)
+ 	struct file_lock	*fl;
+ 	int			error;
+ 
+-	dprintk("grant_reply: looking for cookie %x, s=%d \n",
++	dprintk("grant_reply: looking for cookie %x, s=%d\n",
+ 		*(unsigned int *)(cookie->data), status);
+ 	if (!(block = nlmsvc_find_block(cookie)))
+ 		return;
+-- 
+2.50.0
 
 

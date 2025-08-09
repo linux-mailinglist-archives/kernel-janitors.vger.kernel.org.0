@@ -1,77 +1,103 @@
-Return-Path: <kernel-janitors+bounces-8888-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-8890-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3771EB1F1D9
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 Aug 2025 03:28:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB5D1B1F6CB
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 Aug 2025 23:26:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 388431AA8281
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 Aug 2025 01:28:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F5EF189E8E3
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 Aug 2025 21:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4B8277814;
-	Sat,  9 Aug 2025 01:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FFC927CB21;
+	Sat,  9 Aug 2025 21:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="F8R0mMZZ"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-18.smtpout.orange.fr [80.12.242.18])
+	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7F4274FD0;
-	Sat,  9 Aug 2025 01:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62A11F8725;
+	Sat,  9 Aug 2025 21:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754702893; cv=none; b=SQaVSLu12L6Ggq7lNb4gvnKs+hHXLjZnlG2qT3CVoF/xCWYK8TyNgVSVRPBV9ix+alZSlc7FNVORHY7KcwigCa917WTUiNhlWTT4LF4GuAikIrkP1Du7wsv3JrqLz/N33BOkUU6Ttxd0VYELavbNdFYzn/xv2YP2Pkjt0Q4i6l8=
+	t=1754774793; cv=none; b=QtxzaKMaLercUvTTi4JOkBNPFsDvuTKi6DcXly8ryU+gisQEtaG8Oy9KwYu3+vIQQafxVEoLH2W2+sPQ/XrjAef8Jsc2cJLMCbUk3ofUPszOYpl9mXY85pFms2eRChBX0RF5Ei5Rba0jr69K7oZGffRQ2Hr09t3RnUWeZgYw/YY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754702893; c=relaxed/simple;
-	bh=0tnJObmLVMaajEbPMCFklfyQV4KEKh7V4lU30FVW2B4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=etnHcbnD4+TThXbPh+6C40HJaCyLKZNJdjJHfhObgwyjvi/l2WBJCQL3eBPIUjgg9luf4yohjqtOH9561H1BTLp/9w1BfUIZ3iqOXr4r6XuUpWgQ448y++kpp78IKVSaCP7KP02E9lqm/J+DZKHQOB+Sv6RAwFna/cSbE30D9Lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4bzNT72THRz2CfsP;
-	Sat,  9 Aug 2025 09:23:39 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 04E2E1A0188;
-	Sat,  9 Aug 2025 09:27:57 +0800 (CST)
-Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 9 Aug 2025 09:27:56 +0800
-Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
- (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 9 Aug
- 2025 09:27:10 +0800
-Message-ID: <8634445b-0462-4d86-9bfb-af10569566dc@huawei.com>
-Date: Sat, 9 Aug 2025 09:27:05 +0800
+	s=arc-20240116; t=1754774793; c=relaxed/simple;
+	bh=hnfjCHnQaU33x2fRHAj1738Ecz7tv9QWfCs2jXcb5j4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YPifiQRuvnX+eMhsg05HoPnDQ5/RyTZhgYGzi7gVGcuewAow5n6beylqn1nmzKhuvshob2Ot6DXTJ2baNlRG8GT+Nj78h4sRdZN36cEo5+eJFZUrlAZHiHm7LA+xz3xmVYnFJysGXkJrgtx/kvczCCgmt/jTZp25tnMwgmDvhjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=F8R0mMZZ; arc=none smtp.client-ip=80.12.242.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
+	by smtp.orange.fr with ESMTPA
+	id kqvxuMZTICThEkqvxuji24; Sat, 09 Aug 2025 23:16:59 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1754774219;
+	bh=gRjOuSVm0vyW/KeKNVV0XzdhAD9WM43tL7z8dD//4s4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=F8R0mMZZGRWpLzWwCxgv62qxAjuqJWsym4+TnvQVLvmtATFUS34JS2O2ip+29jtNN
+	 yO9lzwk8sEJTlyXHRag0oxxNTzbJd+Jpou2QSVFWCEgD/MH2Ke2TBFkTSchWtJNraH
+	 1q4+bTik6NmpOnNnm+WDmmOhmXUlzveAVl//CHFnwVNLNzTOTanzMaqiHAfBVOPv0m
+	 EKcrvmONPj1KZMQ9BKt+fsMknHX+KZxdsK5xz1JX6S/iO1cp97Fsu8kX3x2UvqSIcx
+	 uguG+QTySiKVvEAe3dmafLaiTFx6yoAXj72FvTqUPueqhaC41y8zkkF6zNpMAUkpqW
+	 cREoK2XtF6Pmw==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 09 Aug 2025 23:16:59 +0200
+X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Russell King <linux@armlinux.org.uk>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Rob Clark <robin.clark@oss.qualcomm.com>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Russell King <rmk+kernel@arm.linux.org.uk>,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH] drm/armada: Use the correct prototype for a struct file_operations .write function
+Date: Sat,  9 Aug 2025 23:16:52 +0200
+Message-ID: <8085f9c18ab06158b9adbbdadb8554c85972d390.1754774176.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] soc: hisilicon: kunpeng_hccs: Fix spelling mistake
- "decrese" -> "decrease"
-To: Colin Ian King <colin.i.king@gmail.com>
-CC: <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "xuwei
- (O)" <xuwei5@huawei.com>, <lihuisong@huawei.com>
-References: <20250808105751.830113-1-colin.i.king@gmail.com>
-From: "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <20250808105751.830113-1-colin.i.king@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemn100009.china.huawei.com (7.202.194.112)
 
-+Wei Hisilicon SoC maintainer
+.write functions from struct file_operations return a ssize_t not an int.
 
-在 2025/8/8 18:57, Colin Ian King 写道:
-> There is a spelling mistake in a dev_err message. Fix it.
->
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
-Thanks,
-Reviewed-by: lihuisong@huawei.com
+This is maybe not an issue for architectures that use this driver, but it
+is nicer to explicitly use the correct return type.
+
+Fixes: 96f60e37dc66 ("DRM: Armada: Add Armada DRM driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Spotted while looking at something else and trying to compile the file on a
+x86_64 using:
+  make -j8 drivers/gpu/drm/armada/armada_debugfs.o
+---
+ drivers/gpu/drm/armada/armada_debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/armada/armada_debugfs.c b/drivers/gpu/drm/armada/armada_debugfs.c
+index a763349dd89f..96aebd56272f 100644
+--- a/drivers/gpu/drm/armada/armada_debugfs.c
++++ b/drivers/gpu/drm/armada/armada_debugfs.c
+@@ -49,7 +49,7 @@ static int armada_debugfs_crtc_reg_open(struct inode *inode, struct file *file)
+ 			   inode->i_private);
+ }
+ 
+-static int armada_debugfs_crtc_reg_write(struct file *file,
++static ssize_t armada_debugfs_crtc_reg_write(struct file *file,
+ 	const char __user *ptr, size_t len, loff_t *off)
+ {
+ 	struct armada_crtc *dcrtc;
+-- 
+2.50.1
+
 

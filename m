@@ -1,132 +1,120 @@
-Return-Path: <kernel-janitors+bounces-8929-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-8933-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6559AB24D26
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Aug 2025 17:20:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40288B24F7A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Aug 2025 18:23:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C7F39E1006
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Aug 2025 15:13:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3408172075
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Aug 2025 16:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDDF2FDC5F;
-	Wed, 13 Aug 2025 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B543311C3D;
+	Wed, 13 Aug 2025 16:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YcT6/WLj"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="Af5I8NHF"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from sonic310-30.consmr.mail.ne1.yahoo.com (sonic310-30.consmr.mail.ne1.yahoo.com [66.163.186.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477552E5B22;
-	Wed, 13 Aug 2025 15:13:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5601030E85E
+	for <kernel-janitors@vger.kernel.org>; Wed, 13 Aug 2025 16:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.186.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755098006; cv=none; b=CoVcS2eT/0RQzbTKwR9JagxKPXrHAmVXe7icqHQhcsYvsSqvHZkf2WpEjkSlzSJ2bTJW8JLmikaEBdqlspI7qQIBMFN+gwO7TSO8l/vORUuwLDsjNlMvw0thgtUk6mffwRxW7WRkoRoolAHARM8ymRldKYRtBAdrVFXWgLg+cNw=
+	t=1755100819; cv=none; b=WB0JrAB8jFxCWPeYaOYQryE0tYiYFoWl5Eoz+RrO2YFtzIqS3WeJ6khNDl6yvaY3Nd/y852YSKtdWwKR72u6pFiYN5m5YmxSy6MN7s4NmoyoAMKt9ujpRouMFrXQzSD2UpAm41NLvnbMj5Y9jXKeliL1yi45XHKTOK+eZ+5zwlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755098006; c=relaxed/simple;
-	bh=lyUeY1elz8Oa38aDMGQbLdoxHSZ+fC7TBWAPkNRLobg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qNN6U6UeBBQ8X+03uFrwbkfzPm2U8k8uIC5vwi3T2C+rvB4T9JNhi6a1PRyNEoPZ4CPFKXO9fl+P43k28212bTxUkufdwd5f1ePW4BvLefS/hvO97MWe7aI0bKsGCs+jSP3bOYkekLqkl2OFAam7tPovFBzunxhqzVRCbgZSsho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YcT6/WLj; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4563cfac2d2so58460865e9.3;
-        Wed, 13 Aug 2025 08:13:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755098003; x=1755702803; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CXaG+nrbYg1bcSitJNL4gXYIE8J8lX8ImkkRSgEhuy0=;
-        b=YcT6/WLjEAkJBGvEVCNZhRyerQLpg2xSoCRpMAJEa5v8nAbLymQyx5Dh6h9yLUfM9E
-         8OQsHy+s2YZiz4FJFCGOriNi6T6/dFd4l9hmO3kx4KHIp2Jfrs2WBmH6w1+ahwH+rUjM
-         OFfyKusGrCh04OhoMtY39r/eId+JDmCba2JXT4VixfeQ7mgE+MrVbIJlOhVFHlaTi3um
-         +uOHR6LH+YMDfe577q/aeYnAOVBsCW7y9FoSkOluBbI8DR5/SJC7eOGlw5pO0KzbeU81
-         DeOVLWrbv0jAq88Ahdq5Jv8ZuhX2tbAD7qPLvXv9br8LnNzpRSlwrCAbGTnbFX7KEe/O
-         QbZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755098003; x=1755702803;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CXaG+nrbYg1bcSitJNL4gXYIE8J8lX8ImkkRSgEhuy0=;
-        b=h1WkJXIB5hs1Z+9unGOMkWcu0o4yHquRnWZ0AE1rdyBy9Sr6Yli7cIp/riIDVcBCwf
-         2s6yDoK+jJEcOo0RWopgsgPQwNHpG/MIDk5eXAgY0KnaUNLquACi5u8d2Pr4Bc1GSds2
-         yvlI0hqg0O2vJGHAYjGYDD071uK/bciWyIOi4qdizXfDU/8MKK0DJVwqRdLR5DAh2NH+
-         t0oQjffwEsqpSTsAdSEsbB0R2FLxzwxFhLuHIGoUf4dWJ2538iuDx+JzRMG/WAmJspsg
-         zrw5BxvXe1IwJAlO4f7lrUnGWttcj4um0u5ffFQTgovxC8iFAJR1wOWY0Zn2Jtid27os
-         6xDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX8p9dxGr5gj61lwaiR2+OoEKgpohApv3GMxT8Vk/D+t0aQLKujW8VA1+Zm8qJvKW+N7wFFC4CogtGUSRw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzmevdjso1JmpScH1wkmj8YUFA1TKOtoEA2B1wNcCbnluT61Dlu
-	o58C0/JgALJxhQ31pFEcTN8h/cPLr3TuqtzJvReupFc8n7l0UyicWzMb
-X-Gm-Gg: ASbGncsRbb92sI2eG9ShK5m/601zdAj8aT8sAGggnB1F2ejQKCFepr16MYNBZxp42Dq
-	U3VK2CNJsLSCmmXQxX7R9oJ00vxca6zrEbPFoUM2UbvdvwbCobyGgzxG9Lgz4o6OK9iovax5jT+
-	i9mck1P30CszeAuyFmnIjY1f4Gw9xza7gOT9A9o1cICz4CcgSN2hQam9MjtUomUS6ZDC1prQ25m
-	rLZn55+59s2uRlp9FZej+8QpMetcvBVpad4nGU4NnJMUtzWNXLP8Zkzx4ySKae43AQKODwiiLqY
-	pXrC1G3XymL+5TMwk6UNitzEaMGJLp287mAOR78xpFQRDOot4UCTWghhl3LpgBjEXr2Sn1iDm03
-	f9ZphhDfAv7V3zdf3g2+0
-X-Google-Smtp-Source: AGHT+IEsPZFlG97saXVcQXUrRmXTyLn9RugilGXKIzGMNgbzqlIDl+eWbvR+L/17fz8ERclDq+F/OA==
-X-Received: by 2002:a5d:5c84:0:b0:3b9:167f:7f2e with SMTP id ffacd0b85a97d-3b917d1d57fmr2898871f8f.11.1755098003262;
-        Wed, 13 Aug 2025 08:13:23 -0700 (PDT)
-Received: from localhost ([87.254.0.133])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b79c3abeb2sm47954103f8f.11.2025.08.13.08.13.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 08:13:23 -0700 (PDT)
-From: Colin Ian King <colin.i.king@gmail.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	dri-devel@lists.freedesktop.org
-Cc: kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/dp: remove redundant check on ret and return statement
-Date: Wed, 13 Aug 2025 16:12:43 +0100
-Message-ID: <20250813151243.2055798-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1755100819; c=relaxed/simple;
+	bh=oYl7YVwvE/1YiUQCXhfuujKvjSA7Qfoipgheab9fuxo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HXY89QwweRRXDtFBHHHomDKpMfs1/6hVppr4jxkkgCDajdOFt/Yor+paF1uUD0aqLO0RbURUXrYIUrds/lZx6S44zTGyBt9eMvuadGYrC+g6zlOQwwPAKK/G3K68H2Bi7EY18RaD3qWTKmMCI2jnzmQiLfFfS6f4EpZeeWIms8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=Af5I8NHF; arc=none smtp.client-ip=66.163.186.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1755100817; bh=Bl7qT/lHn+mHsxt3y+eixUAy9gRPqXymKdlAcY+t2L0=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=Af5I8NHFel9KPrFcKKCd0duIvvtaBl6PmNXtfxHrUXb6o+3LIZtn1YtWIBIAWaVki2dacm7xCX5unJG2YbyUa54d94CsPDX11mQL66FQBFKAXPlhj5LiRII9iYWwSUT3gBJrz/wMcVQRQdV41sQQO7XqZhJ0UYlUAgA3DqWkX+8lkatpm2SG7jbhwjz36KUvnq9QaWpHvuBtYrmRi6ttcbjudrV0CFsi8+2qzsweL6BD9TJ41KdZ5sB4BqFLN9JGQWoaUq+7+0TgGpKkwEpxwaEIWWgzE5kGz3AI9XnIE60tp/M/cVtb4ht+D29qwTdUidn9C6UleToIPG/fwTW5ow==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1755100817; bh=lGf+6YtyLP7cReci6fHPNgosP2c/4xxRiyU8b5k5md6=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=g62YhcXHDxjFEci2hUgtBuwxdMhk+b2h3GZexTktM/IXXF+I7NSKbWsntKo+7qPBfkZeN5a0/zkm0SFXIwQRif0AxvI2fuavOLBpIr0XS0Fjl3y9S4XFVYm3ydLF936IU0bp5o29J3CN07YYmuv7U6g7irzZ8BBXecatNIQT8Md8HFc8pnnRqv2u7Zz+KaFa5LwwKc9iSFf1TljEjsGSWMm4huM1BsVE1yZfkTe1MHBmvZacDIAILXE0udzdtg9ZT9Fj+xENRjrujDk6FWB5THNEYLpNiXGMI6X2lvt+5kWiGPWowws9EgGDoDe6E1CidqUMd7an2bWlewC216E53A==
+X-YMail-OSG: P8QeoBgVM1k8qu77WeV.MyPLA.UO7VGnL99tmtQIOEbC7P2rdK.iel0QenhpyAl
+ 3B0xl4BgQQx9mygPPmjjV73wzRF4dmKkphmrZrsSauhnmjAZ.vfnzPWOLiWMalYbnD1IUhrJG1p4
+ vICkp6Kcc.KApxCprnxRT1Y2zf9U99P0IDmz23BXHQzVdktqQSj7lupRsNFRdZtYIe2FPkWWBaUq
+ X5yTKcnNfLHxVKf6.6.1ccNT_2SdzpO3Eb9P5S9ZT2c6CdYM1D7aXC6uaNXGHNftE7lrNGr6na_O
+ Rb0YBfDdhdTACf0GX9NghhLyN13N7xrqNkvciBwfspy7g0rMyVL7_tJO06BAUkTmG215CxJxNkoe
+ .XVdWH8bFvKJxs4VKYCAOkOTmPh8ZUxAYEr_RGYnEbChJ5cV1Y9sLvwsWwAP5IiazEAMhwxs4VWr
+ 7vrowGlLg9bZOomqiMsVq5ycN3Wum4EmDghxSzZ_mW3rNreUSpQja3wiD5wd1kIxZDqjpSHMWRLo
+ 6oi8M96yw_DY8bdFyRdmTkcmR_rl5mGDwid.VDwSUZUsorTqDDuFcM7sJU_YexHlX8.cMdv4INKf
+ bRL2GYVok1_05xiqFI_X77RpC26VIzYEOVx_9eG8WmUelu3BVPjZbFD7YvAEzrPgTmiol1KwXwDX
+ Yn_xLtUxiBbJQEvtahelMvSzQt002K5ROxF1.zbqdH5EpqHReWvnT9Q1cNfh604kK9KGq1deFy.y
+ ru4orckkF4LhkxCiFva3duNVoT6EOfrOaV03GgSC_1JnBwGSJ4XSLawqwRapgyA9ZoZ2X5dxoo3Y
+ pS2qcl5QSu.kQpzghBKVxRL0bUXqaPErlPZsAl5GAktadQ0UW0vVH5FkQQ4u3dJ7hVgI2HYVjbU5
+ yFcSX2CICANtfGhPT2XQzOBOt7jgz1_RTbe.ZC6Yq3e43k6h8nOBD3_T9qlfseprv86bxIktNcuo
+ 0FaNX3SqDacNIrjdV01lBDnHUOD64Mx9lRMDQvGNbJgAkb3C8VVLDxwUfDlaDSRxo2P6edghjmC8
+ OM9fjL2pIilY3J6tWsjE2KOj7sEFvtNuLyxH19SApakCKJPgZBQ2N_j7BRAhMPHi1KV6.ZiZHyU.
+ Al1IlQyIe4FoOjQruUjZzSpQx6tSsNpNHV1QJju7YDt6EbPIm1IcBnn4S9w1FYf_0OHRio6GRgDU
+ HzbvGKKExFer17YAGeDtQkD1kT6ROXfOhfr9TXKZLkV1dXfqp92Q_E__9hInPcng807MowZo5EZX
+ lszhcvBBdg_9zaRgKHavDu5fGMtA6pUG3.p_MMcqgKaQ_EeVbTtgvgSD_p1oMd49asQsUcYcLFir
+ vO9f6uBxKLbJXEU1_WSb283nkdrOepr_OvhQ7JD0Y6KVpbapNWcbk.9ZtsWKYCJ1dReQAtfJqisF
+ LJmpTgh._v5p5P4HZAYHAzJgvJzKg3i_gOgrJ.cJT8M5TM9olYJV5PKOuc.VRqz6wYoiOWfwMQBB
+ jnLIGoRbflEIJgUheok9ifqDQ_Pqg6MVVbDd_RWZw9QD0zyKJ0uVYonOYecEqzE7WG_wssmeEh7w
+ sCSAYm8RieiENQInebYbmCgo6NJiHdUf.Lm8vHj5bdTeEblfrBP7qWHMcGqm_VMsUnyeoZCW1HAE
+ te4882UhN_gC3weKpvjW4zx70g_2t0zlLfXs5Lmpgvj0wC0ELgmiJyaI5jlowq68XFo3HWwUTkvJ
+ qt25LqDs66F.p3GrUuffzviyvEGjlxF.o88LqJsDSqlCH0cYODzsKVCsmIAHKmotJ1w_IkwlDGD9
+ s8PhpPHFdVZhLPkFdaUVt1yuB2yTNCPFE4e8kdF_CjktN3QI_5j1.HpP_HX4oIxD3stp_zGO2D7s
+ kpPa510G09AoImCTkIqEuncCBT3RcFNRL_oj3d.5C9oMD_f25q9nyfgtw4WFT4cWfHeIJglEZ.b_
+ VZ26Kwi2lP9Iuha09zgnl86eDNNUdlBbtglZpRZlgkxEkVK_9N2oFaGm8xN7qqulGf4kUqLaJtnb
+ HVRAy7mBqt4K7CBhjg4fG5PFuArLOdYCf6dzyJM7WrhorWe_3ryb_rQj8VwUnNJ5pWcbpxM0anSB
+ eXujAw1Z9DaXRh7LvEyAN0mcSKMtv7UeMpXANPk6sOUUXOw.1UJWjyOJPIQ6MgYmt5qsesYC1JYS
+ k0jpOJHpIF8vCFulHMD5F1T26azf82O5OU.nH9IH31KxxuP3PLI.2K5Flfz_8Dc.m8rNDgxOTuVh
+ 9Op59KNnZ8EQ4HUGUB3tBX4giJToXBL2TejfuALmS1bDYf4fYEmDc662033ptWFirQKPWtzwHxR0
+ ZbN2N8y4I6vg-
+X-Sonic-MF: <casey@schaufler-ca.com>
+X-Sonic-ID: 58afb31d-c4cb-40bd-b613-d7d9c2569d11
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ne1.yahoo.com with HTTP; Wed, 13 Aug 2025 16:00:17 +0000
+Received: by hermes--production-gq1-74d64bb7d7-nccgl (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 59051690e0a2483e657ddd5c7a80eaf8;
+          Wed, 13 Aug 2025 15:39:35 +0000 (UTC)
+Message-ID: <9ec4a351-de59-4b6b-b200-3a2fd6cbd9a9@schaufler-ca.com>
+Date: Wed, 13 Aug 2025 08:39:33 -0700
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] audit: add a missing tab
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Paul Moore <paul@paul-moore.com>, Eric Paris <eparis@redhat.com>,
+ audit@vger.kernel.org, kernel-janitors@vger.kernel.org,
+ Casey Schaufler <casey@schaufler-ca.com>
+References: <aJwkwMRSxUAvI4dF@stanley.mountain>
+Content-Language: en-US
+From: Casey Schaufler <casey@schaufler-ca.com>
+In-Reply-To: <aJwkwMRSxUAvI4dF@stanley.mountain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.24260 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-There is a redundant check on return and a return statement after
-a previous return statement from the call to drm_dp_dpcd_write_byte.
-These statements are redundant and can be removed. Remove the
-statements and the now unused variable ret.
+On 8/12/2025 10:38 PM, Dan Carpenter wrote:
+> Someone got a bit carried away deleting tabs.  Add it back.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/gpu/drm/display/drm_dp_helper.c | 5 -----
- 1 file changed, 5 deletions(-)
+Of course, it should be the way you want it to be, but I don't
+see the reasoning. Help me understand.
 
-diff --git a/drivers/gpu/drm/display/drm_dp_helper.c b/drivers/gpu/drm/display/drm_dp_helper.c
-index 1ecc3df7e316..ccae67abb8ff 100644
---- a/drivers/gpu/drm/display/drm_dp_helper.c
-+++ b/drivers/gpu/drm/display/drm_dp_helper.c
-@@ -3594,7 +3594,6 @@ EXPORT_SYMBOL(drm_dp_pcon_frl_configure_1);
- int drm_dp_pcon_frl_configure_2(struct drm_dp_aux *aux, int max_frl_mask,
- 				u8 frl_type)
- {
--	int ret;
- 	u8 buf = max_frl_mask;
- 
- 	if (frl_type == DP_PCON_FRL_LINK_TRAIN_EXTENDED)
-@@ -3603,10 +3602,6 @@ int drm_dp_pcon_frl_configure_2(struct drm_dp_aux *aux, int max_frl_mask,
- 		buf &= ~DP_PCON_FRL_LINK_TRAIN_EXTENDED;
- 
- 	return drm_dp_dpcd_write_byte(aux, DP_PCON_HDMI_LINK_CONFIG_2, buf);
--	if (ret < 0)
--		return ret;
--
--	return 0;
- }
- EXPORT_SYMBOL(drm_dp_pcon_frl_configure_2);
- 
--- 
-2.50.1
-
+>
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> ---
+>  kernel/auditsc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+> index 1c29541c8fb6..497bda0043fb 100644
+> --- a/kernel/auditsc.c
+> +++ b/kernel/auditsc.c
+> @@ -1778,7 +1778,7 @@ static void audit_log_exit(void)
+>  						  axs->target_sessionid[i],
+>  						  &axs->target_ref[i],
+>  						  axs->target_comm[i]))
+> -			call_panic = 1;
+> +				call_panic = 1;
+>  	}
+>  
+>  	if (context->target_pid &&
 

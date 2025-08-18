@@ -1,59 +1,88 @@
-Return-Path: <kernel-janitors+bounces-8946-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-8948-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 751C7B28E8A
-	for <lists+kernel-janitors@lfdr.de>; Sat, 16 Aug 2025 16:43:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4052CB29E9C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Aug 2025 11:59:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFFE91C23F95
-	for <lists+kernel-janitors@lfdr.de>; Sat, 16 Aug 2025 14:44:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F47F16A495
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Aug 2025 09:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4DE42F28F2;
-	Sat, 16 Aug 2025 14:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9393101A1;
+	Mon, 18 Aug 2025 09:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dominikbrodowski.net header.i=@dominikbrodowski.net header.b="qfNZaje+"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kuEHS/mf"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from isilmar-4.linta.de (isilmar-4.linta.de [136.243.71.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55A72F0691;
-	Sat, 16 Aug 2025 14:43:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.243.71.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0D01E008B
+	for <kernel-janitors@vger.kernel.org>; Mon, 18 Aug 2025 09:59:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755355427; cv=none; b=JDVrtPJW1VZ9j/etyxkGUKcsC0rzB2sxY6nrodCCYegKEEoDwdYEHlrI+4q2owQAfB1OJT800u7B8YJZqapWnj6mFRPehEZsCkpQDhzmmmN+Z/l48E8qqOeS+UrRNqzYelIDxDf/KNAMN38nSCUdDgZe2TaIVI2000C7BY9Aqjg=
+	t=1755511164; cv=none; b=sv3hA64NDVHsiXcPlM9c18ASOAyEgE3l/zejLs5aZwtCPpvecarQY5rsv/UOpzexU8BrJbKxhCZvAn7hxSiamLFWqTpm6RSpaZCEm9D8+U3ncED5bOtMpc5udHz6Ztfo7nCRWMYcipdPGqhMpWhyk2rhPrF+mzBjhk5Qf5nSUNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755355427; c=relaxed/simple;
-	bh=MdN9n3zp6VDlQbSpZGpbiSRanxrr7rEMOcrss5ISq/Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nQ5PSemKp75IzK2o5ngTOi/USNGD0czXuPMxdn/DqfKBAEHHigTsIL637PJkydl2ulLpbGYizlNv28enxf6+rnZc2O+OPuTZvgGQ03LlwEAd0ubomNc3YZNti+cuRgMYKbNQKrgQ8G37BBfhJEQYAoSVxTBO1nsjndYoTdKBSMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dominikbrodowski.net; spf=pass smtp.mailfrom=dominikbrodowski.net; dkim=pass (2048-bit key) header.d=dominikbrodowski.net header.i=@dominikbrodowski.net header.b=qfNZaje+; arc=none smtp.client-ip=136.243.71.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dominikbrodowski.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dominikbrodowski.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dominikbrodowski.net;
-	s=k19.isilmar-4; t=1755355416;
-	bh=MdN9n3zp6VDlQbSpZGpbiSRanxrr7rEMOcrss5ISq/Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qfNZaje+1WQ0uDaZJ+wffrKxi2aNn2mfgLDz33PMx908uhnEiOHIArwOl5jgc0m+v
-	 Wt9rAXjyq2wqaTCMg0SkJRUAbY2uT0iu0Pjg+joSHUIV/lz8D9I+cncB6l6037QEZZ
-	 SZL+fStiAG5+Vjk6Q7oqNA+t9glmMKLoFeB4bX9wOjEAt0XZGRfOZlky770TRocEu9
-	 /cPiUId+nwXy9bPfIhv/HCMBuQfuOok/7MpUJ7TIPg8755XE5pFgsH/C5H6uFLJwsr
-	 SSD7oBmejuNP+y+0f/jKkX9bMIVueEF18KemW4ShEPS8He9MiEtKOp+N4L/ED5FbW9
-	 v0rSVLJkMIusg==
-Received: from shine.dominikbrodowski.net (shine.brodo.linta [10.2.0.112])
-	by isilmar-4.linta.de (Postfix) with ESMTPSA id 5CDCE20074D;
-	Sat, 16 Aug 2025 14:43:36 +0000 (UTC)
-Received: by shine.dominikbrodowski.net (Postfix, from userid 1000)
-	id C50BCA00A7; Sat, 16 Aug 2025 16:42:51 +0200 (CEST)
-Date: Sat, 16 Aug 2025 16:42:51 +0200
-From: Dominik Brodowski <linux@dominikbrodowski.net>
-To: Lukas Bulwahn <lbulwahn@redhat.com>
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Subject: Re: [PATCH] pcmcia: remove PCCARD_IODYN
-Message-ID: <aKCY6-qXsMRD5q_x@shine.dominikbrodowski.net>
-References: <20250630093256.175212-1-lukas.bulwahn@redhat.com>
+	s=arc-20240116; t=1755511164; c=relaxed/simple;
+	bh=/C9Csrxdh1sYcqWltONMtXTrt08x9QqeTMlZNgDLvCI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=m/tgY7nBQYOtITt6xW2nZmguiz6a2P2/SeSf0B27FPZIh+kFXU5QNBL0wjDR0paAjzbOeF0TNdPi7iSg3JcKJFOnYB6BCSrOjpRfcOLu3SZP+N+yEg3AdBpPCUUghc5V+xYXiNlkVpQurVgtISoAP215v+BBa5k25+9je/9rw/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kuEHS/mf; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3b9e415a68fso3739229f8f.2
+        for <kernel-janitors@vger.kernel.org>; Mon, 18 Aug 2025 02:59:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755511161; x=1756115961; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qZDLlNuYLU9UmeoCuzZO1+X4n+CJQR7oR8AjhafJt6M=;
+        b=kuEHS/mfIyAN3GAxIk1mSA1lt4VDPAKXPuOoZDzsOUvJgimm7zdIbPsix6fbyNMtZt
+         kEfQvqKia2oFQHzd4rOLd+gwM9DlKm0NrXVLZ3KOXKvTPtEoY/y4bbTvAu1qeU46Vg2H
+         mJNChdIixR2De/GddNzrHS+/ktE5suyDaulm96HyhgpdE8i1UjDk2oSIuegAvmDJGAjw
+         WtxG0X1O+dTVQHgR/K83bjTwq8dg1tlt2zOgAfcdWybu7HR9lPN/hnq22Hak9hxdQoyH
+         54FqEsRRakwPnoS5UYxTR68itfMc4INvkLOD0YYXtk3W+JgVvpeeKCQccmoDppARhaBB
+         wcjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755511161; x=1756115961;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qZDLlNuYLU9UmeoCuzZO1+X4n+CJQR7oR8AjhafJt6M=;
+        b=GPf1/VqgJbix2co+AL2n6TD63iXfgHYUUlBbOAf961dtgD680UK+n0HURZOqMRrgGd
+         tVpnQL8fSOyMcwbPzu0HAQmbHZlG4slPeGUMs0z9KxvzZddmDWFK0uVKXWrgZqCRik6y
+         S9zXeFEE6N/2qONHY3txJ54QWMSqni44M6u6uDXlZBlnKxa/vFmqXcxpgYC5WIjGkRLC
+         c4dsVvvyhimYza/SoAUqI8fC6olE61u+TvyTO97jA3uMwjXthYx0WOvvJSetaVPupIIQ
+         DbrpQNK8r2k/mRsP2otJBdqzKSSA4fUHA3vgPeXaEnB8dxAKNA4yG4V2/S9RpG/ZF8YG
+         IwVg==
+X-Forwarded-Encrypted: i=1; AJvYcCUIhHZnJMGlPeGr+t8skFW6ofEa17MLz5wXw5O56BMghEN3i/OTl39JlvN+7pcW425n9juKfoPaW0k40CUScw0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLz7SAMj+otUNjYkngD6Ewi6Jx0fFswyXG7ce+XR4PhC4NaoM8
+	lsHl8erBn0tImComGd6zF5lDYPno6T5p0AIDHl6QQIZ5xSCf2Rl6xmGE5Y3FBh5KM+A=
+X-Gm-Gg: ASbGncsYWd/XYFmF37gFyN/eVfQBMrCPOQev9r/XdBpwQsLCCMm1uEP8mtyDRe8KwwJ
+	liQrImcnWa+4p6Ss1sCeMJmpQVGK+AttU8U2CuNUriYlUoCb01MCh7EAPk+5q9A5ILGx0xRLxZ+
+	LF9Y74lPq76yu/u+ojAKxEJwTeSpPq9+PllwMH/dNZCenWX74KgvbOGH4ZrU3pp/okqoevlWwKN
+	SOuKMU+h8AtrQECgJiG7ikbzxWh136p9ua1zA0Ew51b+KducGFnErN3D0/I9A4zxstZEY/XrB97
+	MsJXjy6cGb4l3wXuXCvskrbgQM6w1g4SpYzbR+SbCKzyKNsYiLOlCBfBkNXueCt+872h/5BXJ0v
+	N+1ukArPLVb5evZeJG8c1lU06fPG1VxKXGFSBWYihpMxKa4LIWxDqvQ==
+X-Google-Smtp-Source: AGHT+IEAVhk6tBtT8QiYf3c/clKbpVmq0dinSHoKmOjMnv18pQ2Ji8dtljdjZJFXIYwlEZU7sho8fA==
+X-Received: by 2002:a05:6000:24c2:b0:3b6:936:976c with SMTP id ffacd0b85a97d-3bb66f0f6f2mr7896857f8f.17.1755511160898;
+        Mon, 18 Aug 2025 02:59:20 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45a22329b12sm126502615e9.24.2025.08.18.02.59.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Aug 2025 02:59:20 -0700 (PDT)
+Date: Mon, 18 Aug 2025 12:59:17 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+Cc: Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Bharath SM <bharathsm@microsoft.com>, linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH next] smb: client: Fix NULL vs ERR_PTR() returns in
+ cifs_get_tcon_super()
+Message-ID: <aKL5dUyf7UWcQNvW@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
@@ -62,264 +91,41 @@ List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250630093256.175212-1-lukas.bulwahn@redhat.com>
+X-Mailer: git-send-email haha only kidding
 
-Applied to pcmcia-next.
+The cifs_get_tcon_super() function returns NULL on error but the caller
+expect it to return error pointers instead.  Change it to return error
+pointers.  Otherwise it results in a NULL pointer dereference.
 
-Thanks,
-	Dominik
+Fixes: 0938b093b1ae ("smb: client: Fix mount deadlock by avoiding super block iteration in DFS reconnect")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ fs/smb/client/misc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Am Mon, Jun 30, 2025 at 11:32:56AM +0200 schrieb Lukas Bulwahn:
-> From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-> 
-> The config PCCARD_IODYN was last used in the config option PCMCIA_M8XX with
-> its m8xx_pcmcia driver. This driver was removed with commit 39eb56da2b53
-> ("pcmcia: Remove m8xx_pcmcia driver"), included in v3.17, back in 2014.
-> Since then, the config PCCARD_IODYN is unused. Remove the config option,
-> the corresponding file included with this config and the corresponding
-> definition in the pcmcia header file.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-> ---
->  drivers/pcmcia/Kconfig      |   3 -
->  drivers/pcmcia/Makefile     |   1 -
->  drivers/pcmcia/rsrc_iodyn.c | 168 ------------------------------------
->  include/pcmcia/ss.h         |   8 +-
->  4 files changed, 1 insertion(+), 179 deletions(-)
->  delete mode 100644 drivers/pcmcia/rsrc_iodyn.c
-> 
-> diff --git a/drivers/pcmcia/Kconfig b/drivers/pcmcia/Kconfig
-> index dddb235dd020..660a95805524 100644
-> --- a/drivers/pcmcia/Kconfig
-> +++ b/drivers/pcmcia/Kconfig
-> @@ -250,7 +250,4 @@ config ELECTRA_CF
->  config PCCARD_NONSTATIC
->  	bool
->  
-> -config PCCARD_IODYN
-> -	bool
-> -
->  endif	# PCCARD
-> diff --git a/drivers/pcmcia/Makefile b/drivers/pcmcia/Makefile
-> index c9d51b150682..d16a0317ce43 100644
-> --- a/drivers/pcmcia/Makefile
-> +++ b/drivers/pcmcia/Makefile
-> @@ -12,7 +12,6 @@ obj-$(CONFIG_PCMCIA)				+= pcmcia.o
->  
->  pcmcia_rsrc-y					+= rsrc_mgr.o
->  pcmcia_rsrc-$(CONFIG_PCCARD_NONSTATIC)		+= rsrc_nonstatic.o
-> -pcmcia_rsrc-$(CONFIG_PCCARD_IODYN)		+= rsrc_iodyn.o
->  obj-$(CONFIG_PCCARD)				+= pcmcia_rsrc.o
->  
->  
-> diff --git a/drivers/pcmcia/rsrc_iodyn.c b/drivers/pcmcia/rsrc_iodyn.c
-> deleted file mode 100644
-> index b04b16496b0c..000000000000
-> --- a/drivers/pcmcia/rsrc_iodyn.c
-> +++ /dev/null
-> @@ -1,168 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0-only
-> -/*
-> - * rsrc_iodyn.c -- Resource management routines for MEM-static sockets.
-> - *
-> - * The initial developer of the original code is David A. Hinds
-> - * <dahinds@users.sourceforge.net>.  Portions created by David A. Hinds
-> - * are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.
-> - *
-> - * (C) 1999		David A. Hinds
-> - */
-> -
-> -#include <linux/slab.h>
-> -#include <linux/module.h>
-> -#include <linux/kernel.h>
-> -
-> -#include <pcmcia/ss.h>
-> -#include <pcmcia/cistpl.h>
-> -#include "cs_internal.h"
-> -
-> -
-> -struct pcmcia_align_data {
-> -	unsigned long	mask;
-> -	unsigned long	offset;
-> -};
-> -
-> -static resource_size_t pcmcia_align(void *align_data,
-> -				const struct resource *res,
-> -				resource_size_t size, resource_size_t align)
-> -{
-> -	struct pcmcia_align_data *data = align_data;
-> -	resource_size_t start;
-> -
-> -	start = (res->start & ~data->mask) + data->offset;
-> -	if (start < res->start)
-> -		start += data->mask + 1;
-> -
-> -#ifdef CONFIG_X86
-> -	if (res->flags & IORESOURCE_IO) {
-> -		if (start & 0x300)
-> -			start = (start + 0x3ff) & ~0x3ff;
-> -	}
-> -#endif
-> -
-> -#ifdef CONFIG_M68K
-> -	if (res->flags & IORESOURCE_IO) {
-> -		if ((res->start + size - 1) >= 1024)
-> -			start = res->end;
-> -	}
-> -#endif
-> -
-> -	return start;
-> -}
-> -
-> -
-> -static struct resource *__iodyn_find_io_region(struct pcmcia_socket *s,
-> -					unsigned long base, int num,
-> -					unsigned long align)
-> -{
-> -	struct resource *res = pcmcia_make_resource(0, num, IORESOURCE_IO,
-> -						dev_name(&s->dev));
-> -	struct pcmcia_align_data data;
-> -	unsigned long min = base;
-> -	int ret;
-> -
-> -	data.mask = align - 1;
-> -	data.offset = base & data.mask;
-> -
-> -#ifdef CONFIG_PCI
-> -	if (s->cb_dev) {
-> -		ret = pci_bus_alloc_resource(s->cb_dev->bus, res, num, 1,
-> -					     min, 0, pcmcia_align, &data);
-> -	} else
-> -#endif
-> -		ret = allocate_resource(&ioport_resource, res, num, min, ~0UL,
-> -					1, pcmcia_align, &data);
-> -
-> -	if (ret != 0) {
-> -		kfree(res);
-> -		res = NULL;
-> -	}
-> -	return res;
-> -}
-> -
-> -static int iodyn_find_io(struct pcmcia_socket *s, unsigned int attr,
-> -			unsigned int *base, unsigned int num,
-> -			unsigned int align, struct resource **parent)
-> -{
-> -	int i, ret = 0;
-> -
-> -	/* Check for an already-allocated window that must conflict with
-> -	 * what was asked for.  It is a hack because it does not catch all
-> -	 * potential conflicts, just the most obvious ones.
-> -	 */
-> -	for (i = 0; i < MAX_IO_WIN; i++) {
-> -		if (!s->io[i].res)
-> -			continue;
-> -
-> -		if (!*base)
-> -			continue;
-> -
-> -		if ((s->io[i].res->start & (align-1)) == *base)
-> -			return -EBUSY;
-> -	}
-> -
-> -	for (i = 0; i < MAX_IO_WIN; i++) {
-> -		struct resource *res = s->io[i].res;
-> -		unsigned int try;
-> -
-> -		if (res && (res->flags & IORESOURCE_BITS) !=
-> -			(attr & IORESOURCE_BITS))
-> -			continue;
-> -
-> -		if (!res) {
-> -			if (align == 0)
-> -				align = 0x10000;
-> -
-> -			res = s->io[i].res = __iodyn_find_io_region(s, *base,
-> -								num, align);
-> -			if (!res)
-> -				return -EINVAL;
-> -
-> -			*base = res->start;
-> -			s->io[i].res->flags =
-> -				((res->flags & ~IORESOURCE_BITS) |
-> -					(attr & IORESOURCE_BITS));
-> -			s->io[i].InUse = num;
-> -			*parent = res;
-> -			return 0;
-> -		}
-> -
-> -		/* Try to extend top of window */
-> -		try = res->end + 1;
-> -		if ((*base == 0) || (*base == try)) {
-> -			if (adjust_resource(s->io[i].res, res->start,
-> -					    resource_size(res) + num))
-> -				continue;
-> -			*base = try;
-> -			s->io[i].InUse += num;
-> -			*parent = res;
-> -			return 0;
-> -		}
-> -
-> -		/* Try to extend bottom of window */
-> -		try = res->start - num;
-> -		if ((*base == 0) || (*base == try)) {
-> -			if (adjust_resource(s->io[i].res,
-> -					    res->start - num,
-> -					    resource_size(res) + num))
-> -				continue;
-> -			*base = try;
-> -			s->io[i].InUse += num;
-> -			*parent = res;
-> -			return 0;
-> -		}
-> -	}
-> -
-> -	return -EINVAL;
-> -}
-> -
-> -
-> -struct pccard_resource_ops pccard_iodyn_ops = {
-> -	.validate_mem = NULL,
-> -	.find_io = iodyn_find_io,
-> -	.find_mem = NULL,
-> -	.init = static_init,
-> -	.exit = NULL,
-> -};
-> -EXPORT_SYMBOL(pccard_iodyn_ops);
-> diff --git a/include/pcmcia/ss.h b/include/pcmcia/ss.h
-> index 7cf7dbbfa131..89aed99bfeae 100644
-> --- a/include/pcmcia/ss.h
-> +++ b/include/pcmcia/ss.h
-> @@ -227,12 +227,8 @@ struct pcmcia_socket {
->  
->  
->  /* socket drivers must define the resource operations type they use. There
-> - * are three options:
-> + * are two options:
->   * - pccard_static_ops		iomem and ioport areas are assigned statically
-> - * - pccard_iodyn_ops		iomem areas is assigned statically, ioport
-> - *				areas dynamically
-> - *				If this option is selected, use
-> - *				"select PCCARD_IODYN" in Kconfig.
->   * - pccard_nonstatic_ops	iomem and ioport areas are assigned dynamically.
->   *				If this option is selected, use
->   *				"select PCCARD_NONSTATIC" in Kconfig.
-> @@ -240,13 +236,11 @@ struct pcmcia_socket {
->   */
->  extern struct pccard_resource_ops pccard_static_ops;
->  #if defined(CONFIG_PCMCIA) || defined(CONFIG_PCMCIA_MODULE)
-> -extern struct pccard_resource_ops pccard_iodyn_ops;
->  extern struct pccard_resource_ops pccard_nonstatic_ops;
->  #else
->  /* If PCMCIA is not used, but only CARDBUS, these functions are not used
->   * at all. Therefore, do not use the large (240K!) rsrc_nonstatic module
->   */
-> -#define pccard_iodyn_ops pccard_static_ops
->  #define pccard_nonstatic_ops pccard_static_ops
->  #endif
->  
-> -- 
-> 2.50.0
-> 
-> 
+diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
+index 3b6920a52daa..d73c36862e97 100644
+--- a/fs/smb/client/misc.c
++++ b/fs/smb/client/misc.c
+@@ -1116,7 +1116,7 @@ static struct super_block *cifs_get_tcon_super(struct cifs_tcon *tcon)
+ 	struct cifs_sb_info *cifs_sb;
+ 
+ 	if (!tcon)
+-		return NULL;
++		return ERR_PTR(-EINVAL);
+ 
+ 	spin_lock(&tcon->sb_list_lock);
+ 	list_for_each_entry(cifs_sb, &tcon->cifs_sb_list, tcon_sb_link) {
+@@ -1141,7 +1141,7 @@ static struct super_block *cifs_get_tcon_super(struct cifs_tcon *tcon)
+ 	}
+ 	spin_unlock(&tcon->sb_list_lock);
+ 
+-	return NULL;
++	return ERR_PTR(-ENOENT);
+ }
+ 
+ struct super_block *cifs_get_dfs_tcon_super(struct cifs_tcon *tcon)
+-- 
+2.47.2
+
 

@@ -1,128 +1,91 @@
-Return-Path: <kernel-janitors+bounces-8983-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-8981-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2E1B2E788
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Aug 2025 23:34:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A276B2E422
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Aug 2025 19:41:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2196F17900A
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Aug 2025 21:32:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E83AF1BC6418
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Aug 2025 17:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120FD3314DF;
-	Wed, 20 Aug 2025 21:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D2124A05B;
+	Wed, 20 Aug 2025 17:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hpJP7hlJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jqooQauY"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2009627145F;
-	Wed, 20 Aug 2025 21:31:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A146A247295;
+	Wed, 20 Aug 2025 17:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755725521; cv=none; b=NahwMDPj4QfILKR2x4WQ3rlZGdhP5sAIqcn54icNAdeGexZ/vWb28enfcmmkMzz1fCi8cS0j+6lIehXjGngQ65N8sde2WOJCW+9CcrA2BavuxM2VbZhDXGN5YnSJu90wrmG7l3UCvY/ZUwO67dsY4zGs/Hmx3othTE+VV2ehji0=
+	t=1755711560; cv=none; b=GZubX7gvj4K2YEekhUK5ayJjdHM+uOmJNb9zz7xPr0EilFDBDH3zxwY78MYdAUKO3Vswmj6YpDls1yqk66/Flk+kyAmsOmXroEHwxI2t6LUlL7S7976pcaUoOlNxfk2Dw8bgILNhoOHzOVlx8xghFoRrLe2X4lBAAgBDyABEimY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755725521; c=relaxed/simple;
-	bh=KI3LaQ1fw0o6+rBDig54tr9HE7QIF3H1XxcVNFHc0Tw=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KX3DT/lRJX28JcAGvkGjJn4dCZ9G96SqqemUNgtC/e82VRNI0ojmKQK20Fl9bbBk6PGLBCpvetCNgMlqBx9jlc5GjFJOYdJq0TEnp7Py8qEPUZy9eMec0xMbbGiFw063QyLqyWcyiocPLeXwpJ9W5EYW8WJZNTx5Wf1bfK9ch3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hpJP7hlJ; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2445806d44fso2531475ad.1;
-        Wed, 20 Aug 2025 14:31:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755725519; x=1756330319; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KI3LaQ1fw0o6+rBDig54tr9HE7QIF3H1XxcVNFHc0Tw=;
-        b=hpJP7hlJ55vGS5bIssWWxUtV2NU8ed88UVuFVw3sM1XIkbe3PugLRyi4p7UzbjuyRM
-         emR6IuD+794vfgk3aTnTQ1eFQ/QDoFyvJADoulO4uwxWvmQHKIWfSYp6cHQqDVRJlAkO
-         ru79xbCMLH2wJrAU3OZkl6CLITHtckrxuFK7MjbCeJTspnPut512moE3QK2fNpx/ZaKz
-         8wbmupJtgiDpQy33t0x/HH5SZ9vVMe9xdrDNRycuDCWV+O/zur/zGjndOCVHBOn9wQWm
-         /oOhDmOc03+k8XGF5rFms5VliJXItFpqbGwA96UCeW1cYN3hdbDeKjCa0aWFHUgBo7Yh
-         as2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755725519; x=1756330319;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KI3LaQ1fw0o6+rBDig54tr9HE7QIF3H1XxcVNFHc0Tw=;
-        b=i7ExXqv8yaYfopT1ag0lGNpJlbD50/NlcIkmSVGP+mwcxxg2lqBfhluixuQlqKu29d
-         SuYq9HQg1ZI3VBiJu4j4DjS7onz8vWI5OgblwLJhFSjaL62dnm29vP/cr2/dJauRL1Pr
-         CCVbs7kNpURM2WCT6cBnPc2HUq43FwmZZad7CRgX8nTeLS4IBlHH1PTWZqmQxZDGZk/w
-         iYTpn5fEYRibfD6WrS8OvQYM5MYabZVdfBTu8/Kwt8U+yPlqvCSZtRedy9+BYoXo2NM1
-         xsBr29fJr7GULv4gWM8iD9kz+TILtxhdsW51osOc1ihOjvNoB5hRm7atUbgdW6Y5mTbx
-         JmAA==
-X-Forwarded-Encrypted: i=1; AJvYcCVxKlGQ399gHlDVjKZIoBstEXzjjSTnE02/skZchSqhaHqv9rnJRONMKiJ/3QXkEwpkH9GnLiE3Rcgv@vger.kernel.org, AJvYcCWhDEEZkRPdis+Hbh91Qlsa0928NfZbazOhqujzcCYJRaPlzF60Qo9+FxfD8rcLOfrpec1cVRQXRkRgOUESO0ui@vger.kernel.org, AJvYcCXc01nzVFU5WDXCzCy1NZBrZJt0k93nocQCBk1aTNLzJjdRZNlcC04gS6q1Qh9bMpz3SGU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWJtG/h3arV9fi9tCT9Xwg39BU6k992H4B5/McbtFPk+FQbjVz
-	YVht2i94eNN+BCPqKuWhdEDs1gA5Dwk3xI+MSVqnTrOSTJ3qXPiNaoie
-X-Gm-Gg: ASbGncv7AuOckceL961IYoUVk/PZlI5Rc90QPdM7+vUm3hMljcsufC0DI4IR8Pv+tLt
-	ruLeq9kSDyXqT/vyHH3yWi52dUgmYKBlvPFTM8VnQ2jLxZ5ow6MJZvVrBf2Ilji2sKslNuJ2BYd
-	1M7dcrt330Sknol6s5ZUsNKepRiR1wKXr8GfGYKlxQsMtencPVEeIkuX5zFtEbaKrz0h3650dId
-	tTUratgtCDqooNAgFZsZtOgiedzxag06bqV7GI9ZPvVGJ7DGyZCuM8PMkbzlU3fKn/+vdlI21im
-	c19b1raTFq87Ynojc7eNC6QAJOEuUicNzFJuVqDMYwD0SYBsO3ouN1KcsaC0OQBD3Ry1icmtNF0
-	vtkVI1gpRsEzKAJ0rfR5/Vw==
-X-Google-Smtp-Source: AGHT+IHXnQkA6v146KKoCafbiFWO3366g7ibhUgcVzoSqTmRJ3fVK75TlT5LmFWMHbk3AuodFVDgyg==
-X-Received: by 2002:a17:902:e84d:b0:243:597:a2d6 with SMTP id d9443c01a7336-245febec9d1mr3977275ad.1.1755725519058;
-        Wed, 20 Aug 2025 14:31:59 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-245ed361422sm35848205ad.52.2025.08.20.14.31.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Aug 2025 14:31:57 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id C493D4207D14; Wed, 20 Aug 2025 21:11:30 +0700 (WIB)
-Date: Wed, 20 Aug 2025 21:11:30 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Askar Safin <safinaskar@zohomail.com>, git <git@vger.kernel.org>,
-	gitster <gitster@pobox.com>, helpdesk <helpdesk@kernel.org>,
-	kernelnewbies <kernelnewbies@kernelnewbies.org>,
-	kernel-janitors <kernel-janitors@vger.kernel.org>,
-	linux-doc <linux-doc@vger.kernel.org>
-Subject: Re: git: list of my complaints about future graft removal
-Message-ID: <aKXXkvAOhStlS2_m@archie.me>
-References: <198c29e9058.119e3a5c065010.5888624019176274871@zohomail.com>
+	s=arc-20240116; t=1755711560; c=relaxed/simple;
+	bh=EAfJm25eGSujztbJn7BQ2M+SczHpmn8LPSfP0jK8Ep0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=swK2G3CgsgrsWbBek5/2opMJvneDSsamsgznssNMAb0olmwWfi0cKuJhZZoyCJuWSJ8aSrFbpwmjZfgGJ736xhmjCxTgD+qHpjNBcdBpOXj4cpPIDH97lZiKCr4vYUs89Gat8bW7qaEiJvBVUn1G85egLX8lDAnAY5yoJtk8nyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jqooQauY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20445C113D0;
+	Wed, 20 Aug 2025 17:39:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755711558;
+	bh=EAfJm25eGSujztbJn7BQ2M+SczHpmn8LPSfP0jK8Ep0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=jqooQauYHYQZQa8pmYX6HGG2IGlx2gKYeq69wr2WEw9RqzAcgp52vCAuvMTuqsWBT
+	 11SBxhGWya0jhhNiiw1Xgw1uBPChDVW+A7EwkIbbWQUm6K+6lzOXAIzaWJtQBDZJEb
+	 eJDs8HBl1NHQvkA7T3H+Y1XsBJtlJVB+xqkYCWA+1fJBWNUSoLGqVjo1Tek1Vrw8qV
+	 zhrTltP/SfgW2nuswBDlX9kKCJDODlfi5+Cb6DtTm3pEXuE6s8O6mTfZmXEr/pBFSV
+	 mnCPu5h898pZjsGbWaWCWBuifRYELFowA5uvCudWi1hfv5Kru6dQBonfUZDaPx6Poo
+	 E0kCmCCgVzj8Q==
+From: Vinod Koul <vkoul@kernel.org>
+To: Shuai Xue <xueshuai@linux.alibaba.com>, 
+ Colin Ian King <colin.i.king@gmail.com>, 
+ Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>, 
+ Dave Jiang <dave.jiang@intel.com>, Fenghua Yu <fenghuay@nvidia.com>, 
+ dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ kernel-janitors@vger.kernel.org
+In-Reply-To: <aJnJW3iYTDDCj9sk@stanley.mountain>
+References: <aJnJW3iYTDDCj9sk@stanley.mountain>
+Subject: Re: [PATCH] dmaengine: idxd: Fix double free in idxd_setup_wqs()
+Message-Id: <175571155469.80631.13707540161368362564.b4-ty@kernel.org>
+Date: Wed, 20 Aug 2025 23:09:14 +0530
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="0n+dSVK2aIu7RrRW"
-Content-Disposition: inline
-In-Reply-To: <198c29e9058.119e3a5c065010.5888624019176274871@zohomail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
 
---0n+dSVK2aIu7RrRW
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Mon, 11 Aug 2025 13:43:39 +0300, Dan Carpenter wrote:
+> The clean up in idxd_setup_wqs() has had a couple bugs because the error
+> handling is a bit subtle.  It's simpler to just re-write it in a cleaner
+> way.  The issues here are:
+> 
+> 1) If "idxd->max_wqs" is <= 0 then we call put_device(conf_dev) when
+>    "conf_dev" hasn't been initialized.
+> 2) If kzalloc_node() fails then again "conf_dev" is invalid.  It's
+>    either uninitialized or it points to the "conf_dev" from the
+>    previous iteration so it leads to a double free.
+> 
+> [...]
 
-On Tue, Aug 19, 2025 at 05:57:08PM +0400, Askar Safin wrote:
-> * As well as I understand, "git clone --depth=3D1" rely on grafts, too.
-> I hope "git clone --depth=3D1" will continue to work.
+Applied, thanks!
 
-So shallow clones should use git-replace(1) under the hood (both on initial
-clone, deepening with --shallow-since and --unshallow), right?
+[1/1] dmaengine: idxd: Fix double free in idxd_setup_wqs()
+      commit: 39aaa337449e71a41d4813be0226a722827ba606
 
-Thanks.
+Best regards,
+-- 
+~Vinod
 
---=20
-An old man doll... just what I always wanted! - Clara
 
---0n+dSVK2aIu7RrRW
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQQZO/gRNchuWgPJR+Z7tWyQc2rTCAUCaKXXjAAKCRB7tWyQc2rT
-CP5vAQCVKbnTs4dGZkVn+48GVLHMgTTCrhBdAf5SGiuxFxCxqwD/RZwArnIcVMLF
-rewkM9vMJB/bzQxt81QyHh4mA+m8gwA=
-=mSTU
------END PGP SIGNATURE-----
-
---0n+dSVK2aIu7RrRW--
 

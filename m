@@ -1,94 +1,128 @@
-Return-Path: <kernel-janitors+bounces-8980-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-8983-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB25B2D3B5
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Aug 2025 07:40:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2E1B2E788
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Aug 2025 23:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A1783AA008
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Aug 2025 05:40:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2196F17900A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Aug 2025 21:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D17C2BD5A1;
-	Wed, 20 Aug 2025 05:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120FD3314DF;
+	Wed, 20 Aug 2025 21:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="XZGhbgJA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hpJP7hlJ"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820BD22D4C3;
-	Wed, 20 Aug 2025 05:40:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2009627145F;
+	Wed, 20 Aug 2025 21:31:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755668423; cv=none; b=P/14dfOHWDNQIcPHVdK4Rc6xTXj/5ENgisSlArOGPye+E6VHpRgFFJV8Y/bs0Qvsxa7ZcmuFxClTx+IOKzm+rKLq7NMRv/dQU9Ozi1kDyQDtFTSMEddxFttWtnsC72X3WxZ3HpCfLqPSFEU1JuBRQ/qlEgAlETV455EiVhYAkcI=
+	t=1755725521; cv=none; b=NahwMDPj4QfILKR2x4WQ3rlZGdhP5sAIqcn54icNAdeGexZ/vWb28enfcmmkMzz1fCi8cS0j+6lIehXjGngQ65N8sde2WOJCW+9CcrA2BavuxM2VbZhDXGN5YnSJu90wrmG7l3UCvY/ZUwO67dsY4zGs/Hmx3othTE+VV2ehji0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755668423; c=relaxed/simple;
-	bh=ILaNbJn5HNYKVnX5VFPhvmllfQaHUS+n+I/U4jSWibA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HFheiY6C1febQTV0lYFvVd5F4L7FXR/R9j0mvAk39Jz65pGx5xYYX46M+dWyy80DeUpWZbsCO96K96UuyeoRgHkEWh/xXPtL8jyPs95q/ew6ysGxRUaYEOJ9yc9s5a0G8uJat9eOUhx7Gta8PX7bf2akJpqvk4CQDfPxRG9EJYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=XZGhbgJA; arc=none smtp.client-ip=115.124.30.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1755668418; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=G5p+r4JljAf2GgtlwI0TDUe77jYdbD2CY8bO7sSENRI=;
-	b=XZGhbgJAXAP3R9eOUKz8O52YOV95BKcEUhc16FJTdfN6AftoCQAREZBWcvBOdu3oHaWvCcCkc1zn5fjBzkgqtAM8GESSKJ4Q8MDV6WehQNSzPZGMEnfHVP6zZ6wMBD5v1awKeZJ8dyz61ad8iwxLACEmef72hAwrmvqzZ/2SLag=
-Received: from 30.221.144.123(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0WmAN9rA_1755668098 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 20 Aug 2025 13:34:58 +0800
-Message-ID: <e1d33394-c6c9-4f0e-a180-af743772a1e3@linux.alibaba.com>
-Date: Wed, 20 Aug 2025 13:34:57 +0800
+	s=arc-20240116; t=1755725521; c=relaxed/simple;
+	bh=KI3LaQ1fw0o6+rBDig54tr9HE7QIF3H1XxcVNFHc0Tw=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KX3DT/lRJX28JcAGvkGjJn4dCZ9G96SqqemUNgtC/e82VRNI0ojmKQK20Fl9bbBk6PGLBCpvetCNgMlqBx9jlc5GjFJOYdJq0TEnp7Py8qEPUZy9eMec0xMbbGiFw063QyLqyWcyiocPLeXwpJ9W5EYW8WJZNTx5Wf1bfK9ch3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hpJP7hlJ; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2445806d44fso2531475ad.1;
+        Wed, 20 Aug 2025 14:31:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755725519; x=1756330319; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KI3LaQ1fw0o6+rBDig54tr9HE7QIF3H1XxcVNFHc0Tw=;
+        b=hpJP7hlJ55vGS5bIssWWxUtV2NU8ed88UVuFVw3sM1XIkbe3PugLRyi4p7UzbjuyRM
+         emR6IuD+794vfgk3aTnTQ1eFQ/QDoFyvJADoulO4uwxWvmQHKIWfSYp6cHQqDVRJlAkO
+         ru79xbCMLH2wJrAU3OZkl6CLITHtckrxuFK7MjbCeJTspnPut512moE3QK2fNpx/ZaKz
+         8wbmupJtgiDpQy33t0x/HH5SZ9vVMe9xdrDNRycuDCWV+O/zur/zGjndOCVHBOn9wQWm
+         /oOhDmOc03+k8XGF5rFms5VliJXItFpqbGwA96UCeW1cYN3hdbDeKjCa0aWFHUgBo7Yh
+         as2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755725519; x=1756330319;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KI3LaQ1fw0o6+rBDig54tr9HE7QIF3H1XxcVNFHc0Tw=;
+        b=i7ExXqv8yaYfopT1ag0lGNpJlbD50/NlcIkmSVGP+mwcxxg2lqBfhluixuQlqKu29d
+         SuYq9HQg1ZI3VBiJu4j4DjS7onz8vWI5OgblwLJhFSjaL62dnm29vP/cr2/dJauRL1Pr
+         CCVbs7kNpURM2WCT6cBnPc2HUq43FwmZZad7CRgX8nTeLS4IBlHH1PTWZqmQxZDGZk/w
+         iYTpn5fEYRibfD6WrS8OvQYM5MYabZVdfBTu8/Kwt8U+yPlqvCSZtRedy9+BYoXo2NM1
+         xsBr29fJr7GULv4gWM8iD9kz+TILtxhdsW51osOc1ihOjvNoB5hRm7atUbgdW6Y5mTbx
+         JmAA==
+X-Forwarded-Encrypted: i=1; AJvYcCVxKlGQ399gHlDVjKZIoBstEXzjjSTnE02/skZchSqhaHqv9rnJRONMKiJ/3QXkEwpkH9GnLiE3Rcgv@vger.kernel.org, AJvYcCWhDEEZkRPdis+Hbh91Qlsa0928NfZbazOhqujzcCYJRaPlzF60Qo9+FxfD8rcLOfrpec1cVRQXRkRgOUESO0ui@vger.kernel.org, AJvYcCXc01nzVFU5WDXCzCy1NZBrZJt0k93nocQCBk1aTNLzJjdRZNlcC04gS6q1Qh9bMpz3SGU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWJtG/h3arV9fi9tCT9Xwg39BU6k992H4B5/McbtFPk+FQbjVz
+	YVht2i94eNN+BCPqKuWhdEDs1gA5Dwk3xI+MSVqnTrOSTJ3qXPiNaoie
+X-Gm-Gg: ASbGncv7AuOckceL961IYoUVk/PZlI5Rc90QPdM7+vUm3hMljcsufC0DI4IR8Pv+tLt
+	ruLeq9kSDyXqT/vyHH3yWi52dUgmYKBlvPFTM8VnQ2jLxZ5ow6MJZvVrBf2Ilji2sKslNuJ2BYd
+	1M7dcrt330Sknol6s5ZUsNKepRiR1wKXr8GfGYKlxQsMtencPVEeIkuX5zFtEbaKrz0h3650dId
+	tTUratgtCDqooNAgFZsZtOgiedzxag06bqV7GI9ZPvVGJ7DGyZCuM8PMkbzlU3fKn/+vdlI21im
+	c19b1raTFq87Ynojc7eNC6QAJOEuUicNzFJuVqDMYwD0SYBsO3ouN1KcsaC0OQBD3Ry1icmtNF0
+	vtkVI1gpRsEzKAJ0rfR5/Vw==
+X-Google-Smtp-Source: AGHT+IHXnQkA6v146KKoCafbiFWO3366g7ibhUgcVzoSqTmRJ3fVK75TlT5LmFWMHbk3AuodFVDgyg==
+X-Received: by 2002:a17:902:e84d:b0:243:597:a2d6 with SMTP id d9443c01a7336-245febec9d1mr3977275ad.1.1755725519058;
+        Wed, 20 Aug 2025 14:31:59 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-245ed361422sm35848205ad.52.2025.08.20.14.31.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Aug 2025 14:31:57 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id C493D4207D14; Wed, 20 Aug 2025 21:11:30 +0700 (WIB)
+Date: Wed, 20 Aug 2025 21:11:30 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Askar Safin <safinaskar@zohomail.com>, git <git@vger.kernel.org>,
+	gitster <gitster@pobox.com>, helpdesk <helpdesk@kernel.org>,
+	kernelnewbies <kernelnewbies@kernelnewbies.org>,
+	kernel-janitors <kernel-janitors@vger.kernel.org>,
+	linux-doc <linux-doc@vger.kernel.org>
+Subject: Re: git: list of my complaints about future graft removal
+Message-ID: <aKXXkvAOhStlS2_m@archie.me>
+References: <198c29e9058.119e3a5c065010.5888624019176274871@zohomail.com>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ocfs2: remove unnecessary NULL check in
- ocfs2_grab_folios()
-To: Dan Carpenter <dan.carpenter@linaro.org>, Mark Fasheh <mark@fasheh.com>,
- akpm <akpm@linux-foundation.org>
-Cc: Joel Becker <jlbec@evilplan.org>, ocfs2-devel@lists.linux.dev,
- linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <aKRG39hyvDJcN2G7@stanley.mountain>
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
-In-Reply-To: <aKRG39hyvDJcN2G7@stanley.mountain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="0n+dSVK2aIu7RrRW"
+Content-Disposition: inline
+In-Reply-To: <198c29e9058.119e3a5c065010.5888624019176274871@zohomail.com>
 
 
+--0n+dSVK2aIu7RrRW
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 2025/8/19 17:41, Dan Carpenter wrote:
-> Smatch complains that checking "folios" for NULL doesn't make sense
-> because it has already been dereferenced at this point.  Really passing a
-> NULL "folios" pointer to ocfs2_grab_folios() doesn't make sense, and
-> fortunately none of the callers do that.  Delete the unnecessary NULL
-> check.
-> 
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+On Tue, Aug 19, 2025 at 05:57:08PM +0400, Askar Safin wrote:
+> * As well as I understand, "git clone --depth=3D1" rely on grafts, too.
+> I hope "git clone --depth=3D1" will continue to work.
 
-Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-> ---
->  fs/ocfs2/alloc.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
-> index 821cb7874685..162711cc5b20 100644
-> --- a/fs/ocfs2/alloc.c
-> +++ b/fs/ocfs2/alloc.c
-> @@ -6928,8 +6928,7 @@ static int ocfs2_grab_folios(struct inode *inode, loff_t start, loff_t end,
->  
->  out:
->  	if (ret != 0) {
-> -		if (folios)
-> -			ocfs2_unlock_and_free_folios(folios, numfolios);
-> +		ocfs2_unlock_and_free_folios(folios, numfolios);
->  		numfolios = 0;
->  	}
->  
+So shallow clones should use git-replace(1) under the hood (both on initial
+clone, deepening with --shallow-since and --unshallow), right?
 
+Thanks.
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--0n+dSVK2aIu7RrRW
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQQZO/gRNchuWgPJR+Z7tWyQc2rTCAUCaKXXjAAKCRB7tWyQc2rT
+CP5vAQCVKbnTs4dGZkVn+48GVLHMgTTCrhBdAf5SGiuxFxCxqwD/RZwArnIcVMLF
+rewkM9vMJB/bzQxt81QyHh4mA+m8gwA=
+=mSTU
+-----END PGP SIGNATURE-----
+
+--0n+dSVK2aIu7RrRW--
 

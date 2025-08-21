@@ -1,79 +1,117 @@
-Return-Path: <kernel-janitors+bounces-8982-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-8984-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA27CB2E44E
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Aug 2025 19:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC21B2F4E0
+	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Aug 2025 12:11:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EF6BA2587C
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Aug 2025 17:43:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3861FA2511C
+	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Aug 2025 10:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5B5279DC0;
-	Wed, 20 Aug 2025 17:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054BB2EFD92;
+	Thu, 21 Aug 2025 10:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sv+JIZlh"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="bavapI4T"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-22.smtpout.orange.fr [80.12.242.22])
+	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DC4278E7C;
-	Wed, 20 Aug 2025 17:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B6F21B9CE
+	for <kernel-janitors@vger.kernel.org>; Thu, 21 Aug 2025 10:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755711757; cv=none; b=EzNdIKTJ/o19H9XV1Se4MO42G1FGRIFBC/3Vjw9l5qtafDgu9ZAlidNg7/b6IinaR1c++YUBEWCf7v+0bmgfwfGK702dqZBk3K2b3C1SqZknNQIBT6KkSqT+ycRClFMusE0oe3WGOAE+ey3MUv56tceWFPCLNYYC83XQFcf8vzM=
+	t=1755771085; cv=none; b=pzF8oucf10ZqhfdS25bCltzu9lZ+YEqPVleBtQhBbLLYLMaEfC8Cg6IPO75Wl50BoXN536q0a4minHIueyIkyyJnNP/yZNqoOTZHZMlAYuD17X5DUpgXd4AHa9ZumNuRX0581B6/AEcd+9np3HfR+Z5YQGo3GvWcUbuQ18jn5/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755711757; c=relaxed/simple;
-	bh=f5b/XZjopr8Cuv8VprlPMa8Ukxq9ScSdZbNIDsH+L6o=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=aweJ04lQxlazo9M8yKMN2anUL26Ifvo4CXgpgZuz04fhvIrQ+PIccmVIxyiX2YgoUUfCS3YoIQPtQyG4YEqECxBirw3CQkMImoKV0gyqFwtBAse5ZhIHdSYj9il0BLA2guBdgbPcJT6+uXWPW+akwInOoH7FDx5ayxnOwLEbqvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sv+JIZlh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3804CC113D0;
-	Wed, 20 Aug 2025 17:42:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755711756;
-	bh=f5b/XZjopr8Cuv8VprlPMa8Ukxq9ScSdZbNIDsH+L6o=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=sv+JIZlhwxm2bzqHaIT0dneeU60FkdTIN/60NpfBHVCytLiCHAtYgsZ0gEBNATsgl
-	 eeoMa7f2g3Elyr6Si+n6ft6bQPwBzUnd2RCZXo6/tar6V+8JR8CIZ8PfL7PumZUoJT
-	 kgRF2SESj6VD0kGpR6DFJLCZ+e5l7gfWkgGsUS16Z4PRjK9AzFmXte1RZ6t6R/j+Xj
-	 3DBnFXSZgfk+K843yterdk5wWUVEsavkrbo+5x8XUL2xMKpW5ruLPSb8LWWtEtE2v7
-	 ARLaJ53I0Zc2nGh6faRELNA3Jxiqec9n1e6cQuk7Ji5nAOM/iultrADMEp3nyfJHgi
-	 miHUy9/Ew6GgA==
-From: Vinod Koul <vkoul@kernel.org>
-To: dmaengine@vger.kernel.org, Colin Ian King <colin.i.king@gmail.com>
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250730162712.2086439-1-colin.i.king@gmail.com>
-References: <20250730162712.2086439-1-colin.i.king@gmail.com>
-Subject: Re: [PATCH][next] dmaengine: ppc4xx: Remove space before newline
-Message-Id: <175571175477.87738.3069092823141018312.b4-ty@kernel.org>
-Date: Wed, 20 Aug 2025 23:12:34 +0530
+	s=arc-20240116; t=1755771085; c=relaxed/simple;
+	bh=RPMLvVMloA2cSqz77yb1IAXMPhYmiV5Dl1oHzNUQjHQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Du56xFQGewwPxsX28XGI7JXFNxTg87w+YkSKgOih7uSe8TurxhTUqeKjfx7ZcFNT56UQ85V5h0rI5dC3Seh62IisSCUG183JWjB/v5bEHHjv8nbpYOu9L1FpofINMCW4btJpRs/fm6emWVuFfcvR5ppEqvgFqyQWALeoXT3wDyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=bavapI4T; arc=none smtp.client-ip=80.12.242.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
+	by smtp.orange.fr with ESMTPA
+	id p27sunoTGn5mgp27tut2o3; Thu, 21 Aug 2025 12:02:33 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1755770553;
+	bh=8/C56F0xk36C5zHc0NI94zAJrdakfJt6Ccq8eLvFcJQ=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=bavapI4TTJrFLSrIHYHyUxYXF9/j/6DzRdFQkaVsJcJflqvoaQ27Z5JvZUBmtDwI2
+	 oseVuDTz6d4A3X88IV97bTsSi80w5qarUCyCRIKevPZiTOHsG995RRzyarSciIzcso
+	 45Pr9bg2KBEEgbGGhoEJj3XsGaah10vaT4EWVmJ0E4+gi53/w1VgtpKhay/FH/T6HA
+	 VWZo5stMxNE4LCNqo7oBATDs1bJ14+d24IFt2Zy2msnN4Ls+8mBFsXHbAmlN+wUsMs
+	 sKK5g7G9URF35iQfzZyutEZf2UdeV+aWox5h218Gsf6fh0SeGSmGwUxJ+vErFZdrLp
+	 K0qEz5fI3PVsQ==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 21 Aug 2025 12:02:33 +0200
+X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] w1: matrox: Remove some deadcode in matrox_w1_remove()
+Date: Thu, 21 Aug 2025 12:02:21 +0200
+Message-ID: <458641ad2d7a7adf30a03e70038304f0e6a81ff4.1755770484.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: 8bit
 
+The .remove function can only be called if the .probe() succeeds. So there
+is no need to keep track of a successful probe in 'found'.
 
-On Wed, 30 Jul 2025 17:27:12 +0100, Colin Ian King wrote:
-> There is a extraneous space before a newline in pr_err and dev_dbg
-> messages. Remove the spaces.
-> 
-> 
+Simplify code accordingly.
 
-Applied, thanks!
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Compile tested only
+---
+ drivers/w1/masters/matrox_w1.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-[1/1] dmaengine: ppc4xx: Remove space before newline
-      commit: 1daede86fef9e9890c5781541ad4934c776858c5
-
-Best regards,
+diff --git a/drivers/w1/masters/matrox_w1.c b/drivers/w1/masters/matrox_w1.c
+index 2852cd2dc67c..146fa7c6e74e 100644
+--- a/drivers/w1/masters/matrox_w1.c
++++ b/drivers/w1/masters/matrox_w1.c
+@@ -47,7 +47,6 @@ struct matrox_device {
+ 
+ 	unsigned long phys_addr;
+ 	void __iomem *virt_addr;
+-	unsigned long found;
+ 
+ 	struct w1_bus_master *bus_master;
+ };
+@@ -158,8 +157,6 @@ static int matrox_w1_probe(struct pci_dev *pdev, const struct pci_device_id *ent
+ 
+ 	pci_set_drvdata(pdev, dev);
+ 
+-	dev->found = 1;
+-
+ 	dev_info(&pdev->dev, "Matrox G400 GPIO transport layer for 1-wire.\n");
+ 
+ 	return 0;
+@@ -176,10 +173,9 @@ static void matrox_w1_remove(struct pci_dev *pdev)
+ {
+ 	struct matrox_device *dev = pci_get_drvdata(pdev);
+ 
+-	if (dev->found) {
+-		w1_remove_master_device(dev->bus_master);
+-		iounmap(dev->virt_addr);
+-	}
++	w1_remove_master_device(dev->bus_master);
++	iounmap(dev->virt_addr);
++
+ 	kfree(dev);
+ }
+ 
 -- 
-~Vinod
-
+2.50.1
 
 

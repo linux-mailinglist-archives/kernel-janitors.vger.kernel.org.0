@@ -1,180 +1,141 @@
-Return-Path: <kernel-janitors+bounces-9357-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-9361-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2CDBCCFFC
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Oct 2025 14:56:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 739FDBCE6FE
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Oct 2025 21:55:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7EA0B4F8FB5
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Oct 2025 12:56:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92C0219A81F5
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Oct 2025 19:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA932EFDBE;
-	Fri, 10 Oct 2025 12:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3272F3019A2;
+	Fri, 10 Oct 2025 19:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Ixmkdfes"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WoOTehJ8"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A014414;
-	Fri, 10 Oct 2025 12:56:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EAB0301713
+	for <kernel-janitors@vger.kernel.org>; Fri, 10 Oct 2025 19:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760101001; cv=none; b=U1M3p5cTx+Tsv/lbsO7D1oxlsBcNywrqUAqll2Dp8AUWozwjDeRjInd9TFcK4kNxbwvq4BV0Ovw2Xbqlmb6MKXG7a8PrU+geDYeSwWoEMA62S1LnETNT1rq0hNuMgVAQt2x9WqNCJctcKeaz1Y3MngrYh8YdfXHiKSq1osOJVXE=
+	t=1760126149; cv=none; b=KAgQWJ9oT7z6xcECT0Jp8wYONUK63V3Tboylwzpxhg37i3veTjbraFEOPC1dnhCts4/vyXfoYlEbpGITGV4+7Kxh6sgdtoazNV6yHcd+buhZzj+yUcEmtu6jPXw+MXQp2FoTBX1lGNA9CLVoI7Vq5c4+FFO+7BSFoiq8Ve7AD0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760101001; c=relaxed/simple;
-	bh=dD3igITv+JHDtXiWzqDlls1b5ftAr4cPy4acz3BAGhg=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=JNCUNLvUpBUFsMYmAXeqmsdQkElhvffBWANd5X2xs2pIeaKn/SWYOfUzoUI31KKx48NgoJnvdODpCNctC6318Kga2Iuo+jz1uBBSeV19mYXL+8/AbEoDIey9GnCap9nsWccC9BafMoTvLf94V6jyVGC4JHml3jNMowjVqaTJam4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Ixmkdfes; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1760100996; x=1760705796; i=markus.elfring@web.de;
-	bh=2SNKVWEp8lysblDMfyyWDhUGHiqupODtMa0SLSCv0C4=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
-	 Subject:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=IxmkdfesMykOibIC7wP1Qz2AqsM2uzwpKpTbML0feW0mPKFcAQkJG4UJCIPTE6pN
-	 GNyK3p6vm3gI1utC2DKq3rLmDIHPjZYb7O9FF2Y9OxgAeHf5lsm/GTmJh+BNxwhqK
-	 2XXEyT9qugnSLeYxDO08uh5GNF0L1DBDWH6GQewg16BqOepExdMkW6nkk2CkPgzA5
-	 M0mvA+iCL0Vx3OTGfcR3vBKjYN9P3E16Cz/GYGkkrszHA8GRB/oUtKzZTOMyXDgxb
-	 l1VGm3ZP9NxCMbdwEmqWKVlXcX4+TpdqGm4PoBL1uA5W+u5uvxX1+CSHnten75+Nf
-	 dI6Rzt+MlsCPNiLCBg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.69.184]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mcpqo-1uYgru0VfO-00aFLc; Fri, 10
- Oct 2025 14:56:36 +0200
-Message-ID: <10e2a3a5-e109-44b5-ba3c-3e8c40d76361@web.de>
-Date: Fri, 10 Oct 2025 14:56:34 +0200
+	s=arc-20240116; t=1760126149; c=relaxed/simple;
+	bh=9PS7F/m4n1uAkBYWPryVi2hX01WNFFT8P5czGODVaI0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=A8hkTRF623Szyax12iRGJrXpfC24QmvzBIYJ5/6dkj/0XM4Z7BZguxZ9TpQN6UXdZFPD7d7Rft0EZYpm080L5bsiwOxQzk6YjRV6ziJzne+Z4qawdS1ogLjNCZaxTrL4SuozuepP8PjWEOkGmcf+nvDI4tp3E6DjtZmUpYzOhf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WoOTehJ8; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-46e6a6a5e42so11782015e9.0
+        for <kernel-janitors@vger.kernel.org>; Fri, 10 Oct 2025 12:55:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760126146; x=1760730946; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=WlPTxxGqUeSR2lZkjJtan7WE7z8YmM6/O314vANG+hE=;
+        b=WoOTehJ8ZIkVn5KybLL1WjDwxXHekgqlHfszjSWVfabSv6MMLS1rkll9MqiUPO62bF
+         YG+3c036NgWKmyj2Dh/1XJ+bMuTXoPEKAil+YyNqz9+xH6CLrKa+iSgYVtTKkuCdVRSG
+         99iEMe61IxbDPdpm/6FoQpcMygsb6AF/PicxL501BSRH0oNAgmcfhHF9cq3whuG9s4WW
+         KOUozpokXZlfF4QsWKgehZ/7JW/TnhKvL3uFcCYDsiOXC2wZD4z1HODQbSwHiuA4SqG7
+         wzs+KDzRFKQA8dIwE6gy3JGtuHsDibXGtghO9Iaex8q+V5LKIoslO95B0vtKvMrtMYHa
+         68uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760126146; x=1760730946;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WlPTxxGqUeSR2lZkjJtan7WE7z8YmM6/O314vANG+hE=;
+        b=wT5SPDhzgS01TGVMW5own0c4Si6KFLazMdIQiaBdy2VflsyJ6eEIrcKZmqK8cgnAKf
+         A8JQiYgCXk9fx/YHgo984b+1CgEOJopeBSC8AXVm7udo1hlnj+lG5KYfOkS4Kifd3yH2
+         ckvqP711z0qYAlnvecH3azon+vXaOZBJyebVOuZ05LPo2G+g/nRmmyTGpfUnEpCBGMDu
+         fLWI+Pjvica1A+WWhFhY0ahtg/klfW4YL/rIMCa80iXqG8P1jPuEb3T1zJ/nQjQgr3Xx
+         5y3VC2tWUvB4NXQhWPOSne9YwPHgGuA4YiFURTG8e7587GGSyhfCaPnGzl8wVvCTVy7u
+         510w==
+X-Forwarded-Encrypted: i=1; AJvYcCVGrEIAnMN1B4HuCS2BxTor/0NrJvqnRyaeE2oA7Ivn+Q0X/9gwFAwgLBIljo102T/Wa3Ds8NwVlLt2fOWqhMM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUsgiD4vTY3Pwnp4/Fb5iD4dYeNjw8Iszty6+bDijVpNvYhn/e
+	res/sVEC4gbmnzVsVpt5j82VxZ0Tx1CUCyRZuu156OU7eURXTPNF8kyoA3rvReEs
+X-Gm-Gg: ASbGncuM6IzA+VVI/JeDhp55CenaLepQYt+ZrNH0jazco69AIDLJcoASZMJcTX/VlQT
+	S0pZlTL01+H3w+NPd4EPFevde30mcrdTIXs59YYXrjFvnQh2U5Ar9adfebBXLKeQUQE+417Svrq
+	ixRNws2sShzJbt3JYe3IIhhRljiILH2BWq73uivUkS4aWtBzRTVq7s2V7pDLwsVmrdDC1JcyH4t
+	p5QJ9HAx8V/Hy9VBDV1BXLzhWUT3aLx+lGZdHBi8CX7uYQ1t8DYUInjci9b49NQTzNU8yVpHU2t
+	V8eSZKXiuGV3974SfUdUR6wuH06Qseb+BUUDzliaQayG30AULFCCWRZhStv4G+Gunw76O15dKOC
+	pp+g857Nm5s9uKGmlzeCWEd9kKkNHXdfR9MNq7ioVHFZe6YvlDgEnoX1pEKuEPrLWrHDHKCxFgs
+	j6U6Ks9ARj1Y9J9ri7VWx+8Yma
+X-Google-Smtp-Source: AGHT+IHaWYI9QvKReNHkAaSbov4hjc2gUESetJC4TFK/yM1c7gn97K56ZqGizY/MOi2ZOYx+SBgt6w==
+X-Received: by 2002:a05:600c:529a:b0:46e:3e25:1626 with SMTP id 5b1f17b1804b1-46fa9aefe15mr92408175e9.19.1760126145632;
+        Fri, 10 Oct 2025 12:55:45 -0700 (PDT)
+Received: from ?IPv6:2001:818:ea56:d000:94c4:fb0e:28f:2a8d? ([2001:818:ea56:d000:94c4:fb0e:28f:2a8d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb489af92sm70551775e9.17.2025.10.10.12.55.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Oct 2025 12:55:45 -0700 (PDT)
+Message-ID: <3e91c2a282499f862ed7d27842d5bc2ee461ebf8.camel@gmail.com>
+Subject: Re: [PATCH] iio:common:ssp_sensors: Fix an error handling path
+ ssp_probe()
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Jonathan Cameron
+	 <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?ISO-8859-1?Q?S=E1?=
+	 <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Kyungmin Park
+	 <kyungmin.park@samsung.com>, Karol Wrona <k.wrona@samsung.com>
+Cc: linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org, 
+	linux-iio@vger.kernel.org
+Date: Fri, 10 Oct 2025 19:56:41 +0100
+In-Reply-To: <6fdd39e3763a6e0e700982ac6ed63a5748a4ce67.1760122717.git.christophe.jaillet@wanadoo.fr>
+References: 
+	<6fdd39e3763a6e0e700982ac6ed63a5748a4ce67.1760122717.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-GB, de-DE
-To: linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
- Bharath SM <bharathsm@microsoft.com>,
- Boris Protopopov <bprotopopov@hotmail.com>,
- Paulo Alcantara <pc@manguebit.org>,
- Ronnie Sahlberg <ronniesahlberg@gmail.com>,
- Shyam Prasad N <sprasad@microsoft.com>, Steve French <sfrench@samba.org>,
- Tom Talpey <tom@talpey.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org
-From: Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] smb: client: Omit one redundant variable assignment in
- cifs_xattr_set()
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:xgGFKwlC8fAbNPnPhe9WRoYMzFBnzrQvqKFb0p5yK7sXTOUiC/s
- 2XYyLbz3901nw+YfYGSTpJwWX2XlydLtKWPTFqnQH6S6ULL3uACcMCN/CQczU9QFc6DRr2U
- PXo1WeXM7vRWcGH2Ji5vV7hst5BVKwrEKYoMbUDRhEDK03BKiq2OrQUUU3ueCG8W/XFXmYG
- 4c7yOdm/LRFUS5yqD8AlA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:eW8yYte7cDM=;aIZaFF5QXWh3GxyP8Yz03LbE/GA
- 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
- I1EcDd/1wX+ZrHebJgZrpi3U+s=
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Fri, 10 Oct 2025 14:48:13 +0200
+On Fri, 2025-10-10 at 20:58 +0200, Christophe JAILLET wrote:
+> If an error occurs after a successful mfd_add_devices() call, it should b=
+e
+> undone by a corresponding mfd_remove_devices() call, as already done in t=
+he
+> remove function.
+>=20
+> Fixes: 50dd64d57eee ("iio: common: ssp_sensors: Add sensorhub driver")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
 
-The local variable =E2=80=9Crc=E2=80=9D is assigned a value in an if branc=
-h without
-using it before it is reassigned there.
-Thus delete this assignment statement.
+Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- fs/smb/client/xattr.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/fs/smb/client/xattr.c b/fs/smb/client/xattr.c
-index b88fa04f5792..029910d56c22 100644
-=2D-- a/fs/smb/client/xattr.c
-+++ b/fs/smb/client/xattr.c
-@@ -178,7 +178,6 @@ static int cifs_xattr_set(const struct xattr_handler *=
-handler,
- 			memcpy(pacl, value, size);
- 			if (pTcon->ses->server->ops->set_acl) {
- 				int aclflags =3D 0;
--				rc =3D 0;
-=20
- 				switch (handler->flags) {
- 				case XATTR_CIFS_NTSD_FULL:
-=2D-=20
-2.51.0
-
+> =C2=A0drivers/iio/common/ssp_sensors/ssp_dev.c | 4 +++-
+> =C2=A01 file changed, 3 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/iio/common/ssp_sensors/ssp_dev.c
+> b/drivers/iio/common/ssp_sensors/ssp_dev.c
+> index 1e167dc673ca..da09c9f3ceb6 100644
+> --- a/drivers/iio/common/ssp_sensors/ssp_dev.c
+> +++ b/drivers/iio/common/ssp_sensors/ssp_dev.c
+> @@ -503,7 +503,7 @@ static int ssp_probe(struct spi_device *spi)
+> =C2=A0	ret =3D spi_setup(spi);
+> =C2=A0	if (ret < 0) {
+> =C2=A0		dev_err(&spi->dev, "Failed to setup spi\n");
+> -		return ret;
+> +		goto err_setup_spi;
+> =C2=A0	}
+> =C2=A0
+> =C2=A0	data->fw_dl_state =3D SSP_FW_DL_STATE_NONE;
+> @@ -568,6 +568,8 @@ static int ssp_probe(struct spi_device *spi)
+> =C2=A0err_setup_irq:
+> =C2=A0	mutex_destroy(&data->pending_lock);
+> =C2=A0	mutex_destroy(&data->comm_lock);
+> +err_setup_spi:
+> +	mfd_remove_devices(&spi->dev);
+> =C2=A0
+> =C2=A0	dev_err(&spi->dev, "Probe failed!\n");
+> =C2=A0
 

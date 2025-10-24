@@ -1,128 +1,123 @@
-Return-Path: <kernel-janitors+bounces-9492-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-9494-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2388C06391
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Oct 2025 14:22:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DEA9C06890
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Oct 2025 15:38:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 17FB64F1732
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Oct 2025 12:22:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D41AE3B5D75
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Oct 2025 13:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48160316187;
-	Fri, 24 Oct 2025 12:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C8331D746;
+	Fri, 24 Oct 2025 13:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kZZwMPoI"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="jToRp2QV"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE142F39C1;
-	Fri, 24 Oct 2025 12:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150E62D47F3;
+	Fri, 24 Oct 2025 13:34:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761308559; cv=none; b=oVmgX2TGsUqCOD90xHbW9klIk5Y1EHHg/fcB5N5vNmKZGLOvLyLDoFiM7y3jc9yB2dU0/n2XA4ocP/UPmMHezn9Vjc6NXWo7HXX5QFla/txIY2xXp2mLXTSbVFIrTfAlvlAwhrg01dEXk75McYCNN6W1Qu6NifMk6LHcJW9sqkA=
+	t=1761312891; cv=none; b=bshXE3jITKgXohpvKcwb+Mui0AyVKvvYrmlMQQQ/0ODm4cJIdunHvaXnJKTq83WOQC6HL1v2xksJmAGpQtU/YXHUpzO9cD9weMt3ySbD0tS3tQHGShfkcgZqeKuOzn7bzpYuwD8c30enFmj/ENFaqyiALEi9pcriEPqQq2vqffU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761308559; c=relaxed/simple;
-	bh=qTx04iEbOhzfAAE0oGbIBuQx0pHVs8rGV9hEwJGbdr0=;
+	s=arc-20240116; t=1761312891; c=relaxed/simple;
+	bh=j50UC3gpZzM+sZcUvUP6Ut3HC1+zm/hUKXuj616DXSE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rD6Ar2BGcthd4VWleaaPrUNTlSGnkKtEybGB7AidPShpMOoTN8I67PDekZIAHVzcfE8Wn3xyaRYke/FMw+QPXQ2ffZME7N/msldryWE+El6CgUcfC9DJsWNaiY53uBTQlLyR4858rZIuT8ejDxTl5+Hs2clj1EDXq8cvMXBhAtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kZZwMPoI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89CCC4CEF1;
-	Fri, 24 Oct 2025 12:22:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761308559;
-	bh=qTx04iEbOhzfAAE0oGbIBuQx0pHVs8rGV9hEwJGbdr0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kZZwMPoI4s/dkfoY7KAucgUs/9klMClinqSNfZ+lPbew2rPPkkTZkcpwCsq4iEwSr
-	 GU7a4I/9UE+bWIb3ZWgiZqbskXRY+DfPUO4pAiIyQ+EpAdHUnPcSm1Y/QWWFSN9IlP
-	 guli5OJ9WNAF5ENb/zGrkG+J6g3a3A/wufa+MqBAQPQBUL8L/dYoBLjSfQQXNdI9zM
-	 6/squULZR4gVKo5ZBftSemMSq8dtlN8GL4P1rTvlq4PB73Lk5u09iQc3iFCvTFhZkS
-	 SMOr+80cTM6WlMF86IGL2Lh8Fb+XOz7cfBeljLJyvkQi1u4dVCOvNG2SufSislaEIt
-	 ZvOQSGGnuLEEA==
-Date: Fri, 24 Oct 2025 14:22:35 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=OrX8pqzddob0PUCTDdIl9TFgoJL+1WGSQeiGt5wYojOztJ6l7CdtjCHwJKL/3uCf3WKrzlKzVIlyJC+45Gzj9A01oMfkxcxc38Ni1NrF9d1eCzYWV7h1IsJBZuawG8n5Op4QOvVzcsdMngj7dJz35WCdaXyNDHSxgYECJsCq/I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=jToRp2QV; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 9D7B314C2D3;
+	Fri, 24 Oct 2025 15:34:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1761312880;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=r1/r7129Thb1q07EWwLnDb7V2mKBqHDrr+sIHFTvGfo=;
+	b=jToRp2QVbPYnRqiNsobWoAssQ3moE8bSJytyjP8pQA6Ho7wRDhiXWICqVyQGI2TO5j4sQU
+	2AedX+o0qlGY5wiWfGb74FmCWVZ5irz30LuXgQG7oAHRjVA2i/0IjqOQULOX72aIeGF8Ie
+	iJBqW/gF9zZzaq5sKaBqv0a4sIxu83Fo1QHY4bMZx1Nt5xV5smWAgNxFjTTTF8wk+zEN7U
+	FQfmZ33ymbBvoSkoCwZkQ7OfO1nMJcvs4W/qhSoKPysqoTk/I5NoXOKqYJiBOH/TSCeB8m
+	OZx+4+PAqKA7ejcL7m/PppdE/T82r0mkJa839BZfAIJdvaFSV1hVOghY6RgJ5g==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 02b4df75;
+	Fri, 24 Oct 2025 13:34:36 +0000 (UTC)
+Date: Fri, 24 Oct 2025 22:34:21 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
 	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next] net: airoha: Fix a copy and paste bug in probe()
-Message-ID: <aPtvi1hwDKOZH3vB@lore-desk>
-References: <aPtht6y5DRokn9zv@stanley.mountain>
+Subject: Re: [PATCH] fs/9p: delete unnnecessary condition
+Message-ID: <aPuAXaHNWMhZOeuv@codewreck.org>
+References: <aPtiSJl8EwSfVvqN@stanley.mountain>
+ <13655400.bYd4YqkHfl@silver>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="azbuYC81tseTLIZm"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aPtht6y5DRokn9zv@stanley.mountain>
+In-Reply-To: <13655400.bYd4YqkHfl@silver>
+
+Christian Schoenebeck wrote on Fri, Oct 24, 2025 at 01:59:46PM +0200:
+> On Friday, October 24, 2025 1:26:00 PM CEST Dan Carpenter wrote:
+> > We already know that "retval" is negative, so there is no need to check
+> > again.  Also the statement is not indented far enough.  Delete it.
+> > 
+> > Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> > ---
+> 
+> Fixes: 43c36a5
+> Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+> 
+> Apparently a manual revert copy paste error. The rest of the revert commit
+> LGTM.
+
+Ah, I left that part of the reverted hunk while keeping the HEAD part:
+```
+<<<<<<< HEAD
+                }
+                if (v9inode->cache_validity & V9FS_INO_INVALID_ATTR) {
+                        p9_debug(P9_DEBUG_VFS, "dentry: %pd (%p) invalidated due to type change\n",
+                                 dentry, dentry);
+                        return 0;
+                }
+                if (retval < 0) {
+                        p9_debug(P9_DEBUG_VFS,
+                                "refresh inode: dentry = %pd (%p), got error %pe\n",
+                                dentry, dentry, ERR_PTR(retval));
+||||||| 290434474c33 (fs/9p: Refresh metadata in d_revalidate for uncached mode too)
+                if (!cached && v9inode->cache_validity & V9FS_INO_INVALID_ATTR)
+                        return 0;
+                if (retval < 0)
+=======
+                if (retval < 0)
+>>>>>>> parent of 290434474c33 (fs/9p: Refresh metadata in d_revalidate for uncached mode too)
+                        return retval;
+```
+
+For a proper revert I should have removed the first `if
+(v9inode->cache_validity & V9FS_INO_INVALID_ATTR)` too :/
+
+OTOH it still makes sense even without the rest of the patch (the only
+reason V9FS_INO_INVALID_ATTR would still be set is on type change, and
+in that case we do want to return 0 even on refresh inode error)
 
 
---azbuYC81tseTLIZm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Anyway, thanksfully this particular double retval < 0 check is harmless
+-- I'll pick this up for -next for now but hopefully we'll be able to
+"revert the revert" and fix the other problems Tingmao pointed out by
+the time we reach the 6.19 merge window...
 
-> This code has a copy and paste bug where it accidentally checks "if (err)"
-> instead of checking if "xsi_rsts" is NULL.  Also, as a free bonus, I
-> changed the allocation from kzalloc() to  kcalloc() which is a kernel
-> hardening measure to protect against integer overflows.
->=20
-> Fixes: 5863b4e065e2 ("net: airoha: Add airoha_eth_soc_data struct")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-
-> ---
->  drivers/net/ethernet/airoha/airoha_eth.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
-net/airoha/airoha_eth.c
-> index 8483ea02603e..d0ef64a87396 100644
-> --- a/drivers/net/ethernet/airoha/airoha_eth.c
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-> @@ -2985,11 +2985,11 @@ static int airoha_probe(struct platform_device *p=
-dev)
->  		return err;
->  	}
-> =20
-> -	xsi_rsts =3D devm_kzalloc(eth->dev,
-> -				eth->soc->num_xsi_rsts * sizeof(*xsi_rsts),
-> +	xsi_rsts =3D devm_kcalloc(eth->dev,
-> +				eth->soc->num_xsi_rsts, sizeof(*xsi_rsts),
->  				GFP_KERNEL);
-> -	if (err)
-> -		return err;
-> +	if (!xsi_rsts)
-> +		return -ENOMEM;
-> =20
->  	eth->xsi_rsts =3D xsi_rsts;
->  	for (i =3D 0; i < eth->soc->num_xsi_rsts; i++)
-> --=20
-> 2.51.0
->=20
-
---azbuYC81tseTLIZm
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaPtviwAKCRA6cBh0uS2t
-rPipAP9ULxOBgv2wFtLbEDmV13eMnbOkkxwrAX135INBNPEm7gD/RJ5HNXgRC5fa
-73KCPBdoSt5hEOBCmw1Rf7+x2TR7TAM=
-=ScI+
------END PGP SIGNATURE-----
-
---azbuYC81tseTLIZm--
+Thank you both!
+-- 
+Dominique Martinet | Asmadeus
 

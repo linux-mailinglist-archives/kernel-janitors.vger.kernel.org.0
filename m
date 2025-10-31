@@ -1,189 +1,116 @@
-Return-Path: <kernel-janitors+bounces-9576-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-9578-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1ECBC247A8
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Oct 2025 11:35:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A434C24C67
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Oct 2025 12:27:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 405F34E9C14
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Oct 2025 10:35:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D3C03B5686
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Oct 2025 11:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A673E335570;
-	Fri, 31 Oct 2025 10:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B603451CD;
+	Fri, 31 Oct 2025 11:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="hRSaomr6"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mVx0TeTu"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE692690D9;
-	Fri, 31 Oct 2025 10:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FA142050
+	for <kernel-janitors@vger.kernel.org>; Fri, 31 Oct 2025 11:27:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761906912; cv=none; b=u8FMMGuARzfjZ9Y9U+zvKcjLkU5Pl0P7WhiuUBeAcvcwbQVogAWl9cDX7ofx8cR2hS3KcZ7/CLwQa5N1ErFnPKnny8KGdF3U2jWIdHRUBAtgUpCqUHud3mCJPfbo8QwlIT2XbZ+ITh2J8UhpBiHi8nr5Gw+O4k5tCCimh+bGPCs=
+	t=1761910040; cv=none; b=TCtG/NSfx1euO/SAsBYpqp4p2/hwbqggJFSPgybepYht5cxjZybDU7XStu8SA5eiLklwICEqs7+qkscNi3xIdI7q/uH4omQpiPZ9I+O+ET/5k8bnHJCVXprbah8/5kSydEquJNPMDWITzead/nCaSU+M5LPOXCuNkURApFNA/Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761906912; c=relaxed/simple;
-	bh=FxherFwh5Pm0koccKZg5lK6dMO0spByFj3QLIWLaPo8=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=W2fSb2ak4qXUHUq+lkCfcRVQbVfAoWnMhjE/qva3MTutgi1pRn1wpFapnp+ehNvzuJT2TZ7YKQsrqBunDe2qVmjieohEGMuj2XIVrOb11gN+muSDIbvcXZ6VUbc+AhuLqz/zWoUXod+H7An56lRWoOKmA4dhC+KjmDBUKZioTNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=hRSaomr6; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1761906896; x=1762511696; i=markus.elfring@web.de;
-	bh=oFx6XJksggUg16W1s+jVFqjmiEorlTHQrV24vlNqe6o=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
-	 Subject:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=hRSaomr6sci/WJpUEj3CgYmEA9bnBYxYwTrnrbz/lloHqgf2XyBfXYgSBrpOwTC+
-	 agD8VQKVcwr4ob7THf+O32FM83tBo3xMPbfU7sTv1ZezT2MHvfjpHTNoraMlg5339
-	 Qrwnjl5z7t3OWoV2Uz1x3+v9tE1CLPXcub9RUzWrHTu4laSalaMniHq0/+iSZWKp+
-	 Ksy0N0v6fJyAmDmTfkO224Nm5MsyajX9AtTg9P8S5LDPB0EhkOwQVLWrgigJtUtcT
-	 Q9xHVnJjRdCmfgzcokFKrFPG2maaRiV1WfvyvLt7TBjdhdmlqotDtBUpKgMtqK2Kq
-	 Z/Cm7ir6EZtyLiR1Nw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.69.206]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MQgpA-1vaHrS2Pvq-00YlOW; Fri, 31
- Oct 2025 11:34:56 +0100
-Message-ID: <d154d3c4-dd3e-488d-862f-5361867a70f1@web.de>
-Date: Fri, 31 Oct 2025 11:34:54 +0100
+	s=arc-20240116; t=1761910040; c=relaxed/simple;
+	bh=plC+/6CrEBYyMLwLcmmekRAtRmr4crxYvfBWrqa4EsI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a/Lg1rLpGX1/ZMNNbK5pjSJgORADiThNOl0krg05rp7QGAR8A9y8qxslpX8sSw0VYudRtkeE1oqS7iKRUd+TjXhjMb4b5zuG1JZpzwVpxcZzqw9P74HHlu79f8pbeSXDRYnASwA/UneNoi5j8aknGMCbWJ50q7yZCdg8UU7IdKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mVx0TeTu; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4710022571cso22769735e9.3
+        for <kernel-janitors@vger.kernel.org>; Fri, 31 Oct 2025 04:27:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761910037; x=1762514837; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gwf871RDbtgle/X+gHRRa1kmehrfWm8Nitz2OZjIhxk=;
+        b=mVx0TeTuTskgFvVTRNFRNe6XPJ94tkP1BMM3Y+K2B68F7NwdV8zrYxQtzarW4GnYHN
+         2akQ1i0UOJPhSqXG78UBb3x/gjoD+M1vtBRBMoRzCz+nr5/hoE1RUzwdR6sK30PiSC0N
+         UKgyltXMeNnjYB8zeitgS/3/LFrhIXkoDINbmEfZtBL4SvulrJ4jZmymUYq0y+khpK5q
+         H0Xqr0TMWLZ/853vx/Z2BIy84xuxgKHy+s+RKgYKNiQnj1Yk8XOnpcZUREm2FZev0Vns
+         Ex34fuxZ7RZBIM/sWha4ANvIYjrhV9aubPIfpZQQeEu1rcWjUVVCaY8Scvt9JYx6O+1p
+         Ltyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761910037; x=1762514837;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gwf871RDbtgle/X+gHRRa1kmehrfWm8Nitz2OZjIhxk=;
+        b=sbs0EgAGK8GdeP3G4j0Q+dfCyQWcb7HbdPa4kCKEvZGFv9s7rrVDyZ+IinA3xH9Fwq
+         wWmcjDcSCU19AXqu+n4HYybM2pkxCYiCxtQFRhi5hMc97z52VyddD/yVPKqXrE7iUvOQ
+         Jn2J433HQtKszXUjAW/8dpyNmR0GzyNsPdeeQQN0IzuPSRytk7GOstxyXsiBnGTFL9HV
+         OM1z6tHc6ykOCbCAckg+MrtaDphpp0QoAufQdK2u1/2ioTNn+dLQGsNQBVUPgCRFIVac
+         5W0SSM9kmJBf6fMLE+fdcJRyPAstBGY3DjYPwFM/qVKPMiEoYKLgK7oxnKTJRglPpKKG
+         9W8g==
+X-Forwarded-Encrypted: i=1; AJvYcCV7ipnwrR2qb8cXFHJHOUCO3LnXNasEkt62IuS7iiMrU8jahvHetNPnn8Y1C1I1ME510tNRb3msq8pcFfzRZLI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypA+K/Hx8bl0OwdtP1sHVpseLTcRjelqPY+4HmXk5znk+3gIHt
+	CzuBxNgrFCSLWxqqDxGady/zogJyYYLrLauqKmk4yblkAHtItpfwGlacDT/qXcYuuOs=
+X-Gm-Gg: ASbGncvmGRDyuwsrPIf9dED7CfZz02QArc0/r/G+LbmQKV3q9wiqSY3JcuWCgJBOdGD
+	/0bHUGNlxz+UoXaHwV67EBZA4QJVefKqm2nO9DGnT8BROU4CgikVuMYLfh4Tou+otO2ZVZIhoHI
+	XmxvDTanAFvhm0kl1TSuKRUztgSAliGpjS6mreEzUjJqpTugkG2Izx/t750sXEYjUxb2c4QDkwR
+	VRn1kUZy4RkGUMj45eG5cLOYc1/Jm7eaScOrnVAeNRIJo2nln2T5eBXpk7am2jtha2IZitwMQjB
+	ZOdRHSpE0S5dQUmcxZsWqbGS2+DLobXmXCUoGbkEs4Uo2oFUJls4/8Xtc14r7ga83t1jv6GuXcM
+	HAKWE7JQwrKFSore27NHwURhnHmMVxhJbGeDNvYuBLSWXY/PyfPr7ErwYkn7JrzI4XGPd1kxr8Y
+	fEYyxZTw==
+X-Google-Smtp-Source: AGHT+IHOCxnrV9vNtIsoHM6missOnF5vwOTnrAGX8+16mZQ7e1sifCeCAgu5UUuGQnX7eDw9qPPn1A==
+X-Received: by 2002:a05:600c:5387:b0:46e:1b89:77f1 with SMTP id 5b1f17b1804b1-477307c23d9mr27753125e9.9.1761910035750;
+        Fri, 31 Oct 2025 04:27:15 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-47728a96897sm90006865e9.11.2025.10.31.04.27.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Oct 2025 04:27:15 -0700 (PDT)
+Date: Fri, 31 Oct 2025 14:27:11 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Markus Elfring <Markus.Elfring@web.de>, sparclinux@vger.kernel.org,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Christoph Lameter <cl@linux.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Finn Thain <fthain@linux-m68k.org>, Tejun Heo <tj@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	kernel-janitors@vger.kernel.org, Miaoqian Lin <linmq006@gmail.com>
+Subject: Re: [PATCH] sparc: time: Use pointer from memcpy() call for
+ assignment in setup_sparc64_timer()
+Message-ID: <aQSdD5RFHvzJOlak@stanley.mountain>
+References: <2fa899eb-60b6-4637-9035-aeff78e261fa@web.de>
+ <CAMuHMdX-uKt3-Lb2NaxmONEqWdtFgTOqXEo1nOfGq-R8ysHfcQ@mail.gmail.com>
+ <33199802-d83d-48e8-9032-f1c4c61cfee7@web.de>
+ <CAMuHMdXL+YXxwAM+HkawzTMxL2ez5O4bQ-j-LCCXTjz=NoLOKQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
- Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>,
- Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
- Jeff Hugo <jeff.hugo@oss.qualcomm.com>, Oded Gabbay <ogabbay@kernel.org>,
- Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>,
- Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Content-Language: en-GB, de-DE
-Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org,
- Miaoqian Lin <linmq006@gmail.com>
-From: Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] accel/qaic: Use pointer from memcpy() call for assignment in
- copy_partial_exec_reqs()
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:NfRtVan5498ZivDyGFWJwH743+N/6vdXytH3TdaLvTWLt5VYL+W
- DK4aQNkKFPNe4EwUC+wDg9AMPxIi8dYBQgZLTL+cdieHf6pheXtIaJhUwhY3wf0WbQfkhC7
- sNyPsetkDolgCZRa+yBLEd/kQociTdkDF2ZTahOF9XPPUjDoXsC/4FdwC/ZV7n6jiDLJFK2
- s6bByFiz4NRLGrAG0eZvw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:mIfDsisP1fc=;/yrmD4e8xKKgNZXTMo3G/l6Jsj5
- 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
- 5QCNrAc4IhMnuPxfw=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdXL+YXxwAM+HkawzTMxL2ez5O4bQ-j-LCCXTjz=NoLOKQ@mail.gmail.com>
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Fri, 31 Oct 2025 11:26:33 +0100
+On Fri, Oct 31, 2025 at 11:08:39AM +0100, Geert Uytterhoeven wrote:
+> 
+> The above function could be shortened by writing
+> 
+>     (sevt = memcpy(this_cpu_ptr(&sparc64_events), &sparc64_clockevent,
+> sizeof(*sevt)))->cpumask = cpumask_of(smp_processor_id());
 
-A pointer was assigned to a variable. The same pointer was used for
-the destination parameter of a memcpy() call.
-This function is documented in the way that the same value is returned.
-Thus convert two separate statements into a direct variable assignment for
-the return value from a memory copy action.
+Heh.
 
-The source code was transformed by using the Coccinelle software.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- drivers/accel/qaic/qaic_data.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/accel/qaic/qaic_data.c b/drivers/accel/qaic/qaic_data=
-.c
-index fa723a2bdfa9..c1b315d1689c 100644
-=2D-- a/drivers/accel/qaic/qaic_data.c
-+++ b/drivers/accel/qaic/qaic_data.c
-@@ -1171,8 +1171,8 @@ static inline int copy_partial_exec_reqs(struct qaic=
-_device *qdev, struct bo_sli
- 	 * Copy over the last entry. Here we need to adjust len to the left over
- 	 * size, and set src and dst to the entry it is copied to.
- 	 */
--	last_req =3D fifo_at(dbc->req_q_base, (tail + first_n) % dbc->nelem);
--	memcpy(last_req, reqs + slice->nents - 1, sizeof(*reqs));
-+	last_req =3D memcpy(fifo_at(dbc->req_q_base, (tail + first_n) % dbc->nel=
-em),
-+			  reqs + slice->nents - 1, sizeof(*reqs));
-=20
- 	/*
- 	 * last_bytes holds size of a DMA segment, maximum DMA segment size is
-=2D-=20
-2.51.1
+regards,
+dan carpenter
 
 

@@ -1,113 +1,240 @@
-Return-Path: <kernel-janitors+bounces-9862-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-9864-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A91CBA7C4
-	for <lists+kernel-janitors@lfdr.de>; Sat, 13 Dec 2025 10:46:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DEE4CBB913
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Dec 2025 10:41:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C7EE830C4EE1
-	for <lists+kernel-janitors@lfdr.de>; Sat, 13 Dec 2025 09:46:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5079E300A1D6
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Dec 2025 09:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658842E764E;
-	Sat, 13 Dec 2025 09:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31DE2C326F;
+	Sun, 14 Dec 2025 09:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BApx56E5"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="q/vLTEym"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.smtpout.orange.fr (smtp-79.smtpout.orange.fr [80.12.242.79])
+	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE9E2DC335
-	for <kernel-janitors@vger.kernel.org>; Sat, 13 Dec 2025 09:46:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86992C11DD;
+	Sun, 14 Dec 2025 09:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765619168; cv=none; b=JFaoo19mLuC6yiL8145s9NMkGQxeMAFYdR6HbmCjTJJn/za8y4/auktcSGqt+xIASrZpLGE01Whji/WV2/yChTuS6d3kNUBdgAo/oH3Iwhh/xP+xP4DOl3Zt5WChdKkH1YzpFu+/EMh+OlS8m1Nlp+BiwlWSXUMeziciLpeE0Rc=
+	t=1765705268; cv=none; b=tfTD/9zpv6YsL1VfE+hKBV57UtLeKffPYIyIybA5c3BXRasP4CJgwTrX2cnb9BZwqh9eWmxVq6QQimkkipqB29dZz59OS1kFhHgdoDOUTsT4+pBA7ZE+WuAsR/PulwOYArHOyrEP8k/3CZ22I6dC7zX/QmwZeU7R7tF2xue5SEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765619168; c=relaxed/simple;
-	bh=NSbZQBOFUXaWkcuR/hJOF3n1LVHIwUIhkJnljZs40gw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CZXOMIhxKTJxDOIEaWnUruWiYEaDvhNa4aT+yklfEDVuoozMqYgNBdoTL/kh+/oe3gnTlhzz7ALRSXBGGb4zRDvPlGpcQwQqo1U8XmVZYqHG0TZobh9BBnN+85tL/83F2lAZNrwHNsVQ/SMyQ77KlEoUC1Ri4fEbDEJt4kcBU/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BApx56E5; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-bdb6f9561f9so1741384a12.3
-        for <kernel-janitors@vger.kernel.org>; Sat, 13 Dec 2025 01:46:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765619167; x=1766223967; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=caAzMdu0TkrR2UL5lOMmu+hJ8etOlD/LjX1U1H7Gx84=;
-        b=BApx56E5peedh2GTXnMGUvE4UaAQoPnPHMkfN+28EDPQmdMQvFvNwN/wcMqKLhXXZJ
-         GBrx71iUYBWRh0CyW3NRrRZrSsLmyqEYaUF5lRmbwdlNdfqpgv1WLdVuHm2rpO96HGTA
-         juQoaaEcDSluhCCbRpNI7OELYzSz3ujrYjMUbCg2HnfNAv+tQBHCs6AoTIRzW4GyZ6Bk
-         FyHHsq8Py1RxvCGp3NrW1bvLyXIz6xYzarDgfh0efmgI1JaBFHzrkNBdZbxdExK6Bq5S
-         Uu/+BkYyWf4tv8+koesiKOvNDbh3tNkZ6Lu7aQOQhD6+OGs35ewyXlhGrqHhW15iEYDz
-         m8tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765619167; x=1766223967;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=caAzMdu0TkrR2UL5lOMmu+hJ8etOlD/LjX1U1H7Gx84=;
-        b=PDG1cyKqocQn+BMGKirhU4qNLlBM3TlrY4RN8hng214rucz0GZHifIA9n9tKUjDJFV
-         YfJJYqbjIakToo+mDhL3+9oK/0+MZ+jHuyV+l9JMx7g9AfreyEL6ncQ5WmVXjbSm72WR
-         j9ic6FJIQk68E6hQ0HPqUsLNFon5g89npyleMMto2N8KUWcVLyIUntf3afjUS8PnWf1p
-         mn5viI6jE4R+n500GwW3VkcA7AruxvCx4bZm3HQre6OQQmppTK+35d7p4JTlfWW89Jry
-         sTKSNqkKl9nTdbT0jwTwGOKw1952d2JLCHK9dVvyvHMYycEDn06BOzbWVJcJkVsPt8G2
-         HEkg==
-X-Forwarded-Encrypted: i=1; AJvYcCVBsvvfgaYRv8Qlbo5O1SY9AjpPmAq6cVH1VkhaF+/rRYHlYdGFf0MWmq0vnqMze1t6pVEGdnzR0lx0KhDT6HE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAACRLjzW/E3xvkLN87L/XSQ3ymQebTKjIZqD1RADcLr99j0hf
-	HRGOFkswQzVqU4j5gwhWbGmh2wPFsFDPiKgfrLhQX4DYvJ2oWHf5gpLy
-X-Gm-Gg: AY/fxX6MCLoiHAnvMbyDWclIXrxpX74uBthAp/FMC4TlnWkNeBIO9Ho+jx59udOIdF3
-	eBto4h/BRe4VybVaLFc/jvknq3WOfiPfEXUHaIyVDaR/jyABR1Do6Z+8q3vAPPt7u+qjN5OhXTi
-	qVKr2NhkD19nZedlF/fk1YTpEqZzRwr4QNPLM/pJiY5jOz8pHqyt7Rsw6qqeF3hMd0z0oNexEwA
-	P3qWr+qy+dTVALtuA1KlY/S0lmzoOmVYiALDRYS6/luYARWhFYqo8D8FU3taeB4+PPywKgneduq
-	DhvgiiK45NUyMOwOOseQco3TDD98niLPYDmVzGxFiHDpxpiv/Ay413NKSbWsybC03T6WDvxmGcv
-	XGCwYhQqOQYwkQBx519rISgdOSPRckvXuFr3kuCQwni7PoMSOkPGuuv2ZbB07SmyFbTed2b3MXK
-	9Mrm5f53SX3aJxdr1wv3Ls6uf9vGXXJGsLWhP9eRoQHOA++XSSB/Ez0e6u2RefDag=
-X-Google-Smtp-Source: AGHT+IHEwKVmlUftku9bZpvLbrn8o4ZbzGaitvRNC2Wvc4P/QcAMM+FztDiB812Mo9LIJVcrlS8yDg==
-X-Received: by 2002:a05:7022:2209:b0:11b:9386:a3cb with SMTP id a92af1059eb24-11f354f39f9mr2913885c88.44.1765619166468;
-        Sat, 13 Dec 2025 01:46:06 -0800 (PST)
-Received: from google.com ([2a00:79e0:2ebe:8:3478:9150:d4be:149f])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11f2e30b799sm23915360c88.17.2025.12.13.01.46.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Dec 2025 01:46:05 -0800 (PST)
-Date: Sat, 13 Dec 2025 01:46:03 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Lukas Bulwahn <lbulwahn@redhat.com>
-Cc: Job Noorman <job@noorman.info>, Frank Li <Frank.Li@nxp.com>, 
-	linux-input@vger.kernel.org, Rob Herring <robh@kernel.org>, kernel-janitors@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Subject: Re: [PATCH] MAINTAINERS: adjust file entry in HIMAX HX83112B
- TOUCHSCREEN SUPPORT
-Message-ID: <rfgg3zmapcfkh5krj6kmuvgmcoxmzrzbwlhdslfte4wjzs6svw@yvrgovad3pwh>
-References: <20251110054733.441893-1-lukas.bulwahn@redhat.com>
+	s=arc-20240116; t=1765705268; c=relaxed/simple;
+	bh=0hwOfhAp3UTL+iR2tyBdVops9IcCIdCfHjICSSG+9YI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hc+3WUM/I5CBPHOOv6SkKf4oBWPmCeukI4HG7qVjafEsI6VFzgboC8UuwoWxV4WpQ7O5BE8NWAa59v4sRO4Vm4Qk99aqgTDy4u7AUtyNBWuCxs1MLHzYYqhYdChx1JBb36yN89jVBX1vOI8g8aUlkY9xZg6QCSr/IByR9ULB1mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=q/vLTEym; arc=none smtp.client-ip=80.12.242.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
+	by smtp.orange.fr with ESMTPA
+	id UiS8vIWZh3uKaUiS8vNd9F; Sun, 14 Dec 2025 10:31:45 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1765704705;
+	bh=msBpPCdi77sPTHHajIHtie7l4GqzHly2h9Y2kEQTlB8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=q/vLTEymif60zEam0GCBQw6LpG3kcLqwBeQ7B/AWhvHUN6fNb07Dkx004gGMdyifi
+	 pf97yjvLgwJLYigHEsXCa+Web/Lw5C5vi9rNFGfEkHLlD7h5ApDbHQgidSJYyLKxZ+
+	 JhRkwjhex/Wo2PKs4nrvG0SzBQJ7EX/fjdollsIe83EanUvwGk+vy3zLFKlY+xZFkg
+	 lWOBkfbnYofFdSYEgWTIoa/b6vvnX2G0PvIKYpwlmYVJ8+Aabc2RaYR2I2vqRJBTdp
+	 k0/FVzHkE5IQA+nBJli/ENX9o425d+LtBXcYbjritTzYFs3g/XKbPEQie/NczJP0Gb
+	 SdEEfGpPBEjMg==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 14 Dec 2025 10:31:45 +0100
+X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH] gpio: Constify struct configfs_item_operations and configfs_group_operations
+Date: Sun, 14 Dec 2025 10:31:40 +0100
+Message-ID: <ccb5155342ce6dbb89cfbad0687b448860d8e8f0.1765703044.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251110054733.441893-1-lukas.bulwahn@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 10, 2025 at 06:47:33AM +0100, Lukas Bulwahn wrote:
-> From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-> 
-> Commit a311c777f298 ("dt-bindings: touchscreen: consolidate simple touch
-> controller to trivial-touch.yaml") aggregates a few touchscreen yaml files
-> into a common trivial-touch.yaml, but misses to adjust the reference in
-> HIMAX HX83112B TOUCHSCREEN SUPPORT, which refers to the removed file
-> himax,hx83112b.yaml.
-> 
-> Make HIMAX HX83112B TOUCHSCREEN SUPPORT refer to trivial-touch.yaml, in
-> order to inform the maintainer on changes to the device-tree binding
-> relevant to that hardware driver.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+'struct configfs_item_operations' and 'configfs_group_operations' are not
+modified in these drivers.
 
-Applied, thank you.
+Constifying these structures moves some data to a read-only section, so
+increases overall security, especially when the structure holds some
+function pointers.
 
+On a x86_64, with allmodconfig, as an example:
+Before:
+======
+   text	   data	    bss	    dec	    hex	filename
+  43935	  11632	    384	  55951	   da8f	drivers/gpio/gpio-aggregator.o
+
+After:
+=====
+   text	   data	    bss	    dec	    hex	filename
+  44191	  11376	    384	  55951	   da8f	drivers/gpio/gpio-aggregator.o
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Compile tested only.
+
+This change is possible since commits f2f36500a63b and f7f78098690d.
+---
+ drivers/gpio/gpio-aggregator.c |  8 ++++----
+ drivers/gpio/gpio-sim.c        | 16 ++++++++--------
+ drivers/gpio/gpio-virtuser.c   |  8 ++++----
+ 3 files changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/gpio/gpio-aggregator.c b/drivers/gpio/gpio-aggregator.c
+index 416f265d09d0..a4cd32674a96 100644
+--- a/drivers/gpio/gpio-aggregator.c
++++ b/drivers/gpio/gpio-aggregator.c
+@@ -1226,7 +1226,7 @@ gpio_aggregator_line_release(struct config_item *item)
+ 	kfree(line);
+ }
+ 
+-static struct configfs_item_operations gpio_aggregator_line_item_ops = {
++static const struct configfs_item_operations gpio_aggregator_line_item_ops = {
+ 	.release	= gpio_aggregator_line_release,
+ };
+ 
+@@ -1247,7 +1247,7 @@ static void gpio_aggregator_device_release(struct config_item *item)
+ 	gpio_aggregator_free(aggr);
+ }
+ 
+-static struct configfs_item_operations gpio_aggregator_device_item_ops = {
++static const struct configfs_item_operations gpio_aggregator_device_item_ops = {
+ 	.release	= gpio_aggregator_device_release,
+ };
+ 
+@@ -1292,7 +1292,7 @@ gpio_aggregator_device_make_group(struct config_group *group, const char *name)
+ 	return &line->group;
+ }
+ 
+-static struct configfs_group_operations gpio_aggregator_device_group_ops = {
++static const struct configfs_group_operations gpio_aggregator_device_group_ops = {
+ 	.make_group	= gpio_aggregator_device_make_group,
+ };
+ 
+@@ -1328,7 +1328,7 @@ gpio_aggregator_make_group(struct config_group *group, const char *name)
+ 	return &aggr->group;
+ }
+ 
+-static struct configfs_group_operations gpio_aggregator_group_ops = {
++static const struct configfs_group_operations gpio_aggregator_group_ops = {
+ 	.make_group	= gpio_aggregator_make_group,
+ };
+ 
+diff --git a/drivers/gpio/gpio-sim.c b/drivers/gpio/gpio-sim.c
+index a83f5238427c..437b4500f56b 100644
+--- a/drivers/gpio/gpio-sim.c
++++ b/drivers/gpio/gpio-sim.c
+@@ -1384,7 +1384,7 @@ static void gpio_sim_hog_config_item_release(struct config_item *item)
+ 	kfree(hog);
+ }
+ 
+-static struct configfs_item_operations gpio_sim_hog_config_item_ops = {
++static const struct configfs_item_operations gpio_sim_hog_config_item_ops = {
+ 	.release	= gpio_sim_hog_config_item_release,
+ };
+ 
+@@ -1433,11 +1433,11 @@ static void gpio_sim_line_config_group_release(struct config_item *item)
+ 	kfree(line);
+ }
+ 
+-static struct configfs_item_operations gpio_sim_line_config_item_ops = {
++static const struct configfs_item_operations gpio_sim_line_config_item_ops = {
+ 	.release	= gpio_sim_line_config_group_release,
+ };
+ 
+-static struct configfs_group_operations gpio_sim_line_config_group_ops = {
++static const struct configfs_group_operations gpio_sim_line_config_group_ops = {
+ 	.make_item	= gpio_sim_line_config_make_hog_item,
+ };
+ 
+@@ -1494,11 +1494,11 @@ static void gpio_sim_bank_config_group_release(struct config_item *item)
+ 	kfree(bank);
+ }
+ 
+-static struct configfs_item_operations gpio_sim_bank_config_item_ops = {
++static const struct configfs_item_operations gpio_sim_bank_config_item_ops = {
+ 	.release	= gpio_sim_bank_config_group_release,
+ };
+ 
+-static struct configfs_group_operations gpio_sim_bank_config_group_ops = {
++static const struct configfs_group_operations gpio_sim_bank_config_group_ops = {
+ 	.make_group	= gpio_sim_bank_config_make_line_group,
+ };
+ 
+@@ -1549,11 +1549,11 @@ static void gpio_sim_device_config_group_release(struct config_item *item)
+ 	kfree(dev);
+ }
+ 
+-static struct configfs_item_operations gpio_sim_device_config_item_ops = {
++static const struct configfs_item_operations gpio_sim_device_config_item_ops = {
+ 	.release	= gpio_sim_device_config_group_release,
+ };
+ 
+-static struct configfs_group_operations gpio_sim_device_config_group_ops = {
++static const struct configfs_group_operations gpio_sim_device_config_group_ops = {
+ 	.make_group	= gpio_sim_device_config_make_bank_group,
+ };
+ 
+@@ -1589,7 +1589,7 @@ gpio_sim_config_make_device_group(struct config_group *group, const char *name)
+ 	return &no_free_ptr(dev)->group;
+ }
+ 
+-static struct configfs_group_operations gpio_sim_config_group_ops = {
++static const struct configfs_group_operations gpio_sim_config_group_ops = {
+ 	.make_group	= gpio_sim_config_make_device_group,
+ };
+ 
+diff --git a/drivers/gpio/gpio-virtuser.c b/drivers/gpio/gpio-virtuser.c
+index 37f2ce20f1ae..090f5643afaf 100644
+--- a/drivers/gpio/gpio-virtuser.c
++++ b/drivers/gpio/gpio-virtuser.c
+@@ -1631,7 +1631,7 @@ static void gpio_virtuser_lookup_config_group_release(struct config_item *item)
+ 	kfree(lookup);
+ }
+ 
+-static struct configfs_item_operations gpio_virtuser_lookup_config_item_ops = {
++static const struct configfs_item_operations gpio_virtuser_lookup_config_item_ops = {
+ 	.release	= gpio_virtuser_lookup_config_group_release,
+ };
+ 
+@@ -1692,11 +1692,11 @@ static void gpio_virtuser_device_config_group_release(struct config_item *item)
+ 	kfree(dev);
+ }
+ 
+-static struct configfs_item_operations gpio_virtuser_device_config_item_ops = {
++static const struct configfs_item_operations gpio_virtuser_device_config_item_ops = {
+ 	.release	= gpio_virtuser_device_config_group_release,
+ };
+ 
+-static struct configfs_group_operations gpio_virtuser_device_config_group_ops = {
++static const struct configfs_group_operations gpio_virtuser_device_config_group_ops = {
+ 	.make_group	= gpio_virtuser_make_lookup_group,
+ };
+ 
+@@ -1729,7 +1729,7 @@ gpio_virtuser_config_make_device_group(struct config_group *group,
+ 	return &no_free_ptr(dev)->group;
+ }
+ 
+-static struct configfs_group_operations gpio_virtuser_config_group_ops = {
++static const struct configfs_group_operations gpio_virtuser_config_group_ops = {
+ 	.make_group	= gpio_virtuser_config_make_device_group,
+ };
+ 
 -- 
-Dmitry
+2.52.0
+
 

@@ -1,59 +1,62 @@
-Return-Path: <kernel-janitors+bounces-9863-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-9865-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6C4CBB907
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Dec 2025 10:40:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AFC1CBB922
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Dec 2025 10:54:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9A0663005080
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Dec 2025 09:40:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D61A8300ACD0
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Dec 2025 09:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D422C21D8;
-	Sun, 14 Dec 2025 09:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6E7283121;
+	Sun, 14 Dec 2025 09:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="detwN09t"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="lCJ00w6B"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-77.smtpout.orange.fr [80.12.242.77])
+Received: from smtp.smtpout.orange.fr (smtp-81.smtpout.orange.fr [80.12.242.81])
 	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B813824CEEA;
-	Sun, 14 Dec 2025 09:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD12D3B8D7D;
+	Sun, 14 Dec 2025 09:54:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765705242; cv=none; b=WW7z2ep521sDAN+uTXc4avyIDLC5Sp2MIg5sNKIo2lpE75SoN8pXHY62bunTQEe1ev7iqByoGjzIwWPFSCpk/5R14lwlozYjomXlUsOrV0pCJY7nBy4Q5oniVKnlLaoZs7GDkRigGTknJab9NsVt9pWfzjLIsGghU5bqSC6bCek=
+	t=1765706084; cv=none; b=Th2dX7yYEXhuG6Tomxuwwhju/V0/+8/T4zSO3YuLpA1nA81miqUCMlp5fQSuKhklIlS2lUUJ6vzoltvnslEKlRfQSfy0iOhSaWgYbCVppo4UUFvI//2Om2V72Nkw32p3bmw81FtFwWIG28N7zdG+dE9FVCOw9jT6zUGKo9D+hQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765705242; c=relaxed/simple;
-	bh=PXm2v5vIzgPv+kC9SK1XHJbIectthyO3AEs/6y3GDr0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BuCUlo4RjZ6SkWtEVw5L/P2LnXNdhiP7LwAS876tSYxuQ/TqYlgXSOAf+jkGf2xiX5swe7WKKY+7T/i0J2Gw7FMSZcBGsyS4kB4MpswT2cy0ZQkNclFAawA868Py1F9HvDqGWGL6Y6bom5HFsmE47kx/69Uf19PfktYXZ03GxJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=detwN09t; arc=none smtp.client-ip=80.12.242.77
+	s=arc-20240116; t=1765706084; c=relaxed/simple;
+	bh=MiLYoG6Ha8Ec/c9s/f0uvsanOJ/j30qQus8nDksp+IY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lTIjQD2030r45V1vxqI+kJIla4Ao0U10EFEV0btyNvHjZlcZrr5Hys56NXU79XDeIKDTR8lB/J7b3S5Ihrd2vtjVdbXhIeLcJM6iP0H4iqJDt8I6sbtP/EKbLj3s8D0X62Fx5J/g+fSMik7X0OeG64GD6jWO5OTxuCps95no8ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=lCJ00w6B; arc=none smtp.client-ip=80.12.242.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Received: from fedora.home ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
 	by smtp.orange.fr with ESMTPA
-	id UiZUvEQD9mwzyUiZVv9dqM; Sun, 14 Dec 2025 10:39:23 +0100
+	id UifTvmqh4YUkFUifUvMFRl; Sun, 14 Dec 2025 10:45:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1765705163;
-	bh=i3lKctb/2V8Ddc2wCwoCD3HHhlTKaIPs67OtHnfL2Nk=;
+	s=t20230301; t=1765705532;
+	bh=nLHwS7D5TJkT1/L8Qlt5PBuPvdd4HPre2Bq5lOBMk0c=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=detwN09tuWLace+y4Hfjb3MLTjdheLYmC7gZGbDkm0kmH+HJw+/mzf/w7tYAXAOXv
-	 Va77AlAdDayeN+vufA/QTNFNY1d6luA9N3vtRr+Zj9TtOW8fe2DcAF7uktk/npJpwB
-	 gPyrZEeC8rTJ0ATqXFXPKz/2zBtjwoiqkjZjO1Kp9QtOXjVgTn4Hj9nxe+S3ytVXtV
-	 5KmuXokunsuOoaINxD9HtOwqyQ58yc8vl16gzAhjWoADNSpj+pQmmKromIbAyEln5r
-	 S1AI2F7gACbvbaghlIypR+6Y7SLHW7EfjM9X8Xf+q2XS+hvXze90yUeTzIDbTwIOKM
-	 C1WJDZ5H2laqg==
+	b=lCJ00w6B0kznumKwcfEFK4G9+8MYLYTbfq/QOJaNEqCQAuxCYw/zifkMFwH8/1EXN
+	 q49nx4tmERu6UKDlrTeyEFenrrznyAmpWYngKRsb4zKi6wThGHIqRkc7TUXY1hl/+8
+	 wvKOVNNI3RyJl3KSLBSbyhk+AJyLNX/WRE/in+MW45LBhpeX5+hWAEnxj+avFaoO4G
+	 t5wnLykCapbQGR3Si5bPaQyODzvDWRNE+LBPzuXJbnlrJXChylPvmfuxDkjLJ2UB2H
+	 SjzWj3OHNJf4T+LqULeunaYcP+jBSJaBrcLIC87Yoqac8f5mIEYPPtNHl9rKMgau0E
+	 6QlamZSiXdgTQ==
 X-ME-Helo: fedora.home
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 14 Dec 2025 10:39:23 +0100
+X-ME-Date: Sun, 14 Dec 2025 10:45:32 +0100
 X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Dan Williams <dan.j.williams@intel.com>
+To: Manivannan Sadhasivam <mani@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
 Cc: linux-kernel@vger.kernel.org,
 	kernel-janitors@vger.kernel.org,
 	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	linux-coco@lists.linux.dev
-Subject: [PATCH] coco/guest: Constify struct configfs_item_operations and configfs_group_operations
-Date: Sun, 14 Dec 2025 10:39:17 +0100
-Message-ID: <78bd5a65dbbc668fed7f82b5d3f0a198a15e6c9f.1765705141.git.christophe.jaillet@wanadoo.fr>
+	linux-pci@vger.kernel.org
+Subject: [PATCH] scsi: target: Constify struct configfs_item_operations and configfs_group_operations
+Date: Sun, 14 Dec 2025 10:45:29 +0100
+Message-ID: <f1f05f6c1bc0c6f37cd680f012fe08c525364968.1765705512.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
@@ -74,12 +77,12 @@ On a x86_64, with allmodconfig:
 Before:
 ======
    text	   data	    bss	    dec	    hex	filename
-  13784	   6864	    128	  20776	   5128	drivers/virt/coco/guest/report.o
+  27503	  12184	    256	  39943	   9c07	drivers/pci/endpoint/pci-ep-cfs.o
 
 After:
 =====
    text	   data	    bss	    dec	    hex	filename
-  14040	   6608	    128	  20776	   5128	drivers/virt/coco/guest/report.o
+  27855	  11832	    256	  39943	   9c07	drivers/pci/endpoint/pci-ep-cfs.o
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
@@ -87,39 +90,57 @@ Compile tested only.
 
 This change is possible since commits f2f36500a63b and f7f78098690d.
 ---
- drivers/virt/coco/guest/report.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pci/endpoint/pci-ep-cfs.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/virt/coco/guest/report.c b/drivers/virt/coco/guest/report.c
-index d3d18fc22bc2..77f8dc3ca088 100644
---- a/drivers/virt/coco/guest/report.c
-+++ b/drivers/virt/coco/guest/report.c
-@@ -376,7 +376,7 @@ static void tsm_report_item_release(struct config_item *cfg)
- 	kfree(state);
+diff --git a/drivers/pci/endpoint/pci-ep-cfs.c b/drivers/pci/endpoint/pci-ep-cfs.c
+index ef50c82e647f..034a31c341c9 100644
+--- a/drivers/pci/endpoint/pci-ep-cfs.c
++++ b/drivers/pci/endpoint/pci-ep-cfs.c
+@@ -85,7 +85,7 @@ static void pci_secondary_epc_epf_unlink(struct config_item *epc_item,
+ 	pci_epc_remove_epf(epc, epf, SECONDARY_INTERFACE);
  }
  
--static struct configfs_item_operations tsm_report_item_ops = {
-+static const struct configfs_item_operations tsm_report_item_ops = {
- 	.release = tsm_report_item_release,
+-static struct configfs_item_operations pci_secondary_epc_item_ops = {
++static const struct configfs_item_operations pci_secondary_epc_item_ops = {
+ 	.allow_link	= pci_secondary_epc_epf_link,
+ 	.drop_link	= pci_secondary_epc_epf_unlink,
  };
- 
-@@ -406,7 +406,7 @@ static bool tsm_report_is_bin_visible(struct config_item *item,
- 	return provider.ops->report_bin_attr_visible(n);
+@@ -149,7 +149,7 @@ static void pci_primary_epc_epf_unlink(struct config_item *epc_item,
+ 	pci_epc_remove_epf(epc, epf, PRIMARY_INTERFACE);
  }
  
--static struct configfs_group_operations tsm_report_attr_group_ops = {
-+static const struct configfs_group_operations tsm_report_attr_group_ops = {
- 	.is_visible = tsm_report_is_visible,
- 	.is_bin_visible = tsm_report_is_bin_visible,
+-static struct configfs_item_operations pci_primary_epc_item_ops = {
++static const struct configfs_item_operations pci_primary_epc_item_ops = {
+ 	.allow_link	= pci_primary_epc_epf_link,
+ 	.drop_link	= pci_primary_epc_epf_unlink,
  };
-@@ -443,7 +443,7 @@ static void tsm_report_drop_item(struct config_group *group, struct config_item
- 	atomic_dec(&provider.count);
+@@ -257,7 +257,7 @@ static void pci_epc_epf_unlink(struct config_item *epc_item,
+ 	pci_epc_remove_epf(epc, epf, PRIMARY_INTERFACE);
  }
  
--static struct configfs_group_operations tsm_report_group_ops = {
-+static const struct configfs_group_operations tsm_report_group_ops = {
- 	.make_item = tsm_report_make_item,
- 	.drop_item = tsm_report_drop_item,
+-static struct configfs_item_operations pci_epc_item_ops = {
++static const struct configfs_item_operations pci_epc_item_ops = {
+ 	.allow_link	= pci_epc_epf_link,
+ 	.drop_link	= pci_epc_epf_unlink,
+ };
+@@ -508,7 +508,7 @@ static void pci_epf_release(struct config_item *item)
+ 	kfree(epf_group);
+ }
+ 
+-static struct configfs_item_operations pci_epf_ops = {
++static const struct configfs_item_operations pci_epf_ops = {
+ 	.allow_link		= pci_epf_vepf_link,
+ 	.drop_link		= pci_epf_vepf_unlink,
+ 	.release		= pci_epf_release,
+@@ -662,7 +662,7 @@ static void pci_epf_drop(struct config_group *group, struct config_item *item)
+ 	config_item_put(item);
+ }
+ 
+-static struct configfs_group_operations pci_epf_group_ops = {
++static const struct configfs_group_operations pci_epf_group_ops = {
+ 	.make_group     = &pci_epf_make,
+ 	.drop_item      = &pci_epf_drop,
  };
 -- 
 2.52.0

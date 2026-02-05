@@ -1,124 +1,184 @@
-Return-Path: <kernel-janitors+bounces-10148-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-10149-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OnCCqxEg2nqkgMAu9opvQ
-	(envelope-from <kernel-janitors+bounces-10148-lists+kernel-janitors=lfdr.de@vger.kernel.org>)
-	for <lists+kernel-janitors@lfdr.de>; Wed, 04 Feb 2026 14:07:56 +0100
+	id KHlDKr9QhGkE2gMAu9opvQ
+	(envelope-from <kernel-janitors+bounces-10149-lists+kernel-janitors=lfdr.de@vger.kernel.org>)
+	for <lists+kernel-janitors@lfdr.de>; Thu, 05 Feb 2026 09:11:43 +0100
 X-Original-To: lists+kernel-janitors@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCADDE62E4
-	for <lists+kernel-janitors@lfdr.de>; Wed, 04 Feb 2026 14:07:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50117EFC25
+	for <lists+kernel-janitors@lfdr.de>; Thu, 05 Feb 2026 09:11:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 420AF302CD34
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Feb 2026 13:05:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B5DDB300A333
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Feb 2026 08:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6CB40B6DF;
-	Wed,  4 Feb 2026 13:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DBE361DA2;
+	Thu,  5 Feb 2026 08:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eyRBDbKr"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HueV4lcS";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MNZcv7pJ"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3037640B6CE;
-	Wed,  4 Feb 2026 13:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7EE35C182
+	for <kernel-janitors@vger.kernel.org>; Thu,  5 Feb 2026 08:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770210311; cv=none; b=coS4hEm323Xk9Myv7aL9ybJo7ArEA0RjhSxFiNPH214P3ex5UNOJnRjPc+IJ4YJi15Umgode9ICXEvakPyiy0ObeBSdgHxRbYB3zofs85E9xXu6bD4N5SaaY7E6cLQ5J9Kmm7xgQtfou5h9UgnOEP+o1hm/nPoUIEsdiGffI6UQ=
+	t=1770279100; cv=none; b=kgNif8KjISOue730/AloeXDZC7SnwOZvJXEX0AJzAhPaWERxMo56HmRTBkjSvnxz4rTotGteMNQVnVRafagCQ0zS4t7uwMsSIP6a/GxOI+KkBvnS7tbC21y67R8Is+IhXGxUr8P2SGcB5eWJUE0Fh7vtVwtVpEQWKuHy8bUcp6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770210311; c=relaxed/simple;
-	bh=Hx6NFYTFGKEqU4p+d+bpM74eF0b9omNPgd5ukVZgyGc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ftyLGUx07Yj9RundRARQ5rR3jhO42XAdiKuworCc08SYwOLAJZo3wLDRDu0QIP29IkJh5YPqVAchduG38LhH75HbDx86qAE4QjBYPUK9m0Kn7t/y6gllID2bc5JLkq1M9hORlkeoUfstwG9lJ6iynwLv7OQZ3uirbeAwd/6OBLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eyRBDbKr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81737C4CEF7;
-	Wed,  4 Feb 2026 13:05:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770210311;
-	bh=Hx6NFYTFGKEqU4p+d+bpM74eF0b9omNPgd5ukVZgyGc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eyRBDbKrxUS4lv7rdNYXGjs3Ab0G4ZRQtqcAI+4rRGrW9u090/iXGf+dpAf/lzbIj
-	 XXqNBDe/V1RLdQ81r0J9nyReRxhlvzLwzSZEnFPxvWQNHcLssPbx2taNct+TwOnqfF
-	 VpVvFgEcF2wfCk1SkrDeb27aRF1j+jClEomySFKSOVw0qZteqUFq+ZLlACIs6ZpZGc
-	 LMz/TQjLY1CxWV8tV5iVq+iobc3MlhMuM6h3tUQ+0Ek5Fem/WNlXxBkuYM7f1XonyX
-	 5z74z+TNUUJ6IVZgknbmkDGwThaA9XWK16Xp+slz/kMw2G/kscssyIEhL8KB82FWtw
-	 +yaL/lR7yNCWw==
-Date: Wed, 4 Feb 2026 14:05:06 +0100
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Colin Ian King <colin.i.king@gmail.com>
-Cc: Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] irqchip/gic-v5: Fix spelling mistake "ouside" ->
- "outside"
-Message-ID: <aYNEAorI+Ax/nDie@lpieralisi>
-References: <20260203210735.5036-1-colin.i.king@gmail.com>
+	s=arc-20240116; t=1770279100; c=relaxed/simple;
+	bh=6/KGEC6Gt90c6jArV8FtgQJZA1bpUaGmU4DaNQWBmdM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E/EkHHpZxBbPpH40Bog7W+Za97vIyYyuuFPvtA+x9K4GC3ascNED5ZjMVpcy7oOBN6YmIG/gBSiSlEpj/B7nfzzsqkMyMemCq/gFZtNlbIJbJxgi4eVm6qmqtr3oHFOgvNmKuq7kSSGQJGFHW//bDU2uyO9XQVtugIvxyvyLr6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HueV4lcS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MNZcv7pJ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770279099;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=yHsh3p4Z4g5WT30y3E/M2Shpq+ytnOY1Lj/yheiirwI=;
+	b=HueV4lcS1xEXbIMYnkaJZtVzfedlTrdxPRyi6ehWepY5R65LGH/+VtANPQA2WrwkHRsBrr
+	//5g+opiTQWgPuVBew3MEs0iXxkxbcFBybkXN3onyf2B4hNPSAe2yy/JEz1c6O0oxvqk/3
+	kApMOZvRorMnwns/Dvf4oGDIs5loZ7M=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-237-EKbBtxEfMemQEHJDEibnyg-1; Thu, 05 Feb 2026 03:11:38 -0500
+X-MC-Unique: EKbBtxEfMemQEHJDEibnyg-1
+X-Mimecast-MFC-AGG-ID: EKbBtxEfMemQEHJDEibnyg_1770279097
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4362456500eso238310f8f.3
+        for <kernel-janitors@vger.kernel.org>; Thu, 05 Feb 2026 00:11:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1770279097; x=1770883897; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yHsh3p4Z4g5WT30y3E/M2Shpq+ytnOY1Lj/yheiirwI=;
+        b=MNZcv7pJgVJ0wvwlYTD1h+agT0aiWsUmtnE8K8Nxq93W58Xn/4TWlQG3tWFgfvZc1n
+         sHgT249R/vQhEkeU+TI10eBB6NL1eudG6HbigROpqEhZrYU/Zj8aDqfZbPNS9dxuiTz5
+         bKVJ3NiHSorfyoxCphWVGDGIco7sr9ZzLrlb5/jyTNmaZINL31aGd8JKkHb2vO4sxfhC
+         aDnFSwqYnbgZ9FmKQG+A1XaaiF74EHX4Tk0I9+KKng9hK7jwmzwuLgQc4LUaHOB40erP
+         2ECjSH+cExDB3lW9IgofbQtG6tIOPiseQ/72VtYAbv9lxYElK6IOJbcL0dcSn73oLxwy
+         M1KA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770279097; x=1770883897;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yHsh3p4Z4g5WT30y3E/M2Shpq+ytnOY1Lj/yheiirwI=;
+        b=EACW89/FvAHcBp+heudJX32K9fBeNf8I4h+5rxuAcVJP16PvnqwtaKghLp7H9A7Cmq
+         nBImiNf3rieCSSS2X9iB7u6QdvB33D8OOGs7y/ODx7RWqB5+2LvysKVyUj1hkena+uA1
+         lfss8V3c+5ZpIrNzZd5QdLwW+yUuepHTe5CrWILyS8M8zdxtKTiGH6s8tM8xdsl3f92Y
+         ZymLWxmtuVejy6QoCO0uesxnUIxxo/c8UtdMFeEtkDjQ3vavca6IAsGjh0slFNEctIjp
+         VJw4P7sSdPP/dMtx8MlydUonXL2Z6zofnPrllprWNGZZSCxEwb0jfAJNiMWzcSFqXrxS
+         CIyA==
+X-Gm-Message-State: AOJu0YwLmynSoablRloi0TNqD4n9rMv+jNrwhLEMaKsn9wROcWqnQrdT
+	Pog4e7e0MnRFLcOruTbr2zqwkOnYToPRoAxK+FFx70v14cWWwHhO63U83sYqYC8EQuzZ2j7/Wdv
+	/ztPT6cjD3AJNDCjZGN8085V9bHIn6PTgM7W3d3RIew5tnwTt8LE31t+aEFWitRMKv84pPNnZLS
+	v4Fg==
+X-Gm-Gg: AZuq6aJqoV1+VPxx79rfPdyr7rMlkp4bAf7xS0kZjCNPJs+0B2hesVDJwnaNwsjkShV
+	6r/rTjWIu76s7pcqhQ8O6QkEIWlAT32x5yr8giHe8X/l5S7anDVJgpueR8B1sdy5OdNvmCjL0Gh
+	cUhzXhyoLvJZL1ueLUTYCji/7awYwpRMVM4HqvCmmn/ZvdrwgRVoCawTopbYbJD2m5bgo+t8hfr
+	/q2EVnJvyGT1Qkp/vImCGCfE9SbVvpx4e65AvbShN3F+4DQlIM0LKlQlubWl72w3RTXfjiBmBXA
+	eX/kzfUhlXK/o6WlBArWemCdX7EvyQu5AmT8I4+Z2/sMDd+yi7gZ6sq1lx1Tb7JE/LnsgTu/t1G
+	ufIhA4ZSrEeNmnxjxq8Way3a2wfymHZ3OIMGv078yuzFyVJi8h/xT9vEf5/Y=
+X-Received: by 2002:a05:6000:26cc:b0:430:f68f:ee97 with SMTP id ffacd0b85a97d-43618054e2amr8632135f8f.40.1770279096717;
+        Thu, 05 Feb 2026 00:11:36 -0800 (PST)
+X-Received: by 2002:a05:6000:26cc:b0:430:f68f:ee97 with SMTP id ffacd0b85a97d-43618054e2amr8632106f8f.40.1770279096299;
+        Thu, 05 Feb 2026 00:11:36 -0800 (PST)
+Received: from lbulwahn-thinkpadx1carbongen12.rmtde.csb ([2a02:810d:7e01:ef00:a774:9360:8ecf:6701])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4361805fbc5sm11402116f8f.34.2026.02.05.00.11.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 00:11:35 -0800 (PST)
+From: Lukas Bulwahn <lbulwahn@redhat.com>
+X-Google-Original-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+To: Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	linux-input@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Subject: [PATCH] HID: quirks: really enable the intended work around for appledisplay
+Date: Thu,  5 Feb 2026 09:11:31 +0100
+Message-ID: <20260205081131.426899-1-lukas.bulwahn@redhat.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260203210735.5036-1-colin.i.king@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FROM_NEQ_ENVFROM(0.00)[lbulwahn@redhat.com,kernel-janitors@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-10149-lists,kernel-janitors=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-10148-lists,kernel-janitors=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lpieralisi@kernel.org,kernel-janitors@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[kernel-janitors];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: DCADDE62E4
+	TAGGED_RCPT(0.00)[kernel-janitors];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 50117EFC25
 X-Rspamd-Action: no action
 
-On Tue, Feb 03, 2026 at 09:07:35PM +0000, Colin Ian King wrote:
-> There is a spelling mistake in a pr_err message. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
->  drivers/irqchip/irq-gic-v5-its.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
-Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Commit c7fabe4ad921 ("HID: quirks: work around VID/PID conflict for
+appledisplay") intends to add a quirk for kernels built with Apple Cinema
+Display support, but it refers to the non-existing config option
+CONFIG_APPLEDISPLAY, whereas the config option for Apple Cinema Display
+support is named CONFIG_USB_APPLEDISPLAY.
 
-> diff --git a/drivers/irqchip/irq-gic-v5-its.c b/drivers/irqchip/irq-gic-v5-its.c
-> index e24ce3d9fb62..8c4cf8430871 100644
-> --- a/drivers/irqchip/irq-gic-v5-its.c
-> +++ b/drivers/irqchip/irq-gic-v5-its.c
-> @@ -902,7 +902,7 @@ static int gicv5_its_alloc_eventid(struct gicv5_its_dev *its_dev, msi_alloc_info
->  		event_id_base = info->hwirq;
->  
->  		if (event_id_base >= its_dev->num_events) {
-> -			pr_err("EventID ouside of ITT range; cannot allocate an ITT entry!\n");
-> +			pr_err("EventID outside of ITT range; cannot allocate an ITT entry!\n");
->  
->  			return -EINVAL;
->  		}
-> -- 
-> 2.51.0
-> 
+Refer to the intended config option CONFIG_USB_APPLEDISPLAY in the ifdef
+directive.
+
+Fixes: c7fabe4ad921 ("HID: quirks: work around VID/PID conflict for appledisplay")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+---
+
+Note this fix suggests that the patch of commit c7fabe4ad921 in this form
+was never effectively tested, checking the effect that the commit message
+claims it would have.
+
+ drivers/hid/hid-quirks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 3217e436c052..b91e081ef69c 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -233,7 +233,7 @@ static const struct hid_device_id hid_quirks[] = {
+  * used as a driver. See hid_scan_report().
+  */
+ static const struct hid_device_id hid_have_special_driver[] = {
+-#if IS_ENABLED(CONFIG_APPLEDISPLAY)
++#if IS_ENABLED(CONFIG_USB_APPLEDISPLAY)
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9218) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9219) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921c) },
+-- 
+2.52.0
+
 

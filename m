@@ -1,169 +1,144 @@
-Return-Path: <kernel-janitors+bounces-10174-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-10175-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAQSBhPQhGk45QMAu9opvQ
-	(envelope-from <kernel-janitors+bounces-10174-lists+kernel-janitors=lfdr.de@vger.kernel.org>)
-	for <lists+kernel-janitors@lfdr.de>; Thu, 05 Feb 2026 18:14:59 +0100
+	id mP1RNpDThGlo5gMAu9opvQ
+	(envelope-from <kernel-janitors+bounces-10175-lists+kernel-janitors=lfdr.de@vger.kernel.org>)
+	for <lists+kernel-janitors@lfdr.de>; Thu, 05 Feb 2026 18:29:52 +0100
 X-Original-To: lists+kernel-janitors@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD767F5BD1
-	for <lists+kernel-janitors@lfdr.de>; Thu, 05 Feb 2026 18:14:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C43F5F2E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 05 Feb 2026 18:29:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E0A5304CCDD
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Feb 2026 17:12:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DBDF93020A5A
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Feb 2026 17:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE14143C079;
-	Thu,  5 Feb 2026 17:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C882643D4EA;
+	Thu,  5 Feb 2026 17:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ncMe3GKf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nJLx9T57"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B652727FA;
-	Thu,  5 Feb 2026 17:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5AF31B10D;
+	Thu,  5 Feb 2026 17:28:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770311576; cv=none; b=gGbFxj8D/dw02w9XapPEGhKoffF8DFLKvYnnQ7wYyQjdaynX6HaMHvmdug57alcMupKajWS3WSpsoqhg+V7lMOdIJXHLpO27hJ1TvCEllOrccnK/LYi/StHlNZxyqhR4ZJvDsCIpL2x+cSCgieLYO8RZxn6jiaR80OQGqRr5ms0=
+	t=1770312521; cv=none; b=deV/Fe4Kd4dZXUCpIn1dPC+mQr69S/sllOe+ZNZtSk3wgV+WlZAq/VFuoJCzaXLp75XRQaEwJ9VmZD7u2eX0Qg5cMftpZjWAE/vT0svN0LdN2fJWmCQagnI6X397vDBuBVb1VNn88oJ8lm1+9nyApc1dOWQ8QTTk6IC1QAZ6gx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770311576; c=relaxed/simple;
-	bh=0idIWL/GIM+wlWEcQx/MjLXxcl9N3MK8YyVi1jvuQsM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uv52poyuvKJK3n6dkiX3uiFCl2ZuUtu9mfOcMdgER5mG6oYdyCUaJcnnX47ppQxAENLIk+XHmyK4PtRRZT2JxdW0gh2kBy+Rrk4QXiUruQuYqg2GbBllw3/+2WTSqqFB+/oFje7k+xuKmgoXLmmdZ/lYE1mdJx2EtOTx5hrYWpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ncMe3GKf; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770311576; x=1801847576;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=0idIWL/GIM+wlWEcQx/MjLXxcl9N3MK8YyVi1jvuQsM=;
-  b=ncMe3GKfgWqBm93GCiX5Zdaj2W2W1OmxAnDZjCPn1LT/CpAMW83GQKym
-   Adz51A/StqSKEphQYVc8YSuoOzC1Naz7dZDJQr0qb0JbaeDYZsteDZn/o
-   RvOicBS9pDx5drM/ZJ/FBf38HUEamqP+WBH+0IYLYuSrWi9hKqA1BdDuF
-   NFYP3X7o7gaOcaXiOD9YIujPZ8KE+TWQj+loQwg/LMx3AWIjTjuvSUPJx
-   38q3RAH1xAm06oGre9SHV+noWv77FZg0yMMrEFLqB8//v6VZcBOIQWA1F
-   Tl05Vz3CaD/H9cUKlxVFW/zCLEMdkXBpPvM/xfmDGCAcTuWxO0WJrpMdJ
-   A==;
-X-CSE-ConnectionGUID: 16V0E8+xSP+yAuD0BbZjRg==
-X-CSE-MsgGUID: C2iwBdSlTTG5XoFuNDvvzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="82953804"
-X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; 
-   d="scan'208";a="82953804"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 09:12:56 -0800
-X-CSE-ConnectionGUID: LOTjmKVVSb2g0pfaafk4Hg==
-X-CSE-MsgGUID: A7dHXsBIR8eR2c4c5LN7+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; 
-   d="scan'208";a="215092932"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.142])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 09:12:52 -0800
-Date: Thu, 5 Feb 2026 19:12:50 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Andrew Ijano <andrew.ijano@gmail.com>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-	David Lechner <dlechner@baylibe.com>
-Subject: Re: [PATCH v5 next 7/7] iio: sca3000: manage device registration
- with devm helper
-Message-ID: <aYTPkt5jKoX3X_4i@smile.fi.intel.com>
-References: <20260205131234.3244467-1-harshit.m.mogalapalli@oracle.com>
- <20260205131234.3244467-8-harshit.m.mogalapalli@oracle.com>
- <aYTFUMe3jUO_bGCr@smile.fi.intel.com>
- <34bac81e-6a6c-4cf6-b370-beead4f705c1@oracle.com>
- <CAHp75VfSYGoNUTqDb9WLYNYeChkB4mM+LEBpyRVnLOEKkr==WQ@mail.gmail.com>
- <437592e6-460d-435d-bd83-7ff8222a6130@oracle.com>
+	s=arc-20240116; t=1770312521; c=relaxed/simple;
+	bh=1US4AEkxgJLekWaZD9MCfcTX7fP8TVAB/Nj49TVNjPE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=QQYWQK7iGePLk81b1VD00ua80Xwx6S7GoSH1iwtHg7wa3RAbX93O/7SIjoaKuM0UU3rl+yGFJeknJ7JewiiuZnl/3aEaovYcL4JtePtR6ThG3yhDORu2KQQ65sDhjOX/vSsKS+5ZleN9vFvu+OQ8MG6Tdb3ceC6Z/wTC5gk/i9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nJLx9T57; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050B2C4CEF7;
+	Thu,  5 Feb 2026 17:28:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770312520;
+	bh=1US4AEkxgJLekWaZD9MCfcTX7fP8TVAB/Nj49TVNjPE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=nJLx9T572Jg3PRXJbtwyTFk+/XhuubO5OjsVDTO8MY/8PopAuaUa8SN4NARduDdzd
+	 c9iUgJUHTPNAS0uSHmcF8PDH7GJt0FGsG3L25XFIMLuU41W61O86JCBO0ygL6PaZ/Z
+	 uT5yXymXEluPPChESkfa1cnNHVj/EcGKihgMCfkptiaoGQvcS6XjccxFDxwY1jf3HL
+	 4oAibM0HKyrFbbVr7Pf7EbXKCzHhwlmifTwtOYPXoaqmZtH0/b15o3A1DAwu1jSRhB
+	 BrfQrf/HnrdcQ4AOf3QIGJYjfqBm3Q/7TP/WCUOsnHXu3iuPbdgnKU0rZfcc1N6gDO
+	 k8ZuA8ILl+Dbg==
+From: Mark Brown <broonie@kernel.org>
+To: David Rhodes <david.rhodes@cirrus.com>, 
+ Richard Fitzgerald <rf@opensource.cirrus.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, Herve Codina <herve.codina@bootlin.com>, 
+ Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
+ Pascal Huerst <pascal.huerst@gmail.com>, linux-sound@vger.kernel.org, 
+ patches@opensource.cirrus.com, linux-kernel@vger.kernel.org, 
+ Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: dan.carpenter@linaro.org, kernel-janitors@vger.kernel.org, 
+ error27@gmail.com
+In-Reply-To: <20260110195337.2522347-1-harshit.m.mogalapalli@oracle.com>
+References: <20260110195337.2522347-1-harshit.m.mogalapalli@oracle.com>
+Subject: Re: [PATCH] ASoC: cs4271: Fix resource leak in cs4271_soc_resume()
+Message-Id: <177031251773.127114.745142802569517839.b4-ty@kernel.org>
+Date: Thu, 05 Feb 2026 17:28:37 +0000
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <437592e6-460d-435d-bd83-7ff8222a6130@oracle.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,baylibre.com,analog.com,vger.kernel.org,baylibe.com];
-	TAGGED_FROM(0.00)[bounces-10174-lists,kernel-janitors=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,kernel-janitors@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-10175-lists,kernel-janitors=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[cirrus.com,opensource.cirrus.com,gmail.com,perex.cz,suse.com,bootlin.com,vger.kernel.org,oracle.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linaro.org,vger.kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,kernel-janitors@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[kernel-janitors];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,smile.fi.intel.com:mid]
-X-Rspamd-Queue-Id: AD767F5BD1
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 45C43F5F2E
 X-Rspamd-Action: no action
 
-On Thu, Feb 05, 2026 at 10:30:31PM +0530, Harshit Mogalapalli wrote:
-> On 05/02/26 22:26, Andy Shevchenko wrote:
-> > On Thu, Feb 5, 2026 at 6:51 PM Harshit Mogalapalli
-> > <harshit.m.mogalapalli@oracle.com> wrote:
-> > > On 05/02/26 21:59, Andy Shevchenko wrote:
-> > > > On Thu, Feb 05, 2026 at 05:12:13AM -0800, Harshit Mogalapalli wrote:
-
-...
-
-> > > > > -    struct iio_dev *indio_dev = spi_get_drvdata(spi);
-> > > > 
-> > > > Do you still need spi_set_drvdata() or analogue in the ->probe()?
-> > > > 
-> > > 
-> > > That's a great catch, I don't see spi_get_drvdata() anymore after this
-> > > series, so yes I think we should get rid of this.
-> > > 
-> > > Should I fold that into this patch in v6, as spi_get_drvdata() is also
-> > > removed in this patch ?
-> > 
-> > Ideally it should be done in this patch, but let's wait for Jonathan.
-> > He usually may tweak these small things when applying.
-> > 
+On Sat, 10 Jan 2026 11:53:36 -0800, Harshit Mogalapalli wrote:
+> Smatch detects this resource leak:
 > 
-> Also, while checking the patch now, I see I copied a wrong tag(RB with
-> missing r in baylibre from [1])
+> sound/soc/codecs/cs4271.c:548 cs4271_soc_resume() warn:
+>  'cs4271->clk' from clk_prepare_enable() not released on lines: 540,546.
 > 
-> So that's one more thing to fix. Let me know if v6 would be a preferred
-> approach, I can do it.
+> Instead of direct returns, unprepare the clock and disable regulators on
+> the error paths.
+> 
+> [...]
 
-Let's not hurry, wait for Jonathan to decide.
+Applied to
 
-> [1] https://lore.kernel.org/all/a5fa2f97-9ba3-4085-bfaf-a255d24a81f0@baylibre.com/
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
--- 
-With Best Regards,
-Andy Shevchenko
+Thanks!
 
+[1/1] ASoC: cs4271: Fix resource leak in cs4271_soc_resume()
+      commit: fef1f756155c30511397bbcd9d55640ab2e44d99
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
 

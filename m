@@ -1,167 +1,187 @@
-Return-Path: <kernel-janitors+bounces-10150-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-10152-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPMACIhfhGng2gMAu9opvQ
-	(envelope-from <kernel-janitors+bounces-10150-lists+kernel-janitors=lfdr.de@vger.kernel.org>)
-	for <lists+kernel-janitors@lfdr.de>; Thu, 05 Feb 2026 10:14:48 +0100
+	id YPAnI1GXhGk43gMAu9opvQ
+	(envelope-from <kernel-janitors+bounces-10152-lists+kernel-janitors=lfdr.de@vger.kernel.org>)
+	for <lists+kernel-janitors@lfdr.de>; Thu, 05 Feb 2026 14:12:49 +0100
 X-Original-To: lists+kernel-janitors@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F1AF06DB
-	for <lists+kernel-janitors@lfdr.de>; Thu, 05 Feb 2026 10:14:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F593F30B6
+	for <lists+kernel-janitors@lfdr.de>; Thu, 05 Feb 2026 14:12:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 876743041D56
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Feb 2026 09:08:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 43E7D301A507
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Feb 2026 13:12:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F7B392800;
-	Thu,  5 Feb 2026 09:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207153D6460;
+	Thu,  5 Feb 2026 13:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=exactco.de header.i=@exactco.de header.b="eNTN+/Yl"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="r41XeZpO"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from exactco.de (exactco.de [176.9.10.151])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F21B2F5308;
-	Thu,  5 Feb 2026 09:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.10.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511AF3A0B0E;
+	Thu,  5 Feb 2026 13:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770282394; cv=none; b=H+/58lXucGLhtoVYf9khVkuqBM2ZCwNJEXrwj5LgEmqox7LQKUnO57z5sRspM4fqMzCTErpZZBhHeZ6vbkBygXsjiH/PF/gy5EhL9+AcNf7iNJqLhbxG4TuIPWO3ZpFAltB3VUFJk5QxhZS+++ZSfCcp/UeoRtFlK6pfL/umCEE=
+	t=1770297165; cv=none; b=eM0bClgngUuOOP4zf8QIkJ6/wP7xlLE3OVsFiX3NPbO3JAqfzNjj7PBdNw7XIHFiGSWiAWrrctY6NX6Irk9w01uPZP7eXweh3BMlJ6bTZF9kgJUaY87X0iTmfvTHeeV2JDw7hhEXOnr8zmuC2ghcFuz/oRhcr1AlaxpglrfYEK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770282394; c=relaxed/simple;
-	bh=CkKS9y6aRJsbAusQwozTRtjjZB5QaXQjJNMmbDyBAao=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=i8GslCTx1eEE1y+hGBaeFbfYw2gyrLtTW+zRmILmyskvOIeXQYEUIXdlhw+PqeOcmAzYpLYze4TZtyJA6KxY/CvIpBe844SdywJpiewokHIJxANTME+1yyDe2ObUO3PtOyzJxZBDilMZvqPyGyuUoKUWcaMpaVbUHu7fHjrkq5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactco.de; spf=pass smtp.mailfrom=exactco.de; dkim=pass (2048-bit key) header.d=exactco.de header.i=@exactco.de header.b=eNTN+/Yl; arc=none smtp.client-ip=176.9.10.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactco.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=exactco.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=exactco.de;
-	s=x; h=To:References:Message-Id:Content-Transfer-Encoding:Cc:Date:In-Reply-To
-	:From:Subject:Mime-Version:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=4y75qcVYgR38d17wD3n16fGetFs1+5TBWiIF0fUIsrI=; b=eNTN+/YlLbcmTclGkg6Qylmpb3
-	Rw5pjalBIEall8brZldNEY5t3nXFu8WLCdXTVf1ptipiZWlS+Fz70vMdrcZLHhlxkmWdUocVKcs4j
-	GYFnk3TTlpN18QKFrYlqfH2IGFwvrsOg9FxJGvBblCGSBC4h5l+IFSam0K9y5MnUt0pcvcnYYJhW/
-	8kvk5JGz3x3aSI6GaM4a5B5q9xm/LzMbxTSNfDC9B4u1GSJYtzn2ax5CMd9AE1yPYT5lfcKcg9dbY
-	x3FHfcQmQJTbR2JzqwaOFZhvJQd8F1j6ReSsxWUQd0E9y8LovQfJbEa4/+7JVeA57knomMU0sZ07J
-	S8vir69Q==;
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1770297165; c=relaxed/simple;
+	bh=g5VpYPtgum8ebn6P5cytDltDHcfD8nUsLmDnJgR6Ir4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kI3jpNk0hpsBQk0GhOl210tIaHNPIqgN06pQEtP0oBcOS4d1Mbq6LUlglyHsCDyGafYlhFf7DSknTOGOWsjwZL7vdThRUSJNGdigsVbmNt9RfKqm63elGB1JaMEMqzqdZOhyH5aijZixZctOp3dkOTrD215WtaiWGIDbW5aR3fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=r41XeZpO; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 614N4HBS1716188;
+	Thu, 5 Feb 2026 13:12:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=bYyjhPgmAptEIMPi4JXQtGcScqw92
+	A9WvziGGmCM++M=; b=r41XeZpOVfPrgpzdKhVVUi1SGtVgfUXDdmNToqSCug3kk
+	CycNMIsLq0ihp17KIYUCdJlqY3PF77OElWgjLDk0vxVjOUz7ow6e5GF9czkpKOMB
+	Dsun+n4BPFHXi2fBJsMgS/s0A1X/FfiAlQ7NaQ+gSfKrYOIL4QIZ+O1soXr2DJer
+	3Vu2kbfoWwenR8QX5mGVNxAp0V3X2nwER93zCuVPkNw73ztmByX1LsXf0N0d95FG
+	UwgillbvSZOQqqvXtJ9Dz25xN/rVRVvDYhmKwhH7e2gLz5YCLQWHMJy5x9Sn3uZL
+	ZK8FoNmCaS22mqslIxXRZOWSMjXxYp8l42tDIW9oA==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c3jhb3p54-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 05 Feb 2026 13:12:38 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 615CsMMp001900;
+	Thu, 5 Feb 2026 13:12:37 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4c186d55bg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 05 Feb 2026 13:12:37 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 615DCbDt038070;
+	Thu, 5 Feb 2026 13:12:37 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4c186d55b9-1;
+	Thu, 05 Feb 2026 13:12:37 +0000
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+To: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
+        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+        Andrew Ijano <andrew.ijano@gmail.com>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org, andriy.shevchenko@intel.com
+Subject: [PATCH v5 next 0/7] IIO: sca3000: devm resource management
+Date: Thu,  5 Feb 2026 05:12:06 -0800
+Message-ID: <20260205131234.3244467-1-harshit.m.mogalapalli@oracle.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
-Subject: Re: [PATCH] HID: quirks: really enable the intended work around for
- appledisplay
-From: =?utf-8?Q?Ren=C3=A9_Rebe?= <rene@exactco.de>
-In-Reply-To: <20260205081131.426899-1-lukas.bulwahn@redhat.com>
-Date: Thu, 5 Feb 2026 10:06:24 +0100
-Cc: Jiri Kosina <jikos@kernel.org>,
- Benjamin Tissoires <bentiss@kernel.org>,
- linux-input@vger.kernel.org,
- kernel-janitors@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <944F8139-6528-442E-BFC2-9609A7DACA2D@exactco.de>
-References: <20260205081131.426899-1-lukas.bulwahn@redhat.com>
-To: Lukas Bulwahn <lbulwahn@redhat.com>
-X-Mailer: Apple Mail (2.3826.400.131.1.6)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-05_02,2026-02-05_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
+ mlxscore=0 adultscore=0 phishscore=0 bulkscore=0 malwarescore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2601150000 definitions=main-2602050098
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA1MDA5OCBTYWx0ZWRfX66pWjeSOMD6R
+ 8ZiCKNqS4HZOjT6+pLh+X1G8UBa3rM4T/pTU19T65hrTQbwY2DqfK4cnAZXCldQUsqK0zik6WWA
+ W4w6fQFEE6CjEEHu9yD3XFLrfKBWTbqK0agQrK0e4iA669AOs6XCMZr9c2xNhN/dO5Zu9QmImNp
+ IZVuliOMMjyvf7PzcjpJktHC3wES46fXI31d6nyiLBq7ai64jCNQPIQfSYRYlYo92a9ITdc023C
+ HFyBDf0N+8gO7ihcXE9EVY0DODJrm0j8VAsWA4HgYudnhKvdcvduYEHUkg4T6K4/G0hzVBmuas8
+ folJxoosqGv0pjCOdu1SR1/YPZWQevq2mcMrb+8AUkggm/hGda39DrDZ56molq4d1P/dyV98qAJ
+ cZqcxNjZ30xrNqHPSKzECrh8UOgROgLnYi4nw4kr8MSBISKjvHOx8PUhrgYvaNS5oEP3PpDZHtc
+ d3qkN+b3HQQhdnoJXBA==
+X-Proofpoint-ORIG-GUID: 0xNG8gt5-SH9raVHY06KoAjbOuBuAC7m
+X-Proofpoint-GUID: 0xNG8gt5-SH9raVHY06KoAjbOuBuAC7m
+X-Authority-Analysis: v=2.4 cv=CaYFJbrl c=1 sm=1 tr=0 ts=69849746 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=1D1gIlUcNSU6DadnfT0A:9
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
-	R_DKIM_REJECT(1.00)[exactco.de:s=x];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[rene@exactco.de,kernel-janitors@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-10150-lists,kernel-janitors=lfdr.de];
-	DMARC_NA(0.00)[exactco.de];
-	DKIM_TRACE(0.00)[exactco.de:-];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.983];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.org,baylibre.com,analog.com,oracle.com,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-10152-lists,kernel-janitors=lfdr.de];
+	DKIM_TRACE(0.00)[oracle.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[harshit.m.mogalapalli@oracle.com,kernel-janitors@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oracle.com:mid,oracle.com:dkim];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[kernel-janitors];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 97F1AF06DB
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: 4F593F30B6
 X-Rspamd-Action: no action
 
-Hi,
+This is an attempt to update sca3000 accelerometer driver to make use
+of devm_ based helpers where needed. I have split it into 6 patches.
 
-> On 5. Feb 2026, at 09:11, Lukas Bulwahn <lbulwahn@redhat.com> wrote:
->=20
-> From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
->=20
-> Commit c7fabe4ad921 ("HID: quirks: work around VID/PID conflict for
-> appledisplay") intends to add a quirk for kernels built with Apple =
-Cinema
-> Display support, but it refers to the non-existing config option
-> CONFIG_APPLEDISPLAY, whereas the config option for Apple Cinema =
-Display
-> support is named CONFIG_USB_APPLEDISPLAY.
->=20
-> Refer to the intended config option CONFIG_USB_APPLEDISPLAY in the =
-ifdef
-> directive.
->=20
-> Fixes: c7fabe4ad921 ("HID: quirks: work around VID/PID conflict for =
-appledisplay")
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-> ---
->=20
-> Note this fix suggests that the patch of commit c7fabe4ad921 in this =
-form
-> was never effectively tested, checking the effect that the commit =
-message
-> claims it would have.
+Patch 1 - some refactoring and simplification of dev.
+Patch 2 - switches request_threaded_irq() over to the devm helper
+{atch 3 - Move stop_all_interrupts() above probe
+Patch 4 - make stop_all_interrupts() return void
+Patch 5 - Make use of guard() in sca3000_stop_all_interrupts() function.
+Patch 6 - Used devm_add_action_or_reset() for disabling interrupts.
+(Ensured the ordering of teardown bits remain same)
+Patch 7 - manage device registration with devm helper
 
-Thanks for spotting this. It was tested when I did this years ago. =
-Though, maybe I
-tested before adding the #if IS_ENABLED, anciently hit some key in Vim, =
-o
-something was renamed since then.
+Yet to be addressed tasks: (Would like to take this up as a separate
+activity)
+1. We shouldn't be using the spi_device_id at all. [Thanks to onathan
+and David]
+2. Modernize other functions to make use of autocleanup style locking
+which simpifies the code and makes error paths cleaner.
 
-Either way, I=E2=80=99ll get the display out of the basement and re-test =
-it the coming days.
+I will be working on these two above tasks and will be sending a
+different patches for those.
 
-	Ren=C3=A9
+The series builds cleanly and I have performed static analysis with
+smatch checker but haven't tested on actual hardware.
 
-> drivers/hid/hid-quirks.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-> index 3217e436c052..b91e081ef69c 100644
-> --- a/drivers/hid/hid-quirks.c
-> +++ b/drivers/hid/hid-quirks.c
-> @@ -233,7 +233,7 @@ static const struct hid_device_id hid_quirks[] =3D =
-{
->  * used as a driver. See hid_scan_report().
->  */
-> static const struct hid_device_id hid_have_special_driver[] =3D {
-> -#if IS_ENABLED(CONFIG_APPLEDISPLAY)
-> +#if IS_ENABLED(CONFIG_USB_APPLEDISPLAY)
-> { HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9218) },
-> { HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9219) },
-> { HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921c) },
-> --=20
-> 2.52.0
->=20
+v1 -> v2: changes are documented in patches where necessary.
+v2 -> v3: Address comments from David Lechner.
+v3 -> v4: Address comments from Andy.
+v4 -> v5: Rebase the patches based on suggestions from Andy which
+simplifies the patches.
 
---=20
-https://exactco.de =E2=80=A2 https://t2linux.com =E2=80=A2 =
-https://patreon.com/renerebe
+Thanks for your time.
+Regards,
+Harshit
+
+Harshit Mogalapalli (7):
+  iio: sca3000: reuse device pointer for devm helpers
+  iio: sca3000: switch IRQ handling to devm helpers
+  iio: sca3000: Move sca3000_stop_all_interrupts() above sca3000_probe()
+  iio: sca3000: make stop_all_interrupts() return void
+  iio: sca3000: use guard(mutex) to simplify return paths
+  iio: sca3000: stop interrupts via devm_add_action_or_reset()
+  iio: sca3000: manage device registration with devm helper
+
+ drivers/iio/accel/sca3000.c | 87 +++++++++++++++----------------------
+ 1 file changed, 34 insertions(+), 53 deletions(-)
+
+-- 
+2.47.3
 
 

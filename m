@@ -1,138 +1,147 @@
-Return-Path: <kernel-janitors+bounces-10230-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-10231-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDFAF/CzoGmHlwQAu9opvQ
-	(envelope-from <kernel-janitors+bounces-10230-lists+kernel-janitors=lfdr.de@vger.kernel.org>)
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Feb 2026 21:58:24 +0100
+	id cBQCH/a2oGnClwQAu9opvQ
+	(envelope-from <kernel-janitors+bounces-10231-lists+kernel-janitors=lfdr.de@vger.kernel.org>)
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Feb 2026 22:11:18 +0100
 X-Original-To: lists+kernel-janitors@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B15B31AF571
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Feb 2026 21:58:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A0221AF7FB
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Feb 2026 22:11:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA25C30C595D
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Feb 2026 20:57:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B419730B9DD8
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Feb 2026 21:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AD6372B51;
-	Thu, 26 Feb 2026 20:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62103472794;
+	Thu, 26 Feb 2026 21:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="Ppx8My7D"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="mCtjL7eH"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-79.smtpout.orange.fr [80.12.242.79])
+Received: from smtp.smtpout.orange.fr (smtp-14.smtpout.orange.fr [80.12.242.14])
 	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EF23624A8;
-	Thu, 26 Feb 2026 20:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FF847277D;
+	Thu, 26 Feb 2026 21:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772139475; cv=none; b=rBXFSnFxCM+zLIDMavuxDRCMthUO8x/ZV63ADQc2RPwQSWqH+ZLkEqkaf+x2rymIebQVkyUwJstiJGoEiwojF7R2WVXOMt507cBHaZjha0XRGbsJUOLEbQSqH1+XSfO9GEk1+AfeAOvbBAQotA2F6tlRrUmCHxudAKlz2Fh5s2E=
+	t=1772140001; cv=none; b=JdvP51r7D5BWbUNczfZ5nm1QO11JzqKaUOc0z8/Bzj532hVhRQTQlsx8OZc6Zbu80MeDFSEKdDjCLlF5/L317ZMBwC79euUyO1fa41vCyhWsHy9beMGfLM39jvzbpvjrb9Q0gdvTK4Zpw9pS6/AjLYk/NvG2O5NhI+qaXpE/gYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772139475; c=relaxed/simple;
-	bh=fNGFgs4B82iXHmM4Fjf/KpzSuOE1Qds2OmrzEiXvoJc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=REqfYeAf5ZvA4gGN8hNgG2yExqDeKmKqwpjtmwu/57WaJW5As94ElsFXLkzneirWz0EwSafLZAHXE/yLQtjz+LbpHrhU1WEMIqzF8jLo22mG+cX1qRJRlP3+Lgb5SnAdoUWz8iWLa/SuXtdOUAEokNa0/XRS2ztuRoul+sS2Zqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=Ppx8My7D; arc=none smtp.client-ip=80.12.242.79
+	s=arc-20240116; t=1772140001; c=relaxed/simple;
+	bh=OTverRsJf3zRrZm8xLDRYc8nbCvn9xgjenOwfuanfpM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cs0I47/2IXU/DSKg2PSNh5/CNUGyQzsOpkavH6Xws2Un6lMF1wNHIcMo5H/H2qzE0vAibR01KAUlLtyw9RMLp2uqFkSVgAs9DQdCmG2cq9MeB1PcTUcij8oDdSfM7NLbYTP73upX69HfUyu5xJCItymFznw3K6A/4upkiTZo7jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=mCtjL7eH; arc=none smtp.client-ip=80.12.242.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
- ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
+Received: from fedora.home ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
 	by smtp.orange.fr with ESMTPSA
-	id viPYv6Djy0h1yviPYvQ3lF; Thu, 26 Feb 2026 21:56:42 +0100
+	id viY3viyNVADIAviY4vHEFP; Thu, 26 Feb 2026 22:05:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1772139402;
-	bh=XNvxEZUCBvpU8JwtRc1bKvRe9HjTkA50spCCWeLolOQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=Ppx8My7DW0Tash6fRof9n4+6lWDa8ewK0KusdITyWFkaucykY9/lauiR5Qbu+VhOa
-	 LJGQfSqFqNuVnSe7Yuhui2umVN4S7U1CeR77+cFPI16j8ixG61vjMIEZk3srFmdFxx
-	 K0d+Ttk9Ccq6ORR3jG0rC/Bvyma32ZRQW/DW4it3UwYqBf78O9XQ47eDx5OFw4jmC1
-	 rCQetJ5bua+Ccvk/cqOJJVO6KOWOopEr16NkfP207QpU+49Alj6btvqV8E92ovDInl
-	 Z8zf6M4Fm0JcLCkDeypupyMUA0jmb7LeDL3O01Ak7xXGIOgWZjXM66zuATDna+VAIY
-	 2zwrmkaixMynw==
-X-ME-Helo: [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
+	s=t20230301; t=1772139930;
+	bh=1OETAWCs24Uv+jRKuDOfg+migguacq1G5+KDrHSlOgA=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=mCtjL7eHdhOo6qFv9fL/7cJIfHk7TR59qZWYkv1mWCZPkXtUQKRIta/yJasPeeHuw
+	 w3JSJdw3p9y1bmXbMQckfozCv7e+0Nx6zgOKEzUoDnQGHr11f+yBKlYBygq2uEr48v
+	 RGXIXbTrei3Mano+CcfeqCs9R+f9YnpGgzzam6pBvymU6JsVoDIszUYIBhlRyLJB3K
+	 y9ke2gU1hcjXGdOgybG9H4MiNHrqpzDjXoqAM4K2x2/B2SvTJ0jCkUWy6sFhGawSL8
+	 Y3OrmLQSOKkG7/DF+bOoH4gTJMRtXU4CBHLPcZOVmtHocaCYVhNUg3N6q2OwwPikuU
+	 9Ps/h4ladgtYw==
+X-ME-Helo: fedora.home
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 26 Feb 2026 21:56:42 +0100
+X-ME-Date: Thu, 26 Feb 2026 22:05:30 +0100
 X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
-Message-ID: <61cece55-8ab1-4146-a3f5-a2b5d97adc66@wanadoo.fr>
-Date: Thu, 26 Feb 2026 21:56:39 +0100
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	iommu@lists.linux.dev
+Subject: [PATCH] iommufd: Constify struct dma_buf_attach_ops
+Date: Thu, 26 Feb 2026 22:05:21 +0100
+Message-ID: <67e9126bbffa1d5c05124773a8dd4a3493be77ac.1772139886.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ALSA: aoa: Constify struct configfs_item_operations
- and configfs_group_operations
-To: Johannes Berg <johannes@sipsolutions.net>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc: linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-sound@vger.kernel.org
-References: <803ed3c1a19faab6481f3b3b4bf1eb86739061bd.1772138561.git.christophe.jaillet@wanadoo.fr>
- <05f10825418c4e8c12b96eaf9404e4e14ad63aaa.camel@sipsolutions.net>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <05f10825418c4e8c12b96eaf9404e4e14ad63aaa.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[wanadoo.fr,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[wanadoo.fr:s=t20230301];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-10230-lists,kernel-janitors=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[wanadoo.fr:+];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,wanadoo.fr,lists.linux.dev];
+	TAGGED_FROM(0.00)[bounces-10231-lists,kernel-janitors=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[wanadoo.fr];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[christophe.jaillet@wanadoo.fr,kernel-janitors@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[wanadoo.fr:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[kernel-janitors];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[wanadoo.fr];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B15B31AF571
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0A0221AF7FB
 X-Rspamd-Action: no action
 
-Le 26/02/2026 à 21:47, Johannes Berg a écrit :
-> On Thu, 2026-02-26 at 21:43 +0100, Christophe JAILLET wrote:
->> 'struct codec_connection' are not modified in this driver.
->>
->> Constifying these structures moves some data to a read-only section, so
->> increases overall security.
->>
-> 
-> The security claim seems like a stretch for this data, but I guess since
-> it's never modified making it const makes some sense.
+'struct dma_buf_attach_ops' is not modified in this driver.
 
-You are right, in this case the security claim is a bit too much.
-I use the same template for all such patches, and some times, it is less 
-relevant.
+Constifying this structure moves some data to a read-only section, so
+increases overall security, especially when the structure holds some
+function pointers.
 
-The claim makes much more sense when the struct has some function pointers.
+On a x86_64, with allmodconfig:
+Before:
+======
+   text	   data	    bss	    dec	    hex	filename
+  81096	  13899	    192	  95187	  173d3	drivers/iommu/iommufd/pages.o
 
+After:
+=====
+   text	   data	    bss	    dec	    hex	filename
+  81160	  13835	    192	  95187	  173d3	drivers/iommu/iommufd/pages.o
 
-Please not the the subject is broken (configfs_item_operations...)
-I've sent the same patch with the correct subject.
-Sorry for the noise.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Compile tested only.
+---
+ drivers/iommu/iommufd/pages.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-CJ
-
-
-> 
-> johannes
-> 
-> 
+diff --git a/drivers/iommu/iommufd/pages.c b/drivers/iommu/iommufd/pages.c
+index 8124c554f2cc..9bdb2945afe1 100644
+--- a/drivers/iommu/iommufd/pages.c
++++ b/drivers/iommu/iommufd/pages.c
+@@ -1450,7 +1450,7 @@ static void iopt_revoke_notify(struct dma_buf_attachment *attach)
+ 	pages->dmabuf.phys.len = 0;
+ }
+ 
+-static struct dma_buf_attach_ops iopt_dmabuf_attach_revoke_ops = {
++static const struct dma_buf_attach_ops iopt_dmabuf_attach_revoke_ops = {
+ 	.allow_peer2peer = true,
+ 	.invalidate_mappings = iopt_revoke_notify,
+ };
+-- 
+2.53.0
 
 

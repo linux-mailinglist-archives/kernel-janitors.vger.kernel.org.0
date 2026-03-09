@@ -1,162 +1,216 @@
-Return-Path: <kernel-janitors+bounces-10261-lists+kernel-janitors=lfdr.de@vger.kernel.org>
+Return-Path: <kernel-janitors+bounces-10262-lists+kernel-janitors=lfdr.de@vger.kernel.org>
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMYeGP62rmnMIAIAu9opvQ
-	(envelope-from <kernel-janitors+bounces-10261-lists+kernel-janitors=lfdr.de@vger.kernel.org>)
-	for <lists+kernel-janitors@lfdr.de>; Mon, 09 Mar 2026 13:03:10 +0100
+	id sG0RDYG7rmmxIQIAu9opvQ
+	(envelope-from <kernel-janitors+bounces-10262-lists+kernel-janitors=lfdr.de@vger.kernel.org>)
+	for <lists+kernel-janitors@lfdr.de>; Mon, 09 Mar 2026 13:22:25 +0100
 X-Original-To: lists+kernel-janitors@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D7E2238612
-	for <lists+kernel-janitors@lfdr.de>; Mon, 09 Mar 2026 13:03:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 819FD238B81
+	for <lists+kernel-janitors@lfdr.de>; Mon, 09 Mar 2026 13:22:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A0537301AA96
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Mar 2026 12:01:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83CA432533CE
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Mar 2026 12:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17603A7F56;
-	Mon,  9 Mar 2026 12:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E513AA1B1;
+	Mon,  9 Mar 2026 12:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b="UgjiauK/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZrSkZ9u"
 X-Original-To: kernel-janitors@vger.kernel.org
-Received: from mail2-relais-roc.national.inria.fr (mail2-relais-roc.national.inria.fr [192.134.164.83])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54472359A81;
-	Mon,  9 Mar 2026 12:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.134.164.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641F13A9D94;
+	Mon,  9 Mar 2026 12:10:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773057662; cv=none; b=B3uOLdf5cfqLttEFDWvDBJaqjhbdsYg/ZGVxH+B48ViPv/UHbWJ6tyVkRpk3sHbTaez88hkI6GufNTF5buGbddnBLTsN5NB/Es1qPpyGU3NulUGrv4nS1w1rGQVD80ABjuFhLraFN5O7PpSDs/Dn2Ol/Ta3nHpg85SGyR41lk/s=
+	t=1773058226; cv=none; b=DteADlHQv6YKDPoKkhpnXU0HqdBwc3olfHg9zsoUTmfQMa2QEe5gZ3GLMG2R/97m9wA5FD3SORB6YntD2mQwwatgRxYdOi57JLSncGLL3SHeXGsmnOq8Ya25bfmo7C9cAI3KIAetyPBPYlyVlcHmD5dWjsPtlPaVsvGOrORPl/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773057662; c=relaxed/simple;
-	bh=2Q5vE+DJ6P2Avog0kIHAAYkrVPHu1YnNhMLWWJjbKck=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=U5Foyi+h8VLnuakFS2j6dkCJO94TJub098Xc+o3EuowMRbEsIZsNc9iSCM87Qd9eolKF5+INvnS6+xve8LBj1mig0V3f8YvMP12ryvj/3C7fI4lWLqc1rYIl9VPvoRjJ9gkW+SB19WCoUZbBu02f1jleb/2X9QbKrZo3UTXMNFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr; spf=pass smtp.mailfrom=inria.fr; dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b=UgjiauK/; arc=none smtp.client-ip=192.134.164.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inria.fr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=inria.fr; s=dc;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=7nNx4Iyc2/imBw5Tui/WljzGJuysqz2B4nsrBQSnvGI=;
-  b=UgjiauK/q4UEc9KFJOBw74x9GWTU/fNh83zClssbaXqlYLNTDKet9/Wt
-   X7ZrK5DDAJ9+l7+knijAulBettEUJB1c828JfiEwZVeNSNd89lkwoxVss
-   lAYPdubQil9/EbJmy4ZkSzfh+de55TFTHkuKSHd9W3E0yLRBeyJpVtCwm
-   g=;
-X-CSE-ConnectionGUID: E4RQBa7yRuuOIViRAvxgaQ==
-X-CSE-MsgGUID: ANJlQXodTZSLqBW6Aspzew==
-Authentication-Results: mail2-relais-roc.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=julia.lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
-X-IronPort-AV: E=Sophos;i="6.23,109,1770591600"; 
-   d="scan'208";a="266876557"
-Received: from dt-lawall.paris.inria.fr ([128.93.67.65])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2026 12:59:48 +0100
-Date: Mon, 9 Mar 2026 12:59:48 +0100 (CET)
-From: Julia Lawall <julia.lawall@inria.fr>
+	s=arc-20240116; t=1773058226; c=relaxed/simple;
+	bh=Q5cOPE6T5rdZ2KwqIlpqd/NhV8/TkqTjqCcs/GNI4mg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jtNakav2t3PnMRREJrsR4Xe7bZI1dI/0w3/HHpDZGH9OZUvsVOo/BpUGej40JP3e6IiW1cxtkfWOVK8bx+MM83jsalHAGyjH8Uog6oXTSFOpe4PC1Fu8UbEmKONf5jQq3EixwD1ujL9B5EBEEaHMvF2Q3jV4RH8Fa+hcf8Q1Qw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZrSkZ9u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3D0C2BC86;
+	Mon,  9 Mar 2026 12:10:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773058226;
+	bh=Q5cOPE6T5rdZ2KwqIlpqd/NhV8/TkqTjqCcs/GNI4mg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LZrSkZ9uw+K+Z/G74mQmuoVzgSgE+ZrcP0eihZh0CVp6GsUe7BT7PwLT9m0/XWw8l
+	 MaMVu70b7ejsOI4m61mluJcgIMq2E2uBdv5g1iOJeZzdt6I580Rd/SIDGyFTNdEztb
+	 qfSlXmLwOkwZ2CaxJDhHZjksIe58O2GqWc1X3WZh8jgtGtIalfiNQALJOjSnALKeO9
+	 jninxuOagNablZ3WDOyshO7kB+R101Jgh2tbKN0G4XEfIS7WJRXJ0m6Zib0ShipPCR
+	 23dJfvwe1qJ+bIFWEQkriV2fKF8zQF+Qi4o5tDDBOUakTvD1UAJ6BlKEIvkq/nN3k0
+	 pMHwAUHCLzh1A==
+Date: Mon, 9 Mar 2026 13:10:22 +0100
+From: Alejandro Colomar <alx@kernel.org>
 To: Markus Elfring <Markus.Elfring@web.de>
-cc: Alejandro Colomar <alx@kernel.org>, cocci@inria.fr, 
-    Nicolas Palix <nicolas.palix@imag.fr>, LKML <linux-kernel@vger.kernel.org>, 
-    kernel-janitors@vger.kernel.org, Kees Cook <kees@kernel.org>
+Cc: cocci@inria.fr, Julia Lawall <Julia.Lawall@inria.fr>, 
+	Nicolas Palix <nicolas.palix@imag.fr>, LKML <linux-kernel@vger.kernel.org>, 
+	kernel-janitors@vger.kernel.org, Kees Cook <kees@kernel.org>
 Subject: Re: [cocci] [PATCH] scripts/coccinelle: Add script for using
  ARRAY_END()
-In-Reply-To: <cab3d2a8-4c3f-45e6-9e7f-8bdca48a6209@web.de>
-Message-ID: <4aa2fc38-3c32-75a1-161-1c90709252be@inria.fr>
-References: <cover.1772752564.git.alx@kernel.org> <f1c9dff525752dc5a839760269a1c96d6e0870b4.1772752564.git.alx@kernel.org> <cab3d2a8-4c3f-45e6-9e7f-8bdca48a6209@web.de>
+Message-ID: <aa6vSvsp4J6InmiB@devuan>
+References: <cover.1772752564.git.alx@kernel.org>
+ <f1c9dff525752dc5a839760269a1c96d6e0870b4.1772752564.git.alx@kernel.org>
+ <cab3d2a8-4c3f-45e6-9e7f-8bdca48a6209@web.de>
 Precedence: bulk
 X-Mailing-List: kernel-janitors@vger.kernel.org
 List-Id: <kernel-janitors.vger.kernel.org>
 List-Subscribe: <mailto:kernel-janitors+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kernel-janitors+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1303160379-1773057588=:9033"
-X-Rspamd-Queue-Id: 5D7E2238612
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cvowzgf7khn6nplo"
+Content-Disposition: inline
+In-Reply-To: <cab3d2a8-4c3f-45e6-9e7f-8bdca48a6209@web.de>
+X-Rspamd-Queue-Id: 819FD238B81
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	CTYPE_MIXED_BOGUS(1.00)[];
+X-Spamd-Result: default: False [-3.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[inria.fr,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[inria.fr:s=dc];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-10261-lists,kernel-janitors=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-10262-lists,kernel-janitors=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[web.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[inria.fr:+];
+	FREEMAIL_TO(0.00)[web.de];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.958];
+	NEURAL_HAM(-0.00)[-0.943];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[julia.lawall@inria.fr,kernel-janitors@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[alx@kernel.org,kernel-janitors@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[kernel-janitors];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[inria.fr:dkim,inria.fr:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[kernel-janitors];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,alejandro-colomar.es:url]
 X-Rspamd-Action: no action
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323329-1303160379-1773057588=:9033
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+--cvowzgf7khn6nplo
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+From: Alejandro Colomar <alx@kernel.org>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: cocci@inria.fr, Julia Lawall <Julia.Lawall@inria.fr>, 
+	Nicolas Palix <nicolas.palix@imag.fr>, LKML <linux-kernel@vger.kernel.org>, 
+	kernel-janitors@vger.kernel.org, Kees Cook <kees@kernel.org>
+Subject: Re: [cocci] [PATCH] scripts/coccinelle: Add script for using
+ ARRAY_END()
+Message-ID: <aa6vSvsp4J6InmiB@devuan>
+References: <cover.1772752564.git.alx@kernel.org>
+ <f1c9dff525752dc5a839760269a1c96d6e0870b4.1772752564.git.alx@kernel.org>
+ <cab3d2a8-4c3f-45e6-9e7f-8bdca48a6209@web.de>
+MIME-Version: 1.0
+In-Reply-To: <cab3d2a8-4c3f-45e6-9e7f-8bdca48a6209@web.de>
 
+Hi Markus,
 
-
-On Mon, 9 Mar 2026, Markus Elfring wrote:
-
-> …
+On 2026-03-09T12:17:00+0100, Markus Elfring wrote:
+> =E2=80=A6
 > > This script makes it easy to find more places where that macro should be
 > > used.
->
+>=20
 > See also:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v7.0-rc3#n94
->
->
-> …
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/D=
+ocumentation/process/submitting-patches.rst?h=3Dv7.0-rc3#n94
+
+Thanks!
+
+> =E2=80=A6
 > > +++ b/scripts/coccinelle/misc/array_end.cocci
 > > @@ -0,0 +1,93 @@
-> …
->
->
+> =E2=80=A6
+>=20
+>=20
 > > +// Confidence: ???
->
-> I hope that a more reasonable value can be determined for this information.
->
->
-> …
+>=20
+> I hope that a more reasonable value can be determined for this informatio=
+n.
+
+I don't know how the scale works.  I know the script has a few false
+negatives, and AFAIK there are no false positives.  To what level of
+confidence would that belong?
+
+Is that field a keyword, or may I be explicit such as with this?:
+
+// Confidence: no false positives, but a few false negatives
+
+Or maybe I should write that in Comments...
+
+> =E2=80=A6
 > > +// Comments:
->
+>=20
 > Please omit such an empty field.
->
->
-> …
+
+Ok; thanks!
+
+$ grep -rh '^// Comments:' scripts/coccinelle/ | sort | uniq -c
+     34 // Comments:
+      2 // Comments: -
+      1 // Comments: -I ... -all_includes can give more complete results
+      1 // Comments: Comments on code can be deleted if near code that is r=
+emoved.
+      1 // Comments: Some false positives on empty default cases in switch =
+statements.
+      1 // Comments: requires at least Coccinelle 0.2.4, lex or parse error=
+ otherwise
+$ find scripts/coccinelle/ -type f | wc -l
+76
+
+
+It seems around half of the existing scripts have that.  You may want to
+remove those empty comments.  I added it because the scripts I looked at
+do have it.
+
+> =E2=80=A6
 > > +@i@
 > > +@@
 > > +
 > > +#include <linux/kernel.h>
->
+>=20
 > I doubt that such an SmPL rule would be required.
->
->
+
+Okay, I'll remove it.  Thanks!
+
 > > +
 > > +//----------------------------------------------------------
 > > +//  For context mode
 > > +//----------------------------------------------------------
 > > +
->
+>=20
 > Please omit such extra comment lines.
 
-No problem to put such comments.
+Agree.  BTW, you may want to remove such lines from existing scripts:
 
->
->
+$ grep -r '^//.*For context mode' scripts/coccinelle/
+scripts/coccinelle/null/deref_null.cocci:// For context mode
+scripts/coccinelle/misc/boolconv.cocci://  For context mode
+scripts/coccinelle/misc/array_size.cocci://  For context mode
+scripts/coccinelle/misc/struct_size.cocci://  For context mode
+scripts/coccinelle/misc/newline_in_nl_msg.cocci://  For context mode
+scripts/coccinelle/misc/badty.cocci://  For context mode
+scripts/coccinelle/api/alloc/pool_zalloc-simple.cocci://  For context mode
+scripts/coccinelle/api/alloc/zalloc-simple.cocci://  For context mode
+scripts/coccinelle/api/alloc/alloc_cast.cocci://  For context mode
+scripts/coccinelle/api/pm_runtime.cocci://  For context mode
+scripts/coccinelle/api/resource_size.cocci://  For context mode
+scripts/coccinelle/api/vma_pages.cocci://  For context mode
+
 > > +@depends on i&&context@
 > > +type T;
 > > +T[] a;
@@ -171,33 +225,106 @@ No problem to put such comments.
 > > +|
 > > +* (&a[ARRAY_SIZE(a) - b])
 > > +)
->
+>=20
 > Extra space characters may be omitted directly after SmPL asterisks.
 
-No concern about the spaces either.
+Good to know; thanks!
 
->
->
-> …
+Although most scripts seem to be using white space (space (164) or
+tab (26)) after the asterisk.  Please confirm if you prefer it removed
+in new scripts.  Only 39 scripts don't have white space after it.
+
+$ grep -rh '^\*' scripts/coccinelle/ | grep -o '^..' | sort | uniq -c
+     26 *=09
+    164 *=20
+      4 *(
+      1 *;
+      1 *E
+      1 *I
+      1 *P
+      2 *W
+      1 *\
+      1 *b
+      1 *c
+      3 *d
+      1 *e
+      4 *f
+      1 *g
+      2 *i
+      1 *l
+      4 *r
+      2 *s
+      1 *u
+      2 *w
+      5 *x
+$ grep -rh '^\*' scripts/coccinelle/ | grep -o '^.\s' | sort | uniq -c | hd
+00000000  20 20 20 20 20 32 36 20  2a 09 0a 20 20 20 20 31  |     26 *..   =
+ 1|
+00000010  36 34 20 2a 20 0a                                 |64 * .|
+00000016
+$ grep -rh '^\*' scripts/coccinelle/ | grep -o '^.\S' | wc -l
+39
+
+
+> =E2=80=A6
 > > +@r depends on (org || report)@
->
+>=20
 > You may omit parentheses here.
->
->
-> …
+
+Ok.
+
+> =E2=80=A6
 > > +@script:python depends on report@
 > > +p << r.p;
 > > +@@
 > > +
-> > +msg="WARNING: Use ARRAY_END"
+> > +msg=3D"WARNING: Use ARRAY_END"
 > > +coccilib.report.print_report(p[0], msg)
->
+>=20
 > Would the following command variant be a bit nicer?
->
+>=20
 > coccilib.report.print_report(p[0], "WARNING: opportunity for ARRAY_END()")
 
-Either way.
+Sounds good.
 
-julia
---8323329-1303160379-1773057588=:9033--
+> By the way:
+> How do you think about to omit a cover letter for a single patch?
+
+Sounds reasonable.  I like the cover letter as it holds the range-diff,
+which may become a bit confusing when it's in the same email as the
+patch, but maybe that's just me.
+
+I'll send v2 in a single email.
+
+>=20
+> Regards,
+> Markus
+
+Have a lovely day!
+Alex
+
+--=20
+<https://www.alejandro-colomar.es>
+
+--cvowzgf7khn6nplo
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmmuuK0ACgkQ64mZXMKQ
+wqkSzw/7BsY+QbHN9FP+p5Frj+Yh5Vr3bWpVw9TsBPrJ7Uq3JcaZHHDmXtIxZSj1
+toOrlHkdfWlOLA+4QEec+PyFf3tTcAPu5jFYRazT9QjPwyj/vGSep6A4XKrZ/CQv
+Mvgn/OLhoW0/0SGqYp6xMmJxcNIpo+7Idm7cVnwf8WQNvHOToQBLDdXIOv6z18tI
+XFFQxayGDbK39nQldUB7j7c+lfO8w/Qpj9yrkrgLFrkRa3CDyeMUh/n/SIoepHPj
+crYvb2C95hZFEHdI8UbWLlRtpMRj/ZbltH0MZn7Hn6xrh55kKQOVgQzjew39IkRW
+J3xyGV5PejQZ3Ju2htZPcdOsHVksmcBLb1W5IXxJMBIIPuMeyGiqf6sl/tIR3l5Y
+6jHJMIaKBy6zZRBOx80uyZEVhuTV43bEjePDfVLou7KWvBLNnCpDALUaLzlfhlaS
+HVPJJdVtUEQ96v+3tPdefIL/+HYvopI+L4Cg3ob5eIAxYTjd0JduKvZHh22a5vYg
+ccyVRtO9IOtY77z/5bw5r9lY8CqN/1rG/tHUQhS2RPd9337bkcFFprt0UTZxnBPP
+4Szqx+KeeaODP4YaAVlPkWfNFWjbWk2+0m8MFfGWz79OkJZpI6zY7EbvQlDU1zXe
+cmMZX5yhs8JJ1d2n0GE6H3R4SLVcjZn64tSDO7w+zjx9v7W/1+s=
+=gFux
+-----END PGP SIGNATURE-----
+
+--cvowzgf7khn6nplo--
 
